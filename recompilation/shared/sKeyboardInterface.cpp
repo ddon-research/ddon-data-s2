@@ -175,7 +175,7 @@ void sKeyboardInterface::setKeyboardSetting(sKeyboardInterface::KEYBOARD_TYPE ke
 
 // Address: 0x007de230 - 0x007de242 (18 bytes)
 bool sKeyboardInterface::isBusy() const {
-    // local: bool is_busy;
+    // DWARF local not rendered: bool is_busy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return (this->mMode != static_cast<sKeyboardInterface::MODE>(0)) || (this->mRequest != static_cast<sKeyboardInterface::REQUEST>(0));
 }

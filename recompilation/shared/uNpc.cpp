@@ -288,7 +288,7 @@ __attribute__((weak)) void uNpc::loadFSM(MT_CTSTR filePath) {
 
 // Address: 0x00ca6fe0 - 0x00ca7006 (38 bytes)
 bool uNpc::isAttend() {
-    // local: uControl* pCtrl;
+    // DWARF local not rendered: uControl* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
         if (this->::uDDOModel::getCtrl()->mCtrlType == static_cast<u8>(16)) {
@@ -300,7 +300,6 @@ bool uNpc::isAttend() {
 
 // Address: 0x00ca8260 - 0x00ca8289 (41 bytes)
 bool uNpc::isDispMiniMap() {
-    // local: uControlNpc* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     uControlNpc* pCtrl = this->::uDDOModel::getCtrlNpc();
     if (pCtrl != static_cast<uControlNpc*>(nullptr)) {
@@ -339,9 +338,7 @@ __attribute__((weak)) bool uNpc::isMotionCancelMyRoom() {
 
 // Address: 0x00ca77d0 - 0x00ca7891 (193 bytes)
 void uNpc::controlLantern(const uControlNpc* pCtrl) {
-    // local: cEquipData& data;
-    // local: bool forceOn;
-    // local: u32 hour;
+    // DWARF local not rendered: bool forceOn;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (pCtrl->mIsFsmEventNpc != false) {
         return;
@@ -390,14 +387,14 @@ __attribute__((weak)) u32 uNpc::trace(MtVector3& TargetPos, MtVector3& DestPos, 
 
 // Address: 0x00ca83e0 - 0x00ca83f0 (16 bytes)
 void uNpc::setInvincible(bool IsInvincible) {
-    // local: uControlNpc* pCtrl;
+    // DWARF local not rendered: uControlNpc* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     static_cast<uControlNpc*>(this->::uDDOModel::getCtrl())->::uControlNpc::setInvincible(IsInvincible);
 }
 
 // Address: 0x00ca83f0 - 0x00ca8485 (149 bytes)
 void uNpc::setGripFinger() {
-    // local: u32 jobIndex;
+    // DWARF local not rendered: u32 jobIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
         if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isJobActArea() != false) {

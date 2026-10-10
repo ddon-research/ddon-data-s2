@@ -66,7 +66,7 @@ inline void cpEffectProvider::operator delete(void* p_addr) {
 
 // Address: 0x00470050 - 0x00470086 (54 bytes)
 cpEffectProvider::cpEffectProvider() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     ::memset(static_cast<void*>(&this->mprResource[0]), static_cast<int>(0), static_cast<size_t>(256));
 }

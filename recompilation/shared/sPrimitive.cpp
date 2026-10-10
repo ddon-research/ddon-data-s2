@@ -508,7 +508,7 @@ __attribute__((weak)) void sPrimitive::setMetaData(cDraw* p_draw, const nPrim::M
 
 // Address: 0x01256070 - 0x012560b5 (69 bytes)
 void sPrimitive::clearTag() {
-    // local: u32 ui;
+    // DWARF local not rendered: u32 ui;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpPrim[0]->::cPrim::clear();
     this->mpPrim[1]->::cPrim::clear();

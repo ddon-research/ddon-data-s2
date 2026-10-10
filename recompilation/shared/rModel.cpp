@@ -224,11 +224,10 @@ rMaterial* rModel::getMaterialResource() {
 
 // Address: 0x011d7a40 - 0x011d7a7b (59 bytes)
 u32 rModel::getPrimitiveIndexFromParts(u32 parts_no) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     if (this->mPrimitiveNum != static_cast<u32>(0)) {
         u32 i = static_cast<u32>(0);
-        // inferred: the pointer this loop steps by one element; DWARF names no local for it
+        // inferred: the pointer this loop steps by one element; no location-less local in scope fits
         rModel::PRIMITIVE_INFO* p2 = this->mPrimitiveInfo;
         do {
             if (p2->parts_no == parts_no) {

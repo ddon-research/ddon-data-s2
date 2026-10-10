@@ -7,6 +7,7 @@
 #include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -1024,25 +1025,25 @@ inline void rAdjLimitParam::operator delete(void* p_addr) {
 
 // Address: 0x0064b630 - 0x0064c41c (3564 bytes)
 bool rAdjLimitParam::loadData(MtDataReader& r, cAdjLimitParam* pData) {
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     pData->mGuardAtkAdjMax[0] = r.readF32();
     pData->mGuardAtkAdjMin[0] = r.readF32();
@@ -1242,10 +1243,18 @@ bool rAdjLimitParam::loadData(MtDataReader& r, cAdjLimitParam* pData) {
     pData->mStaminaHealDefAdjMin[3] = r.readF32();
     pData->mStaminaHealDefAdjMax[4] = r.readF32();
     pData->mStaminaHealDefAdjMin[4] = r.readF32();
-    pData->mHolyAbsorpMax = r.readU16();
-    pData->mHolyAbsorpMin = r.readU16();
-    pData->mDamageMax = r.readF32();
-    pData->mDamageMin = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mHolyAbsorpMax);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mHolyAbsorpMin);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mDamageMax);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mDamageMin);
     return true;
 }
 
@@ -1324,8 +1333,12 @@ inline void rBlowSaveEmLvParam::operator delete(void* p_addr) {
 // Address: 0x0064d630 - 0x0064d660 (48 bytes)
 bool rBlowSaveEmLvParam::loadData(MtDataReader& in, cBlowSaveEmLvParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mKeyLv = in.readU32();
-    pData->mSaveRate = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKeyLv);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSaveRate);
     return true;
 }
 
@@ -1404,8 +1417,12 @@ inline void rCalcDamageAtdmAdj::operator delete(void* p_addr) {
 // Address: 0x006499e0 - 0x00649a12 (50 bytes)
 bool rCalcDamageAtdmAdj::loadData(MtDataReader& in, cCalcDamageAtdmAdj* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mAtdmRate = in.readF32();
-    pData->mDamageAdj = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAtdmRate);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mDamageAdj);
     return true;
 }
 
@@ -1484,8 +1501,12 @@ inline void rCalcDamageAtdmAdjRate::operator delete(void* p_addr) {
 // Address: 0x00649d70 - 0x00649da2 (50 bytes)
 bool rCalcDamageAtdmAdjRate::loadData(MtDataReader& in, cCalcDamageAtdmAdjRate* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mKeyValue = in.readF32();
-    pData->mAtdmAdjRate = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKeyValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAtdmAdjRate);
     return true;
 }
 
@@ -1563,7 +1584,7 @@ inline void rCalcDamageLvAdj::operator delete(void* p_addr) {
 
 // Address: 0x00649610 - 0x0064968c (124 bytes)
 bool rCalcDamageLvAdj::loadData(MtDataReader& in, cCalcDamageLvAdj* pData) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     pData->mLvDiff = in.readS16();
     pData->mLvAdj[0] = in.readF32();
@@ -1650,10 +1671,18 @@ inline void rDamageSaveEmLvParam::operator delete(void* p_addr) {
 // Address: 0x0064d290 - 0x0064d2de (78 bytes)
 bool rDamageSaveEmLvParam::loadData(MtDataReader& in, cDamageSaveEmLvParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mKeyLv = in.readU32();
-    pData->mSaveParamA = in.readF32();
-    pData->mSaveParamB = in.readF32();
-    pData->mSaveParamC = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKeyLv);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSaveParamA);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSaveParamB);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSaveParamC);
     return true;
 }
 
@@ -1732,7 +1761,8 @@ inline void rDamageSpecialAdj::operator delete(void* p_addr) {
 // Address: 0x0064d900 - 0x0064d920 (32 bytes)
 bool rDamageSpecialAdj::loadData(MtDataReader& in, cDamageSpecialAdj* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mDamageRate = in.readF32();
+    // inferred: reference argument from the copy's one access
+    ::nDDOIO::readData(in, pData->mDamageRate);
     return true;
 }
 
@@ -1811,22 +1841,54 @@ inline void rDmJobAdjParam::operator delete(void* p_addr) {
 // Address: 0x0064ac50 - 0x0064ad52 (258 bytes)
 bool rDmJobAdjParam::loadData(MtDataReader& in, cDmJobAdjParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mJobType = in.readU32();
-    pData->mActionRateAdj = in.readF32();
-    pData->mDamageAdj = in.readF32();
-    pData->mStaminaDamageAdj = in.readF32();
-    pData->mEnchantDamageAdj = in.readF32();
-    pData->mAbilityBlowAdj = in.readF32();
-    pData->mHumanEmOcdAdj = in.readF32();
-    pData->mTiredDamageAdj = in.readF32();
-    pData->mChanceDamageAdj = in.readF32();
-    pData->mAtDmRateMaxPhys = in.readF32();
-    pData->mAtDmRateMaxMagic = in.readF32();
-    pData->mHealBaseMagicAdjAdd = in.readF32();
-    pData->mHealBaseMagicAdjMulti = in.readF32();
-    pData->mHealWepMagicAdjAdd = in.readF32();
-    pData->mHealWepMagicAdjMulti = in.readF32();
-    pData->mShrinkBlowSaveAdj = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mJobType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mActionRateAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mDamageAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mStaminaDamageAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEnchantDamageAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAbilityBlowAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mHumanEmOcdAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mTiredDamageAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mChanceDamageAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAtDmRateMaxPhys);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAtDmRateMaxMagic);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mHealBaseMagicAdjAdd);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mHealBaseMagicAdjMulti);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mHealWepMagicAdjAdd);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mHealWepMagicAdjMulti);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mShrinkBlowSaveAdj);
     return true;
 }
 
@@ -1905,10 +1967,18 @@ inline void rDmJobPawnAdjParam::operator delete(void* p_addr) {
 // Address: 0x0064c900 - 0x0064c94e (78 bytes)
 bool rDmJobPawnAdjParam::loadData(MtDataReader& in, cDmJobPawnAdjParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mJobType = in.readU32();
-    pData->mBaseAttackAdj = in.readF32();
-    pData->mBaseMagicAttackAdj = in.readF32();
-    pData->mBaseBlowShrinkAdj = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mJobType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBaseAttackAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBaseMagicAttackAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBaseBlowShrinkAdj);
     return true;
 }
 
@@ -1987,9 +2057,15 @@ inline void rDmLvPawnAdjParam::operator delete(void* p_addr) {
 // Address: 0x0064cd70 - 0x0064cdaf (63 bytes)
 bool rDmLvPawnAdjParam::loadData(MtDataReader& in, cDmLvPawnAdjParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mKeyLv = in.readU32();
-    pData->mLvAdjRateBase = in.readF32();
-    pData->mLvAdjRateWep = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKeyLv);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLvAdjRateBase);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLvAdjRateWep);
     return true;
 }
 
@@ -2068,8 +2144,12 @@ inline void rErosionShakeConvert::operator delete(void* p_addr) {
 // Address: 0x0064dc70 - 0x0064dca2 (50 bytes)
 bool rErosionShakeConvert::loadData(MtDataReader& in, cErosionShakeConvert* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mKeyShakesRate = in.readF32();
-    pData->mAddCoreTime = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKeyShakesRate);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAddCoreTime);
     return true;
 }
 
@@ -2148,12 +2228,24 @@ inline void rShrinkBlowValue::operator delete(void* p_addr) {
 // Address: 0x0064b3e0 - 0x0064b44a (106 bytes)
 bool rShrinkBlowValue::loadData(MtDataReader& in, cShrinkBlowValue* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mDamageType = in.readU32();
-    pData->mLv = in.readU32();
-    pData->mSpeedXZ = in.readF32();
-    pData->mAccelerateXZ = in.readF32();
-    pData->mSpeedY = in.readF32();
-    pData->mGravityY = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mDamageType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLv);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSpeedXZ);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAccelerateXZ);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSpeedY);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mGravityY);
     return true;
 }
 
@@ -2419,4 +2511,52 @@ template unsigned int rTbl2<cErosionShakeConvert>::getDataNum() const;
 // Instance at 0x01a78620 - 0x01a78624 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cShrinkBlowValue>::getDataNum() const;
+
+// Instance at 0x01a7a900 - 0x01a7a958 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cAdjLimitParam>::~rTbl2();
+
+// Instance at 0x01a7a600 - 0x01a7a658 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cBlowSaveEmLvParam>::~rTbl2();
+
+// Instance at 0x01a7ac00 - 0x01a7ac58 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCalcDamageAtdmAdj>::~rTbl2();
+
+// Instance at 0x01a7ab40 - 0x01a7ab98 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCalcDamageAtdmAdjRate>::~rTbl2();
+
+// Instance at 0x01a7acc0 - 0x01a7ad18 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCalcDamageLvAdj>::~rTbl2();
+
+// Instance at 0x01a7a6c0 - 0x01a7a718 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cDamageSaveEmLvParam>::~rTbl2();
+
+// Instance at 0x01a7a540 - 0x01a7a598 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cDamageSpecialAdj>::~rTbl2();
+
+// Instance at 0x01a7aa80 - 0x01a7aad8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cDmJobAdjParam>::~rTbl2();
+
+// Instance at 0x01a7a840 - 0x01a7a898 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cDmJobPawnAdjParam>::~rTbl2();
+
+// Instance at 0x01a7a780 - 0x01a7a7d8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cDmLvPawnAdjParam>::~rTbl2();
+
+// Instance at 0x01a7a480 - 0x01a7a4d8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cErosionShakeConvert>::~rTbl2();
+
+// Instance at 0x01a7a9c0 - 0x01a7aa18 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cShrinkBlowValue>::~rTbl2();
 

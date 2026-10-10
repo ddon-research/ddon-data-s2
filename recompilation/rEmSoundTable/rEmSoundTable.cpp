@@ -7,6 +7,7 @@
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -144,14 +145,24 @@ inline void rEmSoundTable::operator delete(void* p_addr) {
 // Address: 0x00669d30 - 0x00669e0b (219 bytes)
 bool rEmSoundTable::loadData(MtDataReader& in, cEmSoundTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mIdx = in.readU32();
-    pData->mSoundResNo = in.readU32();
-    pData->mSoundNo = in.readU32();
-    pData->mAttachFlag = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mIdx);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSoundResNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSoundNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAttachFlag);
     pData->mRequestType = in.readU32();
     pData->mBoneNo = in.readS32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->mOffsetPos = in.readV3();
-    pData->mDieIsNoCall = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    ::nDDOIO::readData(in, pData->mDieIsNoCall);
     return true;
 }
 
@@ -197,4 +208,8 @@ template const cEmSoundTable* rTbl2<cEmSoundTable>::getData(unsigned int) const;
 // Instance at 0x01a88ab0 - 0x01a88ab4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEmSoundTable>::getDataNum() const;
+
+// Instance at 0x01a88c60 - 0x01a88cb8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cEmSoundTable>::~rTbl2();
 

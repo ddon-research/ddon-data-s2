@@ -67,7 +67,6 @@ inline void cQuestSvRequestManager::operator delete(void* p_addr) {
 
 // Address: 0x001c3590 - 0x001c35d8 (72 bytes)
 cQuestSvRequest* cQuestSvRequestManager::pushRequest(const MtDTI& requestClassDti) {
-    // local: cQuestSvRequest* pRequestClass;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     ::sQuestManagerExt::getInstance()->::sQuestManagerExt::csLock();
     cQuestSvRequest* pRequestClass = static_cast<cQuestSvRequest*>(requestClassDti.newInstance());
@@ -162,9 +161,9 @@ void cQuestSvRequestManager::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->mpQuestProgressReq = static_cast<cQuestSvReqQuestProgress*>(nullptr);
     if (this->mQuestSvRequestQueue.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1c3d40 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1c3d40 carries; no location-less local in scope fits
         u32 v0_0 = this->mQuestSvRequestQueue.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mQuestSvRequestQueue.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mQuestSvRequestQueue.::MtArray::mpArray[i0_3];

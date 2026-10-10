@@ -201,9 +201,9 @@ __attribute__((weak)) void cZoneContactInfoList::createProperty(MtPropertyList& 
 void cZoneContactInfoList::initList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mContactPairListStart.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1a66a00 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1a66a00 carries; no location-less local in scope fits
         u32 v0_0 = this->mContactPairListStart.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mContactPairListStart.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mContactPairListStart.::MtArray::mpArray[i0_3];
@@ -229,9 +229,9 @@ void cZoneContactInfoList::initList() {
     this->mContactPairListStart.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mContactPairListStart.::MtArray::mLength = static_cast<u32>(0);
     if (this->mContactPairListEnd.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1a66a70 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1a66a70 carries; no location-less local in scope fits
         u32 v2_0 = this->mContactPairListEnd.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mContactPairListEnd.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mContactPairListEnd.::MtArray::mpArray[i2_3];

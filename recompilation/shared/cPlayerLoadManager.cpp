@@ -106,9 +106,7 @@ __attribute__((weak)) void cPlayerLoadManager::createProtectorEx(uHuman* pPl, u3
 
 // Address: 0x004cb250 - 0x004cb303 (179 bytes)
 void cPlayerLoadManager::setWeaponMotSe(uHuman* pHuman, u32 index, u32 itemId, u32 sex) {
-    // local: rItemParam* pParam;
-    // local: u32 wepCategory;
-    // local: rSoundRequest* prResource;
+    // DWARF local not rendered: rSoundRequest* prResource;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rItemList::rItemParam* pParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemId);
     if (pParam == static_cast<rItemList::rItemParam*>(nullptr)) {
@@ -170,9 +168,9 @@ __attribute__((weak)) void cPlayerLoadManager::setProtectorSeType(uHuman* pHuman
 
 // Address: 0x004c9a40 - 0x004c9b91 (337 bytes)
 bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
-    // local: ARC_TAGID tag_id;
-    // local: ARC_TAGID tag_id;
-    // local: ARC_TAGID tag_id;
+    // DWARF local not rendered: ARC_TAGID tag_id;
+    // DWARF local not rendered: ARC_TAGID tag_id;
+    // DWARF local not rendered: ARC_TAGID tag_id;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (pContext != static_cast<cContextInstance*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x4c9a72, used twice; no DWARF local holds it
@@ -431,8 +429,7 @@ __attribute__((weak)) void cPlayerLoadManager::loadRequest(cContextInstance* pCo
 
 // Address: 0x004cad60 - 0x004cade4 (132 bytes)
 void cPlayerLoadManager::loadRequest(uControl* pCtrl, rCharacterEdit* pEdit, u32 prio) {
-    // local: uControlNpc* pCtrlNpc;
-    // local: u32 tag_id;
+    // DWARF local not rendered: uControlNpc* pCtrlNpc;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cPlayerLoadManager::loadRequest(pCtrl->::uControl::getContextInst(), pEdit, prio);
     if (pCtrl->mCtrlType != static_cast<u8>(16)) {
@@ -456,9 +453,7 @@ void cPlayerLoadManager::loadRequest(uControl* pCtrl, rCharacterEdit* pEdit, u32
 
 // Address: 0x004ca570 - 0x004ca5be (78 bytes)
 cWeaponResTable* cPlayerLoadManager::getWeaponArcTagEx(u16 wepId, u32 sex) {
-    // local: rItemParam* pParam;
-    // local: u32 modelId;
-    // local: cWeaponResTable* pRes;
+    // DWARF local not rendered: cWeaponResTable* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (wepId != static_cast<u16>(0)) {
         rItemList::rItemParam* pParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(wepId);

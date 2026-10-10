@@ -420,9 +420,9 @@ __attribute__((weak)) void cOcdInfo::checkCheckOcd() {
 
 // Address: 0x003a8d30 - 0x003a8d66 (54 bytes)
 void cOcdInfo::reportCheatOcd() {
-    // local: u32 num;
-    // local: u32 num;
-    // local: u32 num;
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: u32 num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mOcdUID == static_cast<u32>(12295)) {
         ::sObjCondition::getInstance()->mCntCheatOcdAlter_Gold = ::sObjCondition::getInstance()->mCntCheatOcdAlter_Gold + static_cast<u32>(1);

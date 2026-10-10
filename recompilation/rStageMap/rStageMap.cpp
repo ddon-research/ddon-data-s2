@@ -362,3 +362,7 @@ template const cStageMap* rTbl2<cStageMap>::getData(unsigned int) const;
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cStageMap>::getDataNum() const;
 
+// Instance at 0x01aa8c30 - 0x01aa8c5a (42 bytes) of the generic rTbl2<T>::~rTbl2
+// Proven from the ELF: the body oracle checks this instance (022 D5).
+template rTbl2<cStageMap>::~rTbl2();
+

@@ -6,6 +6,7 @@
 #include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -147,8 +148,12 @@ bool rStageToSpot::loadData(MtDataReader& in, cStageToSpot* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pData != static_cast<cStageToSpot*>(nullptr)) {
         pData->mStageNo = in.readU32();
-        pData->mSpotId = in.readU32();
-        pData->mRecommendLevel = in.::MtDataReader::readU8();
+        // inferred: reference argument from the copy's one access
+        // inferred: argument from a callee-saved register at the copy's entry
+        ::nDDOIO::readData(in, pData->mSpotId);
+        // inferred: reference argument from the copy's one access
+        // inferred: argument from a callee-saved register at the copy's entry
+        ::nDDOIO::readData(in, pData->mRecommendLevel);
         return true;
     } else {
         return false;
@@ -197,4 +202,8 @@ template const cStageToSpot* rTbl2<cStageToSpot>::getData(unsigned int) const;
 // Instance at 0x01aa8f20 - 0x01aa8f24 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cStageToSpot>::getDataNum() const;
+
+// Instance at 0x01aa90b0 - 0x01aa9108 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cStageToSpot>::~rTbl2();
 

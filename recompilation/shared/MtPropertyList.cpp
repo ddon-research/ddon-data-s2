@@ -104,18 +104,17 @@ __attribute__((weak)) void MtPropertyList::clear() {
 
 // Address: 0x00d6d2e0 - 0x00d6d2fc (28 bytes)
 u32 MtPropertyList::length() {
-    // local: u32 i;
-    // local: MtProperty* pe;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
     unsigned int i0_0 = static_cast<unsigned int>(0);
-    // inferred: the value the loop at 0xd6d2f6 carries; DWARF names no local for it
-    for (MtProperty* v0_1 = this->mpElement;;) {
-        if (v0_1 == static_cast<MtProperty*>(nullptr)) {
+    // inferred: DWARF's location-less 'pe' (function scope) is the value the loop at 0xd6d2f6 carries
+    for (MtProperty* pe = this->mpElement;;) {
+        if (pe == static_cast<MtProperty*>(nullptr)) {
             break;
         } else {
             i0_0 += static_cast<unsigned int>(1);
-            v0_1 = v0_1->mpPrev;
+            pe = pe->mpPrev;
         }
     }
     return i0_0;

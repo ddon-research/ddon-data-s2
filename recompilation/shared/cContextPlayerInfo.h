@@ -30,6 +30,7 @@ class cAbilityParam;
 class cChargeEffectUID;
 class cContextInstHm;
 class cContextInterface;
+class cNetGameServer;
 class cOcdStatusParamRes;
 class cPlActWpnBow;
 namespace nJobParam { class cHumanBaseInfo; }
@@ -59,6 +60,8 @@ class cContextPlayerInfo : public cContext
 {
     // inferred: cContextInterface::setJob names cContextInstHm::mPlayerInfo.mCurrentJob_pri
     friend class cContextInterface;
+    // inferred: cNetGameServer::reqCharacterGoldenRevive names cContextPlayerInfo::mNoBadHpMax_pri
+    friend class cNetGameServer;
     // inferred: cPlActWpnBow::finalUp_Shot names cContextPlayerInfo::mCurrentJob_pri
     friend class cPlActWpnBow;
     // inferred: uHuman::deleteHealingCircle names cContextPlayerInfo::mCurrentJob_pri

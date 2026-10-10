@@ -8,6 +8,7 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTable.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -163,7 +164,6 @@ u16 rEmEffectTable::getDataVersion() {
 
 // Address: 0x01a86ae0 - 0x01a86b49 (105 bytes)
 bool rEmEffectTable::load(MtStream& in) {
-    // local: MtDataReader r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     return this->::rEmEffectTable::loadData(r);
@@ -203,8 +203,10 @@ bool rEmEffectTable::loadData(MtDataReader& in, cEmEffectTable* pData) {
     pData->mEffectIndexNo = in.readS32();
     pData->mEffectElementNo = in.readS32();
     pData->mBoneNo = in.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->mOffsetPos = in.readV3();
-    pData->mDieNoCall = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    ::nDDOIO::readData(in, pData->mDieNoCall);
     return true;
 }
 

@@ -119,7 +119,6 @@ void MtNetRequest::clearFatal() {
 
 // Address: 0x00dbffb0 - 0x00dbfff6 (70 bytes)
 void MtNetRequest::setFatal(const MtNetError* err) {
-    // local: MtNetError e;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::MtNetObject::setFatal(err);
     MtNetError e;
@@ -128,7 +127,6 @@ void MtNetRequest::setFatal(const MtNetError* err) {
 
 // Address: 0x00dc0000 - 0x00dc0046 (70 bytes)
 void MtNetRequest::setFatal(s32 no, s32 cause, s32 native) {
-    // local: MtNetError e;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::MtNetObject::setFatal(no, cause, native);
     MtNetError e;

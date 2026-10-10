@@ -3,10 +3,9 @@
 #include "rJobMasterCtrl.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
-#include "../shared/MtDataWriter.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -159,30 +158,57 @@ rJobMasterCtrl::~rJobMasterCtrl() {
 // Address: 0x0068e610 - 0x0068e699 (137 bytes)
 bool rJobMasterCtrl::loadData(MtDataReader& r, cJobMasterCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mJobId = r.readU32();
-    pData->mStartJobLevel = r.readU32();
-    pData->mFirstTalkGrpSerial = r.readU32();
-    pData->mTraningTalkGrpSerial = r.readU32();
-    pData->mFirstOrderTalkGrpSerial = r.readU32();
-    pData->mJobTutorialQuestId = r.readU32();
-    pData->mJobMasterTutorialQuestId = r.readU32();
-    pData->mAreaId = r.readU32();
-    pData->mAreaRank = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJobId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mStartJobLevel);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mFirstTalkGrpSerial);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mTraningTalkGrpSerial);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mFirstOrderTalkGrpSerial);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJobTutorialQuestId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJobMasterTutorialQuestId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mAreaId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mAreaRank);
     return true;
 }
 
 // Address: 0x0068e6a0 - 0x0068e729 (137 bytes)
 bool rJobMasterCtrl::saveData(MtDataWriter& w, cJobMasterCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(pData->mJobId);
-    w.writeU32(pData->mStartJobLevel);
-    w.writeU32(pData->mFirstTalkGrpSerial);
-    w.writeU32(pData->mTraningTalkGrpSerial);
-    w.writeU32(pData->mFirstOrderTalkGrpSerial);
-    w.writeU32(pData->mJobTutorialQuestId);
-    w.writeU32(pData->mJobMasterTutorialQuestId);
-    w.writeU32(pData->mAreaId);
-    w.writeU32(pData->mAreaRank);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mJobId);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mStartJobLevel);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mFirstTalkGrpSerial);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mTraningTalkGrpSerial);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mFirstOrderTalkGrpSerial);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mJobTutorialQuestId);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mJobMasterTutorialQuestId);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mAreaId);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, pData->mAreaRank);
     return true;
 }
 
@@ -228,4 +254,8 @@ template const cJobMasterCtrl* rTbl2<cJobMasterCtrl>::getData(unsigned int) cons
 // Instance at 0x01a96090 - 0x01a96094 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cJobMasterCtrl>::getDataNum() const;
+
+// Instance at 0x01a96230 - 0x01a96288 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cJobMasterCtrl>::~rTbl2();
 

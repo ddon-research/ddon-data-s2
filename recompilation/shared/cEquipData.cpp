@@ -140,7 +140,6 @@ __attribute__((weak)) void cEquipData::retEquipToCharacterData(nCharacterData::s
 
 // Address: 0x000c9190 - 0x000c9272 (226 bytes)
 void cEquipData::setHumanEnemyEquip(u32 presetId, u32 seed) {
-    // local: const cHumanEnemyEquip* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const cHumanEnemyEquip* pData = ::sEnemyManager::getInstance()->::sEnemyManager::getHumanEnemyEquipData(presetId);
     if (pData == static_cast<const cHumanEnemyEquip*>(nullptr)) {
@@ -178,10 +177,9 @@ __attribute__((weak)) cEquipData& cEquipData::operator=(const cEquipData& source
 
 // Address: 0x000c66b0 - 0x000c66d6 (38 bytes)
 u32 cEquipData::convEquipCateToIndex(nCharacterData::EQUIP_SLOT_TYPE category) {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipTbl;
     do {
         if ((*p2) == category) {
@@ -195,10 +193,9 @@ u32 cEquipData::convEquipCateToIndex(nCharacterData::EQUIP_SLOT_TYPE category) {
 
 // Address: 0x000c66f0 - 0x000c6716 (38 bytes)
 u32 cEquipData::convEquipCateWepToIndex(nCharacterData::EQUIP_SLOT_TYPE category) {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipWepTbl;
     do {
         if ((*p2) == category) {
@@ -224,10 +221,9 @@ __attribute__((weak)) nCharacterData::EQUIP_CATEGORY cEquipData::convSlotTypeToE
 
 // Address: 0x000c6760 - 0x000c6784 (36 bytes)
 bool cEquipData::isWepCategory(nCharacterData::EQUIP_SLOT_TYPE category) {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipWepTbl;
     do {
         if ((*p2) == category) {
@@ -241,10 +237,9 @@ bool cEquipData::isWepCategory(nCharacterData::EQUIP_SLOT_TYPE category) {
 
 // Address: 0x000c6790 - 0x000c67b6 (38 bytes)
 u32 cEquipData::convEquipCateArmorToIndex(nCharacterData::EQUIP_SLOT_TYPE category) {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipArmorTbl;
     do {
         if ((*p2) == category) {
@@ -258,10 +253,9 @@ u32 cEquipData::convEquipCateArmorToIndex(nCharacterData::EQUIP_SLOT_TYPE catego
 
 // Address: 0x000c67c0 - 0x000c67e4 (36 bytes)
 bool cEquipData::isArmorCategory(nCharacterData::EQUIP_SLOT_TYPE category) {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::cEquipData::mEquipArmorTbl;
     do {
         if ((*p2) == category) {

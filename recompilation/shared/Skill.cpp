@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -77,9 +78,9 @@ __attribute__((weak)) void CDataAbilityLevelParam::operator delete(void* p_addr)
 // CDataAbilityLevelParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bc560 - 0x003bc5b6 (86 bytes)
-__attribute__((weak)) MtObject* CDataAbilityLevelParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataAbilityLevelParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAbilityLevelParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAbilityLevelParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -219,9 +220,9 @@ __attribute__((weak)) void CDataLearnedAcquirementParam::operator delete(void* p
 // CDataLearnedAcquirementParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bca60 - 0x003bcaba (90 bytes)
-__attribute__((weak)) MtObject* CDataLearnedAcquirementParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataLearnedAcquirementParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataLearnedAcquirementParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataLearnedAcquirementParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -290,9 +291,9 @@ __attribute__((weak)) void CDataNormalSkillParam::operator delete(void* p_addr) 
 // CDataNormalSkillParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bc690 - 0x003bc6e3 (83 bytes)
-__attribute__((weak)) MtObject* CDataNormalSkillParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataNormalSkillParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataNormalSkillParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataNormalSkillParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -361,9 +362,9 @@ __attribute__((weak)) void CDataPresetAbilityParam::operator delete(void* p_addr
 // CDataPresetAbilityParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bcdf0 - 0x003bce65 (117 bytes)
-__attribute__((weak)) MtObject* CDataPresetAbilityParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataPresetAbilityParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPresetAbilityParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPresetAbilityParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -432,9 +433,9 @@ __attribute__((weak)) void CDataReleaseAcquirementParam::operator delete(void* p
 // CDataReleaseAcquirementParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bcb90 - 0x003bcbea (90 bytes)
-__attribute__((weak)) MtObject* CDataReleaseAcquirementParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataReleaseAcquirementParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataReleaseAcquirementParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataReleaseAcquirementParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -503,9 +504,9 @@ __attribute__((weak)) void CDataSetAcquirementParam::operator delete(void* p_add
 // CDataSetAcquirementParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bccc0 - 0x003bcd17 (87 bytes)
-__attribute__((weak)) MtObject* CDataSetAcquirementParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataSetAcquirementParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataSetAcquirementParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataSetAcquirementParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -574,9 +575,9 @@ __attribute__((weak)) void CDataSkillLevelParam::operator delete(void* p_addr) {
 // CDataSkillLevelParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bc430 - 0x003bc486 (86 bytes)
-__attribute__((weak)) MtObject* CDataSkillLevelParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataSkillLevelParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataSkillLevelParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataSkillLevelParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -645,8 +646,8 @@ __attribute__((weak)) void CDataSkillParam::operator delete(void* p_addr) {
 // CDataSkillParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bc7c0 - 0x003bc838 (120 bytes)
-__attribute__((weak)) MtObject* CDataSkillParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataSkillParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataSkillParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataSkillParam;
 }
 

@@ -85,7 +85,7 @@ sPlayerManager::sPlayerManager() {
 // Address: 0x00808eb0 - 0x00808f8b (219 bytes)
 // Also emitted as: _ZN14sPlayerManagerD0Ev at 0x00808f90
 sPlayerManager::~sPlayerManager() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprActBowParamList.elems[0] != static_cast<rBowActParamList*>(nullptr)) {
         this->mprActBowParamList.elems[0]->::cResource::release();
@@ -230,7 +230,6 @@ __attribute__((weak)) void sPlayerManager::playerSyncLoadCoreSub(cContextInstHm*
 
 // Address: 0x00809a80 - 0x00809ac3 (67 bytes)
 void sPlayerManager::returnTicket(u32 uniqId) {
-    // local: cContextInstHm* pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cContextInstHm* pContext = ::sContextManager::getInstance()->::sContextManager::searchContext(uniqId);
     if (pContext == static_cast<cContextInstHm*>(nullptr)) {
@@ -281,7 +280,7 @@ __attribute__((weak)) void sPlayerManager::updateCalcStatus() {
 
 // Address: 0x0080abb0 - 0x0080ac91 (225 bytes)
 void sPlayerManager::loadResource() {
-    // local: u32 mode;
+    // DWARF local not rendered: u32 mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
         this->mprHumanAdjustParam->::cResource::release();
@@ -378,8 +377,8 @@ __attribute__((weak)) bool sPlayerManager::isOnsenTimeMyPlayer(nHuman::ONSEN_TYP
 
 // Address: 0x00809e40 - 0x00809e6d (45 bytes)
 void sPlayerManager::resetOnsenFlag() {
-    // local: u32 i;
-    // local: u32 k;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 k;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mIsOnsenTime[1][2] = static_cast<unsigned int>(0);
     this->mIsOnsenTime[1][3] = static_cast<unsigned int>(0);
@@ -591,7 +590,6 @@ f32 sPlayerManager::getWeightMax() const {
 
 // Address: 0x0080ae40 - 0x0080ae6d (45 bytes)
 f32 sPlayerManager::getHumanAdjustParam(u32 index) const {
-    // local: cAdjustParam* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprHumanAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
         cAdjustParam* pParam = this->mprHumanAdjustParam->getData(index);
@@ -628,7 +626,7 @@ __attribute__((weak)) bool sPlayerManager::isItemSeal(const uHuman* pHuman) cons
 
 // Address: 0x0080afb0 - 0x0080afd0 (32 bytes)
 bool sPlayerManager::isItemSealMyPlayer() const {
-    // local: uHuman* pHuman;
+    // DWARF local not rendered: uHuman* pHuman;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
         return this->::sPlayerManager::getMyPlayer()->::uDDOModel::isAbnormalConditionActive(static_cast<u32>(4127));
@@ -653,12 +651,12 @@ __attribute__((weak)) void sPlayerManager::callbackDeadEnemy() {
 
 // Address: 0x0080b3f0 - 0x0080b441 (81 bytes)
 void sPlayerManager::registCSLoadWait(const u32 char_id) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayer(char_id, static_cast<u32>(0)) != static_cast<cContextInstHm*>(nullptr)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the pointer this loop steps by one element; DWARF names no local for it
+        // inferred: the pointer this loop steps by one element; no location-less local in scope fits
         for (unsigned int* p0_10 = &this->mLoadWaitCharId[0];;) {
             if ((*p0_10) != static_cast<unsigned int>(4294967295)) {
                 if ((i0_3 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {

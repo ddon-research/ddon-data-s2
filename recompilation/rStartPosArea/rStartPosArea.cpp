@@ -3,9 +3,9 @@
 #include "rStartPosArea.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -149,8 +149,12 @@ inline void rStartPosArea::operator delete(void* p_addr) {
 // Address: 0x006c4bd0 - 0x006c4c00 (48 bytes)
 bool rStartPosArea::loadData(MtDataReader& in, cStartPosArea* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mStartPosNo = in.readU16();
-    pData->mAreaId = in.readU16();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mStartPosNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAreaId);
     return true;
 }
 
@@ -196,4 +200,8 @@ template const cStartPosArea* rTbl2<cStartPosArea>::getData(unsigned int) const;
 // Instance at 0x01aa93f0 - 0x01aa93f4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cStartPosArea>::getDataNum() const;
+
+// Instance at 0x01aa9570 - 0x01aa95c8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cStartPosArea>::~rTbl2();
 

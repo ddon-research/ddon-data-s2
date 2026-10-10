@@ -111,9 +111,8 @@ rFieldAreaMarkerInfo::~rFieldAreaMarkerInfo() {
 
 // Address: 0x00677c30 - 0x00677cee (190 bytes)
 bool rFieldAreaMarkerInfo::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u32 dataVersion;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(4803910)) {
@@ -213,10 +212,16 @@ __attribute__((weak)) void rFieldAreaMarkerInfo::cMarkerInfo::createProperty(MtP
 // Address: 0x00678220 - 0x0067827d (93 bytes)
 void rFieldAreaMarkerInfo::cMarkerInfo::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->mPos = r.readV3();
-    this->mStageNo = r.readS32();
-    this->mGroupNo = r.readU32();
-    this->mUniqueId = r.readU32();
+    ::nDDOIO::readData(r, this->mStageNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mGroupNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mUniqueId);
 }
 
 // Address: 0x00678280 - 0x0067830f (143 bytes)

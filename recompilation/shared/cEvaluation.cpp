@@ -148,7 +148,7 @@ __attribute__((weak)) void cEvaluationName::cEvaluation::deleteCategory(u32 cate
 
 // Address: 0x001e00c0 - 0x001e01e8 (296 bytes)
 void cEvaluationName::cEvaluation::deleteCategoryAll(uDDOModel* pObjModel) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(0));
     this->::cEvaluationName::cEvaluation::deleteCategory(pObjModel, static_cast<u32>(1));

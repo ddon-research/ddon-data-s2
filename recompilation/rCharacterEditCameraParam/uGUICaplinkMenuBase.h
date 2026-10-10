@@ -193,3 +193,10 @@ public:
 protected:
     static const u32 val_num = 4;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline uGUICaplinkMenuBase::cCmdVal::cCmdVal() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mVal = static_cast<u32>(0);
+}

@@ -9,6 +9,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -106,9 +107,11 @@ inline MtAllocator* CDataPartnerPawnData::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataPartnerPawnData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataPartnerPawnData::MyDTI::newInstance at 0x003cdc44-0x003cdc6d (called at PawnImplement.inc:26)
-// void* CDataPartnerPawnData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataPartnerPawnData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartnerPawnData::DTI)->memAlloc(sz, align, ::CDataPartnerPawnData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataPartnerPawnData::operator new[](size_t sz, u32 align);
@@ -150,9 +153,9 @@ __attribute__((weak)) void CDataPartnerPawnData::operator delete(void* p_addr) {
 // CDataPartnerPawnData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cdc40 - 0x003cdc92 (82 bytes)
-__attribute__((weak)) MtObject* CDataPartnerPawnData::MyDTI::newInstance() const {
-    DDON_STUB("CDataPartnerPawnData::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPartnerPawnData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPartnerPawnData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -294,9 +297,9 @@ __attribute__((weak)) void CDataPawnCraftSkill::operator delete(void* p_addr) {
 // CDataPawnCraftSkill::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cc140 - 0x003cc18b (75 bytes)
-__attribute__((weak)) MtObject* CDataPawnCraftSkill::MyDTI::newInstance() const {
-    DDON_STUB("CDataPawnCraftSkill::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPawnCraftSkill::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPawnCraftSkill;
 }
 
 // No out-of-line body: no code in the ELF
@@ -367,9 +370,9 @@ __attribute__((weak)) void CDataPawnFeedback::operator delete(void* p_addr) {
 // CDataPawnFeedback::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cc570 - 0x003cc5ba (74 bytes)
-__attribute__((weak)) MtObject* CDataPawnFeedback::MyDTI::newInstance() const {
-    DDON_STUB("CDataPawnFeedback::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPawnFeedback::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPawnFeedback;
 }
 
 // No out-of-line body: no code in the ELF
@@ -511,9 +514,9 @@ __attribute__((weak)) void CDataPawnHp::operator delete(void* p_addr) {
 // CDataPawnHp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cd750 - 0x003cd798 (72 bytes)
-__attribute__((weak)) MtObject* CDataPawnHp::MyDTI::newInstance() const {
-    DDON_STUB("CDataPawnHp::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPawnHp::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPawnHp;
 }
 
 // No out-of-line body: no code in the ELF
@@ -605,9 +608,11 @@ inline MtAllocator* CDataPawnListData::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataPawnListData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataPawnListData::MyDTI::newInstance at 0x003cceb4-0x003ccedd (called at PawnImplement.inc:16)
-// void* CDataPawnListData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataPawnListData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnListData::DTI)->memAlloc(sz, align, ::CDataPawnListData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataPawnListData::operator new[](size_t sz, u32 align);
@@ -649,9 +654,9 @@ __attribute__((weak)) void CDataPawnListData::operator delete(void* p_addr) {
 // CDataPawnListData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cceb0 - 0x003ccf3a (138 bytes)
-__attribute__((weak)) MtObject* CDataPawnListData::MyDTI::newInstance() const {
-    DDON_STUB("CDataPawnListData::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPawnListData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPawnListData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -674,9 +679,11 @@ inline MtAllocator* CDataPawnName::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataPawnName::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataPawnName::MyDTI::newInstance at 0x003cc494-0x003cc4bd (called at PawnImplement.inc:10)
-// void* CDataPawnName::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* CDataPawnName::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnName::DTI)->memAlloc(sz, align, ::CDataPawnName::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataPawnName::operator new[](size_t sz, u32 align);
@@ -718,9 +725,9 @@ __attribute__((weak)) void CDataPawnName::operator delete(void* p_addr) {
 // CDataPawnName::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cc490 - 0x003cc4d8 (72 bytes)
-__attribute__((weak)) MtObject* CDataPawnName::MyDTI::newInstance() const {
-    DDON_STUB("CDataPawnName::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPawnName::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPawnName;
 }
 
 // No out-of-line body: no code in the ELF
@@ -789,9 +796,9 @@ __attribute__((weak)) void CDataPawnReaction::operator delete(void* p_addr) {
 // CDataPawnReaction::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cc370 - 0x003cc3bb (75 bytes)
-__attribute__((weak)) MtObject* CDataPawnReaction::MyDTI::newInstance() const {
-    DDON_STUB("CDataPawnReaction::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPawnReaction::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPawnReaction;
 }
 
 // No out-of-line body: no code in the ELF
@@ -814,9 +821,11 @@ inline MtAllocator* CDataPawnTotalScore::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataPawnTotalScore::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataPawnTotalScore::MyDTI::newInstance at 0x003cc824-0x003cc84d (called at PawnImplement.inc:13)
-// void* CDataPawnTotalScore::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataPawnTotalScore::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnTotalScore::DTI)->memAlloc(sz, align, ::CDataPawnTotalScore::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataPawnTotalScore::operator new[](size_t sz, u32 align);
@@ -858,8 +867,8 @@ __attribute__((weak)) void CDataPawnTotalScore::operator delete(void* p_addr) {
 // CDataPawnTotalScore::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cc820 - 0x003cc89e (126 bytes)
-__attribute__((weak)) MtObject* CDataPawnTotalScore::MyDTI::newInstance() const {
-    DDON_STUB("CDataPawnTotalScore::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPawnTotalScore::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPawnTotalScore;
 }
 

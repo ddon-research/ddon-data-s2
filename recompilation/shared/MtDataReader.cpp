@@ -59,7 +59,6 @@ __attribute__((weak)) u32 MtDataReader::readString(MT_STR buf, u32 bufmax) {
 
 // Address: 0x00dc1570 - 0x00dc1619 (169 bytes)
 u16 MtDataReader::readU16() {
-    // local: u16 n;
     // Approximate from the ELF: a call inferred from code DWARF attributes to no inlined copy, which only the caller's recompile checks; the body oracle reports this body.
     // inferred: a call from code DWARF attributes to no inlined copy: this->refill() for 0xdc1587-0xdc15fc (line 108), refill being DW_INL_inlined in this unit (0xdc14e0); its exit branch tests the result; approximate: only this caller's recompile checks it
     if ((this->mSeekPt + static_cast<u32>(1)) >= this->mBufsiz) {
@@ -81,7 +80,6 @@ u16 MtDataReader::readU16() {
 
 // Address: 0x00dc1620 - 0x00dc16c6 (166 bytes)
 u32 MtDataReader::readU32() {
-    // local: u32 n;
     // Approximate from the ELF: a call inferred from code DWARF attributes to no inlined copy, which only the caller's recompile checks; the body oracle reports this body.
     // inferred: a call from code DWARF attributes to no inlined copy: this->refill() for 0xdc1637-0xdc16ae (line 127), refill being DW_INL_inlined in this unit (0xdc14e0); its exit branch tests the result; approximate: only this caller's recompile checks it
     if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
@@ -103,7 +101,6 @@ u32 MtDataReader::readU32() {
 
 // Address: 0x00dc16d0 - 0x00dc1778 (168 bytes)
 u64 MtDataReader::readU64() {
-    // local: u64 n;
     // Approximate from the ELF: a call inferred from code DWARF attributes to no inlined copy, which only the caller's recompile checks; the body oracle reports this body.
     // inferred: a call from code DWARF attributes to no inlined copy: this->refill() for 0xdc16e7-0xdc175e (line 146), refill being DW_INL_inlined in this unit (0xdc14e0); its exit branch tests the result; approximate: only this caller's recompile checks it
     if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
@@ -130,15 +127,28 @@ size_t MtDataReader::readUPtr() {
 }
 
 // Address: 0x00dc1790 - 0x00dc1839 (169 bytes)
-__attribute__((weak)) s16 MtDataReader::readS16() {
-    // local: s16 n;
-    DDON_STUB("MtDataReader::readS16")
-    return {};
+s16 MtDataReader::readS16() {
+    // Approximate from the ELF: a call inferred from code DWARF attributes to no inlined copy, which only the caller's recompile checks; the body oracle reports this body.
+    // inferred: a call from code DWARF attributes to no inlined copy: this->refill() for 0xdc17a7-0xdc181c (line 181), refill being DW_INL_inlined in this unit (0xdc14e0); its exit branch tests the result; approximate: only this caller's recompile checks it
+    if ((this->mSeekPt + static_cast<u32>(1)) >= this->mBufsiz) {
+        if (this->::MtDataReader::refill() != false) {
+            s16 n;
+            __builtin_memcpy(&n, &(*this->mBuffer), 2);
+            this->mSeekPt = static_cast<u32>(2);
+            return n;
+        } else {
+            return static_cast<s16>(0);
+        }
+    } else {
+        s16 n;
+        __builtin_memcpy(&n, &this->mBuffer[this->mSeekPt], 2);
+        this->mSeekPt = this->mSeekPt + static_cast<u32>(2);
+        return n;
+    }
 }
 
 // Address: 0x00dc1840 - 0x00dc18e6 (166 bytes)
 s32 MtDataReader::readS32() {
-    // local: s32 n;
     // Approximate from the ELF: a call inferred from code DWARF attributes to no inlined copy, which only the caller's recompile checks; the body oracle reports this body.
     // inferred: a call from code DWARF attributes to no inlined copy: this->refill() for 0xdc1857-0xdc18ce (line 199), refill being DW_INL_inlined in this unit (0xdc14e0); its exit branch tests the result; approximate: only this caller's recompile checks it
     if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
@@ -160,7 +170,6 @@ s32 MtDataReader::readS32() {
 
 // Address: 0x00dc18f0 - 0x00dc1998 (168 bytes)
 s64 MtDataReader::readS64() {
-    // local: s64 n;
     // Approximate from the ELF: a call inferred from code DWARF attributes to no inlined copy, which only the caller's recompile checks; the body oracle reports this body.
     // inferred: a call from code DWARF attributes to no inlined copy: this->refill() for 0xdc1907-0xdc197e (line 217), refill being DW_INL_inlined in this unit (0xdc14e0); its exit branch tests the result; approximate: only this caller's recompile checks it
     if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
@@ -187,10 +196,27 @@ size_t MtDataReader::readSPtr() {
 }
 
 // Address: 0x00dc19b0 - 0x00dc1a58 (168 bytes)
-__attribute__((weak)) f32 MtDataReader::readF32() {
-    // local: MT_UNION_IF detour;
-    DDON_STUB("MtDataReader::readF32")
-    return {};
+f32 MtDataReader::readF32() {
+    // DWARF local not rendered: MT_UNION_IF detour;
+    // Approximate from the ELF: a call inferred from code DWARF attributes to no inlined copy, which only the caller's recompile checks; a read of bytes through a cast pointer; the body oracle reports this body.
+    // inferred: a call from code DWARF attributes to no inlined copy: this->refill() for 0xdc19c7-0xdc1a40 (line 250), refill being DW_INL_inlined in this unit (0xdc14e0); its exit branch tests the result; approximate: only this caller's recompile checks it
+    if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
+        if (this->::MtDataReader::refill() != false) {
+            // inferred: a temporary for the value the load at 0xdc1a48 read, used once; no DWARF local holds it
+            f32 t0;
+            __builtin_memcpy(&t0, &(*this->mBuffer), 4);
+            this->mSeekPt = static_cast<u32>(4);
+            return t0;
+        } else {
+            return 0.0f;
+        }
+    } else {
+        // inferred: a temporary for the value the load at 0xdc1a48 read, used once; no DWARF local holds it
+        f32 t1;
+        __builtin_memcpy(&t1, &this->mBuffer[this->mSeekPt], 4);
+        this->mSeekPt = this->mSeekPt + static_cast<u32>(4);
+        return t1;
+    }
 }
 
 // Address: 0x00dc1a60 - 0x00dc1b08 (168 bytes)
@@ -275,18 +301,14 @@ __attribute__((weak)) u32 MtDataReader::seek(s32 offset, MtStream::SEEK_ORIGIN o
 
 // Address: 0x00dc14e0 - 0x00dc1565 (133 bytes)
 bool MtDataReader::refill() {
-    // local: u32 p;
-    // local: u32 i;
     // Approximate from the ELF: a load the way back re-reads, read at the head of the iteration; the body oracle reports this body.
     u32 p = this->mBufsiz - this->mSeekPt;
     if (this->mBufsiz == static_cast<u32>(0)) {
         this->mBufsiz = this->mBufsizMax;
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i2 = static_cast<unsigned int>(0);
-    while (p != i2) {
-        this->mBuffer[i2] = this->mBuffer[i2 + this->mSeekPt];
-        i2 += static_cast<unsigned int>(1);
+    // inferred: DWARF's location-less 'i' (lexical block [0xdc1500, 0xdc1536)) is the counter this loop steps
+    for (u32 i = static_cast<u32>(0); p != i; i += static_cast<u32>(1)) {
+        this->mBuffer[i] = this->mBuffer[i + this->mSeekPt];
     }
     this->mBufsiz = p + this->mStream.read(static_cast<void*>(&this->mBuffer[p]), this->mBufsiz - p);
     this->mSeekPt = static_cast<u32>(0);

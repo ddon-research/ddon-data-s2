@@ -283,7 +283,6 @@ __attribute__((weak)) void cpJobBase::setJobMotionParam(MT_CTSTR tag, MT_CTSTR i
 
 // Address: 0x004bf410 - 0x004bf456 (70 bytes)
 void cpJobBase::setJobParam(MT_CTSTR tag, MT_CTSTR id) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
     if (pRes == static_cast<cResource*>(nullptr)) {
@@ -295,7 +294,6 @@ void cpJobBase::setJobParam(MT_CTSTR tag, MT_CTSTR id) {
 
 // Address: 0x004bf460 - 0x004bf4ab (75 bytes)
 void cpJobBase::setJumpParam(MT_CTSTR tag, MT_CTSTR id) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
     if (pRes == static_cast<cResource*>(nullptr)) {
@@ -307,7 +305,6 @@ void cpJobBase::setJumpParam(MT_CTSTR tag, MT_CTSTR id) {
 
 // Address: 0x004bf4b0 - 0x004bf512 (98 bytes)
 void cpJobBase::setCollision(MT_CTSTR tag, MT_CTSTR id, u32 bank) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
     if (pRes == static_cast<cResource*>(nullptr)) {
@@ -319,7 +316,6 @@ void cpJobBase::setCollision(MT_CTSTR tag, MT_CTSTR id, u32 bank) {
 
 // Address: 0x004bf520 - 0x004bf57e (94 bytes)
 void cpJobBase::setShlParam(MT_CTSTR tag, MT_CTSTR id) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
     if (pRes == static_cast<cResource*>(nullptr)) {
@@ -334,7 +330,6 @@ void cpJobBase::setShlParam(MT_CTSTR tag, MT_CTSTR id) {
 
 // Address: 0x004bf580 - 0x004bf5d2 (82 bytes)
 void cpJobBase::setEpvData(MT_CTSTR tag, MT_CTSTR id) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
     if (pRes == static_cast<cResource*>(nullptr)) {
@@ -354,7 +349,6 @@ __attribute__((weak)) void cpJobBase::setJobSe(MT_CTSTR tag, MT_CTSTR id) {
 
 // Address: 0x004bf650 - 0x004bf69b (75 bytes)
 void cpJobBase::setStaminaParam(MT_CTSTR tag, MT_CTSTR id) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes(tag, id, static_cast<u32>(1), false);
     if (pRes == static_cast<cResource*>(nullptr)) {
@@ -366,7 +360,6 @@ void cpJobBase::setStaminaParam(MT_CTSTR tag, MT_CTSTR id) {
 
 // Address: 0x004bf6a0 - 0x004bf71d (125 bytes)
 void cpJobBase::setCameraParam(MT_CTSTR tag, MT_CTSTR id) {
-    // local: cResource* pRes;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x4bf6b0 read, used twice; no DWARF local holds it
     uHuman* t0 = this->mpHuman;
@@ -386,7 +379,6 @@ void cpJobBase::setCameraParam(MT_CTSTR tag, MT_CTSTR id) {
 
 // Address: 0x004bf720 - 0x004bf773 (83 bytes)
 void cpJobBase::setMagicChantParam(MT_CTSTR tag, MT_CTSTR id) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((this->mpHuman->::uDDOModel::mUnitId & static_cast<u32>(1024)) != static_cast<u32>(0)) {
         return;

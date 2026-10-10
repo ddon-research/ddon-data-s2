@@ -23,6 +23,7 @@ namespace nDraw { class VertexBuffer; }
 namespace nNetMsgData { namespace Head { struct stMsgHead; } }
 namespace nNetwork { class Decoder; }
 class rEffect2D;
+class rEffectStrip;
 class rVibration;
 class sItemManager;
 class sRender;
@@ -72,6 +73,8 @@ class MtMemory
     friend void nNetMsgData::Head::freeData(nNetMsgData::Head::stMsgHead* pData);
     // inferred: rEffect2D::save names MtMemory::mpAllocatorType
     friend class rEffect2D;
+    // inferred: rEffectStrip::load names MtMemory::mpAllocatorType
+    friend class rEffectStrip;
     // inferred: rVibration::load names MtMemory::mpAllocatorType
     friend class rVibration;
     // inferred: sItemManager::releaseSortBinary names MtMemory::mpAllocatorType

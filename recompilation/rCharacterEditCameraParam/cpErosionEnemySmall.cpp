@@ -201,10 +201,6 @@ void cpErosionEnemySmall::updateEfcHandle() {
 
 // Address: 0x00154840 - 0x00154929 (233 bytes)
 void cpErosionEnemySmall::setupBeforeContext(bool initSet) {
-    // local: u32 initErosionLevel;
-    // local: uControlEnemy* pEmCtrl;
-    // local: const cErosionSmallInfoRes* pData;
-    // local: cEmRandomCtrl randomCtrl;
     // Approximate from the ELF: a frame object built in several branches; the body oracle reports this body.
     this->::cpErosionEnemyBase::setupBeforeContext(initSet);
     uControlEnemy* pEmCtrl = static_cast<uControlEnemy*>(this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::getCtrl());
@@ -273,7 +269,7 @@ bool cpErosionEnemySmall::isErosionRegionActiveAll() const {
 
 // Address: 0x00155320 - 0x001553c8 (168 bytes)
 void cpErosionEnemySmall::callbackChecked(cHitInfo* pHitInfo) {
-    // local: u16 nodeID;
+    // DWARF local not rendered: u16 nodeID;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isMaster() == false) {
         return;
@@ -388,7 +384,6 @@ bool cpErosionEnemySmall::isErosionCancelStatus(bool isCheckOcdCnacel) const {
 
 // Address: 0x00154bb0 - 0x00154c2f (127 bytes)
 __attribute__((weak)) void cpErosionEnemySmall::checkReciveMsg() {
-    // local: EROSION_LEVEL level;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isMaster() != false) {
         return;

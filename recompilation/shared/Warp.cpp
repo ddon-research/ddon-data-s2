@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -75,9 +76,9 @@ __attribute__((weak)) void CDataAreaWarpPoint::operator delete(void* p_addr) {
 // CDataAreaWarpPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bb7c0 - 0x003bb80f (79 bytes)
-__attribute__((weak)) MtObject* CDataAreaWarpPoint::MyDTI::newInstance() const {
-    DDON_STUB("CDataAreaWarpPoint::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAreaWarpPoint::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAreaWarpPoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,9 +151,9 @@ __attribute__((weak)) void CDataFavoriteWarpPoint::operator delete(void* p_addr)
 // CDataFavoriteWarpPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bb6a0 - 0x003bb6ef (79 bytes)
-__attribute__((weak)) MtObject* CDataFavoriteWarpPoint::MyDTI::newInstance() const {
-    DDON_STUB("CDataFavoriteWarpPoint::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataFavoriteWarpPoint::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataFavoriteWarpPoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -221,8 +222,8 @@ __attribute__((weak)) void CDataWarpPoint::operator delete(void* p_addr) {
 // CDataWarpPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bb580 - 0x003bb5c8 (72 bytes)
-__attribute__((weak)) MtObject* CDataWarpPoint::MyDTI::newInstance() const {
-    DDON_STUB("CDataWarpPoint::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataWarpPoint::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataWarpPoint;
 }
 

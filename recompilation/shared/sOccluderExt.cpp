@@ -96,7 +96,7 @@ MtUI* sOccluderEx::createUI(MtProperty& prop) {
 
 // Address: 0x007f8ab0 - 0x007f8b08 (88 bytes)
 void sOccluderEx::move() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::sOccluderEx::updateCameraArea();
     // inferred: a temporary for the value the load at 0x7f8abf read, used 3 times; no DWARF local holds it

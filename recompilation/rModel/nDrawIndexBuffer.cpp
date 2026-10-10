@@ -76,7 +76,7 @@ __attribute__((weak)) void nDraw::IndexBuffer::resume() {
 
 // Address: 0x0115bc60 - 0x0115bc65 (5 bytes)
 void* nDraw::IndexBuffer::map(nDraw::MAP_TYPE type) {
-    // local: void* pbuf;
+    // DWARF local not rendered: void* pbuf;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::nDraw::Buffer::mpBuffer;
 }

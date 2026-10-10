@@ -4,7 +4,6 @@
 #include "MtAllocator.h"
 #include "MtCollection.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
@@ -13,6 +12,7 @@
 #include "cpActionManager.h"
 #include "cpComponent.h"
 #include "cpThinkBase.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
@@ -188,7 +188,7 @@ void cpEnemyThink::before() {
 
 // Address: 0x00475ff0 - 0x004760f4 (260 bytes)
 u32 cpEnemyThink::callbackGetAction() {
-    // local: bool isUpdate;
+    // DWARF local not rendered: bool isUpdate;
     // Approximate from the ELF: a statement both arms of a test start with; a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->mIsThinkStop != false) {
         this->mIsThinkStop = false;
@@ -552,10 +552,18 @@ inline void rRageTable::operator delete(void* p_addr) {
 // Address: 0x00475b10 - 0x00475b5a (74 bytes)
 bool rRageTable::loadData(MtDataReader& in, cRage* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mStatusStartHpPer = in.readU32();
-    pData->mStatusEndHpPer = in.readU32();
-    pData->mMindStatus = in.readU32();
-    pData->mMindStatusFrameMax = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mStatusStartHpPer);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mStatusEndHpPer);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMindStatus);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMindStatusFrameMax);
     return true;
 }
 
@@ -605,4 +613,8 @@ template const cRage* rTbl2<cRage>::getData(unsigned int) const;
 // Instance at 0x01a594e0 - 0x01a594e4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cRage>::getDataNum() const;
+
+// Instance at 0x01a59810 - 0x01a59868 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cRage>::~rTbl2();
 

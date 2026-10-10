@@ -182,8 +182,8 @@ __attribute__((weak)) void cpTalk::callVoice(u32 reqNo) {
 
 // Address: 0x0053d210 - 0x0053d2c9 (185 bytes)
 void cpTalk::startFaceMot(u32 MotType, f32 SetFrame, u32 handle) {
-    // local: u32 setMotNo;
-    // local: uDDOModel* pOwner;
+    // DWARF local not rendered: u32 setMotNo;
+    // DWARF local not rendered: uDDOModel* pOwner;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x53d22d read, used 5 times; no DWARF local holds it
     MtObject* t0 = this->::cpComponent::getOwner();

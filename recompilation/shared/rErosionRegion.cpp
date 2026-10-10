@@ -6,6 +6,7 @@
 #include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #include "nErosionEnemyBase.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -213,9 +214,21 @@ inline void cErosionRegionRes::operator delete(void* p_addr) {
 // s32 cErosionRegionRes::getScaleChangeType() const;
 
 // Address: 0x00671bb0 - 0x00671bd5 (37 bytes)
-__attribute__((weak)) void cErosionRegionRes::copyParam(const cErosionRegionRes& data) {
-    DDON_STUB("cErosionRegionRes::copyParam")
-    /* stub */
+void cErosionRegionRes::copyParam(const cErosionRegionRes& data) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mRegionCategory = data.mRegionCategory;
+    this->mJointNo = data.mJointNo;
+    this->mBreakShlIndex = data.mBreakShlIndex;
+    this->mGenerateShlIndex = data.mGenerateShlIndex;
+    this->mJointNo2 = data.mJointNo2;
+    this->mBreakShlIndex2 = data.mBreakShlIndex2;
+    this->mGenerateShlIndex2 = data.mGenerateShlIndex2;
+    this->mJointNo3 = data.mJointNo3;
+    this->mBreakShlIndex3 = data.mBreakShlIndex3;
+    this->mGenerateShlIndex3 = data.mGenerateShlIndex3;
+    this->mScaleJointNo = data.mScaleJointNo;
+    this->mScaleJointNo2 = data.mScaleJointNo2;
+    this->mScaleChangeType = data.mScaleChangeType;
 }
 
 // Address: 0x00671b50 - 0x00671ba6 (86 bytes)
@@ -502,8 +515,8 @@ inline void rErosionInfoRes::operator delete(void* p_addr) {
 
 // Address: 0x006718e0 - 0x0067196c (140 bytes)
 bool rErosionInfoRes::loadData(MtDataReader& r, cErosionInfoRes* pData) {
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     pData->mRegenerateTimer[0] = r.readF32();
     pData->mRegenerateTimer[1] = r.readF32();
@@ -591,19 +604,45 @@ inline void rErosionRegion::operator delete(void* p_addr) {
 // Address: 0x00671be0 - 0x00671c9d (189 bytes)
 bool rErosionRegion::loadData(MtDataReader& r, cErosionRegionRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mRegionCategory = r.readS32();
-    pData->mJointNo = r.readS32();
-    pData->mBreakShlIndex = r.readS32();
-    pData->mGenerateShlIndex = r.readS32();
-    pData->mJointNo2 = r.readS32();
-    pData->mBreakShlIndex2 = r.readS32();
-    pData->mGenerateShlIndex2 = r.readS32();
-    pData->mJointNo3 = r.readS32();
-    pData->mBreakShlIndex3 = r.readS32();
-    pData->mGenerateShlIndex3 = r.readS32();
-    pData->mScaleJointNo = r.readS32();
-    pData->mScaleJointNo2 = r.readS32();
-    pData->mScaleChangeType = r.readS32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mRegionCategory);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJointNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mBreakShlIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mGenerateShlIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJointNo2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mBreakShlIndex2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mGenerateShlIndex2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJointNo3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mBreakShlIndex3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mGenerateShlIndex3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mScaleJointNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mScaleJointNo2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mScaleChangeType);
     return true;
 }
 
@@ -682,11 +721,21 @@ inline void rErosionSmallInfoRes::operator delete(void* p_addr) {
 // Address: 0x00671e70 - 0x00671ecf (95 bytes)
 bool rErosionSmallInfoRes::loadData(MtDataReader& r, cErosionSmallInfoRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mCancelTimer = r.readF32();
-    pData->mCancelWaitTimer = r.readF32();
-    pData->mScaleActiveRate = r.readF32();
-    pData->mScaleInActiveMax = r.readF32();
-    pData->mScaleInActiveMin = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCancelTimer);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCancelWaitTimer);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mScaleActiveRate);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mScaleInActiveMax);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mScaleInActiveMin);
     return true;
 }
 
@@ -765,10 +814,18 @@ inline void rErosionSuperInfoRes::operator delete(void* p_addr) {
 // Address: 0x006720e0 - 0x0067212c (76 bytes)
 bool rErosionSuperInfoRes::loadData(MtDataReader& r, cErosionSuperInfoRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mCorepointType = r.readS32();
-    pData->mAdjustDamageRate = r.readF32();
-    pData->mApearTime = r.readF32();
-    pData->mRegionCategory = r.readS32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCorepointType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mAdjustDamageRate);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mApearTime);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mRegionCategory);
     return true;
 }
 
@@ -874,4 +931,20 @@ template unsigned int rTbl2<cErosionSmallInfoRes>::getDataNum() const;
 // Instance at 0x01a8e060 - 0x01a8e064 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cErosionSuperInfoRes>::getDataNum() const;
+
+// Instance at 0x01a8e6a0 - 0x01a8e6f8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cErosionInfoRes>::~rTbl2();
+
+// Instance at 0x01a8e5e0 - 0x01a8e638 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cErosionRegionRes>::~rTbl2();
+
+// Instance at 0x01a8e520 - 0x01a8e578 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cErosionSmallInfoRes>::~rTbl2();
+
+// Instance at 0x01a8e460 - 0x01a8e4b8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cErosionSuperInfoRes>::~rTbl2();
 

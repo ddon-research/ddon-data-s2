@@ -42,7 +42,7 @@ __attribute__((weak)) f32 nDDOMath::getLengthXZ(const MtVector3& v0, const MtVec
 
 // Address: 0x005b18e0 - 0x005b1925 (69 bytes)
 f32 nDDOMath::clampRadian(f32 rad) {
-    // local: f32 normalized_rad;
+    // DWARF local not rendered: f32 normalized_rad;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (rad >= 0.0f) {
         if ((rad - (6.2831855f * static_cast<float>(static_cast<int>(rad / 6.2831855f)))) >= 3.1415927f) {
@@ -89,7 +89,7 @@ __attribute__((weak)) MtVector3 nDDOMath::calcVelocityXZ(f32 speed, f32 rotY) {
 
 // Address: 0x005b1c10 - 0x005b1c55 (69 bytes)
 f32 nDDOMath::calcAngLimit(f32 ang) {
-    // local: f32 normalized_ang;
+    // DWARF local not rendered: f32 normalized_ang;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (ang >= 0.0f) {
         if ((ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))) >= 3.1415927f) {
@@ -222,9 +222,9 @@ __attribute__((weak)) bool nDDOMath::isRange(const MtVector3& Pos0, const MtVect
 // Address: 0x005b2610 - 0x005b2663 (83 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nDDOMath.cpp:510
 bool nDDOMath::isInSide(const MtVector3& Pos0, const MtVector3& Pos1, f32 range, f32 min) {
-    // local: f32 sub_sq;
-    // local: f32 range_sq;
-    // local: MtVector3 sub_pos;
+    // DWARF local not rendered: f32 sub_sq;
+    // DWARF local not rendered: f32 range_sq;
+    // DWARF local not rendered: MtVector3 sub_pos;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (min > 1.1920929e-7f) {
         if ((min * min) > ((((Pos1.x - Pos0.x) * (Pos1.x - Pos0.x)) + ((Pos1.y - Pos0.y) * (Pos1.y - Pos0.y))) + ((Pos1.z - Pos0.z) * (Pos1.z - Pos0.z)))) {
@@ -237,9 +237,9 @@ bool nDDOMath::isInSide(const MtVector3& Pos0, const MtVector3& Pos1, f32 range,
 // Address: 0x005b2670 - 0x005b26bb (75 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nDDOMath.cpp:549
 bool nDDOMath::isInSideXZ(const MtVector3& Pos0, const MtVector3& Pos1, f32 range, f32 min) {
-    // local: f32 sub_sq;
-    // local: f32 range_sq;
-    // local: MtVector2 sub_pos;
+    // DWARF local not rendered: f32 sub_sq;
+    // DWARF local not rendered: f32 range_sq;
+    // DWARF local not rendered: MtVector2 sub_pos;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (min > 1.1920929e-7f) {
         if ((min * min) > (((Pos1.x - Pos0.x) * (Pos1.x - Pos0.x)) + ((Pos1.z - Pos0.z) * (Pos1.z - Pos0.z)))) {
@@ -512,7 +512,7 @@ __attribute__((weak)) MtVector3 nDDOMath::alignVectorXZ(const MtVector3& OrgVec,
 // Address: 0x005b4290 - 0x005b42bd (45 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nDDOMath.cpp:1381
 f32 nDDOMath::dd_acos(f32 cs) {
-    // local: f32 r;
+    // DWARF local not rendered: f32 r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((-1.0f) > cs) {
         return ::acosf(-1.0f);

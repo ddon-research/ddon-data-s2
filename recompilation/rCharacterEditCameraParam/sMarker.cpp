@@ -243,7 +243,6 @@ const rFieldAreaList::cFieldAreaInfo* sMarker::getFieldAreaInfo(u32 landId) cons
 
 // Address: 0x007e3480 - 0x007e34d1 (81 bytes)
 MT_CTSTR sMarker::getFieldAreaName(u32 fieldAreaId) const {
-    // local: const cFieldAreaInfo* pInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpFieldAreaName != static_cast<rGUIMessage*>(nullptr)) {
         const rFieldAreaList::cFieldAreaInfo* pInfo = this->mpFieldAreaList->::rFieldAreaList::getFieldAreaInfo(fieldAreaId);

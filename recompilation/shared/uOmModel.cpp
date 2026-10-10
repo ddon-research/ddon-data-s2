@@ -155,7 +155,7 @@ void uOmModel::draw(cDraw* pDraw) {
 
 // Address: 0x00cb02a0 - 0x00cb031c (124 bytes)
 void uOmModel::updatePtr() {
-    // local: cOmControl* pctrl;
+    // DWARF local not rendered: cOmControl* pctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uDDOModel::updatePtr();
     if (this->::cUnit::isEnable()) {
@@ -221,7 +221,7 @@ const cOmParam* uOmModel::getOmParam() const {
 
 // Address: 0x00cb0340 - 0x00cb0356 (22 bytes)
 void uOmModel::setActiveScrSbc(bool f) {
-    // local: cOmControl* pctrl;
+    // DWARF local not rendered: cOmControl* pctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mOmComp.mpOmControl == static_cast<cOmControl*>(nullptr)) {
         return;
@@ -231,7 +231,7 @@ void uOmModel::setActiveScrSbc(bool f) {
 
 // Address: 0x00cb0360 - 0x00cb0376 (22 bytes)
 void uOmModel::setActiveEfcSbc(bool f) {
-    // local: cOmControl* pctrl;
+    // DWARF local not rendered: cOmControl* pctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mOmComp.mpOmControl == static_cast<cOmControl*>(nullptr)) {
         return;
@@ -263,7 +263,7 @@ __attribute__((weak)) void uOmModel::callbackDamage(cHitInfo* pHitLocalInfo) {
 
 // Address: 0x00cb0680 - 0x00cb0688 (8 bytes)
 void uOmModel::callbackAttack(cHitInfo* pHitInfo) {
-    // local: const cAttackParam* pAttackParam;
+    // DWARF local not rendered: const cAttackParam* pAttackParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mOmComp.mbHit = true;
 }
@@ -387,7 +387,6 @@ __attribute__((weak)) cGatherItemList* uOmModel::getGatherItemList() {
 
 // Address: 0x00cb0ef0 - 0x00cb0f0b (27 bytes)
 u32 uOmModel::getItemGetInfoNum() {
-    // local: cGatherItemList* pil;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cGatherItemList* pil = this->::uOmModel::getGatherItemList();
     if (pil != static_cast<cGatherItemList*>(nullptr)) {

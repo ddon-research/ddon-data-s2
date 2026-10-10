@@ -138,7 +138,7 @@ bool cNetStorage::isSaveComplete() {
 
 // Address: 0x00393150 - 0x0039318e (62 bytes)
 bool cNetStorage::saveNativeCharStorage(void* pBuf, s32 charId, bool errDialog) {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mStorageType = static_cast<s32>(1);
     this->mComId = static_cast<u32>(16);

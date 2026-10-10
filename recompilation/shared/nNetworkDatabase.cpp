@@ -291,7 +291,7 @@ void nNetwork::SessionDatabase::deleteMemberData(s32 member_index, MtNetSession:
 
 // Address: 0x01198c90 - 0x01198df6 (358 bytes)
 void nNetwork::SessionDatabase::deleteMemberDataAll() {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Approximate from the ELF: a constant over array elements; zero stores the recompile merges past a memset; the body oracle reports this body.
     this->mMemberList[0].::nNetwork::Member::clear();
     this->mMemberList[1].::nNetwork::Member::clear();

@@ -306,7 +306,6 @@ void uMockUpModel::setMotionParam(rMotionParam* pMotParam) {
 
 // Address: 0x00ca4330 - 0x00ca4396 (102 bytes)
 bool uMockUpModel::setEmotionList() {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("Human", "RES_ID_M0000_EMO_LMT", static_cast<u32>(1), false);
     if (pRes != static_cast<cResource*>(nullptr)) {
@@ -323,7 +322,7 @@ bool uMockUpModel::setEmotionList() {
 
 // Address: 0x00ca15a0 - 0x00ca15f9 (89 bytes)
 void uMockUpModel::setStopPauseAction(u32 motNo, f32 frame, f32 hokan) {
-    // local: u32 ActNo;
+    // DWARF local not rendered: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getActMgrPtr() == static_cast<cpActionManager*>(nullptr)) {
         return;
@@ -340,7 +339,6 @@ void uMockUpModel::setStopPauseAction(u32 motNo, f32 frame, f32 hokan) {
 
 // Address: 0x00ca3e10 - 0x00ca3e32 (34 bytes)
 f32 uMockUpModel::getMotionMaxFrame(u32 motNo) const {
-    // local: MOTION_INFO* pInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nMotion::MOTION_INFO* pInfo = this->::uDDOModel::getMotionInfo(motNo);
     if (pInfo != static_cast<nMotion::MOTION_INFO*>(nullptr)) {
@@ -404,14 +402,13 @@ __attribute__((weak)) void uMockUpModel::setEquip(const uMockUpModel::stItemData
 
 // Address: 0x00ca32e0 - 0x00ca3307 (39 bytes)
 void uMockUpModel::changeEquipFromContext(const cContextInstHm* pContext, u32 option) {
-    // local: const cEquipData& equipData;
+    // DWARF local not rendered: const cEquipData& equipData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uMockUpModel::changeEquipFromEquipData(::cContextInterface::getContextEquipConst(pContext), option);
 }
 
 // Address: 0x00ca3d60 - 0x00ca3dde (126 bytes)
 void uMockUpModel::changeEquipFromCharaData(const nCharacterData::stEquipData& charaData, u32 option) {
-    // local: cEquipData equipData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cEquipData equipData;
     equipData.::cEquipData::setEquipFromCharacterData(charaData);

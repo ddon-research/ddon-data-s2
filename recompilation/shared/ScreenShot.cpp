@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -76,8 +77,8 @@ __attribute__((weak)) void CDataScreenShotCategory::operator delete(void* p_addr
 // CDataScreenShotCategory::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dd4f0 - 0x003dd53f (79 bytes)
-__attribute__((weak)) MtObject* CDataScreenShotCategory::MyDTI::newInstance() const {
-    DDON_STUB("CDataScreenShotCategory::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataScreenShotCategory::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataScreenShotCategory;
 }
 

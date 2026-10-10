@@ -95,14 +95,14 @@ __attribute__((weak)) void cDDMaterialCtrl::update() {
 
 // Address: 0x00084410 - 0x000844cf (191 bytes)
 void cDDMaterialCtrl::setCommonState() {
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpBakeModel != static_cast<cBakeModel*>(nullptr)) {
         if (this->mpBakeModel->mMaterialNum != static_cast<u32>(0)) {
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             unsigned int i0_3 = static_cast<unsigned int>(0);
-            // inferred: the value the loop at 0x84440 carries; DWARF names no local for it
+            // inferred: the value the loop at 0x84440 carries; no location-less local in scope fits
             for (cBakeModel* v0_5 = this->mpBakeModel;;) {
                 // inferred: a temporary for the result of the call at 0x84442, used once; no DWARF local holds it
                 nDraw::Material* t0 = v0_5->::cBakeModel::getMaterial(i0_3);
@@ -118,9 +118,9 @@ void cDDMaterialCtrl::setCommonState() {
     } else {
         if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
             if (this->mpOwner->mMaterialNum != static_cast<u32>(0)) {
-                // inferred: the counter this loop steps; DWARF names no local for it
+                // inferred: the counter this loop steps; no location-less local in scope fits
                 unsigned int i2_3 = static_cast<unsigned int>(0);
-                // inferred: the value the loop at 0x84490 carries; DWARF names no local for it
+                // inferred: the value the loop at 0x84490 carries; no location-less local in scope fits
                 for (uBaseModel* v2_5 = this->mpOwner;;) {
                     // inferred: a temporary for the result of the call at 0x84492, used once; no DWARF local holds it
                     nDraw::Material* t1 = v2_5->::uBaseModel::getMaterial(i2_3);
@@ -309,7 +309,7 @@ __attribute__((weak)) void cDDMaterialCtrl::setDataMaterialSpecularColor(const M
 
 // Address: 0x000917f0 - 0x00091805 (21 bytes)
 void cDDMaterialCtrl::resetDataMaterialDefaultColors() {
-    // local: cShaderDataMaterialToDefaultColor* p_to_def;
+    // DWARF local not rendered: cShaderDataMaterialToDefaultColor* p_to_def;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((*this->mMaterialData.::MtArray::mpArray) == static_cast<MtObject*>(nullptr)) {
         return;
@@ -1027,7 +1027,7 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::setTextur
 
 // Address: 0x00086510 - 0x0008652f (31 bytes)
 void cDDMaterialCtrl::cShaderDataStatusAilments::copy(cDDMaterialCtrl::cShaderData* sd) {
-    // local: cShaderDataStatusAilments* sdsa;
+    // DWARF local not rendered: cShaderDataStatusAilments* sdsa;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mApplicateA = static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(sd)->::cDDMaterialCtrl::cShaderDataStatusAilments::getApplicateA();
     this->mFactorN = static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(sd)->::cDDMaterialCtrl::cShaderDataStatusAilments::getFactorN();

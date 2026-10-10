@@ -136,8 +136,7 @@ __attribute__((weak)) MT_CTSTR sNpcManager::getNpcName(u32 NpcId) {
 
 // Address: 0x007f1230 - 0x007f12a2 (114 bytes)
 MT_CTSTR sNpcManager::getNpcClassName(u32 NpcId) {
-    // local: MtString Name;
-    // local: const cItem* pNpcInfo;
+    // DWARF local not rendered: MtString Name;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
         const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
@@ -169,7 +168,6 @@ MT_CTSTR sNpcManager::getNpcClassName(u32 NpcId) {
 
 // Address: 0x007f11f0 - 0x007f1222 (50 bytes)
 u32 sNpcManager::getNpcVoiceType(u32 NpcId) {
-    // local: const cItem* pNpcInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
         const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
@@ -185,7 +183,6 @@ u32 sNpcManager::getNpcVoiceType(u32 NpcId) {
 
 // Address: 0x007f11a0 - 0x007f11d2 (50 bytes)
 u32 sNpcManager::getNpcUnitType(u32 NpcId) {
-    // local: const cItem* pNpcInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
         const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
@@ -379,7 +376,6 @@ void sNpcManager::releaseNPCMotMyRoomRes() {
 
 // Address: 0x007f1e00 - 0x007f1e33 (51 bytes)
 bool sNpcManager::isTransOffMyRoom(u8 no) {
-    // local: InfoBinary* pInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
         rNPCMotMyRoom::InfoBinary* pInfo = this->mpNPCMotMyRoom->getInfo(no);
@@ -395,7 +391,6 @@ bool sNpcManager::isTransOffMyRoom(u8 no) {
 
 // Address: 0x007f1e40 - 0x007f1e84 (68 bytes)
 bool sNpcManager::isMotionCancelMyRoom(u8 no, s32 index) {
-    // local: InfoBinary* pInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
         rNPCMotMyRoom::InfoBinary* pInfo = this->mpNPCMotMyRoom->getInfo(no);
@@ -411,7 +406,6 @@ bool sNpcManager::isMotionCancelMyRoom(u8 no, s32 index) {
 
 // Address: 0x007f1e90 - 0x007f1ed3 (67 bytes)
 bool sNpcManager::isMotionFinishMyRoom(u8 no, s32 index) {
-    // local: InfoBinary* pInfo;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
         rNPCMotMyRoom::InfoBinary* pInfo = this->mpNPCMotMyRoom->getInfo(no);
@@ -462,7 +456,6 @@ void sNpcManager::releaseNPCEmoMyRoomRes() {
 
 // Address: 0x007f21f0 - 0x007f2223 (51 bytes)
 bool sNpcManager::isTransOffEmoMyRoom(u8 no) {
-    // local: InfoBinary* pInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
         rNPCEmoMyRoom::InfoBinary* pInfo = this->mpNPCEmoMyRoom->getInfo(no);
@@ -486,7 +479,6 @@ __attribute__((weak)) u32 sNpcManager::getIndexFromUIDEmoMyRoom(u32 uid) {
 
 // Address: 0x007f22a0 - 0x007f22e5 (69 bytes)
 bool sNpcManager::isMotionCancelEmoMyRoom(u8 no, s32 index) {
-    // local: InfoBinary* pInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
         rNPCEmoMyRoom::InfoBinary* pInfo = this->mpNPCEmoMyRoom->getInfo(no);
@@ -502,7 +494,6 @@ bool sNpcManager::isMotionCancelEmoMyRoom(u8 no, s32 index) {
 
 // Address: 0x007f22f0 - 0x007f2333 (67 bytes)
 bool sNpcManager::isMotionFinishEmoMyRoom(u8 no, s32 index) {
-    // local: InfoBinary* pInfo;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
         rNPCEmoMyRoom::InfoBinary* pInfo = this->mpNPCEmoMyRoom->getInfo(no);
@@ -557,7 +548,7 @@ __attribute__((weak)) void sNpcManager::npcSyncLoad() {
 
 // Address: 0x007f2410 - 0x007f241b (11 bytes)
 rkThinkData* sNpcManager::getThinkData(u32 job) const {
-    // local: u32 index;
+    // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mpThinkData[job - static_cast<u32>(1)];
 }
@@ -628,7 +619,7 @@ __attribute__((weak)) cNpcCustomSkill* sNpcManager::getNpcCustomSkill(u16 thinkI
 
 // Address: 0x007f2d60 - 0x007f2d7b (27 bytes)
 cNpcConstItem* sNpcManager::getNpcConstItem(u32 index) const {
-    // local: cNpcConstItem* pData;
+    // DWARF local not rendered: cNpcConstItem* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpNpcConstItem != static_cast<rNpcConstItem*>(nullptr)) {
         return this->mpNpcConstItem->getData(index);
@@ -647,7 +638,6 @@ __attribute__((weak)) bool sNpcManager::isHaveFunction(u32 NpcId, u32 FunctionId
 
 // Address: 0x007f2f70 - 0x007f2fc6 (86 bytes)
 bool sNpcManager::isHaveFunction(u32 NpcId) {
-    // local: const cItem* pNpcInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
         const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
@@ -829,11 +819,11 @@ void sNpcManager::releaseExMotArc() {
 
 // Address: 0x007f3b30 - 0x007f3bb3 (131 bytes)
 cNpcMeetingPlace* sNpcManager::getMeetingPlace(u32 NpcId) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpNpcMeetingPlace != static_cast<rNpcMeetingPlace*>(nullptr)) {
         if (this->mpNpcMeetingPlace->getDataNum() != static_cast<u32>(0)) {
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
                 if (this->mpNpcMeetingPlace->getData(i0_3)->mNpcId == NpcId) {
                     return this->mpNpcMeetingPlace->getData(i0_3);

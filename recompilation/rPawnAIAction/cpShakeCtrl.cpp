@@ -155,8 +155,7 @@ __attribute__((weak)) void cpShakeCtrl::updateShakeCtrl() {
 
 // Address: 0x00530880 - 0x005309a8 (296 bytes)
 void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
-    // local: uCnsShakeCtrl* pShakeCtrl;
-    // local: u32 flag;
+    // DWARF local not rendered: u32 flag;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
         return;
@@ -271,7 +270,7 @@ void cpShakeCtrl::shake(cHitInfo* pHitInfo, bool force_shake, s32 ResourceNo) {
 
 // Address: 0x00530d50 - 0x00530d94 (68 bytes)
 void cpShakeCtrl::shake(cHitInfoAfter* pHitInfo, bool force_shake, s32 ResourceNo) {
-    // local: uDDOModel* pAtkModel;
+    // DWARF local not rendered: uDDOModel* pAtkModel;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;

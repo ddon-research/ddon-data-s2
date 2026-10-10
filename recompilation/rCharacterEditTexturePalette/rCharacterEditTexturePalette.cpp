@@ -3,11 +3,11 @@
 #include "rCharacterEditTexturePalette.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cCharacterEditPaletteBase.h"
 #include "../shared/cResPath.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #include "../shared/rTexture.h"
 #ifndef DDON_STUB
@@ -157,10 +157,16 @@ rCharacterEditTexturePalette::~rCharacterEditTexturePalette() {
 // Address: 0x006547b0 - 0x006547f3 (67 bytes)
 bool rCharacterEditTexturePalette::loadData(MtDataReader& r, cCharacterEditTexturePalette* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->::cCharacterEditPaletteBase::loadData(r);
-    pData->mUID = r.readU32();
-    pData->mPath.::cResPathBase::mId = r.readU64();
-    pData->mRandom = r.readU32();
+    ::nDDOIO::readData(r, pData->mUID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mPath);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mRandom);
     return true;
 }
 
@@ -212,4 +218,8 @@ template const cCharacterEditTexturePalette* rTbl2<cCharacterEditTexturePalette>
 // Instance at 0x01a7f3a0 - 0x01a7f3a4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cCharacterEditTexturePalette>::getDataNum() const;
+
+// Instance at 0x01a7f4d0 - 0x01a7f528 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCharacterEditTexturePalette>::~rTbl2();
 

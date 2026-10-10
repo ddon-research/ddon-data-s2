@@ -428,21 +428,19 @@ void cPlActWpnBow::requestScopeSeBgn() {
     if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
         return;
     }
-    // inferred: a temporary for the value the load at 0x21f126 read, used 3 times; no DWARF local holds it
-    const nHumanBow::cBowActParam* t1 = this->::cPlActWpnBow::getActParam();
     // inferred: a temporary for the value the load at 0x21f12d read, used twice; no DWARF local holds it
-    const s16 t2 = t1->seNoScopeBgn;
-    if (t1->seType != static_cast<nHumanBow::cBowActParam::SE_TYPE>(0)) {
-        if (t2 > static_cast<s16>(-1)) {
+    const s16 t1 = this->::cPlActWpnBow::getActParam()->seNoScopeBgn;
+    if (this->::cPlActWpnBow::getActParam()->seType != static_cast<nHumanBow::cBowActParam::SE_TYPE>(0)) {
+        if (t1 > static_cast<s16>(-1)) {
             // inferred: a temporary for the result of the call at 0x21f148, used once; no DWARF local holds it
-            rSoundRequest* t3 = this->::cHumanActBase::mpHuman->::uHuman::getCommonShlSe();
-            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t3, t2, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
+            rSoundRequest* t2 = this->::cHumanActBase::mpHuman->::uHuman::getCommonShlSe();
+            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t2, t1, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
         }
     } else {
-        if (t2 > static_cast<s16>(-1)) {
+        if (t1 > static_cast<s16>(-1)) {
             // inferred: a temporary for the result of the call at 0x21f15c, used once; no DWARF local holds it
-            rSoundRequest* t4 = this->::cHumanActBase::mpHuman->::uHuman::getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(t1->customId));
-            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t4, t2, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
+            rSoundRequest* t3 = this->::cHumanActBase::mpHuman->::uHuman::getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(this->::cPlActWpnBow::getActParam()->customId));
+            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t3, t1, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
         }
     }
 }
@@ -458,21 +456,19 @@ void cPlActWpnBow::requestScopeSeEnd() {
     if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
         return;
     }
-    // inferred: a temporary for the value the load at 0x21f1c6 read, used 3 times; no DWARF local holds it
-    const nHumanBow::cBowActParam* t1 = this->::cPlActWpnBow::getActParam();
     // inferred: a temporary for the value the load at 0x21f1cd read, used twice; no DWARF local holds it
-    const s16 t2 = t1->seNoScopeEnd;
-    if (t1->seType != static_cast<nHumanBow::cBowActParam::SE_TYPE>(0)) {
-        if (t2 > static_cast<s16>(-1)) {
+    const s16 t1 = this->::cPlActWpnBow::getActParam()->seNoScopeEnd;
+    if (this->::cPlActWpnBow::getActParam()->seType != static_cast<nHumanBow::cBowActParam::SE_TYPE>(0)) {
+        if (t1 > static_cast<s16>(-1)) {
             // inferred: a temporary for the result of the call at 0x21f1e8, used once; no DWARF local holds it
-            rSoundRequest* t3 = this->::cHumanActBase::mpHuman->::uHuman::getCommonShlSe();
-            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t3, t2, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
+            rSoundRequest* t2 = this->::cHumanActBase::mpHuman->::uHuman::getCommonShlSe();
+            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t2, t1, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
         }
     } else {
-        if (t2 > static_cast<s16>(-1)) {
+        if (t1 > static_cast<s16>(-1)) {
             // inferred: a temporary for the result of the call at 0x21f1fc, used once; no DWARF local holds it
-            rSoundRequest* t4 = this->::cHumanActBase::mpHuman->::uHuman::getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(t1->customId));
-            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t4, t2, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
+            rSoundRequest* t3 = this->::cHumanActBase::mpHuman->::uHuman::getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(this->::cPlActWpnBow::getActParam()->customId));
+            static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(t3, t1, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), static_cast<s32>(-1));
         }
     }
 }
@@ -1205,7 +1201,6 @@ f32 cPlActWpnBow::getChargeFrame() const {
 
 // Address: 0x002265c0 - 0x00226685 (197 bytes)
 void cPlActWpnBow::setChargeCompEfct() {
-    // local: uDDOModel* pParent;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     uDDOModel* pParent = this->::cHumanActBase::mpHuman;
     if ((this->::cPlActWpnBow::getActParam()->efOption & static_cast<u32>(2)) != static_cast<u32>(0)) {
@@ -1516,8 +1511,8 @@ inline void cPlActWpnBowBase::operator delete(void* p_addr) {
 // Address: 0x01993b80 - 0x01993b85 (5 bytes)
 // Also emitted as: _ZN16cPlActWpnBowBaseD0Ev at 0x01993b90
 cPlActWpnBowBase::~cPlActWpnBowBase() {
-    DDON_STUB("cPlActWpnBowBase::~cPlActWpnBowBase")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: cHumanActBase declares no destructor; its implicit one is _ZN13cHumanActBaseD1Ev at 0x1994c00, one jmp to _ZN7cActionD2Ev
 }
 
 // Address: 0x0021ce40 - 0x0021cfa8 (360 bytes)

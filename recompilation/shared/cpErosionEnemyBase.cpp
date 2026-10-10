@@ -70,7 +70,7 @@ inline void cpErosionEnemyBase::operator delete(void* p_addr) {
 
 // Address: 0x00153a90 - 0x00153b25 (149 bytes)
 cpErosionEnemyBase::cpErosionEnemyBase() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpErosionLinpunNode = static_cast<cHitNode*>(nullptr);
     this->mpEnemy = static_cast<uCharacter*>(nullptr);
@@ -178,9 +178,9 @@ void cpErosionEnemyBase::setupBeforeContext(bool initSet) {
 
 // Address: 0x00154080 - 0x0015409e (30 bytes)
 bool cpErosionEnemyBase::callbackErosionCancel(cHitInfoAfter* pHitInfo) {
-    // local: u16 attackID;
-    // local: const cAttackParam* pAttackParam;
-    // local: bool isErosionCancel;
+    // DWARF local not rendered: u16 attackID;
+    // DWARF local not rendered: const cAttackParam* pAttackParam;
+    // DWARF local not rendered: bool isErosionCancel;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (pHitInfo->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {

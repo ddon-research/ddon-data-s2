@@ -235,8 +235,6 @@ MT_CTSTR cTalkMsgData::getMessage(u32 GrpNo, u32 PageNo) {
 
 // Address: 0x00583be0 - 0x00583c36 (86 bytes)
 MT_CTSTR cTalkMsgData::getMessage() {
-    // local: cMsgGroup* pGrpData;
-    // local: cMsgData* pMsgData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
         if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
@@ -302,7 +300,6 @@ __attribute__((weak)) bool cTalkMsgData::isExistGrpType(u32 GrpType, bool IsChkH
 
 // Address: 0x00583fa0 - 0x00583fd4 (52 bytes)
 u32 cTalkMsgData::getTalkNpcId() {
-    // local: cMsgGroup* pGrpData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
         if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
@@ -327,7 +324,6 @@ u32 cTalkMsgData::getTalkNpcId() {
 
 // Address: 0x00583fe0 - 0x00584019 (57 bytes)
 bool cTalkMsgData::isDispNpcName() {
-    // local: cMsgGroup* pGrpData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
         if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
@@ -347,7 +343,6 @@ bool cTalkMsgData::isDispNpcName() {
 
 // Address: 0x00584020 - 0x00584054 (52 bytes)
 u32 cTalkMsgData::getDispGrpType() {
-    // local: cMsgGroup* pGrpData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
         if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
@@ -367,8 +362,6 @@ u32 cTalkMsgData::getDispGrpType() {
 
 // Address: 0x00584060 - 0x005840ab (75 bytes)
 u32 cTalkMsgData::getDispMsgType() {
-    // local: cMsgGroup* pGrpData;
-    // local: cMsgData* pMsgData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
         if (this->mpMsgData != static_cast<rGUIMessage*>(nullptr)) {
@@ -397,8 +390,6 @@ u32 cTalkMsgData::getDispMsgType() {
 
 // Address: 0x005840b0 - 0x005840f4 (68 bytes)
 s32 cTalkMsgData::getVoiceReqNo() {
-    // local: cMsgGroup* pGrp;
-    // local: cMsgData* pMsgData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
         rMsgSet::cMsgGroup* pGrp = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);
@@ -426,8 +417,6 @@ __attribute__((weak)) rSoundStreamRequest* cTalkMsgData::getVoiceReqResource(u32
 
 // Address: 0x00584100 - 0x00584141 (65 bytes)
 u32 cTalkMsgData::getSetMotionNo() {
-    // local: cMsgGroup* pGrp;
-    // local: cMsgData* pMsgData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMsgSetData != static_cast<rMsgSet*>(nullptr)) {
         rMsgSet::cMsgGroup* pGrp = this->mpMsgSetData->::rMsgSet::getGroupData(this->mDispGrpNo);

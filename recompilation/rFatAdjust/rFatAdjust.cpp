@@ -187,3 +187,7 @@ template const cFatAdjust* rTbl2<cFatAdjust>::getData(unsigned int) const;
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cFatAdjust>::getDataNum() const;
 
+// Instance at 0x01a90190 - 0x01a901e8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cFatAdjust>::~rTbl2();
+

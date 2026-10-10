@@ -7,6 +7,7 @@
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -147,7 +148,9 @@ bool rHeadCtrl::loadData(MtDataReader& r, cHeadCtrl* pData) {
     pData->mAngleBlend = r.readF32();
     pData->mAngleLimit.x = r.readF32();
     pData->mAngleLimit.y = r.readF32();
-    pData->mLocal = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mLocal);
     pData->mLocalAxis = r.readU32();
     pData->mPitchBlend = r.readF32();
     pData->mPitchLimit.x = r.readF32();
@@ -203,4 +206,8 @@ template const cHeadCtrl* rTbl2<cHeadCtrl>::getData(unsigned int) const;
 // Instance at 0x01a93aa0 - 0x01a93aa4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cHeadCtrl>::getDataNum() const;
+
+// Instance at 0x01a93be0 - 0x01a93c38 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cHeadCtrl>::~rTbl2();
 

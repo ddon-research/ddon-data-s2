@@ -139,7 +139,7 @@ bool cQuestPhaseCpDivide::isDivideSetup() const {
 
 // Address: 0x0015c510 - 0x0015c576 (102 bytes)
 void cQuestPhaseCpDivide::setDivideSetup(bool isSetup) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsSetup = isSetup;
     this->mDividePlayer[0].mCharacterId = static_cast<u32>(0);
@@ -229,13 +229,13 @@ __attribute__((weak)) bool cQuestPhaseCpDivide::isDividePlayer() const {
 
 // Address: 0x0015c710 - 0x0015c785 (117 bytes)
 void cQuestPhaseCpDivide::dividePlayer(u32 characterId) {
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 j;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 j;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_0 = static_cast<unsigned int>(0);
-    // inferred: the value the loop at 0x15c720 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x15c720 carries; no location-less local in scope fits
     for (u32* v0_1 = &this->mDividePlayer[0].mCharacterId;;) {
         if ((*v0_1) != characterId) {
             if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
@@ -249,11 +249,11 @@ void cQuestPhaseCpDivide::dividePlayer(u32 characterId) {
             break;
         }
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i2_0 = static_cast<unsigned int>(0);
-    // inferred: the value the loop at 0x15c760 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x15c760 carries; several values fit
     unsigned int v4_0;
-    // inferred: the value the loop at 0x15c760 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x15c760 carries; several values fit
     unsigned int v4_1;
     for (;;) {
         if (this->mHasRequestedCharacterId[i2_0] != characterId) {
@@ -309,10 +309,9 @@ void cQuestPhaseCpDivide::setExistDividePlayer(bool exists) {
 
 // Address: 0x0015c7e0 - 0x0015c804 (36 bytes)
 bool cQuestPhaseCpDivide::hasRequestedWarpPlayer(u32 characterId) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     unsigned int* p2 = &this->mHasRequestedCharacterId[0];
     do {
         if ((*p2) == characterId) {
@@ -326,11 +325,11 @@ bool cQuestPhaseCpDivide::hasRequestedWarpPlayer(u32 characterId) {
 
 // Address: 0x0015c810 - 0x0015c83c (44 bytes)
 void cQuestPhaseCpDivide::requestWarpPlayer(u32 characterId) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0 = static_cast<unsigned int>(1);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     unsigned int* p2 = &this->mHasRequestedCharacterId[0];
     do {
         if ((*p2) != static_cast<unsigned int>(0)) {

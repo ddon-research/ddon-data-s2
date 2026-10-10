@@ -116,7 +116,6 @@ rFullbodyIKHuman2::~rFullbodyIKHuman2() {
 
 // Address: 0x00e43ef0 - 0x00e43f6e (126 bytes)
 bool rFullbodyIKHuman2::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -124,7 +123,6 @@ bool rFullbodyIKHuman2::load(MtStream& in) {
 
 // Address: 0x00e43f70 - 0x00e43ff3 (131 bytes)
 bool rFullbodyIKHuman2::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rFullbodyIKHuman2::DTI));

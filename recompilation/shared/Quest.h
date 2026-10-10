@@ -2922,3 +2922,417 @@ public:
     MtTypedArray<CDataQuestKeyItemPointRecord> m_QuestKeyItemPointRecordList;  // offset: 0x68
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataAreaBonus::CDataAreaBonus() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usRimRatio = static_cast<u16>(0);
+    this->m_usAreaPointRatio = static_cast<u16>(0);
+    this->m_unAreaId = static_cast<u32>(0);
+    this->m_usGoldRatio = static_cast<u16>(0);
+    this->m_usExpRatio = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataAreaInfoList::CDataAreaInfoList() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unAreaId = static_cast<u32>(0);
+    this->m_ucWeather = static_cast<u8>(0);
+    this->m_ucUndiscoveredQuestNum = static_cast<u8>(0);
+    this->m_ucHighDiffcultyQuestNum = static_cast<u8>(0);
+    this->m_bIsBonus = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCycleContentsExtraReward::CDataCycleContentsExtraReward() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucType = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCycleContentsNewsDetail::CDataCycleContentsNewsDetail() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucSituationLevel = static_cast<u8>(0);
+    this->m_usContentJoinItemRank = static_cast<u16>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+    this->m_unBaseLevel = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCycleContentsRank::CDataCycleContentsRank() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucType = static_cast<u8>(0);
+    this->m_unRank = static_cast<u32>(0);
+    this->m_unScore = static_cast<u32>(0);
+    this->m_ullUpdateDate = static_cast<u64>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCycleContentsReward::CDataCycleContentsReward() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucType = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCycleContentsRewardRecord::CDataCycleContentsRewardRecord() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ullRecvMaxDate = static_cast<u64>(0);
+    this->m_bIsExistExtraReward = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCycleContentsStateList::CDataCycleContentsStateList() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unCycleContentsScheduleId = static_cast<u32>(0);
+    this->m_ucCategory = static_cast<u8>(0);
+    this->m_unCategoryType = static_cast<u32>(0);
+    this->m_ucState = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataDeliveredItem::CDataDeliveredItem() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unItemId = static_cast<u32>(0);
+    this->m_usItemNum = static_cast<u16>(0);
+    this->m_usNeedNum = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataDeliveredItemRecord::CDataDeliveredItemRecord() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unCharacterId = static_cast<u32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_usProcessNo = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataDeliveryItem::CDataDeliveryItem() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unItemId = static_cast<u32>(0);
+    this->m_usNum = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataEndContentsGroup::CDataEndContentsGroup() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataExpiredQuestList::CDataExpiredQuestList() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataGetRewardBoxItem::CDataGetRewardBoxItem() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataLightQuestDetail::CDataLightQuestDetail() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unClearNum = static_cast<u32>(0);
+    this->m_unGetCP = static_cast<u32>(0);
+    this->m_unOrderLimit = static_cast<u32>(0);
+    this->m_unAreaId = static_cast<u32>(0);
+    this->m_unBaseAreaPoint = static_cast<u32>(0);
+    this->m_unBoardType = static_cast<u32>(1);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataOrderConditionInfo::CDataOrderConditionInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bCanProgress = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPartyQuestProgressInfo::CDataPartyQuestProgressInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPriorityQuest::CDataPriorityQuest() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPriorityQuestSetting::CDataPriorityQuestSetting() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unCharacterId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestAnnounce::CDataQuestAnnounce() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unAnnounceNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestCommand::CDataQuestCommand() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usCommand = static_cast<u16>(0);
+    this->m_nParam03 = static_cast<s32>(0);
+    this->m_nParam04 = static_cast<s32>(0);
+    this->m_nParam01 = static_cast<s32>(0);
+    this->m_nParam02 = static_cast<s32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestContents::CDataQuestContents() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucType = static_cast<u8>(0);
+    this->m_nParam03 = static_cast<s32>(0);
+    this->m_nParam04 = static_cast<s32>(0);
+    this->m_nParam01 = static_cast<s32>(0);
+    this->m_nParam02 = static_cast<s32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestContentsSituationInfo::CDataQuestContentsSituationInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestDefine::CDataQuestDefine() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucOrderMaxNum = static_cast<u8>(10);
+    this->m_ucChargeAddOrderNum = static_cast<u8>(10);
+    this->m_ucRewardBoxMaxNum = static_cast<u8>(100);
+    this->m_usCycleContentsPlaydataRemainDay = static_cast<u16>(30);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestEnemyInfo::CDataQuestEnemyInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unGroupId = static_cast<u32>(0);
+    this->m_usLv = static_cast<u16>(0);
+    this->m_bIsPartyRecommend = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestFlag::CDataQuestFlag() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unFlagId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestIdScheduleId::CDataQuestIdScheduleId() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestId = static_cast<u32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestKeyItemPoint::CDataQuestKeyItemPoint() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucPointID = static_cast<u8>(0);
+    this->m_usPoint = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestKeyItemPointRecord::CDataQuestKeyItemPointRecord() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_usProcessNo = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestLayoutFlag::CDataQuestLayoutFlag() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unFlagId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestLayoutFlagSetInfo::CDataQuestLayoutFlagSetInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unLayoutFlagNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestLog::CDataQuestLog() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestOrderConditionParam::CDataQuestOrderConditionParam() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unType = static_cast<u32>(0);
+    this->m_nParam01 = static_cast<s32>(0);
+    this->m_nParam02 = static_cast<s32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestPartyBonusInfo::CDataQuestPartyBonusInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+    this->m_usGoldRatio = static_cast<u16>(100);
+    this->m_usExpRatio = static_cast<u16>(100);
+    this->m_usRimRatio = static_cast<u16>(100);
+    this->m_usAreaPointRatio = static_cast<u16>(100);
+    this->m_unDorb = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestPhaseEvent::CDataQuestPhaseEvent() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unEventId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestPhaseEventParam::CDataQuestPhaseEventParam() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unType = static_cast<u32>(0);
+    this->m_unIndex = static_cast<u32>(0);
+    this->m_unValue = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestPointDetailRecord::CDataQuestPointDetailRecord() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestPointRecordId = static_cast<u32>(0);
+    this->m_unPoint = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestProgressWork::CDataQuestProgressWork() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_nWork04 = static_cast<s32>(0);
+    this->m_nWork02 = static_cast<s32>(0);
+    this->m_nWork03 = static_cast<s32>(0);
+    this->m_unCommandNo = static_cast<u32>(0);
+    this->m_nWork01 = static_cast<s32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestSetInfo::CDataQuestSetInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unStageNo = static_cast<u32>(0);
+    this->m_unGroupId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestTalkInfo::CDataQuestTalkInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unTalkNo = static_cast<u32>(0);
+    this->m_usNpcId = static_cast<u16>(0);
+    this->m_bIsOneOnly = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataRewardAbility::CDataRewardAbility() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unAbilityNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataRewardBoxRecord::CDataRewardBoxRecord() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unListNo = static_cast<u32>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataRewardItem::CDataRewardItem() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unItemId = static_cast<u32>(0);
+    this->m_usNum = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataRewardItemDetail::CDataRewardItemDetail() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unItemId = static_cast<u32>(0);
+    this->m_usNum = static_cast<u16>(0);
+    this->m_ucType = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataRewardJobValue::CDataRewardJobValue() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucType = static_cast<u8>(0);
+    this->m_unAddPoint = static_cast<u32>(0);
+    this->m_unExtraBonusPoint = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataRewardWalletPoint::CDataRewardWalletPoint() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucType = static_cast<u8>(0);
+    this->m_unAddPoint = static_cast<u32>(0);
+    this->m_unExtraBonusPoint = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataSetQuestDetail::CDataSetQuestDetail() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unClearCharacterNum = static_cast<u32>(0);
+    this->m_unBaseAreaPoint = static_cast<u32>(0);
+    this->m_unImageId = static_cast<u32>(0);
+    this->m_unClearCount = static_cast<u32>(0);
+    this->m_usUndiscoveryGoldRatio = static_cast<u16>(100);
+    this->m_usUndiscoveryExpRatio = static_cast<u16>(100);
+    this->m_usUndiscoveryRimRatio = static_cast<u16>(100);
+    this->m_ucProgressBonusNum = static_cast<u8>(0);
+    this->m_bIsDiscovery = false;
+    this->m_usLeaderCompleteNum = static_cast<u16>(0);
+    this->m_usRepeatRewardType = static_cast<u16>(0);
+    this->m_ucRepeatRewardValue = static_cast<u8>(0);
+    this->m_ucRepeatRewardCompleteNum = static_cast<u8>(0);
+    this->m_ucRandomRewardNum = static_cast<u8>(0);
+    this->m_ucChargeRewardNum = static_cast<u8>(0);
+}

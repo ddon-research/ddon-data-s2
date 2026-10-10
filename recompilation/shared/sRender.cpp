@@ -565,8 +565,8 @@ void sRender::setHalfLambertBlendCoeff(f32 coeff) {
 
 // Address: 0x01261cf0 - 0x01261d23 (51 bytes)
 f32 sRender::getRenderFps() {
-    // local: f64 spt;
-    // local: f64 rt;
+    // DWARF local not rendered: f64 spt;
+    // DWARF local not rendered: f64 rt;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mRenderTime != static_cast<s64>(0)) {
         return static_cast<float>(1.0 / (1.25e-9 * static_cast<double>(this->mRenderTime)));
@@ -971,11 +971,10 @@ __attribute__((weak)) void sRender::setViewports(sRender::RENDER_STATE& rs, u32 
 
 // Address: 0x01262b90 - 0x01262bb4 (36 bytes)
 bool sRender::findWaitAddr(sRender::RENDER_STATE& rs, u32 addr) {
-    // local: bool ret;
-    // local: u32 i;
+    // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     unsigned int* p2 = &rs.wait_addr[0];
     do {
         if ((*p2) == addr) {

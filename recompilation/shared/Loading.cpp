@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -102,9 +103,11 @@ inline MtAllocator* CDataLoadingInfoSchedules::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataLoadingInfoSchedules::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataLoadingInfoSchedules::MyDTI::newInstance at 0x003cdf84-0x003cdfad (called at LoadingImplement.inc:8)
-// void* CDataLoadingInfoSchedules::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataLoadingInfoSchedules::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataLoadingInfoSchedules::DTI)->memAlloc(sz, align, ::CDataLoadingInfoSchedules::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataLoadingInfoSchedules::operator new[](size_t sz, u32 align);
@@ -146,8 +149,8 @@ __attribute__((weak)) void CDataLoadingInfoSchedules::operator delete(void* p_ad
 // CDataLoadingInfoSchedules::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cdf80 - 0x003cdfe9 (105 bytes)
-__attribute__((weak)) MtObject* CDataLoadingInfoSchedules::MyDTI::newInstance() const {
-    DDON_STUB("CDataLoadingInfoSchedules::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataLoadingInfoSchedules::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataLoadingInfoSchedules;
 }
 

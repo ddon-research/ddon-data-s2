@@ -64,7 +64,7 @@ cGUIFontFilter::~cGUIFontFilter() {
 
 // Address: 0x01bd6eb0 - 0x01bd6ee7 (55 bytes)
 void cGUIFontFilter::calcBufferSize(nGUI::MTAG::DRAW& dw) {
-    // local: u32 charNum;
+    // DWARF local not rendered: u32 charNum;
     // Approximate from the ELF: a wider integer stored into a bitfield; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x1bd6eba read, used twice; no DWARF local holds it
     u32 t0 = dw.totalCharNum;

@@ -374,3 +374,188 @@ inline nJobParam::cJobInfo::cJobInfo() {
     this->mDef_pri = static_cast<u32>(0);
     this->mExp_pri = static_cast<u64>(0);
 }
+
+// Inline, no code of its own: checked where it is inlined.
+inline u16 nJobParam::cJobInfo::getLv() const {
+    return this->mLv_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u64 nJobParam::cJobInfo::getExp() const {
+    return this->mExp_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 nJobParam::cJobInfo::getConstitution() const {
+    return this->mConstitution_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 nJobParam::cJobInfo::getGuts() const {
+    return this->mGuts_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u64 nJobParam::cJobInfo::getJobPoint() const {
+    return this->mJobPoint_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s16 nJobParam::cJobInfo::getFireResist() const {
+    return this->mFireResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s16 nJobParam::cJobInfo::getIceResist() const {
+    return this->mIceResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s16 nJobParam::cJobInfo::getThunderResist() const {
+    return this->mThunderResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s16 nJobParam::cJobInfo::getHolyResist() const {
+    return this->mHolyResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s16 nJobParam::cJobInfo::getDarkResist() const {
+    return this->mDarkResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getSpreadResist() const {
+    return this->mSpreadResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getFreezeResist() const {
+    return this->mFreezeResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getShockResist() const {
+    return this->mShockResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getAbsorbResist() const {
+    return this->mAbsorbResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getDarkElmResist() const {
+    return this->mDarkElmResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getPoisonResist() const {
+    return this->mPoisonResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getSlowResist() const {
+    return this->mSlowResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getSleepResist() const {
+    return this->mSleepResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getStunResist() const {
+    return this->mStunResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getWetResist() const {
+    return this->mWetResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getOilResist() const {
+    return this->mOilResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getSealResist() const {
+    return this->mSealResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getCurseResist() const {
+    return this->mCurseResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getSoftResist() const {
+    return this->mSoftResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getStoneResist() const {
+    return this->mStoneResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getGoldResist() const {
+    return this->mGoldResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getFireReduceResist() const {
+    return this->mFireReduceResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getIceReduceResist() const {
+    return this->mIceReduceResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getThunderReduceResist() const {
+    return this->mThunderReduceResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getHolyReduceResist() const {
+    return this->mHolyReduceResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getDarkReduceResist() const {
+    return this->mDarkReduceResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getAtkDownResist() const {
+    return this->mAtkDownResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getDefDownResist() const {
+    return this->mDefDownResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getMAtkDownResist() const {
+    return this->mMAtkDownResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getMDefDownResist() const {
+    return this->mMDefDownResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getErosionResist() const {
+    return this->mErosionResist_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u8 nJobParam::cJobInfo::getItemSealResist() const {
+    return this->mItemSealResist_pri;
+}

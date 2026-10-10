@@ -111,7 +111,6 @@ void uGUIGainInfo::kill() {
 
 // Address: 0x00a930e0 - 0x00a930fe (30 bytes)
 bool uGUIGainInfo::isEndAnimation() {
-    // local: FLOW* pFlow;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nGUI::FLOW* pFlow = this->getPlayingFlow();
     if (pFlow != static_cast<nGUI::FLOW*>(nullptr)) {

@@ -143,7 +143,6 @@ MtUI* rStartPos::createUI(MtProperty& prop) {
 
 // Address: 0x00707cd0 - 0x00707d51 (129 bytes)
 bool rStartPos::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -151,7 +150,6 @@ bool rStartPos::load(MtStream& in) {
 
 // Address: 0x00707d60 - 0x00707dde (126 bytes)
 bool rStartPos::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     sz.::MtSerializer::serializeBinary(out, static_cast<u16>(2), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));

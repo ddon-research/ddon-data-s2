@@ -269,9 +269,17 @@ void uLight::setPriority(u32 v) {
 // const MtAABB& uLight::getBoundingBox() const;
 
 // Address: 0x00f0f090 - 0x00f0f0a8 (24 bytes)
-__attribute__((weak)) bool uLight::getBoundary(MtSphere* pdst) {
-    DDON_STUB("uLight::getBoundary")
-    return {};
+bool uLight::getBoundary(MtSphere* pdst) {
+    // Approximate from the ELF: a vector copy split into members it may not keep apart; the body oracle reports this body.
+    if ((this->mBound & static_cast<u32>(1)) != static_cast<u32>(0)) {
+        pdst->pos.x = this->mBoundingSphere.pos.x;
+        pdst->pos.y = this->mBoundingSphere.pos.y;
+        pdst->pos.z = this->mBoundingSphere.pos.z;
+        pdst->r = this->mBoundingSphere.r;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01b62be0 - 0x01b62be7 (7 bytes)
@@ -332,7 +340,7 @@ __attribute__((weak)) cUnit::cHardwareDispCtrl* uLight::createHardwareDispCtrl()
 
 // Address: 0x00f0db40 - 0x00f0db64 (36 bytes)
 void uLight::setPS3DisableMode(bool set) {
-    // local: cHardwareDispCtrl* pHDC;
+    // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsPS3Disable = set;
     if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
@@ -347,7 +355,7 @@ void uLight::setPS3DisableMode(bool set) {
 
 // Address: 0x00f0db70 - 0x00f0db94 (36 bytes)
 void uLight::setPS4DisableMode(bool set) {
-    // local: cHardwareDispCtrl* pHDC;
+    // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsPS4Disable = set;
     if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
@@ -362,7 +370,7 @@ void uLight::setPS4DisableMode(bool set) {
 
 // Address: 0x00f0dba0 - 0x00f0dbc4 (36 bytes)
 void uLight::setPCDisableMode(bool set) {
-    // local: cHardwareDispCtrl* pHDC;
+    // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsPCDisable = set;
     if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {

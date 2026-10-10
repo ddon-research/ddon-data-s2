@@ -183,7 +183,7 @@ __attribute__((weak)) void uGUICaplinkMailNotice::moveEvent() {
 
 // Address: 0x009c2980 - 0x009c29f0 (112 bytes)
 void uGUICaplinkMailNotice::updateMove() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
     this->mTop.mCheckItem[0].mCheck.::uGUIBase::cReferenceUICheckbox::update();
     this->mTop.mCheckItem[1].mCheck.::uGUIBase::cReferenceUICheckbox::update();

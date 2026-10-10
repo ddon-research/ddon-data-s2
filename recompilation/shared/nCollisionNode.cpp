@@ -163,10 +163,10 @@ __attribute__((weak)) u32 nCollision::cCollisionNode::addGeometry(MtGeomConvex* 
 
 // Address: 0x0118edc0 - 0x0118ee07 (71 bytes)
 u32 nCollision::cCollisionNode::setGeometry(MtGeomConvex* pGeomConvex, u32 RegistArrayIndex, bool FlgEnableDeepCopy) {
-    // local: const u32 NowGeometryNum;
-    // local: MtObject* * ppArrayBuffer;
-    // local: cGeometry* pTargetIndexGeometry;
-    // local: cGeometry* pGeometry;
+    // DWARF local not rendered: const u32 NowGeometryNum;
+    // DWARF local not rendered: MtObject* * ppArrayBuffer;
+    // DWARF local not rendered: cGeometry* pTargetIndexGeometry;
+    // DWARF local not rendered: cGeometry* pGeometry;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpEditDTI != static_cast<const MtDTI*>(nullptr)) {
         if (RegistArrayIndex < this->mGeometryArray.::MtArray::mLength) {
@@ -186,8 +186,7 @@ u32 nCollision::cCollisionNode::setGeometry(MtGeomConvex* pGeomConvex, u32 Regis
 
 // Address: 0x0118ee10 - 0x0118eeaa (154 bytes)
 u32 nCollision::cCollisionNode::insertGeometry(MtGeomConvex* pGeomConvex, u32 RegistArrayIndex, bool FlgEnableDeepCopy) {
-    // local: cGeometry* pTargetIndexGeometry;
-    // local: const u32 NowGeometryNum;
+    // DWARF local not rendered: const u32 NowGeometryNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpEditDTI != static_cast<const MtDTI*>(nullptr)) {
         if (RegistArrayIndex < this->mGeometryArray.::MtArray::mLength) {
@@ -233,9 +232,9 @@ __attribute__((weak)) bool nCollision::cCollisionNode::eraseGeometry(u32 TargetG
 void nCollision::cCollisionNode::eraseGeometryAll() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mGeometryArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x118efb0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x118efb0 carries; no location-less local in scope fits
         u32 v0_0 = this->mGeometryArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mGeometryArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mGeometryArray.::MtArray::mpArray[i0_3];

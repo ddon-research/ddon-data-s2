@@ -189,7 +189,7 @@ class uDDOModel : public uModel
     friend class uCharacter;
     // inferred: uControl::connectModel names uDDOModel::mpCtrl
     friend class uControl;
-    // inferred: uEnemy::setEmParamFromResToContext names uDDOModel::mContextInterface.mpContextInstance
+    // inferred: uEnemy::setupContextEnemyStatusChange names uDDOModel::mContextInterface.mpContextInstance
     friend class uEnemy;
     // inferred: uHuman::setupBeforeContext names uDDOModel::mGuardComponent.mpHpDamageCtrl
     friend class uHuman;

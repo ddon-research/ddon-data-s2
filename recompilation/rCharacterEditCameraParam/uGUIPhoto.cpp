@@ -13,6 +13,7 @@
 #include "../shared/rGUIMessage.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
+#include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -290,9 +291,22 @@ __attribute__((weak)) void uGUIPhoto::initPhoto() {
 // void uGUIPhoto::initShot();
 
 // Address: 0x00b3ea40 - 0x00b3eb03 (195 bytes)
-__attribute__((weak)) void uGUIPhoto::initFrame() {
-    DDON_STUB("uGUIPhoto::initFrame")
-    /* stub */
+void uGUIPhoto::initFrame() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mMode = static_cast<u32>(2);
+    this->mOldFrame = static_cast<u32>(this->mControls.::cGUIControlMgr::getCurrentPos(static_cast<u32>(1)));
+    this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(3)), true);
+    this->::uGUI::play(0.0f);
+    if (this->mpScrbar != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpScrbar->::cGUIInstance::setVisible(false);
+    }
+    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(0), false);
+    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(1), true);
+    this->::uGUIPhoto::updateCursor();
+    if (this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(true);
+    }
+    this->mClose.mEnable = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (135 bytes)
@@ -309,9 +323,9 @@ __attribute__((weak)) void uGUIPhoto::initFrame() {
 
 // Address: 0x00b3f200 - 0x00b3f327 (295 bytes)
 void uGUIPhoto::initList(u32 Index, cGUIInstAnimation* pInst) {
-    // local: f32 posy;
-    // local: f32 ofsy;
-    // local: cGUIObjMessage* pmsg;
+    // DWARF local not rendered: f32 posy;
+    // DWARF local not rendered: f32 ofsy;
+    // DWARF local not rendered: cGUIObjMessage* pmsg;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (pInst == static_cast<cGUIInstAnimation*>(nullptr)) {
         return;
@@ -325,18 +339,14 @@ void uGUIPhoto::initList(u32 Index, cGUIInstAnimation* pInst) {
     cGUIObject* t0 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(pInst), static_cast<u32>(2));
     if (t0 != static_cast<cGUIObject*>(nullptr)) {
         this->::uGUIBase::setObjectMessage(t0, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpFrameGMDRes, Index), static_cast<u32>(0), false);
-        // inferred: a temporary for the value the load at 0xb3f28d read, used once; no DWARF local holds it
-        cGUIInstAnimation* t1 = this->mpList[0];
         // inferred: a temporary for the value the load at 0xb3f294 read, used once; no DWARF local holds it
-        f32 t2 = t1->::cGUIInstNull::mPosition.y;
-        pInst->::cGUIInstNull::setPositionY(t2 + (static_cast<float>(this->::uGUIBase::getVariableParamS32FromId(static_cast<u32>(4))) * static_cast<float>(Index)));
+        f32 t1 = this->mpList[0]->::cGUIInstNull::mPosition.y;
+        pInst->::cGUIInstNull::setPositionY(t1 + (static_cast<float>(this->::uGUIBase::getVariableParamS32FromId(static_cast<u32>(4))) * static_cast<float>(Index)));
         this->mControls.::cGUIControlMgr::addMouseTouchList(static_cast<u32>(1), static_cast<cGUIInstance*>(pInst), this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(pInst), static_cast<u32>(3)), static_cast<s32>(Index), static_cast<cGUIObject*>(nullptr), static_cast<u32>(1), static_cast<u32>(1), static_cast<s32>(-1));
     } else {
-        // inferred: a temporary for the value the load at 0xb3f28d read, used once; no DWARF local holds it
-        cGUIInstAnimation* t1 = this->mpList[0];
         // inferred: a temporary for the value the load at 0xb3f294 read, used once; no DWARF local holds it
-        f32 t2 = t1->::cGUIInstNull::mPosition.y;
-        pInst->::cGUIInstNull::setPositionY(t2 + (static_cast<float>(this->::uGUIBase::getVariableParamS32FromId(static_cast<u32>(4))) * static_cast<float>(Index)));
+        f32 t1 = this->mpList[0]->::cGUIInstNull::mPosition.y;
+        pInst->::cGUIInstNull::setPositionY(t1 + (static_cast<float>(this->::uGUIBase::getVariableParamS32FromId(static_cast<u32>(4))) * static_cast<float>(Index)));
         this->mControls.::cGUIControlMgr::addMouseTouchList(static_cast<u32>(1), static_cast<cGUIInstance*>(pInst), this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(pInst), static_cast<u32>(3)), static_cast<s32>(Index), static_cast<cGUIObject*>(nullptr), static_cast<u32>(1), static_cast<u32>(1), static_cast<s32>(-1));
     }
 }

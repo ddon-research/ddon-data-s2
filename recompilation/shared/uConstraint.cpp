@@ -477,9 +477,9 @@ inline void uConstraint::cConstraint::operator delete(void* p_addr) {
 
 // Address: 0x01017a70 - 0x01017ab6 (70 bytes)
 void uConstraint::cConstraint::adjust(uModel::Joint* pjnt, uModel* pmod) {
-    // local: uConstraint* pCns;
+    // DWARF local not rendered: uConstraint* pCns;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0x1017aa6 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x1017aa6 carries; the location-less local in scope that fits is declared on no line of the value's writes
     for (uConstraint* v0_3 = this->mpParent;;) {
         if (v0_3 == static_cast<uConstraint*>(nullptr)) {
             break;
@@ -498,7 +498,7 @@ __attribute__((weak)) void uConstraint::cConstraint::createProperty(MtPropertyLi
 
 // Address: 0x01017ac0 - 0x01017ad5 (21 bytes)
 u32 uConstraint::cConstraint::getDependentJointNum() {
-    // local: u32 Num;
+    // DWARF local not rendered: u32 Num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpParent != static_cast<uConstraint*>(nullptr)) {
         return this->mpParent->getDependentJointNum();
@@ -509,7 +509,7 @@ u32 uConstraint::cConstraint::getDependentJointNum() {
 
 // Address: 0x01017ae0 - 0x01017af8 (24 bytes)
 uModel::Joint* uConstraint::cConstraint::getDependentJoint(u32 idx) {
-    // local: Joint* pJnt;
+    // DWARF local not rendered: Joint* pJnt;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpParent != static_cast<uConstraint*>(nullptr)) {
         return this->mpParent->getDependentJoint(idx);

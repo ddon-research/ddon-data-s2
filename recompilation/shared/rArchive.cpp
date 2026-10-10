@@ -103,7 +103,6 @@ __attribute__((weak)) bool rArchive::load(MtStream& in) {
 
 // Address: 0x011c0f70 - 0x011c1004 (148 bytes)
 void rArchive::clear() {
-    // local: u32 i;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
     if (this->mResourceNum == static_cast<u32>(0)) {
         ::MtMemoryAllocator::getAllocator(::rArchive::DTI)->memFree(static_cast<void*>(this->mpResource));

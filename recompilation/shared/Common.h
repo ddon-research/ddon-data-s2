@@ -120,3 +120,24 @@ public:
     u32 m_unQuestId;  // offset: 0x8
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCommonU32::CDataCommonU32() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unvalue = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCommonU8::CDataCommonU8() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucvalue = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuestId::CDataQuestId() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unQuestId = static_cast<u32>(0);
+}

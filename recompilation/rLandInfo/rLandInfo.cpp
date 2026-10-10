@@ -102,9 +102,8 @@ __attribute__((weak)) bool rLandInfo::save(MtStream& out) {
 
 // Address: 0x006923b0 - 0x00692457 (167 bytes)
 bool rLandInfo::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u32 dataVersion;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(4800844)) {

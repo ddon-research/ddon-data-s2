@@ -249,7 +249,6 @@ inline void nNetwork::TagChecker::RpcSyncReq::operator delete(void* p_addr) {
 
 // Address: 0x011a31e0 - 0x011a324d (109 bytes)
 void nNetwork::TagChecker::RpcSyncReq::serialize(MtStream& stream) {
-    // local: Coder cod;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetwork::Coder cod(stream);
     cod.::nNetwork::Coder::writeU32(static_cast<u32>(this->mMemberIndex));
@@ -259,7 +258,6 @@ void nNetwork::TagChecker::RpcSyncReq::serialize(MtStream& stream) {
 
 // Address: 0x011a3250 - 0x011a32bd (109 bytes)
 void nNetwork::TagChecker::RpcSyncReq::deserialize(MtStream& stream) {
-    // local: Decoder dec;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetwork::Decoder dec(stream);
     this->mMemberIndex = static_cast<s32>(dec.::nNetwork::Decoder::readU32());

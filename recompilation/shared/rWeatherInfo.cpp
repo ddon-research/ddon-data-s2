@@ -1079,3 +1079,19 @@ template unsigned int rTbl2<cWeatherParamEfcInfo>::getDataNum() const;
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cWeatherParamInfo>::getDataNum() const;
 
+// Instance at 0x01abb460 - 0x01abb4b8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cWeatherFogInfo>::~rTbl2();
+
+// Instance at 0x01abb860 - 0x01abb907 (167 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cWeatherInfo>::~rTbl2();
+
+// Instance at 0x01abb520 - 0x01abb5c4 (164 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cWeatherParamEfcInfo>::~rTbl2();
+
+// Instance at 0x01abb680 - 0x01abb761 (225 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cWeatherParamInfo>::~rTbl2();
+

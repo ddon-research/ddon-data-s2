@@ -22,9 +22,9 @@ void nCaplink::FriendTagFreeListGetAns::init() {
     this->::nCaplink::ContextListener::init();
     this->mFreeTagInfoTbl.mAutoDelete = true;
     if (this->mFreeTagInfoTbl.mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1abe870 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1abe870 carries; no location-less local in scope fits
         u32 v0_0 = this->mFreeTagInfoTbl.mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mFreeTagInfoTbl.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mFreeTagInfoTbl.mpArray[i0_3];

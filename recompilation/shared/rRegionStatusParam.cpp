@@ -551,3 +551,15 @@ template unsigned int rTbl2<cChildRegionStatusParamList>::getDataNum() const;
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cParentRegionStatusParam>::getDataNum() const;
 
+// Instance at 0x01ab0b40 - 0x01ab0b98 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cChildRegionStatusParam>::~rTbl2();
+
+// Instance at 0x01ab09f0 - 0x01ab0a8f (159 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cChildRegionStatusParamList>::~rTbl2();
+
+// Instance at 0x01ab0c00 - 0x01ab0c9f (159 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cParentRegionStatusParam>::~rTbl2();
+

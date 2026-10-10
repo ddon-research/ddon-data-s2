@@ -401,12 +401,12 @@ __attribute__((weak)) void uGUIMap::evSubMenu() {
 
 // Address: 0x00b6a9b0 - 0x00b6ab20 (368 bytes)
 void uGUIMap::setupMarker() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mMarker.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xb6a9d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xb6a9d0 carries; no location-less local in scope fits
         u32 v0_0 = this->mMarker.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mMarker.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMarker.::MtArray::mpArray[i0_3];
@@ -431,7 +431,7 @@ void uGUIMap::setupMarker() {
     this->mMarker.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
     this->mMarker.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mMarker.::MtArray::mLength = static_cast<u32>(0);
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
         if (i2_3 != static_cast<unsigned int>(0)) {
             if (i2_3 <= static_cast<unsigned int>(8)) {
@@ -722,7 +722,7 @@ __attribute__((weak)) void uGUIMap::execFooter() {
 
 // Address: 0x00b75730 - 0x00b75769 (57 bytes)
 void uGUIMap::execBtnGuaid() {
-    // local: u32 dispBit;
+    // DWARF local not rendered: u32 dispBit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mIsEnableLandSubMenu != false) {
         this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::setDispBit(static_cast<u32>(63));
@@ -1198,10 +1198,11 @@ const MtDTI& uGUIMap::cLandId::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void uGUIMap::cLandId::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (86 bytes)
-//   in uGUIMap::cLandId::MyDTI::newInstance at 0x00b668e4-0x00b6690d (called at uGUIMap.cpp:147)
-//   in uGUIMap::evSubMenu at 0x00b71185-0x00b71189, 0x00b711ae-0x00b711d7 (called at uGUIMap.cpp:1566)
-// void* uGUIMap::cLandId::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* uGUIMap::cLandId::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMap::cLandId::DTI)->memAlloc(sz, align, ::uGUIMap::cLandId::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* uGUIMap::cLandId::operator new[](size_t sz, u32 align);
@@ -1243,9 +1244,9 @@ inline void uGUIMap::cLandId::operator delete(void* p_addr) {
 // uGUIMap::cLandId::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00b668e0 - 0x00b66927 (71 bytes)
-__attribute__((weak)) MtObject* uGUIMap::cLandId::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMap::cLandId::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMap::cLandId::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::uGUIMap::cLandId;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (88 bytes)

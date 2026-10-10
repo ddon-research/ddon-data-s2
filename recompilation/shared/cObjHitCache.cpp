@@ -96,9 +96,30 @@ void cObjHitCache::clear() {
 }
 
 // Address: 0x00178870 - 0x001788e8 (120 bytes)
-__attribute__((weak)) void cObjHitCache::copy(const cObjHitCache* pSrc, bool copy_node) {
-    DDON_STUB("cObjHitCache::copy")
-    /* stub */
+void cObjHitCache::copy(const cObjHitCache* pSrc, bool copy_node) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pSrc == static_cast<const cObjHitCache*>(nullptr)) {
+        return;
+    }
+    this->mPri = pSrc->mPri;
+    this->mUID = pSrc->mUID;
+    this->mTimer = pSrc->mTimer;
+    this->mAge = pSrc->mAge;
+    this->mAtkAttr = pSrc->mAtkAttr;
+    this->mDfdAttr = pSrc->mDfdAttr;
+    if (copy_node != false) {
+        this->mpAtkNode = pSrc->mpAtkNode;
+        this->mpDfdNode = pSrc->mpDfdNode;
+        this->mpAtkGeom = pSrc->mpAtkGeom;
+        this->mpDfdGeom = pSrc->mpDfdGeom;
+    } else {
+        this->mpAtkGeom = static_cast<cHitGeom*>(nullptr);
+        this->mpDfdNode = static_cast<cHitNode*>(nullptr);
+        this->mpAtkNode = static_cast<cHitNode*>(nullptr);
+        this->mpDfdGeom = static_cast<cHitGeom*>(nullptr);
+    }
+    this->mpAtkModel = pSrc->mpAtkModel;
+    this->mpDfdModel = pSrc->mpDfdModel;
 }
 
 // Address: 0x001788f0 - 0x00178f3e (1614 bytes)

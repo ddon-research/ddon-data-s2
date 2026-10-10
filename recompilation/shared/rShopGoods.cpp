@@ -7,6 +7,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cResource.h"
+#include "nDDOIO.h"
 #include "rTable.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -166,9 +167,13 @@ __attribute__((weak)) void cShopGoods::rDate::createProperty(MtPropertyList& s) 
 
 // Address: 0x006e6810 - 0x006e688c (124 bytes)
 bool cShopGoods::rDate::load(MtDataReader& in) {
-    // Approximate from the ELF: a byte stored between two folded calls (struct-path TBAA keeps a value the ELF reads again); the body oracle reports this body.
-    this->mYear = in.readU16();
-    this->mMonth = in.::MtDataReader::readU8();
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mYear);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mMonth);
     this->mDay = in.::MtDataReader::readU8();
     return true;
 }
@@ -273,7 +278,6 @@ u16 rShopGoods::getDataVersion() {
 
 // Address: 0x01ab0f30 - 0x01ab0f99 (105 bytes)
 bool rShopGoods::load(MtStream& in) {
-    // local: MtDataReader r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     return this->::rShopGoods::loadData(r);

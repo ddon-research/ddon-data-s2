@@ -69,8 +69,12 @@ cEfcMotSync::cEfcMotSync() {
 // Address: 0x0009f470 - 0x0009f4c2 (82 bytes)
 // Also emitted as: _ZN11cEfcMotSyncD0Ev at 0x0009f4e0
 cEfcMotSync::~cEfcMotSync() {
-    DDON_STUB("cEfcMotSync::~cEfcMotSync")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpSyncManageList != static_cast<cEfcMotSync::SyncManageFactor*>(nullptr)) {
+        delete[] this->mpSyncManageList;
+        this->mpSyncManageList = static_cast<cEfcMotSync::SyncManageFactor*>(nullptr);
+    }
+    this->mSyncManageNum = static_cast<u32>(0);
 }
 
 // Address: 0x0009f550 - 0x0009f85f (783 bytes)
@@ -169,11 +173,10 @@ inline void cEfcMotSync::SyncManageFactor::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
 }
 
-// No out-of-line body: 3 inlined copies in 3 functions (78 bytes)
-//   in _ZN11cEfcMotSyncD1Ev at 0x0009f495-0x0009f4ad (called at cEfcMotSync.cpp:172)
-//   in cEfcMotSync::~cEfcMotSync at 0x0009f505-0x0009f51d (called at cEfcMotSync.cpp:172)
-//   in cEfcMotSync::setupFromProv at 0x0009f57a-0x0009f598 (called at cEfcMotSync.cpp:172)
-// void cEfcMotSync::SyncManageFactor::operator delete[](void* p_addr);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline void cEfcMotSync::SyncManageFactor::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
+}
 
 // No out-of-line body: no code in the ELF
 // void cEfcMotSync::SyncManageFactor::operator delete(void* p_addr, u32 align);

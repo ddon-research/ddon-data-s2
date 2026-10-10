@@ -982,8 +982,8 @@ __attribute__((weak)) bool cpPawnThink::setTargetThinkMgr(const kTHINKDATA& tbl,
 
 // Address: 0x0051e390 - 0x0051e3d5 (69 bytes)
 bool cpPawnThink::sortFuncCharacterHp(const uCharacter* pA, const uCharacter* pB, u32) {
-    // local: cContextInterface& a;
-    // local: cContextInterface& b;
+    // DWARF local not rendered: cContextInterface& a;
+    // DWARF local not rendered: cContextInterface& b;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x51e3ad, used once; no DWARF local holds it
     HP_DATATYPE t0 = ::cContextInterface::getHp(pA->::uDDOModel::mContextInterface.mpContextInstance, pA->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u32>(0));
@@ -1373,10 +1373,10 @@ __attribute__((weak)) void cpPawnThink::callbackCheckPawnThink(cHitInfo* pHitInf
 
 // Address: 0x005215f0 - 0x00521632 (66 bytes)
 void cpPawnThink::callbackAttackTestPawnThink(cHitInfo* pHitInfo) {
-    // local: cHitNode* p_node;
-    // local: const cCollNode* p_coll_node;
-    // local: uDDOModel* p_model;
-    // local: u32 node_id;
+    // DWARF local not rendered: cHitNode* p_node;
+    // DWARF local not rendered: const cCollNode* p_coll_node;
+    // DWARF local not rendered: uDDOModel* p_model;
+    // DWARF local not rendered: u32 node_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cpComponent::isActive() == false) {
         return;

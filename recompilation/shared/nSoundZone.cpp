@@ -35,7 +35,6 @@ __attribute__((weak)) cSoundLayoutInfo* nSoundZone::getLayoutInfoFromZoneLayout(
 // Address: 0x00639790 - 0x006397b0 (32 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nSoundZone.cpp:92
 nZone::ShapeInfoBase* nSoundZone::getShapeFromZoneLayout(cZoneLayout* pZone, u32 index) {
-    // local: const cLayoutElement* pLayout;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pZone != static_cast<cZoneLayout*>(nullptr)) {
         const nZone::cLayoutElement* pLayout = pZone->::cZoneLayout::getLayoutElement(index);

@@ -78,7 +78,7 @@ cHttpClient::~cHttpClient() {
 
 // Address: 0x00e3fc20 - 0x00e3fd00 (224 bytes)
 s32 cHttpClient::move() {
-    // local: s32 ret;
+    // DWARF local not rendered: s32 ret;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     switch (static_cast<unsigned int>(this->mState - static_cast<s32>(1))) {
         case static_cast<unsigned int>(0):

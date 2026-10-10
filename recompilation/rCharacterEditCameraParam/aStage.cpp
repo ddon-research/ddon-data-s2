@@ -438,7 +438,7 @@ __attribute__((weak)) void aStage::createGUIUnit() {
 
 // Address: 0x00013ce0 - 0x00013d1b (59 bytes)
 s32 aStage::getNextStage() {
-    // local: s32 next;
+    // DWARF local not rendered: s32 next;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (static_cast<unsigned int>(this->::aStage::getJmpStatus() - static_cast<s32>(1)) <= static_cast<unsigned int>(1)) {
         return this->::aStage::getJmpStageNo();
@@ -788,7 +788,7 @@ __attribute__((weak)) bool aStage::isSplitSbc(const MtVector3& pos) {
 
 // Address: 0x00015260 - 0x00015272 (18 bytes)
 void aStage::updateCraftPawn() {
-    // local: uStageCraftPawnCtrl* pCtrl;
+    // DWARF local not rendered: uStageCraftPawnCtrl* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::aStage::getCraftPawnCtrl() == static_cast<uStageCraftPawnCtrl*>(nullptr)) {
         return;
@@ -809,7 +809,6 @@ void aStage::updateCraftPawn() {
 
 // Address: 0x00014ea0 - 0x00014efc (92 bytes)
 void aStage::requestCameraEvt(u32 no, const uDDOModel* pObj) {
-    // local: rCameraParamList* pCpl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpStageInfo == static_cast<rStageInfo*>(nullptr)) {
         return;
@@ -827,7 +826,7 @@ void aStage::requestCameraEvt(u32 no, const uDDOModel* pObj) {
 
 // Address: 0x00014f00 - 0x00014f1b (27 bytes)
 const cCamExParam* aStage::getCameraParamFld(u32 no) const {
-    // local: rCameraParamList* pCpl;
+    // DWARF local not rendered: rCameraParamList* pCpl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpStageInfo->mprCmrPrmLstFld != static_cast<rCameraParamList*>(nullptr)) {
         return this->mpStageInfo->mprCmrPrmLstFld->::rCameraParamList::getParam(no);
@@ -838,7 +837,7 @@ const cCamExParam* aStage::getCameraParamFld(u32 no) const {
 
 // Address: 0x00014f20 - 0x00014f3b (27 bytes)
 const cCamExParam* aStage::getCameraParamEvt(u32 no) const {
-    // local: rCameraParamList* pCpl;
+    // DWARF local not rendered: rCameraParamList* pCpl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpStageInfo->mprCmrPrmLstEvt != static_cast<rCameraParamList*>(nullptr)) {
         return this->mpStageInfo->mprCmrPrmLstEvt->::rCameraParamList::getParam(no);
@@ -862,7 +861,7 @@ bool aStage::isEnableJointArea(s32 areaNo) {
 
 // Address: 0x000125c0 - 0x000125fd (61 bytes)
 s32 aStage::getJointAreaNo(MtVector3& pos) {
-    // local: uStageJointCtrl* pCtrl;
+    // DWARF local not rendered: uStageJointCtrl* pCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpStageInfo != static_cast<rStageInfo*>(nullptr)) {
         if ((this->mpStageInfo->mFlag & static_cast<u32>(2)) != static_cast<u32>(0)) {
@@ -920,7 +919,7 @@ __attribute__((weak)) cDayNightColorFogParam aStage::getColorFogPD() {
 
 // Address: 0x00015360 - 0x00015381 (33 bytes)
 rStageCustomPartsEx::HemiSphLight* aStage::getHemiSphLightPD() {
-    // local: uStagePartsCtrl* pPtsCtrl;
+    // DWARF local not rendered: uStagePartsCtrl* pPtsCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::aStage::getStagePartsCtrl() != static_cast<uStagePartsCtrl*>(nullptr)) {
         if (this->::aStage::getStagePartsCtrl()->::uStagePartsCtrl::isLightFogZone() != false) {
@@ -932,7 +931,7 @@ rStageCustomPartsEx::HemiSphLight* aStage::getHemiSphLightPD() {
 
 // Address: 0x00015390 - 0x000153b1 (33 bytes)
 rStageCustomPartsEx::InfiLight* aStage::getInfiLightPD() {
-    // local: uStagePartsCtrl* pPtsCtrl;
+    // DWARF local not rendered: uStagePartsCtrl* pPtsCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::aStage::getStagePartsCtrl() != static_cast<uStagePartsCtrl*>(nullptr)) {
         if (this->::aStage::getStagePartsCtrl()->::uStagePartsCtrl::isLightFogZone() != false) {
@@ -1194,7 +1193,7 @@ __attribute__((weak)) bool aStage::isUnitGroupStop() {
 
 // Address: 0x00015030 - 0x00015059 (41 bytes)
 cSplitBgm* aStage::getJointStageBgmType() {
-    // local: bool isSplit;
+    // DWARF local not rendered: bool isSplit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpStageInfo != static_cast<rStageInfo*>(nullptr)) {
         if ((this->mpStageInfo->mFlag & static_cast<u32>(2)) != static_cast<u32>(0)) {
@@ -1208,8 +1207,6 @@ cSplitBgm* aStage::getJointStageBgmType() {
 
 // Address: 0x00015060 - 0x000150a2 (66 bytes)
 u32 aStage::getSoundAttributeRequestSeNo(u32 reqNo, u32 attrId) {
-    // local: rSoundAttributeSe* pAttrSe;
-    // local: u32 aserNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rSoundAttributeSe* pAttrSe = this->::aStage::getSoundAttributeSe();
     if (pAttrSe != static_cast<rSoundAttributeSe*>(nullptr)) {
@@ -1546,7 +1543,6 @@ __attribute__((weak)) void aStage::setTutorialEquip() {
 
 // Address: 0x00015190 - 0x00015235 (165 bytes)
 void aStage::resetTutorialEquip() {
-    // local: cContextInstHm* pContext;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() == false) {
         return;

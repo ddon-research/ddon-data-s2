@@ -92,7 +92,6 @@ MtUI* cRemoteCall::createUI(MtProperty& prop) {
 
 // Address: 0x010257b0 - 0x01025829 (121 bytes)
 void cRemoteCall::serialize(MtStream& queue) {
-    // local: MtSerializer sr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sr(static_cast<s32>(65536));
     sr.::MtSerializer::serializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
@@ -100,7 +99,6 @@ void cRemoteCall::serialize(MtStream& queue) {
 
 // Address: 0x01025830 - 0x010258a6 (118 bytes)
 void cRemoteCall::deserialize(MtStream& queue) {
-    // local: MtSerializer sr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sr(static_cast<s32>(65536));
     sr.::MtSerializer::deserializeBinary(queue, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0));

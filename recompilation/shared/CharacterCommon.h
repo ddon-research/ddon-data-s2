@@ -435,3 +435,146 @@ public:
     u32 m_unGainMagicDefense;  // offset: 0x34
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataArisenProfile::CDataArisenProfile() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucBackgroundID = static_cast<u8>(0);
+    this->m_usMotionID = static_cast<u16>(0);
+    this->m_unMotionFrameNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCharacterEquipData::CDataCharacterEquipData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataCharacterJobData::CDataCharacterJobData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucMAtkDownResist = static_cast<u8>(0);
+    this->m_ucMDefDownResist = static_cast<u8>(0);
+    this->m_ucHolyReduceResist = static_cast<u8>(0);
+    this->m_ucDarkReduceResist = static_cast<u8>(0);
+    this->m_ucAtkDownResist = static_cast<u8>(0);
+    this->m_ucDefDownResist = static_cast<u8>(0);
+    this->m_ucSealResist = static_cast<u8>(0);
+    this->m_ucCurseResist = static_cast<u8>(0);
+    this->m_ucSoftResist = static_cast<u8>(0);
+    this->m_ucStoneResist = static_cast<u8>(0);
+    this->m_ucGoldResist = static_cast<u8>(0);
+    this->m_ucFireReduceResist = static_cast<u8>(0);
+    this->m_ucIceReduceResist = static_cast<u8>(0);
+    this->m_ucThunderReduceResist = static_cast<u8>(0);
+    this->m_ucAbsorbResist = static_cast<u8>(0);
+    this->m_ucDarkElmResist = static_cast<u8>(0);
+    this->m_ucPoisonResist = static_cast<u8>(0);
+    this->m_ucSlowResist = static_cast<u8>(0);
+    this->m_ucSleepResist = static_cast<u8>(0);
+    this->m_ucStunResist = static_cast<u8>(0);
+    this->m_ucWetResist = static_cast<u8>(0);
+    this->m_ucOilResist = static_cast<u8>(0);
+    this->m_ucFireResist = static_cast<u8>(0);
+    this->m_ucIceResist = static_cast<u8>(0);
+    this->m_ucThunderResist = static_cast<u8>(0);
+    this->m_ucHolyResist = static_cast<u8>(0);
+    this->m_ucDarkResist = static_cast<u8>(0);
+    this->m_ucSpreadResist = static_cast<u8>(0);
+    this->m_ucFreezeResist = static_cast<u8>(0);
+    this->m_ucShockResist = static_cast<u8>(0);
+    this->m_usShakePower = static_cast<u16>(0);
+    this->m_usStunPower = static_cast<u16>(0);
+    this->m_usConstitution = static_cast<u16>(0);
+    this->m_usGuts = static_cast<u16>(0);
+    this->m_usMAtk = static_cast<u16>(0);
+    this->m_usMDef = static_cast<u16>(0);
+    this->m_usStrength = static_cast<u16>(0);
+    this->m_usDownPower = static_cast<u16>(0);
+    this->m_unLv = static_cast<u32>(0);
+    this->m_usAtk = static_cast<u16>(0);
+    this->m_usDef = static_cast<u16>(0);
+    this->m_unExp = static_cast<u32>(0);
+    this->m_unJobPoint = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataContextAcquirementData::CDataContextAcquirementData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_unAcquirementNo = static_cast<u32>(0);
+    this->m_ucAcquirementLv = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataContextNormalSkillData::CDataContextNormalSkillData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucSkillNo = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataOrbCategoryStatus::CDataOrbCategoryStatus() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucCategoryID = static_cast<u8>(0);
+    this->m_ucReleaseNum = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataOrbGainExtendParam::CDataOrbGainExtendParam() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usSupportPawnSlot = static_cast<u16>(0);
+    this->m_usUseItemSlot = static_cast<u16>(0);
+    this->m_usMaterialItemSlot = static_cast<u16>(0);
+    this->m_usEquipItemSlot = static_cast<u16>(0);
+    this->m_usMainPawnSlot = static_cast<u16>(0);
+    this->m_usMagicAttack = static_cast<u16>(0);
+    this->m_usMagicDefence = static_cast<u16>(0);
+    this->m_usAbilityCost = static_cast<u16>(0);
+    this->m_usJewerlySlot = static_cast<u16>(0);
+    this->m_usHpMax = static_cast<u16>(0);
+    this->m_usStaminaMax = static_cast<u16>(0);
+    this->m_usAttack = static_cast<u16>(0);
+    this->m_usDefence = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataOrbPageStatus::CDataOrbPageStatus() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucPageNo = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataReleaseOrbElement::CDataReleaseOrbElement() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucIndex = static_cast<u8>(0);
+    this->m_ucPageNo = static_cast<u8>(0);
+    this->m_ucGroupNo = static_cast<u8>(0);
+    this->m_unElementID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataStatusInfo::CDataStatusInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unHp = static_cast<u32>(0);
+    this->m_unStamina = static_cast<u32>(0);
+    this->m_ucRevivePoint = static_cast<u8>(0);
+    this->m_unGainMagicDefense = static_cast<u32>(0);
+    this->m_unGainDefense = static_cast<u32>(0);
+    this->m_unGainMagicAttack = static_cast<u32>(0);
+    this->m_unGainStamina = static_cast<u32>(0);
+    this->m_unGainAttack = static_cast<u32>(0);
+    this->m_unWhiteHp = static_cast<u32>(0);
+    this->m_unGainHp = static_cast<u32>(0);
+    this->m_unMaxHp = static_cast<u32>(0);
+    this->m_unMaxStamina = static_cast<u32>(0);
+}

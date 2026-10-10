@@ -94,7 +94,6 @@ __attribute__((weak)) bool rCameraParamList::load(MtStream& in) {
 
 // Address: 0x0064e780 - 0x0064e806 (134 bytes)
 bool rCameraParamList::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rCameraParamList::DTI));

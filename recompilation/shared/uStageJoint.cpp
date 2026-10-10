@@ -19,6 +19,7 @@
 #include "nZoneUnitCtrl.h"
 #include "rStageJoint.h"
 #include "sCollision.h"
+#include "sUnit.h"
 #include "uCoord.h"
 #include "../rCharacterEditCameraParam/uScheduler.h"
 #include "uScrollCollisionGeometry.h"
@@ -124,14 +125,14 @@ __attribute__((weak)) void uStageJointCtrl::kill() {
 
 // Address: 0x00d33010 - 0x00d3309a (138 bytes)
 void uStageJointCtrl::updatePtr() {
-    // local: u32 idx;
-    // local: u32 i;
-    // local: cSplitLot* pSplitLot;
+    // DWARF local not rendered: u32 idx;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cSplitLot* pSplitLot;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0xd33030 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xd33030 carries; no location-less local in scope fits
     u32 v0_0 = this->mJointMdlAry.::MtArray::mLength;
     if (v0_0 != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
             if (this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
                 if (static_cast<cUnit*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_1)])->::cUnit::isEnable() == false) {
@@ -146,9 +147,9 @@ void uStageJointCtrl::updatePtr() {
         }
     }
     if (this->mSplitLotAry.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xd33070 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xd33070 carries; no location-less local in scope fits
         u32 v2_0 = this->mSplitLotAry.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(i2_3)] != static_cast<MtObject*>(nullptr)) {
                 static_cast<cSplitLot*>(this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(i2_3)])->::cSplitLot::updatePtr();
@@ -369,14 +370,61 @@ __attribute__((weak)) uSoundOcclusion* uStageJointCtrl::getSoundOcclusion() {
 }
 
 // Address: 0x00d33d90 - 0x00d33e5d (205 bytes)
-__attribute__((weak)) void uStageJointCtrl::stopMoveUnitLight(bool sleep) {
-    // local: u32 i;
-    // local: uScheduler* pSchdl;
-    // local: uStageJointMdl* pMdl;
-    // local: u32 i;
-    // local: cUnit* pUnit;
-    DDON_STUB("uStageJointCtrl::stopMoveUnitLight")
-    /* stub */
+void uStageJointCtrl::stopMoveUnitLight(bool sleep) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uStageJointMdl* pMdl;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cUnit* pUnit;
+    // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mJointMdlAry.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0xd33dc0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mJointMdlAry.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_9 = static_cast<unsigned int>(0);
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1_3;
+        // inferred: the value carried to 0xd33e42; no location-less local in scope fits
+        u32 v3_0;
+        for (;;) {
+            if (this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_9)] == static_cast<MtObject*>(nullptr)) {
+                v3_0 = v0_0;
+            } else {
+                uScheduler* pSchdl = static_cast<uStageJointMdl*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i0_9)])->::uStageJointMdl::getLightSdl();
+                if (pSchdl == static_cast<uScheduler*>(nullptr)) {
+                    v3_0 = v0_0;
+                } else {
+                    if (pSchdl->::uScheduler::getUnitNum() != static_cast<u32>(0)) {
+                        i1_3 = static_cast<unsigned int>(0);
+                        for (;;) {
+                            // inferred: a temporary for the result of the call at 0xd33df5, used 3 times; no DWARF local holds it
+                            cUnit* t0 = pSchdl->::uScheduler::getUnit(i1_3);
+                            if (t0 != static_cast<cUnit*>(nullptr)) {
+                                if (t0->::cUnit::isEnable()) {
+                                    if (sleep != false) {
+                                        ::sUnit::getInstance()->::sUnit::setUnitGroup(t0, static_cast<u32>(55));
+                                    } else {
+                                        ::sUnit::getInstance()->::sUnit::removeUnitGroup(t0, static_cast<u32>(55));
+                                    }
+                                }
+                            }
+                            if ((i1_3 + static_cast<unsigned int>(1)) < pSchdl->::uScheduler::getUnitNum()) {
+                                i1_3 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    v3_0 = this->mJointMdlAry.::MtArray::mLength;
+                }
+            }
+            if ((i0_9 + static_cast<unsigned int>(1)) < v3_0) {
+                v0_0 = v3_0;
+                i0_9 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x00d33e60 - 0x00d33f58 (248 bytes)
@@ -884,7 +932,7 @@ __attribute__((weak)) void uStageJointMdl::reserveSbcReposition() {
 
 // Address: 0x00d2fcb0 - 0x00d2fdad (253 bytes)
 void uStageJointMdl::finishSbcReposition() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mScrSbcHandle[0] == static_cast<unsigned int>(4294967295)) {
     } else {

@@ -368,7 +368,7 @@ u32 uGUIBrowserBG::evCtrlCancel(cControl::Message* pMsg) {
 
 // Address: 0x009acae0 - 0x009acb26 (70 bytes)
 u32 uGUIBrowserBG::evCtrlExit(cControl::Message* pMsg) {
-    // local: u32 ret;
+    // DWARF local not rendered: u32 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mBrowserResult = static_cast<nGUIExt::BROWSER_RESULT>(1);
     if (this->mCancelMode == static_cast<u32>(1)) {

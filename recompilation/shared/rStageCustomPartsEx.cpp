@@ -10,6 +10,7 @@
 #include "MtObject.h"
 #include "MtString.h"
 #include "cAreaHit.h"
+#include "nDDOIO.h"
 #include "rStageCustomParts.h"
 #include "uSkyFog.h"
 #ifndef DDON_STUB
@@ -449,8 +450,10 @@ bool rStageCustomPartsEx::ColorFog::load(MtDataReader& r) {
     this->mNight.mStart = r.readF32();
     this->mNight.mEnd = r.readF32();
     this->mNight.mDensity = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->mNight.mColor = r.readV3();
-    this->mNight.mDiffuseBlendFactor = r.readF32();
+    ::nDDOIO::readData(r, this->mNight.mDiffuseBlendFactor);
     return true;
 }
 

@@ -138,6 +138,14 @@ u32 rTbl2<T>::getDataNum() const {
     return this->mDataNum;
 }
 
+// Generic (024 T808): every instance that renders gives this body; the unit of each instance's compile unit, else rTbl2.cpp, instantiates it for the body oracle.
+// approximate: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported
+template <typename T>
+rTbl2<T>::~rTbl2() {
+    // inferred: rTbl2Base declares no destructor; its implicit one is _ZN9rTbl2BaseD1Ev at 0x1aa9b40, one jmp to _ZN9cResourceD2Ev
+    this->::rTbl2<T>::deleteData();
+}
+
 // Generic (024 T863c): every instance's inlined copies give this body; no code of its own, checked where it is inlined (rendered.json inline_proofs).
 template <typename T>
 inline bool rTbl2<T>::loadRoot(MtDataReader& r) {

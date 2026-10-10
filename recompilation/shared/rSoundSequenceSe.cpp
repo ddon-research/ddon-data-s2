@@ -88,7 +88,6 @@ MtUI* rSoundSequenceSe::createUI(MtProperty& prop) {
 
 // Address: 0x006fc300 - 0x006fc3c1 (193 bytes)
 bool rSoundSequenceSe::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     MtSerializer sz(static_cast<s32>(65536));
     if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {

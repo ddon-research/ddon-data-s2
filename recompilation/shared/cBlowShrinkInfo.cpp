@@ -62,7 +62,7 @@ inline void cBlowShrinkInfo::operator delete(void* p_addr) {
 
 // Address: 0x00033d50 - 0x00033dad (93 bytes)
 cBlowShrinkInfo::cBlowShrinkInfo() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mIsActive = false;
     this->mEndurance = 0.0f;
@@ -125,7 +125,7 @@ void cBlowShrinkInfo::update(f32 deltaTime) {
 
 // Address: 0x00033e70 - 0x00033e91 (33 bytes)
 void cBlowShrinkInfo::updateEndurance(f32 attackValue) {
-    // local: f32 tmpE;
+    // DWARF local not rendered: f32 tmpE;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (0.0f >= (this->mEndurance - attackValue)) {
         this->mIsActive = true;
@@ -144,8 +144,8 @@ void cBlowShrinkInfo::updateEnduranceForceActive() {
 
 // Address: 0x00033eb0 - 0x00033ef1 (65 bytes)
 void cBlowShrinkInfo::addRateDamage(f32 rate, bool isReaction) {
-    // local: f32 tmpE;
-    // local: f32 damage;
+    // DWARF local not rendered: f32 tmpE;
+    // DWARF local not rendered: f32 damage;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (1.1920929e-7f > rate) {
     } else {
@@ -175,7 +175,7 @@ void cBlowShrinkInfo::reset() {
 
 // Address: 0x00033f10 - 0x00033f3a (42 bytes)
 bool cBlowShrinkInfo::holdOneEndurance() {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mIsActive != false) {
         if (1.0f > this->mEndurance) {
@@ -196,8 +196,8 @@ void cBlowShrinkInfo::setCureSpeedRate(nRegionStatus::ENDURANCE_CURE_RATE_TYPE t
 
 // Address: 0x00033f50 - 0x00033f65 (21 bytes)
 void cBlowShrinkInfo::reCalcCureSpeedRate() {
-    // local: f32 rate;
-    // local: u32 i;
+    // DWARF local not rendered: f32 rate;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mCureSpeedRateResult = this->mCureSpeedRate[2] * (this->mCureSpeedRate[0] * this->mCureSpeedRate[1]);
 }

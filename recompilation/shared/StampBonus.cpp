@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -76,9 +77,9 @@ __attribute__((weak)) void CDataStampBonus::operator delete(void* p_addr) {
 // CDataStampBonus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003db0d0 - 0x003db118 (72 bytes)
-__attribute__((weak)) MtObject* CDataStampBonus::MyDTI::newInstance() const {
-    DDON_STUB("CDataStampBonus::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataStampBonus::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataStampBonus;
 }
 
 // No out-of-line body: no code in the ELF
@@ -147,9 +148,9 @@ __attribute__((weak)) void CDataStampBonusDaily::operator delete(void* p_addr) {
 // CDataStampBonusDaily::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003db1f0 - 0x003db263 (115 bytes)
-__attribute__((weak)) MtObject* CDataStampBonusDaily::MyDTI::newInstance() const {
-    DDON_STUB("CDataStampBonusDaily::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataStampBonusDaily::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataStampBonusDaily;
 }
 
 // No out-of-line body: no code in the ELF
@@ -218,8 +219,8 @@ __attribute__((weak)) void CDataStampBonusTotal::operator delete(void* p_addr) {
 // CDataStampBonusTotal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003db340 - 0x003db3b3 (115 bytes)
-__attribute__((weak)) MtObject* CDataStampBonusTotal::MyDTI::newInstance() const {
-    DDON_STUB("CDataStampBonusTotal::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataStampBonusTotal::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataStampBonusTotal;
 }
 

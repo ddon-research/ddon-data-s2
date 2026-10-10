@@ -223,10 +223,9 @@ __attribute__((weak)) u32 cpSlave::getMoveAction() {
 
 // Address: 0x00535db0 - 0x00535f17 (359 bytes)
 void cpSlave::interpolatePos() {
-    // local: f32 deltaTime;
-    // local: MtVector3 add;
-    // local: MtVector3 pos;
-    // local: MtVector3 pos;
+    // DWARF local not rendered: MtVector3 add;
+    // DWARF local not rendered: MtVector3 pos;
+    // DWARF local not rendered: MtVector3 pos;
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     if (this->mForceSetPos != false) {
         this->mpModel->resetPos(this->mMoveTargetPos);
@@ -381,8 +380,8 @@ __attribute__((weak)) const MtVector3& cpSlave::getTargetPos() {
 
 // Address: 0x005369f0 - 0x00536a0f (31 bytes)
 u32 cpSlave::getTargetUID() {
-    // local: const uDDOModel* p_model;
-    // local: const cContextInterface& p_info;
+    // DWARF local not rendered: const uDDOModel* p_model;
+    // DWARF local not rendered: const cContextInterface& p_info;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
         return ::cContextInterface::getTargetUid(this->mpModel->mContextInterface.mpContextInstance, this->mpModel->mContextInterface.mpContextCharacter);

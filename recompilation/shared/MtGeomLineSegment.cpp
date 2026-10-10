@@ -75,7 +75,7 @@ inline void MtGeomLineSegment::operator delete(void* p_addr) {
 
 // Address: 0x019437b0 - 0x0194383a (138 bytes)
 void MtGeomLineSegment::load(MtDataReader& fin) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mLineSegment.p0.x = fin.readF32();
     this->mLineSegment.p1.x = fin.readF32();
@@ -89,7 +89,7 @@ void MtGeomLineSegment::load(MtDataReader& fin) {
 
 // Address: 0x01943840 - 0x019438cc (140 bytes)
 void MtGeomLineSegment::save(MtDataWriter& fout) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     fout.writeF32(this->mLineSegment.p0.x);
     fout.writeF32(this->mLineSegment.p1.x);

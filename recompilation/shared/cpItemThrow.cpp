@@ -185,8 +185,7 @@ __attribute__((weak)) void cpItemThrow::changeCommandItemTbl() {
 
 // Address: 0x00156a90 - 0x00156b22 (146 bytes)
 void cpItemThrow::offItemMode() {
-    // local: cpKeyCommand* pCpKeyCommand;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpHuman == static_cast<uHuman*>(nullptr)) {
         return;

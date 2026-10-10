@@ -77,7 +77,6 @@ __attribute__((weak)) void cAIFSMCluster::createProperty(MtPropertyList& s) {
 
 // Address: 0x011e6330 - 0x011e636d (61 bytes)
 void cAIFSMCluster::setup() {
-    // local: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 i = static_cast<u32>(0);
     if (this->mNodeNum != static_cast<u32>(0)) {
@@ -147,17 +146,16 @@ cAIFSMNode* cAIFSMCluster::getNode(u32 index) {
 
 // Address: 0x011e6660 - 0x011e6686 (38 bytes)
 cAIFSMNode* cAIFSMCluster::searchNode(u32 id) {
-    // local: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mNodeNum != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
-        unsigned int i2 = static_cast<unsigned int>(0);
+        // inferred: DWARF's location-less 'i' (lexical block [0x11e6660, 0x11e6685)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
         do {
-            if (this->mpNodeList[i2]->mId == id) {
-                return this->mpNodeList[i2];
+            if (this->mpNodeList[i]->mId == id) {
+                return this->mpNodeList[i];
             }
-            i2 += static_cast<unsigned int>(1);
-        } while (i2 < this->mNodeNum);
+            i += static_cast<u32>(1);
+        } while (i < this->mNodeNum);
     }
     return static_cast<cAIFSMNode*>(nullptr);
 }
@@ -529,7 +527,6 @@ MT_CTSTR rAIFSM::getExt() const {
 
 // Address: 0x011e6a40 - 0x011e6adb (155 bytes)
 bool rAIFSM::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
@@ -603,7 +600,6 @@ __attribute__((weak)) MT_CTSTR rAIFSM::getName() {
 
 // Address: 0x011e6f10 - 0x011e6f5a (74 bytes)
 u32 rAIFSM::getHierarchyDepth(MtArray* pClusterList) {
-    // local: u32 level;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 level = static_cast<u32>(0);
     this->::rAIFSM::getHierarchyDepth(this->mpRootCluster, level, pClusterList);

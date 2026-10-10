@@ -66,11 +66,11 @@ __attribute__((weak)) void sBakingJointOrder::asyncBakeJointOrder() {
 
 // Address: 0x00724f20 - 0x00724f92 (114 bytes)
 void sBakingJointOrder::syncBakeJointOrder() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_0 = static_cast<unsigned int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     for (BakedQueue* p0_2 = &this->mBakeModelQueue[0];;) {
         if (p0_2->::BakedQueue::getState() == static_cast<BakedQueue::BAKED_STATE::DECL>(4)) {
             this->mBakeModelQueue[i0_0].mpInfoCallBack->setRenewalEnvelope();
@@ -320,7 +320,7 @@ __attribute__((weak)) void sBakingJointOrder::drawBakingModelOrder(cDraw* pdraw,
 
 // Address: 0x00727ea0 - 0x00727ebc (28 bytes)
 bool sBakingJointOrder::isBaked(const sBakingJointOrder::BAKE_HANDLE index) {
-    // local: BakedQueue* pbq;
+    // DWARF local not rendered: BakedQueue* pbq;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index != static_cast<sBakingJointOrder::BAKE_HANDLE>(4294967295)) {
         return this->mBakeModelQueue[index].mBakeState == static_cast<volatile BakedQueue::BAKED_STATE::DECL>(8);

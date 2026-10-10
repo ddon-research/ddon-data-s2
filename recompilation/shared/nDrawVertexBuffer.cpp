@@ -76,7 +76,7 @@ __attribute__((weak)) void nDraw::VertexBuffer::resume() {
 
 // Address: 0x01163d70 - 0x01163d75 (5 bytes)
 void* nDraw::VertexBuffer::map(nDraw::MAP_TYPE type) {
-    // local: void* pbuf;
+    // DWARF local not rendered: void* pbuf;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::nDraw::Buffer::mpBuffer;
 }

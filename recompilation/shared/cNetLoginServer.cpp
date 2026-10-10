@@ -461,8 +461,8 @@ bool cNetLoginServer::isLogin() {
 
 // Address: 0x003800d0 - 0x00380155 (133 bytes)
 bool cNetLoginServer::getGameSessionKey() {
-    // local: bool ret;
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mStatus[8] = static_cast<sNetworkExt::NET_STAT>(4);
     static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(8));
@@ -492,8 +492,8 @@ __attribute__((weak)) bool cNetLoginServer::getErrorMessageList() {
 
 // Address: 0x00380270 - 0x003802f5 (133 bytes)
 bool cNetLoginServer::getGameSetting() {
-    // local: bool ret;
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mStatus[10] = static_cast<sNetworkExt::NET_STAT>(4);
     static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(10));
@@ -515,8 +515,8 @@ bool cNetLoginServer::getGameSetting() {
 
 // Address: 0x00380300 - 0x00380385 (133 bytes)
 bool cNetLoginServer::getGPCourseInfo() {
-    // local: bool ret;
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mStatus[11] = static_cast<sNetworkExt::NET_STAT>(4);
     static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(11));
@@ -538,8 +538,8 @@ bool cNetLoginServer::getGPCourseInfo() {
 
 // Address: 0x00380390 - 0x00380418 (136 bytes)
 bool cNetLoginServer::getCharacterList() {
-    // local: bool ret;
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mStatus[12] = static_cast<sNetworkExt::NET_STAT>(4);
     static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(12));
@@ -577,8 +577,8 @@ __attribute__((weak)) bool cNetLoginServer::decideCharacterId(u32 characterId) {
 
 // Address: 0x00380670 - 0x003806f8 (136 bytes)
 bool cNetLoginServer::cancelDecideCharacterId() {
-    // local: bool ret;
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mStatus[15] = static_cast<sNetworkExt::NET_STAT>(4);
     static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(15));
@@ -600,8 +600,8 @@ bool cNetLoginServer::cancelDecideCharacterId() {
 
 // Address: 0x00380700 - 0x0038079a (154 bytes)
 bool cNetLoginServer::deleteCharacter(s32 id) {
-    // local: bool ret;
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mStatus[16] = static_cast<sNetworkExt::NET_STAT>(4);
     static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(16));

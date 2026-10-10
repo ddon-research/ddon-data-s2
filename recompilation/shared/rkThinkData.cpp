@@ -9,6 +9,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cResource.h"
+#include "nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -85,8 +86,8 @@ inline kTHINKDATA::kTHINKDATA() {
 
 // Address: 0x01a98a10 - 0x01a98c13 (515 bytes)
 void kTHINKDATA::load(MtDataReader& r) {
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->tbltype = r.readU32();
     this->flg = r.readU64();
@@ -126,35 +127,61 @@ void kTHINKDATA::load(MtDataReader& r) {
 
 // Address: 0x01a98c40 - 0x01a98e45 (517 bytes)
 void kTHINKDATA::save(MtDataWriter& w) {
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(this->tbltype);
-    w.writeU64(this->flg);
-    w.writeU64(this->userflg);
-    w.writeF32(this->lengA);
-    w.writeF32(this->lengB);
-    w.writeF32(this->angleA);
-    w.writeF32(this->angleB);
-    w.writeF32(this->heightA);
-    w.writeF32(this->heightB);
-    w.writeS32(this->actionNo);
-    w.writeS32(this->thintblListIdx);
-    w.writeU32(this->functype);
-    w.writeU32(this->funcno);
-    w.writeU32(this->exevalue);
-    w.writeU32(this->exectype);
-    w.writeU32(this->execfuncno);
-    w.writeU32(this->value);
-    w.writeU32(this->functype2);
-    w.writeU32(this->funcno2);
-    w.writeU32(this->value2);
-    w.writeU32(this->functype3);
-    w.writeU32(this->funcno3);
-    w.writeU32(this->value3);
-    w.writeU64(this->bitOnce);
-    w.writeU64(this->bit);
-    w.writeU64(this->freework);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->tbltype);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->flg);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->userflg);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->lengA);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->lengB);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->angleA);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->angleB);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->heightA);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->heightB);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->actionNo);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->thintblListIdx);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->functype);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->funcno);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->exevalue);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->exectype);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->execfuncno);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->value);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->functype2);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->funcno2);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->value2);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->functype3);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->funcno3);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->value3);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->bitOnce);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->bit);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->freework);
     w.writeF32(this->fsys_param[0]);
     w.writeF32(this->fsys_param[1]);
     w.writeF32(this->fsys_param[2]);

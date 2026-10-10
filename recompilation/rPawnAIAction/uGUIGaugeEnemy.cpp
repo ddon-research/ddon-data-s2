@@ -118,10 +118,10 @@ __attribute__((weak)) void uGUIGaugeEnemy::SetHateIcon(uGUIGaugeEnemy::HateIcon&
 
 // Address: 0x00b5ce50 - 0x00b5ce92 (66 bytes)
 bool uGUIGaugeEnemy::IsDispAngerGauge(const uEnemy* enemy) {
-    // local: bool is_disp_anger;
-    // local: const bool is_shake_action;
-    // local: const bool is_chance_down;
-    // local: const bool is_swayed;
+    // DWARF local not rendered: bool is_disp_anger;
+    // DWARF local not rendered: const bool is_shake_action;
+    // DWARF local not rendered: const bool is_chance_down;
+    // DWARF local not rendered: const bool is_swayed;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (enemy != static_cast<const uEnemy*>(nullptr)) {
         if (enemy->::uEnemy::isShakedActionEnemy() != false) {

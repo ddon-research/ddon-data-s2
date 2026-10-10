@@ -169,7 +169,7 @@ __attribute__((weak)) void nNetwork::Connect::removeRoute(s32 route_index, MtNet
 
 // Address: 0x011973f0 - 0x011974e9 (249 bytes)
 void nNetwork::Connect::removeRouteAll() {
-    // local: s32 route_index;
+    // DWARF local not rendered: s32 route_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::nNetwork::Connect::removeRoute(static_cast<s32>(0), static_cast<MtNetError*>(nullptr));
     this->::nNetwork::Connect::removeRoute(static_cast<s32>(1), static_cast<MtNetError*>(nullptr));

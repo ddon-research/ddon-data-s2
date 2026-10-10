@@ -16,6 +16,7 @@ class MtPropertyList;
 class MtString;
 class cAbilityData;
 class cAbilityParam;
+class cAreaMasterSpotDetailData;
 class cContextCharacter;
 class cContextInstChar;
 class cControl;
@@ -29,6 +30,7 @@ class cFSMUnit;
 class cGUIFloorManager;
 class cGroupParam;
 class cHitNode;
+class cLayoutSet;
 class cMagicCommandList;
 class cMenuBase;
 class cMenuBlackList;
@@ -61,6 +63,8 @@ class cShlGroupParam;
 class cStageCtrl;
 class cStaminaDecList;
 class cTalkMsgData;
+class cWeatherScript;
+class cWeatherScriptIO;
 class cZCEFLControl;
 class cZoneContactInfoList;
 class cZoneLayout;
@@ -106,6 +110,8 @@ namespace nZone { class cLayoutElement; }
 class rAIPawnAutoMotionTbl;
 class rAISensor;
 class rAbilityList;
+namespace rAcquirement { class cAbilityAddData; }
+namespace rAcquirement { class cCustomSkillData; }
 class rBowActParamList;
 class rCameraQuakeList;
 class rCycleQuestInfo;
@@ -135,6 +141,7 @@ class sBrowser;
 class sCaplinkManager;
 class sCollision;
 class sCraftManager;
+class sEffectExt;
 class sGUIExt;
 class sGame;
 class sNetworkExt;
@@ -188,6 +195,8 @@ class MtArray : public MtObject
     friend class cAbilityData;
     // inferred: cAbilityParam::cAbilityParam names cAbilityParam::mParamDataArray.::MtArray::mAutoDelete
     friend class cAbilityParam;
+    // inferred: cAreaMasterSpotDetailData::cAreaMasterSpotDetailData names cAreaMasterSpotDetailData::mItemArray.::MtArray::mAutoDelete
+    friend class cAreaMasterSpotDetailData;
     // inferred: cContextCharacter::isReqStickShl names cContextCharacter::mShlStickInfoArray.::MtArray::mLength
     friend class cContextCharacter;
     // inferred: cContextInstChar::getCorePointMsgNum names cContextInstChar::mCorePointMsgArray.::MtArray::mLength
@@ -214,6 +223,8 @@ class MtArray : public MtObject
     friend class cGroupParam;
     // inferred: cHitNode::updateNode names cHitNode::mGeomArray.mLength
     friend class cHitNode;
+    // inferred: cLayoutSet::kill names cLayoutSet::mUnitDataArray.::MtArray::mLength
+    friend class cLayoutSet;
     // inferred: cMagicCommandList::clear names cMagicCommandList::mMagicCommandListEasy.::MtArray::mLength
     friend class cMagicCommandList;
     // inferred: cMenuBase::initMenu names cMenuBase::mMenuSupportList.::MtArray::mLength
@@ -278,6 +289,10 @@ class MtArray : public MtObject
     friend class cStaminaDecList;
     // inferred: cTalkMsgData::getDispMsgType names rMsgSet::cMsgGroup::mMsgData.::MtArray::mLength
     friend class cTalkMsgData;
+    // inferred: cWeatherScript::releaseScript names cWeatherScript::mScripts.elems[0].::MtArray::mAutoDelete
+    friend class cWeatherScript;
+    // inferred: cWeatherScriptIO::cWeatherScriptIO names cWeatherScriptIO::mWSCParams.::MtArray::mAutoDelete
+    friend class cWeatherScriptIO;
     // inferred: cZCEFLControl::getResourceSetNum names cZCEFLControl::mSetList.::MtArray::mLength
     friend class cZCEFLControl;
     // inferred: cZoneContactInfoList::initList names cZoneContactInfoList::mContactPairListStart.::MtArray::mLength
@@ -366,6 +381,10 @@ class MtArray : public MtObject
     friend class rAISensor;
     // inferred: rAbilityList::rAbilityList names rAbilityList::mDataList.::MtArray::mAutoDelete
     friend class rAbilityList;
+    // inferred: rAcquirement::cAbilityAddData::cAbilityAddData names rAcquirement::cAbilityAddData::mLvArray.::MtArray::mAutoDelete
+    friend class rAcquirement::cAbilityAddData;
+    // inferred: rAcquirement::cCustomSkillData::cCustomSkillData names rAcquirement::cCustomSkillData::mLvArray.::MtArray::mAutoDelete
+    friend class rAcquirement::cCustomSkillData;
     // inferred: rBowActParamList::rBowActParamList names rBowActParamList::mParamList.mAutoDelete
     friend class rBowActParamList;
     // inferred: rCameraQuakeList::rCameraQuakeList names rCameraQuakeList::mQuakeList.mAutoDelete
@@ -424,6 +443,8 @@ class MtArray : public MtObject
     friend class sCollision;
     // inferred: sCraftManager::reset names sCraftManager::mRequest.::MtArray::mLength
     friend class sCraftManager;
+    // inferred: sEffectExt::releaseEfcZoneAll names sEffectExt::mZoneEffectUnitLayoutArray.::MtArray::mAutoDelete
+    friend class sEffectExt;
     // inferred: sGUIExt::isActiveServerUI names cServerUIClientControl::mServerUIList.::MtArray::mLength
     friend class sGUIExt;
     // inferred: sGame::clearChargeCourse names sGame::mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength
@@ -665,8 +686,7 @@ inline MtObject* * MtArray::getBuffer() {
     return this->mpArray;
 }
 
-// Generic (024 T808): every instance that renders gives this body; the unit of each instance's compile unit, else MtCollection.cpp, instantiates it for the body oracle.
-// approximate: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported
+// Generic (024 T808): every instance that renders gives this body; the unit of each instance's compile unit, else MtCollection.cpp or MtCollection.instances.cpp, instantiates it for the body oracle.
 template <typename T>
 MtTypedArray<T>::~MtTypedArray() {
 }

@@ -56,3 +56,10 @@ public:
     MtString m_wstrName;  // offset: 0x10
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataScreenShotCategory::CDataScreenShotCategory() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unId = static_cast<u32>(0);
+}

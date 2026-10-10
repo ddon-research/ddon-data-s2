@@ -10,6 +10,7 @@
 #include "../rOcdPriorityParam/cOcdPriority.h"
 #include "cResource.h"
 #include "cpEnemyThink.h"
+#include "nDDOIO.h"
 #include "nJobParam.h"
 #include "rAIPawnActNoSwitch.h"
 #include "rAIPawnAutoWordTbl.h"
@@ -201,7 +202,8 @@ rTbl2Base::rTbl2Base() {
 // Address: 0x006c59f0 - 0x006c5a0b (27 bytes)
 __attribute__((weak)) void rTbl2Base::readDataValue(MtDataReader& r, u32& data) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    data = r.readU32();
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, data);
 }
 
 // No out-of-line body: no code in the ELF
@@ -2223,6 +2225,18 @@ void rTbl2<T>::allocData(u32 num) {
     this->mDataNum = num;
 }
 
+// Generic (024 T808): every instance that renders gives this body; rTbl2.cpp instantiates each for the body oracle.
+// inferred: from inlined copies only approximate callers check (2.11.0); approximate: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported
+// placed: defined in its family's unit only: 4 proven bodies call or inline its instances (4 call an unproven one out of line), and none of them is compiled in rTbl2.cpp (024 D4, constitution 2.6.0)
+template <typename T>
+void rTbl2<T>::deleteData() {
+    if (this->mpData != static_cast<T*>(nullptr)) {
+        delete[] this->mpData;
+        this->mpData = static_cast<T*>(nullptr);
+    }
+    this->mDataNum = static_cast<u32>(0);
+}
+
 // Instance at 0x01962dc0 - 0x01962dd2 (18 bytes) of the generic rTbl2<T>::getData
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template nJobParam::cJobInfo* rTbl2<nJobParam::cJobInfo>::getData(unsigned int);
@@ -2242,6 +2256,10 @@ template const nJobParam::cJobInfo* rTbl2<nJobParam::cJobInfo>::getData(unsigned
 // Instance at 0x01962e00 - 0x01962e04 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<nJobParam::cJobInfo>::getDataNum() const;
+
+// Instance at 0x01963000 - 0x01963058 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<nJobParam::cJobInfo>::~rTbl2();
 
 // Instance at 0x01a71550 - 0x01a71715 (453 bytes) of the generic rTbl2<T>::allocData
 // Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
@@ -2771,4 +2789,496 @@ template void rTbl2<rAcquirement::cAbilityData>::allocData(unsigned int);
 
 // placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
 template void rTbl2<rAcquirement::cNormalSkillData>::allocData(unsigned int);
+
+// Instance at 0x01a80a60 - 0x01a80ae8 (136 bytes) of the generic rTbl2<T>::deleteData
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template void rTbl2<cCollNode>::deleteData();
+
+// Instance at 0x01a8aa00 - 0x01a8ab0d (269 bytes) of the generic rTbl2<T>::deleteData
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template void rTbl2<cEnemyGroup>::deleteData();
+
+// Instance at 0x01a97490 - 0x01a9753d (173 bytes) of the generic rTbl2<T>::deleteData
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template void rTbl2<cJointOrder>::deleteData();
+
+// Instance at 0x01aa8b10 - 0x01aa8c0d (253 bytes) of the generic rTbl2<T>::deleteData
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template void rTbl2<cStageMap>::deleteData();
+
+// Instance at 0x01ab9020 - 0x01ab9146 (294 bytes) of the generic rTbl2<T>::deleteData
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template void rTbl2<cWeaponResTable>::deleteData();
+
+// Instance at 0x01abc470 - 0x01abc596 (294 bytes) of the generic rTbl2<T>::deleteData
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template void rTbl2<cWepCateResTbl>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAIPawnActNoSwitch>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAIPawnAutoWordNode>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAIPawnEmNode>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAIPawnOrderParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAIPawnSkillParamNode>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAchievementData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAchievementHeaderData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAdjLimitParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAdjustParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAnimalData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAreaMasterRankData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAreaMasterSpotData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAreaMasterSpotDetailData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cAttackParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cBakeJoint>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cBitTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cBlowSaveEmLvParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCalcDamageAtdmAdj>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCalcDamageAtdmAdjRate>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCalcDamageLvAdj>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCatchInfoParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCaughtDamageRate>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCaughtDamageRateReference>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCaughtInfoParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCharacterEditCameraParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCharacterEditColorDef>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCharacterEditModelPalette>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCharacterEditMuscle>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCharacterEditPresetPalette>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCharacterEditTexturePalette>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCharacterEditVoicePalette>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cChildRegionStatusParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cChildRegionStatusParamList>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCollIndex>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCraftCapPassData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCraftElementExpData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCraftQualityData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCraftSkillCostData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCraftSkillSpdData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCraftUpGradeExpData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cCustomShlLimit>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cDamageSaveEmLvParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cDamageSpecialAdj>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cDmJobAdjParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cDmJobPawnAdjParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cDmLvPawnAdjParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cDmVecWeightParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmBaseInfoSv>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmDamageDirInfo>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmDmgTimerTbl>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmLvUpParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmScaleTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmScrAdjust>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmSoundTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmStatusAdj>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmWarpParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmWeakSafe>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmWorkRateTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEmblemColorTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEnemyBloodStain>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEnemyLocalEstTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEnemyLocalShelTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEnemyMaterialTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEnemyReactRes>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEnemyStatusChange>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEquipPreset>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEquipPresetPalette>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cErosionInfoRes>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cErosionRegionRes>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cErosionRegionScaleChange>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cErosionShakeConvert>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cErosionSmallInfoRes>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cErosionSuperInfoRes>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEvaluationTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cEventParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cFacialEditJointPreset>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cFatAdjust>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cFurnitureData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cFurnitureGroup>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cFurnitureItem>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cFurnitureLayout>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cGUIDogmaOrbRes>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cGatheringItem>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cHeadCtrl>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cHumanEnemyCustomSkill>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cHumanEnemyEquip>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cHumanEnemyParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cHumanEnemyPreset>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cIKCtrl>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cIncreaseParam2>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cJobMasterCtrl>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cJointEx2>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cJointInfo>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cJumpParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cKeyCustomParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cLargeCameraParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cLayoutPreset>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cLegCtrl>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cMagicChantParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cMagicCommandWord>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cMotionFilter>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cMotionParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cMyRoomActParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cNamedParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cNpcConstItem>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cNpcCustomSkill>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cNpcIsNoSetPS3>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cNpcIsUseJobParamEx>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cNpcMeetingPlace>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cOcdElectricParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cOcdImmuneParamRes>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cOcdIrAdj>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cOcdIrAdjPL>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cOcdPriorityParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cOcdStatusParamRes>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cParentRegionStatusParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cPartnerReactParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cPartsCtrlTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cPawnAIAction>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cPlayerExpTable>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cPrioThkCode>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cPrologueHmStatus>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cPushRate>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cQuestHistoryData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cQuestSequence>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cRage>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cReaction>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cReplaceWardGmdList>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cRoomWearParam>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cShakeCtrl>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cShlLimit>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cShotReqInfo2>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cShotReqInfo>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cShrinkBlowValue>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cSndPitchLimitData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cSoundOptData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cSoundParamOfs>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cStageToSpot>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cStartPosArea>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cStatusCheck>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cStatusGain>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cTargetCursorOffset>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cTbl2ChatMacro>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cVfxLightInfluence>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cWarpLocation>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cWeaponOffset>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cWeatherFogInfo>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cWeatherInfo>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cWeatherParamEfcInfo>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<cWeatherParamInfo>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<nJobParam::cJobInfo>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<nKeyConfigTextTable::cKeyText>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<rAcquirement::cAbilityAddData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<rAcquirement::cAbilityData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<rAcquirement::cCustomSkillData>::deleteData();
+
+// placed: no code of its own in the ELF (inlined at every call); instantiated here for the callers that see only its declaration (024 D4)
+template void rTbl2<rAcquirement::cNormalSkillData>::deleteData();
 

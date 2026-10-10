@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cUIObject.h"
 #include "cUnit.h"
 #include "uDDOModel.h"
@@ -31,9 +32,11 @@ const MtDTI& cPcTouchAction::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cPcTouchAction::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cPcTouchAction::MyDTI::newInstance at 0x0017fac4-0x0017faed (called at cPcTouchAction.cpp:19)
-// void* cPcTouchAction::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: parameters written where their values stand in every inlined copy
+inline void* cPcTouchAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPcTouchAction::DTI)->memAlloc(sz, align, ::cPcTouchAction::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* cPcTouchAction::operator new[](size_t sz, u32 align);
@@ -60,8 +63,11 @@ inline void cPcTouchAction::operator delete(void* p_addr) {
 
 // Address: 0x0017fb90 - 0x0017fbb6 (38 bytes)
 cPcTouchAction::cPcTouchAction() {
-    DDON_STUB("cPcTouchAction::cPcTouchAction")
-    /* stub */
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mRno = static_cast<u32>(0);
+    this->mpTarget = static_cast<uDDOModel*>(nullptr);
+    this->mpOwner = static_cast<uDDOModel*>(nullptr);
 }
 
 // Address: 0x0017fbc0 - 0x0017fbc1 (1 bytes)
@@ -109,8 +115,8 @@ __attribute__((weak)) void cPcTouchAction::move() {
 // cPcTouchAction::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0017fac0 - 0x0017fb17 (87 bytes)
-__attribute__((weak)) MtObject* cPcTouchAction::MyDTI::newInstance() const {
-    DDON_STUB("cPcTouchAction::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPcTouchAction::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::cPcTouchAction;
 }
 

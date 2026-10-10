@@ -300,7 +300,7 @@ void uCameraBase::init() {
 
 // Address: 0x0087f530 - 0x0087f537 (7 bytes)
 void uCameraBase::update(const f32 deltaTime, const f32 deltaSec) {
-    // local: bool bDisp;
+    // DWARF local not rendered: bool bDisp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uCameraBase::calcFrustum(false);
 }

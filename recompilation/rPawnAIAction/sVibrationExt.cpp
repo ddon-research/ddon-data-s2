@@ -64,7 +64,7 @@ inline void sVibrationExt::operator delete(void* p_addr) {
 
 // Address: 0x0086a030 - 0x0086a08f (95 bytes)
 sVibrationExt::sVibrationExt() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mprVibration[3] = static_cast<rVibration*>(nullptr);
     this->mprVibration[2] = static_cast<rVibration*>(nullptr);
@@ -78,7 +78,7 @@ sVibrationExt::sVibrationExt() {
 // Address: 0x0086a090 - 0x0086a125 (149 bytes)
 // Also emitted as: _ZN13sVibrationExtD0Ev at 0x0086a130
 sVibrationExt::~sVibrationExt() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprVibration[0] != static_cast<rVibration*>(nullptr)) {
         this->mprVibration[0]->::cResource::release();

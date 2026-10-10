@@ -6,6 +6,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -79,9 +80,9 @@ __attribute__((weak)) void CDataAreaBaseInfo::operator delete(void* p_addr) {
 // CDataAreaBaseInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bafa0 - 0x003bb00d (109 bytes)
-__attribute__((weak)) MtObject* CDataAreaBaseInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataAreaBaseInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAreaBaseInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAreaBaseInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,9 +151,9 @@ __attribute__((weak)) void CDataAreaQuestHint::operator delete(void* p_addr) {
 // CDataAreaQuestHint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ba990 - 0x003ba9e2 (82 bytes)
-__attribute__((weak)) MtObject* CDataAreaQuestHint::MyDTI::newInstance() const {
-    DDON_STUB("CDataAreaQuestHint::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAreaQuestHint::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAreaQuestHint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -221,9 +222,9 @@ __attribute__((weak)) void CDataAreaRank::operator delete(void* p_addr) {
 // CDataAreaRank::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bae80 - 0x003baec8 (72 bytes)
-__attribute__((weak)) MtObject* CDataAreaRank::MyDTI::newInstance() const {
-    DDON_STUB("CDataAreaRank::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAreaRank::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAreaRank;
 }
 
 // No out-of-line body: no code in the ELF
@@ -292,9 +293,9 @@ __attribute__((weak)) void CDataAreaSpotSet::operator delete(void* p_addr) {
 // CDataAreaSpotSet::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bb0e0 - 0x003bb128 (72 bytes)
-__attribute__((weak)) MtObject* CDataAreaSpotSet::MyDTI::newInstance() const {
-    DDON_STUB("CDataAreaSpotSet::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAreaSpotSet::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAreaSpotSet;
 }
 
 // No out-of-line body: no code in the ELF
@@ -363,9 +364,9 @@ __attribute__((weak)) void CDataReleaseAreaInfoSet::operator delete(void* p_addr
 // CDataReleaseAreaInfoSet::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ba850 - 0x003ba8c0 (112 bytes)
-__attribute__((weak)) MtObject* CDataReleaseAreaInfoSet::MyDTI::newInstance() const {
-    DDON_STUB("CDataReleaseAreaInfoSet::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataReleaseAreaInfoSet::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataReleaseAreaInfoSet;
 }
 
 // No out-of-line body: no code in the ELF
@@ -434,9 +435,9 @@ __attribute__((weak)) void CDataRewardItemInfo::operator delete(void* p_addr) {
 // CDataRewardItemInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ba720 - 0x003ba772 (82 bytes)
-__attribute__((weak)) MtObject* CDataRewardItemInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataRewardItemInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataRewardItemInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataRewardItemInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -505,9 +506,9 @@ __attribute__((weak)) void CDataSpotEnemyInfo::operator delete(void* p_addr) {
 // CDataSpotEnemyInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003baac0 - 0x003bab0b (75 bytes)
-__attribute__((weak)) MtObject* CDataSpotEnemyInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataSpotEnemyInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataSpotEnemyInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataSpotEnemyInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -647,8 +648,8 @@ __attribute__((weak)) void CDataSpotItemInfo::operator delete(void* p_addr) {
 // CDataSpotItemInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003babe0 - 0x003bac2b (75 bytes)
-__attribute__((weak)) MtObject* CDataSpotItemInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataSpotItemInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataSpotItemInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataSpotItemInfo;
 }
 

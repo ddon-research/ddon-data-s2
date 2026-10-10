@@ -76,8 +76,8 @@ cpMotionRate::~cpMotionRate() {
 
 // Address: 0x004d28a0 - 0x004d291e (126 bytes)
 void cpMotionRate::saveMotionSpeed(uDDOModel* pModel) {
-    // local: u32 i;
-    // local: Motion* pMot;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: Motion* pMot;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mSaveMotSpeed[0] = pModel->::uModel::mMotion[0].mSpeed;
     this->mSaveMotSpeed[1] = pModel->::uModel::mMotion[1].mSpeed;
@@ -91,8 +91,8 @@ void cpMotionRate::saveMotionSpeed(uDDOModel* pModel) {
 
 // Address: 0x004d2920 - 0x004d299e (126 bytes)
 void cpMotionRate::loadMotionSpeed(uDDOModel* pModel) {
-    // local: u32 i;
-    // local: Motion* pMot;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: Motion* pMot;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     pModel->::uModel::mMotion[0].mSpeed = this->mSaveMotSpeed[0];
     pModel->::uModel::mMotion[1].mSpeed = this->mSaveMotSpeed[1];

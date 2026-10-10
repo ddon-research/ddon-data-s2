@@ -75,7 +75,6 @@ inline void uGUIBoughtBox::operator delete(void* p_addr) {
 // Address: 0x0099d1d0 - 0x0099d21f (79 bytes)
 // Also emitted as: _ZN13uGUIBoughtBoxD0Ev at 0x0099d220
 uGUIBoughtBox::~uGUIBoughtBox() {
-    // local: cItemBag* pBag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mIsBoughtBoxListOk == false) {
         return;
@@ -262,8 +261,7 @@ __attribute__((weak)) bool uGUIBoughtBox::getBoughtBoxSortDataRequestServer() {
 
 // Address: 0x0099d9f0 - 0x0099daf7 (263 bytes)
 void uGUIBoughtBox::getBoughtBoxSortDataCallBack() {
-    // local: cItemBag* pBag;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     sItemManager::cItemBag* pBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(4));
     if (pBag != static_cast<sItemManager::cItemBag*>(nullptr)) {

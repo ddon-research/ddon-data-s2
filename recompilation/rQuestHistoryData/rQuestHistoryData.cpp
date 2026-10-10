@@ -3,10 +3,10 @@
 #include "rQuestHistoryData.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cUIObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -34,9 +34,11 @@ const MtDTI& cQuestHistoryData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cQuestHistoryData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cQuestHistoryData::MyDTI::newInstance at 0x006b6534-0x006b655d (called at rQuestHistoryData.cpp:21)
-// void* cQuestHistoryData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* cQuestHistoryData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestHistoryData::DTI)->memAlloc(sz, align, ::cQuestHistoryData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
 //   in rTbl2<cQuestHistoryData>::loadCore at 0x01aa30ff-0x01aa312c (called at rTbl2.h:215)
@@ -79,9 +81,9 @@ inline void cQuestHistoryData::operator delete(void* p_addr) {
 // cQuestHistoryData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x006b6530 - 0x006b657e (78 bytes)
-__attribute__((weak)) MtObject* cQuestHistoryData::MyDTI::newInstance() const {
-    DDON_STUB("cQuestHistoryData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cQuestHistoryData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cQuestHistoryData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -136,9 +138,15 @@ inline void rQuestHistoryData::operator delete(void* p_addr) {
 // Address: 0x006b66d0 - 0x006b670d (61 bytes)
 bool rQuestHistoryData::loadData(MtDataReader& r, cQuestHistoryData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mQuestId = r.readU32();
-    pData->mImageId = r.readU16();
-    pData->mSortId = r.readU16();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mQuestId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mImageId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mSortId);
     return true;
 }
 
@@ -184,4 +192,8 @@ template const cQuestHistoryData* rTbl2<cQuestHistoryData>::getData(unsigned int
 // Instance at 0x01aa3060 - 0x01aa3064 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cQuestHistoryData>::getDataNum() const;
+
+// Instance at 0x01aa31f0 - 0x01aa3248 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cQuestHistoryData>::~rTbl2();
 

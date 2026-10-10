@@ -798,7 +798,6 @@ __attribute__((weak)) bool sQuestManagerExt::isCycleContentsEndFlowNow() {
 
 // Address: 0x00811c90 - 0x00811cab (27 bytes)
 u32 sQuestManagerExt::getCycleContentsPoint() const {
-    // local: cCycleQuestManagerBase* pMgr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cCycleQuestManagerBase* pMgr = this->::sQuestManagerExt::getCycleContentsMgrPlayNow();
     if (pMgr != static_cast<cCycleQuestManagerBase*>(nullptr)) {
@@ -843,7 +842,6 @@ __attribute__((weak)) bool sQuestManagerExt::hasStartedCycleContentsTimer() cons
 
 // Address: 0x00811ff0 - 0x0081200b (27 bytes)
 u32 sQuestManagerExt::getCycleContentsPurposeNum() const {
-    // local: cCycleQuestManagerBase* pMgr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cCycleQuestManagerBase* pMgr = this->::sQuestManagerExt::getCycleContentsMgrPlayNow();
     if (pMgr != static_cast<cCycleQuestManagerBase*>(nullptr)) {
@@ -1065,7 +1063,6 @@ __attribute__((weak)) MT_CTSTR sQuestManagerExt::getCycleContentsSituationName(n
 
 // Address: 0x00812a20 - 0x00812a40 (32 bytes)
 MT_CTSTR sQuestManagerExt::getCycleContentsSituationNamePlayNow() const {
-    // local: const cCycleQuestManagerBase* pMgr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const cCycleQuestManagerBase* pMgr = this->::sQuestManagerExt::getCycleContentsMgrPlayNow();
     if (pMgr != static_cast<const cCycleQuestManagerBase*>(nullptr)) {
@@ -1260,7 +1257,6 @@ __attribute__((weak)) void sQuestManagerExt::releaseEntryBoardChangePhase(nQuest
 
 // Address: 0x00813de0 - 0x00813dfd (29 bytes)
 bool sQuestManagerExt::isDistEnableEntryBoard(u32 npcId) {
-    // local: cCycleQuestSubCategoryManager* pMgr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cCycleQuestSubCategoryManager* pMgr = this->::sQuestManagerExt::getCycleContentsSubCategoryMgr(npcId);
     if (pMgr != static_cast<cCycleQuestSubCategoryManager*>(nullptr)) {
@@ -1484,7 +1480,6 @@ void sQuestManagerExt::setEndContentsEntry(u32 npcId, bool solo) {
 
 // Address: 0x00814ce0 - 0x00814d0b (43 bytes)
 u32 sQuestManagerExt::getEndContentEntryStage() {
-    // local: cNpcMeetingPlace* pPlace;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cNpcMeetingPlace* pPlace = ::sNpcManager::getInstance()->::sNpcManager::getMeetingPlace(this->mEntryNpcId);
     if (pPlace != static_cast<cNpcMeetingPlace*>(nullptr)) {
@@ -1496,7 +1491,6 @@ u32 sQuestManagerExt::getEndContentEntryStage() {
 
 // Address: 0x00814d10 - 0x00814d3b (43 bytes)
 u32 sQuestManagerExt::getEndContentEntryStartPos() {
-    // local: cNpcMeetingPlace* pPlace;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cNpcMeetingPlace* pPlace = ::sNpcManager::getInstance()->::sNpcManager::getMeetingPlace(this->mEntryNpcId);
     if (pPlace != static_cast<cNpcMeetingPlace*>(nullptr)) {
@@ -3530,15 +3524,11 @@ __attribute__((weak)) void sQuestManagerExt::callbackRemainingTime60Sec() {
 
 // Address: 0x00826410 - 0x00826474 (100 bytes)
 void sQuestManagerExt::callbackEntryParty(cQuestEventArg* pArg) {
-    // local: cQuestEventArgEntryParty* pEntryParty;
+    // DWARF local not rendered: cQuestEventArgEntryParty* pEntryParty;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    // inferred: a temporary for the value the load at 0x826427 read, used once; no DWARF local holds it
-    sNetwork* t0 = ::sNetwork::getInstance();
-    // inferred: a temporary for the value the load at 0x82642a read, used once; no DWARF local holds it
-    cNetGameServer* t1 = static_cast<sNetworkExt*>(t0)->::sNetworkExt::getGameServer();
     // inferred: a temporary for the value the load at 0x826431 read, used once; no DWARF local holds it
-    u32 t2 = t1->::cNetGameServer::getCharacterId();
-    if (t2 == static_cast<cQuestEventArgEntryParty*>(pArg)->::cQuestEventArgEntryParty::getCharacterId()) {
+    u32 t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getCharacterId();
+    if (t0 == static_cast<cQuestEventArgEntryParty*>(pArg)->::cQuestEventArgEntryParty::getCharacterId()) {
         return;
     }
     if (static_cast<cQuestEventArgEntryParty*>(pArg)->::cQuestEventArgEntryParty::isPawn() != false) {
@@ -3659,8 +3649,7 @@ __attribute__((weak)) bool sQuestManagerExt::setOrderUI(nQuest::SCHEDULE_ID sche
 
 // Address: 0x00827c50 - 0x00827ca5 (85 bytes)
 sQuestManagerExt::QUEST_UI_RESULT sQuestManagerExt::moveOrderUI() {
-    // local: QUEST_UI_RESULT returnVal;
-    // local: u32 result;
+    // DWARF local not rendered: QUEST_UI_RESULT returnVal;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 result = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getQuestInfoResult();
     if (result != static_cast<u32>(0)) {
@@ -4126,7 +4115,6 @@ __attribute__((weak)) bool sQuestManagerExt::isAreaBonus(u32 areaId) const {
 
 // Address: 0x0082bb30 - 0x0082bb60 (48 bytes)
 u32 sQuestManagerExt::getAreaBonusRate(u32 areaId) const {
-    // local: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 i = static_cast<u32>(0);
     do {

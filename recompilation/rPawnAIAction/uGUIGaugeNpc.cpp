@@ -600,8 +600,8 @@ void uGUIGaugeNpcBase::setUnit(uDDOModel* pUnit) {
 
 // Address: 0x00b61d60 - 0x00b61f15 (437 bytes)
 void uGUIGaugeNpcBase::setupInstances() {
-    // local: const u32 INST_fix_jyoutai_ids[2];
-    // local: u32 i;
+    // DWARF local not rendered: const u32 INST_fix_jyoutai_ids[2];
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpINST_Null = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(467), false));
     this->mpINST_Null_all = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(370), false));

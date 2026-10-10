@@ -3,9 +3,9 @@
 #include "rGUIDogmaOrb.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -140,12 +140,24 @@ inline void rGUIDogmaOrb::operator delete(void* p_addr) {
 // Address: 0x0067be60 - 0x0067bec2 (98 bytes)
 bool rGUIDogmaOrb::loadData(MtDataReader& Reader, cGUIDogmaOrbRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mElementId = Reader.readU32();
-    pData->mParamType = Reader.readU32();
-    pData->mParamId = Reader.readU32();
-    pData->mParamValue = Reader.readU32();
-    pData->mRequireOrb = Reader.readU32();
-    pData->mIconNo = Reader.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(Reader, pData->mElementId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(Reader, pData->mParamType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(Reader, pData->mParamId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(Reader, pData->mParamValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(Reader, pData->mRequireOrb);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(Reader, pData->mIconNo);
     return true;
 }
 
@@ -191,4 +203,8 @@ template const cGUIDogmaOrbRes* rTbl2<cGUIDogmaOrbRes>::getData(unsigned int) co
 // Instance at 0x01a92cd0 - 0x01a92cd4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cGUIDogmaOrbRes>::getDataNum() const;
+
+// Instance at 0x01a92e70 - 0x01a92ec8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cGUIDogmaOrbRes>::~rTbl2();
 

@@ -82,7 +82,7 @@ __attribute__((weak)) void cCraftParam::createProperty(MtPropertyList& s) {
 
 // Address: 0x000e0680 - 0x000e06b5 (53 bytes)
 void cCraftParam::init() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mCraftPlusParam = static_cast<u8>(0);
     this->mCraftElementItemNo[2] = static_cast<unsigned int>(0);
@@ -97,7 +97,7 @@ void cCraftParam::init() {
 
 // Address: 0x000e0820 - 0x000e089f (127 bytes)
 void cCraftParam::copyParam(const cCraftParam* pSrc, rItemList::rItemParam* pItemParam) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (pSrc == static_cast<const cCraftParam*>(nullptr)) {
         return;

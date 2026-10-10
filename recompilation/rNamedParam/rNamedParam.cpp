@@ -429,8 +429,8 @@ inline void rNamedParam::operator delete(void* p_addr) {
 
 // Address: 0x006a90a0 - 0x006a921d (381 bytes)
 bool rNamedParam::loadData(MtDataReader& in, cNamedParam* pData) {
-    // local: u32 ReadU32;
-    // local: u16 ReadU16;
+    // DWARF local not rendered: u32 ReadU32;
+    // DWARF local not rendered: u16 ReadU16;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pData != static_cast<cNamedParam*>(nullptr)) {
         pData->mID = in.readU32();
@@ -508,4 +508,8 @@ template const cNamedParam* rTbl2<cNamedParam>::getData(unsigned int) const;
 // Instance at 0x01a9e090 - 0x01a9e094 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cNamedParam>::getDataNum() const;
+
+// Instance at 0x01a9e250 - 0x01a9e2a8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cNamedParam>::~rTbl2();
 

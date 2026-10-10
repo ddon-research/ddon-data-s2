@@ -3,9 +3,9 @@
 #include "rNpcConstItem.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -156,8 +156,12 @@ inline void rNpcConstItem::operator delete(void* p_addr) {
 // Address: 0x006a9720 - 0x006a974e (46 bytes)
 bool rNpcConstItem::loadData(MtDataReader& in, cNpcConstItem* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mMTag = in.readU32();
-    pData->mOffset = in.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMTag);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mOffset);
     return true;
 }
 
@@ -203,4 +207,8 @@ template const cNpcConstItem* rTbl2<cNpcConstItem>::getData(unsigned int) const;
 // Instance at 0x01a9e550 - 0x01a9e554 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cNpcConstItem>::getDataNum() const;
+
+// Instance at 0x01a9e6d0 - 0x01a9e728 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cNpcConstItem>::~rTbl2();
 

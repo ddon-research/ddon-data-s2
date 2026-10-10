@@ -318,8 +318,8 @@ __attribute__((weak)) void sGpuParticle::Context::update(cDraw* p_draw) {
 
 // Address: 0x01234b10 - 0x01234d86 (630 bytes)
 __attribute__((weak)) void sGpuParticle::Context::update() {
-    // local: u32 ui;
-    // local: DrawCtx* p_ctx;
+    // DWARF local not rendered: u32 ui;
+    // DWARF local not rendered: DrawCtx* p_ctx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mNewMaxCapacity != static_cast<u32>(0)) {
         this->mMaxCapacity = this->mNewMaxCapacity;
@@ -1055,7 +1055,7 @@ __attribute__((weak)) void sGpuParticle::ContextPolyline::update(cDraw* p_draw) 
 
 // Address: 0x01b9f3c0 - 0x01b9f621 (609 bytes)
 void sGpuParticle::ContextPolyline::update() {
-    // local: u32 ui;
+    // DWARF local not rendered: u32 ui;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sGpuParticle::Context::update();
     // inferred: a temporary for the value the load at 0x1b9f3ce read, used 8 times; no DWARF local holds it

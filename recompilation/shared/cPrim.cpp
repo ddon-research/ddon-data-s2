@@ -100,7 +100,7 @@ void cPrim::createProperty(MtPropertyList& prop_list) {
 
 // Address: 0x013267a0 - 0x013267f9 (89 bytes)
 s32 cPrim::push(bool use_vscr) {
-    // local: ObjState* p_stack;
+    // DWARF local not rendered: ObjState* p_stack;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x13267b0 read, used 4 times; no DWARF local holds it
     u32 t0 = this->mCurrentStack;

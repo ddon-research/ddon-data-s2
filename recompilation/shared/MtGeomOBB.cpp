@@ -78,8 +78,8 @@ inline void MtGeomOBB::operator delete(void* p_addr) {
 
 // Address: 0x00d70f80 - 0x00d710be (318 bytes)
 void MtGeomOBB::load(MtDataReader& fin) {
-    // local: u32 i;
-    // local: u32 j;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 j;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mOBB.coord.m[0].x = fin.readF32();
     this->mOBB.coord.m[0].y = fin.readF32();
@@ -105,8 +105,8 @@ void MtGeomOBB::load(MtDataReader& fin) {
 
 // Address: 0x00d710c0 - 0x00d71200 (320 bytes)
 void MtGeomOBB::save(MtDataWriter& fout) {
-    // local: u32 i;
-    // local: u32 j;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 j;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     fout.writeF32(this->mOBB.coord.m[0].x);
     fout.writeF32(this->mOBB.coord.m[0].y);

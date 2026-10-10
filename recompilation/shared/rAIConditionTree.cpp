@@ -169,16 +169,48 @@ MT_CTSTR rAIConditionTree::getExt() const {
 
 // Address: 0x0136ceb0 - 0x0136cf31 (129 bytes)
 bool rAIConditionTree::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(2), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
 }
 
 // Address: 0x0136cf40 - 0x0136cfd8 (152 bytes)
-__attribute__((weak)) void rAIConditionTree::clear() {
-    DDON_STUB("rAIConditionTree::clear")
-    /* stub */
+void rAIConditionTree::clear() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpTreeList != static_cast<rAIConditionTree::TreeInfo* *>(nullptr)) {
+        if (this->mTreeNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x136cf76 carries; no location-less local in scope fits
+            u32 v0_0 = this->mTreeNum;
+            // inferred: the value the loop at 0x136cf76 carries; no location-less local in scope fits
+            rAIConditionTree::TreeInfo* * v0_1 = this->mpTreeList;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(1);;) {
+                if (v0_1 != static_cast<rAIConditionTree::TreeInfo* *>(nullptr)) {
+                    if (v0_1[i0_3 - static_cast<unsigned int>(1)] != static_cast<rAIConditionTree::TreeInfo*>(nullptr)) {
+                        delete v0_1[i0_3 - static_cast<unsigned int>(1)];
+                        this->mpTreeList[i0_3 - static_cast<unsigned int>(1)] = static_cast<rAIConditionTree::TreeInfo*>(nullptr);
+                        if (i0_3 >= this->mTreeNum) {
+                            break;
+                        }
+                        v0_0 = this->mTreeNum;
+                    } else {
+                        if (i0_3 >= v0_0) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (i0_3 >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = this->mpTreeList;
+                i0_3 += static_cast<unsigned int>(1);
+            }
+        }
+        ::MtMemoryAllocator::getAllocator(::rAIConditionTree::DTI)->memFree(static_cast<void*>(this->mpTreeList));
+    }
+    this->mTreeNum = static_cast<u32>(0);
+    this->mpTreeList = static_cast<rAIConditionTree::TreeInfo* *>(nullptr);
 }
 
 // Address: 0x0136d200 - 0x0136d45d (605 bytes)

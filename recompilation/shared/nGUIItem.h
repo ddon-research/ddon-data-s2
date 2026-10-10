@@ -273,6 +273,31 @@ namespace nGUIItem {
 }  // namespace nGUIItem
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nGUIItem::cItem::cItem() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mSelect = false;
+    this->mpParent = static_cast<nGUIItem::cItemList*>(nullptr);
+    this->mprItemParam = static_cast<rItemList::rItemParam*>(nullptr);
+    this->mpParam = static_cast<cItemParam*>(nullptr);
+    this->mUseEnable = true;
+    this->mIsPut = true;
+    this->mCheckMode = false;
+    this->mFirstSelect = false;
+    this->mItemNo = static_cast<u32>(0);
+    this->mSlotNo = static_cast<s32>(0);
+    this->mLimitNum2 = static_cast<u32>(0);
+    this->mLimitNum3 = static_cast<u32>(0);
+    this->mNum = static_cast<s32>(0);
+    this->mLimitNum = static_cast<u32>(0);
+    this->mToSlotNo = static_cast<s32>(-1);
+    this->mOmId = static_cast<u32>(0);
+    this->mLoadFrom = static_cast<nGUIItem::LOAD_FROM>(0);
+    this->mBagType = static_cast<nItem::E_STORAGE_TYPE>(0);
+    this->mToBagType = static_cast<nItem::E_STORAGE_TYPE>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cItemParam* nGUIItem::cItem::getItemParam() {
     return this->mpParam;
 }

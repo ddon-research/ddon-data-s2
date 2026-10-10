@@ -221,3 +221,7 @@ template const cFurnitureData* rTbl2<cFurnitureData>::getData(unsigned int) cons
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cFurnitureData>::getDataNum() const;
 
+// Instance at 0x01a91600 - 0x01a91658 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cFurnitureData>::~rTbl2();
+

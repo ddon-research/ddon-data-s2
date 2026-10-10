@@ -3,10 +3,10 @@
 #include "rCharacterEditVoicePalette.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cCharacterEditPaletteBase.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -155,10 +155,16 @@ rCharacterEditVoicePalette::~rCharacterEditVoicePalette() {
 // Address: 0x00654bd0 - 0x00654c14 (68 bytes)
 bool rCharacterEditVoicePalette::loadData(MtDataReader& r, cCharacterEditVoicePalette* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->::cCharacterEditPaletteBase::loadData(r);
-    pData->mUID = r.readU32();
-    pData->mVoiceFlag = r.readU32();
-    pData->mNameIndex = r.readU16();
+    ::nDDOIO::readData(r, pData->mUID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mVoiceFlag);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mNameIndex);
     return true;
 }
 
@@ -213,4 +219,8 @@ template const cCharacterEditVoicePalette* rTbl2<cCharacterEditVoicePalette>::ge
 // Instance at 0x01a7f8b0 - 0x01a7f8b4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cCharacterEditVoicePalette>::getDataNum() const;
+
+// Instance at 0x01a7f9d0 - 0x01a7fa28 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCharacterEditVoicePalette>::~rTbl2();
 

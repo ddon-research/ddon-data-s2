@@ -508,7 +508,7 @@ __attribute__((weak)) f32 cpJob02::getWireLockRange() const {
 
 // Address: 0x0049cfc0 - 0x0049cfdd (29 bytes)
 f32 cpJob02::getWireLockAngle(bool isWide) const {
-    // local: f32 angle;
+    // DWARF local not rendered: f32 angle;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (isWide != false) {
         return this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(31));

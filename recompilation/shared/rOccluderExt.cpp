@@ -95,7 +95,6 @@ MtUI* rOccluderEx::createUI(MtProperty& prop) {
 
 // Address: 0x006b16b0 - 0x006b1731 (129 bytes)
 bool rOccluderEx::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -103,7 +102,6 @@ bool rOccluderEx::load(MtStream& in) {
 
 // Address: 0x006b1740 - 0x006b17c2 (130 bytes)
 bool rOccluderEx::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
@@ -126,7 +124,7 @@ u32 rOccluderEx::getAreaNum() {
 
 // Address: 0x006b1810 - 0x006b1831 (33 bytes)
 sOccluderEx::Shape* rOccluderEx::getAreaShape(u32 areaIdx, u32 shapeIdx) {
-    // local: Area* pArea;
+    // DWARF local not rendered: Area* pArea;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (areaIdx < this->mAreaList.mLength) {
         if (this->mAreaList.mpArray[areaIdx] != static_cast<MtObject*>(nullptr)) {
@@ -141,7 +139,7 @@ sOccluderEx::Shape* rOccluderEx::getAreaShape(u32 areaIdx, u32 shapeIdx) {
 
 // Address: 0x006b1850 - 0x006b186f (31 bytes)
 u32 rOccluderEx::getAreaShapeNum(u32 areaIdx) {
-    // local: Area* pArea;
+    // DWARF local not rendered: Area* pArea;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (areaIdx < this->mAreaList.mLength) {
         if (this->mAreaList.mpArray[areaIdx] != static_cast<MtObject*>(nullptr)) {

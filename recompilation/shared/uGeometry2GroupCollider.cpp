@@ -144,12 +144,12 @@ void uGeometry2GroupCollider::registGeometryGroupUnit(uGeometry2Group* pGeometry
     if (pGeometryGroup != this->mpGeometryGroupUnit) {
         this->mpGeometryGroupUnit = pGeometryGroup;
         this->::uGeometry2GroupCollider::restoreNodeFromGeometry();
-        // inferred: the value the loop at 0x1315840 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1315840 carries; no location-less local in scope fits
         MtObject* v0_11 = this->mOwnerSystem.::nCollisionUtil::cOwnerSystem::getRegistOwner();
-        // inferred: the value the loop at 0x1315840 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1315840 carries; no location-less local in scope fits
         u32 v0_10 = this->mNodeArray.::MtArray::mLength;
         if (v0_10 != static_cast<u32>(0)) {
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
                 if (this->mNodeArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                     static_cast<uGeometry2Collider*>(this->mNodeArray.::MtArray::mpArray[i0_3])->::uGeometry2Collider::registOwner(static_cast<uModel*>(v0_11));

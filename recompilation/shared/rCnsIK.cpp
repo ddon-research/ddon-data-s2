@@ -98,7 +98,6 @@ __attribute__((weak)) void rCnsIK::copyUnitProperty(uConstraint* pSrcUnit) {
 
 // Address: 0x0120d0f0 - 0x0120d171 (129 bytes)
 bool rCnsIK::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(4), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -106,7 +105,6 @@ bool rCnsIK::load(MtStream& in) {
 
 // Address: 0x0120d180 - 0x0120d206 (134 bytes)
 bool rCnsIK::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(4), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rCnsIK::DTI));

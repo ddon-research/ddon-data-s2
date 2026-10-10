@@ -116,8 +116,7 @@ __attribute__((weak)) void uStageFieldCtrl::kill() {
 
 // Address: 0x00d2d370 - 0x00d2d3ba (74 bytes)
 void uStageFieldCtrl::updatePtr() {
-    // local: u32 idx;
-    // local: cSplitLot* pSplitLot;
+    // DWARF local not rendered: cSplitLot* pSplitLot;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     u32 idx = static_cast<u32>(0);
     if (this->mSplitLotAry.::MtArray::mLength != static_cast<u32>(0)) {
@@ -132,12 +131,11 @@ void uStageFieldCtrl::updatePtr() {
 
 // Address: 0x00d2d0b0 - 0x00d2d12c (124 bytes)
 void uStageFieldCtrl::initSplitData(s32 stageNo) {
-    // local: u32 i;
-    // local: const stStageSplitData* p;
+    // DWARF local not rendered: const stStageSplitData* p;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i0 = static_cast<unsigned int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0xd2d0b9, 0xd2d0de), [0xd2d0df, 0xd2d12b)) is the counter this loop steps (DWARF's stale constant 0)
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const stStageSplitData* p1 = ::uStageFieldCtrl::mSplitDataTbl;
     do {
         if (p1 != static_cast<const stStageSplitData*>(nullptr)) {
@@ -145,19 +143,19 @@ void uStageFieldCtrl::initSplitData(s32 stageNo) {
                 if (stageNo >= (p1->mStageNo + static_cast<s32>(10))) {
                 } else {
                     this->mSplitData.mStageNo = stageNo;
-                    this->mSplitData.mStartPosX = ::uStageFieldCtrl::mSplitDataTbl[i0].mStartPosX;
-                    this->mSplitData.mStartPosZ = ::uStageFieldCtrl::mSplitDataTbl[i0].mStartPosZ;
-                    this->mSplitData.mSplitNumX = ::uStageFieldCtrl::mSplitDataTbl[i0].mSplitNumX;
-                    this->mSplitData.mSplitNumZ = ::uStageFieldCtrl::mSplitDataTbl[i0].mSplitNumZ;
-                    this->mSplitData.mLengthX = ::uStageFieldCtrl::mSplitDataTbl[i0].mLengthX;
-                    this->mSplitData.mLengthZ = ::uStageFieldCtrl::mSplitDataTbl[i0].mLengthZ;
+                    this->mSplitData.mStartPosX = ::uStageFieldCtrl::mSplitDataTbl[i].mStartPosX;
+                    this->mSplitData.mStartPosZ = ::uStageFieldCtrl::mSplitDataTbl[i].mStartPosZ;
+                    this->mSplitData.mSplitNumX = ::uStageFieldCtrl::mSplitDataTbl[i].mSplitNumX;
+                    this->mSplitData.mSplitNumZ = ::uStageFieldCtrl::mSplitDataTbl[i].mSplitNumZ;
+                    this->mSplitData.mLengthX = ::uStageFieldCtrl::mSplitDataTbl[i].mLengthX;
+                    this->mSplitData.mLengthZ = ::uStageFieldCtrl::mSplitDataTbl[i].mLengthZ;
                     return;
                 }
             }
         }
-        i0 += static_cast<unsigned int>(1);
+        i += static_cast<u32>(1);
         p1 += static_cast<int>(1);
-    } while (i0 <= static_cast<unsigned int>(1));
+    } while (i <= static_cast<u32>(1));
 }
 
 // No out-of-line body: no code in the ELF

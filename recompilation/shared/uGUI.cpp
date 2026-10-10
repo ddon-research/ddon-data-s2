@@ -97,7 +97,7 @@ __attribute__((weak)) void uGUI::move() {
 
 // Address: 0x00f00d90 - 0x00f00db1 (33 bytes)
 void uGUI::moveAfter() {
-    // local: f32 delta;
+    // DWARF local not rendered: f32 delta;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uGUI::play((this->::cUnit::mDeltaTime * this->mFramerate) / (::sMain::mpInstance)->mFps);
 }
@@ -596,12 +596,46 @@ bool uGUI::isForceSamplerLinear(cGUIObject* pObj) const {
 // cGUIInstance* uGUI::createInstance(const MtDTI& dti);
 
 // Address: 0x00f04c30 - 0x00f04cb1 (129 bytes)
-__attribute__((weak)) void uGUI::deleteInstance(cGUIInstance* pInstance) {
-    // local: cGUIInstance* pParent;
-    // local: cGUIInstance* pChild;
-    // local: cGUIInstance* pNext;
-    DDON_STUB("uGUI::deleteInstance")
-    /* stub */
+void uGUI::deleteInstance(cGUIInstance* pInstance) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    cGUIInstance* pParent = pInstance->mpParent;
+    if (pParent == static_cast<cGUIInstance*>(nullptr)) {
+        if (this->::uGUI::deleteDuplicateInstance(pInstance) != false) {
+            return;
+        }
+    } else {
+        cGUIInstance* pChild = pParent->mpChild;
+        if (pInstance != pChild) {
+            pChild->mAttr = pChild->mAttr | static_cast<u32>(262144);
+            // inferred: the value the loop at 0xf04c50 carries; no location-less local in scope fits
+            for (cGUIInstance* v0_1 = pChild;;) {
+                if (v0_1 == static_cast<cGUIInstance*>(nullptr)) {
+                    break;
+                } else {
+                    if (pInstance != v0_1->mpNext) {
+                        v0_1 = v0_1->mpNext;
+                    } else {
+                        v0_1->mpNext = pInstance->mpNext;
+                        break;
+                    }
+                }
+            }
+        } else {
+            cGUIInstance* pNext = pInstance->mpNext;
+            if (pNext != static_cast<cGUIInstance*>(nullptr)) {
+                pNext->mAttr = pNext->mAttr | static_cast<u32>(262144);
+            }
+            pParent->mpChild = pNext;
+        }
+        if (this->::uGUI::deleteDuplicateInstance(pInstance) == false) {
+            if (pInstance == static_cast<cGUIInstance*>(nullptr)) {
+                return;
+            }
+        } else {
+            return;
+        }
+    }
+    delete pInstance;
 }
 
 // Address: 0x00f051c0 - 0x00f05ccf (2831 bytes)
@@ -656,16 +690,15 @@ cGUIInstance* uGUI::getParentInstance(cGUIInstance* pInstance) const {
 
 // Address: 0x00f04950 - 0x00f04989 (57 bytes)
 void uGUI::updateInstanceMatrix(cGUIInstance* pInstance) {
-    // local: cGUIInstance* pChild;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     pInstance->mAttr = pInstance->mAttr | static_cast<u32>(65536);
-    // inferred: the value the loop at 0xf0497f carries; DWARF names no local for it
-    for (cGUIInstance* v0_3 = pInstance->mpChild;;) {
-        if (v0_3 == static_cast<cGUIInstance*>(nullptr)) {
+    // inferred: DWARF's location-less 'pChild' (function scope) is the value the loop at 0xf0497f carries
+    for (cGUIInstance* pChild = pInstance->mpChild;;) {
+        if (pChild == static_cast<cGUIInstance*>(nullptr)) {
             break;
         } else {
-            this->::uGUI::updateInstanceMatrix(v0_3);
-            v0_3 = v0_3->mpNext;
+            this->::uGUI::updateInstanceMatrix(pChild);
+            pChild = pChild->mpNext;
         }
     }
 }

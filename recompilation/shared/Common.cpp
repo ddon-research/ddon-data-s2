@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -79,9 +80,9 @@ __attribute__((weak)) void CDataCommonU32::operator delete(void* p_addr) {
 // CDataCommonU32::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b8810 - 0x003b8857 (71 bytes)
-__attribute__((weak)) MtObject* CDataCommonU32::MyDTI::newInstance() const {
-    DDON_STUB("CDataCommonU32::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataCommonU32::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataCommonU32;
 }
 
 // No out-of-line body: no code in the ELF
@@ -154,9 +155,9 @@ __attribute__((weak)) void CDataCommonU8::operator delete(void* p_addr) {
 // CDataCommonU8::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b89f0 - 0x003b8a34 (68 bytes)
-__attribute__((weak)) MtObject* CDataCommonU8::MyDTI::newInstance() const {
-    DDON_STUB("CDataCommonU8::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataCommonU8::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataCommonU8;
 }
 
 // No out-of-line body: no code in the ELF
@@ -225,8 +226,8 @@ __attribute__((weak)) void CDataQuestId::operator delete(void* p_addr) {
 // CDataQuestId::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b8c30 - 0x003b8c77 (71 bytes)
-__attribute__((weak)) MtObject* CDataQuestId::MyDTI::newInstance() const {
-    DDON_STUB("CDataQuestId::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataQuestId::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataQuestId;
 }
 

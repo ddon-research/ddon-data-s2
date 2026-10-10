@@ -292,8 +292,8 @@ __attribute__((weak)) void uGUIPSStore::setupStationWindow() {
 
 // Address: 0x00be5fa0 - 0x00be60ee (334 bytes)
 void uGUIPSStore::setupHistoryCommon() {
-    // local: cGUIInstNull* pInst;
-    // local: cGUIObjMessage* pMsg;
+    // DWARF local not rendered: cGUIInstNull* pInst;
+    // DWARF local not rendered: cGUIObjMessage* pMsg;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xbe5fb7, used twice; no DWARF local holds it
     cGUIInstance* t0 = this->getInstance(static_cast<u32>(56), false);
@@ -588,7 +588,7 @@ __attribute__((weak)) void uGUIPSStore::updateHistoryItemDisp(uGUIBase::cScrollL
 
 // Address: 0x00be7370 - 0x00be73a6 (54 bytes)
 void uGUIPSStore::updateHistoryItemHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cHistoryListItem* pdisp;
+    // DWARF local not rendered: cHistoryListItem* pdisp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
         return;

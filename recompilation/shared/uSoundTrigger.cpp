@@ -69,7 +69,7 @@ inline void cSoundTriggerLayoutInfo::operator delete(void* p_addr) {
 // Address: 0x00d4e470 - 0x00d4e4c9 (89 bytes)
 // Also emitted as: _ZN23cSoundTriggerLayoutInfoD0Ev at 0x00d4e4d0
 cSoundTriggerLayoutInfo::~cSoundTriggerLayoutInfo() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpUSequenceSe[0] != static_cast<uSoundSequenceSe*>(nullptr)) {
         this->mpUSequenceSe[0]->kill();
@@ -474,18 +474,16 @@ __attribute__((weak)) void uSoundTrigger::checkHitPanel() {
 
 // Address: 0x00d4c4b0 - 0x00d4c546 (150 bytes)
 __attribute__((weak)) void uSoundTrigger::initPanel() {
-    // local: cZoneLayout* pZone;
-    // local: const u32 layoutNum;
-    // local: u32 i;
-    // local: cLayoutElement* pLayout;
-    // local: ShapeInfoBase* pShape;
-    // local: cSoundTriggerLayoutInfo* pLayoutInfo;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cLayoutElement* pLayout;
+    // DWARF local not rendered: ShapeInfoBase* pShape;
+    // DWARF local not rendered: cSoundTriggerLayoutInfo* pLayoutInfo;
     // Approximate from the ELF: a frame slot a join carries read as the values its stores carried; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     cZoneLayout* pZone = this->::uSoundZoneBase::getZoneLayout();
     if (pZone != static_cast<cZoneLayout*>(nullptr)) {
         const u32 layoutNum = pZone->::cZoneLayout::getLayoutElementNum();
         if (layoutNum != static_cast<u32>(0)) {
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
                 // inferred: a temporary for the result of the call at 0xd4c4e6, used 4 times; no DWARF local holds it
                 nZone::cLayoutElement* t0 = pZone->::cZoneLayout::getLayoutElement(i0_3);

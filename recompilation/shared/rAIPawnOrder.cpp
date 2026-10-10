@@ -7,6 +7,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cAIObject.h"
+#include "nDDOIO.h"
 #include "nDDOUtility.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -173,10 +174,10 @@ bool rAIPawnOrder::loadData(MtDataReader& in, cAIPawnOrderParam* pData) {
     pData->mOrderAttrActID = in.readU32();
     // inferred: a temporary for the result of the call at 0x6403d4, used once; no DWARF local holds it
     u32 t0 = in.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     in.read(static_cast<void*>(&pData->mOrderAttrActGroup), t0 * static_cast<u32>(4));
-    // inferred: a temporary for the result of the call at 0x6403f0, used twice; no DWARF local holds it
-    u32 t1 = in.readU32();
-    pData->mActionCancelFlag = t1;
+    ::nDDOIO::readData(in, pData->mActionCancelFlag);
     return true;
 }
 
@@ -222,4 +223,8 @@ template const cAIPawnOrderParam* rTbl2<cAIPawnOrderParam>::getData(unsigned int
 // Instance at 0x01a72bc0 - 0x01a72bc4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cAIPawnOrderParam>::getDataNum() const;
+
+// Instance at 0x01a72d40 - 0x01a72dd1 (145 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cAIPawnOrderParam>::~rTbl2();
 

@@ -3,9 +3,9 @@
 #include "rEnemyBloodStain.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -137,13 +137,27 @@ inline void rEnemyBloodStain::operator delete(void* p_addr) {
 // Address: 0x0066ae20 - 0x0066ae95 (117 bytes)
 bool rEnemyBloodStain::loadData(MtDataReader& r, cEnemyBloodStain* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mBloodStainType = r.readS32();
-    pData->mHpRateLv1 = r.readF32();
-    pData->mHpRateLv2 = r.readF32();
-    pData->mHpRateLv3 = r.readF32();
-    pData->mRegionNoLv1 = r.readS32();
-    pData->mRegionNoLv2 = r.readS32();
-    pData->mRegionNoLv3 = r.readS32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mBloodStainType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mHpRateLv1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mHpRateLv2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mHpRateLv3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mRegionNoLv1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mRegionNoLv2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mRegionNoLv3);
     return true;
 }
 
@@ -189,4 +203,8 @@ template const cEnemyBloodStain* rTbl2<cEnemyBloodStain>::getData(unsigned int) 
 // Instance at 0x01a8a350 - 0x01a8a354 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEnemyBloodStain>::getDataNum() const;
+
+// Instance at 0x01a8a550 - 0x01a8a5a8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cEnemyBloodStain>::~rTbl2();
 

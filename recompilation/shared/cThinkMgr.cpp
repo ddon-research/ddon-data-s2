@@ -1120,7 +1120,7 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::recalculationTarg
 
 // Address: 0x00584c30 - 0x00584c53 (35 bytes)
 __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::updatePtr() {
-    // local: uDDOModel* pObjModel;
+    // DWARF local not rendered: uDDOModel* pObjModel;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpTargetChar == static_cast<MtObject*>(nullptr)) {
         return;
@@ -1254,7 +1254,7 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetMgr::createProperty(MtP
 
 // Address: 0x01a598d0 - 0x01a599f3 (291 bytes)
 void cThinkMgrName::cThinkMgrTargetMgr::updatePtr() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mTargetData[0].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
     this->mTargetData[1].::cThinkMgrName::cThinkMgrTargetData::updatePtr();
@@ -1352,7 +1352,7 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetMgr::initAllTargetData(
 
 // Address: 0x01a65350 - 0x01a65481 (305 bytes)
 void cThinkMgrName::cThinkMgrTargetMgr::recalculationTargetData(MtVector3& myPos, f32 myAngleYRad) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mTargetData[9].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);
     this->mTargetData[10].::cThinkMgrName::cThinkMgrTargetData::recalculationTargetVectorData(myPos, myAngleYRad);

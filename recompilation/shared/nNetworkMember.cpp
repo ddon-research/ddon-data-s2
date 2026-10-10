@@ -244,9 +244,14 @@ __attribute__((weak)) bool nNetwork::Member::isTalking() const {
 }
 
 // Address: 0x01b86630 - 0x01b8666c (60 bytes)
-__attribute__((weak)) void nNetwork::Member::setTalking(bool f) {
-    DDON_STUB("nNetwork::Member::setTalking")
-    /* stub */
+void nNetwork::Member::setTalking(bool f) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (f != false) {
+        this->mConfiguration = this->mConfiguration | static_cast<u32>(32);
+        this->mTalkTime = ::MtNetTime::mInstance.::MtNetTime::getTotalTime() + static_cast<MtNetTime::Total>(250);
+    } else {
+        this->mConfiguration = this->mConfiguration & static_cast<u32>(4294967263);
+    }
 }
 
 // Address: 0x01b86670 - 0x01b86679 (9 bytes)

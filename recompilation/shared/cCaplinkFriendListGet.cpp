@@ -22,9 +22,9 @@ void nCaplink::FriendListGetAns::init() {
     this->::nCaplink::ContextListener::init();
     this->mFriendInfoTbl.mAutoDelete = true;
     if (this->mFriendInfoTbl.mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1abe750 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1abe750 carries; no location-less local in scope fits
         u32 v0_0 = this->mFriendInfoTbl.mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mFriendInfoTbl.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mFriendInfoTbl.mpArray[i0_3];

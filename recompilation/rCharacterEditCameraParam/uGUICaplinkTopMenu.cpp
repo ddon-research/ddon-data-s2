@@ -5,6 +5,7 @@
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/MtObject.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
 #include "../shared/cResource.h"
@@ -238,10 +239,11 @@ const MtDTI& cCaptrophyRewardData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cCaptrophyRewardData::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
-//   in cCaptrophyRewardData::MyDTI::newInstance at 0x009dd744-0x009dd76d (called at uGUICaplinkTopMenu.cpp:50)
-//   in uGUICaplinkTopMenu::setupCaptrophyRelationInfo at 0x009e0948-0x009e0971 (called at uGUICaplinkTopMenu.cpp:1229)
-// void* cCaptrophyRewardData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cCaptrophyRewardData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaptrophyRewardData::DTI)->memAlloc(sz, align, ::cCaptrophyRewardData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* cCaptrophyRewardData::operator new[](size_t sz, u32 align);
@@ -280,9 +282,9 @@ inline void cCaptrophyRewardData::operator delete(void* p_addr) {
 // cCaptrophyRewardData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x009dd740 - 0x009dd78f (79 bytes)
-__attribute__((weak)) MtObject* cCaptrophyRewardData::MyDTI::newInstance() const {
-    DDON_STUB("cCaptrophyRewardData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCaptrophyRewardData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cCaptrophyRewardData;
 }
 
 // No out-of-line body: no code in the ELF

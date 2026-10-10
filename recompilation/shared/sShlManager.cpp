@@ -93,7 +93,7 @@ MtUI* sShlManager::createUI(MtProperty& prop) {
 
 // Address: 0x00847f00 - 0x00847f1c (28 bytes)
 void sShlManager::move() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sShlManager::moveShlLimit();
     this->::sUnitManager::move();
@@ -257,7 +257,7 @@ __attribute__((weak)) void sShlManager::searchShlFromShlId(nShlBase::SHL_ID id, 
 
 // Address: 0x00849a90 - 0x00849b33 (163 bytes)
 void sShlManager::createShlLimitResource() {
-    // local: cResource* pRes;
+    // DWARF local not rendered: cResource* pRes;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x849abd, used 4 times; no DWARF local holds it
     cResource* t0 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("game_common", "RES_ID_SHL_LIMIT_SLM", static_cast<u32>(1), false);

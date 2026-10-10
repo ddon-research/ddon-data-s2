@@ -99,7 +99,6 @@ MtUI* rSoundSimpleCurve::createUI(MtProperty& prop) {
 
 // Address: 0x006fd4f0 - 0x006fd587 (151 bytes)
 bool rSoundSimpleCurve::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
@@ -112,7 +111,6 @@ bool rSoundSimpleCurve::load(MtStream& in) {
 
 // Address: 0x006fd590 - 0x006fd616 (134 bytes)
 bool rSoundSimpleCurve::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rSoundSimpleCurve::DTI));

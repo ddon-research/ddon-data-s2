@@ -138,6 +138,8 @@ public:
 public:
     class cTitle
     {
+        // inferred: uGUIMyRoomPopup::setTitle names uGUIMyRoomPopup::cTitle::mpOBJ_msg_poptitile_m_poptitle
+        friend class uGUIMyRoomPopup;
     public:
         cTitle();
         void setup(uGUIMyRoomPopup& owner);

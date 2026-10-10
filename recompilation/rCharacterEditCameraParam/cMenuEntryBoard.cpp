@@ -759,7 +759,7 @@ void cMenuEntryBoardItemList::exitMenu() {
 
 // Address: 0x0014c750 - 0x0014c7d9 (137 bytes)
 void cMenuEntryBoardItemList::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
-    // local: uGUIEntryBoard* pGUIEntryBoard;
+    // DWARF local not rendered: uGUIEntryBoard* pGUIEntryBoard;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (menuId == static_cast<s32>(8)) {
         return;
@@ -997,9 +997,9 @@ __attribute__((weak)) void cMenuEntryBoardRecruit::refreshEntryBoardRecruit(MtTy
 void cMenuEntryBoardRecruit::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mRecruitData.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x14c920 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x14c920 carries; no location-less local in scope fits
         u32 v0_0 = this->mRecruitData.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mRecruitData.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mRecruitData.::MtArray::mpArray[i0_3];
@@ -1139,8 +1139,8 @@ void cMenuExtendEntryBoardItem::initExtendEntryBoardItem() {
 
 // Address: 0x0014b0e0 - 0x0014b170 (144 bytes)
 nMenu::MENU_RET cMenuExtendEntryBoardItem::moveExtendEntryBoardItem() {
-    // local: s32& baseRno;
-    // local: u32 statusId;
+    // DWARF local not rendered: s32& baseRno;
+    // DWARF local not rendered: u32 statusId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::moveMenu();
     if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {

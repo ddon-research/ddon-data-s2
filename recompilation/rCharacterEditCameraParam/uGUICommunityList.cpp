@@ -320,7 +320,7 @@ __attribute__((weak)) void uGUICommunityList::createCtrl() {
 
 // Address: 0x00a48fa0 - 0x00a49102 (354 bytes)
 void uGUICommunityList::setFixedMessage() {
-    // local: u32 index;
+    // DWARF local not rendered: u32 index;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xa48fc8, used once; no DWARF local holds it
     MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUICommunityList::getMessageRes(), static_cast<u32>(11));

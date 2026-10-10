@@ -67,7 +67,6 @@ rGUI::~rGUI() {
 
 // Address: 0x01211920 - 0x012119b5 (149 bytes)
 bool rGUI::load(MtStream& in) {
-    // local: u32 size;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 size = in.getLength();
     // inferred: a temporary for the result of the call at 0x1211948, used 3 times; no DWARF local holds it
@@ -367,16 +366,16 @@ __attribute__((weak)) nGUI::ANIMATION* rGUI::getAnimation(u32 id) const {
 
 // Address: 0x012157c0 - 0x01215803 (67 bytes)
 nGUI::TEXTURE* rGUI::getTextureFromId(u32 id) const {
-    // local: TEXTURE* pTexture;
-    // local: u32 i;
+    // DWARF local not rendered: TEXTURE* pTexture;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpHeader->pTexture != static_cast<nGUI::TEXTURE*>(nullptr)) {
-        // inferred: the value the loop at 0x12157f0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x12157f0 carries; no location-less local in scope fits
         u32 v0_2 = this->mpHeader->textureNum;
         if (v0_2 != static_cast<u32>(0)) {
-            // inferred: the pointer this loop steps by one element; DWARF names no local for it
+            // inferred: the pointer this loop steps by one element; no location-less local in scope fits
             nGUI::TEXTURE* p0_0 = this->mpHeader->pTexture;
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
                 if (p0_0->id == id) {
                     return p0_0;
@@ -410,16 +409,16 @@ __attribute__((weak)) rTexture* rGUI::replaceTexture(u32 id, rTexture* pTexture)
 
 // Address: 0x01215980 - 0x012159c3 (67 bytes)
 nGUI::FONT* rGUI::getFontFromId(u32 id) const {
-    // local: FONT* pFont;
-    // local: u32 i;
+    // DWARF local not rendered: FONT* pFont;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpHeader->pFont != static_cast<nGUI::FONT*>(nullptr)) {
-        // inferred: the value the loop at 0x12159b0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x12159b0 carries; no location-less local in scope fits
         u32 v0_2 = this->mpHeader->fontNum;
         if (v0_2 != static_cast<u32>(0)) {
-            // inferred: the pointer this loop steps by one element; DWARF names no local for it
+            // inferred: the pointer this loop steps by one element; no location-less local in scope fits
             nGUI::FONT* p0_0 = this->mpHeader->pFont;
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
                 if (p0_0->id == id) {
                     return p0_0;
@@ -456,16 +455,16 @@ __attribute__((weak)) cGUIFontFilter* rGUI::getFontFilterFromId(u32 id) const {
 
 // Address: 0x01215a50 - 0x01215a93 (67 bytes)
 nGUI::MESSAGE* rGUI::getMessageFromId(u32 id) const {
-    // local: MESSAGE* pMessage;
-    // local: u32 i;
+    // DWARF local not rendered: MESSAGE* pMessage;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpHeader->pMessage != static_cast<nGUI::MESSAGE*>(nullptr)) {
-        // inferred: the value the loop at 0x1215a80 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1215a80 carries; no location-less local in scope fits
         u32 v0_2 = this->mpHeader->messageNum;
         if (v0_2 != static_cast<u32>(0)) {
-            // inferred: the pointer this loop steps by one element; DWARF names no local for it
+            // inferred: the pointer this loop steps by one element; no location-less local in scope fits
             nGUI::MESSAGE* p0_0 = this->mpHeader->pMessage;
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
                 if (p0_0->id == id) {
                     return p0_0;
@@ -488,16 +487,16 @@ nGUI::MESSAGE* rGUI::getMessageFromId(u32 id) const {
 
 // Address: 0x01212910 - 0x01212953 (67 bytes)
 nGUI::GUIRESOURCE* rGUI::getGUIResourceFromId(u32 id) const {
-    // local: GUIRESOURCE* pGUIResource;
-    // local: u32 i;
+    // DWARF local not rendered: GUIRESOURCE* pGUIResource;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpHeader->pGUIResource != static_cast<nGUI::GUIRESOURCE*>(nullptr)) {
-        // inferred: the value the loop at 0x1212940 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1212940 carries; no location-less local in scope fits
         u32 v0_2 = this->mpHeader->guiResourceNum;
         if (v0_2 != static_cast<u32>(0)) {
-            // inferred: the pointer this loop steps by one element; DWARF names no local for it
+            // inferred: the pointer this loop steps by one element; no location-less local in scope fits
             nGUI::GUIRESOURCE* p0_0 = this->mpHeader->pGUIResource;
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
                 if (p0_0->id == id) {
                     return p0_0;
@@ -520,16 +519,16 @@ nGUI::GUIRESOURCE* rGUI::getGUIResourceFromId(u32 id) const {
 
 // Address: 0x01215aa0 - 0x01215ae3 (67 bytes)
 nGUI::GENERALRESOURCE* rGUI::getGeneralResourceFromId(u32 id) const {
-    // local: GENERALRESOURCE* pGeneralResource;
-    // local: u32 i;
+    // DWARF local not rendered: GENERALRESOURCE* pGeneralResource;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpHeader->pGeneralResource != static_cast<nGUI::GENERALRESOURCE*>(nullptr)) {
-        // inferred: the value the loop at 0x1215ad0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1215ad0 carries; no location-less local in scope fits
         u32 v0_2 = this->mpHeader->generalResourceNum;
         if (v0_2 != static_cast<u32>(0)) {
-            // inferred: the pointer this loop steps by one element; DWARF names no local for it
+            // inferred: the pointer this loop steps by one element; no location-less local in scope fits
             nGUI::GENERALRESOURCE* p0_0 = this->mpHeader->pGeneralResource;
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
                 if (p0_0->id == id) {
                     return p0_0;
@@ -663,29 +662,28 @@ void rGUI::setFramerateMode(nGUI::FRAMERATE_MODE mode) {
 
 // Address: 0x01215b40 - 0x01215b82 (66 bytes)
 const rGUI::InstanceNeedObjectInfo* rGUI::getInstanceNeedObjectInfoPtr(u32 InstanceID) const {
-    // local: INSTANCE* pInstance;
-    // local: u32 i;
+    // DWARF local not rendered: INSTANCE* pInstance;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0x1215b60 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x1215b60 carries; no location-less local in scope fits
     u32 v0_2 = this->mpHeader->instanceNum;
-    // inferred: the value carried to 0x1215b81; DWARF names no local for it
+    // inferred: the value carried to 0x1215b81; no location-less local in scope fits
     rGUI::InstanceNeedObjectInfo* v2_0;
     if (v0_2 == static_cast<u32>(0)) {
         v2_0 = static_cast<rGUI::InstanceNeedObjectInfo*>(nullptr);
     } else {
-        // inferred: the counter this loop steps; DWARF names no local for it
-        unsigned int i0_0 = static_cast<unsigned int>(0);
-        // inferred: the pointer this loop steps by one element; DWARF names no local for it
+        // inferred: DWARF's location-less 'i' (lexical block [0x1215b44, 0x1215b54), [0x1215b5d, 0x1215b81)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        // inferred: the pointer this loop steps by one element; no location-less local in scope fits
         for (nGUI::INSTANCE* p0_1 = this->mpHeader->pInstance;;) {
             if (p0_1->id != InstanceID) {
-                if ((i0_0 + static_cast<unsigned int>(1)) < v0_2) {
-                    i0_0 = i0_0 + static_cast<unsigned int>(1);
+                if ((i + static_cast<u32>(1)) < v0_2) {
+                    i = i + static_cast<u32>(1);
                     p0_1 += static_cast<int>(1);
                 } else {
                     break;
                 }
             } else {
-                v2_0 = &this->mpInstanceNeedObjectInfo[i0_0];
+                v2_0 = &this->mpInstanceNeedObjectInfo[i];
                 return v2_0;
             }
         }

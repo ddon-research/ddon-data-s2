@@ -8,6 +8,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cResource.h"
+#include "nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -206,14 +207,28 @@ MtUI* rLocationData::Data::createUI(MtProperty& prop) {
 // Address: 0x0069f7f0 - 0x0069f8af (191 bytes)
 bool rLocationData::Data::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->mPos = r.readV3();
-    this->mRadius = r.readF32();
-    this->mAngle = r.readF32();
-    this->mRange = r.readF32();
-    this->mMessageNo = r.readU16();
-    this->mType = r.readU16();
-    this->mWarpPointId = r.readU32();
-    this->mSafeZone = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    ::nDDOIO::readData(r, this->mRadius);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mAngle);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mRange);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMessageNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mWarpPointId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mSafeZone);
     return true;
 }
 

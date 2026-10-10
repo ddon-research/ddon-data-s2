@@ -472,7 +472,7 @@ __attribute__((weak)) void cCamImpBase::calcTargetPos(uCameraGame* pCam, nCamera
 
 // Address: 0x00890960 - 0x0089097c (28 bytes)
 f32 cCamImpBase::adjustAddPlayerHeight(f32 addHeight) {
-    // local: f32 result;
+    // DWARF local not rendered: f32 result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (0.0f > addHeight) {
         return 0.4f * addHeight;
@@ -483,7 +483,7 @@ f32 cCamImpBase::adjustAddPlayerHeight(f32 addHeight) {
 
 // Address: 0x00890980 - 0x0089099c (28 bytes)
 f32 cCamImpBase::adjustAddPlayerDistance(f32 addHeight) {
-    // local: f32 result;
+    // DWARF local not rendered: f32 result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (0.0f > addHeight) {
         return 0.8f * addHeight;
@@ -852,7 +852,6 @@ __attribute__((weak)) void uCameraGame::copy(const uCameraGame* pParam) {
 
 // Address: 0x0088f210 - 0x0088f27a (106 bytes)
 bool uCameraGame::isStageCamera(u32 no) const {
-    // local: aStage* pStage;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     aStage* pStage = static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::getCurrentStage();
     if (pStage != static_cast<aStage*>(nullptr)) {

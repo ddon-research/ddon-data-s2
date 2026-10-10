@@ -149,28 +149,26 @@ __attribute__((weak)) void MtDTI::sort() {
 
 // Address: 0x00d617d0 - 0x00d61828 (88 bytes)
 MtDTI* MtDTI::getType(MT_CTSTR name) const {
-    // local: MtDTI* pt;
-    // local: MtDTI* ppt;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0xd617f9 carries; DWARF names no local for it
-    MtDTI* v0_2 = this->mpChild;
-    // inferred: the value carried to 0xd61823; DWARF names no local for it
+    // inferred: DWARF's location-less 'pt' (function scope) is the value the loop at 0xd617f9 carries
+    MtDTI* pt = this->mpChild;
+    // inferred: the value carried to 0xd61823; the location-less local in scope that fits is declared on no line of the value's writes
     MtDTI* v1_0;
     for (;;) {
-        if (v0_2 == static_cast<MtDTI*>(nullptr)) {
+        if (pt == static_cast<MtDTI*>(nullptr)) {
             v1_0 = static_cast<MtDTI*>(nullptr);
             break;
         } else {
-            if (::strcmp(v0_2->mName, name) != static_cast<int>(0)) {
-                MtDTI* ppt = v0_2->::MtDTI::getType(name);
+            if (::strcmp(pt->mName, name) != static_cast<int>(0)) {
+                MtDTI* ppt = pt->::MtDTI::getType(name);
                 if (ppt != static_cast<MtDTI*>(nullptr)) {
                     v1_0 = ppt;
                     break;
                 } else {
-                    v0_2 = v0_2->mpNext;
+                    pt = pt->mpNext;
                 }
             } else {
-                v1_0 = v0_2;
+                v1_0 = pt;
                 break;
             }
         }

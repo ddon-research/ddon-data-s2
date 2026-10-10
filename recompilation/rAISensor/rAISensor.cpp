@@ -187,7 +187,6 @@ MT_CTSTR rAISensor::getExt() const {
 
 // Address: 0x00641060 - 0x00641108 (168 bytes)
 bool rAISensor::load(MtStream& in) {
-    // local: MtDataReader r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     this->mMagic = (&r)->readU32();

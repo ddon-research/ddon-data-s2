@@ -7,6 +7,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cUIObject.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -34,9 +35,11 @@ const MtDTI& cAchievementData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cAchievementData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cAchievementData::MyDTI::newInstance at 0x0063d0f4-0x0063d11d (called at rAchievement.cpp:21)
-// void* cAchievementData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cAchievementData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAchievementData::DTI)->memAlloc(sz, align, ::cAchievementData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
 //   in rTbl2<cAchievementData>::loadCore at 0x01a6e9e3-0x01a6ea10 (called at rTbl2.h:215)
@@ -81,9 +84,9 @@ inline void cAchievementData::operator delete(void* p_addr) {
 // cAchievementData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0063d0f0 - 0x0063d145 (85 bytes)
-__attribute__((weak)) MtObject* cAchievementData::MyDTI::newInstance() const {
-    DDON_STUB("cAchievementData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAchievementData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cAchievementData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,9 +111,11 @@ const MtDTI& cAchievementHeaderData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cAchievementHeaderData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cAchievementHeaderData::MyDTI::newInstance at 0x0063d2a4-0x0063d2cd (called at rAchievement.cpp:23)
-// void* cAchievementHeaderData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* cAchievementHeaderData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAchievementHeaderData::DTI)->memAlloc(sz, align, ::cAchievementHeaderData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (46 bytes)
 //   in rTbl2<cAchievementHeaderData>::loadCore at 0x01a6ed5c-0x01a6ed8a (called at rTbl2.h:215)
@@ -155,9 +160,9 @@ inline void cAchievementHeaderData::operator delete(void* p_addr) {
 // cAchievementHeaderData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0063d2a0 - 0x0063d2e7 (71 bytes)
-__attribute__((weak)) MtObject* cAchievementHeaderData::MyDTI::newInstance() const {
-    DDON_STUB("cAchievementHeaderData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAchievementHeaderData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cAchievementHeaderData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -211,11 +216,19 @@ inline void rAchievement::operator delete(void* p_addr) {
 
 // Address: 0x0063d440 - 0x0063d4d5 (149 bytes)
 bool rAchievement::loadData(MtDataReader& in, cAchievementData* pData) {
-    // Approximate from the ELF: a byte stored between two folded calls (struct-path TBAA keeps a value the ELF reads again); the body oracle reports this body.
-    pData->mID = in.readU32();
-    pData->mTargetNum = in.readU32();
-    pData->mMessageIndex = in.readU32();
-    pData->mCategory = in.::MtDataReader::readU8();
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mTargetNum);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMessageIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCategory);
     pData->mTrophy = in.::MtDataReader::readU8();
     return true;
 }
@@ -295,7 +308,8 @@ inline void rAchievementHeader::operator delete(void* p_addr) {
 // Address: 0x0063d4e0 - 0x0063d4fe (30 bytes)
 bool rAchievementHeader::loadData(MtDataReader& in, cAchievementHeaderData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mNum = in.readU32();
+    // inferred: reference argument from the copy's one access
+    ::nDDOIO::readData(in, pData->mNum);
     return true;
 }
 
@@ -361,4 +375,12 @@ template unsigned int rTbl2<cAchievementData>::getDataNum() const;
 // Instance at 0x01a6ecc0 - 0x01a6ecc4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cAchievementHeaderData>::getDataNum() const;
+
+// Instance at 0x01a6efa0 - 0x01a6eff8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cAchievementData>::~rTbl2();
+
+// Instance at 0x01a6eee0 - 0x01a6ef38 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cAchievementHeaderData>::~rTbl2();
 

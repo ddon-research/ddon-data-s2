@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -77,9 +78,9 @@ __attribute__((weak)) void CDataGachaDrawGroupInfo::operator delete(void* p_addr
 // CDataGachaDrawGroupInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ba300 - 0x003ba392 (146 bytes)
-__attribute__((weak)) MtObject* CDataGachaDrawGroupInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataGachaDrawGroupInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGachaDrawGroupInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGachaDrawGroupInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,9 +149,9 @@ __attribute__((weak)) void CDataGachaDrawInfo::operator delete(void* p_addr) {
 // CDataGachaDrawInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ba1b0 - 0x003ba224 (116 bytes)
-__attribute__((weak)) MtObject* CDataGachaDrawInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataGachaDrawInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGachaDrawInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGachaDrawInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -290,9 +291,9 @@ __attribute__((weak)) void CDataGachaItemInfo::operator delete(void* p_addr) {
 // CDataGachaItemInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ba080 - 0x003ba0d8 (88 bytes)
-__attribute__((weak)) MtObject* CDataGachaItemInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataGachaItemInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGachaItemInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGachaItemInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -361,8 +362,8 @@ __attribute__((weak)) void CDataGachaSettlementInfo::operator delete(void* p_add
 // CDataGachaSettlementInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b9f50 - 0x003b9fb0 (96 bytes)
-__attribute__((weak)) MtObject* CDataGachaSettlementInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataGachaSettlementInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGachaSettlementInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGachaSettlementInfo;
 }
 

@@ -78,7 +78,7 @@ cPlDeadFlow::~cPlDeadFlow() {
 
 // Address: 0x004cc3f0 - 0x004cc460 (112 bytes)
 bool cPlDeadFlow::move() {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpTouchPawn != static_cast<uDDOModel*>(nullptr)) {
         if (this->mpTouchPawn->::cUnit::isEnable() == false) {

@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -77,9 +78,9 @@ __attribute__((weak)) void CDataUIListCommand::operator delete(void* p_addr) {
 // CDataUIListCommand::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003de880 - 0x003de8c8 (72 bytes)
-__attribute__((weak)) MtObject* CDataUIListCommand::MyDTI::newInstance() const {
-    DDON_STUB("CDataUIListCommand::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataUIListCommand::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataUIListCommand;
 }
 
 // No out-of-line body: no code in the ELF
@@ -219,8 +220,8 @@ __attribute__((weak)) void CDataUIListElementChild::operator delete(void* p_addr
 // CDataUIListElementChild::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003de9a0 - 0x003de9ef (79 bytes)
-__attribute__((weak)) MtObject* CDataUIListElementChild::MyDTI::newInstance() const {
-    DDON_STUB("CDataUIListElementChild::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataUIListElementChild::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataUIListElementChild;
 }
 

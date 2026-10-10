@@ -137,7 +137,7 @@ void cpJob01::callbackGuard_calc(cHitInfo* pHitInfo) {
 
 // Address: 0x004997b0 - 0x0049983c (140 bytes)
 void cpJob01::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
-    // local: u32 ActNo;
+    // DWARF local not rendered: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cpJobBase::mpHuman == static_cast<uHuman*>(nullptr)) {
         return;
@@ -174,7 +174,6 @@ __attribute__((weak)) void cpJob01::callbackReplaceHitInfo_Def(cHitInfo* pHitInf
 
 // Address: 0x00499860 - 0x004998ca (106 bytes)
 void cpJob01::callbackAttack(cHitInfo* pHitInfo) {
-    // local: u32 actNo;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x49986a read, used 3 times; no DWARF local holds it
     uHuman* t0 = this->::cpJobBase::mpHuman;

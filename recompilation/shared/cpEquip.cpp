@@ -412,7 +412,7 @@ __attribute__((weak)) uWeapon* cpEquip::getNpcItem() {
 
 // Address: 0x0047c440 - 0x0047c536 (246 bytes)
 __attribute__((weak)) void cpEquip::killAllWeapon() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mWeapon[0].mpModel != static_cast<uModel*>(nullptr)) {
         this->mWeapon[0].mpModel->kill();
@@ -442,7 +442,7 @@ __attribute__((weak)) void cpEquip::killAllWeapon() {
 
 // Address: 0x0047c590 - 0x0047c6e7 (343 bytes)
 __attribute__((weak)) void cpEquip::killAllArmor() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mArmor[0].mpModel == static_cast<uModel*>(nullptr)) {
     } else {
@@ -774,7 +774,7 @@ __attribute__((weak)) void cpEquip::setGrassWind(bool isGrassWind) {
 
 // Address: 0x0047c6f0 - 0x0047c7e0 (240 bytes)
 void cpEquip::killAllArmorBJ() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mArmor[0].mpModel == static_cast<uModel*>(nullptr)) {
     } else {

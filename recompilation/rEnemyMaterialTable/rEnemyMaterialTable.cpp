@@ -3,9 +3,9 @@
 #include "rEnemyMaterialTable.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -145,12 +145,24 @@ inline void rEnemyMaterialTable::operator delete(void* p_addr) {
 // Address: 0x0066d1e0 - 0x0066d266 (134 bytes)
 bool rEnemyMaterialTable::loadData(MtDataReader& in, cEnemyMaterialTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mIdx = in.readU32();
-    pData->mMaterialType = in.readU32();
-    pData->mMaterialNo = in.readS32();
-    pData->mMaterialWeakPointNo = in.readU32();
-    pData->mMaterialAnimationType = in.readU32();
-    pData->mDieIsNoCall = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mIdx);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMaterialType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMaterialNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMaterialWeakPointNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMaterialAnimationType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mDieIsNoCall);
     return true;
 }
 
@@ -196,4 +208,8 @@ template const cEnemyMaterialTable* rTbl2<cEnemyMaterialTable>::getData(unsigned
 // Instance at 0x01a8b7e0 - 0x01a8b7e4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEnemyMaterialTable>::getDataNum() const;
+
+// Instance at 0x01a8b970 - 0x01a8b9c8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cEnemyMaterialTable>::~rTbl2();
 

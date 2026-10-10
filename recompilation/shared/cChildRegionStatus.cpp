@@ -89,20 +89,20 @@ __attribute__((weak)) void cChildRegionStatus::update() {
 
 // Address: 0x00050b40 - 0x00051014 (1236 bytes)
 void cChildRegionStatus::setParamFromRes(cChildRegionStatusParam* paramRes) {
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (paramRes == static_cast<cChildRegionStatusParam*>(nullptr)) {
         return;

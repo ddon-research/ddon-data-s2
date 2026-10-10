@@ -164,3 +164,21 @@ public:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cAchievementData::cAchievementData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mCategory = static_cast<u8>(0);
+    this->mTrophy = static_cast<u8>(0);
+    this->mMessageIndex = static_cast<u32>(0);
+    this->mID = static_cast<u32>(0);
+    this->mTargetNum = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cAchievementHeaderData::cAchievementHeaderData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mNum = static_cast<u32>(0);
+}

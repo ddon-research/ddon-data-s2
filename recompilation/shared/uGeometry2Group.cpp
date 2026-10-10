@@ -134,28 +134,27 @@ __attribute__((weak)) void uGeometry2Group::draw(cDraw* pdraw) {
 
 // Address: 0x01314f10 - 0x01314f70 (96 bytes)
 void uGeometry2Group::registOwner(uModel* pOwner) {
-    // local: const u32 GroupNum;
-    // local: u32 i;
-    // local: uGeometry2* pNowGeometry;
+    // DWARF local not rendered: const u32 GroupNum;
+    // DWARF local not rendered: uGeometry2* pNowGeometry;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->mOwnerSystem.::nCollisionUtil::cOwnerSystem::registOwner(static_cast<MtObject*>(pOwner));
     if (this->mGeometryGroupArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1314f48 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1314f48 carries; no location-less local in scope fits
         u32 v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
-        unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the value the loop at 0x1314f48 carries; DWARF names no local for it
+        // inferred: DWARF's location-less 'i' (lexical block [0x1314f30, 0x1314f67)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        // inferred: the value the loop at 0x1314f48 carries; no location-less local in scope fits
         for (u32 v0_10 = this->mGeometryGroupArray.::MtArray::mLength - static_cast<u32>(1);;) {
-            if (i0_3 < v0_0) {
-                if (this->mGeometryGroupArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<uGeometry2*>(this->mGeometryGroupArray.::MtArray::mpArray[i0_3])->::uGeometry2::registOwner(pOwner);
+            if (i < v0_0) {
+                if (this->mGeometryGroupArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                    static_cast<uGeometry2*>(this->mGeometryGroupArray.::MtArray::mpArray[i])->::uGeometry2::registOwner(pOwner);
                 }
             }
-            if (i0_3 == v0_10) {
+            if (i == v0_10) {
                 break;
             } else {
                 v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
-                i0_3 = i0_3 + static_cast<unsigned int>(1);
+                i = i + static_cast<u32>(1);
             }
         }
     }
@@ -214,11 +213,11 @@ u32 uGeometry2Group::getGeometryGroupNum() const {
 void uGeometry2Group::setGeometryGroupDispAllON() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mGeometryGroupArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1314a97 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1314a97 carries; no location-less local in scope fits
         u32 v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the value the loop at 0x1314a97 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1314a97 carries; no location-less local in scope fits
         for (u32 v0_8 = this->mGeometryGroupArray.::MtArray::mLength - static_cast<u32>(1);;) {
             if (i0_3 < v0_0) {
                 if (this->mGeometryGroupArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
@@ -239,11 +238,11 @@ void uGeometry2Group::setGeometryGroupDispAllON() {
 void uGeometry2Group::setGeometryGroupDispAllOFF() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mGeometryGroupArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1314af7 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1314af7 carries; no location-less local in scope fits
         u32 v0_0 = this->mGeometryGroupArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the value the loop at 0x1314af7 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1314af7 carries; no location-less local in scope fits
         for (u32 v0_8 = this->mGeometryGroupArray.::MtArray::mLength - static_cast<u32>(1);;) {
             if (i0_3 < v0_0) {
                 if (this->mGeometryGroupArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {

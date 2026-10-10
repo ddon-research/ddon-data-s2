@@ -551,9 +551,9 @@ __attribute__((weak)) void cpCorePointCtrl::checkOwnerStatus() {
 
 // Address: 0x0017e0f0 - 0x0017e1d3 (227 bytes)
 void cpCorePointCtrl::checkSlaveMsg() {
-    // local: cContextInterface& context;
-    // local: bool isSend;
-    // local: cContextInterface& context;
+    // DWARF local not rendered: cContextInterface& context;
+    // DWARF local not rendered: bool isSend;
+    // DWARF local not rendered: cContextInterface& context;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->mIsWaitTimerActive != false) {
         // inferred: a temporary for the result of the call at 0x17e111, used twice; no DWARF local holds it

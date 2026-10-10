@@ -87,3 +87,74 @@ namespace nDDOIO {
     template <typename T> void readMtArrayEx(MtDataReader& r, MtTypedArray<T>& ar);
 
 }  // namespace nDDOIO
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtDataReader.h"
+#include "MtDataWriter.h"
+#include "cResPath.h"
+
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, u8& data) {
+    data = r.::MtDataReader::readU8();
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, s16& data) {
+    data = r.readS16();
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, bool& data) {
+    data = r.::MtDataReader::readU8() != static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, u32& data) {
+    data = r.readU32();
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, u16& data) {
+    data = r.readU16();
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::writeData(MtDataWriter& w, u32 data) {
+    w.writeU32(data);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, f32& data) {
+    data = r.readF32();
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::writeData(MtDataWriter& w, f32 data) {
+    w.writeF32(data);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, s32& data) {
+    data = r.readS32();
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, u64& data) {
+    data = r.readU64();
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::readData(MtDataReader& r, cResPathBase& data) {
+    data.mId = r.readU64();
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::writeData(MtDataWriter& w, s32 data) {
+    w.writeS32(data);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline void nDDOIO::writeData(MtDataWriter& w, u64 data) {
+    w.writeU64(data);
+}

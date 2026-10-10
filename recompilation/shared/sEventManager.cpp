@@ -146,7 +146,6 @@ MtUI* sEventManager::createUI(MtProperty& prop) {
 
 // Address: 0x0077dae0 - 0x0077db7d (157 bytes)
 void sEventManager::loadCmnResource() {
-    // local: rVibration* pVib;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprEventParam != static_cast<rEventParam*>(nullptr)) {
         this->mprEventParam->::cResource::release();
@@ -200,7 +199,6 @@ __attribute__((weak)) void sEventManager::reqPlay(s32 no) {
 
 // Address: 0x0077dbd0 - 0x0077dc35 (101 bytes)
 void sEventManager::getEventStage(s32 eventID, s32& stage, s32& no) {
-    // local: cEventParam* param;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (this->mprEventParam == static_cast<rEventParam*>(nullptr)) {
         return;
@@ -656,11 +654,11 @@ __attribute__((weak)) bool sEventManager::checkCancelButton() {
 
 // Address: 0x0077fe80 - 0x0077fec8 (72 bytes)
 void sEventManager::setEfcHandle(u32 id, cEfcHandle* pHandle, uDDOModel* pModel) {
-    // local: s32 index;
+    // DWARF local not rendered: s32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     sEventManager::EvtEPV* p0 = &this->mEvtEPV[0];
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     int i1 = static_cast<int>(0);
     if (id != static_cast<u32>(0)) {
         do {
@@ -681,19 +679,18 @@ void sEventManager::setEfcHandle(u32 id, cEfcHandle* pHandle, uDDOModel* pModel)
 
 // Address: 0x0077fed0 - 0x0077fef9 (41 bytes)
 s32 sEventManager::getEfcHandleIndex(u32 id) {
-    // local: s32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    int i1 = static_cast<int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0x77fee0, 0x77fef6)) is the counter this loop steps (DWARF's stale constant 0)
+    s32 i = static_cast<s32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     sEventManager::EvtEPV* p2 = &this->mEvtEPV[0];
     do {
         if (p2->mEfcId == id) {
-            return i1;
+            return i;
         }
-        i1 += static_cast<int>(1);
+        i += static_cast<s32>(1);
         p2 += static_cast<int>(1);
-    } while ((i1 + static_cast<int>(0)) <= static_cast<int>(31));
+    } while ((i + static_cast<s32>(0)) <= static_cast<s32>(31));
     return static_cast<s32>(-1);
 }
 
@@ -848,7 +845,7 @@ __attribute__((weak)) void sEventManager::setEventEpvEx() {
 
 // Address: 0x0077c3d0 - 0x0077c418 (72 bytes)
 void sEventManager::releaseEventEpvEx() {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprEfcPvdEx[0] != static_cast<rEffectProvider*>(nullptr)) {
         this->mprEfcPvdEx[0]->::cResource::release();

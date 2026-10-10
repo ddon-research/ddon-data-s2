@@ -608,7 +608,7 @@ void uDDOModel::setMaster(bool is_master) {
 
 // Address: 0x008d8f90 - 0x008d9016 (134 bytes)
 void uDDOModel::throwMaster(s32 index) {
-    // local: cContextInterface& context;
+    // DWARF local not rendered: cContextInterface& context;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->mIsMaster == false) {
         return;
@@ -737,7 +737,7 @@ __attribute__((weak)) void uDDOModel::registShlParamList(const rShlParamList* pS
 
 // Address: 0x008dd490 - 0x008dd4a2 (18 bytes)
 void uDDOModel::checkReplaceInfo(cHitInfoAfter& HitInfo) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -909,7 +909,7 @@ __attribute__((weak)) void uDDOModel::callbackHealAfter(cHitInfoAfter* pHitInfo)
 
 // Address: 0x008dd4b0 - 0x008dd4c2 (18 bytes)
 void uDDOModel::callbackDamageAfter_make(cHitInfoAfter* pHitInfo) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -922,7 +922,7 @@ void uDDOModel::callbackDamageAfter_make(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008dd4d0 - 0x008dd4e7 (23 bytes)
 void uDDOModel::callbackDamageAfter_calc(cHitInfoAfter* pHitInfo) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;
@@ -938,7 +938,7 @@ void uDDOModel::callbackDamageAfter_calc(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008dd4f0 - 0x008dd507 (23 bytes)
 void uDDOModel::callbackDamageAfter_apply(cHitInfoAfter* pHitInfo) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;
@@ -951,7 +951,7 @@ void uDDOModel::callbackDamageAfter_apply(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008dd510 - 0x008dd522 (18 bytes)
 void uDDOModel::callbackHealedAfter_make(cHitInfoAfter* pHitInfo) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -961,7 +961,7 @@ void uDDOModel::callbackHealedAfter_make(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008dd560 - 0x008dd577 (23 bytes)
 void uDDOModel::callbackHealedAfter_calc(cHitInfoAfter* pHitInfo) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;
@@ -986,8 +986,6 @@ bool uDDOModel::callbackHealedAfter_apply_slave(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008dd5f0 - 0x008dd659 (105 bytes)
 void uDDOModel::callbackGuard_make(cHitInfo* pHitInfo) {
-    // local: uDDOModel* pAttacker;
-    // local: cpHpDamageCtrl* pHpDamageCtr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfo*>(nullptr)) {
         return;
@@ -1638,7 +1636,7 @@ __attribute__((weak)) bool uDDOModel::isDead(u32 index) const {
 
 // Address: 0x008db5a0 - 0x008db5bb (27 bytes)
 bool uDDOModel::isDeadDying() {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::isDeadDying();
@@ -1649,7 +1647,7 @@ bool uDDOModel::isDeadDying() {
 
 // Address: 0x008db5c0 - 0x008db5d4 (20 bytes)
 HP_DATATYPE uDDOModel::getHpRoot() const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::getHpRoot();
@@ -1660,7 +1658,7 @@ HP_DATATYPE uDDOModel::getHpRoot() const {
 
 // Address: 0x008db5e0 - 0x008db5f4 (20 bytes)
 HP_DATATYPE uDDOModel::getHpMaxRoot() const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::getHpMaxRoot();
@@ -1671,7 +1669,7 @@ HP_DATATYPE uDDOModel::getHpMaxRoot() const {
 
 // Address: 0x008db600 - 0x008db614 (20 bytes)
 HP_DATATYPE uDDOModel::getHp(const u32 index) const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::getHp(index);
@@ -1682,7 +1680,7 @@ HP_DATATYPE uDDOModel::getHp(const u32 index) const {
 
 // Address: 0x008db620 - 0x008db634 (20 bytes)
 HP_DATATYPE uDDOModel::getHpMax(const u32 index) const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::getHpMax(index);
@@ -1699,8 +1697,8 @@ HP_DATATYPE uDDOModel::getHpMax(const u32 index) const {
 
 // Address: 0x008db720 - 0x008db74a (42 bytes)
 bool uDDOModel::isUsedPRegion(u32 index) const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
-    // local: const cParentRegionStatus* pRegion;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: const cParentRegionStatus* pRegion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index > static_cast<u32>(9)) {
     } else {
@@ -1713,7 +1711,7 @@ bool uDDOModel::isUsedPRegion(u32 index) const {
 
 // Address: 0x008db750 - 0x008db766 (22 bytes)
 f32 uDDOModel::getHpRate(u32 index) const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::getHpRate(index);
@@ -1724,7 +1722,7 @@ f32 uDDOModel::getHpRate(u32 index) const {
 
 // Address: 0x008db660 - 0x008db675 (21 bytes)
 void uDDOModel::addDamage(HP_DATATYPE damage, bool isNoDeath, u32 index) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -1734,7 +1732,7 @@ void uDDOModel::addDamage(HP_DATATYPE damage, bool isNoDeath, u32 index) {
 
 // Address: 0x008db680 - 0x008db6af (47 bytes)
 void uDDOModel::requestDie(bool isSelfDead) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -1756,7 +1754,7 @@ void uDDOModel::requestDie(bool isSelfDead) {
 
 // Address: 0x008db6b0 - 0x008db6c6 (22 bytes)
 f32 uDDOModel::getShP(const u32 index) const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::getShP(index);
@@ -1770,7 +1768,7 @@ f32 uDDOModel::getShP(const u32 index) const {
 
 // Address: 0x008db6e0 - 0x008db6f6 (22 bytes)
 f32 uDDOModel::getBlP(const u32 index) const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::getBlP(index);
@@ -1781,7 +1779,7 @@ f32 uDDOModel::getBlP(const u32 index) const {
 
 // Address: 0x008db700 - 0x008db716 (22 bytes)
 f32 uDDOModel::getBlPMax(const u32 index) const {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
         return this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::getBlPMax(index);
@@ -1792,7 +1790,7 @@ f32 uDDOModel::getBlPMax(const u32 index) const {
 
 // Address: 0x008db770 - 0x008db786 (22 bytes)
 u32 uDDOModel::getLv() {
-    // local: cContextInterface& pContext;
+    // DWARF local not rendered: cContextInterface& pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<u32>(::cContextInterface::getLv(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter));
 }
@@ -1925,7 +1923,7 @@ void uDDOModel::makeShlDamageAttackInfo(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008de770 - 0x008de7f7 (135 bytes)
 void uDDOModel::makeDamageDefenceInfo(cHitInfoAfter* pHitInfo) {
-    // local: const cContextInterface& contextDM;
+    // DWARF local not rendered: const cContextInterface& contextDM;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;
@@ -1959,8 +1957,8 @@ void uDDOModel::makeBlowShrinkAttackInfoShl(cBlowShrinkDmInfo* pInfo, uDDOModel*
 
 // Address: 0x008de810 - 0x008de8f8 (232 bytes)
 __attribute__((weak)) void uDDOModel::makeBlowShrinkAttackInfoCom(cBlowShrinkDmInfo* pInfo, uDDOModel* pAttacker, uDDOModel* pDefender, u32 atkAdjustUniqueId) {
-    // local: const cContextInterface& contextAT;
-    // local: const cContextInterface& contextDM;
+    // DWARF local not rendered: const cContextInterface& contextAT;
+    // DWARF local not rendered: const cContextInterface& contextDM;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pInfo == static_cast<cBlowShrinkDmInfo*>(nullptr)) {
         return;
@@ -2012,7 +2010,6 @@ __attribute__((weak)) void uDDOModel::makeOcdAttackInfoCom(cHitInfoAfter* pHitIn
 
 // Address: 0x008dea90 - 0x008deac5 (53 bytes)
 void uDDOModel::addOcdDamageParam(cHitInfoAfter* pHitInfo, u32 OcdUID, f32 endurance) {
-    // local: stDamageData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cOcdDamageInfo::stDamageData* pData = pHitInfo->mOcdDamageInfo.::cOcdDamageInfo::getOcdDataFromUID(OcdUID);
     if (pData == static_cast<cOcdDamageInfo::stDamageData*>(nullptr)) {
@@ -2039,9 +2036,9 @@ __attribute__((weak)) void uDDOModel::addDamageMsg(const cDamageMsg& msg) {
 void uDDOModel::clearDamageMsg() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mDamageMsgArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x8dcfa0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x8dcfa0 carries; no location-less local in scope fits
         u32 v0_0 = this->mDamageMsgArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mDamageMsgArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mDamageMsgArray.::MtArray::mpArray[i0_3];
@@ -2065,8 +2062,6 @@ void uDDOModel::clearDamageMsg() {
 
 // Address: 0x008de560 - 0x008de5dc (124 bytes)
 void uDDOModel::makeGuardAttackInfo(cHitInfo* pHitInfo) {
-    // local: uDDOModel* pAttacker;
-    // local: uDDOModel* pDefender;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfo*>(nullptr)) {
         return;
@@ -2279,7 +2274,7 @@ __attribute__((weak)) void uDDOModel::requestReleaseTouch(uDDOModel* pRelease, n
 
 // Address: 0x008de150 - 0x008de168 (24 bytes)
 void uDDOModel::clearTouchType(nDDOModel::TOUCH_TYPE type) {
-    // local: TOUCH_TYPE nowType;
+    // DWARF local not rendered: TOUCH_TYPE nowType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (type != static_cast<nDDOModel::TOUCH_TYPE>(-1)) {
         if (this->mTouchType == type) {
@@ -2299,8 +2294,8 @@ void uDDOModel::clearTouchType(nDDOModel::TOUCH_TYPE type) {
 
 // Address: 0x008dbac0 - 0x008dbb00 (64 bytes)
 u32 uDDOModel::getScrFilter() {
-    // local: bool isUseOwnerScr;
-    // local: uShlBase* pShl;
+    // DWARF local not rendered: bool isUseOwnerScr;
+    // DWARF local not rendered: uShlBase* pShl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getScrCollisionPtr() != static_cast<cpScrCollision*>(nullptr)) {
         return this->::uDDOModel::getScrCollisionPtr()->::cpScrCollision::getFilter();
@@ -2343,7 +2338,7 @@ bool uDDOModel::isHitLand() const {
 
 // Address: 0x008dbb90 - 0x008dbbad (29 bytes)
 bool uDDOModel::isAttackHit(u32 filter) {
-    // local: cpObjCollisionBase* pObjCollision;
+    // DWARF local not rendered: cpObjCollisionBase* pObjCollision;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getObjCollisionPtr() != static_cast<cpObjCollisionBase*>(nullptr)) {
         return this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::isAttackHitSub(filter, false);
@@ -2354,7 +2349,7 @@ bool uDDOModel::isAttackHit(u32 filter) {
 
 // Address: 0x008dbb70 - 0x008dbb90 (32 bytes)
 bool uDDOModel::isAttackTestHit(u32 filter) {
-    // local: cpObjCollisionBase* pObjCollision;
+    // DWARF local not rendered: cpObjCollisionBase* pObjCollision;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getObjCollisionPtr() != static_cast<cpObjCollisionBase*>(nullptr)) {
         return this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::isAttackHitSub(filter, true);
@@ -2912,7 +2907,7 @@ void uDDOModel::setAnyFlag(cHitInfoAfter& HitInfo, u64 flag) {
 
 // Address: 0x008dc550 - 0x008dc562 (18 bytes)
 void uDDOModel::addInvType(nObjCollision::UNIT_INV_TYPE type) {
-    // local: cpInvincibleCtrl* pCpInvincibleCtrl;
+    // DWARF local not rendered: cpInvincibleCtrl* pCpInvincibleCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getInvincibleCtrlPtr() == static_cast<cpInvincibleCtrl*>(nullptr)) {
         return;
@@ -2922,7 +2917,7 @@ void uDDOModel::addInvType(nObjCollision::UNIT_INV_TYPE type) {
 
 // Address: 0x008dc570 - 0x008dc582 (18 bytes)
 void uDDOModel::removeInvType(nObjCollision::UNIT_INV_TYPE type) {
-    // local: cpInvincibleCtrl* pCpInvincibleCtrl;
+    // DWARF local not rendered: cpInvincibleCtrl* pCpInvincibleCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getInvincibleCtrlPtr() == static_cast<cpInvincibleCtrl*>(nullptr)) {
         return;
@@ -2932,7 +2927,7 @@ void uDDOModel::removeInvType(nObjCollision::UNIT_INV_TYPE type) {
 
 // Address: 0x008dc590 - 0x008dc5ab (27 bytes)
 bool uDDOModel::isInvTypeActive(nObjCollision::UNIT_INV_TYPE type) const {
-    // local: cpInvincibleCtrl* pCpInvincibleCtrl;
+    // DWARF local not rendered: cpInvincibleCtrl* pCpInvincibleCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getInvincibleCtrlPtr() != static_cast<cpInvincibleCtrl*>(nullptr)) {
         return this->::uDDOModel::getInvincibleCtrlPtr()->::cpInvincibleCtrl::isInvTypeActive(type);
@@ -2943,7 +2938,7 @@ bool uDDOModel::isInvTypeActive(nObjCollision::UNIT_INV_TYPE type) const {
 
 // Address: 0x008dc5b0 - 0x008dc5cb (27 bytes)
 bool uDDOModel::isDamageAttrActive(u32 attr) const {
-    // local: cpInvincibleCtrl* pCpInvincibleCtrl;
+    // DWARF local not rendered: cpInvincibleCtrl* pCpInvincibleCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getInvincibleCtrlPtr() != static_cast<cpInvincibleCtrl*>(nullptr)) {
         return this->::uDDOModel::getInvincibleCtrlPtr()->::cpInvincibleCtrl::isDamageAttrActive(attr);
@@ -2957,7 +2952,7 @@ bool uDDOModel::isDamageAttrActive(u32 attr) const {
 
 // Address: 0x008dc5e0 - 0x008dc5fb (27 bytes)
 bool uDDOModel::isDamageAttrOldActive(u32 attr) const {
-    // local: cpInvincibleCtrl* pCpInvincibleCtrl;
+    // DWARF local not rendered: cpInvincibleCtrl* pCpInvincibleCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getInvincibleCtrlPtr() != static_cast<cpInvincibleCtrl*>(nullptr)) {
         return this->::uDDOModel::getInvincibleCtrlPtr()->::cpInvincibleCtrl::isDamageAttrOldActive(attr);
@@ -2971,7 +2966,7 @@ bool uDDOModel::isDamageAttrOldActive(u32 attr) const {
 
 // Address: 0x008dc610 - 0x008dc62b (27 bytes)
 bool uDDOModel::isDamageAttrActive_Through(nObjCollision::DAMAGE_ATTR_ENUM attrEnum, nObjCollision::UNIT_INV_THROUGH_TYPE type) const {
-    // local: cpInvincibleCtrl* pCpInvincibleCtrl;
+    // DWARF local not rendered: cpInvincibleCtrl* pCpInvincibleCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getInvincibleCtrlPtr() != static_cast<cpInvincibleCtrl*>(nullptr)) {
         return this->::uDDOModel::getInvincibleCtrlPtr()->::cpInvincibleCtrl::isDamageAttrActive_Through(attrEnum, type);
@@ -3033,7 +3028,7 @@ __attribute__((weak)) void uDDOModel::catchAbnormalCondition(u32 condition, nObj
 
 // Address: 0x008dc890 - 0x008dc8a2 (18 bytes)
 void uDDOModel::recoverAbnormalCondition(u32 condition) {
-    // local: cpOcdCtrl* pOcdCtrl;
+    // DWARF local not rendered: cpOcdCtrl* pOcdCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getOcdCtrlPtr() == static_cast<cpOcdCtrl*>(nullptr)) {
         return;
@@ -3043,7 +3038,7 @@ void uDDOModel::recoverAbnormalCondition(u32 condition) {
 
 // Address: 0x008dc8b0 - 0x008dc8cb (27 bytes)
 bool uDDOModel::isAbnormalConditionActive(u32 condition) const {
-    // local: cpOcdCtrl* pOcdCtrl;
+    // DWARF local not rendered: cpOcdCtrl* pOcdCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getOcdCtrlPtr() != static_cast<cpOcdCtrl*>(nullptr)) {
         return this->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(condition);
@@ -3060,7 +3055,7 @@ bool uDDOModel::healHp(HP_DATATYPE healHp, bool isWhiteHeal, u32 regionNo) {
 
 // Address: 0x008dc8d0 - 0x008dc8e2 (18 bytes)
 void uDDOModel::registAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -3070,7 +3065,7 @@ void uDDOModel::registAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg& srcM
 
 // Address: 0x008dc8f0 - 0x008dc902 (18 bytes)
 void uDDOModel::receiveAbsorpReqNetMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -3080,7 +3075,7 @@ void uDDOModel::receiveAbsorpReqNetMsg(const nObjCondition::stHolyAbsorpReqMsg& 
 
 // Address: 0x008dc910 - 0x008dc922 (18 bytes)
 void uDDOModel::registSoulAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -3090,7 +3085,7 @@ void uDDOModel::registSoulAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg& 
 
 // Address: 0x008dc930 - 0x008dc942 (18 bytes)
 void uDDOModel::receiveSoulAbsorpReqNetMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
+    // DWARF local not rendered: cpHpDamageCtrl* pHpDamageCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getHpDamageCtrlPtr() == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -3100,7 +3095,7 @@ void uDDOModel::receiveSoulAbsorpReqNetMsg(const nObjCondition::stHolyAbsorpReqM
 
 // Address: 0x008dc950 - 0x008dc962 (18 bytes)
 void uDDOModel::registShlRequest(const nHuman::stShellRequestMsg& msg) {
-    // local: cpShlShotCtrl* pShlShotCtrl;
+    // DWARF local not rendered: cpShlShotCtrl* pShlShotCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getShlShotCtrlPtr() == static_cast<cpShlShotCtrl*>(nullptr)) {
         return;
@@ -3119,7 +3114,7 @@ u32 uDDOModel::getHitLightToModel() {
 
 // Address: 0x008dc970 - 0x008dc99d (45 bytes)
 void uDDOModel::setGpCategory(s32 category) {
-    // local: cpLockOn* p_lockon;
+    // DWARF local not rendered: cpLockOn* p_lockon;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getLockOnPtr() != static_cast<cpLockOn*>(nullptr)) {
         this->::uDDOModel::getLockOnPtr()->::cpLockOn::setGpCategory(category);
@@ -3157,14 +3152,14 @@ __attribute__((weak)) cGeneralPoint* uDDOModel::getGeneralPointFast() {
 
 // Address: 0x008d68d0 - 0x008d69a4 (212 bytes)
 void uDDOModel::releaseAsyncArc() {
-    // local: u32 i;
-    // local: cAsyncArc* pAR;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cAsyncArc* pAR;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mAsyncArc.::MtArray::mLength == static_cast<u32>(0)) {
         if (this->mAsyncArc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
             // inferred: a temporary for the result of the call at 0x8d6967, used once; no DWARF local holds it
-            MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-            t2->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
+            MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+            t1->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
             this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
             this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
             this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
@@ -3176,17 +3171,15 @@ void uDDOModel::releaseAsyncArc() {
             return;
         }
     } else {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the value carried to 0x8d691b; DWARF names no local for it
+        // inferred: the value carried to 0x8d691b; no location-less local in scope fits
         u32 v1_0;
         for (;;) {
-            // inferred: a temporary for the value the load at 0x8d68f3 read, used once; no DWARF local holds it
-            MtObject* * t0 = this->mAsyncArc.::MtArray::getBuffer();
             // inferred: a temporary for the value the load at 0x8d68fa read, used twice; no DWARF local holds it
-            MtObject* t1 = t0[static_cast<int>(i0_3)];
-            static_cast<cAsyncArc*>(t1)->::cAsyncArc::releaseArc();
-            static_cast<cAsyncArc*>(t1)->::cAsyncArc::cancelArc();
+            MtObject* t0 = this->mAsyncArc.::MtArray::getBuffer()[static_cast<int>(i0_3)];
+            static_cast<cAsyncArc*>(t0)->::cAsyncArc::releaseArc();
+            static_cast<cAsyncArc*>(t0)->::cAsyncArc::cancelArc();
             v1_0 = this->mAsyncArc.::MtArray::mLength;
             if ((i0_3 + static_cast<unsigned int>(1)) < v1_0) {
                 i0_3 += static_cast<unsigned int>(1);
@@ -3197,8 +3190,8 @@ void uDDOModel::releaseAsyncArc() {
         if (v1_0 == static_cast<u32>(0)) {
             if (this->mAsyncArc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
                 // inferred: a temporary for the result of the call at 0x8d6967, used once; no DWARF local holds it
-                MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-                t2->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
+                MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+                t1->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
                 this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
                 this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
                 this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
@@ -3210,9 +3203,9 @@ void uDDOModel::releaseAsyncArc() {
                 return;
             }
         } else {
-            // inferred: the value the loop at 0x8d6930 carries; DWARF names no local for it
+            // inferred: the value the loop at 0x8d6930 carries; no location-less local in scope fits
             u32 v2_0 = v1_0;
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
                 if (this->mAsyncArc.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                     delete this->mAsyncArc.::MtArray::mpArray[i2_3];
@@ -3232,8 +3225,8 @@ void uDDOModel::releaseAsyncArc() {
             }
             if (this->mAsyncArc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
                 // inferred: a temporary for the result of the call at 0x8d6967, used once; no DWARF local holds it
-                MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-                t2->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
+                MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+                t1->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
                 this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
                 this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
                 this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);

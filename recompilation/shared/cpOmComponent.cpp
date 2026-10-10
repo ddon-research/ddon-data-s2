@@ -66,7 +66,7 @@ inline void cpOmLadder::operator delete(void* p_addr) {
 
 // Address: 0x004fcc40 - 0x004fcc8e (78 bytes)
 cpOmLadder::cpOmLadder() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpuOm = static_cast<uOmModel*>(nullptr);
     this->mbSetup = false;

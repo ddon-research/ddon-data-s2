@@ -3,9 +3,9 @@
 #include "rLegCtrl.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -154,7 +154,8 @@ rLegCtrl::~rLegCtrl() {
 // Address: 0x0069d050 - 0x0069d06e (30 bytes)
 bool rLegCtrl::loadData(MtDataReader& r, cLegCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mValue = r.readU32();
+    // inferred: reference argument from the copy's one access
+    ::nDDOIO::readData(r, pData->mValue);
     return true;
 }
 
@@ -206,4 +207,8 @@ template const cLegCtrl* rTbl2<cLegCtrl>::getData(unsigned int) const;
 // Instance at 0x01a9b400 - 0x01a9b404 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cLegCtrl>::getDataNum() const;
+
+// Instance at 0x01a9b5b0 - 0x01a9b608 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cLegCtrl>::~rTbl2();
 

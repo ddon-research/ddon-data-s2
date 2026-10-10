@@ -8,6 +8,7 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
+#include "../shared/nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -219,9 +220,13 @@ bool rFieldMapData::Data::load(MtDataReader& r) {
     this->mStageNo = r.readS32();
     this->mPoint.x = r.readF32();
     this->mPoint.y = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->mWorldPos = r.readV3();
-    this->mDispWideMap = r.::MtDataReader::readU8() != static_cast<u8>(0);
-    this->mQuestId = r.readU32();
+    ::nDDOIO::readData(r, this->mDispWideMap);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mQuestId);
     return true;
 }
 

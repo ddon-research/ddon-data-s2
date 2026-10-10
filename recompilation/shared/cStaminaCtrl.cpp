@@ -212,7 +212,7 @@ __attribute__((weak)) bool cStaminaCtrl::recoveryStamina(uHuman& owner, f32& sta
 
 // Address: 0x0056ff10 - 0x00570024 (276 bytes)
 void cStaminaCtrl::calcRateFromWeight(uHuman& owner, f32 weight, f32& recoveryRate, f32& decreaseRate) {
-    // local: WEIGHT_TYPE WeightType;
+    // DWARF local not rendered: WEIGHT_TYPE WeightType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     recoveryRate = 1.0f;
     decreaseRate = 1.0f;
@@ -279,7 +279,7 @@ __attribute__((weak)) void cStaminaCtrl::clearRequestParam() {
 
 // Address: 0x00570830 - 0x0057086e (62 bytes)
 void cStaminaCtrl::setJumpSTRecoverSlow() {
-    // local: uHuman* pHm;
+    // DWARF local not rendered: uHuman* pHm;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpOwner == static_cast<uDDOModel*>(nullptr)) {
         return;

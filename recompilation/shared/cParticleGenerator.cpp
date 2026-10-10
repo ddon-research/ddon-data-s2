@@ -191,7 +191,7 @@ bool cParticleGenerator::isDraw(cDraw* pDraw) const {
 
 // Address: 0x010a4e90 - 0x010a4f37 (167 bytes)
 cParticle* cParticleGenerator::closeParticle(cParticle* pParticle) {
-    // local: cParticle* pNext;
+    // DWARF local not rendered: cParticle* pNext;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     pParticle->::cParticle::kill();
     // inferred: a temporary for the value the load at 0x10a4ea8 read, used 4 times; no DWARF local holds it

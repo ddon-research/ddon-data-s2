@@ -293,3 +293,7 @@ template const cEnemyGroup* rTbl2<cEnemyGroup>::getData(unsigned int) const;
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEnemyGroup>::getDataNum() const;
 
+// Instance at 0x01a8ab30 - 0x01a8ab5a (42 bytes) of the generic rTbl2<T>::~rTbl2
+// Proven from the ELF: the body oracle checks this instance (022 D5).
+template rTbl2<cEnemyGroup>::~rTbl2();
+

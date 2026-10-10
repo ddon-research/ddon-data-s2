@@ -117,7 +117,6 @@ void rBrowserFont::clear() {
 
 // Address: 0x00648d90 - 0x00648e58 (200 bytes)
 bool rBrowserFont::load(MtStream& in) {
-    // local: MtDataReader r;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     MtDataReader r(in, static_cast<u32>(4096));
     this->clear();

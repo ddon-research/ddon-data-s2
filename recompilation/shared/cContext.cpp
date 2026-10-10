@@ -934,7 +934,7 @@ __attribute__((weak)) void cContextCharacter::addCorePointSlaveMsg(const nRegion
 
 // Address: 0x00052dc0 - 0x00052e89 (201 bytes)
 void cContextCharacter::clearCorePointSlaveMsgAll() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mCorePointSlaveMsg[0].mRegionCorePointID = static_cast<u16>(0);
     this->mCorePointSlaveMsg[0].mActiveTimer = static_cast<u16>(0);
@@ -978,8 +978,8 @@ __attribute__((weak)) const nRegionStatus::stCorePointSlaveMsg& cContextCharacte
 
 // Address: 0x00052f10 - 0x00052f57 (71 bytes)
 u32 cContextCharacter::getCorePointSlaveMsgNum() const {
-    // local: u32 num;
-    // local: u32 i;
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<u32>(((((((this->mCorePointSlaveMsg[0].mIsStandby + this->mCorePointSlaveMsg[1].mIsStandby) + this->mCorePointSlaveMsg[2].mIsStandby) + this->mCorePointSlaveMsg[3].mIsStandby) + this->mCorePointSlaveMsg[4].mIsStandby) + this->mCorePointSlaveMsg[5].mIsStandby) + this->mCorePointSlaveMsg[6].mIsStandby) + this->mCorePointSlaveMsg[7].mIsStandby);
 }
@@ -1028,8 +1028,8 @@ __attribute__((weak)) void cContextCharacter::registAbsorpReqMsg(const nObjCondi
 
 // Address: 0x00053240 - 0x00053287 (71 bytes)
 u32 cContextCharacter::getAbsorpReqNum() const {
-    // local: u32 num;
-    // local: u32 i;
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<u32>(((((((this->mAbsorpReqArray[0].mIsSeted + this->mAbsorpReqArray[1].mIsSeted) + this->mAbsorpReqArray[2].mIsSeted) + this->mAbsorpReqArray[3].mIsSeted) + this->mAbsorpReqArray[4].mIsSeted) + this->mAbsorpReqArray[5].mIsSeted) + this->mAbsorpReqArray[6].mIsSeted) + this->mAbsorpReqArray[7].mIsSeted);
 }
@@ -1040,7 +1040,7 @@ u32 cContextCharacter::getAbsorpReqNum() const {
 
 // Address: 0x000532a0 - 0x000533c1 (289 bytes)
 void cContextCharacter::clearAbsorpReqArray() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mAbsorpReqArray[0].mReqMsg.mAtkUID = static_cast<u32>(0);
     this->mAbsorpReqArray[0].mReqMsg.mDfdUID = static_cast<u32>(0);
@@ -1120,8 +1120,8 @@ __attribute__((weak)) void cContextCharacter::registSoulAbsorpReqMsg(const nObjC
 
 // Address: 0x00053610 - 0x00053657 (71 bytes)
 u32 cContextCharacter::getSoulAbsorpReqNum() const {
-    // local: u32 num;
-    // local: u32 i;
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<u32>(((((((this->mSoulAbsorpReqArray[0].mIsSeted + this->mSoulAbsorpReqArray[1].mIsSeted) + this->mSoulAbsorpReqArray[2].mIsSeted) + this->mSoulAbsorpReqArray[3].mIsSeted) + this->mSoulAbsorpReqArray[4].mIsSeted) + this->mSoulAbsorpReqArray[5].mIsSeted) + this->mSoulAbsorpReqArray[6].mIsSeted) + this->mSoulAbsorpReqArray[7].mIsSeted);
 }
@@ -1132,7 +1132,7 @@ u32 cContextCharacter::getSoulAbsorpReqNum() const {
 
 // Address: 0x00053670 - 0x00053791 (289 bytes)
 void cContextCharacter::clearSoulAbsorpReqArray() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mSoulAbsorpReqArray[0].mReqMsg.mAtkUID = static_cast<u32>(0);
     this->mSoulAbsorpReqArray[0].mReqMsg.mDfdUID = static_cast<u32>(0);
@@ -1212,8 +1212,8 @@ __attribute__((weak)) void cContextCharacter::registShellRequestMsg(const nHuman
 
 // Address: 0x00053a40 - 0x00053a87 (71 bytes)
 u32 cContextCharacter::getShellRequestInfoNum() const {
-    // local: u32 num;
-    // local: u32 i;
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<u32>(((((((this->mSheRequestArray[0].mIsSeted + this->mSheRequestArray[1].mIsSeted) + this->mSheRequestArray[2].mIsSeted) + this->mSheRequestArray[3].mIsSeted) + this->mSheRequestArray[4].mIsSeted) + this->mSheRequestArray[5].mIsSeted) + this->mSheRequestArray[6].mIsSeted) + this->mSheRequestArray[7].mIsSeted);
 }

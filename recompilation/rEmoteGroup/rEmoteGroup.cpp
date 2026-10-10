@@ -224,7 +224,6 @@ rEmoteGroup::InfoBinary::~InfoBinary() {
 
 // Address: 0x00667ff0 - 0x00668035 (69 bytes)
 s16 rEmoteGroup::InfoBinary::getEmotionNo(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rEmoteGroup::InfoBinary::MotDataBinary* data = this->getMotList(idx);

@@ -292,7 +292,7 @@ __attribute__((weak)) void cPawnAIAction::getActInterOcd(uCharacter& owner, cAIP
 
 // Address: 0x006c9d90 - 0x006c9d97 (7 bytes)
 s32 cPawnAIAction::getJustRangeActNo() const {
-    // local: s32 act_no;
+    // DWARF local not rendered: s32 act_no;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mJustRangeActNo;
 }
@@ -376,15 +376,31 @@ __attribute__((weak)) void cPawnAIAction::load(MtDataReader& r) {
     this->mSupportHpRateMax = r.readF32();
     // inferred: a temporary for the result of the call at 0x6cab89, used once; no DWARF local holds it
     u32 t5 = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     r.read(static_cast<void*>(&this->mSupportPawnActFlag), t5 * static_cast<u32>(4));
-    this->mEnableJobFlag = r.readU32();
-    this->mUseRate = r.readS32();
-    this->mUseRangeMin = r.readF32();
-    this->mUseRangeMax = r.readF32();
-    this->mEnableJobCharge = r.readU32();
-    this->mJustRangeActNo = r.readS32();
-    this->mJustRangeJob = r.readS32();
-    this->mAIPawnGroupThinkID = r.readU32();
+    ::nDDOIO::readData(r, this->mEnableJobFlag);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mUseRate);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mUseRangeMin);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mUseRangeMax);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mEnableJobCharge);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mJustRangeActNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mJustRangeJob);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mAIPawnGroupThinkID);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
@@ -521,4 +537,8 @@ template const cPawnAIAction* rTbl2<cPawnAIAction>::getData(unsigned int) const;
 // Instance at 0x01aab8e0 - 0x01aab8e4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cPawnAIAction>::getDataNum() const;
+
+// Instance at 0x01aabb50 - 0x01aabc10 (192 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cPawnAIAction>::~rTbl2();
 

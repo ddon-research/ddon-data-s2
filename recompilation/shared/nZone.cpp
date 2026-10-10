@@ -369,7 +369,7 @@ nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoOBB::getShapeType() const {
 
 // Address: 0x011b0ed0 - 0x011b0ed9 (9 bytes)
 bool nZone::ShapeInfoOBB::isHit(const MtVector3& pos) const {
-    // local: const bool ret;
+    // DWARF local not rendered: const bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return ::MtCollision::intersect(this->mOBB, pos);
 }
@@ -814,9 +814,9 @@ __attribute__((weak)) void nZone::ShapeInfoPanel::mulMatrix(nZone::ShapeInfoBase
 
 // Address: 0x011b6ba0 - 0x011b6c35 (149 bytes)
 void nZone::ShapeInfoPanel::shiftDiagonal() {
-    // local: MtVector3 temp;
-    // local: u32 i;
-    // local: MtVector3 temp2;
+    // DWARF local not rendered: MtVector3 temp;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: MtVector3 temp2;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11b6baf read, used once; no DWARF local holds it
     f32 t0 = this->mVertex[1].x;
@@ -1048,7 +1048,6 @@ __attribute__((weak)) bool nZone::cContentsPool::loadBeforeAllocateAlign4(nColli
 
 // Address: 0x011b9030 - 0x011b90af (127 bytes)
 bool nZone::cContentsPool::load(MtDataReader& r) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(r, static_cast<u16>(0), static_cast<MtObject*>(&this->mContentsListArray), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -1469,7 +1468,7 @@ nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfo() const {
 
 // Address: 0x011bae80 - 0x011baebe (62 bytes)
 const nZone::ShapeInfoBase* nZone::cLayoutElement::getShapeInfoResource() const {
-    // local: const cLayoutElement* pLayoutElementResource;
+    // DWARF local not rendered: const cLayoutElement* pLayoutElementResource;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
         if (this->mpOwner->mpNativeResource != static_cast<rZone*>(nullptr)) {
@@ -1560,7 +1559,6 @@ __attribute__((weak)) void nZone::cLayoutElement::setEnable(bool flag) {
 
 // Address: 0x011bb180 - 0x011bb1bb (59 bytes)
 bool nZone::cLayoutElement::isEnable() const {
-    // local: const cInGameGroupManager* pGroupManager;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mIsEnable != false) {
         if (this->mpOwner != static_cast<cZoneLayout*>(nullptr)) {
@@ -1665,7 +1663,6 @@ void nZone::cLayoutElement::setShapeInfo(nZone::ShapeInfoBase* pShape) {
 
 // Address: 0x011bbd50 - 0x011bbddc (140 bytes)
 void nZone::cLayoutElement::repairShapeByResource() {
-    // local: const ShapeInfoBase* pOrignalShape;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpShapeInfo == static_cast<nZone::ShapeInfoBase*>(nullptr)) {
         return;

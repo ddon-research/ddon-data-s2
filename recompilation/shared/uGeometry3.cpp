@@ -173,8 +173,7 @@ __attribute__((weak)) bool uGeometry3::loadResource(rGeometry3* pRGeometry) {
 
 // Address: 0x01316700 - 0x01316789 (137 bytes)
 void uGeometry3::restoreGeometryFromResource() {
-    // local: const cGeometryJointGroup* pSrcGroup;
-    // local: uModel* pAttachModel;
+    // DWARF local not rendered: const cGeometryJointGroup* pSrcGroup;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpRGeometry == static_cast<rGeometry3*>(nullptr)) {
         return;

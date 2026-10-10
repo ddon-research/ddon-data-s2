@@ -134,12 +134,10 @@ __attribute__((weak)) void nSessionManager::MyListener::onLeaveMember(s32 index,
 // Address: 0x0038fe20 - 0x0038fe6b (75 bytes)
 void nSessionManager::MyListener::onDrop(MtNetError* err) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    // inferred: a temporary for the value the load at 0x38fe2d read, used once; no DWARF local holds it
-    sNetwork* t0 = ::sNetwork::getInstance();
     // inferred: a temporary for the value the load at 0x38fe30 read, used twice; no DWARF local holds it
-    nSessionManager::cNetSessionManager* t1 = static_cast<sNetworkExt*>(t0)->::sNetworkExt::getSessionManager();
-    t1->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589824), static_cast<nNet::cProgress::CTRL_IDX>(6), false, static_cast<u32>(0));
-    t1->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589825), static_cast<nNet::cProgress::CTRL_IDX>(10), false, static_cast<u32>(0));
+    nSessionManager::cNetSessionManager* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager();
+    t0->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589824), static_cast<nNet::cProgress::CTRL_IDX>(6), false, static_cast<u32>(0));
+    t0->::nSessionManager::cNetSessionManager::requestSessionCommand(static_cast<nNet::cProgress::CMD>(589825), static_cast<nNet::cProgress::CTRL_IDX>(10), false, static_cast<u32>(0));
 }
 
 // Address: 0x0038feb0 - 0x0038fee6 (54 bytes)
@@ -287,7 +285,7 @@ __attribute__((weak)) void nSessionManager::cLobbyDataMessage::serialize(BitWrit
 
 // Address: 0x00392490 - 0x003924c1 (49 bytes)
 void nSessionManager::cLobbyDataMessage::deserialize(BitReader& r) {
-    // local: s32 sessionType;
+    // DWARF local not rendered: s32 sessionType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (r.::BitReader::readS32() == static_cast<s32>(0)) {
         this->mMsgType = static_cast<nSessionManager::cLobbyDataMessage::LOBBY_MSG_TYPE>(r.::BitReader::readS32());
@@ -558,8 +556,8 @@ __attribute__((weak)) s32 nSessionManager::cNetSessionManager::getGameSessionPaw
 
 // Address: 0x0038e110 - 0x0038e14d (61 bytes)
 void nSessionManager::cNetSessionManager::setup() {
-    // local: s32 i;
-    // local: Session* pSession;
+    // DWARF local not rendered: s32 i;
+    // DWARF local not rendered: Session* pSession;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sNetwork::getInstance()->mpSession[0] != static_cast<nNetwork::Session*>(nullptr)) {
         ::sNetwork::getInstance()->mpSession[0]->::nNetwork::Session::addListener(static_cast<nNetwork::SessionListener*>(&this->mListener[0]));
@@ -581,7 +579,7 @@ __attribute__((weak)) void nSessionManager::cNetSessionManager::remove() {
 
 // Address: 0x00390a50 - 0x00390b40 (240 bytes)
 bool nSessionManager::cNetSessionManager::createFlow(nNet::cProgress& progress) {
-    // local: s32 session_id;
+    // DWARF local not rendered: s32 session_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (progress.mState) {
         case static_cast<nNet::STATE>(0):
@@ -640,9 +638,9 @@ bool nSessionManager::cNetSessionManager::createFlow(nNet::cProgress& progress) 
 
 // Address: 0x00390b70 - 0x00390c50 (224 bytes)
 bool nSessionManager::cNetSessionManager::joinFlow(nNet::cProgress& progress) {
-    // local: const CMD cmd;
-    // local: s32 session_id;
-    // local: bool success;
+    // DWARF local not rendered: const CMD cmd;
+    // DWARF local not rendered: s32 session_id;
+    // DWARF local not rendered: bool success;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (progress.mState) {
         case static_cast<nNet::STATE>(0):
@@ -713,9 +711,9 @@ bool nSessionManager::cNetSessionManager::joinFlow(nNet::cProgress& progress) {
 
 // Address: 0x00390c60 - 0x00390d30 (208 bytes)
 bool nSessionManager::cNetSessionManager::startFlow(nNet::cProgress& progress) {
-    // local: const CMD cmd;
-    // local: s32 session_id;
-    // local: bool success;
+    // DWARF local not rendered: const CMD cmd;
+    // DWARF local not rendered: s32 session_id;
+    // DWARF local not rendered: bool success;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (progress.mState) {
         case static_cast<nNet::STATE>(0):
@@ -1028,10 +1026,10 @@ __attribute__((weak)) bool nSessionManager::cNetSessionManager::isEnableReady(bo
 
 // Address: 0x0038f520 - 0x0038f600 (224 bytes)
 void nSessionManager::cNetSessionManager::setReadyAction(bool withPawn) {
-    // local: uPlayer* pPl;
-    // local: s32 i;
-    // local: const cContextInstHm* pContext;
-    // local: uHuman* pPawn;
+    // DWARF local not rendered: uPlayer* pPl;
+    // DWARF local not rendered: s32 i;
+    // DWARF local not rendered: const cContextInstHm* pContext;
+    // DWARF local not rendered: uHuman* pPawn;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(4), static_cast<u32>(14), true, true, false);
     if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
@@ -1040,7 +1038,7 @@ void nSessionManager::cNetSessionManager::setReadyAction(bool withPawn) {
         }
     }
     if (withPawn != false) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             // inferred: a temporary for the result of the call at 0x38f59b, used twice; no DWARF local holds it
             cContextInstHm* t0 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i0_3, true);
@@ -1079,35 +1077,33 @@ __attribute__((weak)) bool nSessionManager::cNetSessionManager::isSetReadyAction
 
 // Address: 0x0038f630 - 0x0038f722 (242 bytes)
 void nSessionManager::cNetSessionManager::endReadyAction() {
-    // local: uPlayer* pPl;
-    // local: s32 i;
-    // local: const cContextInstHm* pContext;
-    // local: uHuman* pPawn;
+    // DWARF local not rendered: uPlayer* pPl;
+    // DWARF local not rendered: s32 i;
+    // DWARF local not rendered: const cContextInstHm* pContext;
+    // DWARF local not rendered: uHuman* pPawn;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(4), static_cast<u32>(14), false, true, false);
-    // inferred: a temporary for the value the load at 0x38f669 read, used once; no DWARF local holds it
-    sPlayerManager* t1 = ::sPlayerManager::getInstance();
     // inferred: a temporary for the value the load at 0x38f66d read, used 4 times; no DWARF local holds it
-    uPlayer* t2 = t1->::sPlayerManager::getMyPlayer();
-    if (t2 != static_cast<uPlayer*>(nullptr)) {
-        if (t2->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-            if (t2->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
-                t2->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
+    uPlayer* t1 = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer();
+    if (t1 != static_cast<uPlayer*>(nullptr)) {
+        if (t1->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
+            if (t1->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
+                t1->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
             }
         }
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i0_11 = static_cast<unsigned int>(0);;) {
         // inferred: a temporary for the result of the call at 0x38f6b2, used twice; no DWARF local holds it
-        cContextInstHm* t3 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i0_11, true);
-        if (::cContextInterface::isPawnOwner(t3) != false) {
+        cContextInstHm* t2 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i0_11, true);
+        if (::cContextInterface::isPawnOwner(t2) != false) {
             // inferred: a temporary for the result of the call at 0x38f6cd, used 5 times; no DWARF local holds it
-            uHuman* t4 = ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(t3);
-            if (t4 != static_cast<uHuman*>(nullptr)) {
-                if (t4->::cUnit::isEnable()) {
-                    if (t4->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-                        if (t4->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
-                            t4->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
+            uHuman* t3 = ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(t2);
+            if (t3 != static_cast<uHuman*>(nullptr)) {
+                if (t3->::cUnit::isEnable()) {
+                    if (t3->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
+                        if (t3->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
+                            t3->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
                         }
                     }
                 }
@@ -1424,8 +1420,8 @@ __attribute__((weak)) void nSessionManager::cNetSessionManager::abortSessionComm
 
 // Address: 0x00391d70 - 0x00391df1 (129 bytes)
 void nSessionManager::cNetSessionManager::abortAllSessionCommand() {
-    // local: u32 i;
-    // local: cProgress& progress;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cProgress& progress;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mSesMngProgress[0].mState == static_cast<nNet::STATE>(7)) {
     } else {

@@ -142,8 +142,8 @@ bool nNetwork::nAchievement::Object::award(s32 user_index, s32 id) {
 
 // Address: 0x01193860 - 0x01193863 (3 bytes)
 bool nNetwork::nAchievement::Object::setVolume(f32 level) {
-    // local: INative* pNav;
-    // local: IAchievementOption* pProg;
+    // DWARF local not rendered: INative* pNav;
+    // DWARF local not rendered: IAchievementOption* pProg;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return true;
 }
@@ -156,43 +156,41 @@ bool nNetwork::nAchievement::Object::setVolume(f32 level) {
 
 // Address: 0x01193880 - 0x011938bb (59 bytes)
 bool nNetwork::nAchievement::Object::addListener(nNetwork::nAchievement::Listener* p) {
-    // local: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    // inferred: the counter this loop steps; DWARF names no local for it
-    int i0 = static_cast<int>(0);
+    // inferred: DWARF's location-less 'i' (lexical block [0x1193890, 0x11938a2), [0x11938a5, 0x11938ba)) is the counter this loop steps
+    s32 i = static_cast<s32>(0);
     if (this->mListenerNum <= static_cast<s32>(15)) {
         do {
-            if (this->mListenerUse[i0] == false) {
-                this->mpListener[i0] = p;
-                this->mListenerUse[i0] = true;
+            if (this->mListenerUse[i] == false) {
+                this->mpListener[i] = p;
+                this->mListenerUse[i] = true;
                 this->mListenerNum = this->mListenerNum + static_cast<s32>(1);
                 return true;
             }
-            i0 += static_cast<int>(1);
-        } while (i0 <= static_cast<int>(15));
+            i += static_cast<s32>(1);
+        } while (i <= static_cast<s32>(15));
     }
     return false;
 }
 
 // Address: 0x011938c0 - 0x011938f9 (57 bytes)
 void nNetwork::nAchievement::Object::removeListener(nNetwork::nAchievement::Listener* p) {
-    // local: s32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     nNetwork::nAchievement::Listener* * p0 = &this->mpListener[0];
-    // inferred: the counter this loop steps; DWARF names no local for it
-    int i1 = static_cast<int>(0);
+    // inferred: DWARF's location-less 'i' (lexical block [0x11938d0, 0x11938f8)) is the counter this loop steps
+    s32 i = static_cast<s32>(0);
     if (this->mListenerNum > static_cast<s32>(0)) {
         do {
             if (p == (*p0)) {
                 *p0 = static_cast<nNetwork::nAchievement::Listener*>(nullptr);
-                this->mListenerUse[i1] = false;
+                this->mListenerUse[i] = false;
                 this->mListenerNum = this->mListenerNum - static_cast<s32>(1);
                 return;
             }
             p0 += static_cast<int>(1);
-            i1 += static_cast<int>(1);
-        } while (i1 <= static_cast<int>(15));
+            i += static_cast<s32>(1);
+        } while (i <= static_cast<s32>(15));
     }
 }
 

@@ -3,9 +3,9 @@
 #include "nPawn.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -101,11 +101,21 @@ __attribute__((weak)) bool cPawnEnableArea::isEnableAreaY(const MtVector3& owner
 // Address: 0x006235d0 - 0x0062362d (93 bytes)
 void cPawnEnableArea::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMinXZ = r.readF32();
-    this->mMaxXZ = r.readF32();
-    this->mMinY = r.readF32();
-    this->mMaxY = r.readF32();
-    this->mRadius = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMinXZ);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMaxXZ);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMinY);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMaxY);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mRadius);
 }
 
 // No out-of-line body: no code in the ELF

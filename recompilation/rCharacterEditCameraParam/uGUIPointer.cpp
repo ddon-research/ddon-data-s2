@@ -281,7 +281,6 @@ __attribute__((weak)) void uGUIPointer::setupPosFromReq() {
 
 // Address: 0x00b4aa40 - 0x00b4ab4a (266 bytes)
 void uGUIPointer::adjustScale() {
-    // local: f32 fScaleRate;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->mpInstNullPointer == static_cast<cGUIInstNull*>(nullptr)) {
         return;

@@ -127,3 +127,27 @@ public:
     u8 m_ucRecieveState;  // offset: 0x2a
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataStampBonus::CDataStampBonus() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unBonusType = static_cast<u32>(0);
+    this->m_unBonusValue = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataStampBonusDaily::CDataStampBonusDaily() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usStampNum = static_cast<u16>(0);
+    this->m_ucRecieveState = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataStampBonusTotal::CDataStampBonusTotal() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usStampNum = static_cast<u16>(0);
+    this->m_ucRecieveState = static_cast<u8>(0);
+}

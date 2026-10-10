@@ -119,9 +119,8 @@ __attribute__((weak)) void rDungeonMarker::createProperty(MtPropertyList& s) {
 
 // Address: 0x0065ba80 - 0x0065bb4e (206 bytes)
 bool rDungeonMarker::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u32 version;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u32 version;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(4803908)) {

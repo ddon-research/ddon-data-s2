@@ -84,8 +84,6 @@ __attribute__((weak)) bool rDynamicSbc::load(MtStream& in) {
 
 // Address: 0x01377400 - 0x01377604 (516 bytes)
 bool rDynamicSbc::save(MtStream& out) {
-    // local: MtDataWriter fout;
-    // local: u32 i;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
     MtDataWriter fout(out, static_cast<u32>(4096), static_cast<u32>(4096));
     fout.::MtDataWriter::writeU32(static_cast<u32>(1667396452));

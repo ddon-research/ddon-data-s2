@@ -152,15 +152,15 @@ u32 cpWorkRate::getTypeBit() const {
 
 // Address: 0x00541ce0 - 0x00541ceb (11 bytes)
 f32 cpWorkRate::getCollisionCacheRate() const {
-    // local: f32 speed;
+    // DWARF local not rendered: f32 speed;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mSpeed[0] * this->mSpeed[5];
 }
 
 // Address: 0x00541cf0 - 0x00541d2b (59 bytes)
 f32 cpWorkRate::getSpeedAll() const {
-    // local: f32 speed;
-    // local: u32 i;
+    // DWARF local not rendered: f32 speed;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mSpeed[10] * (this->mSpeed[9] * (this->mSpeed[8] * (this->mSpeed[7] * (this->mSpeed[6] * (this->mSpeed[5] * (this->mSpeed[4] * (this->mSpeed[3] * (this->mSpeed[2] * (this->mSpeed[0] * this->mSpeed[1])))))))));
 }

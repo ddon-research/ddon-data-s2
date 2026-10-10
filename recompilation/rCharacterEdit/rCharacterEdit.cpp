@@ -105,8 +105,7 @@ __attribute__((weak)) bool rCharacterEdit::load(MtStream& in) {
 
 // Address: 0x006520a0 - 0x00652144 (164 bytes)
 bool rCharacterEdit::save(MtStream& out) {
-    // local: MtDataWriter w;
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     (&w)->writeU32(static_cast<u32>(5522501));
@@ -158,8 +157,8 @@ __attribute__((weak)) u32 rCharacterEdit::toSlider(f32 x, f32 min, f32 max, u32 
 
 // Address: 0x00652210 - 0x0065222f (31 bytes)
 f32 rCharacterEdit::fromSlider(u32 x, f32 min, f32 max, u32 div) {
-    // local: f32 delta;
-    // local: f32 ret;
+    // DWARF local not rendered: f32 delta;
+    // DWARF local not rendered: f32 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return min + (((max - min) / static_cast<float>(div)) * static_cast<float>(x));
 }

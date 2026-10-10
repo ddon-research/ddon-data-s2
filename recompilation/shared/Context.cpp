@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -29,9 +30,11 @@ inline MtAllocator* CDataContextSetBase::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataContextSetBase::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataContextSetBase::MyDTI::newInstance at 0x003d9524-0x003d954d (called at ContextImplement.inc:23)
-// void* CDataContextSetBase::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataContextSetBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextSetBase::DTI)->memAlloc(sz, align, ::CDataContextSetBase::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataContextSetBase::operator new[](size_t sz, u32 align);
@@ -73,8 +76,8 @@ __attribute__((weak)) void CDataContextSetBase::operator delete(void* p_addr) {
 // CDataContextSetBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d9520 - 0x003d9577 (87 bytes)
-__attribute__((weak)) MtObject* CDataContextSetBase::MyDTI::newInstance() const {
-    DDON_STUB("CDataContextSetBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataContextSetBase::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataContextSetBase;
 }
 

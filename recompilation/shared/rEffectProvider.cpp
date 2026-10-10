@@ -265,9 +265,11 @@ const MtDTI& rEffectProvider::INFO_EFFECT::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rEffectProvider::INFO_EFFECT::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in rEffectProvider::INFO_EFFECT::MyDTI::newInstance at 0x00662e74-0x00662e9d (called at rEffectProvider.cpp:712)
-// void* rEffectProvider::INFO_EFFECT::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* rEffectProvider::INFO_EFFECT::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_EFFECT::DTI)->memAlloc(sz, align, ::rEffectProvider::INFO_EFFECT::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* rEffectProvider::INFO_EFFECT::operator new[](size_t sz, u32 align);
@@ -396,9 +398,9 @@ __attribute__((weak)) rEffectProvider::EffectParam* rEffectProvider::INFO_EFFECT
 // rEffectProvider::INFO_EFFECT::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00662e70 - 0x00662edd (109 bytes)
-__attribute__((weak)) MtObject* rEffectProvider::INFO_EFFECT::MyDTI::newInstance() const {
-    DDON_STUB("rEffectProvider::INFO_EFFECT::MyDTI::newInstance")
-    return nullptr;
+MtObject* rEffectProvider::INFO_EFFECT::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::rEffectProvider::INFO_EFFECT;
 }
 
 // No out-of-line body: no code in the ELF
@@ -655,7 +657,7 @@ rEffectProvider::EffectElement::~EffectElement() {
 
 // Address: 0x00662bc0 - 0x00662c5e (158 bytes)
 void rEffectProvider::EffectElement::setEffectList(rEffectList* pEffectList, u32 no) {
-    // local: rEffectList* pELNat;
+    // DWARF local not rendered: rEffectList* pELNat;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (no <= static_cast<u32>(7)) {
         if (pEffectList != this->mpEffectList[no]) {

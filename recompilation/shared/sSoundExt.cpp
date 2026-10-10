@@ -205,9 +205,9 @@ void sSoundExt::setup() {
 void sSoundExt::reset() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mVoiceRequest.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x84bf90 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x84bf90 carries; no location-less local in scope fits
         u32 v0_0 = this->mVoiceRequest.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mVoiceRequest.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mVoiceRequest.::MtArray::mpArray[i0_3];
@@ -233,9 +233,9 @@ void sSoundExt::reset() {
     this->mVoiceRequest.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mVoiceRequest.::MtArray::mLength = static_cast<u32>(0);
     if (this->mStageSplitAreaResource.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x84c010 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x84c010 carries; no location-less local in scope fits
         u32 v2_0 = this->mStageSplitAreaResource.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mStageSplitAreaResource.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mStageSplitAreaResource.::MtArray::mpArray[i2_3];
@@ -342,9 +342,9 @@ __attribute__((weak)) uintptr sSoundExt::requestSe(rSoundRequest* pRequest, u32 
 
 // Address: 0x00850140 - 0x0085017c (60 bytes)
 void sSoundExt::keyOffSe(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, sSoundExt::SE_SEARCH_KEY searchKey) {
-    // local: u32 w_reqNo;
-    // local: rSoundRequest* pReq;
-    // local: uintptr w_thisId;
+    // DWARF local not rendered: u32 w_reqNo;
+    // DWARF local not rendered: rSoundRequest* pReq;
+    // DWARF local not rendered: uintptr w_thisId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (searchKey != static_cast<sSoundExt::SE_SEARCH_KEY>(0)) {
         if (searchKey == static_cast<sSoundExt::SE_SEARCH_KEY>(2)) {
@@ -494,8 +494,8 @@ __attribute__((weak)) void sSoundExt::fadeInStream(rSoundStreamRequest* pRequest
 
 // Address: 0x00850900 - 0x00850940 (64 bytes)
 void sSoundExt::fadeOutStream(rSoundStreamRequest* pRequest, const u32 reqNo, const uintptr thisId, u32 fadeSpd, sSoundExt::STREAM_SEARCH_KEY searchKey) {
-    // local: u32 w_reqNo;
-    // local: uintptr w_thisId;
+    // DWARF local not rendered: u32 w_reqNo;
+    // DWARF local not rendered: uintptr w_thisId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
         return;
@@ -548,8 +548,8 @@ void sSoundExt::setPlayPos(rSoundStreamRequest* pr, const u32 reqNo, const uintp
 
 // Address: 0x00850d00 - 0x00850d40 (64 bytes)
 void sSoundExt::pauseStream(rSoundStreamRequest* pRequest, const u32 reqNo, const uintptr thisId, sSoundExt::STREAM_SEARCH_KEY searchKey) {
-    // local: u32 w_reqNo;
-    // local: uintptr w_thisId;
+    // DWARF local not rendered: u32 w_reqNo;
+    // DWARF local not rendered: uintptr w_thisId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
         return;
@@ -571,8 +571,8 @@ void sSoundExt::pauseStream(rSoundStreamRequest* pRequest, const u32 reqNo, cons
 
 // Address: 0x00850d40 - 0x00850d80 (64 bytes)
 void sSoundExt::resumeStream(rSoundStreamRequest* pRequest, const u32 reqNo, const uintptr thisId, sSoundExt::STREAM_SEARCH_KEY searchKey) {
-    // local: u32 w_reqNo;
-    // local: uintptr w_thisId;
+    // DWARF local not rendered: u32 w_reqNo;
+    // DWARF local not rendered: uintptr w_thisId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pRequest == static_cast<rSoundStreamRequest*>(nullptr)) {
         return;
@@ -724,7 +724,7 @@ rSoundRequest* sSoundExt::getArmorSeSrqResource(u32 SeType) {
 
 // Address: 0x0084ca00 - 0x0084caf0 (240 bytes)
 __attribute__((weak)) void sSoundExt::releaseArmorSeSrqResource() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprArmorSeRequest[0] == static_cast<rSoundRequest*>(nullptr)) {
     } else {
@@ -823,7 +823,7 @@ __attribute__((weak)) void sSoundExt::loadBgmResource(bool isLobby, bool isSplit
 
 // Address: 0x0084caf0 - 0x0084cbd5 (229 bytes)
 void sSoundExt::loadBattleCommon() {
-    // local: rSoundRequest* pReq;
+    // DWARF local not rendered: rSoundRequest* pReq;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::sSoundExt::loadHitSeSrqResource();
     this->::sSoundExt::loadHitSeTableResource();
@@ -1677,11 +1677,10 @@ __attribute__((weak)) void sSoundExt::releaseNoStopStreamAll() {
 
 // Address: 0x00850b30 - 0x00850b77 (71 bytes)
 sSoundExt::cNonStopStream* sSoundExt::checkNoStopStream(rSoundStreamRequest* pRequest) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i0 = static_cast<unsigned int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0x850b43, 0x850b76)) is the counter this loop steps
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     sSoundExt::cNonStopStream* p2 = &this->mNoStopStream[0];
     if (pRequest != static_cast<rSoundStreamRequest*>(nullptr)) {
         do {
@@ -1691,9 +1690,9 @@ sSoundExt::cNonStopStream* sSoundExt::checkNoStopStream(rSoundStreamRequest* pRe
                     return p2;
                 }
             }
-            i0 += static_cast<unsigned int>(1);
+            i += static_cast<u32>(1);
             p2 += static_cast<int>(1);
-        } while (i0 <= static_cast<unsigned int>(7));
+        } while (i <= static_cast<u32>(7));
     }
     return static_cast<sSoundExt::cNonStopStream*>(nullptr);
 }

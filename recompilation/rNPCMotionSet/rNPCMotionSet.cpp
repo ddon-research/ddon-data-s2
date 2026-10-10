@@ -253,7 +253,6 @@ __attribute__((weak)) u32 rNPCMotionSet::InfoBinary::getMotionNo(u32 idx) {
 
 // Address: 0x006ae800 - 0x006ae842 (66 bytes)
 u8 rNPCMotionSet::InfoBinary::getProbability(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -269,7 +268,6 @@ u8 rNPCMotionSet::InfoBinary::getProbability(u32 idx) {
 
 // Address: 0x006ae850 - 0x006ae88c (60 bytes)
 s8 rNPCMotionSet::InfoBinary::getNext(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -285,7 +283,6 @@ s8 rNPCMotionSet::InfoBinary::getNext(u32 idx) {
 
 // Address: 0x006ae990 - 0x006ae9cd (61 bytes)
 bool rNPCMotionSet::InfoBinary::getDispItem(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -304,7 +301,6 @@ bool rNPCMotionSet::InfoBinary::getDispItem(u32 idx) {
 
 // Address: 0x006ae9e0 - 0x006aea1d (61 bytes)
 bool rNPCMotionSet::InfoBinary::getDisableCancel(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -320,7 +316,6 @@ bool rNPCMotionSet::InfoBinary::getDisableCancel(u32 idx) {
 
 // Address: 0x006ae890 - 0x006ae8cb (59 bytes)
 s16 rNPCMotionSet::InfoBinary::getWait(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -336,7 +331,6 @@ s16 rNPCMotionSet::InfoBinary::getWait(u32 idx) {
 
 // Address: 0x006ae950 - 0x006ae98b (59 bytes)
 s16 rNPCMotionSet::InfoBinary::getStartFrame(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -352,7 +346,6 @@ s16 rNPCMotionSet::InfoBinary::getStartFrame(u32 idx) {
 
 // Address: 0x006ae8d0 - 0x006ae90b (59 bytes)
 s16 rNPCMotionSet::InfoBinary::getRandomWait(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -368,7 +361,6 @@ s16 rNPCMotionSet::InfoBinary::getRandomWait(u32 idx) {
 
 // Address: 0x006ae910 - 0x006ae94c (60 bytes)
 s8 rNPCMotionSet::InfoBinary::getFrame(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotionSet::InfoBinary::MotDataBinary* data = this->getMotList(idx);

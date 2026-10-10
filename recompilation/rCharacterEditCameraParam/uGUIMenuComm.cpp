@@ -417,7 +417,7 @@ u32 uGUIMenuComm::evCtrlHLEditMove(cControl::Message* msg) {
 
 // Address: 0x00b137d0 - 0x00b1389a (202 bytes)
 void uGUIMenuComm::updateCtgrList() {
-    // local: u32 uCtgrNum;
+    // DWARF local not rendered: u32 uCtgrNum;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
     if (this->mpCtrlVLCtgr == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
         return;

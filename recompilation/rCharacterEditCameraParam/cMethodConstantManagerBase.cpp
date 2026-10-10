@@ -103,7 +103,7 @@ cMethodConstantTimeName::cMethodConstantBase::cMethodConstantBase() {
 
 // Address: 0x002db680 - 0x002db6b0 (48 bytes)
 bool cMethodConstantTimeName::cMethodConstantBase::checkTimer() {
-    // local: f32 t;
+    // DWARF local not rendered: f32 t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (0.0f >= (this->mTimerMax - this->mTimer)) {
         this->mTimer = this->mTimer - this->mTimerMax;

@@ -3,9 +3,9 @@
 #include "rDmVecWeightParam.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -143,11 +143,21 @@ inline void rDmVecWeightParam::operator delete(void* p_addr) {
 // Address: 0x0065fe00 - 0x0065fe5f (95 bytes)
 bool rDmVecWeightParam::loadData(MtDataReader& in, cDmVecWeightParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mWeight = in.readF32();
-    pData->mWeightAdjSpeedXZ = in.readF32();
-    pData->mWeightAdjSpeedY = in.readF32();
-    pData->mWeightAdjAccXZ = in.readF32();
-    pData->mWeightAdjAccY = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWeight);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWeightAdjSpeedXZ);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWeightAdjSpeedY);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWeightAdjAccXZ);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWeightAdjAccY);
     return true;
 }
 
@@ -193,4 +203,8 @@ template const cDmVecWeightParam* rTbl2<cDmVecWeightParam>::getData(unsigned int
 // Instance at 0x01a84b90 - 0x01a84b94 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cDmVecWeightParam>::getDataNum() const;
+
+// Instance at 0x01a84d20 - 0x01a84d78 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cDmVecWeightParam>::~rTbl2();
 

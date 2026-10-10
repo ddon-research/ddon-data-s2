@@ -155,10 +155,9 @@ void nCharacterData::stCharacterName::clearName() {
 
 // Address: 0x0004a920 - 0x0004a944 (36 bytes)
 bool nCharacterData::stEquipData::checkEquipCategory(nCharacterData::EQUIP_SLOT_TYPE category) const {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_SLOT_TYPE* p2 = ::nCharacterData::stEquipData::mEquipTbl;
     do {
         if ((*p2) == category) {
@@ -295,7 +294,7 @@ __attribute__((weak)) u32 nCharacterData::stEquipData::getExp(const u8 category,
 
 // Address: 0x0004b3d0 - 0x0004b3e9 (25 bytes)
 void nCharacterData::stEquipData::setJobItem(u32 itemNo, nCharacterData::ARROW_EQUIP no) {
-    // local: u8 slotIdx;
+    // DWARF local not rendered: u8 slotIdx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (no != static_cast<nCharacterData::ARROW_EQUIP>(1)) {
         if (no == static_cast<nCharacterData::ARROW_EQUIP>(2)) {

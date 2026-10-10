@@ -498,3 +498,71 @@ public:
     u32 m_unLikability;  // offset: 0x22c
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPartnerPawnData::CDataPartnerPawnData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_unLikability = static_cast<u32>(0);
+    this->m_ucPersonality = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPawnCraftSkill::CDataPawnCraftSkill() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucType = static_cast<u8>(0);
+    this->m_unLevel = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPawnFeedback::CDataPawnFeedback() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucType = static_cast<u8>(0);
+    this->m_ucValue = static_cast<u8>(0);
+    this->m_ucCommentNo = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPawnHp::CDataPawnHp() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_unHp = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPawnListData::CDataPawnListData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_unLevel = static_cast<u32>(0);
+    this->m_unCraftRank = static_cast<u32>(0);
+    this->m_unCommentSize = static_cast<u32>(0);
+    this->m_ullLatestReturnDate = static_cast<u64>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPawnName::CDataPawnName() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPawnReaction::CDataPawnReaction() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucReactionType = static_cast<u8>(0);
+    this->m_unMotionNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPawnTotalScore::CDataPawnTotalScore() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unRentalCount = static_cast<u32>(0);
+    this->m_unBattleCount = static_cast<u32>(0);
+    this->m_unCraftCount = static_cast<u32>(0);
+}

@@ -95,7 +95,6 @@ __attribute__((weak)) void rLoadingParam::createProperty(MtPropertyList& s) {
 
 // Address: 0x0069e590 - 0x0069e611 (129 bytes)
 bool rLoadingParam::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(4), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -103,7 +102,6 @@ bool rLoadingParam::load(MtStream& in) {
 
 // Address: 0x0069e620 - 0x0069e6a6 (134 bytes)
 bool rLoadingParam::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(4), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rLoadingParam::DTI));
@@ -113,9 +111,9 @@ bool rLoadingParam::save(MtStream& out) {
 void rLoadingParam::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x69e6d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x69e6d0 carries; no location-less local in scope fits
         u32 v0_0 = this->mArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mArray.::MtArray::mpArray[i0_3];

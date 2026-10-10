@@ -114,3 +114,7 @@ template const cOcdPriorityParam* rTbl2<cOcdPriorityParam>::getData(unsigned int
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cOcdPriorityParam>::getDataNum() const;
 
+// Instance at 0x01aaa640 - 0x01aaa686 (70 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cOcdPriorityParam>::~rTbl2();
+

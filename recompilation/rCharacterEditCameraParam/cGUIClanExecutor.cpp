@@ -4,6 +4,7 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/MtObject.h"
 #include "../shared/cArcLoader.h"
 #include "../shared/cUIObject.h"
 #include "../shared/cUnit.h"
@@ -68,8 +69,16 @@ inline void cGUIClanExecutor::operator delete(void* p_addr) {
 
 // Address: 0x000cfdc0 - 0x000cfe04 (68 bytes)
 cGUIClanExecutor::cGUIClanExecutor() {
-    DDON_STUB("cGUIClanExecutor::cGUIClanExecutor")
-    /* stub */
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mArc = static_cast<TICKET>(::sArchiveManager::INVALID_TICKET);
+    this->mProc = static_cast<cGUIClanExecutor::PR>(0);
+    this->mOldProc = static_cast<cGUIClanExecutor::PR>(0);
+    this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+    this->mFlags = static_cast<u32>(0);
+    this->mIsEnd = true;
+    this->mIsInit = true;
+    this->mIsScoutEntryCancel = false;
 }
 
 // Address: 0x000cfe10 - 0x000cfe93 (131 bytes)
@@ -190,8 +199,8 @@ void cGUIClanExecutor::start(u32 flags) {
 // cGUIClanExecutor::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x000cfc90 - 0x000cfd05 (117 bytes)
-__attribute__((weak)) MtObject* cGUIClanExecutor::MyDTI::newInstance() const {
-    DDON_STUB("cGUIClanExecutor::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGUIClanExecutor::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::cGUIClanExecutor;
 }
 

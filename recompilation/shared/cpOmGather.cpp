@@ -309,7 +309,7 @@ __attribute__((weak)) void cGatherItemList::setItemGetList(const GatheringItemEl
 
 // Address: 0x0050a650 - 0x0050a6be (110 bytes)
 u32 cGatherItemList::getItemListGroupId() {
-    // local: u32 groupId;
+    // DWARF local not rendered: u32 groupId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mGatherType != static_cast<u32>(2)) {
         if (this->mGatherType == static_cast<u32>(1)) {
@@ -329,7 +329,7 @@ u32 cGatherItemList::getItemListGroupId() {
 
 // Address: 0x0050a6c0 - 0x0050a723 (99 bytes)
 u32 cGatherItemList::getItemListLayerNo() {
-    // local: u32 layerNo;
+    // DWARF local not rendered: u32 layerNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mGatherType == static_cast<u32>(1)) {
         if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getDropItemListPacket() != static_cast<nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES*>(nullptr)) {
@@ -345,7 +345,7 @@ u32 cGatherItemList::getItemListLayerNo() {
 
 // Address: 0x0050a730 - 0x0050a79c (108 bytes)
 u32 cGatherItemList::getItemListPosId() {
-    // local: u32 posId;
+    // DWARF local not rendered: u32 posId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mGatherType != static_cast<u32>(2)) {
         if (this->mGatherType == static_cast<u32>(1)) {

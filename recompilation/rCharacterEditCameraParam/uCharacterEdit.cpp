@@ -3,11 +3,11 @@
 #include "uCharacterEdit.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/nDDOUtility.h"
 #include "rCharacterEditCameraParam.h"
 #include "uFreeCamera.h"
@@ -319,8 +319,12 @@ __attribute__((weak)) void uCharacterEditCameraBase::cLimit::createProperty(MtPr
 // Address: 0x008abc20 - 0x008abc52 (50 bytes)
 bool uCharacterEditCameraBase::cLimit::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->min = r.readF32();
-    this->max = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->min);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->max);
     return true;
 }
 

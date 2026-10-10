@@ -111,8 +111,6 @@ void sInputManager::createProperty(MtPropertyList& s) {
 
 // Address: 0x007c3320 - 0x007c3371 (81 bytes)
 void sInputManager::loadResource() {
-    // local: u32 tagId;
-    // local: u32 searchId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 tagId = ::rArchiveListArray::convTagId("key_custom");
     u32 searchId = ::rArchiveListArray::convSearchId("RES_ID_KEY_CUSTOM_KCP");

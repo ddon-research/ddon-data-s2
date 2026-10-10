@@ -78,9 +78,9 @@ __attribute__((weak)) void rGeometry3::createProperty(MtPropertyList& s) {
 void rGeometry3::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mGroupArray.mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x121ddb0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x121ddb0 carries; no location-less local in scope fits
         u32 v0_0 = this->mGroupArray.mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mGroupArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mGroupArray.mpArray[i0_3];
@@ -109,9 +109,6 @@ void rGeometry3::clear() {
 
 // Address: 0x0121de20 - 0x0121dee9 (201 bytes)
 bool rGeometry3::load(MtStream& in) {
-    // local: u32 FileMagic;
-    // local: u32 FileVersion;
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 FileMagic;
     in.read(static_cast<void*>(&FileMagic), static_cast<u32>(4));

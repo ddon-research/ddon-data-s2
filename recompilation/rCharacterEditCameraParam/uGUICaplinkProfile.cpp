@@ -6,6 +6,7 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
 #include "cGUIObjTextureRef.h"
 #include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
@@ -47,7 +48,6 @@ void cCaplinkProfIconLoader::setup(cGUIObject* pObjTex) {
 
 // Address: 0x009cc7d0 - 0x009cc873 (163 bytes)
 __attribute__((weak)) void cCaplinkProfIconLoader::request(u32 icon_index) {
-    // local: const cIconUrl* pUrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpObjTex != static_cast<cGUIObjTextureRef*>(nullptr)) {
         this->mpObjTex->::cGUIObjTextureRef::setReferenceTexture(static_cast<rTexture*>(nullptr));
@@ -92,7 +92,6 @@ void cCaplinkProfIconLoader::request(MT_CTSTR url) {
 
 // Address: 0x009cc8c0 - 0x009cc93d (125 bytes)
 __attribute__((weak)) void cCaplinkProfIconLoader::update() {
-    // local: rTexture* pTex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mIsUpdate == false) {
         return;
@@ -339,10 +338,36 @@ __attribute__((weak)) void uGUICaplinkProfile::setupInfo() {
 }
 
 // Address: 0x009cee50 - 0x009cef03 (179 bytes)
-__attribute__((weak)) void uGUICaplinkProfile::setupGame() {
-    // local: const s32 pos;
-    DDON_STUB("uGUICaplinkProfile::setupGame")
-    /* stub */
+void uGUICaplinkProfile::setupGame() {
+    // DWARF local not rendered: const s32 pos;
+    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(20)), false);
+    this->::uGUI::play(0.0f);
+    if (this->mpPageCtrl != static_cast<cControl*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x9cee9a read, used once; no DWARF local holds it
+        s32 t1 = this->mpPageCtrl->::cControl::getCurrentPos();
+        this->mGame.mListCtrl.::uGUIBase::cScrollList::clear();
+        this->mGame.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(t1 - static_cast<s32>(1)), true);
+        if (this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+            this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+        }
+        if (this->mpPageCtrl != static_cast<cControl*>(nullptr)) {
+            this->mInfo.mDot.::uGUIBase::cReferenceUIPageDot::setCurrentPos(static_cast<u32>(this->mpPageCtrl->::cControl::getCurrentPos()));
+        } else {
+            this->mInfo.mDot.::uGUIBase::cReferenceUIPageDot::setCurrentPos(static_cast<u32>(0));
+        }
+    } else {
+        this->mGame.mListCtrl.::uGUIBase::cScrollList::clear();
+        this->mGame.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(4294967295), true);
+        if (this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+            this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+        }
+        if (this->mpPageCtrl != static_cast<cControl*>(nullptr)) {
+            this->mInfo.mDot.::uGUIBase::cReferenceUIPageDot::setCurrentPos(static_cast<u32>(this->mpPageCtrl->::cControl::getCurrentPos()));
+        } else {
+            this->mInfo.mDot.::uGUIBase::cReferenceUIPageDot::setCurrentPos(static_cast<u32>(0));
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (92 bytes)

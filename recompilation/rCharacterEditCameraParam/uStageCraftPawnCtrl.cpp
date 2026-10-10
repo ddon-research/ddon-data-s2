@@ -131,7 +131,7 @@ void uStageCraftPawnCtrl::updatePawnList() {
     ::memset(static_cast<void*>(&this->mMainPawnList[0]), static_cast<int>(0), static_cast<size_t>(640));
     if (::sCraftManager::getInstance()->::sCraftManager::getMyPawnNum() <= static_cast<s32>(0)) {
     } else {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (int i0_3 = static_cast<int>(0);;) {
             if (::sCraftManager::getInstance()->::sCraftManager::getMyPawnState(static_cast<u32>(i0_3)) != static_cast<u8>(1)) {
                 this->mMainPawnList[i0_3] = ::sCraftManager::getInstance()->::sCraftManager::getMyPawnId(static_cast<u32>(i0_3));
@@ -145,7 +145,7 @@ void uStageCraftPawnCtrl::updatePawnList() {
     }
     if (::sCraftManager::getInstance()->::sCraftManager::getRentalPawnNum() <= static_cast<s32>(0)) {
     } else {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (int i2_3 = static_cast<int>(0);;) {
             this->mRentalPawnList[i2_3] = ::sCraftManager::getInstance()->::sCraftManager::getRentalPawnId(static_cast<u32>(i2_3));
             if ((i2_3 + static_cast<int>(1)) < ::sCraftManager::getInstance()->::sCraftManager::getRentalPawnNum()) {

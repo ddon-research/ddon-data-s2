@@ -945,8 +945,8 @@ __attribute__((weak)) bool cCharacterData::stTutorialGuide::writeData(BitWriter&
 
 // Address: 0x01960490 - 0x019605a6 (278 bytes)
 void cCharacterData::stTutorialGuide::readData(BitReader& r, u32 CurrentVersion, u32 LoadVersion) {
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (LoadVersion > static_cast<u32>(4)) {
         this->mFinishTutorial[0] = r.::BitReader::readU32();

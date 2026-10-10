@@ -580,7 +580,7 @@ __attribute__((weak)) void uGUISystemMsg::callDecideSe() {
 
 // Address: 0x00c5f470 - 0x00c5f4c5 (85 bytes)
 void uGUISystemMsg::setFocusForActiveBar(bool IsActive) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mActiveBarObjects.elems[0] != static_cast<cGUIObjNull*>(nullptr)) {
         this->mActiveBarObjects.elems[0]->::cGUIObject::setVisible(IsActive);
@@ -643,7 +643,6 @@ __attribute__((weak)) void uGUISystemMsg::showScrollListItem(uGUIBase::cScrollLi
 
 // Address: 0x00c5f700 - 0x00c5f738 (56 bytes)
 void uGUISystemMsg::hideScrollListItem(uGUIBase::cScrollListItemBase* pItemBase) {
-    // local: const u32 disp_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const u32 disp_index = this->mScrollList.::uGUIBase::cScrollList::getDispIndex(pItemBase);
     if (this->mpInstNullChoice[disp_index] == static_cast<cGUIInstNull*>(nullptr)) {

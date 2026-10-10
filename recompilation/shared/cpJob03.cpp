@@ -381,7 +381,7 @@ void cpJob03::callbackOcdSeal() {
 
 // Address: 0x004a0d70 - 0x004a0d88 (24 bytes)
 void cpJob03::shotArrow(u32 num) {
-    // local: u32 arrowNum;
+    // DWARF local not rendered: u32 arrowNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((this->::cpJobBase::mpHuman->::uDDOModel::mUnitId & static_cast<u32>(1024)) != static_cast<u32>(0)) {
         return;
@@ -446,8 +446,8 @@ void cpJob03::setIsJustShot(bool flag) {
 
 // Address: 0x004a0fd0 - 0x004a107e (174 bytes)
 void cpJob03::changeArrowType() {
-    // local: u32 type;
-    // local: u32 arrowId;
+    // DWARF local not rendered: u32 type;
+    // DWARF local not rendered: u32 arrowId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sPlayerManager::getInstance()->::sPlayerManager::isItemSeal(this->::cpJobBase::mpHuman) != false) {
         this->mChangeReason = static_cast<cpJob03::CHANGE_REASON>(3);

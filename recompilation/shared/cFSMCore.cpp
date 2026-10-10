@@ -100,7 +100,6 @@ __attribute__((weak)) void cFSMCore::move() {
 
 // Address: 0x000cbf00 - 0x000cbf8b (139 bytes)
 bool cFSMCore::setupFSM(MT_CTSTR resourcePath) {
-    // local: rAIFSM* pFSMRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mFSM.mpOwner = static_cast<MtObject*>(this);
     if (resourcePath != static_cast<MT_CTSTR>(nullptr)) {

@@ -342,7 +342,7 @@ rChainCol* uCnsTinyChain::getModelColRes() {
 
 // Address: 0x0100fdf0 - 0x0100fe1e (46 bytes)
 void uCnsTinyChain::setModelCol(uModel* pModel) {
-    // local: const MtVector3& scale;
+    // DWARF local not rendered: const MtVector3& scale;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpModelCol = pModel;
     if (pModel != static_cast<uModel*>(nullptr)) {

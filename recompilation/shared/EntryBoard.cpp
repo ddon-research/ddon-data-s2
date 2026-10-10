@@ -7,6 +7,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -359,9 +360,9 @@ __attribute__((weak)) void CDataEntryRecruitData::operator delete(void* p_addr) 
 // CDataEntryRecruitData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d0250 - 0x003d02bf (111 bytes)
-__attribute__((weak)) MtObject* CDataEntryRecruitData::MyDTI::newInstance() const {
-    DDON_STUB("CDataEntryRecruitData::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataEntryRecruitData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataEntryRecruitData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -430,8 +431,8 @@ __attribute__((weak)) void CDataEntryRecruitJob::operator delete(void* p_addr) {
 // CDataEntryRecruitJob::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d0130 - 0x003d0174 (68 bytes)
-__attribute__((weak)) MtObject* CDataEntryRecruitJob::MyDTI::newInstance() const {
-    DDON_STUB("CDataEntryRecruitJob::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataEntryRecruitJob::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataEntryRecruitJob;
 }
 

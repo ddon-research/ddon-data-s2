@@ -348,3 +348,75 @@ public:
     u32 m_unQuickPartyPopularity;  // offset: 0x58
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataAreaBaseInfo::CDataAreaBaseInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unClanAreaPoint = static_cast<u32>(0);
+    this->m_unClanAreaPointBorder = static_cast<u32>(0);
+    this->m_bCanReceiveSupply = false;
+    this->m_bCanRankUp = false;
+    this->m_unWeekPoint = static_cast<u32>(0);
+    this->m_unCurrentPoint = static_cast<u32>(0);
+    this->m_unNextPoint = static_cast<u32>(0);
+    this->m_unAreaID = static_cast<u32>(0);
+    this->m_unRank = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataAreaQuestHint::CDataAreaQuestHint() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unScheduleID = static_cast<u32>(0);
+    this->m_unPrice = static_cast<u32>(0);
+    this->m_bIsSold = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataAreaRank::CDataAreaRank() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unAreaID = static_cast<u32>(0);
+    this->m_unRank = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataAreaSpotSet::CDataAreaSpotSet() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unAreaId = static_cast<u32>(0);
+    this->m_unSpotId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataReleaseAreaInfoSet::CDataReleaseAreaInfoSet() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unAreaID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataRewardItemInfo::CDataRewardItemInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unIndex = static_cast<u32>(0);
+    this->m_ulItemId = static_cast<u32>(0);
+    this->m_ucNum = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataSpotEnemyInfo::CDataSpotEnemyInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unEnemyID = static_cast<u32>(0);
+    this->m_ucEnemyLv = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataSpotItemInfo::CDataSpotItemInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unItemId = static_cast<u32>(0);
+    this->m_ucPawnTakeRate = static_cast<u8>(0);
+}

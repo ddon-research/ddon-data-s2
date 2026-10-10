@@ -7,6 +7,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cCharacterData.h"
+#include "sSavedataExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -402,9 +403,81 @@ __attribute__((weak)) void cEditParam::copyConstValue(const cEditParam* pSrc) {
 // void cEditParam::copyRange(cEditValue& Dst, const cEditValue& Src);
 
 // Address: 0x00098d30 - 0x00099096 (870 bytes)
-__attribute__((weak)) void cEditParam::copyToCharacterData(cCharacterData::stCharacterEdit* pDst) {
-    DDON_STUB("cEditParam::copyToCharacterData")
-    /* stub */
+void cEditParam::copyToCharacterData(cCharacterData::stCharacterEdit* pDst) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    pDst->mVersion = this->mVersion;
+    pDst->mFlag = this->mFlag;
+    pDst->mBodyType = this->mBodyType;
+    pDst->mHair = this->mHair;
+    pDst->mBeard = this->mBeard;
+    pDst->mMakeup = this->mMakeup;
+    pDst->mScar = this->mScar;
+    pDst->mVoice = this->mVoice;
+    pDst->mVoicePitch = this->mVoicePitch;
+    pDst->mRace = this->mRace;
+    pDst->mPersonality = this->mPersonality;
+    pDst->mSpeechFreq = this->mSpeechFreq;
+    pDst->mEyePresetNo = this->mEyePresetNo;
+    pDst->mNosePresetNo = this->mNosePresetNo;
+    pDst->mMouthPresetNo = this->mMouthPresetNo;
+    pDst->mEyebrowTexNo = this->mEyebrowTexNo;
+    pDst->mColorSkin = this->mColorSkin;
+    pDst->mColorHair = this->mColorHair;
+    pDst->mColorBeard = this->mColorBeard;
+    pDst->mColorEyebrow = this->mColorEyebrow;
+    pDst->mColorREye = this->mColorREye;
+    pDst->mColorLEye = this->mColorLEye;
+    pDst->mColorMakeup = this->mColorMakeup;
+    pDst->mSokutoubu = this->mSokutoubu.mValue;
+    pDst->mHitai = this->mHitai.mValue;
+    pDst->mMimijyouge = this->mMimijyouge.mValue;
+    pDst->mKannkaku = this->mKannkaku.mValue;
+    pDst->mMabisasijyouge = this->mMabisasijyouge.mValue;
+    pDst->mHanakuchijyouge = this->mHanakuchijyouge.mValue;
+    pDst->mAgosakihaba = this->mAgosakihaba.mValue;
+    pDst->mAgozengo = this->mAgozengo.mValue;
+    pDst->mAgosakijyouge = this->mAgosakijyouge.mValue;
+    pDst->mHitomiookisa = this->mHitomiookisa.mValue;
+    pDst->mMeookisa = this->mMeookisa.mValue;
+    pDst->mMekaiten = this->mMekaiten.mValue;
+    pDst->mMayukaiten = this->mMayukaiten.mValue;
+    pDst->mMimiookisa = this->mMimiookisa.mValue;
+    pDst->mMimimuki = this->mMimimuki.mValue;
+    pDst->mElfmimi = this->mElfmimi.mValue;
+    pDst->mMikentakasa = this->mMikentakasa.mValue;
+    pDst->mMikenhaba = this->mMikenhaba.mValue;
+    pDst->mHohoboneryou = this->mHohoboneryou.mValue;
+    pDst->mHohobonejyouge = this->mHohobonejyouge.mValue;
+    pDst->mHohoniku = this->mHohoniku.mValue;
+    pDst->mErahonejyouge = this->mErahonejyouge.mValue;
+    pDst->mErahonehaba = this->mErahonehaba.mValue;
+    pDst->mHanajyouge = this->mHanajyouge.mValue;
+    pDst->mHanahaba = this->mHanahaba.mValue;
+    pDst->mHanatakasa = this->mHanatakasa.mValue;
+    pDst->mHanakakudo = this->mHanakakudo.mValue;
+    pDst->mKuchihaba = this->mKuchihaba.mValue;
+    pDst->mKuchiatsusa = this->mKuchiatsusa.mValue;
+    pDst->mEyebrowUVOffsetX = this->mEyebrowUVOffsetX.mValue;
+    pDst->mEyebrowUVOffsetY = this->mEyebrowUVOffsetY.mValue;
+    pDst->mWrinkle = this->mWrinkle.mValue;
+    pDst->mWrinkleAlbedoBlendRate = this->mWrinkleAlbedoBlendRate.mValue;
+    pDst->mWrinkleDetailNormalPower = this->mWrinkleDetailNormalPower.mValue;
+    pDst->mMuscleAlbedoBlendRate = this->mMuscleAlbedoBlendRate.mValue;
+    pDst->mMuscleDetailNormalPower = this->mMuscleDetailNormalPower.mValue;
+    pDst->mHeight = this->mHeight.mValue;
+    pDst->mHeadSize = this->mHeadSize.mValue;
+    pDst->mNeckOffset = this->mNeckOffset.mValue;
+    pDst->mNeckScale = this->mNeckScale.mValue;
+    pDst->mUpperBodyScaleX = this->mUpperBodyScaleX.mValue;
+    pDst->mBellySize = this->mBellySize.mValue;
+    pDst->mTeatScale = this->mTeatScale.mValue;
+    pDst->mTekubiSize = this->mTekubiSize.mValue;
+    pDst->mKoshiOffset = this->mKoshiOffset.mValue;
+    pDst->mKoshiSize = this->mKoshiSize.mValue;
+    pDst->mAnkleOffset = this->mAnkleOffset.mValue;
+    pDst->mFat = this->mFat.mValue;
+    pDst->mMuscle = this->mMuscle.mValue;
+    pDst->mMotionFilter = this->mMotionFilter.mValue;
 }
 
 // Address: 0x000990a0 - 0x000994c3 (1059 bytes)
@@ -414,15 +487,143 @@ __attribute__((weak)) void cEditParam::copyFromCharacterData(const cCharacterDat
 }
 
 // Address: 0x000994d0 - 0x0009981c (844 bytes)
-__attribute__((weak)) void cEditParam::copyToStrageData(cStorageDataEdit* pDstData) const {
-    DDON_STUB("cEditParam::copyToStrageData")
-    /* stub */
+void cEditParam::copyToStrageData(cStorageDataEdit* pDstData) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pDstData == static_cast<cStorageDataEdit*>(nullptr)) {
+        return;
+    }
+    pDstData->mBodyType = this->mBodyType;
+    pDstData->mHair = this->mHair;
+    pDstData->mBeard = this->mBeard;
+    pDstData->mMakeup = this->mMakeup;
+    pDstData->mScar = this->mScar;
+    pDstData->mWrinkleValue = this->mWrinkle.mValue;
+    pDstData->mEyePresetNo = this->mEyePresetNo;
+    pDstData->mEyebrowTexNo = this->mEyebrowTexNo;
+    pDstData->mNosePresetNo = this->mNosePresetNo;
+    pDstData->mMouthPresetNo = this->mMouthPresetNo;
+    pDstData->mSokutoubuValue = this->mSokutoubu.mValue;
+    pDstData->mHitaiValue = this->mHitai.mValue;
+    pDstData->mMimijyougeValue = this->mMimijyouge.mValue;
+    pDstData->mMabisasijyougeValue = this->mMabisasijyouge.mValue;
+    pDstData->mHitomiookisaValue = this->mHitomiookisa.mValue;
+    pDstData->mMeookisaValue = this->mMeookisa.mValue;
+    pDstData->mMekaitenValue = this->mMekaiten.mValue;
+    pDstData->mKannkakuValue = this->mKannkaku.mValue;
+    pDstData->mEyebrowUVOffsetYValue = this->mEyebrowUVOffsetY.mValue;
+    pDstData->mEyebrowUVOffsetXValue = this->mEyebrowUVOffsetX.mValue;
+    pDstData->mMayukaitenValue = this->mMayukaiten.mValue;
+    pDstData->mMikentakasaValue = this->mMikentakasa.mValue;
+    pDstData->mMikenhabaValue = this->mMikenhaba.mValue;
+    pDstData->mHanajyougeValue = this->mHanajyouge.mValue;
+    pDstData->mHanahabaValue = this->mHanahaba.mValue;
+    pDstData->mHanatakasaValue = this->mHanatakasa.mValue;
+    pDstData->mHanakakudoValue = this->mHanakakudo.mValue;
+    pDstData->mHohobonejyougeValue = this->mHohobonejyouge.mValue;
+    pDstData->mHohoboneryouValue = this->mHohoboneryou.mValue;
+    pDstData->mMimiookisaValue = this->mMimiookisa.mValue;
+    pDstData->mMimimukiValue = this->mMimimuki.mValue;
+    pDstData->mElfmimi = this->mElfmimi.mValue;
+    pDstData->mHanakuchijyougeValue = this->mHanakuchijyouge.mValue;
+    pDstData->mAgozengoValue = this->mAgozengo.mValue;
+    pDstData->mKuchihabaValue = this->mKuchihaba.mValue;
+    pDstData->mKuchiatsusaValue = this->mKuchiatsusa.mValue;
+    pDstData->mHohonikuValue = this->mHohoniku.mValue;
+    pDstData->mAgosakijyougeValue = this->mAgosakijyouge.mValue;
+    pDstData->mAgosakihabaValue = this->mAgosakihaba.mValue;
+    pDstData->mErahonejyougeValue = this->mErahonejyouge.mValue;
+    pDstData->mErahonehabaValue = this->mErahonehaba.mValue;
+    pDstData->mHeightValue = this->mHeight.mValue;
+    pDstData->mHeadSizeValue = this->mHeadSize.mValue;
+    pDstData->mNeckOffsetValue = this->mNeckOffset.mValue;
+    pDstData->mNeckScaleValue = this->mNeckScale.mValue;
+    pDstData->mUpperBodyScaleXValue = this->mUpperBodyScaleX.mValue;
+    pDstData->mBellySizeValue = this->mBellySize.mValue;
+    pDstData->mTeatScaleValue = this->mTeatScale.mValue;
+    pDstData->mTekubiSizeValue = this->mTekubiSize.mValue;
+    pDstData->mKoshiOffsetValue = this->mKoshiOffset.mValue;
+    pDstData->mKoshiSizeValue = this->mKoshiSize.mValue;
+    pDstData->mAnkleOffsetValue = this->mAnkleOffset.mValue;
+    pDstData->mFatValue = this->mFat.mValue;
+    pDstData->mMuscleValue = this->mMuscle.mValue;
+    pDstData->mMotionFilterValue = this->mMotionFilter.mValue;
+    pDstData->mColorSkin = this->mColorSkin;
+    pDstData->mColorHair = this->mColorHair;
+    pDstData->mColorBeard = this->mColorBeard;
+    pDstData->mColorEyebrow = this->mColorEyebrow;
+    pDstData->mColorREye = this->mColorREye;
+    pDstData->mColorLEye = this->mColorLEye;
+    pDstData->mColorMakeup = this->mColorMakeup;
 }
 
 // Address: 0x00099820 - 0x00099b6c (844 bytes)
-__attribute__((weak)) void cEditParam::copyFromStrageData(const cStorageDataEdit* pSrcData) {
-    DDON_STUB("cEditParam::copyFromStrageData")
-    /* stub */
+void cEditParam::copyFromStrageData(const cStorageDataEdit* pSrcData) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pSrcData == static_cast<const cStorageDataEdit*>(nullptr)) {
+        return;
+    }
+    this->mBodyType = pSrcData->mBodyType;
+    this->mHair = pSrcData->mHair;
+    this->mBeard = pSrcData->mBeard;
+    this->mMakeup = pSrcData->mMakeup;
+    this->mScar = pSrcData->mScar;
+    this->mWrinkle.mValue = pSrcData->mWrinkleValue;
+    this->mEyePresetNo = pSrcData->mEyePresetNo;
+    this->mEyebrowTexNo = pSrcData->mEyebrowTexNo;
+    this->mNosePresetNo = pSrcData->mNosePresetNo;
+    this->mMouthPresetNo = pSrcData->mMouthPresetNo;
+    this->mSokutoubu.mValue = pSrcData->mSokutoubuValue;
+    this->mHitai.mValue = pSrcData->mHitaiValue;
+    this->mMimijyouge.mValue = pSrcData->mMimijyougeValue;
+    this->mMabisasijyouge.mValue = pSrcData->mMabisasijyougeValue;
+    this->mHitomiookisa.mValue = pSrcData->mHitomiookisaValue;
+    this->mMeookisa.mValue = pSrcData->mMeookisaValue;
+    this->mMekaiten.mValue = pSrcData->mMekaitenValue;
+    this->mKannkaku.mValue = pSrcData->mKannkakuValue;
+    this->mEyebrowUVOffsetY.mValue = pSrcData->mEyebrowUVOffsetYValue;
+    this->mEyebrowUVOffsetX.mValue = pSrcData->mEyebrowUVOffsetXValue;
+    this->mMayukaiten.mValue = pSrcData->mMayukaitenValue;
+    this->mMikentakasa.mValue = pSrcData->mMikentakasaValue;
+    this->mMikenhaba.mValue = pSrcData->mMikenhabaValue;
+    this->mHanajyouge.mValue = pSrcData->mHanajyougeValue;
+    this->mHanahaba.mValue = pSrcData->mHanahabaValue;
+    this->mHanatakasa.mValue = pSrcData->mHanatakasaValue;
+    this->mHanakakudo.mValue = pSrcData->mHanakakudoValue;
+    this->mHohobonejyouge.mValue = pSrcData->mHohobonejyougeValue;
+    this->mHohoboneryou.mValue = pSrcData->mHohoboneryouValue;
+    this->mMimiookisa.mValue = pSrcData->mMimiookisaValue;
+    this->mMimimuki.mValue = pSrcData->mMimimukiValue;
+    this->mElfmimi.mValue = pSrcData->mElfmimi;
+    this->mHanakuchijyouge.mValue = pSrcData->mHanakuchijyougeValue;
+    this->mAgozengo.mValue = pSrcData->mAgozengoValue;
+    this->mKuchihaba.mValue = pSrcData->mKuchihabaValue;
+    this->mKuchiatsusa.mValue = pSrcData->mKuchiatsusaValue;
+    this->mHohoniku.mValue = pSrcData->mHohonikuValue;
+    this->mAgosakijyouge.mValue = pSrcData->mAgosakijyougeValue;
+    this->mAgosakihaba.mValue = pSrcData->mAgosakihabaValue;
+    this->mErahonejyouge.mValue = pSrcData->mErahonejyougeValue;
+    this->mErahonehaba.mValue = pSrcData->mErahonehabaValue;
+    this->mHeight.mValue = pSrcData->mHeightValue;
+    this->mHeadSize.mValue = pSrcData->mHeadSizeValue;
+    this->mNeckOffset.mValue = pSrcData->mNeckOffsetValue;
+    this->mNeckScale.mValue = pSrcData->mNeckScaleValue;
+    this->mUpperBodyScaleX.mValue = pSrcData->mUpperBodyScaleXValue;
+    this->mBellySize.mValue = pSrcData->mBellySizeValue;
+    this->mTeatScale.mValue = pSrcData->mTeatScaleValue;
+    this->mTekubiSize.mValue = pSrcData->mTekubiSizeValue;
+    this->mKoshiOffset.mValue = pSrcData->mKoshiOffsetValue;
+    this->mKoshiSize.mValue = pSrcData->mKoshiSizeValue;
+    this->mAnkleOffset.mValue = pSrcData->mAnkleOffsetValue;
+    this->mFat.mValue = pSrcData->mFatValue;
+    this->mMuscle.mValue = pSrcData->mMuscleValue;
+    this->mMotionFilter.mValue = pSrcData->mMotionFilterValue;
+    this->mColorSkin = pSrcData->mColorSkin;
+    this->mColorHair = pSrcData->mColorHair;
+    this->mColorBeard = pSrcData->mColorBeard;
+    this->mColorEyebrow = pSrcData->mColorEyebrow;
+    this->mColorREye = pSrcData->mColorREye;
+    this->mColorLEye = pSrcData->mColorLEye;
+    this->mColorMakeup = pSrcData->mColorMakeup;
 }
 
 // Address: 0x00099b70 - 0x0009b2c3 (5971 bytes)

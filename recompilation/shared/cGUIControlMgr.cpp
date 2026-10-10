@@ -185,7 +185,7 @@ __attribute__((weak)) void cGUIControlMgr::setCategoryFocus(u32 CategoryId, bool
 
 // Address: 0x000d5860 - 0x000d58cb (107 bytes)
 void cGUIControlMgr::offAllFocus() {
-    // local: u32 idx;
+    // DWARF local not rendered: u32 idx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mControl[0].mIsActive = false;
     this->mControl[1].mIsActive = false;
@@ -322,7 +322,7 @@ __attribute__((weak)) void cGUIControlMgr::resetItemNum(u32 MgrId, u32 ItemNum, 
 
 // Address: 0x000d6130 - 0x000d614a (26 bytes)
 void cGUIControlMgr::setMovePos(u32 MgrId, s32 movePos) {
-    // local: stControl& control;
+    // DWARF local not rendered: stControl& control;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (MgrId <= static_cast<u32>(15)) {
         if (this->mControl[MgrId].mParentMgrId <= static_cast<u8>(15)) {
@@ -361,7 +361,7 @@ __attribute__((weak)) u32 cGUIControlMgr::addControl(cGUIControlMgr::CONTROL_KIN
 
 // Address: 0x000d5540 - 0x000d55ad (109 bytes)
 u32 cGUIControlMgr::addControl(uGUIBase::cScrollList* pScrollList, u32 MgrId, u32 CategoryId, cGUIControlMgr::MOVE_PRIO MovePrio) {
-    // local: cControl* pctrl;
+    // DWARF local not rendered: cControl* pctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pScrollList != static_cast<uGUIBase::cScrollList*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0xd556d, used 4 times; no DWARF local holds it

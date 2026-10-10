@@ -106,7 +106,7 @@ void rTable::createProperty(MtPropertyList& s) {
 
 // Address: 0x00708c30 - 0x00708c48 (24 bytes)
 MtObject* rTable::getDataBase(u32 Idx) {
-    // local: MtObject* pObj;
+    // DWARF local not rendered: MtObject* pObj;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (Idx < this->mArray.mLength) {
         return this->mArray.mpArray[Idx];

@@ -268,8 +268,8 @@ __attribute__((weak)) const cActParam* cpActionManager::getActParam(u32 ActNo) {
 
 // Address: 0x003b3d40 - 0x003b3d6f (47 bytes)
 const cActNetParam* cpActionManager::getActNetParam() {
-    // local: u32 bank;
-    // local: u32 index;
+    // DWARF local not rendered: u32 bank;
+    // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mActNo != static_cast<u32>(4294967295)) {
         return &this->mpActList[(this->mActNo >> static_cast<u32>(12)) & static_cast<u32>(15)][this->mActNo & static_cast<u32>(4294905855)].mNetParam;
@@ -280,8 +280,8 @@ const cActNetParam* cpActionManager::getActNetParam() {
 
 // Address: 0x003b3fa0 - 0x003b3fd0 (48 bytes)
 const cActNetParam* cpActionManager::getActNetParam(u32 ActNo) {
-    // local: u32 bank;
-    // local: u32 index;
+    // DWARF local not rendered: u32 bank;
+    // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (ActNo != static_cast<u32>(4294967295)) {
         if (this->mpActList[(ActNo >> static_cast<u32>(12)) & static_cast<u32>(15)] != static_cast<const cActList*>(nullptr)) {

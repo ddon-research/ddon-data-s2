@@ -286,8 +286,7 @@ __attribute__((weak)) void uUIMockUp::setMannequinEquip(u32 itemId, s32 color, c
 
 // Address: 0x00d568f0 - 0x00d56998 (168 bytes)
 void uUIMockUp::setMannequinEquip(const cContextInstHm* pContext, u32 itemId, s32 color, cItemParam* pParam) {
-    // local: const rItemParam* pParamRes;
-    // local: bool isMale;
+    // DWARF local not rendered: bool isMale;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (pContext == static_cast<const cContextInstHm*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0xd56925, used once; no DWARF local holds it

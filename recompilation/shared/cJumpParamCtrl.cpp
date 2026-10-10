@@ -115,8 +115,8 @@ __attribute__((weak)) void cJumpParamCtrl::updateParam(uHuman* pHuman) {
 
 // Address: 0x002d2430 - 0x002d24a1 (113 bytes)
 void cJumpParamCtrl::updatePadAdjustPos(uHuman* pHuman) {
-    // local: cJumpParam* pJumpParam;
-    // local: MtVector3 vel;
+    // DWARF local not rendered: cJumpParam* pJumpParam;
+    // DWARF local not rendered: MtVector3 vel;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHuman == static_cast<uHuman*>(nullptr)) {
         return;

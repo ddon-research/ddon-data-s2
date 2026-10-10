@@ -158,7 +158,7 @@ const rGUIMessage::INDEX* rGUIMessage::getIndex(u32 index) const {
 
 // Address: 0x01218150 - 0x01218157 (7 bytes)
 const rGUIMessage::INDEX* rGUIMessage::getIndex(MT_CTSTR name) const {
-    // local: const INDEX* pIndex;
+    // DWARF local not rendered: const INDEX* pIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<const ::rGUIMessage*>(this)->::rGUIMessage::searchINDEXFromHashTable(name, static_cast<u32>(0));
 }

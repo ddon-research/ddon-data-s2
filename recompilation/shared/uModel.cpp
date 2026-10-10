@@ -91,7 +91,7 @@ __attribute__((weak)) MT_CTSTR uModel::getName() {
 
 // Address: 0x00f2ab30 - 0x00f2ab6c (60 bytes)
 void uModel::move() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uBaseModel::updateViewDraw();
     this->::uModel::updateShaderAttributes();
@@ -1669,8 +1669,8 @@ void uModel::Joint::setAttr(u32 attr) {
 
 // Address: 0x00f46280 - 0x00f462b1 (49 bytes)
 uModel::Joint* uModel::Joint::getParentJoint() {
-    // local: u32 ParentIndex;
-    // local: Joint* pJnt;
+    // DWARF local not rendered: u32 ParentIndex;
+    // DWARF local not rendered: Joint* pJnt;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mParentIndex != static_cast<u32>(255)) {
         return &this->mpModel->mJoint[this->mParentIndex];

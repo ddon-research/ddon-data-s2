@@ -7,6 +7,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -150,9 +151,9 @@ __attribute__((weak)) void CDataDispelBaseItemData::operator delete(void* p_addr
 // CDataDispelBaseItemData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ddd50 - 0x003ddd9b (75 bytes)
-__attribute__((weak)) MtObject* CDataDispelBaseItemData::MyDTI::newInstance() const {
-    DDON_STUB("CDataDispelBaseItemData::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDispelBaseItemData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataDispelBaseItemData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -221,9 +222,9 @@ __attribute__((weak)) void CDataDispelCategoryInfo::operator delete(void* p_addr
 // CDataDispelCategoryInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003de260 - 0x003de2ac (76 bytes)
-__attribute__((weak)) MtObject* CDataDispelCategoryInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataDispelCategoryInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDispelCategoryInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataDispelCategoryInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -292,9 +293,9 @@ __attribute__((weak)) void CDataDispelLotColor::operator delete(void* p_addr) {
 // CDataDispelLotColor::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dd860 - 0x003dd8a6 (70 bytes)
-__attribute__((weak)) MtObject* CDataDispelLotColor::MyDTI::newInstance() const {
-    DDON_STUB("CDataDispelLotColor::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDispelLotColor::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataDispelLotColor;
 }
 
 // No out-of-line body: no code in the ELF
@@ -363,9 +364,9 @@ __attribute__((weak)) void CDataDispelLotCrest::operator delete(void* p_addr) {
 // CDataDispelLotCrest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dd740 - 0x003dd78b (75 bytes)
-__attribute__((weak)) MtObject* CDataDispelLotCrest::MyDTI::newInstance() const {
-    DDON_STUB("CDataDispelLotCrest::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDispelLotCrest::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataDispelLotCrest;
 }
 
 // No out-of-line body: no code in the ELF
@@ -434,9 +435,9 @@ __attribute__((weak)) void CDataDispelLotData::operator delete(void* p_addr) {
 // CDataDispelLotData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ddb90 - 0x003ddc7a (234 bytes)
-__attribute__((weak)) MtObject* CDataDispelLotData::MyDTI::newInstance() const {
-    DDON_STUB("CDataDispelLotData::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDispelLotData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataDispelLotData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -459,9 +460,11 @@ inline MtAllocator* CDataDispelLotItem::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataDispelLotItem::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataDispelLotItem::MyDTI::newInstance at 0x003ddaa4-0x003ddacd (called at DispelItemImplement.inc:11)
-// void* CDataDispelLotItem::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataDispelLotItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotItem::DTI)->memAlloc(sz, align, ::CDataDispelLotItem::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataDispelLotItem::operator new[](size_t sz, u32 align);
@@ -503,9 +506,9 @@ __attribute__((weak)) void CDataDispelLotItem::operator delete(void* p_addr) {
 // CDataDispelLotItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ddaa0 - 0x003ddaf6 (86 bytes)
-__attribute__((weak)) MtObject* CDataDispelLotItem::MyDTI::newInstance() const {
-    DDON_STUB("CDataDispelLotItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDispelLotItem::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataDispelLotItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -574,9 +577,9 @@ __attribute__((weak)) void CDataDispelLotPlus::operator delete(void* p_addr) {
 // CDataDispelLotPlus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dd980 - 0x003dd9c6 (70 bytes)
-__attribute__((weak)) MtObject* CDataDispelLotPlus::MyDTI::newInstance() const {
-    DDON_STUB("CDataDispelLotPlus::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataDispelLotPlus::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataDispelLotPlus;
 }
 
 // No out-of-line body: no code in the ELF

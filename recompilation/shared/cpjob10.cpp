@@ -178,7 +178,6 @@ void cpJob10::reset() {
 
 // Address: 0x0018d190 - 0x0018d239 (169 bytes)
 void cpJob10::callbackAttack(cHitInfo* pHitInfo) {
-    // local: u32 nowActNo;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (pHitInfo == static_cast<cHitInfo*>(nullptr)) {
         return;
@@ -376,7 +375,7 @@ __attribute__((weak)) bool cpJob10::canReqBoost() const {
 
 // Address: 0x0018f720 - 0x0018f731 (17 bytes)
 void cpJob10::addSpirit(f32 addval) {
-    // local: const f32 rate;
+    // DWARF local not rendered: const f32 rate;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpSpiritMgr->::cpJob10::cSpiritManager::addSpirit(addval, 1.0f);
 }
@@ -495,8 +494,7 @@ void cpJob10::rgeEndBoostMode() {
 
 // Address: 0x0018fef0 - 0x0018ffb9 (201 bytes)
 bool cpJob10::checkCanEndBoost() {
-    // local: bool ret;
-    // local: u32 nowAct;
+    // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a test whose arms are both empty; the body oracle reports this body.
     u32 nowAct = ::nHumanActUtility::getActionNo(*this->::cpJobBase::mpHuman);
     if (this->mpSpiritMgr->mpStateNow->getBoostMode() != static_cast<cpJob10::BOOST_MODE>(0)) {
@@ -974,8 +972,7 @@ __attribute__((weak)) void cpJob10::updateCs08Pos() {
 
 // Address: 0x00191520 - 0x0019154e (46 bytes)
 bool cpJob10::canShotCs08Shl() const {
-    // local: cpChargeCtrl* pChargeCtrl;
-    // local: f32 minChargeFrame;
+    // DWARF local not rendered: f32 minChargeFrame;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cpChargeCtrl* pChargeCtrl = this->::cpJobBase::mpHuman->::uDDOModel::getChargeCtrlPtr();
     // inferred: a temporary for the result of the call at 0x191536, used once; no DWARF local holds it

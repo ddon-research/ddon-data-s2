@@ -100,7 +100,6 @@ MtUI* rScenario::createUI(MtProperty& prop) {
 
 // Address: 0x006f7f40 - 0x006f7fc1 (129 bytes)
 bool rScenario::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(6), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -108,7 +107,6 @@ bool rScenario::load(MtStream& in) {
 
 // Address: 0x006f7fd0 - 0x006f804e (126 bytes)
 bool rScenario::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     sz.::MtSerializer::serializeBinary(out, static_cast<u16>(6), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
@@ -119,9 +117,9 @@ bool rScenario::save(MtStream& out) {
 void rScenario::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mArray.mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x6f8070 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x6f8070 carries; no location-less local in scope fits
         u32 v0_0 = this->mArray.mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mArray.mpArray[i0_3];

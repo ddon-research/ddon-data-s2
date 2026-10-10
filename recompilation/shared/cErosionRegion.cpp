@@ -155,21 +155,21 @@ nRegionStatus::P_REGION_TYPE cErosionRegion::getRegionNo() const {
 
 // Address: 0x000ca180 - 0x000ca188 (8 bytes)
 bool cErosionRegion::isActiveErosion() const {
-    // local: EROSION_MODE mode;
+    // DWARF local not rendered: EROSION_MODE mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mErosionMode == static_cast<nErosionEnemy::EROSION_MODE>(2);
 }
 
 // Address: 0x000ca1a0 - 0x000ca1a8 (8 bytes)
 bool cErosionRegion::isRegenerate() const {
-    // local: EROSION_MODE mode;
+    // DWARF local not rendered: EROSION_MODE mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mErosionMode != static_cast<nErosionEnemy::EROSION_MODE>(2);
 }
 
 // Address: 0x000ca1b0 - 0x000ca1b8 (8 bytes)
 bool cErosionRegion::isEnableBreak() const {
-    // local: EROSION_MODE mode;
+    // DWARF local not rendered: EROSION_MODE mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mErosionMode == static_cast<nErosionEnemy::EROSION_MODE>(2);
 }

@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -29,9 +30,11 @@ inline MtAllocator* CDataQuickPartyMatching::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataQuickPartyMatching::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataQuickPartyMatching::MyDTI::newInstance at 0x003dc754-0x003dc77d (called at QuickPartyImplement.inc:7)
-// void* CDataQuickPartyMatching::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataQuickPartyMatching::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuickPartyMatching::DTI)->memAlloc(sz, align, ::CDataQuickPartyMatching::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataQuickPartyMatching::operator new[](size_t sz, u32 align);
@@ -73,8 +76,8 @@ __attribute__((weak)) void CDataQuickPartyMatching::operator delete(void* p_addr
 // CDataQuickPartyMatching::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dc750 - 0x003dc7a2 (82 bytes)
-__attribute__((weak)) MtObject* CDataQuickPartyMatching::MyDTI::newInstance() const {
-    DDON_STUB("CDataQuickPartyMatching::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataQuickPartyMatching::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataQuickPartyMatching;
 }
 

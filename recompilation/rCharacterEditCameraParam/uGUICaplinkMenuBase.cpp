@@ -6,6 +6,7 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/MtObject.h"
 #include "../shared/MtString.h"
 #include "../shared/cUIObject.h"
 #include "../shared/sGUI.h"
@@ -359,7 +360,6 @@ __attribute__((weak)) void uGUICaplinkMenuBase::reqDialog(MT_CTSTR msg, MT_CTSTR
 
 // Address: 0x009c8570 - 0x009c85e8 (120 bytes)
 s32 uGUICaplinkMenuBase::updateDialog() {
-    // local: const s32 select;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
         if (this->mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
@@ -492,10 +492,11 @@ inline void uGUICaplinkMenuBase::cCmdVal::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void uGUICaplinkMenuBase::cCmdVal::usage();
 
-// No out-of-line body: 2 inlined copies in 2 functions (83 bytes)
-//   in uGUICaplinkMenuBase::cCmdVal::MyDTI::newInstance at 0x009c3844-0x009c386d (called at uGUICaplinkMenuBase.cpp:36)
-//   in uGUICaplinkMenuBase::addSubMenu at 0x009ca341-0x009ca36b (called at uGUICaplinkMenuBase.cpp:1669)
-// void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkMenuBase::cCmdVal::DTI)->memAlloc(sz, align, ::uGUICaplinkMenuBase::cCmdVal::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* uGUICaplinkMenuBase::cCmdVal::operator new[](size_t sz, u32 align);
@@ -531,9 +532,9 @@ inline void uGUICaplinkMenuBase::cCmdVal::operator delete(void* p_addr) {
 // uGUICaplinkMenuBase::cCmdVal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x009c3840 - 0x009c3887 (71 bytes)
-__attribute__((weak)) MtObject* uGUICaplinkMenuBase::cCmdVal::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkMenuBase::cCmdVal::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkMenuBase::cCmdVal::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::uGUICaplinkMenuBase::cCmdVal;
 }
 
 // Instance at 0x01ae3cb0 - 0x01ae3cb5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

@@ -75,7 +75,7 @@ inline void MtGeomAABB::operator delete(void* p_addr) {
 
 // Address: 0x01942f10 - 0x01942f9a (138 bytes)
 void MtGeomAABB::load(MtDataReader& fin) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mAABB.minpos.x = fin.readF32();
     this->mAABB.maxpos.x = fin.readF32();
@@ -89,7 +89,7 @@ void MtGeomAABB::load(MtDataReader& fin) {
 
 // Address: 0x01942fa0 - 0x0194302c (140 bytes)
 void MtGeomAABB::save(MtDataWriter& fout) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     fout.writeF32(this->mAABB.minpos.x);
     fout.writeF32(this->mAABB.maxpos.x);

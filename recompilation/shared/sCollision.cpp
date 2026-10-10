@@ -149,7 +149,7 @@ __attribute__((weak)) void sCollision::move() {
 
 // Address: 0x012b5570 - 0x012b5596 (38 bytes)
 void sCollision::sync() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mCollider.::sCollision::Collider::sync();
     this->mCollider.::sCollision::Collider::draw();
@@ -885,7 +885,7 @@ __attribute__((weak)) bool sCollision::setMatrixByIndexWithIndex(u32 SbcIndex, u
 
 // Address: 0x012e84b0 - 0x012e84b8 (8 bytes)
 bool sCollision::setMatrixAll(sCollision::SBC_HANDLE SbcHandle, MtMatrix* pmat, bool reset) {
-    // local: const u32 SbcIndex;
+    // DWARF local not rendered: const u32 SbcIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::sCollision::setMatrixAllByIndex(SbcHandle, pmat, reset);
 }
@@ -983,7 +983,7 @@ __attribute__((weak)) bool sCollision::reserveMatrixByIndexWithIndexRotTransQt(u
 
 // Address: 0x012e8cf0 - 0x012e8cf8 (8 bytes)
 bool sCollision::reserveMatrixAll(sCollision::SBC_HANDLE SbcHandle, const MtMatrix& MoveMat, bool reset) {
-    // local: const u32 SbcIndex;
+    // DWARF local not rendered: const u32 SbcIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::sCollision::reserveMatrixAllByIndex(SbcHandle, MoveMat, reset);
 }
@@ -1062,7 +1062,7 @@ __attribute__((weak)) bool sCollision::reserveResetMatrixByIndexWithIndex(u32 Sb
 
 // Address: 0x012e9550 - 0x012e9555 (5 bytes)
 bool sCollision::reserveResetMatrixAll(sCollision::SBC_HANDLE SbcHandle) {
-    // local: const u32 SbcIndex;
+    // DWARF local not rendered: const u32 SbcIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::sCollision::reserveResetMatrixAllByIndex(SbcHandle);
 }
@@ -1261,7 +1261,7 @@ __attribute__((weak)) u32 sCollision::getSbcTypeFromHandle(sCollision::SBC_HANDL
 
 // Address: 0x012e9af0 - 0x012e9b15 (37 bytes)
 void sCollision::setSbcGroupByBitFromHandle(u32 NewFilterGroupBit, sCollision::SBC_HANDLE TargetSbcHandle) {
-    // local: Sbc* pTarget;
+    // DWARF local not rendered: Sbc* pTarget;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (TargetSbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
         return;
@@ -3613,7 +3613,7 @@ __attribute__((weak)) u32 sCollision::enumSphereWithLS_TriangleFunc(const sColli
 
 // Address: 0x012ce800 - 0x012ce833 (51 bytes)
 u32 sCollision::enumSphereWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    // local: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
+    // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::enumSphereMoveFunc(pGeom, info, CollisionInfo);
     static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisLSHitCheckBeforeMoveFunc(pGeom, info);
@@ -3625,7 +3625,7 @@ u32 sCollision::enumSphereWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::S
 
 // Address: 0x012ce840 - 0x012ce873 (51 bytes)
 u32 sCollision::enumSphereWithLS_ResetFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    // local: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
+    // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::enumSphereResetFunc(pGeom, info, CollisionInfo);
     static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisLSHitCheckBeforeResetFunc(pGeom, info);
@@ -3650,7 +3650,7 @@ __attribute__((weak)) u32 sCollision::enumCapsuleWithLS_TriangleFunc(const sColl
 
 // Address: 0x012ceb00 - 0x012ceb33 (51 bytes)
 u32 sCollision::enumCapsuleWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    // local: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
+    // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::enumCapsuleMoveFunc(pGeom, info, CollisionInfo);
     static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisLSHitCheckBeforeMoveFunc(pGeom, info);
@@ -3662,7 +3662,7 @@ u32 sCollision::enumCapsuleWithLS_MoveFunc(MtGeometry* pGeom, const sCollision::
 
 // Address: 0x012ceb40 - 0x012ceb73 (51 bytes)
 u32 sCollision::enumCapsuleWithLS_ResetFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    // local: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
+    // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::enumCapsuleResetFunc(pGeom, info, CollisionInfo);
     static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisLSHitCheckBeforeResetFunc(pGeom, info);
@@ -3701,7 +3701,7 @@ __attribute__((weak)) u32 sCollision::enumSphereWithSphere_TriangleFunc(const sC
 
 // Address: 0x012ce980 - 0x012ce9b3 (51 bytes)
 u32 sCollision::enumSphereWithSphere_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    // local: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
+    // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::enumSphereMoveFunc(pGeom, info, CollisionInfo);
     static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisSphereHitCheckBeforeMoveFunc(pGeom, info);
@@ -3713,7 +3713,7 @@ u32 sCollision::enumSphereWithSphere_MoveFunc(MtGeometry* pGeom, const sCollisio
 
 // Address: 0x012ce9c0 - 0x012ce9f3 (51 bytes)
 u32 sCollision::enumSphereWithSphere_ResetFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    // local: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
+    // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::enumSphereResetFunc(pGeom, info, CollisionInfo);
     static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisSphereHitCheckBeforeResetFunc(pGeom, info);
@@ -3738,7 +3738,7 @@ __attribute__((weak)) u32 sCollision::enumCapsuleWithSphere_TriangleFunc(const s
 
 // Address: 0x012cec20 - 0x012cec53 (51 bytes)
 u32 sCollision::enumCapsuleWithSphere_MoveFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    // local: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
+    // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::enumCapsuleMoveFunc(pGeom, info, CollisionInfo);
     static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisSphereHitCheckBeforeMoveFunc(pGeom, info);
@@ -3750,7 +3750,7 @@ u32 sCollision::enumCapsuleWithSphere_MoveFunc(MtGeometry* pGeom, const sCollisi
 
 // Address: 0x012cec60 - 0x012cec93 (51 bytes)
 u32 sCollision::enumCapsuleWithSphere_ResetFunc(MtGeometry* pGeom, const sCollision::SbcInfo& info, sCollision::ScrCollisionInfoBase& CollisionInfo) {
-    // local: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
+    // DWARF local not rendered: ScrCollisionInfoAdjustPosition& MyCollisionInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::enumCapsuleResetFunc(pGeom, info, CollisionInfo);
     static_cast<sCollision::ScrCollisionInfoAdjustPosition*>(&CollisionInfo)->::sCollision::ScrCollisionInfoAdjustPosition::runAxisSphereHitCheckBeforeResetFunc(pGeom, info);
@@ -4164,7 +4164,7 @@ __attribute__((weak)) void sCollision::runReservedSbcProgram() {
 
 // Address: 0x012b58f0 - 0x012b58fc (12 bytes)
 void sCollision::updateScrollCollisionNode(sCollision::SbcObject::cRegisterInfo& RegisterInfo, u32 MoveCode) {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mSbcObject.::sCollision::SbcObject::updateScrCollisionGeometry(RegisterInfo, MoveCode);
 }
@@ -7975,9 +7975,21 @@ __attribute__((weak)) sCollision::SbcInfoBase& sCollision::SbcInfoBase::operator
 }
 
 // Address: 0x012c3f70 - 0x012c3fa9 (57 bytes)
-__attribute__((weak)) void sCollision::SbcInfoBase::copy(const sCollision::SbcInfoBase& src) {
-    DDON_STUB("sCollision::SbcInfoBase::copy")
-    /* stub */
+void sCollision::SbcInfoBase::copy(const sCollision::SbcInfoBase& src) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->SbcHandle = src.SbcHandle;
+    this->SbcNo = src.SbcNo;
+    this->PartsNo = src.PartsNo;
+    this->HitLeafIndex = src.HitLeafIndex;
+    this->RTriNo = src.RTriNo;
+    this->pHitScrGeometry = src.pHitScrGeometry;
+    this->HitHeightFieldHandle = src.HitHeightFieldHandle;
+    this->HitHeightFieldU = src.HitHeightFieldU;
+    this->HitHeightFieldV = src.HitHeightFieldV;
+    this->HitHeightFieldTriID = src.HitHeightFieldTriID;
+    this->pHitDSbc = src.pHitDSbc;
+    this->DSbcBvhID = src.DSbcBvhID;
+    this->FlgHitDynamicSbc = src.FlgHitDynamicSbc;
 }
 
 // Address: 0x012c3fb0 - 0x012c416d (445 bytes)

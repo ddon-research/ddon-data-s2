@@ -266,6 +266,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline sControlManager* sControlManager::getInstance() {
+    return ::sControlManager::mpInstance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sControlManager::cDispPriorityData::cDispPriorityData() {
     this->mPriorityType = static_cast<u8>(0);
     this->mCameraLengthType = static_cast<u8>(0);

@@ -205,9 +205,9 @@ __attribute__((weak)) void rSoundSubMixer::add(rSoundSubMixer::Fader* pFader) {
 void rSoundSubMixer::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mFaders.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x701700 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x701700 carries; no location-less local in scope fits
         u32 v0_0 = this->mFaders.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mFaders.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mFaders.::MtArray::mpArray[i0_3];

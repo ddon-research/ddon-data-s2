@@ -257,7 +257,7 @@ __attribute__((weak)) bool rDDOModelMontage::isPlayExpression(u32 no) {
 
 // Address: 0x0065ed40 - 0x0065ed4f (15 bytes)
 u8 rDDOModelMontage::getSeType(u32 no) {
-    // local: SE_INFO* ps;
+    // DWARF local not rendered: SE_INFO* ps;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mpHeader->se[no].soundType;
 }

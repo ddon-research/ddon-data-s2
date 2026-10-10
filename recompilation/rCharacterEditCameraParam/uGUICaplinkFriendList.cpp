@@ -419,7 +419,7 @@ __attribute__((weak)) void uGUICaplinkFriendList::setupRequestListItem(uGUICapli
 
 // Address: 0x009bbc80 - 0x009bbd62 (226 bytes)
 void uGUICaplinkFriendList::initRequestSubMenu() {
-    // local: stSubMenuInfo info_list[4];
+    // DWARF local not rendered: stSubMenuInfo info_list[4];
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x9bbca8, used once; no DWARF local holds it
     MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(15));
@@ -469,7 +469,7 @@ __attribute__((weak)) void uGUICaplinkFriendList::setupReceiveListItem(uGUICapli
 
 // Address: 0x009bc090 - 0x009bc1cd (317 bytes)
 void uGUICaplinkFriendList::initReceiveSubMenu() {
-    // local: stSubMenuInfo info_list[6];
+    // DWARF local not rendered: stSubMenuInfo info_list[6];
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x9bc0ba, used once; no DWARF local holds it
     MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(15));
@@ -532,7 +532,7 @@ __attribute__((weak)) void uGUICaplinkFriendList::setupIgnoreListItem(uGUICaplin
 
 // Address: 0x009bc4f0 - 0x009bc5d2 (226 bytes)
 void uGUICaplinkFriendList::initIgnoreSubMenu() {
-    // local: stSubMenuInfo info_list[4];
+    // DWARF local not rendered: stSubMenuInfo info_list[4];
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x9bc518, used once; no DWARF local holds it
     MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(15));
@@ -592,7 +592,7 @@ __attribute__((weak)) void uGUICaplinkFriendList::setupInvitedListItem(uGUICapli
 
 // Address: 0x009bc930 - 0x009bca12 (226 bytes)
 void uGUICaplinkFriendList::initInvitedSubMenu() {
-    // local: stSubMenuInfo info_list[4];
+    // DWARF local not rendered: stSubMenuInfo info_list[4];
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x9bc958, used once; no DWARF local holds it
     MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(15));

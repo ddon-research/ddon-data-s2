@@ -294,7 +294,7 @@ void sGUIExt::setAimTargetMarkerPos(u32 targetMarkerId, const MtVector3& pos) {
 
 // Address: 0x007ae260 - 0x007ae293 (51 bytes)
 bool sGUIExt::updateAimTargetMarkerId(u32& targetMarkerId) {
-    // local: bool is_valid;
+    // DWARF local not rendered: bool is_valid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpAimUnit != static_cast<uGUIAim*>(nullptr)) {
         if (this->mpAimUnit->::uGUIAim::isValidTargetMarkerId(targetMarkerId) == false) {
@@ -456,7 +456,6 @@ __attribute__((weak)) MT_CTSTR sGUIExt::getNormalSkillName(u32 job_id, u32 index
 
 // Address: 0x0079b140 - 0x0079b189 (73 bytes)
 MT_CTSTR sGUIExt::getNormalSkillNameFromMsgIndex(u32 job_id, u32 msg_index) {
-    // local: const u32 res_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const u32 res_index = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(job_id));
     if (res_index <= static_cast<u32>(9)) {
@@ -1122,7 +1121,7 @@ __attribute__((weak)) bool sGUIExt::isBlackOut() {
 
 // Address: 0x0079c5a0 - 0x0079c5d2 (50 bytes)
 uGUIBase* sGUIExt::newSingletonMenu(const MtDTI* pDTI) {
-    // local: uGUIBase* p;
+    // DWARF local not rendered: uGUIBase* p;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pDTI != static_cast<const MtDTI*>(nullptr)) {
         this->::sGUIExt::setSingletonMenu(static_cast<uGUIBase*>(pDTI->newInstance()));
@@ -2376,8 +2375,6 @@ __attribute__((weak)) void sGUIExt::getNamedEnemyName(nGUIExt::StringEnemyName& 
 
 // Address: 0x00798090 - 0x007980e1 (81 bytes)
 MT_CTSTR sGUIExt::getEnemyNameFromGroupId(u32 enemy_group_id) {
-    // local: const rGUIMessage* pMsg;
-    // local: const u32 msg_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const rGUIMessage* pMsg = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgEnemyName();
     const u32 msg_index = ::sEnemyManager::getInstance()->::sEnemyManager::getMsgIndexFromEnemyGroup(enemy_group_id);
@@ -2497,7 +2494,6 @@ __attribute__((weak)) MT_CTSTR sGUIExt::getMsgEmotionCtgrMessage(u32 uCtgr) {
 
 // Address: 0x007a3da0 - 0x007a3dd6 (54 bytes)
 MT_CTSTR sGUIExt::getMsgEmotionMessageFromIndex(u32 CategoryId, u32 MenuIdx) {
-    // local: u32 resid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 resid = this->::sGUIExt::getEmotionCheckedMsgIdCore(CategoryId, MenuIdx, false);
     if (resid != static_cast<u32>(4294967295)) {
@@ -2518,7 +2514,6 @@ __attribute__((weak)) MT_CTSTR sGUIExt::getMsgEmotionMessage(u32 CategoryId, u32
 
 // Address: 0x007a3eb0 - 0x007a3efc (76 bytes)
 u32 sGUIExt::getEmotionIdx(u32 uCtgr, u32 uIndex) {
-    // local: u32 retIdx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpTblMenuCommEmotion != static_cast<rTblMenuComm*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x7a3ed4, used once; no DWARF local holds it
@@ -2642,7 +2637,6 @@ s32 sGUIExt::getProfileEmotionCtgrMsgNum(u32 CategoryId) {
 
 // Address: 0x007a3e60 - 0x007a3e99 (57 bytes)
 MT_CTSTR sGUIExt::getMsgProfileEmotionMessageFromIndex(u32 CategoryId, u32 MenuIdx) {
-    // local: u32 resid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 resid = this->::sGUIExt::getEmotionCheckedMsgIdCore(CategoryId, MenuIdx, true);
     if (resid != static_cast<u32>(4294967295)) {
@@ -3127,7 +3121,7 @@ __attribute__((weak)) void sGUIExt::requestInfomation(sGUIExt::INFO_FLAG flag, M
 
 // Address: 0x007a6bd0 - 0x007a6c69 (153 bytes)
 void sGUIExt::clearInfomation(bool isHideInfomation) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpInfomationListHead = static_cast<sGUIExt::stInfomation*>(nullptr);
     this->mInfomationList[0].::sGUIExt::stInfomation::reset();
@@ -3443,9 +3437,9 @@ __attribute__((weak)) void sGUIExt::removeGauge(s32 memberIndex) {
 
 // Address: 0x007a8680 - 0x007a8696 (22 bytes)
 const sGUIExt::cLifeGaugeWork* sGUIExt::refLifeGaugeWork(s32 memberIndex) const {
-    // local: const s32 context_index;
-    // local: const cLifeGaugeWork* work;
-    // local: const s32 live_gauge_work_size;
+    // DWARF local not rendered: const s32 context_index;
+    // DWARF local not rendered: const cLifeGaugeWork* work;
+    // DWARF local not rendered: const s32 live_gauge_work_size;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (static_cast<unsigned int>(memberIndex) <= static_cast<unsigned int>(7)) {
         return &this->mLifeGaugeWorks.elems[static_cast<unsigned int>(memberIndex)];
@@ -3754,7 +3748,7 @@ __attribute__((weak)) void sGUIExt::createGainInfo() {
 
 // Address: 0x007a9bd0 - 0x007a9ce0 (272 bytes)
 void sGUIExt::deleteGainInfo() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpGUIGainInfo[0] == static_cast<uGUIGainInfo*>(nullptr)) {
     } else {
@@ -4174,7 +4168,7 @@ __attribute__((weak)) bool sGUIExt::isNpcWindowEnd() {
 
 // Address: 0x007ad120 - 0x007ad135 (21 bytes)
 u32 sGUIExt::getNpcWindowCurrentPage() {
-    // local: u32 uRet;
+    // DWARF local not rendered: u32 uRet;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpGUINpcWindow != static_cast<uGUINpcWindow*>(nullptr)) {
         return this->mpGUINpcWindow->::uGUISystemMsg::getCurrentPage();
@@ -4185,7 +4179,7 @@ u32 sGUIExt::getNpcWindowCurrentPage() {
 
 // Address: 0x007ad140 - 0x007ad154 (20 bytes)
 u32 sGUIExt::getNpcWindowFinalPageIdx() {
-    // local: u32 uRet;
+    // DWARF local not rendered: u32 uRet;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpGUINpcWindow != static_cast<uGUINpcWindow*>(nullptr)) {
         return this->mpGUINpcWindow->::uGUISystemMsg::getFinalPageIdx();
@@ -4646,7 +4640,7 @@ __attribute__((weak)) void sGUIExt::cancelStopBrowserOperate() {
 
 // Address: 0x007ab500 - 0x007ab51e (30 bytes)
 void sGUIExt::setBrowserPos(f32 PosX, f32 PosY) {
-    // local: MtVector3 pos;
+    // DWARF local not rendered: MtVector3 pos;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpGUIBrowserBG == static_cast<uGUIBrowserBG*>(nullptr)) {
         return;
@@ -4756,7 +4750,7 @@ __attribute__((weak)) void sGUIExt::setOpenCommunityList(uGUICommunityList* pGUI
 
 // Address: 0x007ae0d0 - 0x007ae0e4 (20 bytes)
 void sGUIExt::reqCloseCommunityList() {
-    // local: uGUICommunityList* pGUI;
+    // DWARF local not rendered: uGUICommunityList* pGUI;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::sGUIExt::getOpenCommunityList() == static_cast<uGUICommunityList*>(nullptr)) {
         return;
@@ -5355,8 +5349,8 @@ s32 sGUIExt::getClanEmblemBaseNum() const {
 
 // Address: 0x007bdae0 - 0x007bdafb (27 bytes)
 s32 sGUIExt::getClanEmblemColorNum(uGUIBase* pGUI) const {
-    // local: s32 color_num;
-    // local: rEmblemColorTable* const table;
+    // DWARF local not rendered: s32 color_num;
+    // DWARF local not rendered: rEmblemColorTable* const table;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pGUI->::uGUIBase::getEmblemColorTableRes() != static_cast<rEmblemColorTable*>(nullptr)) {
         return static_cast<s32>(pGUI->::uGUIBase::getEmblemColorTableRes()->getDataNum());
@@ -5394,8 +5388,6 @@ __attribute__((weak)) MtColor sGUIExt::getClanEmblemColor(uGUIBase* pGUI, s32 co
 
 // Address: 0x007b1a40 - 0x007b1a9d (93 bytes)
 bool sGUIExt::isPlActThrow(MT_CTSTR str) {
-    // local: cContextInstHm* pContext;
-    // local: uHuman* pPlayer;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((*str) != static_cast<char>(0)) {
         cContextInstHm* pContext = ::sContextManager::getInstance()->::sContextManager::getContextMyPlayer();
@@ -5653,7 +5645,7 @@ __attribute__((weak)) s32 sGUIExt::cMousePointer::getAxisZ() {
 
 // Address: 0x007af350 - 0x007af35c (12 bytes)
 void sGUIExt::cMousePointer::setAnmTypeReq(u32 uAnmType, u32 uPrio) {
-    // local: s32 a;
+    // DWARF local not rendered: s32 a;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (uPrio >= this->mAnmTypeReqPrio) {
         this->mAnmTypeReqPrio = uPrio;
@@ -6828,7 +6820,7 @@ __attribute__((weak)) s32 sGUIExt::cMap::getStageNoDisplayedMap() {
 
 // Address: 0x007ba3a0 - 0x007ba3b1 (17 bytes)
 void sGUIExt::cMap::reqSendReservFreeMarkerAll() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mIsSendReservFreeMarker[2] = true;
     this->mIsSendReservFreeMarker[0] = true;
@@ -6837,7 +6829,7 @@ void sGUIExt::cMap::reqSendReservFreeMarkerAll() {
 
 // Address: 0x007ba3c0 - 0x007ba3d1 (17 bytes)
 void sGUIExt::cMap::clearSendReservFreeMarkerIdx() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mIsSendReservFreeMarker[2] = false;
     this->mIsSendReservFreeMarker[0] = false;
@@ -6846,8 +6838,8 @@ void sGUIExt::cMap::clearSendReservFreeMarkerIdx() {
 
 // Address: 0x007ba3e0 - 0x007ba3fa (26 bytes)
 u32 sGUIExt::cMap::getSendReservFreeMarkerNum() {
-    // local: u32 num;
-    // local: u32 i;
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<u32>((this->mIsSendReservFreeMarker[0] + this->mIsSendReservFreeMarker[1]) + this->mIsSendReservFreeMarker[2]);
 }
@@ -6999,7 +6991,7 @@ void sGUIExt::cMap::setQuestFocus(u32 uSdlId, bool bKeep) {
 
 // Address: 0x007b9900 - 0x007b9913 (19 bytes)
 bool sGUIExt::cMap::isReloadGridMapTex(bool erase) {
-    // local: bool flag;
+    // DWARF local not rendered: bool flag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7b9900 read, used once; no DWARF local holds it
     bool t0 = this->mIsReloadGridMapTex;

@@ -222,7 +222,7 @@ u32 uGUIDialogTextBox::evCtrlCancel(cControl::Message* msg) {
 
 // Address: 0x00a69510 - 0x00a69567 (87 bytes)
 u32 uGUIDialogTextBox::evCtrlDecide(cControl::Message* msg) {
-    // local: const s32 click_vol;
+    // DWARF local not rendered: const s32 click_vol;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (msg != static_cast<cControl::Message*>(nullptr)) {
         if (msg->reason == static_cast<nGUIExt::MSG_REASON>(37)) {

@@ -7,6 +7,7 @@
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -153,8 +154,10 @@ bool rWeaponOffset::loadData(MtDataReader& r, cWeaponOffset* pData) {
     pData->mFatDamage = r.readF32();
     pData->mJntNoSpecial = r.readS32();
     pData->mRotSpecial = r.readV3();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->mOfsSpecial = r.readV3();
-    pData->mFatSpecial = r.readF32();
+    ::nDDOIO::readData(r, pData->mFatSpecial);
     return true;
 }
 
@@ -200,4 +203,8 @@ template const cWeaponOffset* rTbl2<cWeaponOffset>::getData(unsigned int) const;
 // Instance at 0x01ab8750 - 0x01ab8754 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cWeaponOffset>::getDataNum() const;
+
+// Instance at 0x01ab8a40 - 0x01ab8a98 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cWeaponOffset>::~rTbl2();
 

@@ -231,7 +231,6 @@ __attribute__((weak)) u32 rNPCEmoMyRoom::InfoBinary::getMotionNo(u32 idx, u8 sex
 
 // Address: 0x006aaab0 - 0x006aaaeb (59 bytes)
 s16 rNPCEmoMyRoom::InfoBinary::getFinger(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCEmoMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -247,7 +246,6 @@ s16 rNPCEmoMyRoom::InfoBinary::getFinger(u32 idx) {
 
 // Address: 0x006aaaf0 - 0x006aab2b (59 bytes)
 s16 rNPCEmoMyRoom::InfoBinary::getLoop(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCEmoMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);

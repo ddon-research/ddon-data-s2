@@ -6,6 +6,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -77,9 +78,9 @@ __attribute__((weak)) void CDataJobChangeInfo::operator delete(void* p_addr) {
 // CDataJobChangeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003da1a0 - 0x003da20d (109 bytes)
-__attribute__((weak)) MtObject* CDataJobChangeInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataJobChangeInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataJobChangeInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataJobChangeInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -219,8 +220,8 @@ __attribute__((weak)) void CDataReleaseElement::operator delete(void* p_addr) {
 // CDataReleaseElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d9f30 - 0x003d9f7f (79 bytes)
-__attribute__((weak)) MtObject* CDataReleaseElement::MyDTI::newInstance() const {
-    DDON_STUB("CDataReleaseElement::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataReleaseElement::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataReleaseElement;
 }
 

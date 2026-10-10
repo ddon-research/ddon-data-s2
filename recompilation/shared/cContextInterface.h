@@ -118,7 +118,7 @@ class cContextInterface : public MtObject
     friend class uControlNpc;
     // inferred: uDDOModel::setTarget names uDDOModel::mContextInterface.mpContextInstance
     friend class uDDOModel;
-    // inferred: uEnemy::setEmParamFromResToContext names uDDOModel::mContextInterface.mpContextInstance
+    // inferred: uEnemy::setupContextEnemyStatusChange names uDDOModel::mContextInterface.mpContextInstance
     friend class uEnemy;
     // inferred: uHuman::setupContextEnemyClimb names uDDOModel::mContextInterface.mpContextInstance
     friend class uHuman;

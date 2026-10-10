@@ -90,7 +90,7 @@ MtUI* nNetwork::Transport::createUI(MtProperty& prop) {
 
 // Address: 0x011a4280 - 0x011a42e5 (101 bytes)
 void nNetwork::Transport::setup(nNetwork::Session* ps) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpSession = ps;
     if (this->mpProtocol[0] != static_cast<nNetwork::Protocol*>(nullptr)) {
@@ -225,7 +225,7 @@ __attribute__((weak)) void nNetwork::Transport::updateBandwidth(nNetwork::Route&
 
 // Address: 0x011a6df0 - 0x011a6e51 (97 bytes)
 void nNetwork::Transport::createRoute(s32 route_index) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpProtocol[0] != static_cast<nNetwork::Protocol*>(nullptr)) {
         this->mpProtocol[0]->create(route_index);

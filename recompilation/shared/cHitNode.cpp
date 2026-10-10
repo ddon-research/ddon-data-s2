@@ -110,7 +110,7 @@ __attribute__((weak)) void cHitNode::createProperty(MtPropertyList& s) {
 
 // Address: 0x000de650 - 0x000de698 (72 bytes)
 cAttackParam* cHitNode::getAttackParamFromAttackNo(u32 no) const {
-    // local: cAttackParam* pAttackParam;
+    // DWARF local not rendered: cAttackParam* pAttackParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpAttackParamRes != static_cast<rAttackParam*>(nullptr)) {
         if (no < this->mpAttackParamRes->getDataNum()) {
@@ -145,7 +145,6 @@ void cHitNode::setAttackParam(const cAttackParam* pAttackParam) {
 
 // Address: 0x000de6c0 - 0x000de735 (117 bytes)
 void cHitNode::setAttackParamFromAttackNo(u32 no) {
-    // local: cAttackParam* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpAttackParamRes == static_cast<rAttackParam*>(nullptr)) {
         return;
@@ -188,7 +187,7 @@ __attribute__((weak)) void cHitNode::setAttackParamRes(rAttackParam* mpr) {
 
 // Address: 0x000de5b0 - 0x000de5c7 (23 bytes)
 const MtSphere* cHitNode::getSphere(u32 index) const {
-    // local: cHitGeom* pGeom;
+    // DWARF local not rendered: cHitGeom* pGeom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mGeomArray.mpArray[index] != static_cast<MtObject*>(nullptr)) {
         return static_cast<cHitGeom*>(this->mGeomArray.mpArray[index])->::cHitGeom::getSphere();
@@ -199,7 +198,7 @@ const MtSphere* cHitNode::getSphere(u32 index) const {
 
 // Address: 0x000de5d0 - 0x000de5e8 (24 bytes)
 void cHitNode::setSphere(u32 index, const MtSphere& sphere) {
-    // local: cHitGeom* pGeom;
+    // DWARF local not rendered: cHitGeom* pGeom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mGeomArray.mpArray[index] == static_cast<MtObject*>(nullptr)) {
         return;
@@ -209,7 +208,7 @@ void cHitNode::setSphere(u32 index, const MtSphere& sphere) {
 
 // Address: 0x000de5f0 - 0x000de607 (23 bytes)
 const MtCapsule* cHitNode::getCapsule(u32 index) const {
-    // local: cHitGeom* pGeom;
+    // DWARF local not rendered: cHitGeom* pGeom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mGeomArray.mpArray[index] != static_cast<MtObject*>(nullptr)) {
         return static_cast<cHitGeom*>(this->mGeomArray.mpArray[index])->::cHitGeom::getCapsule();
@@ -220,7 +219,7 @@ const MtCapsule* cHitNode::getCapsule(u32 index) const {
 
 // Address: 0x000de610 - 0x000de628 (24 bytes)
 void cHitNode::setCapsule(u32 index, const MtCapsule& capsule) {
-    // local: cHitGeom* pGeom;
+    // DWARF local not rendered: cHitGeom* pGeom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mGeomArray.mpArray[index] == static_cast<MtObject*>(nullptr)) {
         return;
@@ -236,25 +235,24 @@ void cHitNode::setCapsule(u32 index, const MtCapsule& capsule) {
 
 // Address: 0x000ddfe0 - 0x000de055 (117 bytes)
 void cHitNode::updateNode() {
-    // local: uDDOModel* pModel;
-    // local: u32 CollAttr;
-    // local: u32 Num;
-    // local: u32 i;
-    // local: cHitGeom* pGeom;
+    // DWARF local not rendered: uDDOModel* pModel;
+    // DWARF local not rendered: u32 CollAttr;
+    // DWARF local not rendered: u32 Num;
+    // DWARF local not rendered: cHitGeom* pGeom;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpObjCollision->::cpObjCollisionBase::getModel() != static_cast<uDDOModel*>(nullptr)) {
         if (this->mpCollNode != static_cast<cCollNode*>(nullptr)) {
             this->::cHitNode::setSCollisionNodeAttr(this->mpObjCollision->::cpObjCollisionBase::getModel()->replaceCollisionAttr(this->mpCollNode->::cCollNode::getAttr(), this->mpCollNode));
-            // inferred: the value the loop at 0xde030 carries; DWARF names no local for it
+            // inferred: the value the loop at 0xde030 carries; the location-less local in scope that fits is declared on no line of the value's writes
             u32 v0_10 = this->mGeomArray.mLength;
             if (v0_10 != static_cast<u32>(0)) {
-                // inferred: the counter this loop steps; DWARF names no local for it
-                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                    if (this->mGeomArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                        static_cast<cHitGeom*>(this->mGeomArray.mpArray[i0_3])->::cHitGeom::updateGeom();
+                // inferred: DWARF's location-less 'i' (lexical block [0xde02a, 0xde04a)) is the counter this loop steps (DWARF's stale constant 0)
+                for (u32 i = static_cast<u32>(0);;) {
+                    if (this->mGeomArray.mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                        static_cast<cHitGeom*>(this->mGeomArray.mpArray[i])->::cHitGeom::updateGeom();
                     }
-                    if (v0_10 != (i0_3 + static_cast<unsigned int>(1))) {
-                        i0_3 = i0_3 + static_cast<unsigned int>(1);
+                    if (v0_10 != (i + static_cast<u32>(1))) {
+                        i = i + static_cast<u32>(1);
                     } else {
                         break;
                     }

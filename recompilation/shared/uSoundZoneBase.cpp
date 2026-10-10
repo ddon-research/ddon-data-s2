@@ -140,7 +140,7 @@ s32 cSoundLayoutInfo::getContentsIndex(u32 index) {
 
 // Address: 0x00d4f630 - 0x00d4f641 (17 bytes)
 const nZone::ShapeInfoBase* cSoundLayoutInfo::getOriginalShape() {
-    // local: cLayoutElement* pOwnerLayoutElement;
+    // DWARF local not rendered: cLayoutElement* pOwnerLayoutElement;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cZoneExtendObject::getOwner() != static_cast<nZone::cLayoutElement*>(nullptr)) {
         return this->::cZoneExtendObject::getOwner()->::nZone::cLayoutElement::getShapeInfoResource();
@@ -359,9 +359,7 @@ __attribute__((weak)) void uSoundZoneBase::setupFromResource(rZone* pRes) {
 
 // Address: 0x00d4fd00 - 0x00d4fdbe (190 bytes)
 void uSoundZoneBase::setupFromResource(rZone* pRes, const MtVector3& pos) {
-    // local: const MtDTI* pGroupManagerDTI;
-    // local: cSoundZoneListener* pListener;
-    // local: cZoneLayout* pZone;
+    // DWARF local not rendered: cZoneLayout* pZone;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (pRes == static_cast<rZone*>(nullptr)) {
         return;
@@ -456,7 +454,6 @@ cSoundLayoutInfo* uSoundZoneBase::getLayoutInfo(u32 index) {
 
 // Address: 0x00d4fce0 - 0x00d4fcfd (29 bytes)
 cZoneLayout* uSoundZoneBase::getZoneLayout() {
-    // local: cZoneListener* pListener;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cZoneListener* pListener = this->getZoneListener();
     if (pListener != static_cast<cZoneListener*>(nullptr)) {

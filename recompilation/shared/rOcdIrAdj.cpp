@@ -3,9 +3,9 @@
 #include "rOcdIrAdj.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -238,8 +238,12 @@ inline void rOcdIrAdj::operator delete(void* p_addr) {
 // Address: 0x006b1e60 - 0x006b1e90 (48 bytes)
 bool rOcdIrAdj::loadData(MtDataReader& in, cOcdIrAdj* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mLv = in.readU32();
-    pData->mOcdRank = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLv);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mOcdRank);
     return true;
 }
 
@@ -318,8 +322,12 @@ inline void rOcdIrAdjPL::operator delete(void* p_addr) {
 // Address: 0x006b21e0 - 0x006b2210 (48 bytes)
 bool rOcdIrAdjPL::loadData(MtDataReader& in, cOcdIrAdjPL* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mItemLank = in.readU32();
-    pData->mOcdRank = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mItemLank);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mOcdRank);
     return true;
 }
 
@@ -385,4 +393,12 @@ template unsigned int rTbl2<cOcdIrAdj>::getDataNum() const;
 // Instance at 0x01aa11d0 - 0x01aa11d4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cOcdIrAdjPL>::getDataNum() const;
+
+// Instance at 0x01aa14a0 - 0x01aa14f8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cOcdIrAdj>::~rTbl2();
+
+// Instance at 0x01aa13e0 - 0x01aa1438 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cOcdIrAdjPL>::~rTbl2();
 

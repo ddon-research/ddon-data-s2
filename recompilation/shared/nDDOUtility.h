@@ -825,6 +825,53 @@ namespace nDDOUtility {
     };
 }  // namespace nDDOUtility
 
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+// Generic (024 T808): every instance that renders gives this body; the unit of each instance's compile unit, else nDDOUtility.cpp, instantiates it for the body oracle.
+// approximate: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported
+template <typename T>
+nDDOUtility::cNoObjectArray<T>::~cNoObjectArray() {
+    if (this->mAutoDelete != false) {
+        if (this->mLength != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x1adec10 carries; no location-less local in scope fits
+            u32 v0_0 = this->mLength;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                if (this->mpArray[i0_3] != static_cast<T*>(nullptr)) {
+                    delete this->mpArray[i0_3];
+                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mLength) {
+                        v0_0 = this->mLength;
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (this->mpArray != static_cast<T* *>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mpArray));
+        }
+        this->mpArray = static_cast<T* *>(nullptr);
+        this->mLength = static_cast<u32>(0);
+        this->mBufsiz = static_cast<u32>(0);
+    } else {
+        if (this->mpArray != static_cast<T* *>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mpArray));
+        }
+    }
+    this->mpArray = static_cast<T* *>(nullptr);
+    this->mLength = static_cast<u32>(0);
+    this->mBufsiz = static_cast<u32>(0);
+}
+
 // Generic (024 T808): every instance that renders gives this body; the unit of each instance's compile unit, else nDDOUtility.cpp, instantiates it for the body oracle.
 template <unsigned int NODE>
 nDDOUtility::cRNSplineBase::stSplineData* nDDOUtility::cRNSpline<NODE>::getNodePtr() {

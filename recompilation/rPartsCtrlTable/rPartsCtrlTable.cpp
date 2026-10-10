@@ -169,7 +169,7 @@ inline void rPartsCtrlTable::operator delete(void* p_addr) {
 
 // Address: 0x006c9570 - 0x006c9661 (241 bytes)
 bool rPartsCtrlTable::loadData(MtDataReader& in, cPartsCtrlTable* pData) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     pData->mPartsKeyNo = in.readS32();
     pData->mPartsDisp[0] = in.readU32();
@@ -233,4 +233,8 @@ template const cPartsCtrlTable* rTbl2<cPartsCtrlTable>::getData(unsigned int) co
 // Instance at 0x01aab140 - 0x01aab144 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cPartsCtrlTable>::getDataNum() const;
+
+// Instance at 0x01aab300 - 0x01aab358 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cPartsCtrlTable>::~rTbl2();
 

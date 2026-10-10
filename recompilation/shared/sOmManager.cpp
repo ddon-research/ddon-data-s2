@@ -666,7 +666,6 @@ __attribute__((weak)) void sOmManager::callBackUseItemReq(void* param) {
 
 // Address: 0x007fff00 - 0x007fff4f (79 bytes)
 u32 sOmManager::getGatherGrp(cOmControl* pctrl) {
-    // local: const cOmParam* pparam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pctrl != static_cast<cOmControl*>(nullptr)) {
         const cOmParam* pparam = pctrl->::cOmControl::getOmParam();
@@ -1185,7 +1184,6 @@ __attribute__((weak)) void sOmManager::setShell(const MtVector3& pos, uDDOModel*
 
 // Address: 0x008015c0 - 0x008015fd (61 bytes)
 void sOmManager::add603000(cOmControl* pctrl) {
-    // local: u32 cnt;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     if (pctrl == static_cast<cOmControl*>(nullptr)) {
         return;
@@ -1193,7 +1191,7 @@ void sOmManager::add603000(cOmControl* pctrl) {
     if (this->m60300Num > static_cast<u32>(3)) {
         return;
     }
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     cOmControl* * p0 = &this->mpCtrl603000[0];
     u32 cnt = static_cast<u32>(0);
     do {
@@ -1209,9 +1207,8 @@ void sOmManager::add603000(cOmControl* pctrl) {
 
 // Address: 0x00801600 - 0x00801630 (48 bytes)
 void sOmManager::remove603000(cOmControl* pctrl) {
-    // local: u32 cnt;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     cOmControl* * p0 = &this->mpCtrl603000[0];
     u32 cnt = static_cast<u32>(0);
     if (pctrl != static_cast<cOmControl*>(nullptr)) {

@@ -257,10 +257,9 @@ rWeatherEffectParam::~rWeatherEffectParam() {
 
 // Address: 0x007135d0 - 0x007136de (270 bytes)
 bool rWeatherEffectParam::load(MtStream& in) {
-    // local: MtDataReader r;
-    // local: u32 maggic;
-    // local: u32 varsion;
-    // local: u32 type;
+    // DWARF local not rendered: u32 maggic;
+    // DWARF local not rendered: u32 varsion;
+    // DWARF local not rendered: u32 type;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(7366007)) {
@@ -301,7 +300,7 @@ __attribute__((weak)) const cEffectCorrectParam* rWeatherEffectParam::getCorrect
 
 // Address: 0x01ab9a70 - 0x01ab9a82 (18 bytes)
 u32 rWeatherEffectParam::getCorrectParamNum(u32 type) const {
-    // local: const MtTypedArray<cEffectCorrectParam>& list;
+    // DWARF local not rendered: const MtTypedArray<cEffectCorrectParam>& list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (type <= static_cast<u32>(6)) {
         return this->mpParamList[type].::MtArray::mLength;

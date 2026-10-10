@@ -25,9 +25,9 @@ void nCaplink::ContentAchievementGetAns::init() {
     ::memset(static_cast<void*>(&this->mAchievement[0]), static_cast<int>(0), static_cast<size_t>(2732));
     this->mExtended.::MtArray::mAutoDelete = true;
     if (this->mExtended.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1abf400 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1abf400 carries; no location-less local in scope fits
         u32 v0_0 = this->mExtended.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mExtended.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mExtended.::MtArray::mpArray[i0_3];

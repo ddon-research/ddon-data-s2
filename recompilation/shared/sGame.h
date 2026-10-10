@@ -738,6 +738,11 @@ inline void sGame::offDisableActionPlayer() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline rJobBaseParam* sGame::getJobBaseParam() const {
+    return this->mpJobBaseParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cPlayPointInfo* sGame::getPlayPointInfo() const {
     return this->mpPlayPointInfo;
 }

@@ -102,7 +102,6 @@ void rGeometry2::clear() {
 
 // Address: 0x0121d5d0 - 0x0121d69d (205 bytes)
 bool rGeometry2::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->clear();
     this->mMagic = static_cast<u32>(0);
@@ -120,7 +119,6 @@ bool rGeometry2::load(MtStream& in) {
 
 // Address: 0x0121d6a0 - 0x0121d763 (195 bytes)
 bool rGeometry2::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpGeometry != static_cast<rGeometry2::cGeometryArray*>(nullptr)) {
         this->mMagic = static_cast<u32>(846161255);
@@ -339,7 +337,6 @@ __attribute__((weak)) MtGeomConvex* rGeometry2::cGeometryArray::getAttachGeometr
 
 // Address: 0x0121ce30 - 0x0121ce4b (27 bytes)
 MtGeomConvex* rGeometry2::cGeometryArray::getLocalGeometry(u32 TargetGeometryIndex) const {
-    // local: const cGeometry* pTargetGeometry;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const rGeometry2::cGeometry* pTargetGeometry = static_cast<const rGeometry2::cGeometry*>(this->::nCollision::cCollisionNode::getGeometryClassConst(TargetGeometryIndex));
     if (pTargetGeometry != static_cast<const rGeometry2::cGeometry*>(nullptr)) {

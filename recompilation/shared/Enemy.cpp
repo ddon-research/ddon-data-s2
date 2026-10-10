@@ -5,6 +5,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #include "nEnemyID.h"
@@ -78,9 +79,9 @@ __attribute__((weak)) void CDataNamedEnemyParamClient::operator delete(void* p_a
 // CDataNamedEnemyParamClient::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dc840 - 0x003dc8b4 (116 bytes)
-__attribute__((weak)) MtObject* CDataNamedEnemyParamClient::MyDTI::newInstance() const {
-    DDON_STUB("CDataNamedEnemyParamClient::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataNamedEnemyParamClient::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataNamedEnemyParamClient;
 }
 
 // No out-of-line body: no code in the ELF
@@ -149,9 +150,9 @@ __attribute__((weak)) void CDataTraningRoomEnemyHeader::operator delete(void* p_
 // CDataTraningRoomEnemyHeader::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dcb10 - 0x003dcb5f (79 bytes)
-__attribute__((weak)) MtObject* CDataTraningRoomEnemyHeader::MyDTI::newInstance() const {
-    DDON_STUB("CDataTraningRoomEnemyHeader::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataTraningRoomEnemyHeader::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataTraningRoomEnemyHeader;
 }
 
 // Address: 0x005b73f0 - 0x005b741c (44 bytes)

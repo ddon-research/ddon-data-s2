@@ -356,7 +356,7 @@ __attribute__((weak)) void nNetwork::Route::recRecv(u32 seq, u32 length, u32 hop
 
 // Address: 0x011a05c0 - 0x011a05f1 (49 bytes)
 void nNetwork::Route::ready() {
-    // local: s32 ival;
+    // DWARF local not rendered: s32 ival;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mReady != false) {
         return;

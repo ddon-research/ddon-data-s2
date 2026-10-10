@@ -134,7 +134,7 @@ using u8 = unsigned char;
 
 class uHuman : public uCharacter
 {
-    // inferred: cHumanActBase::final names uHuman::mIsBeforeAttackHit
+    // inferred: cHumanActBase::move names uHuman::mIsOmTiming
     friend class cHumanActBase;
     // inferred: cHumanActSetNpcMotMyRoom::final names uHuman::mIsBeforeAttackHit
     friend class cHumanActSetNpcMotMyRoom;
@@ -1529,6 +1529,11 @@ inline s32 uHuman::getClimbJointNo() const {
 // Inline, no code of its own: checked where it is inlined.
 inline cContextPlayerInfo* uHuman::getContextPlayerInfo() const {
     return this->mpContextPlayerInfo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline f32 uHuman::getInvincibleTime() const {
+    return this->mInvincibleTime;
 }
 
 // Inline, no code of its own: checked where it is inlined.

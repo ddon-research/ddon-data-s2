@@ -3,9 +3,9 @@
 #include "rEmStatusAdj.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -139,11 +139,21 @@ inline void rEmStatusAdj::operator delete(void* p_addr) {
 // Address: 0x0066a130 - 0x0066a18f (95 bytes)
 bool rEmStatusAdj::loadData(MtDataReader& r, cEmStatusAdj* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mDamageAtkAdj = r.readF32();
-    pData->mShrinkAtkAdj = r.readF32();
-    pData->mBlowAtkAdj = r.readF32();
-    pData->mStaminaDamageAtkAdj = r.readF32();
-    pData->mOcdAtkAdj = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mDamageAtkAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mShrinkAtkAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mBlowAtkAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mStaminaDamageAtkAdj);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mOcdAtkAdj);
     return true;
 }
 
@@ -189,4 +199,8 @@ template const cEmStatusAdj* rTbl2<cEmStatusAdj>::getData(unsigned int) const;
 // Instance at 0x01a88f50 - 0x01a88f54 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEmStatusAdj>::getDataNum() const;
+
+// Instance at 0x01a890f0 - 0x01a89148 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cEmStatusAdj>::~rTbl2();
 

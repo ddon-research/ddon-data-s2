@@ -118,7 +118,7 @@ __attribute__((weak)) void nNetwork::Session::setup() {
 
 // Address: 0x011a0c00 - 0x011a0c25 (37 bytes)
 void nNetwork::Session::move() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mDriver.::nNetwork::SessionDriver::move();
     this->mpMatch->move();
@@ -475,7 +475,6 @@ __attribute__((weak)) void nNetwork::Session::removeDriver() {
 
 // Address: 0x011a0ba0 - 0x011a0bec (76 bytes)
 void nNetwork::Session::updateUniqueId() {
-    // local: MtNetContext* pcon;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtNetContext* pcon = (::sNetwork::mpInstance)->::sNetwork::getContext(this->mUserIndex, static_cast<s32>(this->mService));
     if (pcon == static_cast<MtNetContext*>(nullptr)) {

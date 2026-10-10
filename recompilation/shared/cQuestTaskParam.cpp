@@ -193,9 +193,9 @@ __attribute__((weak)) cQuestTaskParam& cQuestTaskParam::setAreaId(u32 areaId) {
 void cQuestTaskParam::resetParam() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mKeyItemPoint.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1c5e00 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1c5e00 carries; no location-less local in scope fits
         u32 v0_0 = this->mKeyItemPoint.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mKeyItemPoint.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mKeyItemPoint.::MtArray::mpArray[i0_3];
@@ -221,9 +221,9 @@ void cQuestTaskParam::resetParam() {
     this->mKeyItemPoint.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mKeyItemPoint.::MtArray::mLength = static_cast<u32>(0);
     if (this->mRandomValue.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1c5e80 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1c5e80 carries; no location-less local in scope fits
         u32 v2_0 = this->mRandomValue.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mRandomValue.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mRandomValue.::MtArray::mpArray[i2_3];
@@ -249,9 +249,9 @@ void cQuestTaskParam::resetParam() {
     this->mRandomValue.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mRandomValue.::MtArray::mLength = static_cast<u32>(0);
     if (this->mTimer.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1c5f00 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1c5f00 carries; no location-less local in scope fits
         u32 v4_0 = this->mTimer.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
             if (this->mTimer.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mTimer.::MtArray::mpArray[i4_3];
@@ -435,9 +435,9 @@ __attribute__((weak)) bool cQuestTaskParam::loadOrderConditionQuest() {
 void cQuestTaskParam::resetOrderCondition() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mOrderConditions.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1c5a70 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1c5a70 carries; no location-less local in scope fits
         u32 v0_0 = this->mOrderConditions.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mOrderConditions.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mOrderConditions.::MtArray::mpArray[i0_3];
@@ -473,8 +473,7 @@ __attribute__((weak)) void cQuestTaskParam::addOrderCondition(u32 Type, s32 Para
 
 // Address: 0x001c67f0 - 0x001c683a (74 bytes)
 void cQuestTaskParam::updateOrderConditionMsg() {
-    // local: u32 i;
-    // local: cOrderCondition* pCondition;
+    // DWARF local not rendered: cOrderCondition* pCondition;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
     if (this->mOrderConditions.::MtArray::mLength != static_cast<u32>(0)) {

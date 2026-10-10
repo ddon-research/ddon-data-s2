@@ -202,7 +202,6 @@ __attribute__((weak)) void rOutlineParamList::clear() {
 
 // Address: 0x006c9020 - 0x006c90a1 (129 bytes)
 bool rOutlineParamList::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -210,7 +209,6 @@ bool rOutlineParamList::load(MtStream& in) {
 
 // Address: 0x006c90b0 - 0x006c9136 (134 bytes)
 bool rOutlineParamList::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rOutlineParamList::DTI));

@@ -3,9 +3,9 @@
 #include "rCraftQuality.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -155,10 +155,18 @@ inline void rCraftQuality::operator delete(void* p_addr) {
 // Address: 0x00659a80 - 0x00659ae9 (105 bytes)
 bool rCraftQuality::loadData(MtDataReader& in, cCraftQualityData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mItemNo = in.readU32();
-    pData->mBonus = in.readU32();
-    pData->mRankLimit = in.readU16();
-    pData->mLv = in.::MtDataReader::readU8();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mItemNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBonus);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mRankLimit);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLv);
     return true;
 }
 
@@ -204,4 +212,8 @@ template const cCraftQualityData* rTbl2<cCraftQualityData>::getData(unsigned int
 // Instance at 0x01a81c50 - 0x01a81c54 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cCraftQualityData>::getDataNum() const;
+
+// Instance at 0x01a81de0 - 0x01a81e38 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCraftQualityData>::~rTbl2();
 

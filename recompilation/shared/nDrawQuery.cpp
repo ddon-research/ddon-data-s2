@@ -59,7 +59,7 @@ void* nDraw::OcclusionQuery::operator new(size_t sz, u32 align) {
 
 // Address: 0x013493e0 - 0x013493e6 (6 bytes)
 u32 nDraw::OcclusionQuery::get(s32* frame) {
-    // local: u32 data;
+    // DWARF local not rendered: u32 data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<u32>(4294967295);
 }

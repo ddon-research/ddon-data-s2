@@ -102,8 +102,6 @@ MT_CTSTR rLanguageResIDConverter::getExt() const {
 
 // Address: 0x00643210 - 0x006432fd (237 bytes)
 bool rLanguageResIDConverter::load(MtStream& in) {
-    // local: u32 len;
-    // local: stHeader* p_header;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 len = in.getLength();
     if (this->mpHeader != static_cast<rLanguageResIDConverter::stHeader*>(nullptr)) {

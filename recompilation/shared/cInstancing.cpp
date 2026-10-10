@@ -712,19 +712,18 @@ __attribute__((weak)) void cInstancingFromMatrices::move() {
 
 // Address: 0x0101fc10 - 0x0101fc3d (45 bytes)
 s32 cInstancingFromMatrices::getId() {
-    // local: s32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    int i1 = static_cast<int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0x101fc20, 0x101fc3a)) is the counter this loop steps (DWARF's stale constant 0)
+    s32 i = static_cast<s32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     cInstancingFromMatrices::Area* p2 = &this->mArea[0];
     do {
         if ((p2->mEmpty & static_cast<u32>(1)) != static_cast<u32>(0)) {
-            return i1;
+            return i;
         }
-        i1 += static_cast<int>(1);
+        i += static_cast<s32>(1);
         p2 += static_cast<int>(1);
-    } while ((i1 + static_cast<int>(0)) <= static_cast<int>(255));
+    } while ((i + static_cast<s32>(0)) <= static_cast<s32>(255));
     return static_cast<s32>(-1);
 }
 

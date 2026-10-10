@@ -64,3 +64,19 @@ public:
     u32 m_unOriginalMoonAge;  // offset: 0x34
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataGameTimeBaseInfo::CDataGameTimeBaseInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unOriginalWeek = static_cast<u32>(0);
+    this->m_unOriginalMoonAge = static_cast<u32>(0);
+    this->m_llOriginalGameTimeSec = static_cast<s64>(0);
+    this->m_llOriginalRealTimeSec = static_cast<s64>(0);
+    this->m_unGameTimeWeekDay = static_cast<u32>(0);
+    this->m_unGameTimeMoonAge = static_cast<u32>(0);
+    this->m_unGameTimeMonthDay = static_cast<u32>(0);
+    this->m_unGameTimeDayHour = static_cast<u32>(0);
+    this->m_unGameTimeOneDayMin = static_cast<u32>(0);
+    this->m_unGameTimeYearMonth = static_cast<u32>(0);
+}

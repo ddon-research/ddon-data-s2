@@ -96,7 +96,6 @@ __attribute__((weak)) void rCycleQuestInfo::createProperty(MtPropertyList& s) {
 
 // Address: 0x0065a320 - 0x0065a3fd (221 bytes)
 bool rCycleQuestInfo::save(MtStream& out) {
-    // local: MtDataWriter w;
     // Approximate from the ELF: a cast to the other signedness; code after the loop copied into an arm that skips it; the body oracle reports this body.
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     (&w)->writeU32(static_cast<u32>(4804931));
@@ -105,7 +104,7 @@ bool rCycleQuestInfo::save(MtStream& out) {
     if (this->mCycleQuestInfo.::MtArray::mLength == static_cast<u32>(0)) {
         return true;
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i3 = static_cast<unsigned int>(0);
     do {
         static_cast<rCycleQuestInfo::cCycleQuestInfo*>(this->mCycleQuestInfo.::MtArray::getBuffer()[static_cast<int>(i3)])->::rCycleQuestInfo::cCycleQuestInfo::save(w);
@@ -116,9 +115,8 @@ bool rCycleQuestInfo::save(MtStream& out) {
 
 // Address: 0x0065a400 - 0x0065a4a7 (167 bytes)
 bool rCycleQuestInfo::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u32 dataVersion;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(4804931)) {

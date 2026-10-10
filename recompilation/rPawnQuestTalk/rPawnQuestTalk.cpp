@@ -115,9 +115,8 @@ MtUI* rPawnQuestTalk::createUI(MtProperty& prop) {
 
 // Address: 0x006b53b0 - 0x006b5457 (167 bytes)
 bool rPawnQuestTalk::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u32 dataVersion;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(5525840)) {
@@ -226,8 +225,12 @@ __attribute__((weak)) void rPawnQuestTalk::cTalkData::setMsgType(u8 msgType) {
 // Address: 0x006b5720 - 0x006b57c6 (166 bytes)
 void rPawnQuestTalk::cTalkData::load(MtDataReader& r) {
     // Approximate from the ELF: a byte stored between two folded calls (struct-path TBAA keeps a value the ELF reads again); the body oracle reports this body.
-    this->mGroupSerial = r.readU32();
-    this->mMsgType = r.::MtDataReader::readU8();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mGroupSerial);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMsgType);
     this->mResType = r.::MtDataReader::readU8();
     this->mParsonality = r.::MtDataReader::readU8();
 }

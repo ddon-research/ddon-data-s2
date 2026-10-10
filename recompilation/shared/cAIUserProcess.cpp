@@ -184,7 +184,7 @@ s32 cAIUserProcess::process(MtObject* pOwner, MtObject* pParam, MtObject* pCalle
 
 // Address: 0x01060370 - 0x010603de (110 bytes)
 cAIUserProcess::EXAMINE_RESULT cAIUserProcess::examine(MtObject* pOwner, MtObject* pParam, MtObject* pCaller, bool permitsCaller) {
-    // local: EXAMINE_RESULT result;
+    // DWARF local not rendered: EXAMINE_RESULT result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pOwner != static_cast<MtObject*>(nullptr)) {
         if (pCaller != static_cast<MtObject*>(nullptr)) {

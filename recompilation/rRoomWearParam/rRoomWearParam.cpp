@@ -3,9 +3,9 @@
 #include "rRoomWearParam.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -195,22 +195,54 @@ inline void rRoomWearParam::operator delete(void* p_addr) {
 // Address: 0x006bac90 - 0x006bad82 (242 bytes)
 bool rRoomWearParam::loadData(MtDataReader& in, cRoomWearParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mItem = in.readU32();
-    pData->mType = in.readU32();
-    pData->mAH_M = in.readU16();
-    pData->mAB_M = in.readU16();
-    pData->mWB_M = in.readU16();
-    pData->mAA_M = in.readU16();
-    pData->mAL_M = in.readU16();
-    pData->mWL_M = in.readU16();
-    pData->mAC_M = in.readU16();
-    pData->mAH_W = in.readU16();
-    pData->mAB_W = in.readU16();
-    pData->mWB_W = in.readU16();
-    pData->mAA_W = in.readU16();
-    pData->mAL_W = in.readU16();
-    pData->mWL_W = in.readU16();
-    pData->mAC_W = in.readU16();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mItem);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAH_M);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAB_M);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWB_M);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAA_M);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAL_M);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWL_M);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAC_M);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAH_W);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAB_W);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWB_W);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAA_W);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAL_W);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWL_W);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAC_W);
     return true;
 }
 
@@ -256,4 +288,8 @@ template const cRoomWearParam* rTbl2<cRoomWearParam>::getData(unsigned int) cons
 // Instance at 0x01aa4f50 - 0x01aa4f54 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cRoomWearParam>::getDataNum() const;
+
+// Instance at 0x01aa50f0 - 0x01aa5148 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cRoomWearParam>::~rTbl2();
 

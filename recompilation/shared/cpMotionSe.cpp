@@ -208,7 +208,6 @@ void cpMotionSe::setMotType(u8 type) {
 
 // Address: 0x004d3420 - 0x004d3466 (70 bytes)
 void cpMotionSe::setMotionSeVoice(u32 sex, u32 voiceType) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::loadPlVoiceSRQResource(sex, voiceType);
     if (pRes == static_cast<cResource*>(nullptr)) {
@@ -220,7 +219,6 @@ void cpMotionSe::setMotionSeVoice(u32 sex, u32 voiceType) {
 
 // Address: 0x004d3470 - 0x004d34b6 (70 bytes)
 void cpMotionSe::setMotionSeVoicePawn(u32 sex, u32 voiceType, u32 personality) {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cResource* pRes = static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::loadPawnVoiceSRQResource(sex, voiceType, personality);
     if (pRes == static_cast<cResource*>(nullptr)) {
@@ -232,7 +230,6 @@ void cpMotionSe::setMotionSeVoicePawn(u32 sex, u32 voiceType, u32 personality) {
 
 // Address: 0x004d34c0 - 0x004d3538 (120 bytes)
 void cpMotionSe::setChatVoice(u32 sex, u32 voiceType) {
-    // local: rSoundStreamRequest* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpChatVoice != static_cast<rSoundStreamRequest*>(nullptr)) {
         this->mpChatVoice->::cResource::release();

@@ -110,9 +110,9 @@ void nFurnitureMenuFlow::cFurnitureGroupListItems::release() {
         this->mFurnitureGroupNames = static_cast<rGUIMessage*>(nullptr);
     }
     if (this->mItems.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x16dd60 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x16dd60 carries; no location-less local in scope fits
         u32 v0_0 = this->mItems.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mItems.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mItems.::MtArray::mpArray[i0_3];
@@ -329,9 +329,9 @@ void nFurnitureMenuFlow::cFurnitureListItems::release() {
         this->mFurnitureLayoutNames = static_cast<rGUIMessage*>(nullptr);
     }
     if (this->mItems.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x16e9d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x16e9d0 carries; no location-less local in scope fits
         u32 v0_0 = this->mItems.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mItems.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mItems.::MtArray::mpArray[i0_3];

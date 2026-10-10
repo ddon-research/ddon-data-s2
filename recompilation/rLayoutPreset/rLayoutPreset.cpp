@@ -195,3 +195,7 @@ template const cLayoutPreset* rTbl2<cLayoutPreset>::getData(unsigned int) const;
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cLayoutPreset>::getDataNum() const;
 
+// Instance at 0x01a9af00 - 0x01a9b008 (264 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cLayoutPreset>::~rTbl2();
+

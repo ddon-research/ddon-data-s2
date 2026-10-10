@@ -177,7 +177,7 @@ f32 uShadow::getShadowSlopeScaledDepthBias() const {
 
 // Address: 0x00f6a9d0 - 0x00f6ab03 (307 bytes)
 void uShadow::setShadowSlopeScaledDepthBias(f32 b) {
-    // local: u32 c;
+    // DWARF local not rendered: u32 c;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mShadowSlopeScaledDepthBias == b) {
         return;
@@ -827,7 +827,7 @@ __attribute__((weak)) cUnit::cHardwareDispCtrl* uShadow::createHardwareDispCtrl(
 
 // Address: 0x00f6aed0 - 0x00f6aef4 (36 bytes)
 void uShadow::setPS3DisableMode(bool set) {
-    // local: cHardwareDispCtrl* pHDC;
+    // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsPS3Disable = set;
     if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
@@ -842,7 +842,7 @@ void uShadow::setPS3DisableMode(bool set) {
 
 // Address: 0x00f6af00 - 0x00f6af24 (36 bytes)
 void uShadow::setPS4DisableMode(bool set) {
-    // local: cHardwareDispCtrl* pHDC;
+    // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsPS4Disable = set;
     if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
@@ -857,7 +857,7 @@ void uShadow::setPS4DisableMode(bool set) {
 
 // Address: 0x00f6af30 - 0x00f6af54 (36 bytes)
 void uShadow::setPCDisableMode(bool set) {
-    // local: cHardwareDispCtrl* pHDC;
+    // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsPCDisable = set;
     if (this->::cUnit::mpHardwareDispCtrl == static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {

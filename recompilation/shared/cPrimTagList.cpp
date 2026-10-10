@@ -123,7 +123,7 @@ __attribute__((weak)) void cPrimTagList::createProperty(MtPropertyList& prop_lis
 
 // Address: 0x0132bce0 - 0x0132bd23 (67 bytes)
 s32 cPrimTagList::push() {
-    // local: ObjState* p_stack;
+    // DWARF local not rendered: ObjState* p_stack;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x132bce0 read, used 5 times; no DWARF local holds it
     u32 t0 = this->mCurrentStack;
@@ -141,7 +141,7 @@ s32 cPrimTagList::push() {
 
 // Address: 0x0132bd30 - 0x0132bd70 (64 bytes)
 s32 cPrimTagList::pop() {
-    // local: ObjState* p_stack;
+    // DWARF local not rendered: ObjState* p_stack;
     // Approximate from the ELF: adjacent members copied one by one; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x132bd30 read, used 5 times; no DWARF local holds it
     u32 t0 = this->mCurrentStack;
@@ -167,7 +167,7 @@ s32 cPrimTagList::pop() {
 
 // Address: 0x0132bb70 - 0x0132bbb4 (68 bytes)
 void cPrimTagList::clearTag() {
-    // local: ObjState* p_stack;
+    // DWARF local not rendered: ObjState* p_stack;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mCurrentTagSize = static_cast<u32>(0);
     this->mpCurrentTagPtr = this->mpTags;

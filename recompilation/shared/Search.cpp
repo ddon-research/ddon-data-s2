@@ -6,6 +6,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "Pawn.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -32,9 +33,11 @@ inline MtAllocator* CDataCharacterSearchParameter::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataCharacterSearchParameter::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataCharacterSearchParameter::MyDTI::newInstance at 0x003da8b4-0x003da8dd (called at SearchImplement.inc:7)
-// void* CDataCharacterSearchParameter::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataCharacterSearchParameter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterSearchParameter::DTI)->memAlloc(sz, align, ::CDataCharacterSearchParameter::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataCharacterSearchParameter::operator new[](size_t sz, u32 align);
@@ -76,9 +79,9 @@ __attribute__((weak)) void CDataCharacterSearchParameter::operator delete(void* 
 // CDataCharacterSearchParameter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003da8b0 - 0x003da906 (86 bytes)
-__attribute__((weak)) MtObject* CDataCharacterSearchParameter::MyDTI::newInstance() const {
-    DDON_STUB("CDataCharacterSearchParameter::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataCharacterSearchParameter::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataCharacterSearchParameter;
 }
 
 // No out-of-line body: no code in the ELF
@@ -101,9 +104,11 @@ inline MtAllocator* CDataPartySearchParameter::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataPartySearchParameter::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataPartySearchParameter::MyDTI::newInstance at 0x003da9a4-0x003da9cd (called at SearchImplement.inc:8)
-// void* CDataPartySearchParameter::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataPartySearchParameter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartySearchParameter::DTI)->memAlloc(sz, align, ::CDataPartySearchParameter::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataPartySearchParameter::operator new[](size_t sz, u32 align);
@@ -145,9 +150,9 @@ __attribute__((weak)) void CDataPartySearchParameter::operator delete(void* p_ad
 // CDataPartySearchParameter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003da9a0 - 0x003daa13 (115 bytes)
-__attribute__((weak)) MtObject* CDataPartySearchParameter::MyDTI::newInstance() const {
-    DDON_STUB("CDataPartySearchParameter::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPartySearchParameter::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPartySearchParameter;
 }
 
 // No out-of-line body: no code in the ELF
@@ -239,9 +244,11 @@ inline MtAllocator* CDataQuickMatchSearchParameter::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataQuickMatchSearchParameter::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataQuickMatchSearchParameter::MyDTI::newInstance at 0x003dac24-0x003dac4d (called at SearchImplement.inc:10)
-// void* CDataQuickMatchSearchParameter::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataQuickMatchSearchParameter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuickMatchSearchParameter::DTI)->memAlloc(sz, align, ::CDataQuickMatchSearchParameter::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataQuickMatchSearchParameter::operator new[](size_t sz, u32 align);
@@ -283,8 +290,8 @@ __attribute__((weak)) void CDataQuickMatchSearchParameter::operator delete(void*
 // CDataQuickMatchSearchParameter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dac20 - 0x003dac72 (82 bytes)
-__attribute__((weak)) MtObject* CDataQuickMatchSearchParameter::MyDTI::newInstance() const {
-    DDON_STUB("CDataQuickMatchSearchParameter::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataQuickMatchSearchParameter::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataQuickMatchSearchParameter;
 }
 

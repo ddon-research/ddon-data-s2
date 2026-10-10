@@ -108,24 +108,22 @@ __attribute__((weak)) bool nShlStick::cStickObjectCtrl::findStickCapsule(uDDOMod
 // Address: 0x00d0b120 - 0x00d0b306 (486 bytes)
 void nShlStick::cStickObjectCtrl::storeStickInfo(const cHitGeom* pGeom, uDDOModel* pDDOModel) {
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
-    // inferred: a temporary for the value the load at 0xd0b12d read, used once; no DWARF local holds it
-    const cCollGeom* t0 = pGeom->mpSrcGeom;
     // inferred: a temporary for the value the load at 0xd0b131 read, used 3 times; no DWARF local holds it
-    const u8 t1 = t0->mShape;
-    this->mShape = t1;
+    const u8 t0 = pGeom->mpSrcGeom->mShape;
+    this->mShape = t0;
     this->mpStickModel = pDDOModel;
-    if (t1 == static_cast<u8>(0)) {
+    if (t0 == static_cast<u8>(0)) {
         // inferred: a temporary for the result of the call at 0xd0b147, used 3 times; no DWARF local holds it
-        const MtSphere* t2 = pGeom->::cHitGeom::getSphere();
-        this->mCapsule.p0.x = t2->pos.x;
-        this->mCapsule.p0.y = t2->pos.y;
-        this->mCapsule.p0.z = t2->pos.z;
+        const MtSphere* t1 = pGeom->::cHitGeom::getSphere();
+        this->mCapsule.p0.x = t1->pos.x;
+        this->mCapsule.p0.y = t1->pos.y;
+        this->mCapsule.p0.z = t1->pos.z;
         this->mCapsule.p0.pad_ = 0.0f;
         // inferred: a temporary for the result of the call at 0xd0b173, used 3 times; no DWARF local holds it
-        const MtSphere* t3 = pGeom->::cHitGeom::getSphere();
-        this->mCapsule.p1.x = t3->pos.x;
-        this->mCapsule.p1.y = t3->pos.y;
-        this->mCapsule.p1.z = t3->pos.z;
+        const MtSphere* t2 = pGeom->::cHitGeom::getSphere();
+        this->mCapsule.p1.x = t2->pos.x;
+        this->mCapsule.p1.y = t2->pos.y;
+        this->mCapsule.p1.z = t2->pos.z;
         this->mCapsule.p1.pad_ = 0.0f;
         this->mCapsule.r = pGeom->::cHitGeom::getSphere()->r;
         this->mJoint0 = pGeom->mpSrcGeom->mJnt0;
@@ -139,18 +137,18 @@ void nShlStick::cStickObjectCtrl::storeStickInfo(const cHitGeom* pGeom, uDDOMode
         this->mOffset1.z = pGeom->mpSrcGeom->mOffset0.z;
         this->mOffset1.pad_ = 0.0f;
     } else {
-        if (t1 == static_cast<u8>(1)) {
+        if (t0 == static_cast<u8>(1)) {
             // inferred: a temporary for the result of the call at 0xd0b21a, used 3 times; no DWARF local holds it
-            const MtCapsule* t4 = pGeom->::cHitGeom::getCapsule();
-            this->mCapsule.p0.x = t4->p0.x;
-            this->mCapsule.p0.y = t4->p0.y;
-            this->mCapsule.p0.z = t4->p0.z;
+            const MtCapsule* t3 = pGeom->::cHitGeom::getCapsule();
+            this->mCapsule.p0.x = t3->p0.x;
+            this->mCapsule.p0.y = t3->p0.y;
+            this->mCapsule.p0.z = t3->p0.z;
             this->mCapsule.p0.pad_ = 0.0f;
             // inferred: a temporary for the result of the call at 0xd0b246, used 3 times; no DWARF local holds it
-            const MtCapsule* t5 = pGeom->::cHitGeom::getCapsule();
-            this->mCapsule.p1.x = t5->p1.x;
-            this->mCapsule.p1.y = t5->p1.y;
-            this->mCapsule.p1.z = t5->p1.z;
+            const MtCapsule* t4 = pGeom->::cHitGeom::getCapsule();
+            this->mCapsule.p1.x = t4->p1.x;
+            this->mCapsule.p1.y = t4->p1.y;
+            this->mCapsule.p1.z = t4->p1.z;
             this->mCapsule.p1.pad_ = 0.0f;
             this->mCapsule.r = pGeom->::cHitGeom::getCapsule()->r;
             this->mJoint0 = pGeom->mpSrcGeom->mJnt0;

@@ -67,7 +67,7 @@ void cOcdPriorityParam::operator delete[](void* p_addr) {
 
 // Address: 0x003a9df0 - 0x003a9e6f (127 bytes)
 cOcdPriorityParam::cOcdPriorityParam() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mOcdUID = static_cast<u32>(0);
     this->mIsMultiApply = true;
@@ -175,8 +175,8 @@ __attribute__((weak)) void cOcdPriorityParam::createProperty(MtPropertyList& s) 
 
 // Address: 0x003a9e70 - 0x003a9ee0 (112 bytes)
 bool cOcdPriorityParam::isAnnihilateOcd(u32 OcdUID) const {
-    // local: u32 bank;
-    // local: u32 index;
+    // DWARF local not rendered: u32 bank;
+    // DWARF local not rendered: u32 index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch ((OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)) {
         case static_cast<u32>(0):

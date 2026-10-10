@@ -201,10 +201,10 @@ __attribute__((weak)) bool cStorageData::stOptionDataSystem::reflectSavedGraphic
 
 // Address: 0x01aca6e0 - 0x01aca839 (345 bytes)
 void cStorageData::stTutorialGuide::readData(MtDataReader& r, u32 CurrentVersion, u32 LoadVersion) {
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mFinishTutorial[0] = r.readU32();
     this->mFinishTutorial[1] = r.readU32();
@@ -519,7 +519,7 @@ bool cStorageDataEdit::saveUserHeader(MtDataWriter& w) {
 
 // Address: 0x008376f0 - 0x00837735 (69 bytes)
 bool cStorageDataEdit::loadUserHeader(MtDataReader& r) {
-    // local: const u32 SaveVersion;
+    // DWARF local not rendered: const u32 SaveVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (r.readU32() == static_cast<u32>(1)) {
         r.read(static_cast<void*>(&this->mUserHeader.playerName[0]), static_cast<u32>(208));
@@ -749,7 +749,7 @@ __attribute__((weak)) void sSavedataExt::setLoadData(SAVEDATA_TYPE Type) {
 
 // Address: 0x00836220 - 0x00836228 (8 bytes)
 bool sSavedataExt::isBusy() {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::sSavedata::mState != static_cast<sSavedata::STATE>(0);
 }
@@ -766,7 +766,7 @@ bool sSavedataExt::beginExistCheck() {
 
 // Address: 0x00836490 - 0x00836496 (6 bytes)
 u32 sSavedataExt::getSavedataSize() {
-    // local: u32 size;
+    // DWARF local not rendered: u32 size;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<u32>(102400);
 }

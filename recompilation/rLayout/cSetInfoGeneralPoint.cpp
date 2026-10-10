@@ -3,10 +3,10 @@
 #include "cSetInfoGeneralPoint.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "cSetInfoCoord.h"
+#include "../shared/nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -96,10 +96,16 @@ cSetInfoGeneralPoint::~cSetInfoGeneralPoint() {
 // Address: 0x0055e470 - 0x0055e4b2 (66 bytes)
 bool cSetInfoGeneralPoint::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->::cSetInfoCoord::load(r);
-    this->mRadius = r.readF32();
-    this->mObjectID = r.readS32();
-    this->mGroup = r.readS32();
+    ::nDDOIO::readData(r, this->mRadius);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mObjectID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mGroup);
     return true;
 }
 

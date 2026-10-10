@@ -424,7 +424,7 @@ __attribute__((weak)) void BitWriter::writeBytes(const void* psrc, u32 nBytes) {
 
 // Address: 0x0038c0c0 - 0x0038c130 (112 bytes)
 void BitWriter::flushBits() {
-    // local: u32 bytes;
+    // DWARF local not rendered: u32 bytes;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mStream.write(static_cast<const void*>(&this->mBits[0]), (this->mBitPos + static_cast<u32>(7)) >> static_cast<u32>(3));
     this->mBits[60] = static_cast<unsigned char>(0);

@@ -3,9 +3,9 @@
 #include "rShakeCtrl.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -154,15 +154,33 @@ rShakeCtrl::~rShakeCtrl() {
 // Address: 0x006bb0c0 - 0x006bb151 (145 bytes)
 bool rShakeCtrl::loadData(MtDataReader& r, cShakeCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mJntNo = r.readS32();
-    pData->mShakeRot = r.readF32();
-    pData->mShakeAxis = r.readF32();
-    pData->mShakeTrans = r.readF32();
-    pData->mJntNoChild = r.readS32();
-    pData->mChildRate = r.readF32();
-    pData->mAxis = r.readU32();
-    pData->mFlag = r.readU32();
-    pData->mIK = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJntNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mShakeRot);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mShakeAxis);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mShakeTrans);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJntNoChild);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mChildRate);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mAxis);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mFlag);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIK);
     return true;
 }
 
@@ -214,4 +232,8 @@ template const cShakeCtrl* rTbl2<cShakeCtrl>::getData(unsigned int) const;
 // Instance at 0x01aa5490 - 0x01aa5494 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cShakeCtrl>::getDataNum() const;
+
+// Instance at 0x01aa55e0 - 0x01aa5638 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cShakeCtrl>::~rTbl2();
 

@@ -302,7 +302,6 @@ __attribute__((weak)) bool cContextPlayerInfo::checkDying() const {
 
 // Address: 0x00066180 - 0x000661c4 (68 bytes)
 u32 cContextPlayerInfo::getLostPower() const {
-    // local: cContextInstHm* pInst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cContextInstHm* pInst = this->mpOwnerContext;
     if (pInst != static_cast<cContextInstHm*>(nullptr)) {
@@ -485,7 +484,7 @@ __attribute__((weak)) bool cContextPlayerInfo::checkAbility(nAbility::ABILITY_ID
 
 // Address: 0x00064120 - 0x00064272 (338 bytes)
 void cContextPlayerInfo::resetAbility() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mAbilityInfoList.elems[0].mIsEnable = true;
     this->mAbilityInfoList.elems[0].mIsUsed = false;
@@ -603,8 +602,8 @@ __attribute__((weak)) bool cContextPlayerInfo::checkValidAbility(const nAbility:
 
 // Address: 0x00067b80 - 0x00067b89 (9 bytes)
 void cContextPlayerInfo::updateAbility() {
-    // local: Profile __profile;
-    // local: u32 jobNo;
+    // DWARF local not rendered: Profile __profile;
+    // DWARF local not rendered: u32 jobNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cContextPlayerInfo::calcStatus(this->mCurrentJob_pri);
 }
@@ -680,8 +679,6 @@ __attribute__((weak)) void cContextPlayerInfo::calcStatus(u32 jobNo) {
 
 // Address: 0x00064d70 - 0x00064daf (63 bytes)
 u32 cContextPlayerInfo::getNeedExp(u32 level) {
-    // local: cPlayerExpTable* pPlayerExpTable;
-    // local: const u32 max_level;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cPlayerExpTable* pPlayerExpTable = ::sGame::getInstance()->::sGame::getPlayerExpTable(level);
     const u32 max_level = ::sGame::getInstance()->::sGame::getPlayerLvMax();
@@ -888,7 +885,6 @@ __attribute__((weak)) void cContextPlayerInfo::removeReceiveCustomSkill(u8 slotN
 
 // Address: 0x00066e90 - 0x00066ee0 (80 bytes)
 void cContextPlayerInfo::setNowCustomSkillGroup(nHuman::CUSTOM_SKILL_GROUP group) {
-    // local: uHuman* pHm;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (group == static_cast<nHuman::CUSTOM_SKILL_GROUP>(-1)) {
         return;

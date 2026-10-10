@@ -97,7 +97,6 @@ MT_CTSTR rOmKey::getExt() const {
 
 // Address: 0x006b2f50 - 0x006b2fea (154 bytes)
 bool rOmKey::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
@@ -111,7 +110,6 @@ bool rOmKey::load(MtStream& in) {
 
 // Address: 0x006b2ff0 - 0x006b306f (127 bytes)
 bool rOmKey::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(0), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));

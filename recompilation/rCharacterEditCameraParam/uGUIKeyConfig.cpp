@@ -201,7 +201,7 @@ u32 uGUIKeyConfig::getKeyListIndex() const {
 
 // Address: 0x00af81b0 - 0x00af81c3 (19 bytes)
 const rGUIMessage* uGUIKeyConfig::getResMsgGroup() const {
-    // local: const rGUIMessage* gmd;
+    // DWARF local not rendered: const rGUIMessage* gmd;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uGUIBase::isAttachedResource() != false) {
         return this->::uGUIBase::mpGUIMsgs.elems[1];
@@ -212,7 +212,7 @@ const rGUIMessage* uGUIKeyConfig::getResMsgGroup() const {
 
 // Address: 0x00af81d0 - 0x00af81e3 (19 bytes)
 const rGUIMessage* uGUIKeyConfig::getResMsgDetail() const {
-    // local: const rGUIMessage* gmd;
+    // DWARF local not rendered: const rGUIMessage* gmd;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uGUIBase::isAttachedResource() != false) {
         return this->::uGUIBase::mpGUIMsgs.elems[2];
@@ -421,9 +421,7 @@ u32 uGUIKeyConfig::evCtrlSubMenuKeyList(cControl::Message* msg) {
 
 // Address: 0x00afab20 - 0x00afaba5 (133 bytes)
 u32 uGUIKeyConfig::evCtrlLayoutMove(cControl::Message* msg) {
-    // local: u32 input_event_id;
-    // local: const s32 old_layout_index;
-    // local: const s32 current_layout_index;
+    // DWARF local not rendered: u32 input_event_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (msg != static_cast<cControl::Message*>(nullptr)) {
         const s32 old_layout_index = this->mControlMgr.::cGUIControlMgr::getOldPos(static_cast<u32>(2));
@@ -505,8 +503,8 @@ __attribute__((weak)) bool uGUIKeyConfig::evCtrlScrollListKey(cControl::Message*
 
 // Address: 0x00afaee0 - 0x00afaf67 (135 bytes)
 u32 uGUIKeyConfig::evCtrlScrollListKeyMouseOver(cControl::Message* msg) {
-    // local: const s32 layout_index;
-    // local: cScrollList& scroll_list;
+    // DWARF local not rendered: const s32 layout_index;
+    // DWARF local not rendered: cScrollList& scroll_list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mMode == static_cast<uGUIKeyConfig::MODE>(1)) {
         if (this->mControlMgr.::cGUIControlMgr::getCurrentPos(static_cast<u32>(2)) != static_cast<s32>(1)) {
@@ -1398,7 +1396,7 @@ uGUIKeyConfig::cKeySettingInfo::~cKeySettingInfo() {
 
 // Address: 0x00afb8c0 - 0x00afb8ec (44 bytes)
 void uGUIKeyConfig::cKeySettingInfo::addMouseTouchList(cControl* control, s32 pos) {
-    // local: cKeySettingItem* const item;
+    // DWARF local not rendered: cKeySettingItem* const item;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uGUIBase::cScrollListInfoBase::mpItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
         return;

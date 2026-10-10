@@ -119,7 +119,7 @@ void cGUIInstAnimControl::resetCurrentFrame() {
 
 // Address: 0x01074080 - 0x0107409e (30 bytes)
 void cGUIInstAnimControl::play(f32 delta) {
-    // local: cGUIVariable* pVariable;
+    // DWARF local not rendered: cGUIVariable* pVariable;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cGUIInstAnimVariable::mpVariable == static_cast<cGUIVariable*>(nullptr)) {
         return;
@@ -273,7 +273,7 @@ __attribute__((weak)) void cGUIInstAnimVariable::init() {
 
 // Address: 0x01073790 - 0x010737c9 (57 bytes)
 void cGUIInstAnimVariable::setVariableId(u32 id) {
-    // local: uGUI* pUnit;
+    // DWARF local not rendered: uGUI* pUnit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mVariableId = id;
     this->mpVariable = static_cast<cGUIVariable*>(nullptr);
@@ -1615,26 +1615,24 @@ __attribute__((weak)) void cGUIInstance::addChild(cGUIInstance* pInstance) {
 
 // Address: 0x0106cb00 - 0x0106cb43 (67 bytes)
 cGUIInstance* cGUIInstance::getInstanceFromId(u32 id) {
-    // local: cGUIInstance* pChild;
-    // local: cGUIInstance* pInstance;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value carried to 0x106cb3e; DWARF names no local for it
+    // inferred: the value carried to 0x106cb3e; the location-less local in scope that fits is declared on no line of the value's writes
     cGUIInstance* v1_0;
     if (this->mId == id) {
         v1_0 = this;
     } else {
-        // inferred: the value the loop at 0x106cb29 carries; DWARF names no local for it
-        for (cGUIInstance* v0_2 = this->mpChild;;) {
-            if (v0_2 == static_cast<cGUIInstance*>(nullptr)) {
+        // inferred: DWARF's location-less 'pChild' (function scope) is the value the loop at 0x106cb29 carries
+        for (cGUIInstance* pChild = this->mpChild;;) {
+            if (pChild == static_cast<cGUIInstance*>(nullptr)) {
                 v1_0 = static_cast<cGUIInstance*>(nullptr);
                 break;
             } else {
-                cGUIInstance* pInstance = v0_2->::cGUIInstance::getInstanceFromId(id);
+                cGUIInstance* pInstance = pChild->::cGUIInstance::getInstanceFromId(id);
                 if (pInstance != static_cast<cGUIInstance*>(nullptr)) {
                     v1_0 = pInstance;
                     break;
                 } else {
-                    v0_2 = v0_2->mpNext;
+                    pChild = pChild->mpNext;
                 }
             }
         }
@@ -1792,16 +1790,15 @@ __attribute__((weak)) bool cGUIInstance::isUpdateParentMatrix() const {
 
 // Address: 0x0106d3c0 - 0x0106d3ea (42 bytes)
 void cGUIInstance::setupParent() {
-    // local: cGUIInstance* pChild;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0x106d3e0 carries; DWARF names no local for it
-    for (cGUIInstance* v0_3 = this->mpChild;;) {
-        if (v0_3 == static_cast<cGUIInstance*>(nullptr)) {
+    // inferred: DWARF's location-less 'pChild' (function scope) is the value the loop at 0x106d3e0 carries
+    for (cGUIInstance* pChild = this->mpChild;;) {
+        if (pChild == static_cast<cGUIInstance*>(nullptr)) {
             break;
         } else {
-            v0_3->mpParent = this;
-            v0_3->::cGUIInstance::setupParent();
-            v0_3 = v0_3->mpNext;
+            pChild->mpParent = this;
+            pChild->::cGUIInstance::setupParent();
+            pChild = pChild->mpNext;
         }
     }
 }

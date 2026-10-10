@@ -397,7 +397,6 @@ u32 uGUIPhotoAlbum::evCtrlMouse(cControl::Message* msg) {
 
 // Address: 0x00b41f00 - 0x00b4200a (266 bytes)
 void uGUIPhotoAlbum::adjustScale() {
-    // local: f32 fScaleRate;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->mpInstNullAlbum == static_cast<cGUIInstNull*>(nullptr)) {
         return;

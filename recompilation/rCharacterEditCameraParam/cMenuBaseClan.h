@@ -2536,6 +2536,11 @@ inline cMenuClanMemberList::cMenuClanMemberList() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuClanScoutEntry::cMenuClanScoutEntry() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cMenuClanScoutEntryList::cMenuClanScoutEntryList() {
 }
 

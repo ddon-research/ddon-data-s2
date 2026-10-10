@@ -27,8 +27,10 @@ class uBaseEffect;
 class uCnsTinyChain;
 class uConstraint;
 class uEffect;
+class uEnemy;
 class uFilter;
 class uGUI;
+class uHuman;
 class uLight;
 class uScrollCollisionGeometryModel;
 class uShadow;
@@ -74,10 +76,14 @@ class cUnit : public MtObject
     friend class uConstraint;
     // inferred: uEffect::updateParentEnable names cUnit::mBeFlag
     friend class uEffect;
+    // inferred: uEnemy::updateEnchantColInfo names cUnit::mDeltaTime
+    friend class uEnemy;
     // inferred: uFilter::uFilter names cUnit::mDrawMode
     friend class uFilter;
     // inferred: uGUI::moveAfter names cUnit::mDeltaTime
     friend class uGUI;
+    // inferred: uHuman::updateEnchantColInfo names cUnit::mDeltaTime
+    friend class uHuman;
     // inferred: uLight::setPS3DisableMode names cUnit::mpHardwareDispCtrl
     friend class uLight;
     // inferred: uScrollCollisionGeometryModel::uScrollCollisionGeometryModel names cUnit::mDrawMode

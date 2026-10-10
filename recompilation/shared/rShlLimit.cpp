@@ -3,9 +3,9 @@
 #include "rShlLimit.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -215,10 +215,18 @@ inline void rCustimShlLimit::operator delete(void* p_addr) {
 // Address: 0x006bb750 - 0x006bb798 (72 bytes)
 bool rCustimShlLimit::loadData(MtDataReader& r, cCustomShlLimit* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mLimitId = r.readS32();
-    pData->mShlMaxNum = r.readU32();
-    pData->mLimitType = r.readU32();
-    pData->mKillType = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mLimitId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mShlMaxNum);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mLimitType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mKillType);
     return true;
 }
 
@@ -297,9 +305,15 @@ inline void rShlLimit::operator delete(void* p_addr) {
 // Address: 0x006bb710 - 0x006bb74b (59 bytes)
 bool rShlLimit::loadData(MtDataReader& r, cShlLimit* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mShlMaxNum = r.readU32();
-    pData->mLimitType = r.readU32();
-    pData->mCustomShlLimitId = r.readS32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mShlMaxNum);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mLimitType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCustomShlLimitId);
     return true;
 }
 
@@ -365,4 +379,12 @@ template unsigned int rTbl2<cCustomShlLimit>::getDataNum() const;
 // Instance at 0x01aa5950 - 0x01aa5954 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cShlLimit>::getDataNum() const;
+
+// Instance at 0x01aa5e80 - 0x01aa5ed8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCustomShlLimit>::~rTbl2();
+
+// Instance at 0x01aa5f40 - 0x01aa5f98 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cShlLimit>::~rTbl2();
 

@@ -93,7 +93,7 @@ u64 uBaseModel::getSystemUnitGroup() const {
 
 // Address: 0x00e66f50 - 0x00e66f84 (52 bytes)
 void uBaseModel::move() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uBaseModel::updateViewDraw();
     this->updateLocalMatrix();
@@ -192,9 +192,17 @@ __attribute__((weak)) void uBaseModel::updateBoundary() {
 }
 
 // Address: 0x00e68e80 - 0x00e68e9c (28 bytes)
-__attribute__((weak)) bool uBaseModel::getBoundary(MtSphere* pdst) {
-    DDON_STUB("uBaseModel::getBoundary")
-    return {};
+bool uBaseModel::getBoundary(MtSphere* pdst) {
+    // Approximate from the ELF: a vector copy split into members it may not keep apart; the body oracle reports this body.
+    if (this->mpModel != static_cast<rModel*>(nullptr)) {
+        pdst->pos.x = this->mBoundingSphere.pos.x;
+        pdst->pos.y = this->mBoundingSphere.pos.y;
+        pdst->pos.z = this->mBoundingSphere.pos.z;
+        pdst->r = this->mBoundingSphere.r;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01b5d350 - 0x01b5d363 (19 bytes)
@@ -374,7 +382,6 @@ __attribute__((weak)) void uBaseModel::resetMaterial(u32 index) {
 
 // Address: 0x00e66cd0 - 0x00e66d0a (58 bytes)
 void uBaseModel::resetAllMaterial() {
-    // local: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 i = static_cast<u32>(0);
     if (this->mMaterialNum != static_cast<u32>(0)) {

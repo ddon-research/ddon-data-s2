@@ -80,7 +80,7 @@ cpDDMrlMgr::~cpDDMrlMgr() {
 
 // Address: 0x0046ccd0 - 0x0046ccdb (11 bytes)
 void cpDDMrlMgr::setup() {
-    // local: u32 ctrl;
+    // DWARF local not rendered: u32 ctrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpDDMrlCtrl.mControlEnable = static_cast<u32>(4294967295);
 }
@@ -119,10 +119,9 @@ cDDMaterialCtrl* cpDDMrlMgr::getDDMrlCtrl(u32 set) {
 
 // Address: 0x0046e040 - 0x0046e067 (39 bytes)
 void cpDDMrlMgr::setDDMrlCtrlEquip(cDDMaterialCtrl* set) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     cDDMaterialCtrl* * p1 = &this->mpDDMrlCtrlEquip[0];
     do {
         if ((*p1) == static_cast<cDDMaterialCtrl*>(nullptr)) {
@@ -136,10 +135,9 @@ void cpDDMrlMgr::setDDMrlCtrlEquip(cDDMaterialCtrl* set) {
 
 // Address: 0x0046e010 - 0x0046e03a (42 bytes)
 void cpDDMrlMgr::releaseDDMrlCtrlEquip(cDDMaterialCtrl* set) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     cDDMaterialCtrl* * p1 = &this->mpDDMrlCtrlEquip[0];
     do {
         if (set == (*p1)) {
@@ -524,7 +522,7 @@ void cpDDMrlMgr::requestMaterialAnimationWeakPoint(u32 num) {
 
 // Address: 0x0046dc00 - 0x0046dc28 (40 bytes)
 void cpDDMrlMgr::requestMaterialAnimationPartsbreak(u32 Id) {
-    // local: u32 AnimKind;
+    // DWARF local not rendered: u32 AnimKind;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (Id == static_cast<u32>(0)) {
         return;

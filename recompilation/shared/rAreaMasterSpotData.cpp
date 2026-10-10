@@ -4,7 +4,6 @@
 #include "MtAllocator.h"
 #include "MtCollection.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cUIObject.h"
@@ -36,9 +35,11 @@ const MtDTI& cAreaMasterRankData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cAreaMasterRankData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cAreaMasterRankData::MyDTI::newInstance at 0x00645504-0x0064552d (called at rAreaMasterSpotData.cpp:22)
-// void* cAreaMasterRankData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cAreaMasterRankData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterRankData::DTI)->memAlloc(sz, align, ::cAreaMasterRankData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
 //   in rTbl2<cAreaMasterRankData>::loadCore at 0x01a753a3-0x01a753d0 (called at rTbl2.h:215)
@@ -81,9 +82,9 @@ inline void cAreaMasterRankData::operator delete(void* p_addr) {
 // cAreaMasterRankData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00645500 - 0x00645552 (82 bytes)
-__attribute__((weak)) MtObject* cAreaMasterRankData::MyDTI::newInstance() const {
-    DDON_STUB("cAreaMasterRankData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAreaMasterRankData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cAreaMasterRankData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -108,9 +109,11 @@ const MtDTI& cAreaMasterSpotData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cAreaMasterSpotData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cAreaMasterSpotData::MyDTI::newInstance at 0x00645424-0x0064544d (called at rAreaMasterSpotData.cpp:21)
-// void* cAreaMasterSpotData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cAreaMasterSpotData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (39 bytes)
 //   in rTbl2<cAreaMasterSpotData>::loadCore at 0x01a75005-0x01a7502c (called at rTbl2.h:215)
@@ -153,9 +156,9 @@ inline void cAreaMasterSpotData::operator delete(void* p_addr) {
 // cAreaMasterSpotData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00645420 - 0x0064548c (108 bytes)
-__attribute__((weak)) MtObject* cAreaMasterSpotData::MyDTI::newInstance() const {
-    DDON_STUB("cAreaMasterSpotData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAreaMasterSpotData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cAreaMasterSpotData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -180,9 +183,11 @@ const MtDTI& cAreaMasterSpotDetailData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cAreaMasterSpotDetailData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cAreaMasterSpotDetailData::MyDTI::newInstance at 0x00645764-0x0064578d (called at rAreaMasterSpotData.cpp:25)
-// void* cAreaMasterSpotDetailData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotDetailData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
 //   in rTbl2<cAreaMasterSpotDetailData>::allocData at 0x01a75896-0x01a758bc (called at rTbl2.h:215)
@@ -225,9 +230,9 @@ inline void cAreaMasterSpotDetailData::operator delete(void* p_addr) {
 // cAreaMasterSpotDetailData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00645760 - 0x006457f9 (153 bytes)
-__attribute__((weak)) MtObject* cAreaMasterSpotDetailData::MyDTI::newInstance() const {
-    DDON_STUB("cAreaMasterSpotDetailData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAreaMasterSpotDetailData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cAreaMasterSpotDetailData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -250,10 +255,11 @@ const MtDTI& cSpotEnemyData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cSpotEnemyData::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (84 bytes)
-//   in _ZNK14cSpotEnemyData5MyDTI11newInstanceEv at 0x00645694-0x006456bd (called at rAreaMasterSpotData.cpp:24)
-//   in _ZN6nDDOIO11readMtArrayI14cSpotEnemyDataEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a74b6e-0x01a74b99 (called at rAreaMasterSpotData.cpp:24)
-// void* cSpotEnemyData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cSpotEnemyData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSpotEnemyData::DTI)->memAlloc(sz, align, ::cSpotEnemyData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* cSpotEnemyData::operator new[](size_t sz, u32 align);
@@ -296,9 +302,9 @@ inline void cSpotEnemyData::operator delete(void* p_addr) {
 // cSpotEnemyData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00645690 - 0x006456e2 (82 bytes)
-__attribute__((weak)) MtObject* cSpotEnemyData::MyDTI::newInstance() const {
-    DDON_STUB("cSpotEnemyData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSpotEnemyData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cSpotEnemyData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -321,10 +327,11 @@ const MtDTI& cSpotItemData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cSpotItemData::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (84 bytes)
-//   in _ZNK13cSpotItemData5MyDTI11newInstanceEv at 0x006455d4-0x006455fd (called at rAreaMasterSpotData.cpp:23)
-//   in _ZN6nDDOIO11readMtArrayI13cSpotItemDataEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a748ae-0x01a748d9 (called at rAreaMasterSpotData.cpp:23)
-// void* cSpotItemData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* cSpotItemData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSpotItemData::DTI)->memAlloc(sz, align, ::cSpotItemData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* cSpotItemData::operator new[](size_t sz, u32 align);
@@ -367,9 +374,9 @@ inline void cSpotItemData::operator delete(void* p_addr) {
 // cSpotItemData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x006455d0 - 0x0064561d (77 bytes)
-__attribute__((weak)) MtObject* cSpotItemData::MyDTI::newInstance() const {
-    DDON_STUB("cSpotItemData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cSpotItemData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cSpotItemData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -424,9 +431,15 @@ inline void rAreaMasterRankData::operator delete(void* p_addr) {
 // Address: 0x00645c50 - 0x00645cab (91 bytes)
 bool rAreaMasterRankData::loadData(MtDataReader& r, cAreaMasterRankData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mMsgGroupSerial = r.readU32();
-    pData->mPoint = r.readU32();
-    pData->mBonusType = r.::MtDataReader::readU8();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mMsgGroupSerial);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mPoint);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mBonusType);
     return true;
 }
 
@@ -580,7 +593,9 @@ inline void* rAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
 // Address: 0x00645cd0 - 0x00645d09 (57 bytes)
 bool rAreaMasterSpotDetailData::loadData(MtDataReader& r, cAreaMasterSpotDetailData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mSpotId = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mSpotId);
     ::nDDOIO::readMtArray(r, pData->mItemArray);
     ::nDDOIO::readMtArray(r, pData->mEnemyArray);
     return true;
@@ -676,4 +691,16 @@ template unsigned int rTbl2<cAreaMasterSpotData>::getDataNum() const;
 // Instance at 0x01a75720 - 0x01a75724 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cAreaMasterSpotDetailData>::getDataNum() const;
+
+// Instance at 0x01a75bc0 - 0x01a75c18 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cAreaMasterRankData>::~rTbl2();
+
+// Instance at 0x01a75c80 - 0x01a75cd8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cAreaMasterSpotData>::~rTbl2();
+
+// Instance at 0x01a75a50 - 0x01a75afb (171 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cAreaMasterSpotDetailData>::~rTbl2();
 

@@ -3,9 +3,9 @@
 #include "rEvaluationTable.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -145,11 +145,21 @@ inline void rEvaluationTable::operator delete(void* p_addr) {
 // Address: 0x00672b20 - 0x00672b7b (91 bytes)
 bool rEvaluationTable::loadData(MtDataReader& in, cEvaluationTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mEvalutionCategory = in.readU32();
-    pData->mEvalutionCategoryMax = in.readU32();
-    pData->mEvalutionCategoryDecPer = in.readF32();
-    pData->mEvalutionCategoryHosei = in.readF32();
-    pData->mEvalutionCategoryEizokuHosei = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEvalutionCategory);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEvalutionCategoryMax);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEvalutionCategoryDecPer);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEvalutionCategoryHosei);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEvalutionCategoryEizokuHosei);
     return true;
 }
 
@@ -195,4 +205,8 @@ template const cEvaluationTable* rTbl2<cEvaluationTable>::getData(unsigned int) 
 // Instance at 0x01a8eed0 - 0x01a8eed4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEvaluationTable>::getDataNum() const;
+
+// Instance at 0x01a8f060 - 0x01a8f0b8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cEvaluationTable>::~rTbl2();
 

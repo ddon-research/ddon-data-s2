@@ -96,9 +96,8 @@ __attribute__((weak)) void rSituationMsgCtrl::createProperty(MtPropertyList& s) 
 
 // Address: 0x006bc2a0 - 0x006bc347 (167 bytes)
 bool rSituationMsgCtrl::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u32 dataVersion;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(4410707)) {
@@ -112,7 +111,6 @@ bool rSituationMsgCtrl::load(MtStream& in) {
 
 // Address: 0x006bc350 - 0x006bc3e1 (145 bytes)
 bool rSituationMsgCtrl::save(MtStream& out) {
-    // local: MtDataWriter w;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     (&w)->writeU32(static_cast<u32>(4410707));
@@ -202,11 +200,21 @@ __attribute__((weak)) void rSituationMsgCtrl::cSituationData::createProperty(MtP
 // Address: 0x006bc900 - 0x006bc99d (157 bytes)
 bool rSituationMsgCtrl::cSituationData::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGroupSerial = r.readU32();
-    this->mStartQuestId = r.readU32();
-    this->mIsStartQuestIdStart = r.::MtDataReader::readU8() != static_cast<u8>(0);
-    this->mEndQuestId = r.readU32();
-    this->mIsEndQuestIdStart = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mGroupSerial);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mStartQuestId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mIsStartQuestIdStart);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mEndQuestId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mIsEndQuestIdStart);
     return true;
 }
 

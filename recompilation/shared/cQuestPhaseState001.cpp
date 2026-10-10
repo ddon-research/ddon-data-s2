@@ -152,10 +152,9 @@ void cQuestPhaseState001::resetReturnPlayerId() {
 
 // Address: 0x0015ee10 - 0x0015ee34 (36 bytes)
 bool cQuestPhaseState001::isReturnPlayer(u32 characterId) const {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const unsigned int* p2 = &this->mReturnPlayerId[0];
     do {
         if ((*p2) == characterId) {

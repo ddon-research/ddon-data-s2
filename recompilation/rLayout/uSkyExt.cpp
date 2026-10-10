@@ -77,7 +77,7 @@ uSkyExt::~uSkyExt() {
 
 // Address: 0x00d0fb80 - 0x00d0fbb0 (48 bytes)
 void uSkyExt::setup() {
-    // local: u64 u_group;
+    // DWARF local not rendered: u64 u_group;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uSky::createBuffer();
     ::sUnit::getInstance()->::sUnit::setUnitGroupBit(static_cast<cUnit*>(this), static_cast<u64>(432345564228616192));

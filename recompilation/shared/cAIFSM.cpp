@@ -264,9 +264,9 @@ void cAIFSM::reset() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->mStatus = static_cast<u32>(0);
     if (this->mCoreNum != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x102e7f0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x102e7f0 carries; no location-less local in scope fits
         u32 v0_0 = this->mCoreNum;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             // inferred: a temporary for the value the load at 0x102e7f2 read, used 5 times; no DWARF local holds it
             cAIFSM::Core* t0 = this->mCoreList;
@@ -311,7 +311,7 @@ void cAIFSM::reset(u32 index) {
 // Address: 0x0102e8e0 - 0x0102e93f (95 bytes)
 void cAIFSM::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i7 = static_cast<unsigned int>(0);
     if (this->mCoreNum != static_cast<u32>(0)) {
         do {
@@ -860,7 +860,6 @@ MtUI* cAIFSM::Core::ClusterWork::createUI(MtProperty& prop) {
 
 // Address: 0x01030440 - 0x01030544 (260 bytes)
 bool cAIFSM::Core::ClusterWork::setCluster(cAIFSMCluster* pCluster) {
-    // local: u32 onceNodeNum;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->mpCluster = pCluster;
     if (pCluster != static_cast<cAIFSMCluster*>(nullptr)) {
@@ -1283,8 +1282,61 @@ inline void cAIFSMData::Core::operator delete(void* p_addr) {
 // Address: 0x01032590 - 0x0103266d (221 bytes)
 // Also emitted as: _ZN10cAIFSMData4CoreD0Ev at 0x01032690
 cAIFSMData::Core::~Core() {
-    DDON_STUB("cAIFSMData::Core::~Core")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpCluster != static_cast<cAIFSMData::Cluster* *>(nullptr)) {
+        if (this->mClusterNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x10325c4 carries; no location-less local in scope fits
+            u32 v0_0 = this->mClusterNum;
+            // inferred: the value the loop at 0x10325c4 carries; no location-less local in scope fits
+            cAIFSMData::Cluster* * v0_1 = this->mpCluster;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                if (v0_1[i0_3] != static_cast<cAIFSMData::Cluster*>(nullptr)) {
+                    delete v0_1[i0_3];
+                    if ((i0_3 + static_cast<unsigned int>(1)) >= this->mClusterNum) {
+                        break;
+                    }
+                    v0_0 = this->mClusterNum;
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = this->mpCluster;
+                i0_3 += static_cast<unsigned int>(1);
+            }
+        }
+        ::MtMemoryAllocator::getAllocator(::cAIFSMData::Core::DTI)->memFree(static_cast<void*>(this->mpCluster));
+    }
+    this->mClusterNum = static_cast<u32>(0);
+    this->mpCluster = static_cast<cAIFSMData::Cluster* *>(nullptr);
+    if (this->mpClusterLog != static_cast<cAIFSMData::ClusterLog* *>(nullptr)) {
+        if (this->mClusterLogNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x1032624 carries; no location-less local in scope fits
+            u32 v3_0 = this->mClusterLogNum;
+            // inferred: the value the loop at 0x1032624 carries; no location-less local in scope fits
+            cAIFSMData::ClusterLog* * v3_1 = this->mpClusterLog;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
+                if (v3_1[i3_3] != static_cast<cAIFSMData::ClusterLog*>(nullptr)) {
+                    delete v3_1[i3_3];
+                    if ((i3_3 + static_cast<unsigned int>(1)) >= this->mClusterLogNum) {
+                        break;
+                    }
+                    v3_0 = this->mClusterLogNum;
+                } else {
+                    if ((i3_3 + static_cast<unsigned int>(1)) >= v3_0) {
+                        break;
+                    }
+                }
+                v3_1 = this->mpClusterLog;
+                i3_3 += static_cast<unsigned int>(1);
+            }
+        }
+        ::MtMemoryAllocator::getAllocator(::cAIFSMData::Core::DTI)->memFree(static_cast<void*>(this->mpClusterLog));
+    }
+    this->mClusterLogNum = static_cast<u32>(0);
+    this->mpClusterLog = static_cast<cAIFSMData::ClusterLog* *>(nullptr);
 }
 
 // Address: 0x010326c0 - 0x01032a4b (907 bytes)

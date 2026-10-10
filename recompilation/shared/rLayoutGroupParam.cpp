@@ -497,8 +497,7 @@ void cGroupParam::setMarkerPos(MtVector3& pos) {
 
 // Address: 0x006992d0 - 0x00699337 (103 bytes)
 bool cGroupParam::isKillAreaInside(const MtVector3& pos) const {
-    // local: u32 i;
-    // local: const AreaHitShape* pAHS;
+    // DWARF local not rendered: const AreaHitShape* pAHS;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mKillAreaType == static_cast<cGroupParam::KILL_AREA_TYPE>(0)) {
         return true;
@@ -1316,10 +1315,11 @@ const MtDTI& cGroupParam::EmSetInfo::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cGroupParam::EmSetInfo::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
-//   in cGroupParam::EmSetInfo::MyDTI::newInstance at 0x00695eb4-0x00695edd (called at rLayoutGroupParam.cpp:68)
-//   in cGroupParam::addEmSetInfo at 0x0069a4d1-0x0069a4fa (called at rLayoutGroupParam.cpp:1964)
-// void* cGroupParam::EmSetInfo::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cGroupParam::EmSetInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGroupParam::EmSetInfo::DTI)->memAlloc(sz, align, ::cGroupParam::EmSetInfo::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* cGroupParam::EmSetInfo::operator new[](size_t sz, u32 align);
@@ -1361,9 +1361,9 @@ inline void cGroupParam::EmSetInfo::operator delete(void* p_addr) {
 // cGroupParam::EmSetInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00695eb0 - 0x00695f54 (164 bytes)
-__attribute__((weak)) MtObject* cGroupParam::EmSetInfo::MyDTI::newInstance() const {
-    DDON_STUB("cGroupParam::EmSetInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGroupParam::EmSetInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cGroupParam::EmSetInfo;
 }
 
 // No out-of-line body: no code in the ELF

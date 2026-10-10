@@ -202,7 +202,6 @@ __attribute__((weak)) void rCameraQuakeList::clear() {
 
 // Address: 0x0064ec60 - 0x0064ece1 (129 bytes)
 bool rCameraQuakeList::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -210,7 +209,6 @@ bool rCameraQuakeList::load(MtStream& in) {
 
 // Address: 0x0064ecf0 - 0x0064ed76 (134 bytes)
 bool rCameraQuakeList::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rCameraQuakeList::DTI));

@@ -477,8 +477,7 @@ void cMenuCancelClanScoutEntry::initCancelClanScoutEntry() {
 
 // Address: 0x00145180 - 0x00145384 (516 bytes)
 nMenu::MENU_RET cMenuCancelClanScoutEntry::moveCancelClanScoutEntry() {
-    // local: s32& baseRno;
-    // local: s32 choice;
+    // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     this->::cMenuBase::moveMenu();
     switch (this->::cMenuBase::mMenuRno[0]) {
@@ -2259,9 +2258,11 @@ const MtDTI& cMenuClanScoutEntry::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cMenuClanScoutEntry::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (44 bytes)
-//   in cMenuClanScoutEntry::MyDTI::newInstance at 0x00144424-0x00144450 (called at cMenuBaseClan.cpp:6226)
-// void* cMenuClanScoutEntry::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cMenuClanScoutEntry::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanScoutEntry::DTI)->memAlloc(sz, align, ::cMenuClanScoutEntry::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* cMenuClanScoutEntry::operator new[](size_t sz, u32 align);
@@ -2325,9 +2326,9 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanScoutEntry::moveClanScoutEntry() 
 // cMenuClanScoutEntry::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00144420 - 0x001444ab (139 bytes)
-__attribute__((weak)) MtObject* cMenuClanScoutEntry::MyDTI::newInstance() const {
-    DDON_STUB("cMenuClanScoutEntry::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuClanScoutEntry::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cMenuClanScoutEntry;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2899,7 +2900,6 @@ cMenuEditClanDay::~cMenuEditClanDay() {
 
 // Address: 0x00140180 - 0x00140215 (149 bytes)
 void cMenuEditClanDay::initEditClanDay(u32* pDay, uGUIBase* pRefGUI) {
-    // local: cMenuSupportList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::initMenu();
     this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
@@ -3185,7 +3185,6 @@ cMenuEditClanFeature::~cMenuEditClanFeature() {
 
 // Address: 0x00140660 - 0x001406f5 (149 bytes)
 void cMenuEditClanFeature::initEditClanFeature(u32* pFeature, uGUIBase* pRefGUI) {
-    // local: cMenuSupportList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::initMenu();
     this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
@@ -3288,7 +3287,6 @@ cMenuEditClanHour::~cMenuEditClanHour() {
 
 // Address: 0x001403f0 - 0x00140485 (149 bytes)
 void cMenuEditClanHour::initEditClanHour(u32* pHour, uGUIBase* pRefGUI) {
-    // local: cMenuSupportList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::initMenu();
     this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
@@ -3395,7 +3393,7 @@ cMenuEditClanMessage::~cMenuEditClanMessage() {
 
 // Address: 0x00140ca0 - 0x00140df1 (337 bytes)
 nMenu::MENU_RET cMenuEditClanMessage::moveEditClanMessage() {
-    // local: s32& baseRno;
+    // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::cMenuBase::moveMenu();
     if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
@@ -3548,7 +3546,6 @@ cMenuEditClanMotto::~cMenuEditClanMotto() {
 
 // Address: 0x0013ff10 - 0x0013ffa5 (149 bytes)
 void cMenuEditClanMotto::initEditClanMotto(u32* pMotto, uGUIBase* pRefGUI) {
-    // local: cMenuSupportList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::initMenu();
     this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
@@ -3658,7 +3655,7 @@ void cMenuGetClanBaseInfo::initGetClanBaseInfo() {
 
 // Address: 0x00142be0 - 0x00142c70 (144 bytes)
 nMenu::MENU_RET cMenuGetClanBaseInfo::moveGetClanBaseInfo() {
-    // local: s32& baseRno;
+    // DWARF local not rendered: s32& baseRno;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::moveMenu();
     if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
@@ -3858,7 +3855,7 @@ void cMenuGetMyClan::initGetMyClan() {
 
 // Address: 0x001413a0 - 0x00141430 (144 bytes)
 nMenu::MENU_RET cMenuGetMyClan::moveGetMyClan() {
-    // local: s32& baseRno;
+    // DWARF local not rendered: s32& baseRno;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::moveMenu();
     if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
@@ -3970,7 +3967,7 @@ void cMenuGetMyScoutEntry::initGetMyScoutEntry() {
 
 // Address: 0x001457b0 - 0x00145840 (144 bytes)
 nMenu::MENU_RET cMenuGetMyScoutEntry::moveGetMyScoutEntry() {
-    // local: s32& baseRno;
+    // DWARF local not rendered: s32& baseRno;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::moveMenu();
     if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {

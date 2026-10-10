@@ -314,7 +314,7 @@ __attribute__((weak)) void cpChantCommand::clearReqReset() {
 
 // Address: 0x004597f0 - 0x004598cb (219 bytes)
 void cpChantCommand::setChantData() {
-    // local: cResource* pRes;
+    // DWARF local not rendered: cResource* pRes;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->mprMagicWords != static_cast<rMagicCommandWord*>(nullptr)) {
         this->mprMagicWords->::cResource::release();

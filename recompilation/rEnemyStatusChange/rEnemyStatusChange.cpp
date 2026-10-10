@@ -6,6 +6,7 @@
 #include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -148,13 +149,21 @@ inline void rEnemyStatusChange::operator delete(void* p_addr) {
 
 // Address: 0x0066ee70 - 0x0066efa8 (312 bytes)
 bool rEnemyStatusChange::loadData(MtDataReader& in, cEnemyStatusChange* pData) {
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mGroupNo = in.readU32();
-    pData->mGroupSubNo = in.readU32();
-    pData->mNextGroupSubNo = in.readU32();
-    pData->mNextGroupSubOneGo = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mGroupNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mGroupSubNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNextGroupSubNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNextGroupSubOneGo);
     pData->mSelectNo = in.readU32();
     pData->mType = in.readU32();
     pData->mRepeatSetting = in.readU32();
@@ -165,8 +174,12 @@ bool rEnemyStatusChange::loadData(MtDataReader& in, cEnemyStatusChange* pData) {
     pData->mSystemParam[0] = in.readF32();
     pData->mSystemParam[1] = in.readF32();
     pData->mSystemParam[2] = in.readF32();
-    pData->mBitContrlCommand = in.readU32();
-    pData->mTypeReverse = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBitContrlCommand);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mTypeReverse);
     return true;
 }
 
@@ -212,4 +225,8 @@ template const cEnemyStatusChange* rTbl2<cEnemyStatusChange>::getData(unsigned i
 // Instance at 0x01a8c1b0 - 0x01a8c1b4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEnemyStatusChange>::getDataNum() const;
+
+// Instance at 0x01a8c380 - 0x01a8c3d8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cEnemyStatusChange>::~rTbl2();
 

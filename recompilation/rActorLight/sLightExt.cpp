@@ -176,7 +176,6 @@ u16 rActorLight::getDataVersion() {
 
 // Address: 0x01ac6690 - 0x01ac66f9 (105 bytes)
 bool rActorLight::load(MtStream& in) {
-    // local: MtDataReader r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     return this->::rActorLight::loadData(r);

@@ -121,7 +121,6 @@ cResource* uCnsGroup::getResource() {
 
 // Address: 0x0130f9d0 - 0x0130fa1c (76 bytes)
 void uCnsGroup::remove() {
-    // local: u32 i;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
     if (this->mGroupNum == static_cast<u32>(0)) {
         this->::uConstraint::removeConstraint();
@@ -146,7 +145,6 @@ __attribute__((weak)) void uCnsGroup::update() {
 
 // Address: 0x0130fb20 - 0x0130fb7c (92 bytes)
 void uCnsGroup::setPri(u32 pri) {
-    // local: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uConstraint::setPri(pri);
     u32 i = static_cast<u32>(0);
@@ -346,7 +344,6 @@ MtUI* uCnsGroup::cGroup::createUI(MtProperty& prop) {
 
 // Address: 0x0130f050 - 0x0130f0a1 (81 bytes)
 void uCnsGroup::cGroup::setPri(u32 pri) {
-    // local: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 i = static_cast<u32>(0);
     if (this->mNodeNum != static_cast<u32>(0)) {
@@ -367,7 +364,6 @@ __attribute__((weak)) bool uCnsGroup::cGroup::update(bool resetFlg) {
 
 // Address: 0x0130f0b0 - 0x0130f116 (102 bytes)
 void uCnsGroup::cGroup::remove(bool resetFlg) {
-    // local: u32 i;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
     if (this->mNodeNum == static_cast<u32>(0)) {
         this->mIsReady = false;

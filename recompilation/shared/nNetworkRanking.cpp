@@ -152,7 +152,6 @@ void nNetwork::nRanking::Object::clearFatal() {
 
 // Address: 0x01366070 - 0x013660b6 (70 bytes)
 void nNetwork::nRanking::Object::setFatal(const MtNetError* err) {
-    // local: MtNetError e;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::MtNetObject::setFatal(err);
     MtNetError e;
@@ -161,7 +160,6 @@ void nNetwork::nRanking::Object::setFatal(const MtNetError* err) {
 
 // Address: 0x013660c0 - 0x01366106 (70 bytes)
 void nNetwork::nRanking::Object::setFatal(s32 no, s32 cause, s32 native) {
-    // local: MtNetError e;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::MtNetObject::setFatal(no, cause, native);
     MtNetError e;

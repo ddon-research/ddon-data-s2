@@ -3,9 +3,9 @@
 #include "rCraftSkillSpd.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -157,8 +157,12 @@ inline void rCraftSkillSpd::operator delete(void* p_addr) {
 // Address: 0x0065de80 - 0x0065deae (46 bytes)
 bool rCraftSkillSpd::loadData(MtDataReader& in, cCraftSkillSpdData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mSpdRate1 = in.readU32();
-    pData->mSpdRate2 = in.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSpdRate1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSpdRate2);
     return true;
 }
 
@@ -204,4 +208,8 @@ template const cCraftSkillSpdData* rTbl2<cCraftSkillSpdData>::getData(unsigned i
 // Instance at 0x01a84650 - 0x01a84654 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cCraftSkillSpdData>::getDataNum() const;
+
+// Instance at 0x01a847d0 - 0x01a84828 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCraftSkillSpdData>::~rTbl2();
 

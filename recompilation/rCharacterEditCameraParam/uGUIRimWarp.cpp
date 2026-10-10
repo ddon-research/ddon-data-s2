@@ -581,8 +581,6 @@ __attribute__((weak)) void uGUIRimWarp::addPartyWarp(MtTypedArray<uGUIRimWarp::c
 
 // Address: 0x00c2afe0 - 0x00c2b0e7 (263 bytes)
 void uGUIRimWarp::updateFavoriteList() {
-    // local: const u32 id;
-    // local: const u32 sec;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId) {
         if (this->mPartyWarpSec != static_cast<u32>(0)) {
@@ -918,7 +916,6 @@ __attribute__((weak)) void uGUIRimWarp::callbackRegisterFavoriteWarpList() {
 
 // Address: 0x00c2ef00 - 0x00c2ef43 (67 bytes)
 bool uGUIRimWarp::requestWarp() {
-    // local: const bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const bool ret = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::warp(this->mNowPlaceId, this->mWarpPlaceId, this->mWarpPrice);
     if (ret != false) {
@@ -936,7 +933,6 @@ void uGUIRimWarp::callbackWarp() {
 
 // Address: 0x00c2ef70 - 0x00c2efad (61 bytes)
 bool uGUIRimWarp::requestAreaWarp() {
-    // local: const bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const bool ret = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::areaWarp(this->mWarpPlaceId, this->mWarpPrice);
     if (ret != false) {
@@ -954,7 +950,6 @@ void uGUIRimWarp::callbackAreaWarp() {
 
 // Address: 0x00c2efd0 - 0x00c2f008 (56 bytes)
 bool uGUIRimWarp::requestPartyWarp() {
-    // local: const bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const bool ret = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::partyWarp();
     if (ret != false) {

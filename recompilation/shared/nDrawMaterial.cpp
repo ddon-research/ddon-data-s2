@@ -197,7 +197,7 @@ inline void nDraw::CBuffer::operator delete(void* p_addr) {
 // Address: 0x011646b0 - 0x01164715 (101 bytes)
 // Also emitted as: _ZN5nDraw7CBufferD0Ev at 0x01164720
 nDraw::CBuffer::~CBuffer() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mHandleCount = static_cast<u32>(0);
     this->mTempCount = static_cast<u32>(0);

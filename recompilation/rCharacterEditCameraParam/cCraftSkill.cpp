@@ -157,8 +157,6 @@ void cCraftSkill::releaseCostResource() {
 
 // Address: 0x00071b00 - 0x00071b61 (97 bytes)
 u32 cCraftSkill::getSpdRate(u32 type, u32 Lv) {
-    // local: u32 list;
-    // local: cCraftSkillSpdData* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpSpdResource != static_cast<rCraftSkillSpd*>(nullptr)) {
         u32 list = this->mpSpdResource->getDataNum();

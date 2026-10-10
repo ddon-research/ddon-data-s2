@@ -317,7 +317,6 @@ rGUIFont* sGUI::getRubyFont() const {
 
 // Address: 0x01243b20 - 0x01243b5c (60 bytes)
 void sGUI::updateDynamicFont() {
-    // local: rGUIFont* pNext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLayoutingFont == static_cast<rGUIFont*>(nullptr)) {
         return;
@@ -385,10 +384,10 @@ void sGUI::freeMTagExtendData(void* pt) {
 
 // Address: 0x01243e40 - 0x01243e89 (73 bytes)
 void sGUI::freeMTAGList(nGUI::MTAG* & pMTag) {
-    // local: MTAG* pTemp;
+    // DWARF local not rendered: MTAG* pTemp;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if ((pMTag) != static_cast<nGUI::MTAG*>(nullptr)) {
-        // inferred: the value the loop at 0x1243e60 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1243e60 carries; no location-less local in scope fits
         for (nGUI::MTAG* v0_4 = pMTag;;) {
             // inferred: a temporary for the value the load at 0x1243e60 read, used twice; no DWARF local holds it
             nGUI::MTAG* t0 = v0_4->pNext;

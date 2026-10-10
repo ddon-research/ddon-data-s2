@@ -222,7 +222,6 @@ __attribute__((weak)) void uGUIItemBase01::setPutItem(nGUIItem::cItem* pCatchIte
 
 // Address: 0x00aca5e0 - 0x00aca6a4 (196 bytes)
 void uGUIItemBase01::checkAddStackNum(nCharacterData::ITEM_BAG_TYPE type, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg, s32* pSlotNo) {
-    // local: cItemBag* pBag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     *pMsg = static_cast<int>(-1);
     *pSlotNo = static_cast<int>(-1);
@@ -249,8 +248,6 @@ void uGUIItemBase01::checkAddStackNum(nCharacterData::ITEM_BAG_TYPE type, nGUIIt
 
 // Address: 0x00aca6b0 - 0x00aca785 (213 bytes)
 void uGUIItemBase01::checkAddStackNum(nItem::E_STORAGE_TYPE serverStorage, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg, s32* pSlotNo) {
-    // local: cItemBag* pBag;
-    // local: ITEM_BAG_TYPE type;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     *pMsg = static_cast<int>(-1);
     *pSlotNo = static_cast<int>(-1);
@@ -753,8 +750,6 @@ __attribute__((weak)) u32 uGUIItemBase01::evSortMenu(MtObject* pCaller, MtObject
 
 // Address: 0x00acc3b0 - 0x00acc4fa (330 bytes)
 u32 uGUIItemBase01::evOnlineShop(MtObject* pCaller, MtObject* pData) {
-    // local: u32 retType;
-    // local: uGUISystemMsg* pUnit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 retType = this->callbackOnlineShopDialog(pCaller, pData);
     if (retType != static_cast<u32>(1)) {
@@ -988,7 +983,7 @@ __attribute__((weak)) void uGUIItemBase01::updateOnlineShop() {
 
 // Address: 0x00ac8990 - 0x00ac8a07 (119 bytes)
 void uGUIItemBase01::updateOnlineShopWait() {
-    // local: bool isExit;
+    // DWARF local not rendered: bool isExit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uGUIUseItemBase::mpWaitPopBase != static_cast<uGUIBase*>(nullptr)) {
         if (this->::uGUIUseItemBase::mpWaitPopBase->mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
@@ -1343,7 +1338,6 @@ u32 uGUIItemBase01::evCtrlCancel(cControl::Message* msg) {
 
 // Address: 0x00acca90 - 0x00accb3e (174 bytes)
 u32 uGUIItemBase01::evCtrlChangeBox(cControl::Message* msg) {
-    // local: u32 result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (msg != static_cast<cControl::Message*>(nullptr)) {
         if (this->::uGUIItemBase01::isCheckMode() != false) {

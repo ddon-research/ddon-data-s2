@@ -218,3 +218,42 @@ public:
     MtTypedArray<CDataGachaDrawGroupInfo> m_DrawGroups;  // offset: 0x60
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataGachaDrawGroupInfo::CDataGachaDrawGroupInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataGachaDrawInfo::CDataGachaDrawInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unNum = static_cast<u32>(0);
+    this->m_bIsBonus = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataGachaItemInfo::CDataGachaItemInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_dProbability = 0.0;
+    this->m_unRank = static_cast<u32>(0);
+    this->m_unEffect = static_cast<u32>(0);
+    this->m_unItemId = static_cast<u32>(0);
+    this->m_unItemNum = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataGachaSettlementInfo::CDataGachaSettlementInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unSpecialPriceNum = static_cast<u32>(0);
+    this->m_unSpecialPriceMaxNum = static_cast<u32>(0);
+    this->m_unPurchaseNum = static_cast<u32>(0);
+    this->m_unPurchaseMaxNum = static_cast<u32>(0);
+    this->m_unPrice = static_cast<u32>(0);
+    this->m_unBasePrice = static_cast<u32>(0);
+    this->m_unDrawGroupId = static_cast<u32>(0);
+    this->m_unId = static_cast<u32>(0);
+}

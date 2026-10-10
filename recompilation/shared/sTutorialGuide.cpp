@@ -93,8 +93,6 @@ bool sTutorialGuide::guideSort(const sTutorialGuide::cOpenGuideNo* a, const sTut
 
 // Address: 0x008667e0 - 0x0086687d (157 bytes)
 void sTutorialGuide::createResouce() {
-    // local: rTutorialList* pList;
-    // local: rGUIMessage* pName;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rTutorialList* pList = static_cast<rTutorialList*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes("tutorial_guide", "RES_ID_TUTO_GUIDE_LIST", static_cast<u32>(1), false));
     if (pList != static_cast<rTutorialList*>(nullptr)) {

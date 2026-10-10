@@ -129,7 +129,7 @@ void cpBakeJointHuman::requestBake(u32 type, s32 timer) {
 
 // Address: 0x0017bb80 - 0x0017bbad (45 bytes)
 bool cpBakeJointHuman::initBake() {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cpBakeJointHuman::initBake(this->mBakeRequestType) != false) {
         this->::cpBakeJoint::initBake();

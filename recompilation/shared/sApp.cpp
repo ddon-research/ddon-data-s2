@@ -231,7 +231,7 @@ __attribute__((weak)) void sApp::saveItem() {
 
 // Address: 0x01222e80 - 0x01222f4a (202 bytes)
 void sApp::setItemGroupKeyword(u32 group, MT_CTSTR keyword) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((group & static_cast<u32>(1)) == static_cast<u32>(0)) {
     } else {

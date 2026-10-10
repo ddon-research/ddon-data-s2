@@ -115,7 +115,6 @@ __attribute__((weak)) bool rObjCollision::load(MtStream& in) {
 
 // Address: 0x006b1230 - 0x006b12bd (141 bytes)
 bool rObjCollision::save(MtStream& out) {
-    // local: MtDataWriter w;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     (&w)->writeU32(static_cast<u32>(5001027));

@@ -406,10 +406,8 @@ void cFSMBase::createProperty(MtPropertyList& s) {
 
 // Address: 0x001e18b0 - 0x001e1903 (83 bytes)
 void cFSMBase::move() {
-    // local: uCameraGame* pCam;
-    // local: const u32 cutNo;
-    // local: const bool isUpdateCut;
-    // local: const bool isNewAnmCam;
+    // DWARF local not rendered: const bool isUpdateCut;
+    // DWARF local not rendered: const bool isNewAnmCam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cFSMCore::move();
     uCameraGame* pCam = static_cast<sCameraExt*>(::sCamera::getInstance())->::sCameraExt::getGameCamera();

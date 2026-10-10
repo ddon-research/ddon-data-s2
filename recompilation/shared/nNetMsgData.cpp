@@ -102,7 +102,6 @@ void nNetMsgData::Head::deserializeCore(nNetMsgData::Head::stMsgHead* pHead, nNe
 // Address: 0x00172920 - 0x00172991 (113 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE/prog/nNetMsgData.cpp:471
 nNetMsgData::Head::stMsgHead* nNetMsgData::Head::deserialize(nNetwork::Decoder& dec) {
-    // local: stMsgHead* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetMsgData::Head::stMsgHead* pData = static_cast<nNetMsgData::Head::stMsgHead*>(::MtMemory::mpAllocatorType[static_cast<int>(7)]->memAlloc(static_cast<size_t>(16), static_cast<u32>(16)));
     if (pData != static_cast<nNetMsgData::Head::stMsgHead*>(nullptr)) {

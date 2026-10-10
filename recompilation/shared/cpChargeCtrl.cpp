@@ -232,7 +232,7 @@ __attribute__((weak)) f32 cpChargeCtrl::getMinJustTime() {
 
 // Address: 0x00492b00 - 0x00492b24 (36 bytes)
 f32 cpChargeCtrl::getMaxJustTime() {
-    // local: f32 nokori;
+    // DWARF local not rendered: f32 nokori;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((this->mChargeMax_Gi[this->mNowChargeLevel] - this->mCharge_Gi[this->mNowChargeLevel]) > 0.0f) {
         return (this->mChargeMax_Gi[this->mNowChargeLevel] - this->mCharge_Gi[this->mNowChargeLevel]) / this->mChargeSpeed_Gi[this->mNowChargeLevel];
@@ -265,16 +265,13 @@ f32 cpChargeCtrl::getMaxJustTime() {
 
 // Address: 0x00492b30 - 0x00492b5d (45 bytes)
 void cpChargeCtrl::chargeCut(f32 bairitu) {
-    // local: f32 charge;
-    // local: f32 chargeMax;
+    // DWARF local not rendered: f32 charge;
     // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
-    // inferred: a temporary for the value the load at 0x492b30 read, used 3 times; no DWARF local holds it
-    u8 t0 = this->mNowChargeLevel;
     // inferred: a temporary for the value the load at 0x492b37 read, used twice; no DWARF local holds it
-    float t1 = this->mCharge_Gi[t0];
-    f32 chargeMax = this->mChargeMax_Gi[t0];
-    this->mCharge_Gi[t0] = t1 * bairitu;
-    if ((t1 * bairitu) > chargeMax) {
+    float t0 = this->mCharge_Gi[this->mNowChargeLevel];
+    f32 chargeMax = this->mChargeMax_Gi[this->mNowChargeLevel];
+    this->mCharge_Gi[this->mNowChargeLevel] = t0 * bairitu;
+    if ((t0 * bairitu) > chargeMax) {
         this->mCharge_Gi[this->mNowChargeLevel] = chargeMax;
     }
 }

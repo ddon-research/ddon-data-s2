@@ -292,9 +292,9 @@ u32 cControl::addMouseTouchListLight(cGUIInstance* pInstHit, cGUIObject* pObjHit
 void cControl::clearMouseTouchList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mMouseExec.mMTI.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x6ea40 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x6ea40 carries; no location-less local in scope fits
         u32 v0_0 = this->mMouseExec.mMTI.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mMouseExec.mMTI.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMouseExec.mMTI.::MtArray::mpArray[i0_3];
@@ -451,7 +451,7 @@ void cControl::setPresetSE(u32 uIdx, u32 uSEId) {
 
 // Address: 0x0006eeb0 - 0x0006eec1 (17 bytes)
 u32 cControl::getPresetSEId(nGUIExt::MSG_REASON reason) const {
-    // local: u32 se_id;
+    // DWARF local not rendered: u32 se_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (static_cast<unsigned int>(reason) <= static_cast<unsigned int>(49)) {
         return this->mTblPresetSE[reason];
@@ -549,7 +549,7 @@ void cControl::setFocus(bool flag) {
             t0->setFocus(flag);
         }
         if (t0->mpNext != static_cast<cControl*>(nullptr)) {
-            // inferred: the value the loop at 0x6e4d0 carries; DWARF names no local for it
+            // inferred: the value the loop at 0x6e4d0 carries; no location-less local in scope fits
             for (cControl* v0_3 = t0->mpNext;;) {
                 if (v0_3->::cControl::getBindPos() != static_cast<s32>(-1)) {
                     if (v0_3->::cControl::getBindPos() == this->mCurrentPos) {
@@ -632,10 +632,10 @@ __attribute__((weak)) u32 cControl::resetItemNum(s32 num, const u32* tags, s32 p
 
 // Address: 0x0006e420 - 0x0006e45d (61 bytes)
 void cControl::setParent(cControl* parent, s32 bind_pos) {
-    // local: cControl* next;
+    // DWARF local not rendered: cControl* next;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (parent->mpChild != static_cast<cControl*>(nullptr)) {
-        // inferred: the value the loop at 0x6e430 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x6e430 carries; no location-less local in scope fits
         cControl* v0_0 = parent->mpChild;
         for (;;) {
             if (v0_0->mpNext != static_cast<cControl*>(nullptr)) {

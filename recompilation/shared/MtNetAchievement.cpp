@@ -121,15 +121,11 @@ __attribute__((weak)) void MtNetAchievement::reqAward(u32* req_seq, s32 user_ind
 
 // Address: 0x00de3d90 - 0x00de4000 (624 bytes)
 bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
-    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; the body oracle reports this body.
-    // inferred: a temporary for the result of the call at 0xde3d9c, used twice; no DWARF local holds it
-    s32 t0 = req->::MtNetRequest::getId();
-    switch (static_cast<unsigned int>(t0 - static_cast<s32>(1025))) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    switch (static_cast<unsigned int>(req->::MtNetRequest::getId() - static_cast<s32>(1025))) {
         case static_cast<unsigned int>(0):
         {
-            // inferred: a temporary for the result of the call at 0xde3dcb, used twice; no DWARF local holds it
-            bool t1 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1026));
-            if (t1 != false) {
+            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1026)) != false) {
                 return false;
             } else {
                 return true;
@@ -138,9 +134,7 @@ bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
         }
         case static_cast<unsigned int>(1):
         {
-            // inferred: a temporary for the result of the call at 0xde3deb, used twice; no DWARF local holds it
-            bool t2 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1025));
-            if (t2 != false) {
+            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1025)) != false) {
                 return false;
             } else {
                 return true;
@@ -161,9 +155,7 @@ bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
                         if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1029)) != false) {
                             return false;
                         } else {
-                            // inferred: a temporary for the result of the call at 0xde3f91, used twice; no DWARF local holds it
-                            bool t3 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030));
-                            if (t3 != false) {
+                            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030)) != false) {
                                 return false;
                             } else {
                                 return true;
@@ -188,9 +180,7 @@ bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
                         if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1029)) != false) {
                             return false;
                         } else {
-                            // inferred: a temporary for the result of the call at 0xde3fa6, used twice; no DWARF local holds it
-                            bool t4 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030));
-                            if (t4 != false) {
+                            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030)) != false) {
                                 return false;
                             } else {
                                 return true;
@@ -215,9 +205,7 @@ bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
                         if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1028)) != false) {
                             return false;
                         } else {
-                            // inferred: a temporary for the result of the call at 0xde3fbb, used twice; no DWARF local holds it
-                            bool t5 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030));
-                            if (t5 != false) {
+                            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1030)) != false) {
                                 return false;
                             } else {
                                 return true;
@@ -242,9 +230,7 @@ bool MtNetAchievement::canMoveRequest(MtNetRequest* req) {
                         if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1028)) != false) {
                             return false;
                         } else {
-                            // inferred: a temporary for the result of the call at 0xde3fd0, used twice; no DWARF local holds it
-                            bool t6 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1029));
-                            if (t6 != false) {
+                            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(1029)) != false) {
                                 return false;
                             } else {
                                 return true;
@@ -272,12 +258,10 @@ __attribute__((weak)) s32 MtNetAchievement::startRequest(MtNetRequest* req) {
 
 // Address: 0x00de4160 - 0x00de4234 (212 bytes)
 s32 MtNetAchievement::moveRequest(MtNetRequest* req) {
-    // local: s32 ret;
+    // DWARF local not rendered: s32 ret;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (req != static_cast<MtNetRequest*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0xde417b, used twice; no DWARF local holds it
-        s32 t0 = req->::MtNetRequest::getId();
-        switch (static_cast<unsigned int>(t0 - static_cast<s32>(1025))) {
+        switch (static_cast<unsigned int>(req->::MtNetRequest::getId() - static_cast<s32>(1025))) {
             case static_cast<unsigned int>(0):
             {
                 this->::MtNetAchievement::moveInit(req);

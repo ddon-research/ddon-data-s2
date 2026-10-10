@@ -11,6 +11,7 @@
 #include "MtString.h"
 #include "cResPath.h"
 #include "cResource.h"
+#include "nDDOIO.h"
 #include "nZoneUnitCtrl.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -123,11 +124,10 @@ __attribute__((weak)) bool rStageCustomParts::load(MtStream& in) {
 
 // Address: 0x006f4ff0 - 0x006f5144 (340 bytes)
 bool rStageCustomParts::save(MtStream& out) {
-    // local: MtDataWriter w;
-    // local: u32 i;
-    // local: Info* pInfo;
-    // local: u32 i;
-    // local: Filter* pFilter;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: Info* pInfo;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: Filter* pFilter;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     w.::MtDataWriter::writeU32(static_cast<u32>(7365491));
@@ -136,7 +136,7 @@ bool rStageCustomParts::save(MtStream& out) {
     (&w)->writeF32(this->mParam.mOffsetY);
     w.::MtDataWriter::writeU32(this->mArrayInfoNum);
     if (this->mArrayInfoNum != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             this->mpArrayInfo[i0_3].::rStageCustomParts::Info::save(w);
             if ((i0_3 + static_cast<unsigned int>(1)) < this->mArrayInfoNum) {
@@ -148,7 +148,7 @@ bool rStageCustomParts::save(MtStream& out) {
     }
     w.::MtDataWriter::writeU32(this->mArrayFilterNum);
     if (this->mArrayFilterNum != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             w.::MtDataWriter::writeString(&this->mpArrayFilter[i2_3].mFilter[0]);
             if ((i2_3 + static_cast<unsigned int>(1)) < this->mArrayFilterNum) {
@@ -198,7 +198,6 @@ u32 rStageCustomParts::getFilterNum() const {
 
 // Address: 0x006f5150 - 0x006f516f (31 bytes)
 u32 rStageCustomParts::getAreaSize(u32 areaNo) {
-    // local: Info* pinfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rStageCustomParts::Info* pinfo = this->searchInfo(areaNo);
     if (pinfo != static_cast<rStageCustomParts::Info*>(nullptr)) {
@@ -319,16 +318,22 @@ __attribute__((weak)) void rStageCustomParts::Param::createProperty(MtPropertyLi
 // Address: 0x006f49a0 - 0x006f49d2 (50 bytes)
 bool rStageCustomParts::Param::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mDelta = r.readF32();
-    this->mOffsetY = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mDelta);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mOffsetY);
     return true;
 }
 
 // Address: 0x006f49e0 - 0x006f4a12 (50 bytes)
 bool rStageCustomParts::Param::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeF32(this->mDelta);
-    w.writeF32(this->mOffsetY);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mDelta);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mOffsetY);
     return true;
 }
 

@@ -102,14 +102,14 @@ __attribute__((weak)) void cGUIExtNetMgr::clearReceiveFlags() {
 
 // Address: 0x000d8140 - 0x000d8165 (37 bytes)
 const SkillParamVec& cGUIExtNetMgr::getCustomSkillParam(u32 JobId) {
-    // local: const u32 job_index;
+    // DWARF local not rendered: const u32 job_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mData.CustomSkillParam[::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
 
 // Address: 0x000d8170 - 0x000d8190 (32 bytes)
 bool cGUIExtNetMgr::isReceiveCustomSkillParam(u32 JobId) {
-    // local: const u32 job_index;
+    // DWARF local not rendered: const u32 job_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mData.ReceiveCustomSkillParam[::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
@@ -147,7 +147,7 @@ __attribute__((weak)) const LearnedAcquirementParamVec& cGUIExtNetMgr::getLearne
 
 // Address: 0x000d83f0 - 0x000d8415 (37 bytes)
 const SetAcquirementParamVec& cGUIExtNetMgr::getSetCustomSkill(u32 JobId) {
-    // local: const u32 job_index;
+    // DWARF local not rendered: const u32 job_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mData.SetCustomSkill[::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
@@ -168,7 +168,6 @@ __attribute__((weak)) const PresetAbilityParamVec& cGUIExtNetMgr::getPresetAbili
 
 // Address: 0x000d84a0 - 0x000d84cc (44 bytes)
 u32 cGUIExtNetMgr::getAbilityCost() {
-    // local: const CPacket_S2C_GET_ABILITY_COST_RES* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const nUserSession::CPacket_S2C_GET_ABILITY_COST_RES* pData = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getAbilityCostPacket();
     if (pData != static_cast<const nUserSession::CPacket_S2C_GET_ABILITY_COST_RES*>(nullptr)) {
@@ -276,7 +275,7 @@ __attribute__((weak)) const LearnedAcquirementParamVec& cGUIExtNetMgr::getPawnLe
 
 // Address: 0x000d8890 - 0x000d88b5 (37 bytes)
 const SetAcquirementParamVec& cGUIExtNetMgr::getPawnSetCustomSkill(u32 JobId) {
-    // local: const u32 job_index;
+    // DWARF local not rendered: const u32 job_index;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mData.PawnSetCustomSkill[::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(JobId))];
 }
@@ -290,7 +289,6 @@ __attribute__((weak)) const SetAcquirementParamVec& cGUIExtNetMgr::getPawnSetAbi
 
 // Address: 0x000d8900 - 0x000d892c (44 bytes)
 u32 cGUIExtNetMgr::getPawnAbilityCost() {
-    // local: const CPacket_S2C_GET_PAWN_ABILITY_COST_RES* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES* pData = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getPawnAbilityCostPacket();
     if (pData != static_cast<const nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES*>(nullptr)) {
@@ -356,8 +354,7 @@ __attribute__((weak)) void cGUIExtNetMgr::setupWarpPointList(const CommonU32Vec&
 
 // Address: 0x000d8f70 - 0x000d8fb1 (65 bytes)
 void cGUIExtNetMgr::addWarpPointList(u32 Id) {
-    // local: WarpPoint& warp_point;
-    // local: u32 i;
+    // DWARF local not rendered: WarpPoint& warp_point;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
     if (this->mData.WarpPointList.Num <= static_cast<u32>(79)) {
         if (this->mData.WarpPointList.Num == static_cast<u32>(0)) {
@@ -368,15 +365,15 @@ void cGUIExtNetMgr::addWarpPointList(u32 Id) {
     } else {
         return;
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i1 = static_cast<unsigned int>(0);
+    // inferred: DWARF's location-less 'i' (lexical block [0xd8f70, 0xd8f76), [0xd8f7e, 0xd8fa0)) is the counter this loop steps
+    u32 i = static_cast<u32>(0);
     do {
-        if (this->mData.WarpPointList.Id[i1] != Id) {
+        if (this->mData.WarpPointList.Id[i] != Id) {
         } else {
             return;
         }
-        i1 += static_cast<unsigned int>(1);
-    } while (i1 < this->mData.WarpPointList.Num);
+        i += static_cast<u32>(1);
+    } while (i < this->mData.WarpPointList.Num);
     this->mData.WarpPointList.Id[this->mData.WarpPointList.Num] = Id;
     this->mData.WarpPointList.Num = this->mData.WarpPointList.Num + static_cast<u32>(1);
 }

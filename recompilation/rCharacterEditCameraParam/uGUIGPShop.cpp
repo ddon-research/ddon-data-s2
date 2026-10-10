@@ -286,7 +286,7 @@ __attribute__((weak)) void uGUIGPShop::updateShop() {
 
 // Address: 0x00ab0170 - 0x00ab028c (284 bytes)
 void uGUIGPShop::updateCharge() {
-    // local: s32 idx;
+    // DWARF local not rendered: s32 idx;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
     this->::uGUIGPShop::updateGP();
@@ -309,11 +309,11 @@ void uGUIGPShop::updateCharge() {
         return;
     } else {
         if (this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(5)) != static_cast<s32>(0)) {
-            // inferred: the value the loop at 0xab0230 carries; DWARF names no local for it
+            // inferred: the value the loop at 0xab0230 carries; no location-less local in scope fits
             s32 v0_0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(7));
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             int i0_1 = static_cast<int>(0);
-            // inferred: the value the loop at 0xab0230 carries; DWARF names no local for it
+            // inferred: the value the loop at 0xab0230 carries; no location-less local in scope fits
             for (s32* v0_2 = &this->mChargeItem[0].mIndex;;) {
                 if ((*v0_2) == v0_0) {
                     if (i0_1 > static_cast<int>(-1)) {
@@ -1053,13 +1053,13 @@ __attribute__((weak)) void uGUIGPShop::updateShopCursor(bool IsOperate) {
 
 // Address: 0x00aaf730 - 0x00aaf805 (213 bytes)
 __attribute__((weak)) void uGUIGPShop::updateShopButton(bool IsOperate) {
-    // local: s32 idx;
+    // DWARF local not rendered: s32 idx;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0xaaf760 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xaaf760 carries; no location-less local in scope fits
     s32 v0_0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(4));
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     int i0_1 = static_cast<int>(0);
-    // inferred: the value the loop at 0xaaf760 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xaaf760 carries; no location-less local in scope fits
     for (s32* v0_2 = &this->mShopItem[0].mIndex;;) {
         if ((*v0_2) == v0_0) {
             if (i0_1 > static_cast<int>(-1)) {
@@ -1146,11 +1146,11 @@ __attribute__((weak)) void uGUIGPShop::updateUsedCursor(bool IsOperate) {
 
 // Address: 0x00aad8f0 - 0x00aad9e1 (241 bytes)
 void uGUIGPShop::updateUsedButton(bool IsOperate) {
-    // local: u32 idx;
+    // DWARF local not rendered: u32 idx;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0xaad920 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xaad920 carries; no location-less local in scope fits
     s32* v0_3 = &this->mUsedList[0].::uGUIGPShop::cScrollStatusDispBase::mIndex;
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i0_8 = static_cast<unsigned int>(0);;) {
         // inferred: a temporary for the value the load at 0xaad920 read, used once; no DWARF local holds it
         int t0 = *v0_3;
@@ -1211,11 +1211,11 @@ __attribute__((weak)) void uGUIGPShop::updateNoUseCursor(bool IsOperate) {
 
 // Address: 0x00aadd30 - 0x00aade21 (241 bytes)
 void uGUIGPShop::updateNoUseButton(bool IsOperate) {
-    // local: u32 idx;
+    // DWARF local not rendered: u32 idx;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0xaadd60 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xaadd60 carries; no location-less local in scope fits
     s32* v0_3 = &this->mNoUseList[0].::uGUIGPShop::cScrollStatusDispBase::mIndex;
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i0_8 = static_cast<unsigned int>(0);;) {
         // inferred: a temporary for the value the load at 0xaadd60 read, used once; no DWARF local holds it
         int t0 = *v0_3;
@@ -2027,18 +2027,16 @@ void uGUIGPShop::shiftShopList() {
     this->::uGUIGPShop::setKeyStatus(static_cast<u32>(1));
     this->::uGUIGPShop::updateShopCursor(true);
     this->::uGUIGPShop::updateShopButton(true);
-    // inferred: a temporary for the result of the call at 0xaaf2ea, used once; no DWARF local holds it
-    s32 t0 = this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(2));
     // inferred: a temporary for the value the load at 0xaaf2f5 read, used twice; no DWARF local holds it
-    cGUIInstAnimation* t1 = this->mShopMenuList[t0].pInst;
+    cGUIInstAnimation* t0 = this->mShopMenuList[this->mShopControl.::cGUIControlMgr::getCurrentPos(static_cast<u32>(2))].pInst;
     if (this->mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
         this->mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
     }
     if (this->mStatusMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
         this->mStatusMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
     }
-    if (t1 != static_cast<cGUIInstAnimation*>(nullptr)) {
-        t1->::cGUIInstAnimation::setSequenceId(static_cast<u32>(5));
+    if (t0 != static_cast<cGUIInstAnimation*>(nullptr)) {
+        t0->::cGUIInstAnimation::setSequenceId(static_cast<u32>(5));
     }
     this->mIsBrowserLowPriority = true;
 }
@@ -2074,9 +2072,9 @@ void uGUIGPShop::shiftHistoryList() {
         t0->::cGUIInstAnimation::setSequenceId(static_cast<u32>(5));
     }
     this->::uGUIGPShop::setKeyStatus(static_cast<u32>(1));
-    // inferred: the value the loop at 0xaae2e0 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xaae2e0 carries; no location-less local in scope fits
     s32* v0_3 = &this->mHistoryList[0].mIndex;
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i0_10 = static_cast<unsigned int>(0);;) {
         // inferred: a temporary for the value the load at 0xaae2e0 read, used once; no DWARF local holds it
         int t1 = *v0_3;

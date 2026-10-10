@@ -99,7 +99,7 @@ __attribute__((weak)) void uEffect2D::moveAfter() {
 
 // Address: 0x00fcd570 - 0x00fcd5d6 (102 bytes)
 void uEffect2D::draw(cDraw* pDraw) {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpEffect2D == static_cast<rEffect2D*>(nullptr)) {
         return;

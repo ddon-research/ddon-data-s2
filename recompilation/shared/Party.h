@@ -191,3 +191,21 @@ public:
     u64 m_ullContentNumber;  // offset: 0x38
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPartyListInfo::CDataPartyListInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unServerId = static_cast<u32>(0);
+    this->m_unPartyId = static_cast<u32>(0);
+    this->m_unSequence = static_cast<u32>(0);
+    this->m_ullContentNumber = static_cast<u64>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPartyMemberMaxNum::CDataPartyMemberMaxNum() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unContentType = static_cast<u32>(0);
+    this->m_unNum = static_cast<u32>(0);
+}

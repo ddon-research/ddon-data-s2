@@ -95,7 +95,6 @@ MtUI* rSoundMotionSe::createUI(MtProperty& prop) {
 
 // Address: 0x006fb010 - 0x006fb0a8 (152 bytes)
 bool rSoundMotionSe::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(9), static_cast<MtObject*>(&this->mMotionSe), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
@@ -108,7 +107,6 @@ bool rSoundMotionSe::load(MtStream& in) {
 
 // Address: 0x006faf80 - 0x006fb001 (129 bytes)
 bool rSoundMotionSe::save(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(in, static_cast<u16>(9), static_cast<MtObject*>(&this->mMotionSe), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));

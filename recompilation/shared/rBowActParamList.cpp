@@ -88,7 +88,6 @@ __attribute__((weak)) void rBowActParamList::clear() {
 
 // Address: 0x00648a00 - 0x00648a81 (129 bytes)
 bool rBowActParamList::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(20), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -96,7 +95,6 @@ bool rBowActParamList::load(MtStream& in) {
 
 // Address: 0x00648a90 - 0x00648b16 (134 bytes)
 bool rBowActParamList::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(20), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rBowActParamList::DTI));

@@ -494,8 +494,8 @@ u32 uGUIChat::evCtrlStart(cControl::Message* msg) {
 
 // Address: 0x00a247e0 - 0x00a2481d (61 bytes)
 u32 uGUIChat::evCtrlMenuMoveV(cControl::Message* msg) {
-    // local: const s32 ctrl_menu_pos;
-    // local: const u32 input_event;
+    // DWARF local not rendered: const s32 ctrl_menu_pos;
+    // DWARF local not rendered: const u32 input_event;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (msg != static_cast<cControl::Message*>(nullptr)) {
         msg->changeSE = static_cast<u32>(1);

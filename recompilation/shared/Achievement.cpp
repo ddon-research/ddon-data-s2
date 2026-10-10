@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -77,9 +78,9 @@ __attribute__((weak)) void CDataAchieveRewardCommon::operator delete(void* p_add
 // CDataAchieveRewardCommon::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bbe50 - 0x003bbe9b (75 bytes)
-__attribute__((weak)) MtObject* CDataAchieveRewardCommon::MyDTI::newInstance() const {
-    DDON_STUB("CDataAchieveRewardCommon::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAchieveRewardCommon::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAchieveRewardCommon;
 }
 
 // No out-of-line body: no code in the ELF
@@ -173,9 +174,11 @@ inline MtAllocator* CDataAchievementIdentifier::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataAchievementIdentifier::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataAchievementIdentifier::MyDTI::newInstance at 0x003bb9c4-0x003bb9ed (called at AchievementImplement.inc:7)
-// void* CDataAchievementIdentifier::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* CDataAchievementIdentifier::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataAchievementIdentifier::DTI)->memAlloc(sz, align, ::CDataAchievementIdentifier::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataAchievementIdentifier::operator new[](size_t sz, u32 align);
@@ -217,9 +220,9 @@ __attribute__((weak)) void CDataAchievementIdentifier::operator delete(void* p_a
 // CDataAchievementIdentifier::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bb9c0 - 0x003bba08 (72 bytes)
-__attribute__((weak)) MtObject* CDataAchievementIdentifier::MyDTI::newInstance() const {
-    DDON_STUB("CDataAchievementIdentifier::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAchievementIdentifier::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAchievementIdentifier;
 }
 
 // No out-of-line body: no code in the ELF
@@ -359,8 +362,8 @@ __attribute__((weak)) void CDataAchievementRewardProgress::operator delete(void*
 // CDataAchievementRewardProgress::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bbbe0 - 0x003bbc33 (83 bytes)
-__attribute__((weak)) MtObject* CDataAchievementRewardProgress::MyDTI::newInstance() const {
-    DDON_STUB("CDataAchievementRewardProgress::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAchievementRewardProgress::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAchievementRewardProgress;
 }
 

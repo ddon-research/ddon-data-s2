@@ -8,6 +8,7 @@
 #include "MtObject.h"
 #include "MtString.h"
 #include "MtTime.h"
+#include "Quest.h"
 #include "nMarker.h"
 #include "sQuestManagerExt.h"
 #ifndef DDON_STUB
@@ -3265,9 +3266,13 @@ __attribute__((weak)) void nQuest::cQuestCommand::createProperty(MtPropertyList&
 }
 
 // Address: 0x00631500 - 0x00631513 (19 bytes)
-__attribute__((weak)) void nQuest::cQuestCommand::copy(const CDataQuestCommand* pSrc) {
-    DDON_STUB("nQuest::cQuestCommand::copy")
-    /* stub */
+void nQuest::cQuestCommand::copy(const CDataQuestCommand* pSrc) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->m_usCommand = pSrc->m_usCommand;
+    this->m_nParam01 = pSrc->m_nParam01;
+    this->m_nParam02 = pSrc->m_nParam02;
+    this->m_nParam03 = pSrc->m_nParam03;
+    this->m_nParam04 = pSrc->m_nParam04;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
@@ -5210,7 +5215,6 @@ __attribute__((weak)) void nQuest::cCycleContentsSituationInfo::addOrderConditio
 
 // Address: 0x00637220 - 0x0063725d (61 bytes)
 void nQuest::cCycleContentsSituationInfo::updateOrderConditionInfo() {
-    // local: u32 i;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
     if (this->mOrderConditions.::MtArray::mLength != static_cast<u32>(0)) {
@@ -5361,7 +5365,6 @@ __attribute__((weak)) void nQuest::cEndContentsGroupQuestInfo::addOrderCondition
 
 // Address: 0x006378e0 - 0x0063791d (61 bytes)
 void nQuest::cEndContentsGroupQuestInfo::updateOrderConditionInfo() {
-    // local: u32 i;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
     if (this->mOrderConditions.::MtArray::mLength != static_cast<u32>(0)) {

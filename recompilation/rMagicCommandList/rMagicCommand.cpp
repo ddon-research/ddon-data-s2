@@ -180,9 +180,9 @@ __attribute__((weak)) void cMagicCommandList::createProperty(MtPropertyList& pro
 void cMagicCommandList::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mMagicCommandListEasy.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1a9c160 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1a9c160 carries; no location-less local in scope fits
         u32 v0_0 = this->mMagicCommandListEasy.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mMagicCommandListEasy.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMagicCommandListEasy.::MtArray::mpArray[i0_3];
@@ -208,9 +208,9 @@ void cMagicCommandList::clear() {
     this->mMagicCommandListEasy.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mMagicCommandListEasy.::MtArray::mLength = static_cast<u32>(0);
     if (this->mMagicCommandListNormal.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1a9c1d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1a9c1d0 carries; no location-less local in scope fits
         u32 v2_0 = this->mMagicCommandListNormal.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mMagicCommandListNormal.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMagicCommandListNormal.::MtArray::mpArray[i2_3];
@@ -236,9 +236,9 @@ void cMagicCommandList::clear() {
     this->mMagicCommandListNormal.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mMagicCommandListNormal.::MtArray::mLength = static_cast<u32>(0);
     if (this->mMagicCommandListHard.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1a9c240 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1a9c240 carries; no location-less local in scope fits
         u32 v4_0 = this->mMagicCommandListHard.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
             if (this->mMagicCommandListHard.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMagicCommandListHard.::MtArray::mpArray[i4_3];
@@ -408,15 +408,13 @@ __attribute__((weak)) bool rMagicCommandList::load(MtStream& in) {
 
 // Address: 0x006a1b20 - 0x006a1bdd (189 bytes)
 bool rMagicCommandList::save(MtStream& out) {
-    // local: MtDataWriter writer;
-    // local: u32 size1;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     MtDataWriter writer(out, static_cast<u32>(4096), static_cast<u32>(4096));
     u32 size1 = this->mMagicCommandList.::MtArray::size();
     (&writer)->writeU32(size1);
     if (size1 != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             static_cast<cMagicCommandList*>(this->mMagicCommandList.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::cMagicCommandList::exportBinary(writer);
             if (size1 != (i0_3 + static_cast<unsigned int>(1))) {
@@ -439,9 +437,9 @@ MT_CTSTR rMagicCommandList::getExt() const {
 void rMagicCommandList::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mMagicCommandList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1a9c360 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1a9c360 carries; no location-less local in scope fits
         u32 v0_0 = this->mMagicCommandList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mMagicCommandList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMagicCommandList.::MtArray::mpArray[i0_3];

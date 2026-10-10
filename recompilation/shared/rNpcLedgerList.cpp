@@ -115,7 +115,6 @@ __attribute__((weak)) void rNpcLedgerList::createProperty(MtPropertyList& s) {
 
 // Address: 0x006ac430 - 0x006ac50d (221 bytes)
 bool rNpcLedgerList::save(MtStream& out) {
-    // local: MtDataWriter w;
     // Approximate from the ELF: a cast to the other signedness; code after the loop copied into an arm that skips it; the body oracle reports this body.
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     (&w)->writeU32(static_cast<u32>(7105646));
@@ -124,7 +123,7 @@ bool rNpcLedgerList::save(MtStream& out) {
     if (this->mArray.::MtArray::mLength == static_cast<u32>(0)) {
         return true;
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i3 = static_cast<unsigned int>(0);
     do {
         static_cast<rNpcLedgerList::cItem*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i3)])->::rNpcLedgerList::cItem::save(w);

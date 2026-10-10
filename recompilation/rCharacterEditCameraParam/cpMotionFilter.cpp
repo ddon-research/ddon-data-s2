@@ -68,7 +68,7 @@ inline void cpMotionFilter::operator delete(void* p_addr) {
 
 // Address: 0x004cfc10 - 0x004cfccf (191 bytes)
 cpMotionFilter::cpMotionFilter() {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpMotFilter[9] = static_cast<uCnsMotFilter*>(nullptr);
     this->mpMotFilter[8] = static_cast<uCnsMotFilter*>(nullptr);

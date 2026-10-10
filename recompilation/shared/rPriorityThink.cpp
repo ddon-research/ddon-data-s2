@@ -859,10 +859,10 @@ bool rPriorityThink::loadData(MtDataReader& in, cPrioThkCode* pData) {
     in.read(static_cast<void*>(&pData->mDisableOrder), t0 * static_cast<u32>(4));
     // inferred: a temporary for the result of the call at 0x6d0770, used once; no DWARF local holds it
     u32 t1 = in.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     in.read(static_cast<void*>(&pData->mDisableTypeFlag), t1 * static_cast<u32>(4));
-    // inferred: a temporary for the result of the call at 0x6d078c, used twice; no DWARF local holds it
-    u32 t2 = in.readU32();
-    pData->mCodeFlag = t2;
+    ::nDDOIO::readData(in, pData->mCodeFlag);
     return true;
 }
 
@@ -923,4 +923,8 @@ template const cPrioThkCode* rTbl2<cPrioThkCode>::getData(unsigned int) const;
 // Instance at 0x01aac960 - 0x01aac964 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cPrioThkCode>::getDataNum() const;
+
+// Instance at 0x01aae8b0 - 0x01aae954 (164 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cPrioThkCode>::~rTbl2();
 

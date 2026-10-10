@@ -12,7 +12,7 @@
 
 // Address: 0x003aa900 - 0x003aa96c (108 bytes)
 cOmComponent::cOmComponent() {
-    // local: u32 fcnt;
+    // DWARF local not rendered: u32 fcnt;
     // Approximate from the ELF: zero stores the recompile merges past a memset; the body oracle reports this body.
     this->mIsCallSe = false;
     this->mpSoundRequest = static_cast<rSoundRequest*>(nullptr);

@@ -153,8 +153,7 @@ __attribute__((weak)) void cpOcdCtrl::callbackDie(cUnitDieInfo& dieInfo) {
 
 // Address: 0x004def70 - 0x004defda (106 bytes)
 void cpOcdCtrl::callbackDamageAfter_make(cHitInfoAfter* pHitInfo) {
-    // local: uDDOModel* pAttacker;
-    // local: uCharacter* pDefender;
+    // DWARF local not rendered: uCharacter* pDefender;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->::cpOcdCtrl::isInvalid() != false) {
         return;
@@ -875,7 +874,7 @@ void cpOcdCtrl::registOcdShader(nDDOShader::SHADER_MODE_ENUM shaderType, u32 pri
 
 // Address: 0x004de620 - 0x004de668 (72 bytes)
 bool cpOcdCtrl::checkOcdDamageCache(const cOcdCache& newChach) {
-    // local: OCD_REASON reason;
+    // DWARF local not rendered: OCD_REASON reason;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mIsInvalid != false) {
         return false;

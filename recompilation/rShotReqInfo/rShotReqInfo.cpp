@@ -8,6 +8,7 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -148,14 +149,26 @@ inline void rShotReqInfo::operator delete(void* p_addr) {
 // Address: 0x006e7ab0 - 0x006e7ba2 (242 bytes)
 bool rShotReqInfo::loadData(MtDataReader& in, cShotReqInfo* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mShotGroup = in.readU32();
-    pData->mShotIndex = in.readU32();
-    pData->mSetTarget = in.readU32();
-    pData->mJointNo = in.readU32();
-    pData->mIsConst = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mShotGroup);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mShotIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSetTarget);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mJointNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mIsConst);
     pData->mOffsetPos = in.readV3();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->mOffsetDir = in.readV3();
-    pData->mIsLockOnTarget = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    ::nDDOIO::readData(in, pData->mIsLockOnTarget);
     return true;
 }
 
@@ -207,4 +220,8 @@ template const cShotReqInfo* rTbl2<cShotReqInfo>::getData(unsigned int) const;
 // Instance at 0x01ab1590 - 0x01ab1594 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cShotReqInfo>::getDataNum() const;
+
+// Instance at 0x01ab17b0 - 0x01ab1808 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cShotReqInfo>::~rTbl2();
 

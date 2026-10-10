@@ -42,7 +42,7 @@ __attribute__((weak)) nGUIKeyConfig::CATEGORY_STATE nMenuKeyConfig::CategoryList
 
 // Address: 0x00171710 - 0x00171728 (24 bytes)
 nMenuKeyConfig::KeyCustomManagers::KeyCustomManagers() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mKeyCustomManagers[2] = static_cast<cKeyCustomManager*>(nullptr);
     this->mKeyCustomManagers[1] = static_cast<cKeyCustomManager*>(nullptr);
@@ -86,7 +86,7 @@ __attribute__((weak)) void nMenuKeyConfig::KeyCustomManagers::init(const nMenuKe
 
 // Address: 0x00171790 - 0x001717e3 (83 bytes)
 void nMenuKeyConfig::KeyCustomManagers::release() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mKeyCustomManagers[0] != static_cast<cKeyCustomManager*>(nullptr)) {
         delete this->mKeyCustomManagers[0];
@@ -176,7 +176,6 @@ __attribute__((weak)) void nMenuKeyConfig::KeyCustomManagers::setBlank(u32 categ
 
 // Address: 0x00171c40 - 0x00171c85 (69 bytes)
 void nMenuKeyConfig::KeyCustomManagers::restore(u32 categoryNo, nKeyCustom::KB_CUSTOM keyCustom) {
-    // local: cKeyCustomManager* const key_custom_manager;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (categoryNo <= static_cast<u32>(2)) {
         cKeyCustomManager* const key_custom_manager = this->mKeyCustomManagers[categoryNo];
@@ -189,7 +188,6 @@ void nMenuKeyConfig::KeyCustomManagers::restore(u32 categoryNo, nKeyCustom::KB_C
 
 // Address: 0x00171c90 - 0x00171ccd (61 bytes)
 void nMenuKeyConfig::KeyCustomManagers::setDefault(u32 categoryNo, nKeyCustom::KB_CUSTOM keyCustom) {
-    // local: cKeyCustomManager* const key_custom_manager;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (categoryNo <= static_cast<u32>(2)) {
         cKeyCustomManager* const key_custom_manager = this->mKeyCustomManagers[categoryNo];
@@ -202,7 +200,7 @@ void nMenuKeyConfig::KeyCustomManagers::setDefault(u32 categoryNo, nKeyCustom::K
 
 // Address: 0x001719b0 - 0x001719be (14 bytes)
 cKeyCustomManager* nMenuKeyConfig::KeyCustomManagers::getManager(u32 categoryNo) const {
-    // local: cKeyCustomManager* key_custom_manager;
+    // DWARF local not rendered: cKeyCustomManager* key_custom_manager;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (categoryNo <= static_cast<u32>(2)) {
         return this->mKeyCustomManagers[categoryNo];
@@ -252,7 +250,7 @@ __attribute__((weak)) MT_CTSTR nMenuKeyConfig::KeyListItems::getGroupName(s32 gr
 
 // Address: 0x00171f80 - 0x00171f92 (18 bytes)
 u32 nMenuKeyConfig::KeyListItems::getItemNum(u32 categoryListIndex) const {
-    // local: u32 item_num;
+    // DWARF local not rendered: u32 item_num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mResTextTable != static_cast<const rKeyConfigTextTable*>(nullptr)) {
         return this->mResTextTable->mSortedArray.::MtArray::mLength;
@@ -263,8 +261,7 @@ u32 nMenuKeyConfig::KeyListItems::getItemNum(u32 categoryListIndex) const {
 
 // Address: 0x00171fa0 - 0x00171fca (42 bytes)
 s32 nMenuKeyConfig::KeyListItems::getGroupId(u32 itemIndex, u32 categoryListIndex) const {
-    // local: s32 group_id;
-    // local: const cKeyText* const key_text;
+    // DWARF local not rendered: s32 group_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mResTextTable != static_cast<const rKeyConfigTextTable*>(nullptr)) {
         const nKeyConfigTextTable::cKeyText* const key_text = this->mResTextTable->::rKeyConfigTextTable::getSortedData(itemIndex);
@@ -280,8 +277,7 @@ s32 nMenuKeyConfig::KeyListItems::getGroupId(u32 itemIndex, u32 categoryListInde
 
 // Address: 0x00171fd0 - 0x00171ffa (42 bytes)
 s32 nMenuKeyConfig::KeyListItems::getSerialNumber(u32 itemIndex, u32 categoryListIndex) const {
-    // local: s32 serial_number;
-    // local: const cKeyText* const key_text;
+    // DWARF local not rendered: s32 serial_number;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mResTextTable != static_cast<const rKeyConfigTextTable*>(nullptr)) {
         const nKeyConfigTextTable::cKeyText* const key_text = this->mResTextTable->::rKeyConfigTextTable::getSortedData(itemIndex);
@@ -354,8 +350,7 @@ __attribute__((weak)) u32 nMenuKeyConfig::KeyListItems::getOption(u32 itemIndex,
 
 // Address: 0x001723b0 - 0x001723d7 (39 bytes)
 nKeyCustom::KB_CUSTOM nMenuKeyConfig::KeyListItems::getKeyCustom(u32 itemIndex) const {
-    // local: KB_CUSTOM key_custom;
-    // local: const cKeyText* const key_text;
+    // DWARF local not rendered: KB_CUSTOM key_custom;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mResTextTable != static_cast<const rKeyConfigTextTable*>(nullptr)) {
         const nKeyConfigTextTable::cKeyText* const key_text = this->mResTextTable->::rKeyConfigTextTable::getSortedData(itemIndex);

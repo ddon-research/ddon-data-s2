@@ -3,9 +3,9 @@
 #include "rFurnitureItem.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -327,10 +327,18 @@ inline void rFurnitureGroup::operator delete(void* p_addr) {
 // Address: 0x0067aac0 - 0x0067ab28 (104 bytes)
 bool rFurnitureGroup::loadData(MtDataReader& r, cFurnitureGroup* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mID = r.readU32();
-    pData->mCameraNo = r.readU32();
-    pData->mGmdIdx = r.readU32();
-    pData->mSortNo = r.::MtDataReader::readU8();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCameraNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mGmdIdx);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mSortNo);
     return true;
 }
 
@@ -409,9 +417,15 @@ inline void rFurnitureItem::operator delete(void* p_addr) {
 // Address: 0x0067b5b0 - 0x0067b5eb (59 bytes)
 bool rFurnitureItem::loadData(MtDataReader& r, cFurnitureItem* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mItemId = r.readU32();
-    pData->mLayoutId = r.readU32();
-    pData->mOmId = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mItemId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mLayoutId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mOmId);
     return true;
 }
 
@@ -490,11 +504,21 @@ inline void rFurnitureLayout::operator delete(void* p_addr) {
 // Address: 0x0067b0f0 - 0x0067b189 (153 bytes)
 bool rFurnitureLayout::loadData(MtDataReader& r, cFurnitureLayout* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mID = r.readU32();
-    pData->mIsRemovable = r.::MtDataReader::readU8() != static_cast<u8>(0);
-    pData->mGroupId = r.readU32();
-    pData->mGmdIdx = r.readU32();
-    pData->mSortNo = r.::MtDataReader::readU8();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIsRemovable);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mGroupId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mGmdIdx);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mSortNo);
     return true;
 }
 
@@ -580,4 +604,16 @@ template unsigned int rTbl2<cFurnitureItem>::getDataNum() const;
 // Instance at 0x01a91e90 - 0x01a91e94 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cFurnitureLayout>::getDataNum() const;
+
+// Instance at 0x01a92520 - 0x01a92578 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cFurnitureGroup>::~rTbl2();
+
+// Instance at 0x01a923a0 - 0x01a923f8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cFurnitureItem>::~rTbl2();
+
+// Instance at 0x01a92460 - 0x01a924b8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cFurnitureLayout>::~rTbl2();
 

@@ -78,7 +78,7 @@ inline void MtGeomCylinder::operator delete(void* p_addr) {
 
 // Address: 0x01943410 - 0x019434a9 (153 bytes)
 void MtGeomCylinder::load(MtDataReader& fin) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mCylinder.p0.x = fin.readF32();
     this->mCylinder.p1.x = fin.readF32();
@@ -93,7 +93,7 @@ void MtGeomCylinder::load(MtDataReader& fin) {
 
 // Address: 0x019434b0 - 0x0194354b (155 bytes)
 void MtGeomCylinder::save(MtDataWriter& fout) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     fout.writeF32(this->mCylinder.p0.x);
     fout.writeF32(this->mCylinder.p1.x);

@@ -62,8 +62,8 @@ inline void cQuestPhaseState::operator delete(void* p_addr) {
 
 // Address: 0x0015e130 - 0x0015e196 (102 bytes)
 void cQuestPhaseState::setWarpPlayerStageNoStartPos(cQuestPhaseState* pState, u32 stageNo, u32 startPosNo) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -81,8 +81,8 @@ void cQuestPhaseState::setWarpPlayerStageNoStartPos(cQuestPhaseState* pState, u3
 
 // Address: 0x0015e1a0 - 0x0015e206 (102 bytes)
 void cQuestPhaseState::getWarpPlayerStageNoStartPos(cQuestPhaseState* pState, u32& stageNo, u32& startPosNo) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -100,8 +100,8 @@ void cQuestPhaseState::getWarpPlayerStageNoStartPos(cQuestPhaseState* pState, u3
 
 // Address: 0x0015e210 - 0x0015e25a (74 bytes)
 void cQuestPhaseState::setWarpPlayerId(cQuestPhaseState* pState, u32 playerId) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -119,7 +119,7 @@ void cQuestPhaseState::setWarpPlayerId(cQuestPhaseState* pState, u32 playerId) {
 
 // Address: 0x0015e260 - 0x0015e2a9 (73 bytes)
 void cQuestPhaseState::setDivideCharacterId(cQuestPhaseState* pState, u32 characterId, u32 index) {
-    // local: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -132,8 +132,8 @@ void cQuestPhaseState::setDivideCharacterId(cQuestPhaseState* pState, u32 charac
 
 // Address: 0x0015e2b0 - 0x0015e2f8 (72 bytes)
 void cQuestPhaseState::resetWarpPlayerId(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -154,8 +154,8 @@ void cQuestPhaseState::resetWarpPlayerId(cQuestPhaseState* pState) {
 
 // Address: 0x0015e310 - 0x0015e35d (77 bytes)
 bool cQuestPhaseState::isDividePlayer(cQuestPhaseState* pState, u32 characterId) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e328, used twice; no DWARF local holds it
@@ -178,7 +178,7 @@ bool cQuestPhaseState::isDividePlayer(cQuestPhaseState* pState, u32 characterId)
 
 // Address: 0x0015e360 - 0x0015e391 (49 bytes)
 void cQuestPhaseState::setAddEnemyGcd(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -191,7 +191,7 @@ void cQuestPhaseState::setAddEnemyGcd(cQuestPhaseState* pState) {
 
 // Address: 0x0015e3a0 - 0x0015e3d1 (49 bytes)
 void cQuestPhaseState::resetAddEnemyGcd(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -207,8 +207,8 @@ void cQuestPhaseState::resetAddEnemyGcd(cQuestPhaseState* pState) {
 
 // Address: 0x0015e3f0 - 0x0015e476 (134 bytes)
 void cQuestPhaseState::setReturnPlayerId(cQuestPhaseState* pState, u32 pId1, u32 pId2, u32 pId3) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -228,8 +228,8 @@ void cQuestPhaseState::setReturnPlayerId(cQuestPhaseState* pState, u32 pId1, u32
 
 // Address: 0x0015e480 - 0x0015e4e6 (102 bytes)
 void cQuestPhaseState::resetReturnPlayerId(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -249,8 +249,8 @@ void cQuestPhaseState::resetReturnPlayerId(cQuestPhaseState* pState) {
 
 // Address: 0x0015e4f0 - 0x0015e53a (74 bytes)
 bool cQuestPhaseState::isReturnPlayer(cQuestPhaseState* pState, u32 characterId) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e508, used twice; no DWARF local holds it
@@ -271,8 +271,8 @@ bool cQuestPhaseState::isReturnPlayer(cQuestPhaseState* pState, u32 characterId)
 
 // Address: 0x0015e540 - 0x0015e582 (66 bytes)
 bool cQuestPhaseState::isDispAnnounce(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e554, used twice; no DWARF local holds it
@@ -293,8 +293,8 @@ bool cQuestPhaseState::isDispAnnounce(cQuestPhaseState* pState) {
 
 // Address: 0x0015e590 - 0x0015e5d8 (72 bytes)
 void cQuestPhaseState::returnPlayer(cQuestPhaseState* pState, u32 characterId) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -312,8 +312,8 @@ void cQuestPhaseState::returnPlayer(cQuestPhaseState* pState, u32 characterId) {
 
 // Address: 0x0015e5e0 - 0x0015e62e (78 bytes)
 void cQuestPhaseState::setDivideSetup(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -331,8 +331,8 @@ void cQuestPhaseState::setDivideSetup(cQuestPhaseState* pState) {
 
 // Address: 0x0015e630 - 0x0015e678 (72 bytes)
 void cQuestPhaseState::resetDivideSetup(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -350,8 +350,8 @@ void cQuestPhaseState::resetDivideSetup(cQuestPhaseState* pState) {
 
 // Address: 0x0015e680 - 0x0015e6c2 (66 bytes)
 bool cQuestPhaseState::isDivideSetup(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e694, used twice; no DWARF local holds it
@@ -372,7 +372,7 @@ bool cQuestPhaseState::isDivideSetup(cQuestPhaseState* pState) {
 
 // Address: 0x0015e6d0 - 0x0015e706 (54 bytes)
 void cQuestPhaseState::setWarpPlayer(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -385,7 +385,7 @@ void cQuestPhaseState::setWarpPlayer(cQuestPhaseState* pState) {
 
 // Address: 0x0015e710 - 0x0015e743 (51 bytes)
 void cQuestPhaseState::resetWarpPlayer(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -398,8 +398,8 @@ void cQuestPhaseState::resetWarpPlayer(cQuestPhaseState* pState) {
 
 // Address: 0x0015e750 - 0x0015e792 (66 bytes)
 bool cQuestPhaseState::isWarpPlayer(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e764, used twice; no DWARF local holds it
@@ -420,8 +420,8 @@ bool cQuestPhaseState::isWarpPlayer(cQuestPhaseState* pState) {
 
 // Address: 0x0015e7a0 - 0x0015e801 (97 bytes)
 void cQuestPhaseState::setDivideSuccess(cQuestPhaseState* pState, u32 characterId, bool isSuccess) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -439,8 +439,8 @@ void cQuestPhaseState::setDivideSuccess(cQuestPhaseState* pState, u32 characterI
 
 // Address: 0x0015e810 - 0x0015e852 (66 bytes)
 bool cQuestPhaseState::isDivideSuccess(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e824, used twice; no DWARF local holds it
@@ -461,8 +461,8 @@ bool cQuestPhaseState::isDivideSuccess(cQuestPhaseState* pState) {
 
 // Address: 0x0015e860 - 0x0015e8b2 (82 bytes)
 bool cQuestPhaseState::isDivideProcess(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e874, used twice; no DWARF local holds it
@@ -489,8 +489,8 @@ bool cQuestPhaseState::isDivideProcess(cQuestPhaseState* pState) {
 
 // Address: 0x0015e8c0 - 0x0015e902 (66 bytes)
 bool cQuestPhaseState::isReturnPlayer(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e8d4, used twice; no DWARF local holds it
@@ -511,8 +511,8 @@ bool cQuestPhaseState::isReturnPlayer(cQuestPhaseState* pState) {
 
 // Address: 0x0015e910 - 0x0015e95a (74 bytes)
 void cQuestPhaseState::setExistDividePlayer(cQuestPhaseState* pState, bool isExist) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -530,8 +530,8 @@ void cQuestPhaseState::setExistDividePlayer(cQuestPhaseState* pState, bool isExi
 
 // Address: 0x0015e960 - 0x0015e9a2 (66 bytes)
 bool cQuestPhaseState::isExistDividePlayer(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e974, used twice; no DWARF local holds it
@@ -552,8 +552,8 @@ bool cQuestPhaseState::isExistDividePlayer(cQuestPhaseState* pState) {
 
 // Address: 0x0015e9b0 - 0x0015e9f7 (71 bytes)
 bool cQuestPhaseState::hasRequestedWarpPlayer(cQuestPhaseState* pState, u32 characterId) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x15e9c8, used twice; no DWARF local holds it
@@ -574,8 +574,8 @@ bool cQuestPhaseState::hasRequestedWarpPlayer(cQuestPhaseState* pState, u32 char
 
 // Address: 0x0015ea00 - 0x0015ea45 (69 bytes)
 void cQuestPhaseState::requestWarpPlayer(cQuestPhaseState* pState, u32 characterId) {
-    // local: cQuestPhaseState002* pState002;
-    // local: cQuestPhaseState001* pState001;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState001* pState001;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -593,7 +593,7 @@ void cQuestPhaseState::requestWarpPlayer(cQuestPhaseState* pState, u32 character
 
 // Address: 0x0015ea50 - 0x0015ea83 (51 bytes)
 bool cQuestPhaseState::isFinishedEnemyDivideAction(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState != static_cast<cQuestPhaseState*>(nullptr)) {
         if (pState->getType() == static_cast<u32>(2)) {
@@ -605,7 +605,7 @@ bool cQuestPhaseState::isFinishedEnemyDivideAction(cQuestPhaseState* pState) {
 
 // Address: 0x0015ea90 - 0x0015eac1 (49 bytes)
 void cQuestPhaseState::finishEnemyDivideAction(cQuestPhaseState* pState) {
-    // local: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;
@@ -618,7 +618,7 @@ void cQuestPhaseState::finishEnemyDivideAction(cQuestPhaseState* pState) {
 
 // Address: 0x0015ead0 - 0x0015eb04 (52 bytes)
 void cQuestPhaseState::callbackLeaveParty(cQuestPhaseState* pState, u32 characterId) {
-    // local: cQuestPhaseState002* pState002;
+    // DWARF local not rendered: cQuestPhaseState002* pState002;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pState == static_cast<cQuestPhaseState*>(nullptr)) {
         return;

@@ -10,10 +10,12 @@
 #include "cContextInterface.h"
 #include "cEfcHandle.h"
 #include "cEquipData.h"
+#include "cpActionManager.h"
 #include "cpDDMrlMgr.h"
 #include "cpJobBase.h"
 #include "cpMotionSe.h"
 #include "nDDOGame.h"
+#include "nDDOUtility.h"
 #include "nHuman.h"
 #include "rItemList.h"
 #include "sEffect.h"
@@ -215,9 +217,30 @@ __attribute__((weak)) void cpJob09::setupJobData() {
 }
 
 // Address: 0x004b6e50 - 0x004b6ed2 (130 bytes)
-__attribute__((weak)) void cpJob09::callbackAttack(cHitInfo* pHitInfo) {
-    DDON_STUB("cpJob09::callbackAttack")
-    /* stub */
+void cpJob09::callbackAttack(cHitInfo* pHitInfo) {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
+    this->::cpJob09::addAlchemyValue(pHitInfo);
+    this->::cpJob09::storeCS03Target(pHitInfo);
+    // inferred: a temporary for the value the load at 0x4b6e70 read, used 3 times; no DWARF local holds it
+    uHuman* t2 = this->::cpJobBase::mpHuman;
+    if (t2 == static_cast<uHuman*>(nullptr)) {
+        return;
+    }
+    if (t2->::uDDOModel::isMaster() == false) {
+        return;
+    }
+    if ((t2->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+        return;
+    }
+    if (this->::cpJobBase::mpHuman == static_cast<uHuman*>(nullptr)) {
+        return;
+    }
+    if (this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr() == static_cast<cpActionManager*>(nullptr)) {
+        return;
+    }
+    if ((this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(8209)) <= static_cast<u32>(3)) {
+        ::nDDOUtility::requestOnTutorialFlg(static_cast<s32>(96));
+    }
 }
 
 // Address: 0x004b9220 - 0x004b92b2 (146 bytes)
@@ -412,7 +435,7 @@ void cpJob09::getSpAlchemyCorePos(s32& joint, MtVector3& pos, const cpJob09::SP_
 
 // Address: 0x004ba6e0 - 0x004ba730 (80 bytes)
 u32 cpJob09::getCurrentMedalId(const u32 index) const {
-    // local: u32 id;
+    // DWARF local not rendered: u32 id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index == static_cast<u32>(2)) {
         return ::cContextInterface::getContextEquip(this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextInstance).::cEquipData::getEquip(static_cast<u8>(18), static_cast<u8>(0), true);
@@ -1159,9 +1182,30 @@ __attribute__((weak)) bool cpJob09::checkCndEnableAirCS10() const {
 // uDDOModel* cpJob09::getCS03StoredTarget(u32 num);
 
 // Address: 0x004b6ee0 - 0x004b6f62 (130 bytes)
-__attribute__((weak)) void cpJob09::callbackAttackSubShellCommon(cHitInfo* pHitInfo) {
-    DDON_STUB("cpJob09::callbackAttackSubShellCommon")
-    /* stub */
+void cpJob09::callbackAttackSubShellCommon(cHitInfo* pHitInfo) {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
+    this->::cpJob09::addAlchemyValue(pHitInfo);
+    this->::cpJob09::storeCS03Target(pHitInfo);
+    // inferred: a temporary for the value the load at 0x4b6f00 read, used 3 times; no DWARF local holds it
+    uHuman* t2 = this->::cpJobBase::mpHuman;
+    if (t2 == static_cast<uHuman*>(nullptr)) {
+        return;
+    }
+    if (t2->::uDDOModel::isMaster() == false) {
+        return;
+    }
+    if ((t2->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+        return;
+    }
+    if (this->::cpJobBase::mpHuman == static_cast<uHuman*>(nullptr)) {
+        return;
+    }
+    if (this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr() == static_cast<cpActionManager*>(nullptr)) {
+        return;
+    }
+    if ((this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(8209)) <= static_cast<u32>(3)) {
+        ::nDDOUtility::requestOnTutorialFlg(static_cast<s32>(96));
+    }
 }
 
 // No out-of-line body: 8 inlined copies in 8 functions (61 bytes)
@@ -1193,17 +1237,15 @@ __attribute__((weak)) void cpJob09::callbackCSChange() {
 
 // Address: 0x004be960 - 0x004be9e7 (135 bytes)
 void cpJob09::callbackWarpInStage() {
-    // local: u32 count1;
-    // local: u32 count2;
-    // local: u32 i;
-    // local: uShlAlchemy* pAlc;
-    // local: u32 i;
-    // local: uShlAlchemy* pAlc;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShlAlchemy* pAlc;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShlAlchemy* pAlc;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     u32 count1 = this->mShlArray.::MtArray::mLength;
     u32 count2 = this->mCS03ShlArray.::MtArray::mLength;
     if (count1 != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mShlArray.::MtArray::mpArray[i0_3] == static_cast<MtObject*>(nullptr)) {
                 break;
@@ -1218,7 +1260,7 @@ void cpJob09::callbackWarpInStage() {
         }
     }
     if (count2 != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mCS03ShlArray.::MtArray::mpArray[i2_3] == static_cast<MtObject*>(nullptr)) {
                 break;
@@ -1454,18 +1496,17 @@ __attribute__((weak)) void cpJob09::entryExplosionShlCS09() {
 
 // Address: 0x004b9ef0 - 0x004b9f32 (66 bytes)
 bool cpJob09::checkShlAlchemyValue(u32 value) const {
-    // local: u32 i;
-    // local: uShlAlchemy* pAlc;
+    // DWARF local not rendered: uShlAlchemy* pAlc;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mShlArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
-        unsigned int i3 = static_cast<unsigned int>(0);
+        // inferred: DWARF's location-less 'i' (lexical block [0x4b9ef0, 0x4b9f2b)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
         do {
-            if (static_cast<uShlAlchemy*>(this->mShlArray.::MtArray::mpArray[i3])->::uShlAlchemy::getAlchemyValue() >= static_cast<float>(value)) {
+            if (static_cast<uShlAlchemy*>(this->mShlArray.::MtArray::mpArray[i])->::uShlAlchemy::getAlchemyValue() >= static_cast<float>(value)) {
                 return true;
             }
-            i3 += static_cast<unsigned int>(1);
-        } while (i3 < this->mShlArray.::MtArray::mLength);
+            i += static_cast<u32>(1);
+        } while (i < this->mShlArray.::MtArray::mLength);
     }
     return false;
 }

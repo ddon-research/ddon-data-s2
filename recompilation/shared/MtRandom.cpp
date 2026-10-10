@@ -80,7 +80,7 @@ __attribute__((weak)) MtFloat3 MtRandom::randomSphericalSurface() {
 
 // Address: 0x00d7ef70 - 0x00d7ef9c (44 bytes)
 u32 MtRandom::nrand() {
-    // local: u32 t;
+    // DWARF local not rendered: u32 t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0xd7ef70 read, used twice; no DWARF local holds it
     u32 t0 = this->mRandomX;

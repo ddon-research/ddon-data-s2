@@ -54,7 +54,7 @@ void cGeneralPointIterator::toNext() {
 
 // Address: 0x007898f0 - 0x00789906 (22 bytes)
 bool cGeneralPointIterator::isEnd() const {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mCurIdx >= ::sGeneralPoint::getInstance()->mPointRefNum;
 }

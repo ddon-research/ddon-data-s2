@@ -9,6 +9,7 @@
 #include "cGeneralPointPtr.h"
 #include "cHitInfoAfter.h"
 #include "cUnit.h"
+#include "cpActionManager.h"
 #include "cpChantCommand.h"
 #include "cpEffectProvider.h"
 #include "cpJobBase.h"
@@ -297,7 +298,6 @@ void cpJob06::callbackHitLand() {
 
 // Address: 0x004af420 - 0x004af46d (77 bytes)
 void cpJob06::makeDamageAttackInfo(cHitInfoAfter* pHitInfo) {
-    // local: uDDOModel* pAttacker;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     uDDOModel* pAttacker = pHitInfo->mCommonInfo.::cHitInfoAfterCommon::getAttckerPtr();
     if (pAttacker == static_cast<uDDOModel*>(nullptr)) {
@@ -313,8 +313,6 @@ void cpJob06::makeDamageAttackInfo(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x004af470 - 0x004af4f8 (136 bytes)
 void cpJob06::makeShlDamageAttackInfo(cHitInfoAfter* pHitInfo) {
-    // local: uDDOModel* pAttacker;
-    // local: f32 height;
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     uDDOModel* pAttacker = pHitInfo->mCommonInfo.::cHitInfoAfterCommon::getAttckerPtr();
     if (pAttacker == static_cast<uDDOModel*>(nullptr)) {
@@ -522,10 +520,31 @@ void cpJob06::killCS12Effect() {
 }
 
 // Address: 0x004af120 - 0x004af1f1 (209 bytes)
-__attribute__((weak)) void cpJob06::updateCS12Effect() {
-    // local: u32 nowAct;
-    DDON_STUB("cpJob06::updateCS12Effect")
-    /* stub */
+void cpJob06::updateCS12Effect() {
+    // DWARF local not rendered: u32 nowAct;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr() == static_cast<cpActionManager*>(nullptr)) {
+        return;
+    }
+    if ((this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(4142)) <= static_cast<u32>(4)) {
+        if (this->mpEfcCS12Unit != static_cast<uDDOModel*>(nullptr)) {
+            this->mpEfcCS12Unit->updateLocalMatrix();
+            this->mpEfcCS12Unit->updateWorldMatrix();
+        }
+        if (this->mEfcCS12Hnd != static_cast<cEfcHandle*>(nullptr)) {
+            static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::epvSetTimer(this->mEfcCS12Hnd, static_cast<u32>(this->mCS12Timer));
+        }
+    } else {
+        if (this->mEfcCS12Hnd != static_cast<cEfcHandle*>(nullptr)) {
+            static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mEfcCS12Hnd, static_cast<u32>(1));
+            this->mEfcCS12Hnd = static_cast<cEfcHandle*>(nullptr);
+        }
+        if (this->mpEfcCS12Unit != static_cast<uDDOModel*>(nullptr)) {
+            this->mpEfcCS12Unit->kill();
+            this->mpEfcCS12Unit = static_cast<uDDOModel*>(nullptr);
+        }
+        this->mIsCS12Effect = false;
+    }
 }
 
 // Address: 0x004af8d0 - 0x004af8d7 (7 bytes)
@@ -642,19 +661,16 @@ void cpJob06::finishChainLight() {
 
 // Address: 0x004b01f0 - 0x004b0239 (73 bytes)
 void cpJob06::callAnchorLightning(u32 level) {
-    // local: uDDOModel* mod;
-    // local: rEffectProvider* pEpv;
-    // local: EfcParam param;
+    // DWARF local not rendered: rEffectProvider* pEpv;
+    // DWARF local not rendered: EfcParam param;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     uDDOModel* mod = this->::cpJob06::getCS14Anchor();
     if (mod == static_cast<uDDOModel*>(nullptr)) {
         return;
     }
-    // inferred: a temporary for the value the load at 0x4b0204 read, used twice; no DWARF local holds it
-    uHuman* t0 = this->::cpJobBase::mpHuman;
     // inferred: a temporary for the value the load at 0x4b0208 read, used once; no DWARF local holds it
-    cpEffectProvider* t1 = t0->::uDDOModel::mpEffectProvider;
-    t1->::cpEffectProvider::getResource(static_cast<cpEffectProvider::EPV_TYPE>(t0->::uHuman::getCustomEffectEpvIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(14))));
+    cpEffectProvider* t0 = this->::cpJobBase::mpHuman->::uDDOModel::mpEffectProvider;
+    t0->::cpEffectProvider::getResource(static_cast<cpEffectProvider::EPV_TYPE>(this->::cpJobBase::mpHuman->::uHuman::getCustomEffectEpvIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(14))));
     if (this->mEfcCS14AnchorHnd != static_cast<cEfcHandle*>(nullptr)) {
         return;
     }

@@ -87,7 +87,7 @@ __attribute__((weak)) bool rSoundStreamSourcePackage::load(MtStream& in) {
 
 // Address: 0x012f8200 - 0x012f821e (30 bytes)
 u32 rSoundStreamSourcePackage::read(void* pdest, u32 size, u32* pid, u32 sourceOffset) {
-    // local: const u32 readSize;
+    // DWARF local not rendered: const u32 readSize;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x12f820d, used once; no DWARF local holds it
     u32 t0 = this->::rSoundSource::read(pdest, size, pid);

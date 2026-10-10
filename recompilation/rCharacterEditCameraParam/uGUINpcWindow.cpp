@@ -159,9 +159,9 @@ void uGUINpcWindow::restart() {
     this->mIsMessageWait = true;
     this->::uGUISystemMsg::mMode = static_cast<u32>(0);
     if (this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xcaa5c0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xcaa5c0 carries; no location-less local in scope fits
         u32 v0_0 = this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->::uGUISystemMsg::mArrayPageInfo.::MtArray::mpArray[i0_3];

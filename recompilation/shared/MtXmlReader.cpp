@@ -137,40 +137,38 @@ __attribute__((weak)) void MtXmlReader::Handler::startElement(MT_CTSTR localname
 
 // Address: 0x00dd4d90 - 0x00dd4dfc (108 bytes)
 MT_CTSTR MtXmlReader::Handler::getAttrValue(MT_CTSTR attrName, MtXmlReader::ATTRIBUTE* attr, u32 attr_num) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i3 = static_cast<unsigned int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0xdd4dad, 0xdd4dea)) is the counter this loop steps (DWARF's stale constant 0)
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     MtXmlReader::ATTRIBUTE* p8 = attr;
     if (attr_num != static_cast<u32>(0)) {
         do {
             if (::strcmp(p8->name, attrName) == static_cast<int>(0)) {
-                return attr[i3].value;
+                return attr[i].value;
             }
-            i3 += static_cast<unsigned int>(1);
+            i += static_cast<u32>(1);
             p8 += static_cast<int>(1);
-        } while (i3 < attr_num);
+        } while (i < attr_num);
     }
     return "";
 }
 
 // Address: 0x00dd4e00 - 0x00dd4e4a (74 bytes)
 bool MtXmlReader::Handler::hasAttribute(MT_CTSTR attrName, MtXmlReader::ATTRIBUTE* attr, u32 attr_num) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i3 = static_cast<unsigned int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0xdd4e1b, 0xdd4e3f)) is the counter this loop steps (DWARF's stale constant 0)
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     MtXmlReader::ATTRIBUTE* p8 = attr;
     if (attr_num != static_cast<u32>(0)) {
         do {
             if (::strcmp(p8->name, attrName) == static_cast<int>(0)) {
                 return true;
             }
-            i3 += static_cast<unsigned int>(1);
+            i += static_cast<u32>(1);
             p8 += static_cast<int>(1);
-        } while (i3 < attr_num);
+        } while (i < attr_num);
     }
     return false;
 }

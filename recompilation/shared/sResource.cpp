@@ -87,9 +87,9 @@ sResource::~sResource() {
 
 // Address: 0x0126b610 - 0x0126b632 (34 bytes)
 void sResource::reset() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a counter counted down; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i3 = static_cast<unsigned int>(64);
     do {
         this->setup();

@@ -215,3 +215,30 @@ public:
     u8 m_ucOnlineStatus;  // offset: 0x2c5
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataJobPlayPoint::CDataJobPlayPoint() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucJob = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataJobValueShopItem::CDataJobValueShopItem() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucUnableReason = static_cast<u8>(0);
+    this->m_bIsCountLimit = false;
+    this->m_bCanSelectStorage = false;
+    this->m_unPrice = static_cast<u32>(0);
+    this->m_unLineupId = static_cast<u32>(0);
+    this->m_unItemId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataPlayPointData::CDataPlayPointData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucExpMode = static_cast<u8>(0);
+    this->m_unPlayPoint = static_cast<u32>(0);
+}

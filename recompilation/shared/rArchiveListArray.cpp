@@ -124,14 +124,14 @@ __attribute__((weak)) cArchiveListNode* rArchiveListArray::searchListNode(u32 ta
 
 // Address: 0x00642ee0 - 0x00642eea (10 bytes)
 ARC_SEARCHID rArchiveListArray::convSearchId(MT_CTSTR name) {
-    // local: u32 id;
+    // DWARF local not rendered: u32 id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
 }
 
 // Address: 0x00642ef0 - 0x00642f02 (18 bytes)
 ARC_TAGID rArchiveListArray::convTagId(MT_CTSTR name) {
-    // local: u32 id;
+    // DWARF local not rendered: u32 id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((*name) != static_cast<char>(0)) {
         return ::MtCRC::getCRC(name, static_cast<u32>(4294967295));

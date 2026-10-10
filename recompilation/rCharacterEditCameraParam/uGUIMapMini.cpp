@@ -164,14 +164,11 @@ u32 uGUIMapMini::evCtrlSizeMove(cControl::Message* msg) {
 
 // Address: 0x00b783a0 - 0x00b78425 (133 bytes)
 u32 uGUIMapMini::evCtrlStart(cControl::Message* msg) {
-    // local: u32 free;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    // inferred: a temporary for the result of the call at 0xb783ba, used once; no DWARF local holds it
-    cStorageData& t0 = static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData();
     // inferred: a temporary for the value the load at 0xb783bf read, used once; no DWARF local holds it
-    u8 t1 = t0.mOptionSys.mActPltType;
+    u8 t0 = static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData().mOptionSys.mActPltType;
     u32 free = this->::uGUIMap::evCtrlDirectLink(msg);
-    if (t1 != static_cast<u8>(1)) {
+    if (t0 != static_cast<u8>(1)) {
         if (free == static_cast<u32>(2)) {
             if (this->::uGUIMap::mPointerCursor.mFocusMarkerId != static_cast<u32>(4294967295)) {
                 if (this->::uGUIMap::mPointerCursor.mFocusMarkerId < this->::uGUIMap::mMarker.::MtArray::mLength) {

@@ -140,8 +140,8 @@ f32 uDOFFilter::getNear() {
 
 // Address: 0x00e8e3f0 - 0x00e8e451 (97 bytes)
 void uDOFFilter::setNear(f32 f) {
-    // local: uCamera* pCamera;
-    // local: f32 fNearLimit;
+    // DWARF local not rendered: uCamera* pCamera;
+    // DWARF local not rendered: f32 fNearLimit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mNear = f;
     if (f > this->mFocal) {
@@ -182,8 +182,8 @@ f32 uDOFFilter::getFar() {
 
 // Address: 0x00e8e470 - 0x00e8e4b9 (73 bytes)
 void uDOFFilter::setFar(f32 f) {
-    // local: uCamera* pCamera;
-    // local: f32 fFarLimit;
+    // DWARF local not rendered: uCamera* pCamera;
+    // DWARF local not rendered: f32 fFarLimit;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mFar = f;
     if (this->mFocal > f) {

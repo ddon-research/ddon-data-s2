@@ -91,7 +91,7 @@ inline nLayout::cGameDataCache::cGameDataCache() {
 
 // Address: 0x001fe1a0 - 0x001fe1f5 (85 bytes)
 void nLayout::cGameDataCache::setGameData(u32 data, bool isSend) {
-    // local: stFlagData flagData;
+    // DWARF local not rendered: stFlagData flagData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((data & static_cast<u32>(15)) != static_cast<u32>(1)) {
         return;

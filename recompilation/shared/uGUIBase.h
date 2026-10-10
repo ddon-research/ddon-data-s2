@@ -90,6 +90,7 @@ class uGUIBoxGachaInfo;
 class uGUIBrowserBG;
 class uGUICaplinkFriendList;
 class uGUICaplinkMenuBase;
+class uGUICaplinkProfile;
 class uGUICaplinkTalk;
 class uGUIGPShop;
 class uGUIGiveAndTake;
@@ -101,6 +102,7 @@ class uGUIMenuComm;
 class uGUIMenuTutorial;
 class uGUIMyRoom;
 class uGUINewspaper;
+class uGUIPhoto;
 class uGUIPopCmd01;
 class uGUIPopNumber01;
 class uGUIQuestList;
@@ -1493,10 +1495,14 @@ public:
     {
         // inferred: uGUIBrowserBG::sleep names uGUIBrowserBG::mClose.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIBrowserBG;
+        // inferred: uGUICaplinkProfile::setupGame names uGUICaplinkProfile::mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance
+        friend class uGUICaplinkProfile;
         // inferred: uGUIGPShop::shiftHistoryList names uGUIGPShop::mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIGPShop;
         // inferred: uGUINewspaper::initRankingActiveControl names uGUINewspaper::mRankingScrollbar.mCursor.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUINewspaper;
+        // inferred: uGUIPhoto::initFrame names uGUIPhoto::mCursor.::uGUIBase::cSupportInstAnim::mpInstance
+        friend class uGUIPhoto;
         // inferred: uGUIQuestList::clearInfo names uGUIQuestList::mInfo.mScrollCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIQuestList;
     public:
@@ -2205,6 +2211,8 @@ public:
 public:
     class cReferenceUICloseBtn : public uGUIBase::cReferenceUIBase
     {
+        // inferred: uGUIPhoto::initFrame names uGUIPhoto::mClose.mEnable
+        friend class uGUIPhoto;
     public:
         class MyDTI;
     public:
@@ -4958,6 +4966,8 @@ public:
 public:
     class cScrollCtrl
     {
+        // inferred: uGUICaplinkProfile::setupGame names uGUICaplinkProfile::mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance
+        friend class uGUICaplinkProfile;
         // inferred: uGUIQuestList::clearInfo names uGUIQuestList::mInfo.mScrollCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIQuestList;
     public:
@@ -6066,6 +6076,26 @@ inline cGUIInstAnimation* uGUIBase::cSupportInstAnim::getInstance() {
 inline uGUIBase::cSupportBase::cSupportBase() {
     this->mpUnit = static_cast<uGUIBase*>(nullptr);
     this->mAutoClear = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline uGUIBase::cScrollListItemBase::cScrollListItemBase() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIObject() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mpObjMouseCollision = static_cast<cGUIObject*>(nullptr);
+    this->mpInstMouseCollision = static_cast<cGUIInstance*>(nullptr);
+    this->mpObjPointerTarget = static_cast<cGUIObject*>(nullptr);
+    this->mpInstPointerTarget = static_cast<cGUIInstance*>(nullptr);
+    this->mpRefUIFocus = static_cast<uGUIBase::cReferenceUIBase*>(nullptr);
+    this->mpInstFocus = static_cast<cGUIInstAnimation*>(nullptr);
+    this->mpInstBase = static_cast<cGUIInstNull*>(nullptr);
+    this->mItemType = static_cast<u8>(255);
+    this->mIsVisible = false;
+    this->mUseIndex = static_cast<s32>(-1);
+    this->mDefaultSeqID = static_cast<u32>(1);
+    this->mFocusSeqID = static_cast<u32>(4);
+    this->mSelectSeqID = static_cast<u32>(5);
+    this->mDisableSeqID = static_cast<u32>(7);
 }
 
 // Inline, no code of its own: checked where it is inlined.

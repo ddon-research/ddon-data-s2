@@ -621,7 +621,7 @@ void uGUIGPShopDialog::initEventCodeSendCallBack() {
 
 // Address: 0x00abf810 - 0x00abf844 (52 bytes)
 bool uGUIGPShopDialog::onKeyEvent(const nInputTextKeyboardHook::Keycode& keycode) {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isSoftwareKeyboard() != false) {
         return false;

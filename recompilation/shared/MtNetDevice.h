@@ -16,6 +16,7 @@ struct MtNetError;
 class MtObject;
 namespace nNetwork { class Member; }
 class sNetwork;
+class sNetworkExt;
 
 // Declarations
 struct MtNetAddress;
@@ -203,8 +204,10 @@ private:
 
 class MtNetTime
 {
-    // inferred: nNetwork::Member::setNewbie names MtNetTime::mInstance
+    // inferred: nNetwork::Member::setTalking names MtNetTime::mInstance
     friend class nNetwork::Member;
+    // inferred: sNetworkExt::requestGetServerRealTime names MtNetTime::mInstance
+    friend class sNetworkExt;
 public:
     using Total = u64;
 public:

@@ -112,11 +112,10 @@ __attribute__((weak)) bool rSoundBank::save(MtStream& out) {
 
 // Address: 0x00e45ff0 - 0x00e4602c (60 bytes)
 const rSoundBank::Program* rSoundBank::findProgram(u32 no) const {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     if (this->mProgramNum != static_cast<u32>(0)) {
         u32 i = static_cast<u32>(0);
-        // inferred: the pointer this loop steps by one element; DWARF names no local for it
+        // inferred: the pointer this loop steps by one element; no location-less local in scope fits
         rSoundBank::Program* p2 = this->mpProgramArray;
         do {
             if (p2->mProgramNumber == no) {

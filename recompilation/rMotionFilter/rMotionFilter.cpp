@@ -3,9 +3,9 @@
 #include "rMotionFilter.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -139,9 +139,15 @@ inline void rMotionFilter::operator delete(void* p_addr) {
 // Address: 0x006a4dd0 - 0x006a4e11 (65 bytes)
 bool rMotionFilter::loadData(MtDataReader& r, cMotionFilter* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mMin = r.readF32();
-    pData->mMiddle = r.readF32();
-    pData->mMax = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mMin);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mMiddle);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mMax);
     return true;
 }
 
@@ -187,4 +193,8 @@ template const cMotionFilter* rTbl2<cMotionFilter>::getData(unsigned int) const;
 // Instance at 0x01a9cd40 - 0x01a9cd44 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cMotionFilter>::getDataNum() const;
+
+// Instance at 0x01a9ced0 - 0x01a9cf28 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cMotionFilter>::~rTbl2();
 

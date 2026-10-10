@@ -465,7 +465,7 @@ __attribute__((weak)) void cpCatchCtrl::updateLeverGacha() {
 
 // Address: 0x004553b0 - 0x004553ba (10 bytes)
 bool cpCatchCtrl::checkCatch(u8 catchType, u32 uniqId) {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mCaughtInfo.mCatchUid == uniqId;
 }
@@ -482,7 +482,7 @@ __attribute__((weak)) void cpCatchCtrl::setCatch(u8 catchType, u32 uniqId) {
 
 // Address: 0x004555b0 - 0x00455682 (210 bytes)
 void cpCatchCtrl::setFailed() {
-    // local: cContextInterface& pCtx;
+    // DWARF local not rendered: cContextInterface& pCtx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mCatchType = static_cast<u8>(0);
     this->mCatchInfo.mCatchType = static_cast<u8>(0);
@@ -530,7 +530,7 @@ __attribute__((weak)) void cpCatchCtrl::setCancel() {
 
 // Address: 0x004550b0 - 0x0045518a (218 bytes)
 void cpCatchCtrl::forceCancel() {
-    // local: cContextInterface& pCtx;
+    // DWARF local not rendered: cContextInterface& pCtx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mCatchInfo.mCatchType == static_cast<u8>(0)) {
         return;
@@ -577,9 +577,7 @@ __attribute__((weak)) void cpCatchCtrl::setClutched(u8 catchType, u32 uniqId, u8
 
 // Address: 0x00455190 - 0x0045520c (124 bytes)
 bool cpCatchCtrl::checkCaught() {
-    // local: bool result;
-    // local: uDDOModel* pCatch;
-    // local: s32 state;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     uDDOModel* pCatch = static_cast<uDDOModel*>(::sSetManager::getInstance()->::sSetManager::getLayoutUnit(this->mCaughtInfo.::cCaughtInfo::getCatchUid()));
     if (pCatch != static_cast<uDDOModel*>(nullptr)) {
@@ -638,7 +636,7 @@ __attribute__((weak)) void cpCatchCtrl::setEscape() {
 
 // Address: 0x00456150 - 0x0045621c (204 bytes)
 void cpCatchCtrl::forceEscape() {
-    // local: cContextInterface& pCtx;
+    // DWARF local not rendered: cContextInterface& pCtx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mCaughtInfo.mCatchType == static_cast<u8>(0)) {
         return;
@@ -661,7 +659,7 @@ void cpCatchCtrl::forceEscape() {
 
 // Address: 0x00456220 - 0x00456304 (228 bytes)
 void cpCatchCtrl::disconnectEscape() {
-    // local: cContextInterface& pCtx;
+    // DWARF local not rendered: cContextInterface& pCtx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mCaughtInfo.mCatchType == static_cast<u8>(0)) {
         return;
@@ -685,7 +683,7 @@ void cpCatchCtrl::disconnectEscape() {
 
 // Address: 0x00456670 - 0x004566b8 (72 bytes)
 void cpCatchCtrl::setDispCheck() {
-    // local: cContextInstance* pInst;
+    // DWARF local not rendered: cContextInstance* pInst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpModel->::uDDOModel::isMaster() != false) {
         return;
@@ -840,7 +838,7 @@ __attribute__((weak)) bool cpCatchCtrl::catchHitGroupOther(cHitInfo* pHitInfo, u
 
 // Address: 0x00456f30 - 0x00456f66 (54 bytes)
 bool cpCatchCtrl::isOwnerBeaDown() const {
-    // local: u32 stateNo;
+    // DWARF local not rendered: u32 stateNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
         if (this->mCatchType == static_cast<u8>(1)) {

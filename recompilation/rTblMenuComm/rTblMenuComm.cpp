@@ -96,7 +96,6 @@ __attribute__((weak)) void rTblMenuComm::createProperty(MtPropertyList& s) {
 
 // Address: 0x0070a410 - 0x0070a491 (129 bytes)
 bool rTblMenuComm::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(3), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -104,7 +103,6 @@ bool rTblMenuComm::load(MtStream& in) {
 
 // Address: 0x0070a4a0 - 0x0070a526 (134 bytes)
 bool rTblMenuComm::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(3), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rTblMenuComm::DTI));
@@ -114,9 +112,9 @@ bool rTblMenuComm::save(MtStream& out) {
 void rTblMenuComm::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x70a550 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x70a550 carries; no location-less local in scope fits
         u32 v0_0 = this->mArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mArray.::MtArray::mpArray[i0_3];

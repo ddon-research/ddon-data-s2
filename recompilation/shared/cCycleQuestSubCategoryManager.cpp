@@ -280,9 +280,9 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::move() {
 void cCycleQuestSubCategoryManager::release() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mSituationInfo.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x7a3e0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x7a3e0 carries; no location-less local in scope fits
         u32 v0_0 = this->mSituationInfo.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mSituationInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mSituationInfo.::MtArray::mpArray[i0_3];

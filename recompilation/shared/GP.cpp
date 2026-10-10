@@ -6,6 +6,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -220,9 +221,9 @@ __attribute__((weak)) void CDataGPCourseEffectParam::operator delete(void* p_add
 // CDataGPCourseEffectParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d30e0 - 0x003d3130 (80 bytes)
-__attribute__((weak)) MtObject* CDataGPCourseEffectParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataGPCourseEffectParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGPCourseEffectParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGPCourseEffectParam;
 }
 
 // No out-of-line body: no code in the ELF
@@ -504,9 +505,9 @@ __attribute__((weak)) void CDataGPPeriod::operator delete(void* p_addr) {
 // CDataGPPeriod::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d1f40 - 0x003d1f93 (83 bytes)
-__attribute__((weak)) MtObject* CDataGPPeriod::MyDTI::newInstance() const {
-    DDON_STUB("CDataGPPeriod::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGPPeriod::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGPPeriod;
 }
 
 // No out-of-line body: no code in the ELF
@@ -575,9 +576,9 @@ __attribute__((weak)) void CDataGPShopBuyHistoryElement::operator delete(void* p
 // CDataGPShopBuyHistoryElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d2a80 - 0x003d2ade (94 bytes)
-__attribute__((weak)) MtObject* CDataGPShopBuyHistoryElement::MyDTI::newInstance() const {
-    DDON_STUB("CDataGPShopBuyHistoryElement::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGPShopBuyHistoryElement::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGPShopBuyHistoryElement;
 }
 
 // No out-of-line body: no code in the ELF
@@ -720,9 +721,9 @@ __attribute__((weak)) void CDataGPShopDisplayType::operator delete(void* p_addr)
 // CDataGPShopDisplayType::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d2130 - 0x003d2186 (86 bytes)
-__attribute__((weak)) MtObject* CDataGPShopDisplayType::MyDTI::newInstance() const {
-    DDON_STUB("CDataGPShopDisplayType::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGPShopDisplayType::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGPShopDisplayType;
 }
 
 // No out-of-line body: no code in the ELF

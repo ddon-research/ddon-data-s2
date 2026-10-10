@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -29,9 +30,11 @@ inline MtAllocator* CDataGameTimeBaseInfo::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataGameTimeBaseInfo::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataGameTimeBaseInfo::MyDTI::newInstance at 0x003db494-0x003db4bd (called at WeatherImplement.inc:7)
-// void* CDataGameTimeBaseInfo::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataGameTimeBaseInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameTimeBaseInfo::DTI)->memAlloc(sz, align, ::CDataGameTimeBaseInfo::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataGameTimeBaseInfo::operator new[](size_t sz, u32 align);
@@ -73,8 +76,8 @@ __attribute__((weak)) void CDataGameTimeBaseInfo::operator delete(void* p_addr) 
 // CDataGameTimeBaseInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003db490 - 0x003db500 (112 bytes)
-__attribute__((weak)) MtObject* CDataGameTimeBaseInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataGameTimeBaseInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGameTimeBaseInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGameTimeBaseInfo;
 }
 

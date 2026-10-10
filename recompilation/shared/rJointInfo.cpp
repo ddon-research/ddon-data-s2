@@ -7,6 +7,7 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -147,8 +148,10 @@ bool rJointInfo::loadData(MtDataReader& in, cJointInfo* pData) {
     pData->mJntNo = in.readU16();
     pData->mAttr = in.readU16();
     pData->mRadius = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->mOfsPos = in.readV3();
-    pData->mJointInfoID = in.readU16();
+    ::nDDOIO::readData(in, pData->mJointInfoID);
     return true;
 }
 
@@ -194,4 +197,8 @@ template const cJointInfo* rTbl2<cJointInfo>::getData(unsigned int) const;
 // Instance at 0x01a96d80 - 0x01a96d84 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cJointInfo>::getDataNum() const;
+
+// Instance at 0x01a96f40 - 0x01a96f98 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cJointInfo>::~rTbl2();
 

@@ -128,7 +128,7 @@ MtUI* sScene::createUI(MtProperty& prop) {
 
 // Address: 0x01279fd0 - 0x01279ffc (44 bytes)
 void sScene::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mpTree[0]->::cDynamicBVHCollision::applyWorldOffset(offset);
     this->mpTree[1]->::cDynamicBVHCollision::applyWorldOffset(offset);
@@ -459,7 +459,7 @@ __attribute__((weak)) void sScene::setMultiShadowState(cDraw* pdraw, u32 shadowG
 
 // Address: 0x012773c0 - 0x01277400 (64 bytes)
 void sScene::resetMultiShadowState(cDraw* pdraw) const {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     ::uShadow::setNullShadowReceiveState(pdraw, static_cast<u32>(0));
     ::uShadow::setNullShadowReceiveState(pdraw, static_cast<u32>(1));

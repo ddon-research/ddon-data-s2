@@ -854,6 +854,18 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rEffectProvider::INFO_EFFECT::INFO_EFFECT() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: rEffectProvider::INFO_BASE() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mpEffectIndex = static_cast<rEffectProvider::EffectIndex*>(nullptr);
+    this->mEffectIndexNum = static_cast<u32>(0);
+    this->mpMotSyncList = static_cast<rEffectProvider::EffectMotSyncParam*>(nullptr);
+    this->mMotSyncListNum = static_cast<u32>(0);
+    this->mpEventList = static_cast<rEffectProvider::EffectEventParam*>(nullptr);
+    this->mEventListNum = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rEffectProvider::INFO_BASE::INFO_BASE() {
 }
 

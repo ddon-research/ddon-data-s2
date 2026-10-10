@@ -75,7 +75,7 @@ sEnvMapManager::sEnvMapManager() {
 // Address: 0x0077b8b0 - 0x0077b901 (81 bytes)
 // Also emitted as: _ZN14sEnvMapManagerD0Ev at 0x0077b910
 sEnvMapManager::~sEnvMapManager() {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mapManagedEnvMap[0] != static_cast<sEnvMapManager::cManageEnvMapBase*>(nullptr)) {
         delete this->mapManagedEnvMap[0];

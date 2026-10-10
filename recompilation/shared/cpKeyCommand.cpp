@@ -235,7 +235,7 @@ __attribute__((weak)) bool cpKeyCommand::checkCustomContinueTrg(s32 CustomSkillI
 
 // Address: 0x004c7d70 - 0x004c7d7c (12 bytes)
 s32 cpKeyCommand::getLeftStickRelativeAngleFB() const {
-    // local: s32 retAngle;
+    // DWARF local not rendered: s32 retAngle;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<s32>(this->mpInput->::cpInput::getLeftStickRelativeAngleFB());
 }
@@ -289,7 +289,7 @@ __attribute__((weak)) f32 cpKeyCommand::getAngleYActBegin(u32 actNo) {
 
 // Address: 0x004c8ae0 - 0x004c8b00 (32 bytes)
 f32 cpKeyCommand::getMoveSpeed() {
-    // local: cpInput* p_input;
+    // DWARF local not rendered: cpInput* p_input;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cpKeyCommand::getCpInput() != static_cast<cpInput*>(nullptr)) {
         if (this->::cpKeyCommand::getCpInput()->::cpComponent::mActive != false) {
@@ -301,7 +301,7 @@ f32 cpKeyCommand::getMoveSpeed() {
 
 // Address: 0x004c8b00 - 0x004c8b1e (30 bytes)
 u32 cpKeyCommand::getMoveType() {
-    // local: cpInput* p_input;
+    // DWARF local not rendered: cpInput* p_input;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cpKeyCommand::getCpInput() != static_cast<cpInput*>(nullptr)) {
         if (this->::cpKeyCommand::getCpInput()->::cpComponent::mActive != false) {
@@ -313,7 +313,7 @@ u32 cpKeyCommand::getMoveType() {
 
 // Address: 0x004c8b20 - 0x004c8b40 (32 bytes)
 f32 cpKeyCommand::getMoveLvLX() {
-    // local: cpInput* p_input;
+    // DWARF local not rendered: cpInput* p_input;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cpKeyCommand::getCpInput() != static_cast<cpInput*>(nullptr)) {
         if (this->::cpKeyCommand::getCpInput()->::cpComponent::mActive != false) {

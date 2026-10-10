@@ -123,9 +123,7 @@ __attribute__((weak)) bool rItemList::load(MtStream& in) {
 
 // Address: 0x0068ce50 - 0x0068cf6f (287 bytes)
 bool rItemList::save(MtStream& out) {
-    // local: MtDataWriter w;
-    // local: u32 i;
-    // local: rItemParam* pData;
+    // DWARF local not rendered: rItemParam* pData;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     w.::MtDataWriter::writeU32(static_cast<u32>(6385769));
@@ -786,7 +784,7 @@ u32 rItemList::rItemParam::getChanceNum() const {
 
 // Address: 0x0068c5a0 - 0x0068c5b2 (18 bytes)
 rItemList::rVsEnemyParam* rItemList::rItemParam::getVsEmParam(u32 index) {
-    // local: rVsEnemyParam* pParam;
+    // DWARF local not rendered: rVsEnemyParam* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index < this->mVsEmNum) {
         return &this->mpVsEmList[index];

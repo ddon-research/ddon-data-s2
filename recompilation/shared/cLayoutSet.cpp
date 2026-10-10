@@ -9,6 +9,7 @@
 #include "MtString.h"
 #include "../rCharacterEditCameraParam/aStage.h"
 #include "../rCharacterEditCameraParam/cArea.h"
+#include "cResource.h"
 #include "nLayout.h"
 #include "rLayout.h"
 #include "../rStageConnect/sArea.h"
@@ -97,9 +98,45 @@ __attribute__((weak)) void cLayoutSet::update() {
 }
 
 // Address: 0x002d28c0 - 0x002d2969 (169 bytes)
-__attribute__((weak)) void cLayoutSet::kill() {
-    DDON_STUB("cLayoutSet::kill")
-    /* stub */
+void cLayoutSet::kill() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->finish();
+    if (this->isUseUnitData() != false) {
+        if (this->mUnitDataArray.::MtArray::mLength != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x2d28f0 carries; no location-less local in scope fits
+            u32 v0_0 = this->mUnitDataArray.::MtArray::mLength;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                if (this->mUnitDataArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                    delete this->mUnitDataArray.::MtArray::mpArray[i0_3];
+                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitDataArray.::MtArray::mLength) {
+                        v0_0 = this->mUnitDataArray.::MtArray::mLength;
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (this->mUnitDataArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mUnitDataArray.::MtArray::mpArray));
+        }
+        this->mUnitDataArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+        this->mUnitDataArray.::MtArray::mBufsiz = static_cast<u32>(0);
+        this->mUnitDataArray.::MtArray::mLength = static_cast<u32>(0);
+    }
+    if (this->mpRsrc != static_cast<rLayout*>(nullptr)) {
+        this->mpRsrc->::cResource::release();
+        this->mpRsrc = static_cast<rLayout*>(nullptr);
+    }
+    this->mUnitSetResourceComplete = false;
+    this->mUnitScrollSbcComplete = false;
 }
 
 // Address: 0x002d2fd0 - 0x002d2fd5 (5 bytes)
@@ -169,8 +206,8 @@ __attribute__((weak)) bool cLayoutSet::canSetUnit() const {
 
 // Address: 0x002d3360 - 0x002d33a3 (67 bytes)
 bool cLayoutSet::isSplitSbc(s32 areaNo) {
-    // local: uStageJointCtrl* pjnt;
-    // local: uStageFieldCtrl* pfld;
+    // DWARF local not rendered: uStageJointCtrl* pjnt;
+    // DWARF local not rendered: uStageFieldCtrl* pfld;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (areaNo > static_cast<s32>(-1)) {
         if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::getStageJointCtrl() != static_cast<uStageJointCtrl*>(nullptr)) {
@@ -189,9 +226,6 @@ bool cLayoutSet::isSplitSbc(s32 areaNo) {
 
 // Address: 0x002d33b0 - 0x002d33f0 (64 bytes)
 bool cLayoutSet::isUpdateArea() {
-    // local: s32 old_area;
-    // local: uStageJointCtrl* pjnt;
-    // local: uStagePartsCtrl* ppts;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     s32 old_area = this->mAreaNo;
     uStageJointCtrl* pjnt = static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::getStageJointCtrl();

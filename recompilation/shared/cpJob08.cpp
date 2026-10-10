@@ -93,7 +93,7 @@ void cpJob08::setup() {
 
 // Address: 0x004b2d40 - 0x004b2dee (174 bytes)
 void cpJob08::reset() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cpJobBase::reset();
     if (this->mpCstmSkillShlSeList.elems[0] != static_cast<rSoundRequest*>(nullptr)) {
@@ -194,7 +194,7 @@ __attribute__((weak)) void cpJob08::makeShlDamageAttackInfo(cHitInfoAfter* pHitI
 
 // Address: 0x004b3a40 - 0x004b3a88 (72 bytes)
 void cpJob08::makeHealedAttackInfo(cHitInfoAfter* pHitInfo) {
-    // local: u32 adjUid;
+    // DWARF local not rendered: u32 adjUid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo->mCommonInfo.mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
         return;

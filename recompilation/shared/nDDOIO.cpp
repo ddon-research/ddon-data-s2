@@ -2,6 +2,9 @@
 #include <new>
 #include "nDDOIO.h"
 #include "MtCollection.h"
+#include "MtDataReader.h"
+#include "MtDataWriter.h"
+#include "cResPath.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

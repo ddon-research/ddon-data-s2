@@ -73,26 +73,13 @@ uEffect2DExt::uEffect2DExt() {
 // Address: 0x008e1760 - 0x008e17e4 (132 bytes)
 // Also emitted as: _ZN12uEffect2DExtD0Ev at 0x008e17f0
 uEffect2DExt::~uEffect2DExt() {
-    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sEffect::getInstance() != static_cast<sEffect*>(nullptr)) {
         static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::removeEffect2D(this->mpHandle, this->mGroupNo, static_cast<u32>(2));
-        // inferred: a temporary for the value the load at 0x8e179f read, used twice; no DWARF local holds it
-        uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM* t1 = this->mCorrectColorParam.mpZoneParam;
-        if (t1 != static_cast<uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x8e17b2, used once; no DWARF local holds it
-            MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI);
-            t2->memFree(static_cast<void*>(t1));
-            this->mCorrectColorParam.mpZoneParam = static_cast<uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr);
-        }
-    } else {
-        // inferred: a temporary for the value the load at 0x8e179f read, used twice; no DWARF local holds it
-        uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM* t1 = this->mCorrectColorParam.mpZoneParam;
-        if (t1 != static_cast<uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x8e17b2, used once; no DWARF local holds it
-            MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI);
-            t2->memFree(static_cast<void*>(t1));
-            this->mCorrectColorParam.mpZoneParam = static_cast<uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr);
-        }
+    }
+    if (this->mCorrectColorParam.mpZoneParam != static_cast<uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr)) {
+        delete[] this->mCorrectColorParam.mpZoneParam;
+        this->mCorrectColorParam.mpZoneParam = static_cast<uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr);
     }
     this->mCorrectColorParam.mZoneParamNum = static_cast<u32>(0);
 }
@@ -407,10 +394,8 @@ __attribute__((weak)) MtObject* uEffect2DExt::MyDTI::newInstance() const {
 //   in uEffect2DExt::buildCorrectColorFromZone at 0x008e1b4a-0x008e1b6b (called at uEffect2DExt.cpp:353)
 // void* uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator new[](size_t s);
 
-// No out-of-line body: 4 inlined copies in 4 functions (102 bytes)
-//   in _ZN12uEffect2DExtD1Ev at 0x008e17ab-0x008e17c3 (called at uEffect2DExt.cpp:81)
-//   in uEffect2DExt::~uEffect2DExt at 0x008e183b-0x008e1853 (called at uEffect2DExt.cpp:81)
-//   in uEffect2DExt::buildCorrectColorFromZone at 0x008e1ade-0x008e1afc (called at uEffect2DExt.cpp:338)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// void uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline void uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
+    ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI)->memFree(padr);
+}
 

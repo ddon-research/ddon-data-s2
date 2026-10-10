@@ -219,9 +219,9 @@ __attribute__((weak)) bool cQuestPersonalData::isLayoutFlag(u32 flagNo) const {
 __attribute__((weak)) void cQuestPersonalData::deleteFlags() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mQuestFlag.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x54d6a0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x54d6a0 carries; no location-less local in scope fits
         u32 v0_0 = this->mQuestFlag.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mQuestFlag.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mQuestFlag.::MtArray::mpArray[i0_3];
@@ -247,9 +247,9 @@ __attribute__((weak)) void cQuestPersonalData::deleteFlags() {
     this->mQuestFlag.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mQuestFlag.::MtArray::mLength = static_cast<u32>(0);
     if (this->mQuestFlagFsm.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x54d710 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x54d710 carries; no location-less local in scope fits
         u32 v2_0 = this->mQuestFlagFsm.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mQuestFlagFsm.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mQuestFlagFsm.::MtArray::mpArray[i2_3];
@@ -275,9 +275,9 @@ __attribute__((weak)) void cQuestPersonalData::deleteFlags() {
     this->mQuestFlagFsm.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mQuestFlagFsm.::MtArray::mLength = static_cast<u32>(0);
     if (this->mQuestLayoutFlag.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x54d790 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x54d790 carries; no location-less local in scope fits
         u32 v4_0 = this->mQuestLayoutFlag.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
             if (this->mQuestLayoutFlag.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mQuestLayoutFlag.::MtArray::mpArray[i4_3];
@@ -1190,7 +1190,7 @@ __attribute__((weak)) nQuest::cTalkData* cQuestTask::getTalkData(u32 npcId) cons
 
 // Address: 0x0054e050 - 0x0054e075 (37 bytes)
 __attribute__((weak)) void cQuestTask::addTalkData(u32 npcId, u32 groupSerial) {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (npcId == static_cast<u32>(0)) {
         return;
@@ -1268,8 +1268,7 @@ void cQuestTask::updateOrderConditionMsg() {
 
 // Address: 0x0054f4f0 - 0x0054f53a (74 bytes)
 __attribute__((weak)) bool cQuestTask::isOrder() const {
-    // local: PERSONAL_DATA_TYPE dataType;
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: PERSONAL_DATA_TYPE dataType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cQuestPersonalData* pData = *((this->mTaskParam.::cQuestTaskParam::checkTaskState(static_cast<u32>(0)) == false) ? (&this->mpMyData) : (&this->mpLeaderData));
     if (pData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1281,7 +1280,7 @@ __attribute__((weak)) bool cQuestTask::isOrder() const {
 
 // Address: 0x0054f560 - 0x0054f57a (26 bytes)
 bool cQuestTask::isMyOrder() const {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
         return this->mpMyData->::cQuestPersonalData::hasOrdered() != false;
@@ -1325,7 +1324,7 @@ __attribute__((weak)) bool cQuestTask::isClear() const {
 
 // Address: 0x0054f640 - 0x0054f65a (26 bytes)
 bool cQuestTask::isClearMySelf() const {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
         return this->mpMyData->::cQuestPersonalData::isClear() != false;
@@ -1444,7 +1443,7 @@ __attribute__((weak)) void cQuestTask::setLeaderOrder(bool isOrder) {
 
 // Address: 0x0054e440 - 0x0054e49b (91 bytes)
 void cQuestTask::orderQuest() {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
         if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1577,7 +1576,7 @@ __attribute__((weak)) void cQuestTask::setCyclePhaseQuest(bool isCyclePhaseQuest
 
 // Address: 0x005500f0 - 0x00550107 (23 bytes)
 bool cQuestTask::isProgressBonus() const {
-    // local: bool isProgressBonus;
+    // DWARF local not rendered: bool isProgressBonus;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mTaskParam.::cQuestTaskParam::getProgressBonusNum() != static_cast<u32>(0);
 }
@@ -1663,7 +1662,7 @@ __attribute__((weak)) void cQuestTask::popPurposeForParty() {
 
 // Address: 0x00550760 - 0x00550783 (35 bytes)
 void cQuestTask::resetPurposeForParty() {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
         if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1697,7 +1696,7 @@ __attribute__((weak)) nQuest::cQuestDeliverRequestInfo* cQuestTask::getDeliverRe
 
 // Address: 0x00550910 - 0x00550940 (48 bytes)
 bool cQuestTask::isDeliverNpc(uControl* pCtrl) const {
-    // local: cQuestPersonalData* pPersonalData;
+    // DWARF local not rendered: cQuestPersonalData* pPersonalData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
         if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1726,7 +1725,7 @@ __attribute__((weak)) s32 cQuestTask::getLastDecideDeliverBlockNo() const {
 
 // Address: 0x005509e0 - 0x005509ff (31 bytes)
 void cQuestTask::setLastDecideDeliverBlockNo(s32 blockNo) {
-    // local: cQuestPersonalData* pPersonalData;
+    // DWARF local not rendered: cQuestPersonalData* pPersonalData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
         if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1746,7 +1745,7 @@ __attribute__((weak)) s32 cQuestTask::getCurrentDeliverBlockNo() const {
 
 // Address: 0x00550a50 - 0x00550a6f (31 bytes)
 void cQuestTask::setCurrentDeliverBlockNo(s32 blockNo) {
-    // local: cQuestPersonalData* pPersonalData;
+    // DWARF local not rendered: cQuestPersonalData* pPersonalData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
         if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1881,7 +1880,7 @@ __attribute__((weak)) bool cQuestTask::isLayoutFlag(u32 flagNo) const {
 
 // Address: 0x0054e080 - 0x0054e0a5 (37 bytes)
 __attribute__((weak)) void cQuestTask::onFlag(u32 flagNo) {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
         if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1894,7 +1893,7 @@ __attribute__((weak)) void cQuestTask::onFlag(u32 flagNo) {
 
 // Address: 0x00551090 - 0x005510b8 (40 bytes)
 void cQuestTask::onFlagFsm(u32 flagNo) {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
         if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1907,7 +1906,7 @@ void cQuestTask::onFlagFsm(u32 flagNo) {
 
 // Address: 0x0054e0b0 - 0x0054e0d8 (40 bytes)
 __attribute__((weak)) void cQuestTask::onLayoutFlag(u32 flagNo) {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
         if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
@@ -1920,7 +1919,7 @@ __attribute__((weak)) void cQuestTask::onLayoutFlag(u32 flagNo) {
 
 // Address: 0x005510e0 - 0x005510f6 (22 bytes)
 void cQuestTask::onMyFlag(u32 flagNo) {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMyData == static_cast<cQuestPersonalData*>(nullptr)) {
         return;
@@ -1933,7 +1932,7 @@ void cQuestTask::onMyFlag(u32 flagNo) {
 
 // Address: 0x00551110 - 0x00551129 (25 bytes)
 void cQuestTask::onMyLayoutFlag(u32 flagNo) {
-    // local: cQuestPersonalData* pData;
+    // DWARF local not rendered: cQuestPersonalData* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMyData == static_cast<cQuestPersonalData*>(nullptr)) {
         return;
@@ -1997,9 +1996,72 @@ void cQuestTask::deleteMyFlags() {
 }
 
 // Address: 0x00551590 - 0x005516c7 (311 bytes)
-__attribute__((weak)) void cQuestTask::deleteFlagFsm() {
-    DDON_STUB("cQuestTask::deleteFlagFsm")
-    /* stub */
+void cQuestTask::deleteFlagFsm() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x5515c0 carries; no location-less local in scope fits
+    cQuestPersonalData* v0_8 = this->mpMyData;
+    if (v0_8 != static_cast<cQuestPersonalData*>(nullptr)) {
+        if (v0_8->mQuestFlagFsm.::MtArray::mLength != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x5515c0 carries; no location-less local in scope fits
+            u32 v0_0 = v0_8->mQuestFlagFsm.::MtArray::mLength;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                if (v0_8->mQuestFlagFsm.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                    delete v0_8->mQuestFlagFsm.::MtArray::mpArray[i0_3];
+                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mQuestFlagFsm.::MtArray::mLength) {
+                        v0_0 = v0_8->mQuestFlagFsm.::MtArray::mLength;
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (v0_8->mQuestFlagFsm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_8->mQuestFlagFsm.::MtArray::mpArray));
+        }
+        v0_8->mQuestFlagFsm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+        v0_8->mQuestFlagFsm.::MtArray::mBufsiz = static_cast<u32>(0);
+        v0_8->mQuestFlagFsm.::MtArray::mLength = static_cast<u32>(0);
+    }
+    // inferred: the value the loop at 0x551650 carries; no location-less local in scope fits
+    cQuestPersonalData* v3_8 = this->mpLeaderData;
+    if (v3_8 != static_cast<cQuestPersonalData*>(nullptr)) {
+        if (v3_8->mQuestFlagFsm.::MtArray::mLength != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x551650 carries; no location-less local in scope fits
+            u32 v3_0 = v3_8->mQuestFlagFsm.::MtArray::mLength;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
+                if (v3_8->mQuestFlagFsm.::MtArray::mpArray[i3_3] != static_cast<MtObject*>(nullptr)) {
+                    delete v3_8->mQuestFlagFsm.::MtArray::mpArray[i3_3];
+                    if ((i3_3 + static_cast<unsigned int>(1)) < v3_8->mQuestFlagFsm.::MtArray::mLength) {
+                        v3_0 = v3_8->mQuestFlagFsm.::MtArray::mLength;
+                        i3_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i3_3 + static_cast<unsigned int>(1)) < v3_0) {
+                        i3_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (v3_8->mQuestFlagFsm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v3_8->mQuestFlagFsm.::MtArray::mpArray));
+        }
+        v3_8->mQuestFlagFsm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+        v3_8->mQuestFlagFsm.::MtArray::mBufsiz = static_cast<u32>(0);
+        v3_8->mQuestFlagFsm.::MtArray::mLength = static_cast<u32>(0);
+    }
 }
 
 // Address: 0x005516e0 - 0x00551d33 (1619 bytes)
@@ -2294,7 +2356,7 @@ u32 cQuestTask::getTargetEnemyGroupNum() const {
 
 // Address: 0x00553c40 - 0x00553c55 (21 bytes)
 u32 cQuestTask::getTargetEnemyGroupId(u32 idx) const {
-    // local: cEnemyGroupInfo* pEmGrpId;
+    // DWARF local not rendered: cEnemyGroupInfo* pEmGrpId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->mEnemyGroupIdArray.::MtArray::mLength) {
         return static_cast<cQuestTask::cEnemyGroupInfo*>(this->mEnemyGroupIdArray.::MtArray::mpArray[idx])->::cQuestTask::cEnemyGroupInfo::getEnemyGroupId();
@@ -2305,7 +2367,7 @@ u32 cQuestTask::getTargetEnemyGroupId(u32 idx) const {
 
 // Address: 0x00553c70 - 0x00553c8a (26 bytes)
 u32 cQuestTask::getTargetEnemyLevel(u32 idx) const {
-    // local: cEnemyGroupInfo* pEmGrpId;
+    // DWARF local not rendered: cEnemyGroupInfo* pEmGrpId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->mEnemyGroupIdArray.::MtArray::mLength) {
         if (this->mEnemyGroupIdArray.::MtArray::mpArray[idx] != static_cast<MtObject*>(nullptr)) {
@@ -3940,10 +4002,10 @@ bool cQuestTask::cQuestProcess::checkKeyItemPoint(s32 idx, s32 num, s32 param03,
 }
 
 // Address: 0x001b0490 - 0x001b04bd (45 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsNotEndTimer(s32 timerNo, s32 param02, s32 param03, s32 param04) {
-    // local: s32 sec;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsNotEndTimer")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsNotEndTimer(s32 timerNo, s32 param02, s32 param03, s32 param04) {
+    // DWARF local not rendered: s32 sec;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    return static_cast<unsigned int>(this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::getTaskParam().::cQuestTaskParam::getTimer(static_cast<u32>(timerNo)) + static_cast<s32>(1)) > static_cast<unsigned int>(1);
 }
 
 // Address: 0x001b04c0 - 0x001b056d (173 bytes)
@@ -4483,10 +4545,6 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsPartyReward(s32 par
 
 // Address: 0x001b2ac0 - 0x001b2b28 (104 bytes)
 bool cQuestTask::cQuestProcess::checkIsFullBag(s32 param01, s32 param02, s32 param03, s32 param04) {
-    // local: cItemBag* pItemBag;
-    // local: u32 i;
-    // local: u32 max;
-    // local: u32 use;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
     u32 i = static_cast<u32>(1);
@@ -4764,7 +4822,7 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOmBrokenQuest(s32 s
 
 // Address: 0x001b3780 - 0x001b378f (15 bytes)
 bool cQuestTask::cQuestProcess::checkIsHoldingPeriodCycleContents(s32 param01, s32 param02, s32 param03, s32 param04) {
-    // local: bool isHolding;
+    // DWARF local not rendered: bool isHolding;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isHoldingAnyCycleContents();
 }
@@ -4822,8 +4880,6 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsReleasePawnExpediti
 
 // Address: 0x001b3be0 - 0x001b3c18 (56 bytes)
 bool cQuestTask::cQuestProcess::checkOpenPpMode(s32 param01, s32 param02, s32 param03, s32 param04) {
-    // local: cPlayPointInfo* playPointInfo;
-    // local: cPlayPoint* playPoint;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cPlayPointInfo* playPointInfo = ::sGame::getInstance()->::sGame::getPlayPointInfo();
     if (playPointInfo != static_cast<cPlayPointInfo*>(nullptr)) {
@@ -4840,8 +4896,6 @@ bool cQuestTask::cQuestProcess::checkOpenPpMode(s32 param01, s32 param02, s32 pa
 
 // Address: 0x001b3c20 - 0x001b3c5d (61 bytes)
 bool cQuestTask::cQuestProcess::checkPpNotLess(s32 point, s32 param02, s32 param03, s32 param04) {
-    // local: cPlayPointInfo* playPointInfo;
-    // local: cPlayPoint* playPoint;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     cPlayPointInfo* playPointInfo = ::sGame::getInstance()->::sGame::getPlayPointInfo();
     if (playPointInfo != static_cast<cPlayPointInfo*>(nullptr)) {
@@ -5162,7 +5216,6 @@ bool cQuestTask::cQuestProcess::resultAddMarkerAtDest(s32 stageNo, s32 x, s32 y,
 
 // Address: 0x001b50f0 - 0x001b5131 (65 bytes)
 bool cQuestTask::cQuestProcess::resultAddResultPoint(s32 tableIndex, s32 param02, s32 param03, s32 param04) {
-    // local: cCycleQuestManagerBase* pCycleMgr;
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x1b5101 read, used once; no DWARF local holds it
     sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();
@@ -5303,7 +5356,6 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::resultAddCyclePurpose(s32 
 
 // Address: 0x001b56d0 - 0x001b5715 (69 bytes)
 bool cQuestTask::cQuestProcess::resultRemoveCyclePurpose(s32 announceNo, s32 param02, s32 param03, s32 param04) {
-    // local: cCycleQuestManagerBase* pMgr;
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x1b56e1 read, used once; no DWARF local holds it
     sQuestManagerExt* t0 = ::sQuestManagerExt::getInstance();

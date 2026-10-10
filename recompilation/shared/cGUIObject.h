@@ -50,6 +50,7 @@ class rGUIMessage;
 class uGUI;
 class uGUIBase;
 class uGUIInputText;
+class uGUIMyRoomPopup;
 
 // Declarations
 class cGUIObj2D;
@@ -326,6 +327,8 @@ public:
 
 class cGUIObjMessage : public cGUIObj2D
 {
+    // inferred: uGUIMyRoomPopup::setTitle calls cGUIObjMessage::clearMessage
+    friend class uGUIMyRoomPopup;
 public:
     class MyDTI;
 public:

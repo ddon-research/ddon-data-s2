@@ -144,7 +144,7 @@ inline void rPushRate::operator delete(void* p_addr) {
 
 // Address: 0x006e2060 - 0x006e20ce (110 bytes)
 bool rPushRate::loadData(MtDataReader& in, cPushRate* pData) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     pData->mRate[0] = in.readF32();
     pData->mRate[1] = in.readF32();
@@ -197,4 +197,8 @@ template const cPushRate* rTbl2<cPushRate>::getData(unsigned int) const;
 // Instance at 0x01aaed10 - 0x01aaed14 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cPushRate>::getDataNum() const;
+
+// Instance at 0x01aaeea0 - 0x01aaeef8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cPushRate>::~rTbl2();
 

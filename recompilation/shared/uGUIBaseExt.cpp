@@ -79,7 +79,7 @@ __attribute__((weak)) void uGUIBaseExt::setAutoShow(bool isAutoShow) {
 
 // Address: 0x009833e0 - 0x009833f7 (23 bytes)
 bool uGUIBaseExt::isShowable() const {
-    // local: bool is_showable;
+    // DWARF local not rendered: bool is_showable;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uGUIBase::isAttachedResource() != false) {
         return this->mUpdateMode != static_cast<uGUIBaseExt::UPDATE_MODE>(2);
@@ -104,7 +104,7 @@ bool uGUIBaseExt::isShow() const {
 
 // Address: 0x00983430 - 0x00983464 (52 bytes)
 bool uGUIBaseExt::show() {
-    // local: bool is_show;
+    // DWARF local not rendered: bool is_show;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uGUIBase::isAttachedResource() != false) {
         if (this->mUpdateMode != static_cast<uGUIBaseExt::UPDATE_MODE>(2)) {
@@ -324,7 +324,7 @@ __attribute__((weak)) void uGUIBaseExt::moveEvent() {
 
 // Address: 0x00983290 - 0x00983356 (198 bytes)
 __attribute__((weak)) void uGUIBaseExt::releaseResources() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpGUIRes != static_cast<rGUI*>(nullptr)) {
         this->mpGUIRes->::cResource::release();
@@ -332,9 +332,9 @@ __attribute__((weak)) void uGUIBaseExt::releaseResources() {
     }
     this->::uGUIBase::releaseGMD();
     if (this->mResources.::MtArray::size() != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x9832d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x9832d0 carries; no location-less local in scope fits
         u32 v0_0 = this->mResources.::MtArray::size();
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mResources.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
                 static_cast<cResource*>(this->mResources.::MtArray::getBuffer()[static_cast<int>(i0_3)])->::cResource::release();

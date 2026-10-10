@@ -3,9 +3,9 @@
 #include "rMotionParam.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -139,10 +139,18 @@ inline void rMotionParam::operator delete(void* p_addr) {
 // Address: 0x006a5060 - 0x006a50ce (110 bytes)
 bool rMotionParam::loadData(MtDataReader& r, cMotionParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mInterFrame = r.readF32();
-    pData->mIsContinue = r.::MtDataReader::readU8() != static_cast<u8>(0);
-    pData->mIKFlag = r.readU32();
-    pData->mIKFlagFSM = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mInterFrame);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIsContinue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIKFlag);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIKFlagFSM);
     return true;
 }
 
@@ -188,4 +196,8 @@ template const cMotionParam* rTbl2<cMotionParam>::getData(unsigned int) const;
 // Instance at 0x01a9d200 - 0x01a9d204 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cMotionParam>::getDataNum() const;
+
+// Instance at 0x01a9d3a0 - 0x01a9d3f8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cMotionParam>::~rTbl2();
 

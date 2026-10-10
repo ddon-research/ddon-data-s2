@@ -191,7 +191,7 @@ void uGUICaplinkFilter::moveEvent() {
 
 // Address: 0x009b45a0 - 0x009b470f (367 bytes)
 void uGUICaplinkFilter::updateMove() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
     if (this->mFlowId != static_cast<u32>(1)) {
         if (this->mFlowId == static_cast<u32>(2)) {

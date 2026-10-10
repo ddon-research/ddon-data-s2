@@ -707,12 +707,11 @@ __attribute__((weak)) rSoundAreaInfo* sSoundManager::getSAR() {
 
 // Address: 0x008572d0 - 0x00857385 (181 bytes)
 u32 sSoundManager::getStageBgmReqNo() {
-    // local: rSoundAreaInfo* prsar;
-    // local: WEATHER_PHASE phase;
-    // local: bool isAmb;
-    // local: bool isSecond;
-    // local: WEATHER_PHASE phase;
-    // local: bool isAmb2;
+    // DWARF local not rendered: WEATHER_PHASE phase;
+    // DWARF local not rendered: bool isAmb;
+    // DWARF local not rendered: bool isSecond;
+    // DWARF local not rendered: WEATHER_PHASE phase;
+    // DWARF local not rendered: bool isAmb2;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rSoundAreaInfo* prsar = this->::sSoundManager::getSAR();
     if (prsar != static_cast<rSoundAreaInfo*>(nullptr)) {

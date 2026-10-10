@@ -194,3 +194,13 @@ public:
     f32 mRetSoundVolumeSub;  // offset: 0x30
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cWeatherScriptIO::cWeatherScriptIO() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cWeatherObjectSys() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mWSCParams.::MtArray::mAutoDelete = true;
+    this->mMoveFrame = 0.0f;
+    this->mReqSoundVolumeAdd = 0.0f;
+    this->mRetSoundVolumeSub = 0.0f;
+}

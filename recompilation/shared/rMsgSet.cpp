@@ -4,10 +4,10 @@
 #include "MtAllocator.h"
 #include "MtCollection.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cResource.h"
+#include "nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -357,15 +357,33 @@ __attribute__((weak)) void rMsgSet::cMsgData::createProperty(MtPropertyList& s) 
 // Address: 0x006a6600 - 0x006a66a9 (169 bytes)
 bool rMsgSet::cMsgData::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMsgSerial = r.readU32();
-    this->mGmdIndex = r.readU32();
-    this->mMsgType = r.readU32();
-    this->mJumpGroupSerial = r.readU32();
-    this->mDispType = r.readU32();
-    this->mDispTime = r.readU32();
-    this->mSetMotion = r.readU32();
-    this->mVoiceReqNo = r.readS32();
-    this->mTalkFaceType = r.::MtDataReader::readU8();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMsgSerial);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mGmdIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMsgType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mJumpGroupSerial);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mDispType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mDispTime);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mSetMotion);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mVoiceReqNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTalkFaceType);
     return true;
 }
 

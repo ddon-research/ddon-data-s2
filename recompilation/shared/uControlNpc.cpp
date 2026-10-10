@@ -532,7 +532,7 @@ __attribute__((weak)) void uControlNpc::setHumanData(u32 type, u32 index) {
 
 // Address: 0x008ce270 - 0x008ce2bd (77 bytes)
 void uControlNpc::setAttend(bool IsAttend) {
-    // local: uNpc* pNpc;
+    // DWARF local not rendered: uNpc* pNpc;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsAttend = IsAttend;
     if (this->::uControl::mpModel != static_cast<uDDOModel*>(nullptr)) {
@@ -728,7 +728,6 @@ bool uControlNpc::isUseMotionListLight() {
 
 // Address: 0x008ce1e0 - 0x008ce265 (133 bytes)
 bool uControlNpc::isArcLoadFinish() {
-    // local: u32 voiceType;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->::uControlNpc::isFsmEventNpc() != false) {
         if (::sNpcManager::getInstance()->::sNpcManager::isFinishLoadFsmMotionArc() != false) {

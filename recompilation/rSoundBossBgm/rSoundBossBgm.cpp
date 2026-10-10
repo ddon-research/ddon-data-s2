@@ -98,16 +98,15 @@ __attribute__((weak)) bool rSoundBossBgm::load(MtStream& in) {
 
 // Address: 0x006eccd0 - 0x006ecdde (270 bytes)
 bool rSoundBossBgm::save(MtStream& out) {
-    // local: MtDataWriter w;
-    // local: u32 i;
-    // local: cSoundBossBgm* pData;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cSoundBossBgm* pData;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     (&w)->writeS32(static_cast<s32>(4342355));
     (&w)->writeS32(static_cast<s32>(1));
     (&w)->writeU32(this->mArrayDataNum);
     if (this->mArrayDataNum != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             // inferred: a temporary for the value the load at 0x6ecd62 read, used 3 times; no DWARF local holds it
             rSoundBossBgm::cSoundBossBgm* t3 = this->mpArrayData;

@@ -3,9 +3,9 @@
 #include "rKeyCustomParam.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/nKeyCustom.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
@@ -285,16 +285,36 @@ inline void rKeyCustomParam::operator delete(void* p_addr) {
 // Address: 0x00691440 - 0x006914dd (157 bytes)
 bool rKeyCustomParam::loadData(MtDataReader& in, cKeyCustomParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mKbc = in.readU16();
-    pData->mOverlapGroup = in.readU16();
-    pData->mGmdId = in.readU32();
-    pData->mKbmFlags = in.readU16();
-    pData->mKey = in.readU16();
-    pData->mBtn = in.readU16();
-    pData->mPadFlags = in.readU16();
-    pData->mPad = in.readU32();
-    pData->mPadFlags2 = in.readU16();
-    pData->mPad2 = in.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKbc);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mOverlapGroup);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mGmdId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKbmFlags);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKey);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBtn);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mPadFlags);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mPad);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mPadFlags2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mPad2);
     return true;
 }
 
@@ -340,4 +360,8 @@ template const cKeyCustomParam* rTbl2<cKeyCustomParam>::getData(unsigned int) co
 // Instance at 0x01a98750 - 0x01a98754 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cKeyCustomParam>::getDataNum() const;
+
+// Instance at 0x01a988f0 - 0x01a98948 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cKeyCustomParam>::~rTbl2();
 

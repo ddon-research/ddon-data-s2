@@ -152,20 +152,18 @@ MtMemoryAllocator::Initializer::Initializer(u32 max_entry) {
 // Address: 0x00d5c4a0 - 0x00d5c522 (130 bytes)
 // Also emitted as: _ZN17MtMemoryAllocator11InitializerD0Ev at 0x00d5c530
 MtMemoryAllocator::Initializer::~Initializer() {
-    // local: u32 ui;
+    // DWARF local not rendered: u32 ui;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mEntryNum != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xd5c4d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xd5c4d0 carries; no location-less local in scope fits
         u32 v0_0 = this->mEntryNum;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            // inferred: a temporary for the value the load at 0xd5c4d2 read, used once; no DWARF local holds it
-            MtMemoryAllocator::Initializer::Entry* * t0 = this->mAllocIdTable;
             // inferred: a temporary for the value the load at 0xd5c4d6 read, used 3 times; no DWARF local holds it
-            MtMemoryAllocator::Initializer::Entry* t1 = t0[i0_3];
-            if (t1 != static_cast<MtMemoryAllocator::Initializer::Entry*>(nullptr)) {
-                (*::MtMemory::mpAllocatorType)->memFree(static_cast<void*>(t1->obj_name));
-                (*::MtMemory::mpAllocatorType)->memFree(static_cast<void*>(t1));
+            MtMemoryAllocator::Initializer::Entry* t0 = this->mAllocIdTable[i0_3];
+            if (t0 != static_cast<MtMemoryAllocator::Initializer::Entry*>(nullptr)) {
+                (*::MtMemory::mpAllocatorType)->memFree(static_cast<void*>(t0->obj_name));
+                (*::MtMemory::mpAllocatorType)->memFree(static_cast<void*>(t0));
                 if ((i0_3 + static_cast<unsigned int>(1)) < this->mEntryNum) {
                     v0_0 = this->mEntryNum;
                     i0_3 += static_cast<unsigned int>(1);

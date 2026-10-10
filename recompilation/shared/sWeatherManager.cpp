@@ -573,7 +573,7 @@ __attribute__((weak)) u32 sWeatherManager::getWeatherTimeHour() const {
 
 // Address: 0x00870380 - 0x008703a4 (36 bytes)
 void sWeatherManager::setWeatherTimefromHMS(u32 hour, u32 min, u32 sec) {
-    // local: u32 time;
+    // DWARF local not rendered: u32 time;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsReqWeatherTime = true;
     this->mReqWeatherTime = ((hour * static_cast<u32>(3600000)) + (min * static_cast<u32>(60000))) + (sec * static_cast<u32>(1000));
@@ -642,7 +642,7 @@ __attribute__((weak)) void sWeatherManager::updateSkyParamNextWeather() {
 
 // Address: 0x0086ffd0 - 0x0086ffeb (27 bytes)
 bool sWeatherManager::isEnableSky() const {
-    // local: uSkyExt* p_sky;
+    // DWARF local not rendered: uSkyExt* p_sky;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpWeatherSky != static_cast<uSkyExt*>(nullptr)) {
         return this->mpWeatherSky->::uSky::mpResource != static_cast<rSky*>(nullptr);
@@ -754,7 +754,7 @@ f32 sWeatherManager::getWeatherMoonColorRate() const {
 
 // Address: 0x0086fcc0 - 0x0086fcd4 (20 bytes)
 void sWeatherManager::setWeatherMoonEnable(bool b) {
-    // local: uSkyExt* p_sky;
+    // DWARF local not rendered: uSkyExt* p_sky;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpWeatherSky == static_cast<uSkyExt*>(nullptr)) {
         return;
@@ -998,14 +998,10 @@ __attribute__((weak)) void sWeatherManager::setWeatherID(s32 weatherID, f32 blen
 
 // Address: 0x008713b0 - 0x00871583 (467 bytes)
 void sWeatherManager::changeWeatherScript(bool flash) {
-    // local: cWeatherScript* p_efc_now;
-    // local: cWeatherScript* p_efc_old;
-    // local: cWeatherScript* p_snd_now;
-    // local: cWeatherScript* p_snd_old;
-    // local: u32 step_idx;
-    // local: cWeatherScriptCmdArray& res_array;
-    // local: u32 step_idx;
-    // local: cWeatherScriptCmdArray& res_array;
+    // DWARF local not rendered: u32 step_idx;
+    // DWARF local not rendered: cWeatherScriptCmdArray& res_array;
+    // DWARF local not rendered: u32 step_idx;
+    // DWARF local not rendered: cWeatherScriptCmdArray& res_array;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cWeatherScript* p_efc_now = this->mpWeatherScriptEfcOld;
     if (p_efc_now != static_cast<cWeatherScript*>(nullptr)) {
@@ -1534,8 +1530,6 @@ void sWeatherManager::endQuestWeather() {
 
 // Address: 0x00870ef0 - 0x00870f9f (175 bytes)
 void sWeatherManager::loadResStageWeatherSkyStar(rWeatherStageInfo* pStInfo, uSkyExt* pSky) {
-    // local: rTexture* p_tex;
-    // local: rStarCatalog* p_catalog;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pStInfo == static_cast<rWeatherStageInfo*>(nullptr)) {
         return;
@@ -2096,13 +2090,12 @@ __attribute__((weak)) void sWeatherManager::releaseSoundAmbientRes() {
 
 // Address: 0x00872910 - 0x00872970 (96 bytes)
 void sWeatherManager::callbackZoneIndoorNotifiedScr(const nZone::cLayoutElement& e) {
-    // local: u32 hit_contents_num;
-    // local: u32 j;
-    // local: cZoneContents* p_contents;
+    // DWARF local not rendered: u32 j;
+    // DWARF local not rendered: cZoneContents* p_contents;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     u32 hit_contents_num = e.::nZone::cLayoutElement::getContentsNum();
     if (hit_contents_num != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             // inferred: a temporary for the result of the call at 0x872945, used 3 times; no DWARF local holds it
             cZoneContents* t0 = e.::nZone::cLayoutElement::getContents(i0_3);

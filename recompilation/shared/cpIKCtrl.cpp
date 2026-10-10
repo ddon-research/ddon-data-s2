@@ -346,7 +346,7 @@ __attribute__((weak)) void cpIKCtrl::setup() {
 
 // Address: 0x0048d030 - 0x0048d0af (127 bytes)
 void cpIKCtrl::move() {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpModel == static_cast<uModel*>(nullptr)) {
         return;
@@ -714,7 +714,7 @@ void cpIKCtrl::checkResetIKHandle() {
 
 // Address: 0x0048ec30 - 0x0048ed3e (270 bytes)
 __attribute__((weak)) void cpIKCtrl::updateIKHandle() {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mIKHandle[0].mpTargetModel == static_cast<uModel*>(nullptr)) {
     } else {

@@ -181,7 +181,7 @@ void cAcquirement::cNormalSkillData::releaseResource() {
 
 // Address: 0x0001ca60 - 0x0001cb26 (198 bytes)
 void cAcquirement::cNormalSkillData::loadResource() {
-    // local: const u32 LOAD_MODE;
+    // DWARF local not rendered: const u32 LOAD_MODE;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->mpData == static_cast<rAcquirement::rNormalSkillData*>(nullptr)) {
         // inferred: a temporary for the value the load at 0x1ca7b read, used once; no DWARF local holds it

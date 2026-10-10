@@ -248,7 +248,7 @@ rRenderTargetTexture* uScreenSpace::getRenderTarget() const {
 
 // Address: 0x01b63da0 - 0x01b63e3a (154 bytes)
 void uScreenSpace::setRenderTarget(rRenderTargetTexture* p_rt) {
-    // local: bool rt_mode;
+    // DWARF local not rendered: bool rt_mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpRenderTarget != static_cast<rRenderTargetTexture*>(nullptr)) {
         this->mpRenderTarget->::cResource::release();

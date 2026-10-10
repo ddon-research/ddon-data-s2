@@ -123,7 +123,6 @@ void cOmControl::reqKillCtrl() {
 
 // Address: 0x003ae120 - 0x003ae1d7 (183 bytes)
 void cOmControl::initLot() {
-    // local: const cOmParam* param;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     this->mOmID = this->mLot.mOmID;
     if (static_cast<unsigned int>(this->mLot.mOmID - static_cast<s32>(603000)) > static_cast<unsigned int>(1)) {
@@ -344,9 +343,8 @@ __attribute__((weak)) void cOmControl::moveSbc() {
 
 // Address: 0x003b0800 - 0x003b0846 (70 bytes)
 bool cOmControl::hasSBC() {
-    // local: bool hasSBC;
-    // local: u32 index;
-    // local: u64 rid;
+    // DWARF local not rendered: bool hasSBC;
+    // DWARF local not rendered: u64 rid;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     if (this->mpOmParam == static_cast<const cOmParam*>(nullptr)) {
         return false;
@@ -357,7 +355,7 @@ bool cOmControl::hasSBC() {
     if (this->mLot.mbNoSbc != false) {
         return false;
     }
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const cResPath<rCollision>* p1 = &this->mpOmParam->mrCollision[0][0];
     u32 index = static_cast<u32>(0);
     do {
@@ -411,11 +409,10 @@ void cOmControl::setActiveEfcSbc(bool act) {
 
 // Address: 0x003abe70 - 0x003ac057 (487 bytes)
 void cOmControl::setActiveAllSbcParts(bool act) {
-    // local: u32 type;
-    // local: u32 index;
-    // local: u32 num;
-    // local: SBC_HANDLE handle;
-    // local: u32 cnt;
+    // DWARF local not rendered: u32 type;
+    // DWARF local not rendered: u32 index;
+    // DWARF local not rendered: SBC_HANDLE handle;
+    // DWARF local not rendered: u32 cnt;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x3abe88 read, used 4 times; no DWARF local holds it
     unsigned int t0 = this->mhSbc[0][0];
@@ -427,7 +424,7 @@ void cOmControl::setActiveAllSbcParts(bool act) {
             if (t1->mSbcArray.::MtArray::mpArray[t0] != static_cast<MtObject*>(nullptr)) {
                 u32 num = static_cast<sCollision::Sbc*>(t1->mSbcArray.::MtArray::mpArray[t0])->::sCollision::Sbc::getPartsNum();
                 if (num != static_cast<u32>(0)) {
-                    // inferred: the counter this loop steps; DWARF names no local for it
+                    // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
                     for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
                         ::sCollision::getInstance()->::sCollision::setPartsActive(t0, i0_3, act);
                         if (num != (i0_3 + static_cast<unsigned int>(1))) {
@@ -448,10 +445,10 @@ void cOmControl::setActiveAllSbcParts(bool act) {
         if (t2 >= t3->::sCollision::getSbcSize()) {
         } else {
             if (t3->mSbcArray.::MtArray::mpArray[t2] != static_cast<MtObject*>(nullptr)) {
-                // inferred: the value the loop at 0x3abf50 carries; DWARF names no local for it
+                // inferred: the value the loop at 0x3abf50 carries; the location-less local in scope that fits is declared on no line of the value's writes
                 u32 v2_11 = static_cast<sCollision::Sbc*>(t3->mSbcArray.::MtArray::mpArray[t2])->::sCollision::Sbc::getPartsNum();
                 if (v2_11 != static_cast<u32>(0)) {
-                    // inferred: the counter this loop steps; DWARF names no local for it
+                    // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
                     for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
                         ::sCollision::getInstance()->::sCollision::setPartsActive(t2, i2_3, act);
                         if (v2_11 != (i2_3 + static_cast<unsigned int>(1))) {
@@ -472,10 +469,10 @@ void cOmControl::setActiveAllSbcParts(bool act) {
         if (t4 >= t5->::sCollision::getSbcSize()) {
         } else {
             if (t5->mSbcArray.::MtArray::mpArray[t4] != static_cast<MtObject*>(nullptr)) {
-                // inferred: the value the loop at 0x3abfc0 carries; DWARF names no local for it
+                // inferred: the value the loop at 0x3abfc0 carries; the location-less local in scope that fits is declared on no line of the value's writes
                 u32 v4_11 = static_cast<sCollision::Sbc*>(t5->mSbcArray.::MtArray::mpArray[t4])->::sCollision::Sbc::getPartsNum();
                 if (v4_11 != static_cast<u32>(0)) {
-                    // inferred: the counter this loop steps; DWARF names no local for it
+                    // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
                     for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
                         ::sCollision::getInstance()->::sCollision::setPartsActive(t4, i4_3, act);
                         if (v4_11 != (i4_3 + static_cast<unsigned int>(1))) {
@@ -496,10 +493,10 @@ void cOmControl::setActiveAllSbcParts(bool act) {
         if (t6 >= t7->::sCollision::getSbcSize()) {
         } else {
             if (t7->mSbcArray.::MtArray::mpArray[t6] != static_cast<MtObject*>(nullptr)) {
-                // inferred: the value the loop at 0x3ac030 carries; DWARF names no local for it
+                // inferred: the value the loop at 0x3ac030 carries; the location-less local in scope that fits is declared on no line of the value's writes
                 u32 v6_10 = static_cast<sCollision::Sbc*>(t7->mSbcArray.::MtArray::mpArray[t6])->::sCollision::Sbc::getPartsNum();
                 if (v6_10 != static_cast<u32>(0)) {
-                    // inferred: the counter this loop steps; DWARF names no local for it
+                    // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
                     for (unsigned int i6_3 = static_cast<unsigned int>(0);;) {
                         ::sCollision::getInstance()->::sCollision::setPartsActive(t6, i6_3, act);
                         if (v6_10 != (i6_3 + static_cast<unsigned int>(1))) {

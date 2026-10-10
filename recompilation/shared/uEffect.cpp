@@ -166,18 +166,17 @@ __attribute__((weak)) void uEffect::setEffectList(rEffectList* pEffectList) {
 
 // Address: 0x00fc9680 - 0x00fc96de (94 bytes)
 void uEffect::doFinish() {
-    // local: cParticleManager* pManager;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if ((this->mSerialEffectType & static_cast<u32>(15)) == static_cast<u32>(1)) {
         this->::uEffect::setSerialEffect(static_cast<u32>(1));
     }
-    // inferred: the value the loop at 0xfc96d2 carries; DWARF names no local for it
-    for (cParticleManager* v0_3 = this->mpManager;;) {
-        if (v0_3 == static_cast<cParticleManager*>(nullptr)) {
+    // inferred: DWARF's location-less 'pManager' (function scope) is the value the loop at 0xfc96d2 carries
+    for (cParticleManager* pManager = this->mpManager;;) {
+        if (pManager == static_cast<cParticleManager*>(nullptr)) {
             break;
         } else {
-            v0_3->finish(true);
-            v0_3 = v0_3->mpNext;
+            pManager->finish(true);
+            pManager = pManager->mpNext;
         }
     }
 }
@@ -203,19 +202,18 @@ void uEffect::doClear() {
 
 // Address: 0x00fc98e0 - 0x00fc9938 (88 bytes)
 void uEffect::doKeepHoldOff() {
-    // local: cParticleManager* pManager;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if ((this->mSerialEffectType & static_cast<u32>(15)) == static_cast<u32>(2)) {
         this->::uEffect::setSerialEffect(static_cast<u32>(1));
     }
-    // inferred: the value the loop at 0xfc992c carries; DWARF names no local for it
-    for (cParticleManager* v0_0 = this->mpManager;;) {
-        if (v0_0 == static_cast<cParticleManager*>(nullptr)) {
+    // inferred: DWARF's location-less 'pManager' (function scope) is the value the loop at 0xfc992c carries
+    for (cParticleManager* pManager = this->mpManager;;) {
+        if (pManager == static_cast<cParticleManager*>(nullptr)) {
             break;
         } else {
-            v0_0->mKeepHoldFlag = static_cast<u32>(0);
-            v0_0->mStatus = v0_0->mStatus | static_cast<u32>(1073741824);
-            v0_0 = v0_0->mpNext;
+            pManager->mKeepHoldFlag = static_cast<u32>(0);
+            pManager->mStatus = pManager->mStatus | static_cast<u32>(1073741824);
+            pManager = pManager->mpNext;
         }
     }
 }
@@ -782,16 +780,57 @@ __attribute__((weak)) bool uEffect::createGenerator() {
 
 // Address: 0x00fcb000 - 0x00fcb0ed (237 bytes)
 __attribute__((weak)) void uEffect::releaseGenerator() {
-    // local: cParticleManager* pManager;
-    // local: cParticleManager* pNext;
-    // local: u32 ctr;
-    DDON_STUB("uEffect::releaseGenerator")
-    /* stub */
+    // DWARF local not rendered: cParticleManager* pManager;
+    // DWARF local not rendered: cParticleManager* pNext;
+    // DWARF local not rendered: u32 ctr;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpManager != static_cast<cParticleManager*>(nullptr)) {
+        // inferred: the value the loop at 0xfcb020 carries; no location-less local in scope fits
+        for (cParticleManager* v0_5 = this->mpManager;;) {
+            // inferred: a temporary for the value the load at 0xfcb023 read, used once; no DWARF local holds it
+            cParticleManager* t0 = v0_5->mpNext;
+            delete v0_5;
+            if (t0 != static_cast<cParticleManager*>(nullptr)) {
+                v0_5 = t0;
+            } else {
+                break;
+            }
+        }
+        this->mpManager = static_cast<cParticleManager*>(nullptr);
+    }
+    if (this->mJoint != static_cast<cEffectJoint*>(nullptr)) {
+        if (this->mJointNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0xfcb063 carries; no location-less local in scope fits
+            cEffectJoint* v3_0 = this->mJoint;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
+                v3_0[i3_3].::cEffectJoint::freeMemory();
+                if ((i3_3 + static_cast<unsigned int>(1)) >= this->mJointNum) {
+                    break;
+                } else {
+                    v3_0 = this->mJoint;
+                    i3_3 += static_cast<unsigned int>(1);
+                }
+            }
+        }
+        // inferred: a temporary for the result of the call at 0xfcb089, used once; no DWARF local holds it
+        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::uEffect::DTI);
+        t1->memFree(static_cast<void*>(this->mJoint));
+        this->mpChildUnitBuff = static_cast<u8*>(nullptr);
+        this->mJoint = static_cast<cEffectJoint*>(nullptr);
+    }
+    this->mGeneratorNum = static_cast<u32>(0);
+    this->mGeneratorMoveNum = static_cast<u32>(0);
+    this->mJointNum = static_cast<u32>(0);
+    this->mJointMoveNum = static_cast<u32>(0);
+    this->mDrawBuffSize = static_cast<u32>(0);
+    this->::uBaseEffect::mCreateFlag = static_cast<u32>(0);
+    this->::uBaseEffect::mKillNo = static_cast<u32>(0);
 }
 
 // Address: 0x00fcb0f0 - 0x00fcb15f (111 bytes)
 bool uEffect::updateParentEnable() {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uCoord::mpParent != static_cast<uCoord*>(nullptr)) {
         if ((this->::uCoord::mpParent->::cUnit::mBeFlag - static_cast<u32>(1)) > static_cast<u32>(1)) {
@@ -863,13 +902,12 @@ void uEffect::setupUnitGenerator() {
 
 // Address: 0x00fcb230 - 0x00fcb2c9 (153 bytes)
 void uEffect::setupUnit() {
-    // local: u32 ctr;
-    // local: cParticleManager* pManager;
+    // DWARF local not rendered: u32 ctr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mJointNum != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xfcb250 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xfcb250 carries; no location-less local in scope fits
         cEffectJoint* v0_0 = this->mJoint;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
             v0_0[i0_1].mUpdateConstWorldOfs.x = ::MtVector3::Zero.x;
             v0_0[i0_1].mUpdateConstWorldOfs.y = ::MtVector3::Zero.y;
@@ -882,13 +920,13 @@ void uEffect::setupUnit() {
             }
         }
     }
-    // inferred: the value the loop at 0xfcb2bd carries; DWARF names no local for it
-    for (cParticleManager* v2_3 = this->mpManager;;) {
-        if (v2_3 == static_cast<cParticleManager*>(nullptr)) {
+    // inferred: DWARF's location-less 'pManager' (function scope) is the value the loop at 0xfcb2bd carries
+    for (cParticleManager* pManager = this->mpManager;;) {
+        if (pManager == static_cast<cParticleManager*>(nullptr)) {
             break;
         } else {
-            v2_3->setup();
-            v2_3 = v2_3->mpNext;
+            pManager->setup();
+            pManager = pManager->mpNext;
         }
     }
 }

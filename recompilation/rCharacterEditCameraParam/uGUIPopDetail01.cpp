@@ -183,8 +183,7 @@ __attribute__((weak)) void uGUIPopDetail01::move() {
 
 // Address: 0x00ba5cd0 - 0x00ba5d80 (176 bytes)
 void uGUIPopDetail01::setItemParam(nGUIItem::cItem* p, nCharacterData::EQUIP_SLOT_TYPE equipSlotType) {
-    // local: bool rebuild;
-    // local: cItemParam* const item_param;
+    // DWARF local not rendered: bool rebuild;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     this->mEquipSlotType = equipSlotType;
     if (p != static_cast<nGUIItem::cItem*>(nullptr)) {

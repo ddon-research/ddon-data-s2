@@ -151,10 +151,9 @@ __attribute__((weak)) s32 cCycleQuestManagerBase::getCyclePurposeNo(u32 idx) con
 
 // Address: 0x000752e0 - 0x00075305 (37 bytes)
 void cCycleQuestManagerBase::addCyclePurposeNo(u32 purposeNo) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     int* p1 = &this->mCyclePurpose[0];
     do {
         if ((*p1) == static_cast<int>(-1)) {
@@ -431,20 +430,18 @@ __attribute__((weak)) void cCycleQuestManagerBase::setCycleContentsScheduleId(nQ
 
 // Address: 0x00076860 - 0x000768c9 (105 bytes)
 nQuest::CYCLE_CONTENTS_PERIOD cCycleQuestManagerBase::getCycleContentsPeriodFromSubCategory(nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) const {
-    // local: cCycleQuestSubCategoryManager* pMgr;
+    // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0x76880 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x76880 carries; no location-less local in scope fits
     const u32 v0_8 = this->mSubCategory.::MtArray::mLength;
     if (v0_8 != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            // inferred: a temporary for the value the load at 0x76880 read, used once; no DWARF local holds it
-            MtObject* * t0 = this->mSubCategory.::MtArray::mpArray;
             // inferred: a temporary for the value the load at 0x76884 read, used 3 times; no DWARF local holds it
-            MtObject* t1 = t0[i0_3];
-            if (t1 != static_cast<MtObject*>(nullptr)) {
-                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t1)->::cCycleQuestSubCategoryManager::getSubCategoryType()) {
-                    return static_cast<cCycleQuestSubCategoryManager*>(t1)->::cCycleQuestSubCategoryManager::getCycleContentsPeriod();
+            MtObject* t0 = this->mSubCategory.::MtArray::mpArray[i0_3];
+            if (t0 != static_cast<MtObject*>(nullptr)) {
+                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t0)->::cCycleQuestSubCategoryManager::getSubCategoryType()) {
+                    return static_cast<cCycleQuestSubCategoryManager*>(t0)->::cCycleQuestSubCategoryManager::getCycleContentsPeriod();
                 }
             }
             if ((i0_3 + static_cast<unsigned int>(1)) < v0_8) {
@@ -482,20 +479,18 @@ __attribute__((weak)) nQuest::CYCLE_CONTENTS_PERIOD cCycleQuestManagerBase::getC
 
 // Address: 0x00076b20 - 0x00076b9b (123 bytes)
 void cCycleQuestManagerBase::setCycleContentsPeriod(nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory, nQuest::CYCLE_CONTENTS_PERIOD period) {
-    // local: cCycleQuestSubCategoryManager* pMgr;
+    // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0x76b50 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x76b50 carries; no location-less local in scope fits
     u32 v0_8 = this->mSubCategory.::MtArray::mLength;
     if (v0_8 != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_9 = static_cast<unsigned int>(0);;) {
-            // inferred: a temporary for the value the load at 0x76b50 read, used once; no DWARF local holds it
-            MtObject* * t0 = this->mSubCategory.::MtArray::mpArray;
             // inferred: a temporary for the value the load at 0x76b55 read, used 3 times; no DWARF local holds it
-            MtObject* t1 = t0[i0_9];
-            if (t1 != static_cast<MtObject*>(nullptr)) {
-                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t1)->::cCycleQuestSubCategoryManager::getSubCategoryType()) {
-                    static_cast<cCycleQuestSubCategoryManager*>(t1)->::cCycleQuestSubCategoryManager::setCycleContentsPeriod(period);
+            MtObject* t0 = this->mSubCategory.::MtArray::mpArray[i0_9];
+            if (t0 != static_cast<MtObject*>(nullptr)) {
+                if (subCategory == static_cast<cCycleQuestSubCategoryManager*>(t0)->::cCycleQuestSubCategoryManager::getSubCategoryType()) {
+                    static_cast<cCycleQuestSubCategoryManager*>(t0)->::cCycleQuestSubCategoryManager::setCycleContentsPeriod(period);
                     return;
                 }
             }
@@ -745,7 +740,7 @@ __attribute__((weak)) void cCycleQuestManagerBase::calcResultPoint() {
 
 // Address: 0x000760e0 - 0x000760ec (12 bytes)
 void cCycleQuestManagerBase::callbackGetCycleContentsPointList(u32 errorCode) {
-    // local: bool isSucceeded;
+    // DWARF local not rendered: bool isSucceeded;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (errorCode != static_cast<u32>(0)) {
         return;
@@ -831,21 +826,19 @@ __attribute__((weak)) bool cCycleQuestManagerBase::isDistributeSubCategory(nQues
 
 // Address: 0x000782e0 - 0x0007832f (79 bytes)
 bool cCycleQuestManagerBase::isThereInPeriod(nQuest::CYCLE_CONTENTS_PERIOD period) const {
-    // local: const u32 num;
-    // local: u32 i;
-    // local: cCycleQuestSubCategoryManager* pMgr;
+    // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     const u32 num = this->mSubCategory.::MtArray::mLength;
     if (num != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
-        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-            if (this->mSubCategory.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                if (period == static_cast<cCycleQuestSubCategoryManager*>(this->mSubCategory.::MtArray::mpArray[i0_3])->::cCycleQuestSubCategoryManager::getCycleContentsPeriod()) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x782f6, 0x78324)) is the counter this loop steps (DWARF's stale constant 0)
+        for (u32 i = static_cast<u32>(0);;) {
+            if (this->mSubCategory.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if (period == static_cast<cCycleQuestSubCategoryManager*>(this->mSubCategory.::MtArray::mpArray[i])->::cCycleQuestSubCategoryManager::getCycleContentsPeriod()) {
                     return true;
                 }
             }
-            if ((i0_3 + static_cast<unsigned int>(1)) < num) {
-                i0_3 = i0_3 + static_cast<unsigned int>(1);
+            if ((i + static_cast<u32>(1)) < num) {
+                i = i + static_cast<u32>(1);
             } else {
                 break;
             }

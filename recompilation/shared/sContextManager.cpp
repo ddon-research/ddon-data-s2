@@ -353,11 +353,10 @@ __attribute__((weak)) void sContextManager::removeAllContextPartyPlayer(bool bRe
 
 // Address: 0x0074d2e0 - 0x0074d341 (97 bytes)
 cContextInstHm* sContextManager::getContextPartyPlayer(u32 characterId, u32 pawnId) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i3 = static_cast<unsigned int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0x74d300, 0x74d32f)) is the counter this loop steps (DWARF's stale constant 0)
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     cContextInstHm* * p8 = &this->mpContextPartyPlayerList[0];
     do {
         if ((*p8) != static_cast<cContextInstHm*>(nullptr)) {
@@ -368,9 +367,9 @@ cContextInstHm* sContextManager::getContextPartyPlayer(u32 characterId, u32 pawn
                 }
             }
         }
-        i3 += static_cast<unsigned int>(1);
+        i += static_cast<u32>(1);
         p8 += static_cast<int>(1);
-    } while (i3 <= static_cast<unsigned int>(7));
+    } while (i <= static_cast<u32>(7));
     return static_cast<cContextInstHm*>(nullptr);
 }
 

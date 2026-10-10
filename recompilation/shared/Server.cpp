@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
@@ -101,9 +102,11 @@ inline MtAllocator* CDataGameTime::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataGameTime::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataGameTime::MyDTI::newInstance at 0x003b6ef4-0x003b6f1d (called at ServerImplement.inc:10)
-// void* CDataGameTime::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataGameTime::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameTime::DTI)->memAlloc(sz, align, ::CDataGameTime::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataGameTime::operator new[](size_t sz, u32 align);
@@ -145,9 +148,9 @@ __attribute__((weak)) void CDataGameTime::operator delete(void* p_addr) {
 // CDataGameTime::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b6ef0 - 0x003b6f47 (87 bytes)
-__attribute__((weak)) MtObject* CDataGameTime::MyDTI::newInstance() const {
-    DDON_STUB("CDataGameTime::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGameTime::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGameTime;
 }
 
 // No out-of-line body: no code in the ELF
@@ -216,9 +219,9 @@ __attribute__((weak)) void CDataURLInfo::operator delete(void* p_addr) {
 // CDataURLInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b6cb0 - 0x003b6cff (79 bytes)
-__attribute__((weak)) MtObject* CDataURLInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataURLInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataURLInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataURLInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -287,9 +290,9 @@ __attribute__((weak)) void CDataWeatherForecast::operator delete(void* p_addr) {
 // CDataWeatherForecast::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b6fe0 - 0x003b7027 (71 bytes)
-__attribute__((weak)) MtObject* CDataWeatherForecast::MyDTI::newInstance() const {
-    DDON_STUB("CDataWeatherForecast::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataWeatherForecast::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataWeatherForecast;
 }
 
 // No out-of-line body: no code in the ELF

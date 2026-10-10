@@ -365,7 +365,6 @@ MT_CTSTR rQuestList::getExt() const {
 
 // Address: 0x006b7c60 - 0x006b7ce6 (134 bytes)
 bool rQuestList::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<unsigned short>(::rQuestList::DATA_VERSION), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -373,7 +372,6 @@ bool rQuestList::load(MtStream& in) {
 
 // Address: 0x006b7cf0 - 0x006b7d77 (135 bytes)
 bool rQuestList::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<unsigned short>(::rQuestList::DATA_VERSION), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));

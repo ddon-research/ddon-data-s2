@@ -416,7 +416,7 @@ __attribute__((weak)) MtObject* sScreenShot::MyDTI::newInstance() const {
 
 // Address: 0x01acad40 - 0x01acad51 (17 bytes)
 void sScreenShot::HttpListener::onReceiveHeader(const cHttpClient::ResponseHeader* head_ptr) {
-    // local: HttpResult& r;
+    // DWARF local not rendered: HttpResult& r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (static_cast<unsigned int>(head_ptr->mStatusCode - static_cast<s32>(200)) > static_cast<unsigned int>(99)) {
         this->mHttpResult.mIsError = true;
@@ -432,7 +432,7 @@ __attribute__((weak)) void sScreenShot::HttpListener::onReceiveData(void* data_p
 
 // Address: 0x01acadb0 - 0x01acadb5 (5 bytes)
 void sScreenShot::HttpListener::onErrorEncounterd(s32 error_code) {
-    // local: HttpResult& r;
+    // DWARF local not rendered: HttpResult& r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mHttpResult.mIsError = true;
 }

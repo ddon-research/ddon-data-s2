@@ -136,7 +136,7 @@ void cpActionRequest::updatePtr() {
 
 // Address: 0x003b4d60 - 0x003b4da9 (73 bytes)
 u32 cpActionRequest::callbackGetAutoAction() {
-    // local: u32 ActNo;
+    // DWARF local not rendered: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x3b4d60 read, used twice; no DWARF local holds it
     u32 t0 = this->mLandActionReq;
@@ -163,7 +163,7 @@ u32 cpActionRequest::callbackGetAutoAction() {
 
 // Address: 0x003b4db0 - 0x003b4e2a (122 bytes)
 u32 cpActionRequest::callbackGetDamageAction() {
-    // local: u32 ActNo;
+    // DWARF local not rendered: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x3b4db0 read, used twice; no DWARF local holds it
     u32 t0 = this->mDamageActionReq;
@@ -204,7 +204,6 @@ u32 cpActionRequest::callbackGetDamageAction() {
 
 // Address: 0x003b4e30 - 0x003b4e57 (39 bytes)
 u32 cpActionRequest::callbackGetTouchAction() {
-    // local: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 ActNo = this->mTouchActionReq;
     if (ActNo != static_cast<u32>(4294967295)) {
@@ -219,7 +218,6 @@ u32 cpActionRequest::callbackGetTouchAction() {
 
 // Address: 0x003b4e60 - 0x003b4e81 (33 bytes)
 u32 cpActionRequest::callbackGetEndAction() {
-    // local: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 ActNo = this->mEndActionReq;
     if (ActNo != static_cast<u32>(4294967295)) {
@@ -234,7 +232,6 @@ u32 cpActionRequest::callbackGetEndAction() {
 
 // Address: 0x003b4e90 - 0x003b4eb1 (33 bytes)
 u32 cpActionRequest::callbackGetRequestAction() {
-    // local: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 ActNo = this->mRequestActionReq;
     if (ActNo != static_cast<u32>(4294967295)) {
@@ -249,7 +246,6 @@ u32 cpActionRequest::callbackGetRequestAction() {
 
 // Address: 0x003b4ec0 - 0x003b4ee7 (39 bytes)
 u32 cpActionRequest::callbackGetHighPriorityAction() {
-    // local: u32 ActNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 ActNo = this->mHighPriorityActionReq;
     if (ActNo != static_cast<u32>(4294967295)) {

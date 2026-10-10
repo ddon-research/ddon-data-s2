@@ -170,9 +170,9 @@ __attribute__((weak)) void uCnsShakeCtrl::draw(cDraw* pDraw) {
 
 // Address: 0x008c34e0 - 0x008c356e (142 bytes)
 void uCnsShakeCtrl::shake(const MtVector3& dir) {
-    // local: f32 shake_rot;
-    // local: f32 shake_axis;
-    // local: f32 shake_trans;
+    // DWARF local not rendered: f32 shake_rot;
+    // DWARF local not rendered: f32 shake_axis;
+    // DWARF local not rendered: f32 shake_trans;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpShakeCtrl == static_cast<cpShakeCtrl*>(nullptr)) {
         return;

@@ -3,10 +3,10 @@
 #include "rWarpLocation.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cUIObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -34,9 +34,11 @@ const MtDTI& cWarpLocation::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cWarpLocation::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cWarpLocation::MyDTI::newInstance at 0x00710324-0x0071034d (called at rWarpLocation.cpp:21)
-// void* cWarpLocation::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* cWarpLocation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWarpLocation::DTI)->memAlloc(sz, align, ::cWarpLocation::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
 //   in rTbl2<cWarpLocation>::loadCore at 0x01ab79e3-0x01ab7a10 (called at rTbl2.h:215)
@@ -81,9 +83,9 @@ inline void cWarpLocation::operator delete(void* p_addr) {
 // cWarpLocation::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00710320 - 0x00710383 (99 bytes)
-__attribute__((weak)) MtObject* cWarpLocation::MyDTI::newInstance() const {
-    DDON_STUB("cWarpLocation::MyDTI::newInstance")
-    return nullptr;
+MtObject* cWarpLocation::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cWarpLocation;
 }
 
 // No out-of-line body: no code in the ELF
@@ -138,15 +140,33 @@ inline void rWarpLocation::operator delete(void* p_addr) {
 // Address: 0x007104e0 - 0x0071058b (171 bytes)
 bool rWarpLocation::loadData(MtDataReader& in, cWarpLocation* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mId = in.readU32();
-    pData->mSortNo = in.readU32();
-    pData->mAreaId = in.readU32();
-    pData->mSpotId = in.readU32();
-    pData->mStageNo = in.readS32();
-    pData->mPosNo = in.readU32();
-    pData->mMapPosX = in.readU16();
-    pData->mMapPosY = in.readU16();
-    pData->mIconType = in.::MtDataReader::readU8();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSortNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAreaId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSpotId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mStageNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mPosNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMapPosX);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMapPosY);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mIconType);
     return true;
 }
 
@@ -192,4 +212,8 @@ template const cWarpLocation* rTbl2<cWarpLocation>::getData(unsigned int) const;
 // Instance at 0x01ab7940 - 0x01ab7944 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cWarpLocation>::getDataNum() const;
+
+// Instance at 0x01ab7af0 - 0x01ab7b48 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cWarpLocation>::~rTbl2();
 

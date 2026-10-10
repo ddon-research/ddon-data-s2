@@ -214,7 +214,7 @@ void uGUIGiveAndTake::moveInput() {
 
 // Address: 0x00a9f9c0 - 0x00a9fb2c (364 bytes)
 void uGUIGiveAndTake::moveEvent() {
-    // local: const u32 uMsgIndex;
+    // DWARF local not rendered: const u32 uMsgIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
         case static_cast<u32>(0):
@@ -554,7 +554,7 @@ u32 uGUIGiveAndTake::evCtrlToggle(cControl::Message* msg) {
 
 // Address: 0x00a9fd10 - 0x00a9fe30 (288 bytes)
 __attribute__((weak)) void uGUIGiveAndTake::setupCtrl() {
-    // local: const u8 forbid;
+    // DWARF local not rendered: const u8 forbid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpCtrl == static_cast<cControl*>(nullptr)) {
     } else {

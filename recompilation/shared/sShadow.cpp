@@ -941,7 +941,7 @@ __attribute__((weak)) void sShadow::ResourceGroup::releaseResources() {
 
 // Address: 0x01283a40 - 0x01283a4f (15 bytes)
 const sShadow::Resource* sShadow::ResourceGroup::getResource(u32 index) const {
-    // local: Resource* res;
+    // DWARF local not rendered: Resource* res;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index < this->mResourceNum) {
         return this->mResources[index];

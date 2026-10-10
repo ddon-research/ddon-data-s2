@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -77,9 +78,9 @@ __attribute__((weak)) void CDataSupportRate::operator delete(void* p_addr) {
 // CDataSupportRate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dcf40 - 0x003dcf8b (75 bytes)
-__attribute__((weak)) MtObject* CDataSupportRate::MyDTI::newInstance() const {
-    DDON_STUB("CDataSupportRate::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataSupportRate::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataSupportRate;
 }
 
 // No out-of-line body: no code in the ELF
@@ -148,9 +149,9 @@ __attribute__((weak)) void CDataUseSupportPoint::operator delete(void* p_addr) {
 // CDataUseSupportPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dd060 - 0x003dd0b4 (84 bytes)
-__attribute__((weak)) MtObject* CDataUseSupportPoint::MyDTI::newInstance() const {
-    DDON_STUB("CDataUseSupportPoint::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataUseSupportPoint::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataUseSupportPoint;
 }
 
 // No out-of-line body: no code in the ELF
@@ -219,8 +220,8 @@ __attribute__((weak)) void CDataUseSupportPointRes::operator delete(void* p_addr
 // CDataUseSupportPointRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dd280 - 0x003dd2eb (107 bytes)
-__attribute__((weak)) MtObject* CDataUseSupportPointRes::MyDTI::newInstance() const {
-    DDON_STUB("CDataUseSupportPointRes::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataUseSupportPointRes::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataUseSupportPointRes;
 }
 

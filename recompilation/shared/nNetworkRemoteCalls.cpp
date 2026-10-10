@@ -65,7 +65,6 @@ nNetwork::RpcNetSystem_Match::RpcNetSystem_Match() {
 
 // Address: 0x0119db30 - 0x0119db9e (110 bytes)
 void nNetwork::RpcNetSystem_Match::serialize(MtStream& stream) {
-    // local: Coder cod;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetwork::Coder cod(stream);
     cod.::nNetwork::Coder::writeBit32(this->mMatch, static_cast<u32>(1));
@@ -74,7 +73,6 @@ void nNetwork::RpcNetSystem_Match::serialize(MtStream& stream) {
 
 // Address: 0x0119dba0 - 0x0119dc11 (113 bytes)
 void nNetwork::RpcNetSystem_Match::deserialize(MtStream& stream) {
-    // local: Decoder dec;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nNetwork::Decoder dec(stream);
     this->mMatch = dec.::nNetwork::Decoder::readBit32(static_cast<u32>(1)) == static_cast<u32>(1);

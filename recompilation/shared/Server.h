@@ -220,3 +220,31 @@ public:
     u8 m_ucCycleContentsState;  // offset: 0x58
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataGameTime::CDataGameTime() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usYear = static_cast<u16>(0);
+    this->m_ucWDay = static_cast<u8>(0);
+    this->m_ucMDay = static_cast<u8>(0);
+    this->m_ucMon = static_cast<u8>(0);
+    this->m_ucMoon = static_cast<u8>(0);
+    this->m_ucSec = static_cast<u8>(0);
+    this->m_ucMin = static_cast<u8>(0);
+    this->m_ucHour = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataURLInfo::CDataURLInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unType = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataWeatherForecast::CDataWeatherForecast() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unWeather = static_cast<u32>(0);
+}

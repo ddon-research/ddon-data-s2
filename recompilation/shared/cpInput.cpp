@@ -314,14 +314,14 @@ __attribute__((weak)) MtObject* cpInput::MyDTI::newInstance() const {
 
 // Address: 0x00490390 - 0x00490398 (8 bytes)
 bool cpInput::cRendaInfo::isSuccess() const {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mDecisionType == static_cast<cpInput::cRendaInfo::DECISION_TYPE>(1);
 }
 
 // Address: 0x004903a0 - 0x004903a8 (8 bytes)
 bool cpInput::cRendaInfo::isFailed() const {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mDecisionType == static_cast<cpInput::cRendaInfo::DECISION_TYPE>(2);
 }

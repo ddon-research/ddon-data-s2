@@ -105,9 +105,8 @@ __attribute__((weak)) void rQuestMarkerInfo::createProperty(MtPropertyList& s) {
 
 // Address: 0x006e26a0 - 0x006e275b (187 bytes)
 bool rQuestMarkerInfo::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u32 dataVersion;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(4803921)) {
@@ -207,9 +206,13 @@ __attribute__((weak)) void rQuestMarkerInfo::cInfo::createProperty(MtPropertyLis
 // Address: 0x006e2c10 - 0x006e2c60 (80 bytes)
 void rQuestMarkerInfo::cInfo::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->mPos = r.readV3();
-    this->mGroupNo = r.readU32();
-    this->mUniqueId = r.readU32();
+    ::nDDOIO::readData(r, this->mGroupNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mUniqueId);
 }
 
 // Address: 0x006e2c60 - 0x006e2cdd (125 bytes)

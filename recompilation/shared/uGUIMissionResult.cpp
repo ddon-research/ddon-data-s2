@@ -118,9 +118,9 @@ void uGUIMissionResult::kill() {
         this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
     }
     if (this->mResultData.mResPointList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xb25e70 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xb25e70 carries; no location-less local in scope fits
         u32 v0_0 = this->mResultData.mResPointList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mResultData.mResPointList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mResultData.mResPointList.::MtArray::mpArray[i0_3];
@@ -146,9 +146,9 @@ void uGUIMissionResult::kill() {
     this->mResultData.mResPointList.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mResultData.mResPointList.::MtArray::mLength = static_cast<u32>(0);
     if (this->mResultData.mRewardList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xb25ef0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xb25ef0 carries; no location-less local in scope fits
         u32 v2_0 = this->mResultData.mRewardList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mResultData.mRewardList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mResultData.mRewardList.::MtArray::mpArray[i2_3];
@@ -174,9 +174,9 @@ void uGUIMissionResult::kill() {
     this->mResultData.mRewardList.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mResultData.mRewardList.::MtArray::mLength = static_cast<u32>(0);
     if (this->mChargeEffectEnableList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xb25f70 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xb25f70 carries; no location-less local in scope fits
         u32 v4_0 = this->mChargeEffectEnableList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
             if (this->mChargeEffectEnableList.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mChargeEffectEnableList.::MtArray::mpArray[i4_3];
@@ -422,7 +422,7 @@ __attribute__((weak)) void uGUIMissionResult::updateRewardItemDisp(uGUIBase::cSc
 
 // Address: 0x00b24740 - 0x00b24776 (54 bytes)
 void uGUIMissionResult::updateRewardItemHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cResultScrollItem* pItem;
+    // DWARF local not rendered: cResultScrollItem* pItem;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
         return;

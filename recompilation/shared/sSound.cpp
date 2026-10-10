@@ -2614,7 +2614,7 @@ __attribute__((weak)) void sSound::resolveEntry() {
 
 // Address: 0x0128ff90 - 0x0129004e (190 bytes)
 void sSound::updateStreamBuffer() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mStreamVoice[0].::sSound::Voice::mpNativeVoice == static_cast<sSound::NativeVoice*>(nullptr)) {
     } else {
@@ -2736,7 +2736,7 @@ __attribute__((weak)) MtObject* sSound::MyDTI::newInstance() const {
 
 // Address: 0x01290610 - 0x01290640 (48 bytes)
 sSound::NativeVoice* sSound::NativeVoicePool::getNativeVoice(sSound::Voice::VOICE_TYPE voiceType, u32 index) {
-    // local: NativeVoice* pNativeVoice;
+    // DWARF local not rendered: NativeVoice* pNativeVoice;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (voiceType != static_cast<sSound::Voice::VOICE_TYPE>(2)) {
         if (voiceType == static_cast<sSound::Voice::VOICE_TYPE>(1)) {
@@ -3735,7 +3735,7 @@ __attribute__((weak)) void sSound::NativeSystem::setPICOLAPitchShiftEnable(bool 
 
 // Address: 0x01290150 - 0x0129017c (44 bytes)
 void sSound::NativeSystem::initPICOLAPitchShift() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mPICOLAPitchShiftEnable = false;
     this->mPICOLAPitchShiftFreeAreaNo = static_cast<s32>(-1);
@@ -3754,7 +3754,7 @@ __attribute__((weak)) void sSound::NativeSystem::releasePICOLAPitchShift() {
 
 // Address: 0x012902b0 - 0x012902f9 (73 bytes)
 bool sSound::NativeSystem::checkPICOLAPitchShift(s32 picolaPitchShiftNo, rSoundSource* pSource) {
-    // local: Descriptor desc;
+    // DWARF local not rendered: Descriptor desc;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (pSource != static_cast<rSoundSource*>(nullptr)) {
         if (pSource->getChannelNum() == static_cast<u32>(1)) {
@@ -5841,7 +5841,7 @@ void sSound::NativeVoicePS4::applyPitch() {
 
 // Address: 0x012a6b00 - 0x012a6b16 (22 bytes)
 bool sSound::NativeVoicePS4::isEnd() {
-    // local: const u32 stateFlag;
+    // DWARF local not rendered: const u32 stateFlag;
     // Approximate from the ELF: a virtual call on an object outside an inlined callee; the body oracle reports this body.
     return (&this->mVoiceSampler)->getStateFlags() == static_cast<u32>(0);
 }
@@ -5969,7 +5969,7 @@ bool sSound::NativeVoiceStreamPS4::isPrepared() {
 
 // Address: 0x012a7380 - 0x012a739b (27 bytes)
 bool sSound::NativeVoiceStreamPS4::openSource() {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpSource != static_cast<rSoundSourceStreamAT9*>(nullptr)) {
         return this->mpSource->::rSoundSourceStreamAT9::open();
@@ -5980,7 +5980,7 @@ bool sSound::NativeVoiceStreamPS4::openSource() {
 
 // Address: 0x012a73a0 - 0x012a73bb (27 bytes)
 bool sSound::NativeVoiceStreamPS4::closeSource() {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpSource != static_cast<rSoundSourceStreamAT9*>(nullptr)) {
         return this->mpSource->::rSoundSourceStreamAT9::close();

@@ -131,7 +131,7 @@ __attribute__((weak)) void sAIPawnSys::getAIPawnRotateNo(u32* pDst) {
 
 // Address: 0x0071c060 - 0x0071c077 (23 bytes)
 bool sAIPawnSys::isAIPawnRotateEnable(u32 no) const {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((no - static_cast<u32>(1)) <= static_cast<u32>(2)) {
         if (this->mAIPawnRotateFourceUpdate == false) {
@@ -159,7 +159,7 @@ __attribute__((weak)) void sAIPawnSys::updatePawnOrder() {
 
 // Address: 0x0071b5c0 - 0x0071b5d5 (21 bytes)
 u32 sAIPawnSys::getPawnOrderNum() const {
-    // local: const rAIPawnOrder* p_ptr;
+    // DWARF local not rendered: const rAIPawnOrder* p_ptr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpAIPawnOrderRes.mpPtr != static_cast<rAIPawnOrder*>(nullptr)) {
         return this->mpAIPawnOrderRes.mpPtr->getDataNum();
@@ -352,7 +352,6 @@ void sAIPawnSys::resetPartyInDeploy() {
 
 // Address: 0x0071b420 - 0x0071b460 (64 bytes)
 f32 sAIPawnSys::getPawnPrmF32(MT_CTSTR tag, f32 def) {
-    // local: rFreeF32Tbl* p_pw_info;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rFreeF32Tbl* p_pw_info = this->mpAIPawnParam.mpPtr;
     if (p_pw_info != static_cast<rFreeF32Tbl*>(nullptr)) {

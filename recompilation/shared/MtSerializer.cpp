@@ -42,7 +42,6 @@ __attribute__((weak)) MtObject* MtSerializer::deserializeXML(MtStream& in, MT_CT
 
 // Address: 0x00dcd460 - 0x00dcd524 (196 bytes)
 bool MtSerializer::serializeBinary(MtStream& out, u16 version, MtObject* proot, MtSerializer::MODE mode, const MtDTI* prootdti) {
-    // local: MtDataWriter w;
     // Approximate from the ELF: a frame slot read as the DWARF object it holds; the body oracle reports this body.
     if (out.isWritable() != false) {
         MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));

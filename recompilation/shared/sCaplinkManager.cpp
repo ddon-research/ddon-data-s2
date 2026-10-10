@@ -237,7 +237,6 @@ __attribute__((weak)) void sCaplinkManager::updateListener() {
 
 // Address: 0x0073c720 - 0x0073c758 (56 bytes)
 bool sCaplinkManager::isDispErrorDialog() {
-    // local: u32 i;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (this->mListener.::MtArray::mLength != static_cast<u32>(0)) {
         u32 i = static_cast<u32>(0);
@@ -2691,10 +2690,11 @@ const MtDTI& sCaplinkManager::cChatJoin::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void sCaplinkManager::cChatJoin::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (87 bytes)
-//   in sCaplinkManager::cChatJoin::MyDTI::newInstance at 0x007334a4-0x007334cd (called at sCaplinkManager.cpp:125)
-//   in sCaplinkManager::addChatJoin at 0x00741b89-0x00741bb7 (called at sCaplinkManager.cpp:3589)
-// void* sCaplinkManager::cChatJoin::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* sCaplinkManager::cChatJoin::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cChatJoin::DTI)->memAlloc(sz, align, ::sCaplinkManager::cChatJoin::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* sCaplinkManager::cChatJoin::operator new[](size_t sz, u32 align);
@@ -2736,9 +2736,9 @@ inline void sCaplinkManager::cChatJoin::operator delete(void* p_addr) {
 // sCaplinkManager::cChatJoin::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x007334a0 - 0x007334eb (75 bytes)
-__attribute__((weak)) MtObject* sCaplinkManager::cChatJoin::MyDTI::newInstance() const {
-    DDON_STUB("sCaplinkManager::cChatJoin::MyDTI::newInstance")
-    return nullptr;
+MtObject* sCaplinkManager::cChatJoin::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::sCaplinkManager::cChatJoin;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (78 bytes)

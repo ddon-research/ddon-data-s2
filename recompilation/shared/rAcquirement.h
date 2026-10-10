@@ -409,3 +409,67 @@ namespace rAcquirement {
     };
 
 }  // namespace rAcquirement
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rAcquirement::cSkillLevelData::cSkillLevelData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mMsgExpIndex = static_cast<u16>(0);
+    this->mNeedLv = static_cast<u16>(0);
+    this->mNeedJp = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rAcquirement::cCustomSkillData::cCustomSkillData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mId = static_cast<u16>(0);
+    this->mMsgNameIndex = static_cast<u16>(0);
+    this->mIconId = static_cast<u16>(0);
+    this->mLvArray.::MtArray::mAutoDelete = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rAcquirement::cNormalSkillData::cNormalSkillData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mSlotNo = static_cast<u8>(0);
+    this->mCategory = static_cast<u8>(0);
+    this->mPreSkillIndex = static_cast<u8>(0);
+    this->mIconId = static_cast<u16>(0);
+    this->mIndex = static_cast<u8>(0);
+    this->mMsgIndex = static_cast<u8>(0);
+    this->mNeedJp = static_cast<u32>(0);
+    this->mNeedLv = static_cast<u16>(0);
+    this->mSkillNo = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rAcquirement::cAbilityLevelData::cAbilityLevelData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mNeedLv = static_cast<u16>(0);
+    this->mNeedJp = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rAcquirement::cAbilityData::cAbilityData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mIsPawnDisable = false;
+    this->mCost = static_cast<u16>(0);
+    this->mSortNo = static_cast<u16>(0);
+    this->mId = static_cast<u16>(0);
+    this->mMsgNameIndex = static_cast<u16>(0);
+    this->mMsgExpIndex = static_cast<u16>(0);
+    this->mIconId = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rAcquirement::cAbilityAddData::cAbilityAddData() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: cUIResource() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->mId = static_cast<u16>(0);
+    this->mSortCategory = static_cast<u8>(0);
+    this->mLvArray.::MtArray::mAutoDelete = true;
+}

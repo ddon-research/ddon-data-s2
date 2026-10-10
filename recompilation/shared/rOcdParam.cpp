@@ -3,10 +3,10 @@
 #include "rOcdParam.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cOcdParamRes.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -64,9 +64,15 @@ inline void rOcdImmuneParamRes::operator delete(void* p_addr) {
 // Address: 0x006c5d20 - 0x006c5d5d (61 bytes)
 bool rOcdImmuneParamRes::loadData(MtDataReader& in, cOcdImmuneParamRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mOcdUID = in.readU32();
-    pData->mImmuneRate = in.readF32();
-    pData->mImmuneNum = in.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mOcdUID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mImmuneRate);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mImmuneNum);
     return true;
 }
 
@@ -219,4 +225,12 @@ template unsigned int rTbl2<cOcdImmuneParamRes>::getDataNum() const;
 // Instance at 0x01aa9d90 - 0x01aa9d94 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cOcdStatusParamRes>::getDataNum() const;
+
+// Instance at 0x01aaa1e0 - 0x01aaa226 (70 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cOcdImmuneParamRes>::~rTbl2();
+
+// Instance at 0x01aaa280 - 0x01aaa2c6 (70 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cOcdStatusParamRes>::~rTbl2();
 

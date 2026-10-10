@@ -6,6 +6,7 @@
 #include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -145,11 +146,17 @@ inline void rCollIndex::operator delete(void* p_addr) {
 
 // Address: 0x00657be0 - 0x00657c4f (111 bytes)
 bool rCollIndex::loadData(MtDataReader& in, cCollIndex* pData) {
-    // local: u8 top;
+    // DWARF local not rendered: u8 top;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mNode = in.readS16();
-    pData->mAttack = in.readS16();
-    pData->mLinkID = in.readS16();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNode);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAttack);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLinkID);
     pData->mLinkTop = in.::MtDataReader::readU8() != static_cast<u8>(0);
     return true;
 }
@@ -196,4 +203,8 @@ template const cCollIndex* rTbl2<cCollIndex>::getData(unsigned int) const;
 // Instance at 0x01a80340 - 0x01a80344 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cCollIndex>::getDataNum() const;
+
+// Instance at 0x01a804d0 - 0x01a80528 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCollIndex>::~rTbl2();
 

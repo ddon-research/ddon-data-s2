@@ -83,11 +83,37 @@ __attribute__((weak)) void cHumanActBase::init() {
 }
 
 // Address: 0x0022da60 - 0x0022daf4 (148 bytes)
-__attribute__((weak)) void cHumanActBase::move() {
-    // local: bool iscanemotion;
-    // local: u32 actno;
-    DDON_STUB("cHumanActBase::move")
-    /* stub */
+void cHumanActBase::move() {
+    // DWARF local not rendered: bool iscanemotion;
+    // Approximate from the ELF: a store at a join copied into the arms; the body oracle reports this body.
+    this->mpHuman->mIsOmTiming = false;
+    this->::cAction::move();
+    if (0.0f >= this->mpHuman->mEmotionTimer) {
+        if (this->mpHuman->::uHuman::isEventBusy() != false) {
+            this->mpHuman->mIsCanSetEmotion = false;
+        } else {
+            u32 actno = this->mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
+            if ((actno - static_cast<u32>(3)) > static_cast<u32>(1)) {
+                if (this->mpHuman->::uHuman::isFootWork() == false) {
+                    if (actno != static_cast<u32>(382)) {
+                        if ((actno - static_cast<u32>(242)) > static_cast<u32>(130)) {
+                            this->mpHuman->mIsCanSetEmotion = false;
+                        } else {
+                            this->mpHuman->mIsCanSetEmotion = true;
+                        }
+                    } else {
+                        this->mpHuman->mIsCanSetEmotion = true;
+                    }
+                } else {
+                    this->mpHuman->mIsCanSetEmotion = true;
+                }
+            } else {
+                this->mpHuman->mIsCanSetEmotion = true;
+            }
+        }
+    } else {
+        this->mpHuman->mIsCanSetEmotion = false;
+    }
 }
 
 // Address: 0x0022db00 - 0x0022db66 (102 bytes)
@@ -695,7 +721,7 @@ void nHumanActUtility::resetCstmResource(uHuman* pHuman) {
 
 // Address: 0x0022d650 - 0x0022d667 (23 bytes)
 u32 nHumanActUtility::getActionNo(uDDOModel& mod) {
-    // local: cpActionManager* pActMgr;
+    // DWARF local not rendered: cpActionManager* pActMgr;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (mod.::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
         return mod.::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();

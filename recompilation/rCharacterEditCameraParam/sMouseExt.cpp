@@ -105,7 +105,7 @@ sMouse::TYPE sMouseExt::getCurrentType() {
 
 // Address: 0x007eb330 - 0x007eb337 (7 bytes)
 bool sMouseExt::isConnect() {
-    // local: bool isConnected;
+    // DWARF local not rendered: bool isConnected;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::sMouse::isMouseConnected(static_cast<s32>(0));
 }

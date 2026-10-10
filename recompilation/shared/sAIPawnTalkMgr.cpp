@@ -151,8 +151,7 @@ __attribute__((weak)) void sAIPawnTalkMgr::reqPawnTalkCore(sAIPawnTalkMgr::cAIPa
 
 // Address: 0x0071e7b0 - 0x0071e7ed (61 bytes)
 void sAIPawnTalkMgr::receivePawnTalk(u32 talkPawnMemberIndex, u32 msgNo) {
-    // local: cAIPawnTalkInfo* p_info;
-    // local: bool disable_leave;
+    // DWARF local not rendered: bool disable_leave;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     sAIPawnTalkMgr::cAIPawnTalkInfo* p_info = this->::sAIPawnTalkMgr::findPawnTalkInfo(static_cast<s32>(talkPawnMemberIndex), msgNo != static_cast<u32>(25));
     if (p_info == static_cast<sAIPawnTalkMgr::cAIPawnTalkInfo*>(nullptr)) {
@@ -357,8 +356,6 @@ __attribute__((weak)) u32 sAIPawnTalkMgr::convTalkSituationFromMot(u32 motSituat
 
 // Address: 0x0071f1a0 - 0x0071f1d4 (52 bytes)
 u32 sAIPawnTalkMgr::lotAIPawnTalkMotioin(uDDOModel* pPawn, u32 motSituation, u32* pDstMoveType) {
-    // local: cAIPawnAutoMotionNode* p_node;
-    // local: u32 mot_act_no;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cAIPawnAutoMotionNode* p_node = this->::sAIPawnTalkMgr::lotPawnTalkMotNode(pPawn, motSituation);
     if (p_node != static_cast<cAIPawnAutoMotionNode*>(nullptr)) {
@@ -386,10 +383,9 @@ __attribute__((weak)) u32 sAIPawnTalkMgr::lotAIPawnTalkWord(uDDOModel* pPawn, u3
 
 // Address: 0x0071f660 - 0x0071f6c0 (96 bytes)
 f32 sAIPawnTalkMgr::lotAIPawnTalkWaitFrame(uDDOModel* pPawn, u32 motSituation) {
-    // local: cAIPawnAutoMotionNode* p_node;
-    // local: f32 sub_val;
-    // local: f32 add_rnd;
-    // local: f32 frame;
+    // DWARF local not rendered: f32 sub_val;
+    // DWARF local not rendered: f32 add_rnd;
+    // DWARF local not rendered: f32 frame;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cAIPawnAutoMotionNode* p_node = this->::sAIPawnTalkMgr::lotPawnTalkMotNode(pPawn, motSituation);
     if (p_node != static_cast<cAIPawnAutoMotionNode*>(nullptr)) {
@@ -595,10 +591,8 @@ __attribute__((weak)) bool sAIPawnTalkMgr::cAIPawnTalkInfo::updatePawnTalkInfo(b
 
 // Address: 0x0071c960 - 0x0071cb44 (484 bytes)
 void sAIPawnTalkMgr::cAIPawnTalkInfo::loadPawnTalkMsgData() {
-    // local: u32 search_id_gmd;
-    // local: u32 search_id_mss;
-    // local: rGUIMessage* p_gmd;
-    // local: rMsgSet* p_mss;
+    // DWARF local not rendered: u32 search_id_gmd;
+    // DWARF local not rendered: u32 search_id_mss;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     switch (this->mPawnPersonality - static_cast<u32>(1)) {
         case static_cast<u32>(0):

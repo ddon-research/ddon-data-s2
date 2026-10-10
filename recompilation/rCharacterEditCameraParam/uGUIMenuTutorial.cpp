@@ -366,7 +366,6 @@ __attribute__((weak)) void uGUIMenuTutorial::updateScrollListCaption() {
 
 // Address: 0x00b1a1f0 - 0x00b1a278 (136 bytes)
 void uGUIMenuTutorial::updateScrollListDispCtgr(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index) {
-    // local: u32 dispIndex;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
         return;

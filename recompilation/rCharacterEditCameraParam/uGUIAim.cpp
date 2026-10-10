@@ -157,7 +157,7 @@ void uGUIAim::setTargetMarkerPos(u32 targetMarkerId, const MtVector3& pos) {
 
 // Address: 0x00923c60 - 0x00923c88 (40 bytes)
 bool uGUIAim::isValidTargetMarkerId(u32 targetMarkerId) const {
-    // local: bool is_valid;
+    // DWARF local not rendered: bool is_valid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (targetMarkerId <= static_cast<u32>(15)) {
         if (this->mTargetMarkers.elems[targetMarkerId].mpINST_current != static_cast<cGUIInstAnimation*>(nullptr)) {

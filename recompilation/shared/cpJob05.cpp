@@ -10,6 +10,7 @@
 #include "cHitGeom.h"
 #include "cShlNotifyInfo.h"
 #include "cUnit.h"
+#include "cpActionManager.h"
 #include "cpJobBase.h"
 #include "cpObjCollision.h"
 #include "nCharacterData.h"
@@ -269,24 +270,22 @@ __attribute__((weak)) void cpJob05::callbackAttackTest_ShlNotify(cHitInfo* pHitI
 
 // Address: 0x004ac5f0 - 0x004ac658 (104 bytes)
 void cpJob05::callbackCatch_Shl(cShlNotifyInfo* pInfo) {
-    // local: s32 jntNo;
-    // local: cContextInterface& pInterface;
+    // DWARF local not rendered: s32 jntNo;
+    // DWARF local not rendered: cContextInterface& pInterface;
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x4ac5fa read, used twice; no DWARF local holds it
     uDDOModel* t0 = pInfo->mpDfdModel;
-    // inferred: a temporary for the value the load at 0x4ac5fe read, used once; no DWARF local holds it
-    const cHitGeom* t1 = pInfo->mpDfdGeom;
     // inferred: a temporary for the value the load at 0x4ac602 read, used once; no DWARF local holds it
-    const cCollGeom* t2 = t1->mpSrcGeom;
+    const cCollGeom* t1 = pInfo->mpDfdGeom->mpSrcGeom;
     // inferred: a temporary for the value the load at 0x4ac60a read, used 5 times; no DWARF local holds it
-    uHuman* t3 = this->::cpJobBase::mpHuman;
-    t3->mpClimbEnemy = t0;
+    uHuman* t2 = this->::cpJobBase::mpHuman;
+    t2->mpClimbEnemy = t0;
     // inferred: a temporary for the value the load at 0x4ac615 read, used twice; no DWARF local holds it
-    u32 t4 = t0->::cUnit::getUnitParam();
-    t3->mClimbEnemyUId = t4;
-    t3->mClimbJointNo = t2->mJnt0;
-    ::cContextInterface::setClimbEnemyUId(t3->::uDDOModel::mContextInterface.mpContextInstance, t3->::uDDOModel::mContextInterface.mpContextCharacter, t4);
-    ::cContextInterface::setClimbEnemyJointNo(t3->::uDDOModel::mContextInterface.mpContextInstance, t3->::uDDOModel::mContextInterface.mpContextCharacter, this->::cpJobBase::mpHuman->::uHuman::getClimbJointNo());
+    u32 t3 = t0->::cUnit::getUnitParam();
+    t2->mClimbEnemyUId = t3;
+    t2->mClimbJointNo = t1->mJnt0;
+    ::cContextInterface::setClimbEnemyUId(t2->::uDDOModel::mContextInterface.mpContextInstance, t2->::uDDOModel::mContextInterface.mpContextCharacter, t3);
+    ::cContextInterface::setClimbEnemyJointNo(t2->::uDDOModel::mContextInterface.mpContextInstance, t2->::uDDOModel::mContextInterface.mpContextCharacter, this->::cpJobBase::mpHuman->::uHuman::getClimbJointNo());
 }
 
 // Address: 0x004aad30 - 0x004ab3c9 (1689 bytes)
@@ -331,11 +330,34 @@ void cpJob05::callbackOcdSeal() {
 }
 
 // Address: 0x004ac760 - 0x004ac7d0 (112 bytes)
-__attribute__((weak)) u32 cpJob05::replaceCollisionAttr(u32 attr, const cCollNode* pCollNode) {
-    // local: f32 invincibleTime;
-    // local: u32 actNo;
-    DDON_STUB("cpJob05::replaceCollisionAttr")
-    return {};
+u32 cpJob05::replaceCollisionAttr(u32 attr, const cCollNode* pCollNode) {
+    // DWARF local not rendered: f32 invincibleTime;
+    // DWARF local not rendered: u32 actNo;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        if (this->::cpJobBase::mpHuman->::uHuman::getInvincibleTime() > 0.0f) {
+            if (this->mIsGuardMode == false) {
+                if ((this->::cpJobBase::mpHuman->::uDDOModel::mUnitId & static_cast<u32>(1024)) != static_cast<u32>(0)) {
+                    if ((this->::cpJobBase::mpHuman->::uDDOModel::mObjStatusOld & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                    } else {
+                        this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
+                    }
+                }
+                return attr & static_cast<u32>(4294966783);
+            }
+        }
+        if ((this->::cpJobBase::mpHuman->::uDDOModel::mUnitId & static_cast<u32>(1024)) != static_cast<u32>(0)) {
+            if ((this->::cpJobBase::mpHuman->::uDDOModel::mObjStatusOld & static_cast<u64>(256)) != static_cast<u64>(0)) {
+                return attr;
+            } else {
+                return ((this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(8201)) <= static_cast<u32>(11)) ? attr : (attr & static_cast<u32>(4294966783));
+            }
+        } else {
+            return attr;
+        }
+    } else {
+        return attr;
+    }
 }
 
 // Address: 0x004ac810 - 0x004aca9e (654 bytes)
@@ -586,7 +608,7 @@ __attribute__((weak)) void cpJob05::subGuardChargeStockSize(f32 stockNum) {
 
 // Address: 0x004ad150 - 0x004ad1a5 (85 bytes)
 bool cpJob05::isButtonNagaoshi(u32 inputType) const {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (inputType == static_cast<u32>(8)) {
         // inferred: a temporary for the value the load at 0x4ad15d read, used once; no DWARF local holds it
@@ -692,10 +714,18 @@ __attribute__((weak)) void cpJob05::setupSaintWall(nHuman::HM_SKILL_LV SkillLv, 
 // void cpJob05::clearForceAnchorSuccess();
 
 // Address: 0x004adaf0 - 0x004adb3b (75 bytes)
-__attribute__((weak)) void cpJob05::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
-    // local: u32 ActNo;
-    DDON_STUB("cpJob05::callbackReplaceHitInfo_Atk")
-    /* stub */
+void cpJob05::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
+    // DWARF local not rendered: u32 ActNo;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::cpJobBase::mpHuman == static_cast<uHuman*>(nullptr)) {
+        return;
+    }
+    if (this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr() == static_cast<cpActionManager*>(nullptr)) {
+        return;
+    }
+    if ((this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(4151)) <= static_cast<u32>(1)) {
+        this->::cpJobBase::mpHuman->::uDDOModel::attackParamReplace(pHitInfo, static_cast<s32>(2));
+    }
 }
 
 // Address: 0x004ad760 - 0x004ad931 (465 bytes)

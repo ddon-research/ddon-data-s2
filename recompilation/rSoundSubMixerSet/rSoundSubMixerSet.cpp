@@ -79,7 +79,6 @@ rSoundSubMixerSet::~rSoundSubMixerSet() {
 
 // Address: 0x006f03d0 - 0x006f0466 (150 bytes)
 bool rSoundSubMixerSet::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
@@ -92,7 +91,6 @@ bool rSoundSubMixerSet::load(MtStream& in) {
 
 // Address: 0x006f0470 - 0x006f04f6 (134 bytes)
 bool rSoundSubMixerSet::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeBinary(out, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(&::rSoundSubMixerSet::DTI));

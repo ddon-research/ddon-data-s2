@@ -81,7 +81,6 @@ MT_CTSTR rRigidBody::getExt() const {
 
 // Address: 0x01206b10 - 0x01206b7c (108 bytes)
 bool rRigidBody::save(MtStream& output) {
-    // local: MtDataWriter writer;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataWriter writer(output, static_cast<u32>(4096), static_cast<u32>(4096));
     this->::rRigidBody::saveCore(writer);
@@ -90,8 +89,7 @@ bool rRigidBody::save(MtStream& output) {
 
 // Address: 0x01206d40 - 0x01206dcf (143 bytes)
 bool rRigidBody::load(MtStream& input) {
-    // local: u32 length;
-    // local: MtDataReader reader;
+    // DWARF local not rendered: u32 length;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->clear();
     if (input.getLength() != static_cast<u32>(0)) {

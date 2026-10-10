@@ -22,9 +22,9 @@ void nCaplink::ContentListGetAns::init() {
     this->::nCaplink::ContextListener::init();
     this->mContentInfoTbl.mAutoDelete = true;
     if (this->mContentInfoTbl.mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1abe620 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1abe620 carries; no location-less local in scope fits
         u32 v0_0 = this->mContentInfoTbl.mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mContentInfoTbl.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mContentInfoTbl.mpArray[i0_3];

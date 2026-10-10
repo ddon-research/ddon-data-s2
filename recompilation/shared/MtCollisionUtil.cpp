@@ -158,7 +158,7 @@ __attribute__((weak)) void MtCollisionUtil::MtArrayEx::resize(u32 siz) {
 
 // Address: 0x01949d30 - 0x01949d40 (16 bytes)
 void MtCollisionUtil::MtArrayEx::setClass(MtObject* pObj, u32 index) {
-    // local: MtObject* * pArray;
+    // DWARF local not rendered: MtObject* * pArray;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index < this->::MtArray::mBufsiz) {
         this->::MtArray::mpArray[index] = pObj;
@@ -167,7 +167,7 @@ void MtCollisionUtil::MtArrayEx::setClass(MtObject* pObj, u32 index) {
 
 // Address: 0x01949d40 - 0x01949d52 (18 bytes)
 MtObject* MtCollisionUtil::MtArrayEx::getClass(u32 index) {
-    // local: MtObject* * pArray;
+    // DWARF local not rendered: MtObject* * pArray;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index < this->::MtArray::mBufsiz) {
         return this->::MtArray::mpArray[index];
@@ -184,7 +184,7 @@ MtObject* MtCollisionUtil::MtArrayEx::getClass(u32 index) {
 
 // Address: 0x01949d00 - 0x01949d29 (41 bytes)
 MT_CTSTR MtCollisionUtil::MtArrayEx::getElementDtiName() {
-    // local: MtObject* pObj;
+    // DWARF local not rendered: MtObject* pObj;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::MtArray::mLength != static_cast<u32>(0)) {
         if ((*this->::MtArray::mpArray) != static_cast<MtObject*>(nullptr)) {

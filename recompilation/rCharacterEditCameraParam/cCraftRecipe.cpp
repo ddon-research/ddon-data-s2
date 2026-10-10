@@ -91,10 +91,9 @@ MtUI* cCraftRecipe::createUI(MtProperty& prop) {
 
 // Address: 0x0006fbc0 - 0x0006fbe6 (38 bytes)
 u32 cCraftRecipe::convCategoryToIndex(rItemList::ITEM_CATEGORY category) {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const rItemList::ITEM_CATEGORY* p2 = ::cCraftRecipe::mCategoryTbl;
     do {
         if ((*p2) == category) {
@@ -118,10 +117,9 @@ rItemList::ITEM_CATEGORY cCraftRecipe::convIndexToCategory(u32 index) {
 
 // Address: 0x0006fc30 - 0x0006fc56 (38 bytes)
 u32 cCraftRecipe::convEquipCategoryToIndex(nCharacterData::EQUIP_CATEGORY category) {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_CATEGORY* p2 = ::cCraftRecipe::mEquipCategoryTbl;
     do {
         if ((*p2) == category) {
@@ -229,11 +227,10 @@ __attribute__((weak)) u32 cCraftRecipe::getCategoryNum() {
 
 // Address: 0x00070d20 - 0x00070d57 (55 bytes)
 u32 cCraftRecipe::getItemCategoyNum(rItemList::ITEM_CATEGORY category) {
-    // local: u32 index;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const rItemList::ITEM_CATEGORY* p0_0 = ::cCraftRecipe::mCategoryTbl;
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_1 = static_cast<unsigned int>(0);
     u32 index;
     for (;;) {
@@ -265,11 +262,10 @@ u32 cCraftRecipe::getEquipCategoryNum() {
 
 // Address: 0x00070d60 - 0x00070d97 (55 bytes)
 u32 cCraftRecipe::getEquipItemCategoyNum(nCharacterData::EQUIP_CATEGORY category) {
-    // local: u32 index;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_CATEGORY* p0_0 = ::cCraftRecipe::mEquipCategoryTbl;
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_1 = static_cast<unsigned int>(0);
     u32 index;
     for (;;) {
@@ -301,7 +297,7 @@ __attribute__((weak)) rCraftRecipe::cCraftRecipe* cCraftRecipe::getRecipeList(u3
 
 // Address: 0x00070f90 - 0x00070fad (29 bytes)
 u32 cCraftRecipe::getRecipeId(u32 itemCate, u32 index) {
-    // local: cCraftRecipeList* pList;
+    // DWARF local not rendered: cCraftRecipeList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index < this->mRecipeList[itemCate].::MtArray::mLength) {
         return static_cast<cCraftRecipe::cCraftRecipeList*>(this->mRecipeList[itemCate].::MtArray::mpArray[index])->::cCraftRecipe::cCraftRecipeList::getRecipeId();
@@ -312,7 +308,7 @@ u32 cCraftRecipe::getRecipeId(u32 itemCate, u32 index) {
 
 // Address: 0x00070fb0 - 0x00070fcd (29 bytes)
 u32 cCraftRecipe::getRecipeType(u32 itemCate, u32 index) {
-    // local: cCraftRecipeList* pList;
+    // DWARF local not rendered: cCraftRecipeList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index < this->mRecipeList[itemCate].::MtArray::mLength) {
         return static_cast<cCraftRecipe::cCraftRecipeList*>(this->mRecipeList[itemCate].::MtArray::mpArray[index])->::cCraftRecipe::cCraftRecipeList::getType();
@@ -344,7 +340,7 @@ __attribute__((weak)) MT_CTSTR cCraftRecipe::getSelectUID(u32 category, u32 inde
 
 // Address: 0x00071120 - 0x00071140 (32 bytes)
 u32 cCraftRecipe::getSelectItemBagType(u32 category, u32 index) {
-    // local: cCraftRecipeList* pList;
+    // DWARF local not rendered: cCraftRecipeList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index < this->mRecipeList[category].::MtArray::mLength) {
         return static_cast<cCraftRecipe::cCraftRecipeList*>(this->mRecipeList[category].::MtArray::mpArray[index])->::cCraftRecipe::cCraftRecipeList::getBagType();

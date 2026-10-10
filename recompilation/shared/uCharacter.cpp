@@ -10,6 +10,7 @@
 #include "cAISvPathFinding.h"
 #include "cContextInterface.h"
 #include "cGeneralPointPtr.h"
+#include "cGuardInfo.h"
 #include "cHitInfoAfter.h"
 #include "cResource.h"
 #include "cUnit.h"
@@ -22,6 +23,7 @@
 #include "cpJointEx2.h"
 #include "cpLayout.h"
 #include "../rPawnAIAction/cpMotionRate.h"
+#include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
 #include "../rPawnAIAction/cpShakeCtrl.h"
 #include "cpStateManager.h"
@@ -115,7 +117,7 @@ __attribute__((weak)) void uCharacter::setup() {
 
 // Address: 0x00899f00 - 0x00899f05 (5 bytes)
 void uCharacter::move() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uDDOModel::move();
 }
@@ -248,7 +250,7 @@ u32 uCharacter::actionConvert(u32 actNo) {
 
 // Address: 0x00899a10 - 0x00899aa3 (147 bytes)
 void uCharacter::updateMotion() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((this->::uDDOModel::mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
         if (this->::uDDOModel::getMotionNo(static_cast<u32>(0)) == static_cast<u32>(65535)) {
@@ -278,7 +280,7 @@ void uCharacter::updateMatrix() {
 
 // Address: 0x0089a500 - 0x0089a512 (18 bytes)
 void uCharacter::callbackUpdateAfter() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpVibration == static_cast<cpVibration*>(nullptr)) {
         return;
@@ -463,7 +465,7 @@ void uCharacter::checkReturnTerritory(bool forceReturnTeritory) {
 
 // Address: 0x0089b640 - 0x0089b663 (35 bytes)
 bool uCharacter::isReturnTerritoryFlag() {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getStateLivePtr() != static_cast<cpStateManager*>(nullptr)) {
         return this->::uDDOModel::getStateLivePtr()->::cpStateManager::getStateNo() == static_cast<s32>(516);
@@ -614,13 +616,12 @@ __attribute__((weak)) void uCharacter::effectCondistionFromScr() {
 
 // Address: 0x0089e580 - 0x0089e61e (158 bytes)
 void uCharacter::clearOcdAll() {
-    // local: cpOcdCtrl* pOcdCtrl;
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     cpOcdCtrl* pOcdCtrl = this->::uDDOModel::getOcdCtrlPtr();
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_3;
     if (pOcdCtrl == static_cast<cpOcdCtrl*>(nullptr)) {
         return;
@@ -635,7 +636,7 @@ void uCharacter::clearOcdAll() {
             break;
         }
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i2_3 = static_cast<unsigned int>(4097);;) {
         pOcdCtrl->::cpOcdCtrl::reqOcdCure(i2_3);
         if ((i2_3 + static_cast<unsigned int>(1)) != static_cast<unsigned int>(4128)) {
@@ -810,8 +811,8 @@ __attribute__((weak)) void uCharacter::callbackStorm(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0089e170 - 0x0089e1bf (79 bytes)
 bool uCharacter::isEnableStorm(cHitInfoAfter* pHitInfo) {
-    // local: bool ret;
-    // local: const cAttackParam* pAttackParam;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: const cAttackParam* pAttackParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
         if (this->::uDDOModel::mGuardComponent.mpActionRequest != static_cast<cpActionRequest*>(nullptr)) {
@@ -825,7 +826,7 @@ bool uCharacter::isEnableStorm(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0089e130 - 0x0089e169 (57 bytes)
 bool uCharacter::isEnableQuake(cHitInfoAfter* pHitInfo) {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
         if (this->::uDDOModel::mGuardComponent.mpActionRequest != static_cast<cpActionRequest*>(nullptr)) {
@@ -878,7 +879,7 @@ __attribute__((weak)) void uCharacter::makeDamageDefenceInfo(cHitInfoAfter* pHit
 
 // Address: 0x0089c780 - 0x0089c883 (259 bytes)
 __attribute__((weak)) void uCharacter::makeDamageAttackInfoCom(cHitInfoAfter* pHitInfo) {
-    // local: cHpDamageInfo& damageInfo;
+    // DWARF local not rendered: cHpDamageInfo& damageInfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;
@@ -1014,10 +1015,34 @@ __attribute__((weak)) void uCharacter::playHitStopSlow(cHitInfoAfter* pHitInfo) 
 }
 
 // Address: 0x0089d320 - 0x0089d39a (122 bytes)
-__attribute__((weak)) void uCharacter::callbackGuard(cHitInfo* pHitInfo) {
-    // local: u32 actNo;
-    DDON_STUB("uCharacter::callbackGuard")
-    /* stub */
+void uCharacter::callbackGuard(cHitInfo* pHitInfo) {
+    // DWARF local not rendered: u32 actNo;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pHitInfo == static_cast<cHitInfo*>(nullptr)) {
+        return;
+    }
+    if (pHitInfo->mpAtkModel == static_cast<uDDOModel*>(nullptr)) {
+        return;
+    }
+    if (pHitInfo->mpDfdModel == static_cast<uDDOModel*>(nullptr)) {
+        return;
+    }
+    this->::uDDOModel::callbackGuard(pHitInfo);
+    if (pHitInfo->mpGuardInfo->mGuardDefenceResultType != static_cast<u32>(2)) {
+        return;
+    }
+    if ((pHitInfo->mpDfdModel->mUnitId & static_cast<u32>(2)) == static_cast<u32>(0)) {
+        return;
+    }
+    if (pHitInfo->mpAtkModel == static_cast<uDDOModel*>(nullptr)) {
+        return;
+    }
+    if ((pHitInfo->mpAtkModel->mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+        return;
+    }
+    if ((pHitInfo->mpAtkModel->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(8195)) <= static_cast<u32>(1)) {
+        ::nDDOUtility::requestOnTutorialFlg(static_cast<s32>(1));
+    }
 }
 
 // Address: 0x0089d3a0 - 0x0089d3d1 (49 bytes)
@@ -1032,14 +1057,14 @@ void uCharacter::callbackGuarded(cHitInfo* pHitInfo) {
 
 // Address: 0x0089e090 - 0x0089e095 (5 bytes)
 bool uCharacter::callbackShake(cHitInfoAfter* pHitInfo) {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::uDDOModel::callbackShake(pHitInfo);
 }
 
 // Address: 0x0089e0a0 - 0x0089e0a5 (5 bytes)
 bool uCharacter::callbackDown(cHitInfoAfter* pHitInfo) {
-    // local: bool ret;
+    // DWARF local not rendered: bool ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::uDDOModel::callbackDown(pHitInfo);
 }

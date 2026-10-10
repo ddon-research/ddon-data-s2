@@ -71,8 +71,12 @@ inline void rSoundAttributeSe::operator delete(void* p_addr) {
 // Address: 0x006f8840 - 0x006f8891 (81 bytes)
 // Also emitted as: _ZN17rSoundAttributeSeD0Ev at 0x006f88a0
 rSoundAttributeSe::~rSoundAttributeSe() {
-    DDON_STUB("rSoundAttributeSe::~rSoundAttributeSe")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpAttributeSeData == static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr)) {
+        return;
+    }
+    delete[] this->mpAttributeSeData;
+    this->mpAttributeSeData = static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr);
 }
 
 // Address: 0x01ab3580 - 0x01ab3588 (8 bytes)
@@ -89,7 +93,6 @@ __attribute__((weak)) void rSoundAttributeSe::createProperty(MtPropertyList& s) 
 
 // Address: 0x006f8b10 - 0x006f8b91 (129 bytes)
 bool rSoundAttributeSe::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(3), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr);
@@ -265,11 +268,10 @@ inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete(void* p_ad
     ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
 }
 
-// No out-of-line body: 3 inlined copies in 3 functions (72 bytes)
-//   in _ZN17rSoundAttributeSeD1Ev at 0x006f8865-0x006f887d (called at rSoundAttributeSe.cpp:58)
-//   in rSoundAttributeSe::~rSoundAttributeSe at 0x006f88c5-0x006f88dd (called at rSoundAttributeSe.cpp:58)
-//   in rSoundAttributeSe::createAttributeSeDataForProperty at 0x01ab3481-0x01ab3499 (called at rSoundAttributeSe.cpp:154)
-// void rSoundAttributeSe::cSoundAttributeSeData::operator delete[](void* p_addr);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
+}
 
 // No out-of-line body: no code in the ELF
 // void rSoundAttributeSe::cSoundAttributeSeData::operator delete(void* p_addr, u32 align);
@@ -301,9 +303,45 @@ MtUI* rSoundAttributeSe::cSoundAttributeSeData::createUI(MtProperty& prop) {
 }
 
 // Address: 0x006faa60 - 0x006faace (110 bytes)
-__attribute__((weak)) void rSoundAttributeSe::cSoundAttributeSeData::copy(rSoundAttributeSe::cSoundAttributeSeData* p_src) {
-    DDON_STUB("rSoundAttributeSe::cSoundAttributeSeData::copy")
-    /* stub */
+void rSoundAttributeSe::cSoundAttributeSeData::copy(rSoundAttributeSe::cSoundAttributeSeData* p_src) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (p_src == static_cast<rSoundAttributeSe::cSoundAttributeSeData*>(nullptr)) {
+        return;
+    }
+    this->mReqType = p_src->mReqType;
+    this->mSeReqID_00 = p_src->mSeReqID_00;
+    this->mSeReqID_01 = p_src->mSeReqID_01;
+    this->mSeReqID_02 = p_src->mSeReqID_02;
+    this->mSeReqID_03 = p_src->mSeReqID_03;
+    this->mSeReqID_04 = p_src->mSeReqID_04;
+    this->mSeReqID_05 = p_src->mSeReqID_05;
+    this->mSeReqID_06 = p_src->mSeReqID_06;
+    this->mSeReqID_07 = p_src->mSeReqID_07;
+    this->mSeReqID_08 = p_src->mSeReqID_08;
+    this->mSeReqID_09 = p_src->mSeReqID_09;
+    this->mSeReqID_10 = p_src->mSeReqID_10;
+    this->mSeReqID_11 = p_src->mSeReqID_11;
+    this->mSeReqID_12 = p_src->mSeReqID_12;
+    this->mSeReqID_13 = p_src->mSeReqID_13;
+    this->mSeReqID_14 = p_src->mSeReqID_14;
+    this->mSeReqID_15 = p_src->mSeReqID_15;
+    this->mSeReqID_16 = p_src->mSeReqID_16;
+    this->mSeReqID_17 = p_src->mSeReqID_17;
+    this->mSeReqID_18 = p_src->mSeReqID_18;
+    this->mSeReqID_19 = p_src->mSeReqID_19;
+    this->mSeReqID_20 = p_src->mSeReqID_20;
+    this->mSeReqID_21 = p_src->mSeReqID_21;
+    this->mSeReqID_22 = p_src->mSeReqID_22;
+    this->mSeReqID_23 = p_src->mSeReqID_23;
+    this->mSeReqID_24 = p_src->mSeReqID_24;
+    this->mSeReqID_25 = p_src->mSeReqID_25;
+    this->mSeReqID_26 = p_src->mSeReqID_26;
+    this->mSeReqID_27 = p_src->mSeReqID_27;
+    this->mSeReqID_28 = p_src->mSeReqID_28;
+    this->mSeReqID_29 = p_src->mSeReqID_29;
+    this->mSeReqID_30 = p_src->mSeReqID_30;
+    this->mSeReqID_31 = p_src->mSeReqID_31;
+    this->mUseFindIntersect = p_src->mUseFindIntersect;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (581 bytes)

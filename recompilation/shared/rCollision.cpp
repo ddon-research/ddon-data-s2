@@ -74,18 +74,15 @@ rCollision::~rCollision() {
 
 // Address: 0x01207410 - 0x012074ac (156 bytes)
 bool rCollision::load(MtStream& in) {
-    // local: MtDataReader r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    // inferred: a temporary for the value the load at 0x1207440 read, used once; no DWARF local holds it
-    sResource* t1 = ::sResource::mpInstance;
     // inferred: a temporary for the value the load at 0x1207443 read, used once; no DWARF local holds it
-    u32 t2 = t1->mRCollisionDataReaderBufferSizeKB;
+    u32 t1 = (::sResource::mpInstance)->mRCollisionDataReaderBufferSizeKB;
     // inferred: a temporary for the result of the call at 0x1207452, used once; no DWARF local holds it
-    u32 t3 = in.getLength();
-    MtDataReader r(in, (t3 < (t2 * static_cast<u32>(1024))) ? t3 : (t2 * static_cast<u32>(1024)));
+    u32 t2 = in.getLength();
+    MtDataReader r(in, (t2 < (t1 * static_cast<u32>(1024))) ? t2 : (t1 * static_cast<u32>(1024)));
     // inferred: a temporary for the result of the call at 0x1207479, used once; no DWARF local holds it
-    bool t4 = this->::rCollision::loadCore(r, false);
-    return t4;
+    bool t3 = this->::rCollision::loadCore(r, false);
+    return t3;
 }
 
 // Address: 0x012074b0 - 0x012077a0 (752 bytes)

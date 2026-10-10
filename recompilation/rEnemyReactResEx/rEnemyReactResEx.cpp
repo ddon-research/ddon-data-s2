@@ -3,9 +3,9 @@
 #include "rEnemyReactResEx.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -152,11 +152,21 @@ rEnemyReactResEx::~rEnemyReactResEx() {
 // Address: 0x0066d7c0 - 0x0066d817 (87 bytes)
 bool rEnemyReactResEx::loadData(MtDataReader& r, cEnemyReactRes* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mCountStart = r.readU32();
-    pData->mCountEnd = r.readU32();
-    pData->mPercent = r.readF32();
-    pData->mParam0 = r.readS32();
-    pData->mParam1 = r.readS32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCountStart);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCountEnd);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mPercent);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mParam0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mParam1);
     return true;
 }
 
@@ -210,4 +220,8 @@ template const cEnemyReactRes* rTbl2<cEnemyReactRes>::getData(unsigned int) cons
 // Instance at 0x01a8bd10 - 0x01a8bd14 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEnemyReactRes>::getDataNum() const;
+
+// Instance at 0x01a8be30 - 0x01a8be88 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cEnemyReactRes>::~rTbl2();
 

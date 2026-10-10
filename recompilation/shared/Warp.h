@@ -124,3 +124,29 @@ public:
     u32 m_ulRimPrice;  // offset: 0xc
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataAreaWarpPoint::CDataAreaWarpPoint() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unAreaID = static_cast<u32>(0);
+    this->m_unWarpPointID = static_cast<u32>(0);
+    this->m_unPrice = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataFavoriteWarpPoint::CDataFavoriteWarpPoint() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ulSlotNo = static_cast<u32>(0);
+    this->m_ulWarpPointID = static_cast<u32>(0);
+    this->m_unPrice = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataWarpPoint::CDataWarpPoint() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ulID = static_cast<u32>(0);
+    this->m_ulRimPrice = static_cast<u32>(0);
+}

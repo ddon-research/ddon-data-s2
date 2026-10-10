@@ -228,7 +228,6 @@ __attribute__((weak)) void sEnemyManager::setLODDist(uBaseModel* bm) {
 
 // Address: 0x0077a4d0 - 0x0077a4fd (45 bytes)
 f32 sEnemyManager::getShakeChanceAdjust(u32 index) const {
-    // local: cAdjustParam* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprShakeChanceAdj != static_cast<rAdjustParam*>(nullptr)) {
         cAdjustParam* pParam = this->mprShakeChanceAdj->getData(index);

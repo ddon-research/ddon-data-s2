@@ -292,8 +292,6 @@ __attribute__((weak)) bool rStarCatalog::load(MtStream& in) {
 
 // Address: 0x011e10d0 - 0x011e116b (155 bytes)
 bool rStarCatalog::save(MtStream& in) {
-    // local: MtDataWriter w;
-    // local: Header h;
     // Approximate from the ELF: an unlocated local at the frame address its call receives; the body oracle reports this body.
     MtDataWriter w(in, static_cast<u32>(4096), static_cast<u32>(4096));
     // inferred: an unlocated local at the frame address its call receives

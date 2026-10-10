@@ -68,7 +68,7 @@ inline void uSoundMotionSe::operator delete(void* p_addr) {
 
 // Address: 0x00d20090 - 0x00d20297 (519 bytes)
 uSoundMotionSe::uSoundMotionSe() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mpMotionSe = static_cast<rSoundMotionSe*>(nullptr);
     this->mpTarModel = static_cast<uModel*>(nullptr);

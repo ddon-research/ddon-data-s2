@@ -550,9 +550,8 @@ __attribute__((weak)) bool nNetMsg::cNetMsgBase::receiveMessageCore() {
 
 // Address: 0x00382fa0 - 0x00383022 (130 bytes)
 void nNetMsg::cNetMsgBase::pushUniqueId(u32 uniqueId) {
-    // local: stUniqueID* pUid;
-    // local: cContextInstHm* pInst;
-    // local: stUniqueID sendId;
+    // DWARF local not rendered: stUniqueID* pUid;
+    // DWARF local not rendered: stUniqueID sendId;
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
     if ((uniqueId & static_cast<u32>(7)) == static_cast<u32>(1)) {
         cContextInstHm* pInst = ::sContextManager::getInstance()->::sContextManager::getContextPlayerIndex((uniqueId >> static_cast<u32>(4)) & static_cast<u32>(1048575), true);
@@ -574,8 +573,8 @@ void nNetMsg::cNetMsgBase::pushUniqueId(u32 uniqueId) {
 
 // Address: 0x00383030 - 0x00383069 (57 bytes)
 u32 nNetMsg::cNetMsgBase::popUniqueId(u32 uniqueId) {
-    // local: stUniqueID* pUid;
-    // local: cContextInstHm* pInst;
+    // DWARF local not rendered: stUniqueID* pUid;
+    // DWARF local not rendered: cContextInstHm* pInst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((uniqueId & static_cast<u32>(7)) == static_cast<u32>(1)) {
         return ::cContextInterface::getUniqueId(static_cast<const cContextInstance*>(::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(static_cast<s32>((uniqueId >> static_cast<u32>(4)) & static_cast<u32>(1048575)))), static_cast<const cContextCharacter*>(nullptr));

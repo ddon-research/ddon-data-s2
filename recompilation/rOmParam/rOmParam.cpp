@@ -10,6 +10,7 @@
 #include "../shared/MtString.h"
 #include "../shared/cResPath.h"
 #include "../shared/cResource.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rCaughtInfoParam.h"
 #include "../shared/rCollision.h"
 #include "../shared/rDeformWeightMap.h"
@@ -223,7 +224,6 @@ u16 rOmParam::getDataVersion() {
 
 // Address: 0x01aaa8b0 - 0x01aaa919 (105 bytes)
 bool rOmParam::load(MtStream& in) {
-    // local: MtDataReader r;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     return this->::rOmParam::loadData(r);
@@ -256,39 +256,105 @@ __attribute__((weak)) bool rOmParam::save(MtStream& out) {
 // Address: 0x006c6660 - 0x006c6b0c (1196 bytes)
 bool rOmParam::loadData(MtDataReader& in, cOmParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mOmID = in.readS32();
-    pData->mrModel.::cResPathBase::mId = in.readU64();
-    pData->mrObjCollision.::cResPathBase::mId = in.readU64();
-    pData->mrMotionList.::cResPathBase::mId = in.readU64();
-    pData->mrSoundMotionSe.::cResPathBase::mId = in.readU64();
-    pData->mUnitDTIID = in.readU32();
-    pData->mUseComponent = in.readU32();
-    pData->mOmSetType = in.readU32();
-    pData->mrEffectProvider.::cResPathBase::mId = in.readU64();
-    pData->mrSoundRequest.::cResPathBase::mId = in.readU64();
-    pData->mReqSeFlag = in.readU32();
-    pData->mFxIndex[0] = in.readS32();
-    pData->mSeIndex[0] = in.readS32();
-    pData->mFxIndex[1] = in.readS32();
-    pData->mSeIndex[1] = in.readS32();
-    pData->mFxIndex[2] = in.readS32();
-    pData->mSeIndex[2] = in.readS32();
-    pData->mFxIndex[3] = in.readS32();
-    pData->mSeIndex[3] = in.readS32();
-    pData->mrSwingModel.::cResPathBase::mId = in.readU64();
-    pData->mrSoftBody.::cResPathBase::mId = in.readU64();
-    pData->mrRigidBody.::cResPathBase::mId = in.readU64();
-    pData->mrBrRigidBody.::cResPathBase::mId = in.readU64();
-    pData->mrBrModel.::cResPathBase::mId = in.readU64();
-    pData->mrBrSoftBody.::cResPathBase::mId = in.readU64();
-    pData->mrCaught.::cResPathBase::mId = in.readU64();
-    pData->mrZone.::cResPathBase::mId = in.readU64();
-    pData->mrOmZone.::cResPathBase::mId = in.readU64();
-    pData->mrJointInfo.::cResPathBase::mId = in.readU64();
-    pData->mDetailBehavior = in.readU32();
-    pData->mMapIcon = in.readU32();
-    pData->mKillLength = in.readF32();
-    pData->mbUseNightColor = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mOmID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrModel);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrObjCollision);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrMotionList);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrSoundMotionSe);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mUnitDTIID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mUseComponent);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mOmSetType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrEffectProvider);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrSoundRequest);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mReqSeFlag);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mFxIndex[0]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSeIndex[0]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mFxIndex[1]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSeIndex[1]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mFxIndex[2]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSeIndex[2]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mFxIndex[3]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSeIndex[3]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrSwingModel);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrSoftBody);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrRigidBody);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrBrRigidBody);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrBrModel);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrBrSoftBody);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrCaught);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrZone);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrOmZone);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrJointInfo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mDetailBehavior);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMapIcon);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mKillLength);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mbUseNightColor);
     pData->mNightColor = in.readV3();
     pData->mRigidTime = in.readF32();
     pData->mRigidForce = in.readF32();
@@ -297,25 +363,43 @@ bool rOmParam::loadData(MtDataReader& in, cOmParam* pData) {
     pData->mRigidWorldOfsY = in.readF32();
     pData->mRigid1Frame = in.readF32();
     pData->mOffSeLength = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->mKeyOfs = in.readV3();
-    pData->mbNav = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    ::nDDOIO::readData(in, pData->mbNav);
     pData->mNavOBBPos = in.readV3();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->mNavOBBExtent = in.readV3();
-    pData->mbAtk = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    ::nDDOIO::readData(in, pData->mbAtk);
     pData->mShotGroup = in.readU32();
     pData->mWepType = in.readS32();
     pData->mThrowVelocity = in.readF32();
     pData->mThrowVectorY = in.readF32();
     pData->mArcTagID = in.readU32();
     pData->mTargetJntNo = in.readS32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     pData->mTargetOfs = in.readV3();
-    pData->mColliOffFrame = in.readU32();
-    pData->mBlinkType = in.readU32();
-    pData->mrCollision[0][0].::cResPathBase::mId = in.readU64();
-    pData->mrCollision[0][1].::cResPathBase::mId = in.readU64();
-    pData->mrCollision[1][0].::cResPathBase::mId = in.readU64();
-    pData->mrCollision[1][1].::cResPathBase::mId = in.readU64();
-    pData->mVersion = in.readU32();
+    ::nDDOIO::readData(in, pData->mColliOffFrame);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBlinkType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrCollision[0][0]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrCollision[0][1]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrCollision[1][0]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mrCollision[1][1]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mVersion);
     return true;
 }
 

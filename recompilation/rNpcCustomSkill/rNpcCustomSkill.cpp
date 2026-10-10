@@ -3,9 +3,9 @@
 #include "rNpcCustomSkill.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -170,16 +170,36 @@ inline void rNpcCustomSkill::operator delete(void* p_addr) {
 // Address: 0x006aa190 - 0x006aa22f (159 bytes)
 bool rNpcCustomSkill::loadData(MtDataReader& in, cNpcCustomSkill* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mThinkId = in.readU32();
-    pData->mCustomSkill1 = in.readU16();
-    pData->mCustomSkill2 = in.readU16();
-    pData->mCustomSkill3 = in.readU16();
-    pData->mCustomSkill4 = in.readU16();
-    pData->mCustomSkillLv1 = in.readU16();
-    pData->mCustomSkillLv2 = in.readU16();
-    pData->mCustomSkillLv3 = in.readU16();
-    pData->mCustomSkillLv4 = in.readU16();
-    pData->mNormalSkillBit = in.readU16();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mThinkId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustomSkill1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustomSkill2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustomSkill3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustomSkill4);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustomSkillLv1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustomSkillLv2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustomSkillLv3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustomSkillLv4);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNormalSkillBit);
     return true;
 }
 
@@ -225,4 +245,8 @@ template const cNpcCustomSkill* rTbl2<cNpcCustomSkill>::getData(unsigned int) co
 // Instance at 0x01a9ea10 - 0x01a9ea14 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cNpcCustomSkill>::getDataNum() const;
+
+// Instance at 0x01a9ebb0 - 0x01a9ec08 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cNpcCustomSkill>::~rTbl2();
 

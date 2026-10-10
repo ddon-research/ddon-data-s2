@@ -26,6 +26,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "Party.h"
 #include "Pawn.h"
@@ -134,9 +135,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_R
 // nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fc080 - 0x003fc0fa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -226,9 +227,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LI
 // nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fbcd0 - 0x003fbd4a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -319,9 +320,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_
 // nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fc1d0 - 0x003fc24a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -411,9 +412,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST
 // nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fbf30 - 0x003fbfaa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -535,9 +536,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_AREA_WARP_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_AREA_WARP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_AREA_WARP_RES::MyDTI::newInstance at 0x003f28b4-0x003f28dd (called at S2CImplement.inc:270)
-// void* nUserSession::CPacket_S2C_AREA_WARP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_AREA_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_AREA_WARP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_AREA_WARP_RES::operator new[](size_t sz, u32 align);
@@ -599,9 +602,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_AREA_WARP_RES::operator del
 // nUserSession::CPacket_S2C_AREA_WARP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f28b0 - 0x003f2909 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_AREA_WARP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_AREA_WARP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_AREA_WARP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_AREA_WARP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -624,9 +627,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::MyDTI::newInstance at 0x0040e9e4-0x0040ea0d (called at S2CImplement.inc:646)
-// void* nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::operator new[](size_t sz, u32 align);
@@ -688,9 +693,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::operator
 // nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040e9e0 - 0x0040ea39 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -713,9 +718,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::MyDTI::newInstance at 0x0040e804-0x0040e82d (called at S2CImplement.inc:644)
-// void* nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::operator new[](size_t sz, u32 align);
@@ -777,9 +784,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::operato
 // nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040e800 - 0x0040e859 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -802,9 +809,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RE
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::MyDTI::newInstance at 0x0040ef64-0x0040ef8d (called at S2CImplement.inc:652)
-// void* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::operator new[](size_t sz, u32 align);
@@ -868,9 +877,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE
 // nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040ef60 - 0x0040efb9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -893,9 +902,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::MyDTI::newInstance at 0x0040eda4-0x0040edcd (called at S2CImplement.inc:650)
-// void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::operator new[](size_t sz, u32 align);
@@ -984,9 +995,9 @@ s32 nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::ReadPacket(CPacke
 // nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040eda0 - 0x0040ee00 (96 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1009,9 +1020,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::MyDTI::newInstance at 0x0040ebc4-0x0040ebed (called at S2CImplement.inc:648)
-// void* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::operator new[](size_t sz, u32 align);
@@ -1073,9 +1086,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::operat
 // nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040ebc0 - 0x0040ec1a (90 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1098,9 +1111,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::MyDTI::newInstance at 0x0040ead4-0x0040eafd (called at S2CImplement.inc:647)
-// void* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::operator new[](size_t sz, u32 align);
@@ -1160,9 +1175,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::operat
 // nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040ead0 - 0x0040eb29 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1185,9 +1200,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::MyDTI::newInstance at 0x0040ecb4-0x0040ecdd (called at S2CImplement.inc:649)
-// void* nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::operator new[](size_t sz, u32 align);
@@ -1247,9 +1264,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES
 // nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040ecb0 - 0x0040ed08 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1272,9 +1289,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::MyDTI::newInstance at 0x0040e8f4-0x0040e91d (called at S2CImplement.inc:645)
-// void* nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::operator new[](size_t sz, u32 align);
@@ -1336,9 +1355,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::oper
 // nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040e8f0 - 0x0040e949 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1431,9 +1450,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES::operator
 // nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00416dd0 - 0x00416e51 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1526,9 +1545,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES::op
 // nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00417060 - 0x004170e1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1618,9 +1637,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES::operato
 // nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00416c80 - 0x00416cfa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1707,9 +1726,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES::operat
 // nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00416f30 - 0x00416f88 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1732,9 +1751,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::MyDTI::newInstance at 0x003f9024-0x003f904d (called at S2CImplement.inc:362)
-// void* nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::operator new[](size_t sz, u32 align);
@@ -1795,9 +1816,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::op
 // nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f9020 - 0x003f9078 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1820,9 +1841,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::MyDTI::newInstance at 0x003f7ee4-0x003f7f0d (called at S2CImplement.inc:347)
-// void* nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::operator new[](size_t sz, u32 align);
@@ -1886,9 +1909,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::operato
 // nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f7ee0 - 0x003f7f3c (92 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1911,9 +1934,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::MyDTI::newInstance at 0x00403194-0x004031bd (called at S2CImplement.inc:505)
-// void* nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::operator new[](size_t sz, u32 align);
@@ -1969,9 +1994,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::operator 
 // nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00403190 - 0x004031e1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CANCEL_CRAFT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2058,9 +2083,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::
 // nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eb440 - 0x003eb498 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2170,9 +2195,9 @@ s32 nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::ReadPacket(CPacket* pPacket)
 // nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fd1e0 - 0x003fd23a (90 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2280,9 +2305,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::MyDTI::newInstance at 0x00410c84-0x00410cad (called at S2CImplement.inc:677)
-// void* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -2342,9 +2369,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES
 // nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410c80 - 0x00410cd8 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2367,9 +2394,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::MyDTI::newInstance at 0x003fedc4-0x003feded (called at S2CImplement.inc:444)
-// void* nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::operator new[](size_t sz, u32 align);
@@ -2455,9 +2484,9 @@ s32 nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::ReadPacket(CPacket* p
 // nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fedc0 - 0x003fee1f (95 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2480,9 +2509,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::MyDTI::newInstance at 0x003feeb4-0x003feedd (called at S2CImplement.inc:445)
-// void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::operator new[](size_t sz, u32 align);
@@ -2559,9 +2590,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTIC
 // nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003feeb0 - 0x003fef39 (137 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2584,9 +2615,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTIC
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::MyDTI::newInstance at 0x003ff0f4-0x003ff11d (called at S2CImplement.inc:447)
-// void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::operator new[](size_t sz, u32 align);
@@ -2647,9 +2680,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHE
 // nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ff0f0 - 0x003ff14c (92 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2672,9 +2705,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::MyDTI::newInstance at 0x00410d74-0x00410d9d (called at S2CImplement.inc:678)
-// void* nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -2731,9 +2766,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RE
 // nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410d70 - 0x00410dc1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2756,9 +2791,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::MyDTI::newInstance at 0x00410b94-0x00410bbd (called at S2CImplement.inc:676)
-// void* nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -2818,9 +2855,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES:
 // nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410b90 - 0x00410be3 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2843,9 +2880,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::MyDTI::newInstance at 0x00410e64-0x00410e8d (called at S2CImplement.inc:679)
-// void* nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::operator new[](size_t sz, u32 align);
@@ -2900,9 +2939,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::op
 // nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410e60 - 0x00410eb1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -2992,9 +3031,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::opera
 // nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00414bf0 - 0x00414c6a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3102,9 +3141,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::MyDTI::newInstance at 0x00411314-0x0041133d (called at S2CImplement.inc:684)
-// void* nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::operator new[](size_t sz, u32 align);
@@ -3164,9 +3205,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::op
 // nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00411310 - 0x00411363 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3189,9 +3230,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::MyDTI::newInstance at 0x003ea9c4-0x003ea9ed (called at S2CImplement.inc:162)
-// void* nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::operator new[](size_t sz, u32 align);
@@ -3249,9 +3292,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RE
 // nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ea9c0 - 0x003eaa13 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3407,9 +3450,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::MyDTI::newInstance at 0x00408934-0x0040895d (called at S2CImplement.inc:578)
-// void* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::operator new[](size_t sz, u32 align);
@@ -3466,9 +3511,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::oper
 // nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00408930 - 0x00408981 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3491,9 +3536,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::MyDTI::newInstance at 0x00409174-0x0040919d (called at S2CImplement.inc:584)
-// void* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::operator new[](size_t sz, u32 align);
@@ -3549,9 +3596,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPD
 // nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00409170 - 0x004091bc (76 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3574,9 +3621,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::MyDTI::newInstance at 0x004056e4-0x0040570d (called at S2CImplement.inc:537)
-// void* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::operator new[](size_t sz, u32 align);
@@ -3631,9 +3680,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::opera
 // nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004056e0 - 0x00405731 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3656,9 +3705,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::MyDTI::newInstance at 0x004055f4-0x0040561d (called at S2CImplement.inc:536)
-// void* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::operator new[](size_t sz, u32 align);
@@ -3715,9 +3766,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::opera
 // nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004055f0 - 0x00405641 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3811,9 +3862,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES
 // nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00417400 - 0x00417481 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3836,9 +3887,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::MyDTI::newInstance at 0x00417314-0x0041733d (called at S2CImplement.inc:768)
-// void* nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::operator new[](size_t sz, u32 align);
@@ -3903,9 +3956,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::
 // nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00417310 - 0x00417369 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3928,9 +3981,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::MyDTI::newInstance at 0x00405c54-0x00405c7d (called at S2CImplement.inc:542)
-// void* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::operator new[](size_t sz, u32 align);
@@ -3986,9 +4041,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::oper
 // nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00405c50 - 0x00405ca1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4079,9 +4134,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES::opera
 // nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00408510 - 0x0040858a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4260,9 +4315,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIS
 // nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004057d0 - 0x0040584a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4353,9 +4408,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES::o
 // nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00404ed0 - 0x00404f4a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4378,9 +4433,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::MyDTI::newInstance at 0x00406014-0x0040603d (called at S2CImplement.inc:546)
-// void* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::operator new[](size_t sz, u32 align);
@@ -4439,9 +4496,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::op
 // nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00406010 - 0x00406067 (87 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4531,9 +4588,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LI
 // nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00405920 - 0x0040599a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4556,9 +4613,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::MyDTI::newInstance at 0x00407104-0x0040712d (called at S2CImplement.inc:558)
-// void* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::operator new[](size_t sz, u32 align);
@@ -4614,9 +4673,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::ope
 // nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00407100 - 0x00407151 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4639,9 +4698,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_INVITE_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_INVITE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_INVITE_RES::MyDTI::newInstance at 0x00406ea4-0x00406ecd (called at S2CImplement.inc:556)
-// void* nUserSession::CPacket_S2C_CLAN_INVITE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_INVITE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_INVITE_RES::operator new[](size_t sz, u32 align);
@@ -4697,9 +4758,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_INVITE_RES::operator d
 // nUserSession::CPacket_S2C_CLAN_INVITE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00406ea0 - 0x00406ef1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_INVITE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_INVITE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_INVITE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_INVITE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4722,9 +4783,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::MyDTI::newInstance at 0x00405d44-0x00405d6d (called at S2CImplement.inc:543)
-// void* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::operator new[](size_t sz, u32 align);
@@ -4779,9 +4842,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::operator 
 // nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00405d40 - 0x00405d91 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4804,9 +4867,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::MyDTI::newInstance at 0x00405b64-0x00405b8d (called at S2CImplement.inc:541)
-// void* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::operator new[](size_t sz, u32 align);
@@ -4863,9 +4928,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::oper
 // nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00405b60 - 0x00405bb1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4888,9 +4953,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::MyDTI::newInstance at 0x004073d4-0x004073fd (called at S2CImplement.inc:561)
-// void* nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::operator new[](size_t sz, u32 align);
@@ -4950,9 +5017,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::operator
 // nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004073d0 - 0x00407428 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4975,9 +5042,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::MyDTI::newInstance at 0x00405e34-0x00405e5d (called at S2CImplement.inc:544)
-// void* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::operator new[](size_t sz, u32 align);
@@ -5036,9 +5105,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::
 // nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00405e30 - 0x00405e88 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5061,9 +5130,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::MyDTI::newInstance at 0x004072e4-0x0040730d (called at S2CImplement.inc:560)
-// void* nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::operator new[](size_t sz, u32 align);
@@ -5126,9 +5197,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::operato
 // nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004072e0 - 0x00407339 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5151,9 +5222,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::MyDTI::newInstance at 0x004071f4-0x0040721d (called at S2CImplement.inc:559)
-// void* nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::operator new[](size_t sz, u32 align);
@@ -5209,9 +5282,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::opera
 // nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004071f0 - 0x00407241 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5234,9 +5307,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::MyDTI::newInstance at 0x00405504-0x0040552d (called at S2CImplement.inc:535)
-// void* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::operator new[](size_t sz, u32 align);
@@ -5293,9 +5368,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::ope
 // nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00405500 - 0x00405551 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5318,9 +5393,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::MyDTI::newInstance at 0x00407d04-0x00407d2d (called at S2CImplement.inc:570)
-// void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::operator new[](size_t sz, u32 align);
@@ -5375,9 +5452,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INV
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00407d00 - 0x00407d51 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5400,9 +5477,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::MyDTI::newInstance at 0x00407c14-0x00407c3d (called at S2CImplement.inc:569)
-// void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::operator new[](size_t sz, u32 align);
@@ -5461,9 +5540,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INV
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00407c10 - 0x00407c68 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5486,9 +5565,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::MyDTI::newInstance at 0x004076a4-0x004076cd (called at S2CImplement.inc:564)
-// void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::operator new[](size_t sz, u32 align);
@@ -5545,9 +5626,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004076a0 - 0x004076f1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5570,9 +5651,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::MyDTI::newInstance at 0x004079d4-0x004079fd (called at S2CImplement.inc:567)
-// void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::operator new[](size_t sz, u32 align);
@@ -5627,9 +5710,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004079d0 - 0x00407a21 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5719,9 +5802,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00407f00 - 0x00407f7a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5811,9 +5894,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00407ac0 - 0x00407b3a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5836,9 +5919,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::MyDTI::newInstance at 0x004078e4-0x0040790d (called at S2CImplement.inc:566)
-// void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::operator new[](size_t sz, u32 align);
@@ -5897,9 +5982,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004078e0 - 0x00407938 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5922,9 +6007,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::MyDTI::newInstance at 0x004075b4-0x004075dd (called at S2CImplement.inc:563)
-// void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::operator new[](size_t sz, u32 align);
@@ -5981,9 +6068,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_R
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004075b0 - 0x00407601 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6073,9 +6160,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES
 // nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00407790 - 0x0040780a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6165,9 +6252,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SEARCH_RES::operator d
 // nUserSession::CPacket_S2C_CLAN_SEARCH_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00405130 - 0x004051aa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SEARCH_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SEARCH_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SEARCH_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SEARCH_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6190,9 +6277,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::MyDTI::newInstance at 0x00406db4-0x00406ddd (called at S2CImplement.inc:555)
-// void* nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::operator new[](size_t sz, u32 align);
@@ -6248,9 +6337,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::op
 // nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00406db0 - 0x00406e01 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6273,9 +6362,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::MyDTI::newInstance at 0x00406be4-0x00406c0d (called at S2CImplement.inc:553)
-// void* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::operator new[](size_t sz, u32 align);
@@ -6359,9 +6450,9 @@ s32 nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::ReadPacket(CPacket* pPac
 // nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00406be0 - 0x00406c3a (90 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6384,9 +6475,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::MyDTI::newInstance at 0x00405f24-0x00405f4d (called at S2CImplement.inc:545)
-// void* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::operator new[](size_t sz, u32 align);
@@ -6448,9 +6541,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::o
 // nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00405f20 - 0x00405f79 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6683,9 +6776,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::MyDTI::newInstance at 0x00406cd4-0x00406cfd (called at S2CImplement.inc:554)
-// void* nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::operator new[](size_t sz, u32 align);
@@ -6737,9 +6832,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::operator d
 // nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00406cd0 - 0x00406d1a (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_UPDATE_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6762,9 +6857,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLAN_UPDATE_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLAN_UPDATE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLAN_UPDATE_RES::MyDTI::newInstance at 0x00404de4-0x00404e0d (called at S2CImplement.inc:530)
-// void* nUserSession::CPacket_S2C_CLAN_UPDATE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLAN_UPDATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_UPDATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_UPDATE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLAN_UPDATE_RES::operator new[](size_t sz, u32 align);
@@ -6821,9 +6918,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CLAN_UPDATE_RES::operator d
 // nUserSession::CPacket_S2C_CLAN_UPDATE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00404de0 - 0x00404e31 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLAN_UPDATE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLAN_UPDATE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLAN_UPDATE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLAN_UPDATE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6846,9 +6943,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::MyDTI::newInstance at 0x004120d4-0x004120fd (called at S2CImplement.inc:696)
-// void* nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::operator new[](size_t sz, u32 align);
@@ -6899,7 +6998,7 @@ s32 nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::ReadPacket(CPacket* pPacket)
     if (::nPacket::Read(*pPacket, this->m_ucPasswordEncSize) == static_cast<int>(0)) {
         return this->m_usError != static_cast<u16>(0);
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i3 = static_cast<unsigned int>(0);
     do {
         if (::nPacket::Read(*pPacket, this->m_ucPasswordEnc[i3]) != static_cast<int>(0)) {
@@ -6938,9 +7037,9 @@ s32 nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::ReadPacket(CPacket* pPacket)
 // nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004120d0 - 0x00412161 (145 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a constant over array elements; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -6963,9 +7062,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::MyDTI::newInstance at 0x00412fe4-0x0041300d (called at S2CImplement.inc:710)
-// void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::operator new[](size_t sz, u32 align);
@@ -7024,9 +7125,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES:
 // nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00412fe0 - 0x00413033 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7049,9 +7150,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::MyDTI::newInstance at 0x00412ef4-0x00412f1d (called at S2CImplement.inc:709)
-// void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::operator new[](size_t sz, u32 align);
@@ -7110,9 +7213,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::op
 // nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00412ef0 - 0x00412f43 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7135,9 +7238,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::MyDTI::newInstance at 0x004131c4-0x004131ed (called at S2CImplement.inc:712)
-// void* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::operator new[](size_t sz, u32 align);
@@ -7193,9 +7298,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_
 // nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004131c0 - 0x00413211 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7218,9 +7323,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::MyDTI::newInstance at 0x003e7574-0x003e759d (called at S2CImplement.inc:121)
-// void* nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::operator new[](size_t sz, u32 align);
@@ -7276,9 +7383,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::o
 // nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e7570 - 0x003e75c1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7301,9 +7408,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::MyDTI::newInstance at 0x004037b4-0x004037dd (called at S2CImplement.inc:510)
-// void* nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::operator new[](size_t sz, u32 align);
@@ -7391,9 +7500,9 @@ s32 nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::ReadPacket(CPacket* pPacket) 
 // nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004037b0 - 0x00403811 (97 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7416,9 +7525,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::MyDTI::newInstance at 0x004038b4-0x004038dd (called at S2CImplement.inc:511)
-// void* nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::operator new[](size_t sz, u32 align);
@@ -7500,9 +7611,9 @@ s32 nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::ReadPacket(CPacket* pPacket)
 // nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004038b0 - 0x0040390a (90 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7592,9 +7703,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES::op
 // nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00417880 - 0x004178fa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7617,9 +7728,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::MyDTI::newInstance at 0x004039a4-0x004039cd (called at S2CImplement.inc:512)
-// void* nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::operator new[](size_t sz, u32 align);
@@ -7710,9 +7823,9 @@ s32 nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004039a0 - 0x00403a02 (98 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7735,9 +7848,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::MyDTI::newInstance at 0x00414804-0x0041482d (called at S2CImplement.inc:731)
-// void* nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::operator new[](size_t sz, u32 align);
@@ -7799,9 +7914,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::operat
 // nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00414800 - 0x00414859 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7824,9 +7939,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::MyDTI::newInstance at 0x003e37e4-0x003e380d (called at S2CImplement.inc:76)
-// void* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::operator new[](size_t sz, u32 align);
@@ -7882,9 +7999,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::operator
 // nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e37e0 - 0x003e3831 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CREATE_MYPAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7971,9 +8088,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTIC
 // nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e8270 - 0x003e82c3 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -7996,9 +8113,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::MyDTI::newInstance at 0x003ebd24-0x003ebd4d (called at S2CImplement.inc:178)
-// void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::operator new[](size_t sz, u32 align);
@@ -8061,9 +8180,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::
 // nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ebd20 - 0x003ebd73 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8173,9 +8292,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::MyDTI::newInstance at 0x003edf44-0x003edf6d (called at S2CImplement.inc:208)
-// void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::operator new[](size_t sz, u32 align);
@@ -8231,9 +8352,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES
 // nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003edf40 - 0x003edf91 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8256,9 +8377,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::MyDTI::newInstance at 0x003ed6f4-0x003ed71d (called at S2CImplement.inc:202)
-// void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::operator new[](size_t sz, u32 align);
@@ -8315,9 +8438,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_R
 // nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ed6f0 - 0x003ed741 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8340,9 +8463,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::MyDTI::newInstance at 0x00402524-0x0040254d (called at S2CImplement.inc:494)
-// void* nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::operator new[](size_t sz, u32 align);
@@ -8398,9 +8523,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_
 // nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402520 - 0x00402571 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8423,9 +8548,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::MyDTI::newInstance at 0x00402a54-0x00402a7d (called at S2CImplement.inc:499)
-// void* nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::operator new[](size_t sz, u32 align);
@@ -8481,9 +8608,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_
 // nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402a50 - 0x00402aa1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8571,9 +8698,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES::o
 // nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004026e0 - 0x0040275a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8658,9 +8785,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG
 // nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402830 - 0x004028a3 (115 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8683,9 +8810,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::MyDTI::newInstance at 0x00402144-0x0040216d (called at S2CImplement.inc:490)
-// void* nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::operator new[](size_t sz, u32 align);
@@ -8742,9 +8871,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::
 // nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402140 - 0x00402191 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8767,9 +8896,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::MyDTI::newInstance at 0x00402434-0x0040245d (called at S2CImplement.inc:493)
-// void* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::operator new[](size_t sz, u32 align);
@@ -8828,9 +8959,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::
 // nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402430 - 0x00402483 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -8853,9 +8984,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::MyDTI::newInstance at 0x00402344-0x0040236d (called at S2CImplement.inc:492)
-// void* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::operator new[](size_t sz, u32 align);
@@ -8911,9 +9044,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::oper
 // nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402340 - 0x00402391 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9002,9 +9135,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE
 // nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401b00 - 0x00401b58 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9027,9 +9160,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::MyDTI::newInstance at 0x00401a14-0x00401a3d (called at S2CImplement.inc:485)
-// void* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::operator new[](size_t sz, u32 align);
@@ -9091,9 +9226,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::o
 // nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401a10 - 0x00401a68 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9116,9 +9251,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::MyDTI::newInstance at 0x003e5ce4-0x003e5d0d (called at S2CImplement.inc:97)
-// void* nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::operator new[](size_t sz, u32 align);
@@ -9174,9 +9311,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::o
 // nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e5ce0 - 0x003e5d31 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9199,9 +9336,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::MyDTI::newInstance at 0x003e38d4-0x003e38fd (called at S2CImplement.inc:77)
-// void* nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::operator new[](size_t sz, u32 align);
@@ -9257,9 +9396,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::operator
 // nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e38d0 - 0x003e3921 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DELETE_MYPAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9282,9 +9421,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_DELIVER_ITEM_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_DELIVER_ITEM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_DELIVER_ITEM_RES::MyDTI::newInstance at 0x004017f4-0x0040181d (called at S2CImplement.inc:483)
-// void* nUserSession::CPacket_S2C_DELIVER_ITEM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_DELIVER_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELIVER_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DELIVER_ITEM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_DELIVER_ITEM_RES::operator new[](size_t sz, u32 align);
@@ -9346,9 +9487,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_DELIVER_ITEM_RES::operator 
 // nUserSession::CPacket_S2C_DELIVER_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004017f0 - 0x00401848 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_DELIVER_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_DELIVER_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_DELIVER_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_DELIVER_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9371,9 +9512,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::MyDTI::newInstance at 0x003f1544-0x003f156d (called at S2CImplement.inc:252)
-// void* nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::operator new[](size_t sz, u32 align);
@@ -9457,9 +9600,9 @@ s32 nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::ReadPacket(CPacket* pPacket
 // nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f1540 - 0x003f15cf (143 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9549,9 +9692,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANC
 // nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eadc0 - 0x003eae3a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9574,9 +9717,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_KILL_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENEMY_KILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENEMY_KILL_RES::MyDTI::newInstance at 0x003f0064-0x003f008d (called at S2CImplement.inc:233)
-// void* nUserSession::CPacket_S2C_ENEMY_KILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENEMY_KILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_KILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_KILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENEMY_KILL_RES::operator new[](size_t sz, u32 align);
@@ -9638,9 +9783,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENEMY_KILL_RES::operator de
 // nUserSession::CPacket_S2C_ENEMY_KILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f0060 - 0x003f00b9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENEMY_KILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENEMY_KILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENEMY_KILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENEMY_KILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9663,9 +9808,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::MyDTI::newInstance at 0x003f0a34-0x003f0a5d (called at S2CImplement.inc:242)
-// void* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::operator new[](size_t sz, u32 align);
@@ -9723,9 +9870,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE
 // nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f0a30 - 0x003f0a9b (107 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9748,9 +9895,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RE
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::MyDTI::newInstance at 0x0040b654-0x0040b67d (called at S2CImplement.inc:608)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::operator new[](size_t sz, u32 align);
@@ -9810,9 +9959,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIM
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040b650 - 0x0040b6a7 (87 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9835,9 +9984,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::MyDTI::newInstance at 0x0040b1e4-0x0040b20d (called at S2CImplement.inc:605)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::operator new[](size_t sz, u32 align);
@@ -9893,9 +10044,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_STAR
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040b1e0 - 0x0040b231 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -9918,9 +10069,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::MyDTI::newInstance at 0x0040b824-0x0040b84d (called at S2CImplement.inc:610)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::operator new[](size_t sz, u32 align);
@@ -9976,9 +10129,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040b820 - 0x0040b871 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10097,9 +10250,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::MyDTI::newInstance at 0x0040bc54-0x0040bc7d (called at S2CImplement.inc:613)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::operator new[](size_t sz, u32 align);
@@ -10155,9 +10310,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040bc50 - 0x0040bca1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10180,9 +10335,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::MyDTI::newInstance at 0x0040aaa4-0x0040aacd (called at S2CImplement.inc:598)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::operator new[](size_t sz, u32 align);
@@ -10238,9 +10395,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTI
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040aaa0 - 0x0040aaf1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10263,9 +10420,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::MyDTI::newInstance at 0x0040a9b4-0x0040a9dd (called at S2CImplement.inc:597)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::operator new[](size_t sz, u32 align);
@@ -10322,9 +10481,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES:
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040a9b0 - 0x0040aa01 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10417,9 +10576,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040a1d0 - 0x0040a252 (130 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10442,9 +10601,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::MyDTI::newInstance at 0x0040b104-0x0040b12d (called at S2CImplement.inc:604)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::operator new[](size_t sz, u32 align);
@@ -10496,9 +10657,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTI
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040b100 - 0x0040b14a (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10521,9 +10682,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::MyDTI::newInstance at 0x0040ae04-0x0040ae2d (called at S2CImplement.inc:601)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::operator new[](size_t sz, u32 align);
@@ -10581,9 +10744,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTI
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040ae00 - 0x0040ae57 (87 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10606,9 +10769,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::MyDTI::newInstance at 0x0040ad14-0x0040ad3d (called at S2CImplement.inc:600)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::operator new[](size_t sz, u32 align);
@@ -10664,9 +10829,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES:
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040ad10 - 0x0040ad61 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10751,9 +10916,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NO
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040afd0 - 0x0040b028 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10776,9 +10941,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOT
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::MyDTI::newInstance at 0x0040b744-0x0040b76d (called at S2CImplement.inc:609)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::operator new[](size_t sz, u32 align);
@@ -10834,9 +11001,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TI
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040b740 - 0x0040b790 (80 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -10859,9 +11026,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::MyDTI::newInstance at 0x0040aef4-0x0040af1d (called at S2CImplement.inc:602)
-// void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::operator new[](size_t sz, u32 align);
@@ -10913,9 +11082,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NO
 // nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040aef0 - 0x0040af3a (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11005,9 +11174,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::o
 // nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00414150 - 0x004141ca (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11145,9 +11314,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::MyDTI::newInstance at 0x003fa4d4-0x003fa4fd (called at S2CImplement.inc:381)
-// void* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::operator new[](size_t sz, u32 align);
@@ -11209,9 +11380,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::oper
 // nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fa4d0 - 0x003fa51d (77 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11234,9 +11405,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::MyDTI::newInstance at 0x003fa5b4-0x003fa5dd (called at S2CImplement.inc:382)
-// void* nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::operator new[](size_t sz, u32 align);
@@ -11295,9 +11468,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::
 // nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fa5b0 - 0x003fa5fb (75 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11320,9 +11493,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::MyDTI::newInstance at 0x003fa694-0x003fa6bd (called at S2CImplement.inc:383)
-// void* nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::operator new[](size_t sz, u32 align);
@@ -11381,9 +11556,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NT
 // nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fa690 - 0x003fa6db (75 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11406,9 +11581,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_FAVORITE_WARP_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_FAVORITE_WARP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_FAVORITE_WARP_RES::MyDTI::newInstance at 0x003f23a4-0x003f23cd (called at S2CImplement.inc:265)
-// void* nUserSession::CPacket_S2C_FAVORITE_WARP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_FAVORITE_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FAVORITE_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FAVORITE_WARP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_FAVORITE_WARP_RES::operator new[](size_t sz, u32 align);
@@ -11470,9 +11647,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_FAVORITE_WARP_RES::operator
 // nUserSession::CPacket_S2C_FAVORITE_WARP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f23a0 - 0x003f23f9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_FAVORITE_WARP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_FAVORITE_WARP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_FAVORITE_WARP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_FAVORITE_WARP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11495,9 +11672,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::MyDTI::newInstance at 0x00402dd4-0x00402dfd (called at S2CImplement.inc:502)
-// void* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::operator new[](size_t sz, u32 align);
@@ -11553,9 +11732,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::operat
 // nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402dd0 - 0x00402e21 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11578,9 +11757,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE:
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance at 0x0040e2b4-0x0040e2dd (called at S2CImplement.inc:639)
-// void* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::operator new[](size_t sz, u32 align);
@@ -11635,9 +11816,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_
 // nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040e2b0 - 0x0040e301 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11660,9 +11841,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::MyDTI::newInstance at 0x0040df04-0x0040df2d (called at S2CImplement.inc:635)
-// void* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::operator new[](size_t sz, u32 align);
@@ -11717,9 +11900,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE
 // nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040df00 - 0x0040df51 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11812,9 +11995,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE::operat
 // nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eb930 - 0x003eb9cc (156 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11904,9 +12087,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_
 // nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ec040 - 0x003ec0ba (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11929,9 +12112,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::MyDTI::newInstance at 0x00414f84-0x00414fad (called at S2CImplement.inc:737)
-// void* nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::operator new[](size_t sz, u32 align);
@@ -11987,9 +12172,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::opera
 // nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00414f80 - 0x00414fd1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12083,9 +12268,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GACHA_BUY_RES::operator del
 // nUserSession::CPacket_S2C_GACHA_BUY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00411730 - 0x004117b1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GACHA_BUY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GACHA_BUY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GACHA_BUY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GACHA_BUY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12175,9 +12360,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GACHA_LIST_RES::operator de
 // nUserSession::CPacket_S2C_GACHA_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004115e0 - 0x0041165a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GACHA_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GACHA_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GACHA_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GACHA_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12200,9 +12385,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::MyDTI::newInstance at 0x00413474-0x0041349d (called at S2CImplement.inc:714)
-// void* nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::operator new[](size_t sz, u32 align);
@@ -12260,9 +12447,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::ope
 // nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00413470 - 0x004134f9 (137 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12350,9 +12537,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::opera
 // nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f71e0 - 0x003f7238 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_ABILITY_COST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12442,9 +12629,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST
 // nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f48e0 - 0x003f495a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12534,9 +12721,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL
 // nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4640 - 0x003f46ba (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12626,9 +12813,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_R
 // nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4790 - 0x003f480a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12718,9 +12905,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIS
 // nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00416380 - 0x004163fa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12810,9 +12997,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES::op
 // nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e9e40 - 0x003e9eba (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12902,9 +13089,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::ope
 // nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ef120 - 0x003ef19a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -12927,9 +13114,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::MyDTI::newInstance at 0x003f8b84-0x003f8bad (called at S2CImplement.inc:358)
-// void* nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::operator new[](size_t sz, u32 align);
@@ -12985,9 +13174,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::o
 // nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f8b80 - 0x003f8bd1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13077,9 +13266,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RE
 // nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f8ed0 - 0x003f8f4a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13173,9 +13362,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES::o
 // nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f8940 - 0x003f89be (126 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13198,9 +13387,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::MyDTI::newInstance at 0x003f8a94-0x003f8abd (called at S2CImplement.inc:357)
-// void* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::operator new[](size_t sz, u32 align);
@@ -13256,9 +13447,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::operat
 // nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f8a90 - 0x003f8ae1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13348,9 +13539,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RE
 // nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f2760 - 0x003f27da (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13440,9 +13631,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LI
 // nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003facc0 - 0x003fad3a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13465,9 +13656,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::MyDTI::newInstance at 0x004165e4-0x0041660d (called at S2CImplement.inc:757)
-// void* nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::operator new[](size_t sz, u32 align);
@@ -13524,9 +13717,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_
 // nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004165e0 - 0x00416631 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13549,9 +13742,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_CAP_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_CAP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_CAP_RES::MyDTI::newInstance at 0x003fcfa4-0x003fcfcd (called at S2CImplement.inc:416)
-// void* nUserSession::CPacket_S2C_GET_CAP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_CAP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CAP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CAP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_CAP_RES::operator new[](size_t sz, u32 align);
@@ -13612,9 +13807,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CAP_RES::operator delet
 // nUserSession::CPacket_S2C_GET_CAP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fcfa0 - 0x003fcff8 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CAP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CAP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CAP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CAP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13704,9 +13899,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_R
 // nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fd090 - 0x003fd10a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13817,9 +14012,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::MyDTI::newInstance at 0x004145a4-0x004145cd (called at S2CImplement.inc:729)
-// void* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::operator new[](size_t sz, u32 align);
@@ -13871,9 +14068,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::operato
 // nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004145a0 - 0x004145ea (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13963,9 +14160,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LI
 // nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004171c0 - 0x0041723a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14056,9 +14253,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES:
 // nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402ec0 - 0x00402f44 (132 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14156,9 +14353,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::ReadP
 // nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00403020 - 0x004030bb (155 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14263,9 +14460,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES:
 // nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402b40 - 0x00402c0c (204 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14376,9 +14573,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::ReadP
 // nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00414680 - 0x0041472d (173 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14472,9 +14669,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_R
 // nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ee850 - 0x003ee8d1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14564,9 +14761,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIS
 // nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e9cf0 - 0x003e9d6a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14855,9 +15052,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_
 // nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ee9b0 - 0x003eea31 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -14956,9 +15153,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RE
 // nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eeb10 - 0x003eeb93 (131 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15048,9 +15245,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::o
 // nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00414000 - 0x0041407a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15140,9 +15337,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES
 // nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00416b30 - 0x00416baa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15245,9 +15442,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::Read
 // nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f0c60 - 0x003f0d02 (162 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15348,9 +15545,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::
 // nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e92d0 - 0x003e9367 (151 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15373,9 +15570,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_EXP_MODE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_EXP_MODE_RES::MyDTI::newInstance at 0x00418594-0x004185bd (called at S2CImplement.inc:783)
-// void* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_EXP_MODE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_EXP_MODE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::operator new[](size_t sz, u32 align);
@@ -15434,9 +15633,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_EXP_MODE_RES::operator 
 // nUserSession::CPacket_S2C_GET_EXP_MODE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00418590 - 0x004185e3 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_EXP_MODE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_EXP_MODE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15534,9 +15733,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIS
 // nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f2240 - 0x003f22c1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15626,9 +15825,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_R
 // nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e7060 - 0x003e70da (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15810,9 +16009,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::operator
 // nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fcd00 - 0x003fcd7a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_GP_DETAIL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15903,9 +16102,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_GP_PERIOD_RES::operator
 // nUserSession::CPacket_S2C_GET_GP_PERIOD_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fce50 - 0x003fceca (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_GP_PERIOD_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_GP_PERIOD_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_GP_PERIOD_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_GP_PERIOD_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -15928,9 +16127,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_GP_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_GP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_GP_RES::MyDTI::newInstance at 0x003fcc04-0x003fcc2d (called at S2CImplement.inc:413)
-// void* nUserSession::CPacket_S2C_GET_GP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_GP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_GP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_GP_RES::operator new[](size_t sz, u32 align);
@@ -16019,9 +16220,9 @@ s32 nUserSession::CPacket_S2C_GET_GP_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_GET_GP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fcc00 - 0x003fcc68 (104 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_GP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_GP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_GP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_GP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16044,9 +16245,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::MyDTI::newInstance at 0x003fc864-0x003fc88d (called at S2CImplement.inc:409)
-// void* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::operator new[](size_t sz, u32 align);
@@ -16106,9 +16309,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RE
 // nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fc860 - 0x003fc8b5 (85 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16198,9 +16401,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES::
 // nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00413eb0 - 0x00413f2a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16405,9 +16608,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIS
 // nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f8d80 - 0x003f8dfa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16498,9 +16701,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RE
 // nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f52b0 - 0x003f532a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16591,9 +16794,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LI
 // nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5010 - 0x003f508a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16684,9 +16887,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES:
 // nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5160 - 0x003f51da (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16792,9 +16995,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::Re
 // nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e8480 - 0x003e8504 (132 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16888,9 +17091,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::ope
 // nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e8d80 - 0x003e8e01 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -16913,9 +17116,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::MyDTI::newInstance at 0x003e8b44-0x003e8b6d (called at S2CImplement.inc:140)
-// void* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::operator new[](size_t sz, u32 align);
@@ -16967,9 +17172,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOT
 // nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e8b40 - 0x003e8b8a (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17054,9 +17259,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE:
 // nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e89f0 - 0x003e8a63 (115 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17147,9 +17352,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::op
 // nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e88a0 - 0x003e891a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17247,9 +17452,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::Re
 // nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00404070 - 0x00404106 (150 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17339,9 +17544,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS
 // nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004016a0 - 0x0040171a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17364,9 +17569,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::MyDTI::newInstance at 0x004014d4-0x004014fd (called at S2CImplement.inc:480)
-// void* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::operator new[](size_t sz, u32 align);
@@ -17425,9 +17632,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS
 // nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004014d0 - 0x00401523 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17525,9 +17732,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS
 // nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401350 - 0x004013f3 (163 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17550,9 +17757,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::MyDTI::newInstance at 0x003f1ac4-0x003f1aed (called at S2CImplement.inc:257)
-// void* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::operator new[](size_t sz, u32 align);
@@ -17633,9 +17842,9 @@ s32 nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::ReadPacket(CPacket* 
 // nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f1ac0 - 0x003f1b35 (117 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17658,9 +17867,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::MyDTI::newInstance at 0x003fa0d4-0x003fa0fd (called at S2CImplement.inc:377)
-// void* nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::operator new[](size_t sz, u32 align);
@@ -17723,9 +17934,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_R
 // nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fa0d0 - 0x003fa14e (126 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -17916,9 +18127,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_IN
 // nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401c30 - 0x00401d43 (275 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18009,9 +18220,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::
 // nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f7310 - 0x003f7369 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18105,9 +18316,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LI
 // nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f56c0 - 0x003f5741 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18201,9 +18412,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKI
 // nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5400 - 0x003f5481 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18297,9 +18508,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST
 // nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5560 - 0x003f55e1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18392,9 +18603,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMEN
 // nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f9e70 - 0x003f9ef1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18488,9 +18699,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_R
 // nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f63d0 - 0x003f6451 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18583,9 +18794,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES
 // nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f6270 - 0x003f62f1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18680,9 +18891,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::Re
 // nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e6dd0 - 0x003e6e75 (165 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18775,9 +18986,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE
 // nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f82e0 - 0x003f833c (92 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18868,9 +19079,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES
 // nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f6e60 - 0x003f6eda (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -18960,9 +19171,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES::ope
 // nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eb690 - 0x003eb70a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19056,9 +19267,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES
 // nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eb1c0 - 0x003eb23e (126 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19081,9 +19292,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::newInstance at 0x003ef044-0x003ef06d (called at S2CImplement.inc:219)
-// void* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::operator new[](size_t sz, u32 align);
@@ -19138,9 +19351,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::
 // nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ef040 - 0x003ef08c (76 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19234,9 +19447,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_
 // nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ef490 - 0x003ef512 (130 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19324,9 +19537,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES
 // nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e9440 - 0x003e9498 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19349,9 +19562,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_REAL_TIME_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_REAL_TIME_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_REAL_TIME_RES::MyDTI::newInstance at 0x003dff04-0x003dff2d (called at S2CImplement.inc:18)
-// void* nUserSession::CPacket_S2C_GET_REAL_TIME_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_REAL_TIME_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REAL_TIME_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REAL_TIME_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_REAL_TIME_RES::operator new[](size_t sz, u32 align);
@@ -19410,9 +19625,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_REAL_TIME_RES::operator
 // nUserSession::CPacket_S2C_GET_REAL_TIME_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003dff00 - 0x003dff58 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_REAL_TIME_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_REAL_TIME_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_REAL_TIME_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_REAL_TIME_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19502,9 +19717,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_
 // nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e9a40 - 0x003e9aba (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19594,9 +19809,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RE
 // nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f6b30 - 0x003f6baa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19686,9 +19901,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIS
 // nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f9c20 - 0x003f9c9a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19778,9 +19993,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES:
 // nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f69e0 - 0x003f6a5a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19904,9 +20119,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::MyDTI::newInstance at 0x00411224-0x0041124d (called at S2CImplement.inc:683)
-// void* nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::operator new[](size_t sz, u32 align);
@@ -19966,9 +20183,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_
 // nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00411220 - 0x00411278 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -19991,9 +20208,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::MyDTI::newInstance at 0x00411404-0x0041142d (called at S2CImplement.inc:685)
-// void* nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::operator new[](size_t sz, u32 align);
@@ -20053,9 +20272,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::opera
 // nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00411400 - 0x00411453 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20139,9 +20358,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES::op
 // nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401220 - 0x00401271 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20164,9 +20383,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::MyDTI::newInstance at 0x00401054-0x0040107d (called at S2CImplement.inc:476)
-// void* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::operator new[](size_t sz, u32 align);
@@ -20225,9 +20446,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES
 // nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401050 - 0x004010a3 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20318,9 +20539,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES::op
 // nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00400f00 - 0x00400f7a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20411,9 +20632,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RE
 // nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00413d60 - 0x00413dda (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20503,9 +20724,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SERVER_LIST_RES::operat
 // nUserSession::CPacket_S2C_GET_SERVER_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003df950 - 0x003df9ca (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SERVER_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SERVER_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SERVER_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SERVER_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20596,9 +20817,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES::o
 // nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f6120 - 0x003f619a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20621,9 +20842,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::MyDTI::newInstance at 0x0040d204-0x0040d22d (called at S2CImplement.inc:625)
-// void* nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::operator new[](size_t sz, u32 align);
@@ -20679,9 +20902,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::operat
 // nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040d200 - 0x0040d251 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20783,9 +21006,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES:
 // nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e9b90 - 0x003e9c1d (141 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20880,9 +21103,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE::
 // nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e8740 - 0x003e87c1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -20978,9 +21201,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::ope
 // nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e85e0 - 0x003e8661 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21070,9 +21293,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIS
 // nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eb7e0 - 0x003eb85a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21162,9 +21385,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES::ope
 // nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5fd0 - 0x003f604a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21254,9 +21477,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES::op
 // nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f7d90 - 0x003f7e0a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21346,9 +21569,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES::ope
 // nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f9110 - 0x003f918a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21442,9 +21665,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::operato
 // nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f80c0 - 0x003f811c (92 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_STAY_PRICE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21534,9 +21757,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST
 // nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e8ee0 - 0x003e8f5a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21630,9 +21853,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES
 // nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e8c20 - 0x003e8ca1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21722,9 +21945,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::op
 // nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f1ef0 - 0x003f1f6a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21903,9 +22126,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST
 // nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e9180 - 0x003e91f3 (115 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -21996,9 +22219,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST
 // nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e9030 - 0x003e90aa (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22021,9 +22244,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_END_NTC::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GP_COURSE_END_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GP_COURSE_END_NTC::MyDTI::newInstance at 0x003fe504-0x003fe52d (called at S2CImplement.inc:435)
-// void* nUserSession::CPacket_S2C_GP_COURSE_END_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GP_COURSE_END_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_END_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_END_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GP_COURSE_END_NTC::operator new[](size_t sz, u32 align);
@@ -22083,9 +22308,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_END_NTC::operator
 // nUserSession::CPacket_S2C_GP_COURSE_END_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fe500 - 0x003fe558 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_COURSE_END_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_COURSE_END_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_COURSE_END_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_COURSE_END_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22108,9 +22333,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::MyDTI::newInstance at 0x003fe414-0x003fe43d (called at S2CImplement.inc:434)
-// void* nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::operator new[](size_t sz, u32 align);
@@ -22170,9 +22397,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::opera
 // nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fe410 - 0x003fe469 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22262,9 +22489,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIS
 // nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fdf90 - 0x003fe00a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22354,9 +22581,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RE
 // nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fe0e0 - 0x003fe15a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22379,9 +22606,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::MyDTI::newInstance at 0x003fe5f4-0x003fe61d (called at S2CImplement.inc:436)
-// void* nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::operator new[](size_t sz, u32 align);
@@ -22441,9 +22670,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::
 // nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fe5f0 - 0x003fe648 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22557,9 +22786,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::MyDTI::newInstance at 0x003fe234-0x003fe25d (called at S2CImplement.inc:432)
-// void* nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::operator new[](size_t sz, u32 align);
@@ -22618,9 +22849,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABL
 // nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fe230 - 0x003fe289 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22643,9 +22874,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::MyDTI::newInstance at 0x003feaf4-0x003feb1d (called at S2CImplement.inc:441)
-// void* nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::operator new[](size_t sz, u32 align);
@@ -22706,9 +22939,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::o
 // nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003feaf0 - 0x003feb48 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22731,9 +22964,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::MyDTI::newInstance at 0x003febe4-0x003fec0d (called at S2CImplement.inc:442)
-// void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::operator new[](size_t sz, u32 align);
@@ -22797,9 +23032,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::o
 // nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003febe0 - 0x003fec3c (92 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22822,9 +23057,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::MyDTI::newInstance at 0x003fecd4-0x003fecfd (called at S2CImplement.inc:443)
-// void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::operator new[](size_t sz, u32 align);
@@ -22888,9 +23125,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_
 // nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fecd0 - 0x003fed2c (92 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -22992,9 +23229,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::Rea
 // nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fd6a0 - 0x003fd730 (144 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23084,9 +23321,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_
 // nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fd550 - 0x003fd5ca (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23176,9 +23413,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RE
 // nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fd400 - 0x003fd47a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23268,9 +23505,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES
 // nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fdd50 - 0x003fddca (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23360,9 +23597,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_R
 // nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fd800 - 0x003fd87a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23385,9 +23622,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::MyDTI::newInstance at 0x003f3ef4-0x003f3f1d (called at S2CImplement.inc:290)
-// void* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::operator new[](size_t sz, u32 align);
@@ -23444,9 +23683,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER
 // nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f3ef0 - 0x003f3f41 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23469,9 +23708,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::MyDTI::newInstance at 0x003f4374-0x003f439d (called at S2CImplement.inc:294)
-// void* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::operator new[](size_t sz, u32 align);
@@ -23527,9 +23768,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_R
 // nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4370 - 0x003f43c1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23552,9 +23793,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::MyDTI::newInstance at 0x003fcb24-0x003fcb4d (called at S2CImplement.inc:412)
-// void* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::operator new[](size_t sz, u32 align);
@@ -23606,9 +23849,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::op
 // nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fcb20 - 0x003fcb6a (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23717,9 +23960,9 @@ s32 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::ReadPacket(CPacket* p
 // nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00418a00 - 0x00418a63 (99 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -23817,9 +24060,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RE
 // nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004188a0 - 0x00418922 (130 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24010,9 +24253,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::MyDTI::newInstance at 0x003e5734-0x003e575d (called at S2CImplement.inc:92)
-// void* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::operator new[](size_t sz, u32 align);
@@ -24069,9 +24314,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::oper
 // nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e5730 - 0x003e5781 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24094,9 +24339,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::MyDTI::newInstance at 0x003e5824-0x003e584d (called at S2CImplement.inc:93)
-// void* nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::operator new[](size_t sz, u32 align);
@@ -24153,9 +24400,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES:
 // nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e5820 - 0x003e5871 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24269,9 +24516,9 @@ s32 nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE::ReadPacket(C
 // nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ea730 - 0x003ea78f (95 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24294,9 +24541,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES:
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::MyDTI::newInstance at 0x003ea634-0x003ea65d (called at S2CImplement.inc:159)
-// void* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::operator new[](size_t sz, u32 align);
@@ -24377,9 +24626,9 @@ s32 nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::ReadPacket(CPac
 // nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ea630 - 0x003ea692 (98 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24402,9 +24651,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LEARN_ABILITY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LEARN_ABILITY_RES::MyDTI::newInstance at 0x003f4c24-0x003f4c4d (called at S2CImplement.inc:302)
-// void* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_ABILITY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::operator new[](size_t sz, u32 align);
@@ -24492,9 +24743,9 @@ s32 nUserSession::CPacket_S2C_LEARN_ABILITY_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_LEARN_ABILITY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4c20 - 0x003f4c7f (95 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LEARN_ABILITY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LEARN_ABILITY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24517,9 +24768,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::MyDTI::newInstance at 0x003f4a34-0x003f4a5d (called at S2CImplement.inc:300)
-// void* nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::operator new[](size_t sz, u32 align);
@@ -24602,9 +24855,9 @@ s32 nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::ReadPacket(CPacket* pPacke
 // nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4a30 - 0x003f4a93 (99 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24627,9 +24880,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::MyDTI::newInstance at 0x003f4f14-0x003f4f3d (called at S2CImplement.inc:305)
-// void* nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::operator new[](size_t sz, u32 align);
@@ -24723,9 +24978,9 @@ s32 nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::ReadPacket(CPacket* pPacke
 // nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4f10 - 0x003f4f76 (102 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24748,9 +25003,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::MyDTI::newInstance at 0x003f4d14-0x003f4d3d (called at S2CImplement.inc:303)
-// void* nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::operator new[](size_t sz, u32 align);
@@ -24841,9 +25098,9 @@ s32 nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::ReadPacket(CPacket* p
 // nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4d10 - 0x003f4d7a (106 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24866,9 +25123,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::MyDTI::newInstance at 0x003f4e14-0x003f4e3d (called at S2CImplement.inc:304)
-// void* nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::operator new[](size_t sz, u32 align);
@@ -24962,9 +25221,9 @@ s32 nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::ReadPacket(CPacket* pPacket)
 // nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4e10 - 0x003f4e76 (102 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -24987,9 +25246,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LEARN_SKILL_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LEARN_SKILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LEARN_SKILL_RES::MyDTI::newInstance at 0x003f4b34-0x003f4b5d (called at S2CImplement.inc:301)
-// void* nUserSession::CPacket_S2C_LEARN_SKILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LEARN_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_SKILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LEARN_SKILL_RES::operator new[](size_t sz, u32 align);
@@ -25077,9 +25338,9 @@ s32 nUserSession::CPacket_S2C_LEARN_SKILL_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_LEARN_SKILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f4b30 - 0x003f4b8f (95 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LEARN_SKILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LEARN_SKILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LEARN_SKILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LEARN_SKILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25172,9 +25433,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES
 // nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ea860 - 0x003ea8e1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25264,9 +25525,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::opera
 // nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00411e60 - 0x00411ee9 (137 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LOADING_GET_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25289,9 +25550,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::MyDTI::newInstance at 0x003e0614-0x003e063d (called at S2CImplement.inc:25)
-// void* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::operator new[](size_t sz, u32 align);
@@ -25347,9 +25610,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::operato
 // nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e0610 - 0x003e0661 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25372,9 +25635,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::MyDTI::newInstance at 0x003e0324-0x003e034d (called at S2CImplement.inc:22)
-// void* nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::operator new[](size_t sz, u32 align);
@@ -25430,9 +25695,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::operator d
 // nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e0320 - 0x003e0371 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LOBBY_LEAVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25455,9 +25720,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::MyDTI::newInstance at 0x003e64d4-0x003e64fd (called at S2CImplement.inc:105)
-// void* nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -25520,9 +25787,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES
 // nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e64d0 - 0x003e6524 (84 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25545,9 +25812,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::MyDTI::newInstance at 0x003e63e4-0x003e640d (called at S2CImplement.inc:104)
-// void* nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -25610,9 +25879,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES:
 // nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e63e0 - 0x003e6434 (84 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25635,9 +25904,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::MyDTI::newInstance at 0x003e62f4-0x003e631d (called at S2CImplement.inc:103)
-// void* nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -25696,9 +25967,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::opera
 // nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e62f0 - 0x003e6348 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25721,9 +25992,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::MyDTI::newInstance at 0x003e65c4-0x003e65ed (called at S2CImplement.inc:106)
-// void* nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -25804,9 +26077,9 @@ s32 nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::ReadPacket(CPacket* p
 // nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e65c0 - 0x003e6623 (99 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25829,9 +26102,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_MAIL_DELETE_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_MAIL_DELETE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_MAIL_DELETE_RES::MyDTI::newInstance at 0x0040f484-0x0040f4ad (called at S2CImplement.inc:657)
-// void* nUserSession::CPacket_S2C_MAIL_DELETE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_MAIL_DELETE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_DELETE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_DELETE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_MAIL_DELETE_RES::operator new[](size_t sz, u32 align);
@@ -25892,9 +26167,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_MAIL_DELETE_RES::operator d
 // nUserSession::CPacket_S2C_MAIL_DELETE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040f480 - 0x0040f4d9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MAIL_DELETE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MAIL_DELETE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MAIL_DELETE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_MAIL_DELETE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -25917,9 +26192,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::MyDTI::newInstance at 0x0040f254-0x0040f27d (called at S2CImplement.inc:655)
-// void* nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::operator new[](size_t sz, u32 align);
@@ -25975,9 +26252,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::ope
 // nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040f250 - 0x0040f2a1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26000,9 +26277,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::MyDTI::newInstance at 0x0040f054-0x0040f07d (called at S2CImplement.inc:653)
-// void* nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::operator new[](size_t sz, u32 align);
@@ -26061,9 +26340,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::ope
 // nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040f050 - 0x0040f0a8 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26180,9 +26459,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_MASTER_THROW_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_MASTER_THROW_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_MASTER_THROW_RES::MyDTI::newInstance at 0x0040da44-0x0040da6d (called at S2CImplement.inc:630)
-// void* nUserSession::CPacket_S2C_MASTER_THROW_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_MASTER_THROW_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_THROW_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MASTER_THROW_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_MASTER_THROW_RES::operator new[](size_t sz, u32 align);
@@ -26238,9 +26519,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_MASTER_THROW_RES::operator 
 // nUserSession::CPacket_S2C_MASTER_THROW_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040da40 - 0x0040da91 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MASTER_THROW_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MASTER_THROW_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MASTER_THROW_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_MASTER_THROW_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26263,9 +26544,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::MyDTI::newInstance at 0x003df684-0x003df6ad (called at S2CImplement.inc:12)
-// void* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::operator new[](size_t sz, u32 align);
@@ -26322,9 +26605,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::operato
 // nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003df680 - 0x003df6d1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26347,9 +26630,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_MOVE_ITEM_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_MOVE_ITEM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_MOVE_ITEM_RES::MyDTI::newInstance at 0x003e7974-0x003e799d (called at S2CImplement.inc:125)
-// void* nUserSession::CPacket_S2C_MOVE_ITEM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_MOVE_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOVE_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MOVE_ITEM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_MOVE_ITEM_RES::operator new[](size_t sz, u32 align);
@@ -26405,9 +26690,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_MOVE_ITEM_RES::operator del
 // nUserSession::CPacket_S2C_MOVE_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e7970 - 0x003e79c1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MOVE_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MOVE_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MOVE_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_MOVE_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26430,9 +26715,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::MyDTI::newInstance at 0x00415074-0x0041509d (called at S2CImplement.inc:738)
-// void* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::operator new[](size_t sz, u32 align);
@@ -26488,9 +26775,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::ope
 // nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00415070 - 0x004150c1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26513,9 +26800,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::MyDTI::newInstance at 0x00414d44-0x00414d6d (called at S2CImplement.inc:735)
-// void* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::operator new[](size_t sz, u32 align);
@@ -26571,9 +26860,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::operat
 // nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00414d40 - 0x00414d91 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26596,9 +26885,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIS
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::MyDTI::newInstance at 0x004015c4-0x004015ed (called at S2CImplement.inc:481)
-// void* nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::operator new[](size_t sz, u32 align);
@@ -26653,9 +26944,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REW
 // nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004015c0 - 0x0040160c (76 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26791,9 +27082,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::MyDTI::newInstance at 0x00415bf4-0x00415c1d (called at S2CImplement.inc:748)
-// void* nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::operator new[](size_t sz, u32 align);
@@ -26857,9 +27150,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_T
 // nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00415bf0 - 0x00415c44 (84 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26882,9 +27175,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::MyDTI::newInstance at 0x00415484-0x004154ad (called at S2CImplement.inc:741)
-// void* nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::operator new[](size_t sz, u32 align);
@@ -26947,9 +27242,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::opera
 // nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00415480 - 0x004154f2 (114 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -26972,9 +27267,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::MyDTI::newInstance at 0x003e28a4-0x003e28cd (called at S2CImplement.inc:60)
-// void* nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::operator new[](size_t sz, u32 align);
@@ -27026,9 +27323,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::operator
 // nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e28a0 - 0x003e28ea (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27051,9 +27348,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::MyDTI::newInstance at 0x003e27b4-0x003e27dd (called at S2CImplement.inc:59)
-// void* nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::operator new[](size_t sz, u32 align);
@@ -27109,9 +27408,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::operator
 // nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e27b0 - 0x003e2801 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_BREAKUP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27134,9 +27433,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::MyDTI::newInstance at 0x003e2ba4-0x003e2bcd (called at S2CImplement.inc:63)
-// void* nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::operator new[](size_t sz, u32 align);
@@ -27191,9 +27492,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::oper
 // nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e2ba0 - 0x003e2bf1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27278,9 +27579,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC::op
 // nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e2a70 - 0x003e2ac1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27303,9 +27604,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::MyDTI::newInstance at 0x003e2984-0x003e29ad (called at S2CImplement.inc:61)
-// void* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::operator new[](size_t sz, u32 align);
@@ -27361,9 +27664,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::op
 // nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e2980 - 0x003e29d1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27386,9 +27689,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::MyDTI::newInstance at 0x003e2144-0x003e216d (called at S2CImplement.inc:52)
-// void* nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::operator new[](size_t sz, u32 align);
@@ -27450,9 +27755,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RE
 // nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e2140 - 0x003e21a0 (96 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27475,9 +27780,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::MyDTI::newInstance at 0x003e1574-0x003e159d (called at S2CImplement.inc:40)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::operator new[](size_t sz, u32 align);
@@ -27533,9 +27840,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::op
 // nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e1570 - 0x003e15c1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27558,9 +27865,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::MyDTI::newInstance at 0x003e12d4-0x003e12fd (called at S2CImplement.inc:37)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::operator new[](size_t sz, u32 align);
@@ -27616,9 +27925,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::op
 // nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e12d0 - 0x003e1321 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27641,9 +27950,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::MyDTI::newInstance at 0x003e1b04-0x003e1b2d (called at S2CImplement.inc:46)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::operator new[](size_t sz, u32 align);
@@ -27699,9 +28010,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_R
 // nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e1b00 - 0x003e1b51 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27724,9 +28035,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::MyDTI::newInstance at 0x003e1924-0x003e194d (called at S2CImplement.inc:44)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::operator new[](size_t sz, u32 align);
@@ -27782,9 +28095,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::ope
 // nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e1920 - 0x003e1971 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27807,9 +28120,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::MyDTI::newInstance at 0x003e13c4-0x003e13ed (called at S2CImplement.inc:38)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::operator new[](size_t sz, u32 align);
@@ -27873,9 +28188,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::oper
 // nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e13c0 - 0x003e141e (94 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27960,9 +28275,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NT
 // nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e1dd0 - 0x003e1e43 (115 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -27985,9 +28300,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::MyDTI::newInstance at 0x003e1844-0x003e186d (called at S2CImplement.inc:43)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::operator new[](size_t sz, u32 align);
@@ -28039,9 +28356,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT
 // nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e1840 - 0x003e188a (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28064,9 +28381,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::MyDTI::newInstance at 0x003e1754-0x003e177d (called at S2CImplement.inc:42)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::operator new[](size_t sz, u32 align);
@@ -28122,9 +28441,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT
 // nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e1750 - 0x003e17a1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28147,9 +28466,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::MyDTI::newInstance at 0x003e1664-0x003e168d (called at S2CImplement.inc:41)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::operator new[](size_t sz, u32 align);
@@ -28205,9 +28526,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::op
 // nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e1660 - 0x003e16b1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28230,9 +28551,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_INVITE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_INVITE_RES::MyDTI::newInstance at 0x003e0f64-0x003e0f8d (called at S2CImplement.inc:34)
-// void* nUserSession::CPacket_S2C_PARTY_INVITE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_INVITE_RES::operator new[](size_t sz, u32 align);
@@ -28315,9 +28638,9 @@ s32 nUserSession::CPacket_S2C_PARTY_INVITE_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_PARTY_INVITE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e0f60 - 0x003e0fb9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_INVITE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_INVITE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_INVITE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28340,9 +28663,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_JOIN_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_JOIN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_JOIN_RES::MyDTI::newInstance at 0x003e1f24-0x003e1f4d (called at S2CImplement.inc:50)
-// void* nUserSession::CPacket_S2C_PARTY_JOIN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_JOIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_JOIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_JOIN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_JOIN_RES::operator new[](size_t sz, u32 align);
@@ -28426,9 +28751,9 @@ s32 nUserSession::CPacket_S2C_PARTY_JOIN_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_PARTY_JOIN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e1f20 - 0x003e1f84 (100 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_JOIN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_JOIN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_JOIN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_JOIN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28451,9 +28776,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_LEAVE_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_LEAVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_LEAVE_RES::MyDTI::newInstance at 0x003e2234-0x003e225d (called at S2CImplement.inc:53)
-// void* nUserSession::CPacket_S2C_PARTY_LEAVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_LEAVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_LEAVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_LEAVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_LEAVE_RES::operator new[](size_t sz, u32 align);
@@ -28509,9 +28836,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_LEAVE_RES::operator d
 // nUserSession::CPacket_S2C_PARTY_LEAVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e2230 - 0x003e2281 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_LEAVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_LEAVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_LEAVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_LEAVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28534,9 +28861,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::MyDTI::newInstance at 0x003e2504-0x003e252d (called at S2CImplement.inc:56)
-// void* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::operator new[](size_t sz, u32 align);
@@ -28592,9 +28921,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::oper
 // nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e2500 - 0x003e2551 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28617,9 +28946,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::MyDTI::newInstance at 0x003e2da4-0x003e2dcd (called at S2CImplement.inc:65)
-// void* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::operator new[](size_t sz, u32 align);
@@ -28675,9 +29006,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES:
 // nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e2da0 - 0x003e2df1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28808,9 +29139,9 @@ s32 nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE::ReadPacket(CPacket* p
 // nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401e20 - 0x00401e75 (85 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28898,9 +29229,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE
 // nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401f50 - 0x00402063 (275 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -28923,9 +29254,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PARTY_WARP_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PARTY_WARP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PARTY_WARP_RES::MyDTI::newInstance at 0x003f2674-0x003f269d (called at S2CImplement.inc:268)
-// void* nUserSession::CPacket_S2C_PARTY_WARP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PARTY_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_WARP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PARTY_WARP_RES::operator new[](size_t sz, u32 align);
@@ -28981,9 +29314,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PARTY_WARP_RES::operator de
 // nUserSession::CPacket_S2C_PARTY_WARP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f2670 - 0x003f26c1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PARTY_WARP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PARTY_WARP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PARTY_WARP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PARTY_WARP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29006,9 +29339,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::MyDTI::newInstance at 0x003f7a74-0x003f7a9d (called at S2CImplement.inc:343)
-// void* nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::operator new[](size_t sz, u32 align);
@@ -29070,9 +29405,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::opera
 // nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f7a70 - 0x003f7adf (111 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29095,9 +29430,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::MyDTI::newInstance at 0x003f7974-0x003f799d (called at S2CImplement.inc:342)
-// void* nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::operator new[](size_t sz, u32 align);
@@ -29159,9 +29496,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::
 // nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f7970 - 0x003f79df (111 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29184,9 +29521,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::MyDTI::newInstance at 0x00418124-0x0041814d (called at S2CImplement.inc:779)
-// void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::operator new[](size_t sz, u32 align);
@@ -29243,9 +29582,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALL
 // nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00418120 - 0x00418171 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29268,9 +29607,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALL
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::MyDTI::newInstance at 0x00417ec4-0x00417eed (called at S2CImplement.inc:777)
-// void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::operator new[](size_t sz, u32 align);
@@ -29326,9 +29667,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLD
 // nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00417ec0 - 0x00417f11 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29351,9 +29692,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::MyDTI::newInstance at 0x00417ce4-0x00417d0d (called at S2CImplement.inc:775)
-// void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::operator new[](size_t sz, u32 align);
@@ -29409,9 +29752,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALL
 // nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00417ce0 - 0x00417d31 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29777,9 +30120,9 @@ s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::ReadPacket(C
 // nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00417fb0 - 0x00418048 (152 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29802,9 +30145,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::MyDTI::newInstance at 0x00417dd4-0x00417dfd (called at S2CImplement.inc:776)
-// void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::operator new[](size_t sz, u32 align);
@@ -29861,9 +30206,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::
 // nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00417dd0 - 0x00417e21 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29886,9 +30231,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::MyDTI::newInstance at 0x00411044-0x0041106d (called at S2CImplement.inc:681)
-// void* nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -29952,9 +30299,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::ope
 // nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00411040 - 0x00411099 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -29977,9 +30324,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::MyDTI::newInstance at 0x003ff404-0x003ff42d (called at S2CImplement.inc:450)
-// void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::operator new[](size_t sz, u32 align);
@@ -30054,9 +30403,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOT
 // nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ff400 - 0x003ff489 (137 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30079,9 +30428,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::MyDTI::newInstance at 0x003ff2e4-0x003ff30d (called at S2CImplement.inc:449)
-// void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::operator new[](size_t sz, u32 align);
@@ -30162,9 +30513,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::Re
 // nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ff2e0 - 0x003ff370 (144 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30187,9 +30538,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::MyDTI::newInstance at 0x00415df4-0x00415e1d (called at S2CImplement.inc:750)
-// void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::operator new[](size_t sz, u32 align);
@@ -30244,9 +30597,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::ope
 // nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00415df0 - 0x00415e41 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30269,9 +30622,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_LOST_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_LOST_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_LOST_RES::MyDTI::newInstance at 0x003e5ff4-0x003e601d (called at S2CImplement.inc:100)
-// void* nUserSession::CPacket_S2C_PAWN_LOST_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_LOST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LOST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_LOST_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_LOST_RES::operator new[](size_t sz, u32 align);
@@ -30356,9 +30711,9 @@ s32 nUserSession::CPacket_S2C_PAWN_LOST_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_PAWN_LOST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e5ff0 - 0x003e6052 (98 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_LOST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_LOST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_LOST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_LOST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30381,9 +30736,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::MyDTI::newInstance at 0x003f7874-0x003f789d (called at S2CImplement.inc:341)
-// void* nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::operator new[](size_t sz, u32 align);
@@ -30445,9 +30802,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC
 // nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f7870 - 0x003f78d4 (100 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30470,9 +30827,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::MyDTI::newInstance at 0x00410f54-0x00410f7d (called at S2CImplement.inc:680)
-// void* nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::operator new[](size_t sz, u32 align);
@@ -30536,9 +30895,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::oper
 // nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410f50 - 0x00410fa4 (84 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30561,9 +30920,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::MyDTI::newInstance at 0x00411134-0x0041115d (called at S2CImplement.inc:682)
-// void* nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::operator new[](size_t sz, u32 align);
@@ -30618,9 +30979,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::operato
 // nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00411130 - 0x00411181 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30643,9 +31004,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PING_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PING_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PING_RES::MyDTI::newInstance at 0x003df2c4-0x003df2ed (called at S2CImplement.inc:8)
-// void* nUserSession::CPacket_S2C_PING_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PING_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PING_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PING_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PING_RES::operator new[](size_t sz, u32 align);
@@ -30702,9 +31065,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PING_RES::operator delete(v
 // nUserSession::CPacket_S2C_PING_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003df2c0 - 0x003df311 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PING_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PING_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PING_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PING_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30787,9 +31150,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE::oper
 // nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eca30 - 0x003eca82 (82 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30899,9 +31262,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_END_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_END_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_END_RES::MyDTI::newInstance at 0x003ed364-0x003ed38d (called at S2CImplement.inc:199)
-// void* nUserSession::CPacket_S2C_PLAY_END_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_END_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_END_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_END_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_END_RES::operator new[](size_t sz, u32 align);
@@ -30957,9 +31322,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_END_RES::operator dele
 // nUserSession::CPacket_S2C_PLAY_END_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ed360 - 0x003ed3b1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_END_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_END_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_END_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_END_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -30982,9 +31347,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::MyDTI::newInstance at 0x003ec374-0x003ec39d (called at S2CImplement.inc:184)
-// void* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::operator new[](size_t sz, u32 align);
@@ -31040,9 +31407,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::oper
 // nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ec370 - 0x003ec3c1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31065,9 +31432,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_ENTRY_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_ENTRY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_ENTRY_RES::MyDTI::newInstance at 0x003ec194-0x003ec1bd (called at S2CImplement.inc:182)
-// void* nUserSession::CPacket_S2C_PLAY_ENTRY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_ENTRY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_ENTRY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_ENTRY_RES::operator new[](size_t sz, u32 align);
@@ -31124,9 +31493,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_ENTRY_RES::operator de
 // nUserSession::CPacket_S2C_PLAY_ENTRY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ec190 - 0x003ec1e1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_ENTRY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_ENTRY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_ENTRY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_ENTRY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31149,9 +31518,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::MyDTI::newInstance at 0x003ed284-0x003ed2ad (called at S2CImplement.inc:198)
-// void* nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::operator new[](size_t sz, u32 align);
@@ -31203,9 +31574,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE
 // nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ed280 - 0x003ed2ca (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31228,9 +31599,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::MyDTI::newInstance at 0x003ed0b4-0x003ed0dd (called at S2CImplement.inc:196)
-// void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::operator new[](size_t sz, u32 align);
@@ -31287,9 +31660,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::
 // nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ed0b0 - 0x003ed101 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31312,9 +31685,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::MyDTI::newInstance at 0x003eced4-0x003ecefd (called at S2CImplement.inc:194)
-// void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::operator new[](size_t sz, u32 align);
@@ -31374,9 +31749,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::operato
 // nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eced0 - 0x003ecf23 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31399,9 +31774,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::MyDTI::newInstance at 0x003ed1a4-0x003ed1cd (called at S2CImplement.inc:197)
-// void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::operator new[](size_t sz, u32 align);
@@ -31457,9 +31834,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTIC
 // nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ed1a0 - 0x003ed1ec (76 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31542,9 +31919,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE::
 // nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ecc80 - 0x003eccd2 (82 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31567,9 +31944,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_START_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_START_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_START_RES::MyDTI::newInstance at 0x003ec554-0x003ec57d (called at S2CImplement.inc:186)
-// void* nUserSession::CPacket_S2C_PLAY_START_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_START_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_START_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_START_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_START_RES::operator new[](size_t sz, u32 align);
@@ -31626,9 +32005,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_START_RES::operator de
 // nUserSession::CPacket_S2C_PLAY_START_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ec550 - 0x003ec5a1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_START_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_START_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_START_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_START_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31711,9 +32090,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE::op
 // nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ec900 - 0x003ec952 (82 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31736,9 +32115,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::MyDTI::newInstance at 0x003ec814-0x003ec83d (called at S2CImplement.inc:188)
-// void* nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::operator new[](size_t sz, u32 align);
@@ -31794,9 +32175,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::opera
 // nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ec810 - 0x003ec861 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_START_TIMER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31875,9 +32256,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE::ope
 // nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ecb60 - 0x003ecbaa (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31956,9 +32337,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::operato
 // nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ecdb0 - 0x003ecdfa (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -31981,9 +32362,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::MyDTI::newInstance at 0x00415ce4-0x00415d0d (called at S2CImplement.inc:749)
-// void* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::operator new[](size_t sz, u32 align);
@@ -32046,9 +32429,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RE
 // nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00415ce0 - 0x00415d52 (114 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32134,9 +32517,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE::operat
 // nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eaba0 - 0x003eabf8 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32159,9 +32542,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUEST_CANCEL_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUEST_CANCEL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUEST_CANCEL_RES::MyDTI::newInstance at 0x003eaab4-0x003eaadd (called at S2CImplement.inc:163)
-// void* nUserSession::CPacket_S2C_QUEST_CANCEL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUEST_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUEST_CANCEL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUEST_CANCEL_RES::operator new[](size_t sz, u32 align);
@@ -32221,9 +32606,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_CANCEL_RES::operator 
 // nUserSession::CPacket_S2C_QUEST_CANCEL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eaab0 - 0x003eab08 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_CANCEL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_CANCEL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_CANCEL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_CANCEL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32246,9 +32631,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::MyDTI::newInstance at 0x003eacd4-0x003eacfd (called at S2CImplement.inc:165)
-// void* nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::operator new[](size_t sz, u32 align);
@@ -32307,9 +32694,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_R
 // nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eacd0 - 0x003ead28 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32440,9 +32827,9 @@ s32 nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE::ReadPacket(CPacket* pPacket
 // nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eaf10 - 0x003eaf65 (85 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32528,9 +32915,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::operat
 // nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e8140 - 0x003e8193 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32553,9 +32940,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::MyDTI::newInstance at 0x003e83a4-0x003e83cd (called at S2CImplement.inc:134)
-// void* nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::operator new[](size_t sz, u32 align);
@@ -32607,9 +32996,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NO
 // nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e83a0 - 0x003e83ea (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32696,9 +33085,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE::operato
 // nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ea0e0 - 0x003ea138 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32789,9 +33178,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_ORDER_RES::operator d
 // nUserSession::CPacket_S2C_QUEST_ORDER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e9f90 - 0x003ea00a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_ORDER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_ORDER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_ORDER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_ORDER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32884,9 +33273,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE::operato
 // nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eeee0 - 0x003eef61 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -32978,9 +33367,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE::oper
 // nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ea370 - 0x003ea3f1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33080,9 +33469,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::ReadPack
 // nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ea210 - 0x003ea295 (133 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_PROGRESS_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33270,9 +33659,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE::operato
 // nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ed5c0 - 0x003ed613 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33295,9 +33684,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::MyDTI::newInstance at 0x003e3164-0x003e318d (called at S2CImplement.inc:69)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::operator new[](size_t sz, u32 align);
@@ -33352,9 +33743,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::ope
 // nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e3160 - 0x003e31b1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33377,9 +33768,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::MyDTI::newInstance at 0x003e3614-0x003e363d (called at S2CImplement.inc:74)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::operator new[](size_t sz, u32 align);
@@ -33434,9 +33827,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::oper
 // nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e3610 - 0x003e3661 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33459,9 +33852,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::MyDTI::newInstance at 0x003e3254-0x003e327d (called at S2CImplement.inc:70)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::operator new[](size_t sz, u32 align);
@@ -33517,9 +33912,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::oper
 // nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e3250 - 0x003e32a1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33542,9 +33937,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::MyDTI::newInstance at 0x003e3524-0x003e354d (called at S2CImplement.inc:73)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::operator new[](size_t sz, u32 align);
@@ -33605,9 +34002,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::oper
 // nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e3520 - 0x003e3578 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33630,9 +34027,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::MyDTI::newInstance at 0x003e3344-0x003e336d (called at S2CImplement.inc:71)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::operator new[](size_t sz, u32 align);
@@ -33688,9 +34087,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::o
 // nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e3340 - 0x003e3391 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33713,9 +34112,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::MyDTI::newInstance at 0x003e3434-0x003e345d (called at S2CImplement.inc:72)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::operator new[](size_t sz, u32 align);
@@ -33770,9 +34171,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_
 // nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e3430 - 0x003e3481 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33795,9 +34196,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::MyDTI::newInstance at 0x003e3074-0x003e309d (called at S2CImplement.inc:68)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::operator new[](size_t sz, u32 align);
@@ -33856,9 +34259,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_
 // nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e3070 - 0x003e30c8 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33881,9 +34284,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::MyDTI::newInstance at 0x003e2f84-0x003e2fad (called at S2CImplement.inc:67)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::operator new[](size_t sz, u32 align);
@@ -33942,9 +34347,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::o
 // nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e2f80 - 0x003e2fd7 (87 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -33967,9 +34372,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::MyDTI::newInstance at 0x003e3704-0x003e372d (called at S2CImplement.inc:75)
-// void* nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::operator new[](size_t sz, u32 align);
@@ -34021,9 +34428,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::op
 // nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e3700 - 0x003e374a (74 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34116,9 +34523,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::operator 
 // nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ebbb0 - 0x003ebc4c (156 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RAID_BOSS_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34231,9 +34638,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::MyDTI::newInstance at 0x00409374-0x0040939d (called at S2CImplement.inc:586)
-// void* nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::operator new[](size_t sz, u32 align);
@@ -34292,9 +34701,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES
 // nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00409370 - 0x004093c8 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34384,9 +34793,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES::ope
 // nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004101e0 - 0x0041025a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34482,9 +34891,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_R
 // nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004105f0 - 0x00410672 (130 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34582,9 +34991,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_S
 // nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410490 - 0x00410519 (137 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34684,9 +35093,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::ReadP
 // nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410330 - 0x004103b9 (137 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34709,9 +35118,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::MyDTI::newInstance at 0x003f3544-0x003f356d (called at S2CImplement.inc:280)
-// void* nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::operator new[](size_t sz, u32 align);
@@ -34767,9 +35178,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RE
 // nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f3540 - 0x003f3591 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34792,9 +35203,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::MyDTI::newInstance at 0x003f2494-0x003f24bd (called at S2CImplement.inc:266)
-// void* nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::operator new[](size_t sz, u32 align);
@@ -34858,9 +35271,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES:
 // nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f2490 - 0x003f24e9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34883,9 +35296,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::MyDTI::newInstance at 0x003f6c84-0x003f6cad (called at S2CImplement.inc:330)
-// void* nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::operator new[](size_t sz, u32 align);
@@ -34941,9 +35356,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES
 // nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f6c80 - 0x003f6cd1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -34966,9 +35381,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::MyDTI::newInstance at 0x004164d4-0x004164fd (called at S2CImplement.inc:756)
-// void* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::operator new[](size_t sz, u32 align);
@@ -35059,9 +35476,9 @@ s32 nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::ReadPacket(CPacket* p
 // nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004164d0 - 0x0041654a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35084,9 +35501,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::MyDTI::newInstance at 0x003f9d74-0x003f9d9d (called at S2CImplement.inc:374)
-// void* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::operator new[](size_t sz, u32 align);
@@ -35169,9 +35588,9 @@ s32 nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::ReadPacket(CPacket* pPack
 // nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f9d70 - 0x003f9dd3 (99 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35194,9 +35613,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::MyDTI::newInstance at 0x003f9fd4-0x003f9ffd (called at S2CImplement.inc:376)
-// void* nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::operator new[](size_t sz, u32 align);
@@ -35284,9 +35705,9 @@ s32 nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::ReadPacket(CPacket* 
 // nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f9fd0 - 0x003fa034 (100 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35371,9 +35792,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTI
 // nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e7ff0 - 0x003e8063 (115 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35396,9 +35817,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::MyDTI::newInstance at 0x003e4634-0x003e465d (called at S2CImplement.inc:83)
-// void* nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::operator new[](size_t sz, u32 align);
@@ -35459,9 +35882,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::o
 // nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e4630 - 0x003e4688 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35562,9 +35985,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RE
 // nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f9690 - 0x003f9737 (167 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35587,9 +36010,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::MyDTI::newInstance at 0x00414394-0x004143bd (called at S2CImplement.inc:727)
-// void* nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::operator new[](size_t sz, u32 align);
@@ -35645,9 +36070,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::operato
 // nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00414390 - 0x004143e1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RESET_JOBPOINT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35670,9 +36095,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::MyDTI::newInstance at 0x003e4cc4-0x003e4ced (called at S2CImplement.inc:86)
-// void* nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::operator new[](size_t sz, u32 align);
@@ -35728,9 +36155,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::ope
 // nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e4cc0 - 0x003e4d11 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35753,9 +36180,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::MyDTI::newInstance at 0x00401144-0x0040116d (called at S2CImplement.inc:477)
-// void* nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::operator new[](size_t sz, u32 align);
@@ -35811,9 +36240,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE:
 // nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00401140 - 0x0040118c (76 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35836,9 +36265,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SELL_ITEM_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SELL_ITEM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SELL_ITEM_RES::MyDTI::newInstance at 0x003f7fd4-0x003f7ffd (called at S2CImplement.inc:348)
-// void* nUserSession::CPacket_S2C_SELL_ITEM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SELL_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SELL_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SELL_ITEM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SELL_ITEM_RES::operator new[](size_t sz, u32 align);
@@ -35902,9 +36333,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SELL_ITEM_RES::operator del
 // nUserSession::CPacket_S2C_SELL_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f7fd0 - 0x003f802c (92 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SELL_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SELL_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SELL_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SELL_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -35989,9 +36420,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CON
 // nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ef6e0 - 0x003ef753 (115 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36014,9 +36445,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::MyDTI::newInstance at 0x003ef5f4-0x003ef61d (called at S2CImplement.inc:224)
-// void* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::operator new[](size_t sz, u32 align);
@@ -36072,9 +36505,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CON
 // nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ef5f0 - 0x003ef641 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36159,9 +36592,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUES
 // nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ef920 - 0x003ef993 (115 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36184,9 +36617,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::MyDTI::newInstance at 0x003ef834-0x003ef85d (called at S2CImplement.inc:226)
-// void* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::operator new[](size_t sz, u32 align);
@@ -36242,9 +36677,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUES
 // nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ef830 - 0x003ef881 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36267,9 +36702,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::MyDTI::newInstance at 0x00416a44-0x00416a6d (called at S2CImplement.inc:761)
-// void* nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::operator new[](size_t sz, u32 align);
@@ -36325,9 +36762,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::oper
 // nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00416a40 - 0x00416a91 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36350,9 +36787,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_ABILITY_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_ABILITY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_ABILITY_RES::MyDTI::newInstance at 0x003f5924-0x003f594d (called at S2CImplement.inc:313)
-// void* nUserSession::CPacket_S2C_SET_ABILITY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_ABILITY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_ABILITY_RES::operator new[](size_t sz, u32 align);
@@ -36435,9 +36874,9 @@ s32 nUserSession::CPacket_S2C_SET_ABILITY_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_SET_ABILITY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5920 - 0x003f597e (94 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_ABILITY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_ABILITY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_ABILITY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_ABILITY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36460,9 +36899,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::MyDTI::newInstance at 0x003fb714-0x003fb73d (called at S2CImplement.inc:393)
-// void* nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::operator new[](size_t sz, u32 align);
@@ -36518,9 +36959,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::ope
 // nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fb710 - 0x003fb761 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36543,9 +36984,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::ge
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::MyDTI::newInstance at 0x003e72a4-0x003e72cd (called at S2CImplement.inc:118)
-// void* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::operator new[](size_t sz, u32 align);
@@ -36601,9 +37044,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_
 // nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e72a0 - 0x003e72f1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36626,9 +37069,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RE
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::MyDTI::newInstance at 0x00404654-0x0040467d (called at S2CImplement.inc:524)
-// void* nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::operator new[](size_t sz, u32 align);
@@ -36684,9 +37129,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_
 // nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00404650 - 0x004046a1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36709,9 +37154,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::MyDTI::newInstance at 0x0040d2f4-0x0040d31d (called at S2CImplement.inc:626)
-// void* nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::operator new[](size_t sz, u32 align);
@@ -36770,9 +37217,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::op
 // nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040d2f0 - 0x0040d360 (112 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36795,9 +37242,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::MyDTI::newInstance at 0x003e5bf4-0x003e5c1d (called at S2CImplement.inc:96)
-// void* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::operator new[](size_t sz, u32 align);
@@ -36853,9 +37302,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::oper
 // nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e5bf0 - 0x003e5c41 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36878,9 +37327,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::MyDTI::newInstance at 0x00413c74-0x00413c9d (called at S2CImplement.inc:721)
-// void* nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::operator new[](size_t sz, u32 align);
@@ -36936,9 +37387,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::
 // nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00413c70 - 0x00413cc1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -36961,9 +37412,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::MyDTI::newInstance at 0x00403f84-0x00403fad (called at S2CImplement.inc:518)
-// void* nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::operator new[](size_t sz, u32 align);
@@ -37019,9 +37472,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::o
 // nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00403f80 - 0x00403fd1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37044,9 +37497,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::MyDTI::newInstance at 0x00404854-0x0040487d (called at S2CImplement.inc:526)
-// void* nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::operator new[](size_t sz, u32 align);
@@ -37102,9 +37557,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::operat
 // nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00404850 - 0x004048a1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37127,9 +37582,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::MyDTI::newInstance at 0x00403e94-0x00403ebd (called at S2CImplement.inc:517)
-// void* nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::operator new[](size_t sz, u32 align);
@@ -37185,9 +37642,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::operator
 // nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00403e90 - 0x00403ee1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_OBJECTIVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37210,9 +37667,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::MyDTI::newInstance at 0x003f5b04-0x003f5b2d (called at S2CImplement.inc:315)
-// void* nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::operator new[](size_t sz, u32 align);
@@ -37272,9 +37731,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::operat
 // nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5b00 - 0x003f5b53 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37297,9 +37756,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::MyDTI::newInstance at 0x003f5ee4-0x003f5f0d (called at S2CImplement.inc:319)
-// void* nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::operator new[](size_t sz, u32 align);
@@ -37363,9 +37824,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::o
 // nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5ee0 - 0x003f5f34 (84 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37388,9 +37849,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::MyDTI::newInstance at 0x003f5df4-0x003f5e1d (called at S2CImplement.inc:318)
-// void* nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::operator new[](size_t sz, u32 align);
@@ -37473,9 +37936,9 @@ s32 nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::ReadPacket(CPacket* pPacke
 // nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5df0 - 0x003f5e48 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37498,9 +37961,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::MyDTI::newInstance at 0x003f5a14-0x003f5a3d (called at S2CImplement.inc:314)
-// void* nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::operator new[](size_t sz, u32 align);
@@ -37564,9 +38029,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::operator
 // nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5a10 - 0x003f5a67 (87 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_OFF_SKILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37589,9 +38054,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::MyDTI::newInstance at 0x003f19c4-0x003f19ed (called at S2CImplement.inc:256)
-// void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::operator new[](size_t sz, u32 align);
@@ -37653,9 +38120,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NO
 // nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f19c0 - 0x003f1a2e (110 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37678,9 +38145,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::MyDTI::newInstance at 0x003f18b4-0x003f18dd (called at S2CImplement.inc:255)
-// void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::operator new[](size_t sz, u32 align);
@@ -37761,9 +38230,9 @@ s32 nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::ReadPacket(CPacket* 
 // nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f18b0 - 0x003f1925 (117 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37786,9 +38255,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::MyDTI::newInstance at 0x003f2ad4-0x003f2afd (called at S2CImplement.inc:272)
-// void* nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::operator new[](size_t sz, u32 align);
@@ -37847,9 +38318,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::oper
 // nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f2ad0 - 0x003f2b23 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37872,9 +38343,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::MyDTI::newInstance at 0x003f5cf4-0x003f5d1d (called at S2CImplement.inc:317)
-// void* nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::operator new[](size_t sz, u32 align);
@@ -37963,9 +38436,9 @@ s32 nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::ReadPacket(CPacket* pPacket)
 // nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5cf0 - 0x003f5d55 (101 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -37988,9 +38461,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::MyDTI::newInstance at 0x003fb9f4-0x003fba1d (called at S2CImplement.inc:396)
-// void* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::operator new[](size_t sz, u32 align);
@@ -38046,9 +38521,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RE
 // nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fb9f0 - 0x003fba41 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38071,9 +38546,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::getAllocator
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::MyDTI::newInstance at 0x003fb904-0x003fb92d (called at S2CImplement.inc:395)
-// void* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::operator new[](size_t sz, u32 align);
@@ -38129,9 +38606,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::opera
 // nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fb900 - 0x003fb951 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38154,9 +38631,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::MyDTI::newInstance at 0x003f5bf4-0x003f5c1d (called at S2CImplement.inc:316)
-// void* nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::operator new[](size_t sz, u32 align);
@@ -38250,9 +38729,9 @@ s32 nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5bf0 - 0x003f5c51 (97 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38275,9 +38754,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::MyDTI::newInstance at 0x003f6d74-0x003f6d9d (called at S2CImplement.inc:331)
-// void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::operator new[](size_t sz, u32 align);
@@ -38333,9 +38814,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES
 // nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f6d70 - 0x003f6dc1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38422,9 +38903,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES::ope
 // nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003eb310 - 0x003eb368 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38509,9 +38990,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_N
 // nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e7ea0 - 0x003e7f13 (115 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38534,9 +39015,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::MyDTI::newInstance at 0x003f0f24-0x003f0f4d (called at S2CImplement.inc:246)
-// void* nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::operator new[](size_t sz, u32 align);
@@ -38594,9 +39077,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::ope
 // nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f0f20 - 0x003f0f78 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38619,9 +39102,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::MyDTI::newInstance at 0x00404454-0x0040447d (called at S2CImplement.inc:522)
-// void* nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::operator new[](size_t sz, u32 align);
@@ -38677,9 +39162,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::oper
 // nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00404450 - 0x004044a1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38702,9 +39187,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SET_SKILL_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SET_SKILL_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SET_SKILL_RES::MyDTI::newInstance at 0x003f5824-0x003f584d (called at S2CImplement.inc:312)
-// void* nUserSession::CPacket_S2C_SET_SKILL_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SET_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_SKILL_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SET_SKILL_RES::operator new[](size_t sz, u32 align);
@@ -38793,9 +39280,9 @@ s32 nUserSession::CPacket_S2C_SET_SKILL_RES::ReadPacket(CPacket* pPacket) {
 // nUserSession::CPacket_S2C_SET_SKILL_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f5820 - 0x003f5882 (98 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SET_SKILL_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SET_SKILL_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SET_SKILL_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SET_SKILL_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38818,9 +39305,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::MyDTI::newInstance at 0x004125a4-0x004125cd (called at S2CImplement.inc:700)
-// void* nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::operator new[](size_t sz, u32 align);
@@ -38876,9 +39365,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_R
 // nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004125a0 - 0x004125f1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -38987,9 +39476,9 @@ s32 nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES::ReadPacket(CPacket* pPacket
 // nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00412380 - 0x004123d2 (82 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39090,9 +39579,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::Re
 // nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00412200 - 0x004122a9 (169 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39115,9 +39604,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::getAlloca
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::MyDTI::newInstance at 0x004124b4-0x004124dd (called at S2CImplement.inc:699)
-// void* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::operator new[](size_t sz, u32 align);
@@ -39173,9 +39664,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::op
 // nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004124b0 - 0x00412501 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39198,9 +39689,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_START_CRAFT_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_START_CRAFT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_START_CRAFT_RES::MyDTI::newInstance at 0x00402ce4-0x00402d0d (called at S2CImplement.inc:501)
-// void* nUserSession::CPacket_S2C_START_CRAFT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_START_CRAFT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_CRAFT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_CRAFT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_START_CRAFT_RES::operator new[](size_t sz, u32 align);
@@ -39256,9 +39749,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_START_CRAFT_RES::operator d
 // nUserSession::CPacket_S2C_START_CRAFT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00402ce0 - 0x00402d31 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_START_CRAFT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_START_CRAFT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_START_CRAFT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_START_CRAFT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39281,9 +39774,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance at 0x0040e1c4-0x0040e1ed (called at S2CImplement.inc:638)
-// void* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::operator new[](size_t sz, u32 align);
@@ -39338,9 +39833,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_N
 // nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040e1c0 - 0x0040e211 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39363,9 +39858,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::MyDTI::newInstance at 0x0040de14-0x0040de3d (called at S2CImplement.inc:634)
-// void* nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::operator new[](size_t sz, u32 align);
@@ -39420,9 +39917,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE:
 // nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040de10 - 0x0040de61 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39512,9 +40009,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES:
 // nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004138c0 - 0x0041393a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39604,9 +40101,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::oper
 // nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00413a10 - 0x00413a8a (122 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39629,9 +40126,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::getAllocat
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::MyDTI::newInstance at 0x0040ffa4-0x0040ffcd (called at S2CImplement.inc:666)
-// void* nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::operator new[](size_t sz, u32 align);
@@ -39692,9 +40191,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::ope
 // nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040ffa0 - 0x0040fff9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39717,9 +40216,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::MyDTI::newInstance at 0x0040f9d4-0x0040f9fd (called at S2CImplement.inc:662)
-// void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::operator new[](size_t sz, u32 align);
@@ -39775,9 +40276,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_R
 // nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040f9d0 - 0x0040fa21 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39800,9 +40301,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::get
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::MyDTI::newInstance at 0x0040f7d4-0x0040f7fd (called at S2CImplement.inc:660)
-// void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::operator new[](size_t sz, u32 align);
@@ -39861,9 +40364,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_R
 // nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040f7d0 - 0x0040f828 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39957,9 +40460,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES::o
 // nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0040fac0 - 0x0040fbfb (315 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39982,9 +40485,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::getAllocator()
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::MyDTI::newInstance at 0x00410844-0x0041086d (called at S2CImplement.inc:673)
-// void* nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::operator new[](size_t sz, u32 align);
@@ -40042,9 +40547,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::operato
 // nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410840 - 0x004108b0 (112 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40138,9 +40643,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST
 // nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f1660 - 0x003f16e1 (129 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40163,9 +40668,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::MyDTI::newInstance at 0x003f17c4-0x003f17ed (called at S2CImplement.inc:254)
-// void* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::operator new[](size_t sz, u32 align);
@@ -40221,9 +40728,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES:
 // nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f17c0 - 0x003f1811 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40246,9 +40753,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::MyDTI::newInstance at 0x003fbae4-0x003fbb0d (called at S2CImplement.inc:397)
-// void* nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::operator new[](size_t sz, u32 align);
@@ -40304,9 +40813,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE
 // nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003fbae0 - 0x003fbb31 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40329,9 +40838,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::MyDTI::newInstance at 0x00411af4-0x00411b1d (called at S2CImplement.inc:691)
-// void* nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::operator new[](size_t sz, u32 align);
@@ -40391,9 +40902,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM
 // nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00411af0 - 0x00411b48 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40416,9 +40927,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE:
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::MyDTI::newInstance at 0x003ff524-0x003ff54d (called at S2CImplement.inc:451)
-// void* nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::operator new[](size_t sz, u32 align);
@@ -40501,9 +41014,9 @@ s32 nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::ReadPacket(CPac
 // nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ff520 - 0x003ff57d (93 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40526,9 +41039,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::MyDTI::newInstance at 0x00403da4-0x00403dcd (called at S2CImplement.inc:516)
-// void* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::operator new[](size_t sz, u32 align);
@@ -40617,9 +41132,9 @@ s32 nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::ReadPacket(CPacket* pPa
 // nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00403da0 - 0x00403df5 (85 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40642,9 +41157,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::getAllo
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::MyDTI::newInstance at 0x00403b94-0x00403bbd (called at S2CImplement.inc:514)
-// void* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::operator new[](size_t sz, u32 align);
@@ -40729,9 +41246,9 @@ s32 nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::ReadPacket(CPacket* pPa
 // nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00403b90 - 0x00403bef (95 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40754,9 +41271,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::MyDTI::newInstance at 0x00400ab4-0x00400add (called at S2CImplement.inc:471)
-// void* nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::operator new[](size_t sz, u32 align);
@@ -40842,9 +41361,9 @@ s32 nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::ReadPacket(CPacket* pPac
 // nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00400ab0 - 0x00400b02 (82 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40867,9 +41386,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::MyDTI::newInstance at 0x00400e14-0x00400e3d (called at S2CImplement.inc:474)
-// void* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::operator new[](size_t sz, u32 align);
@@ -40925,9 +41446,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RE
 // nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00400e10 - 0x00400e61 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -40950,9 +41471,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::g
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::MyDTI::newInstance at 0x004007e4-0x0040080d (called at S2CImplement.inc:468)
-// void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::operator new[](size_t sz, u32 align);
@@ -41012,9 +41535,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR
 // nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004007e0 - 0x00400833 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41037,9 +41560,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::getA
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::MyDTI::newInstance at 0x004009c4-0x004009ed (called at S2CImplement.inc:470)
-// void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::operator new[](size_t sz, u32 align);
@@ -41099,9 +41624,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RE
 // nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004009c0 - 0x00400a13 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41124,9 +41649,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::getAl
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::MyDTI::newInstance at 0x003e6bd4-0x003e6bfd (called at S2CImplement.inc:112)
-// void* nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::operator new[](size_t sz, u32 align);
@@ -41188,9 +41715,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES
 // nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e6bd0 - 0x003e6c24 (84 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41213,9 +41740,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::getAlloc
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::MyDTI::newInstance at 0x003ff714-0x003ff73d (called at S2CImplement.inc:453)
-// void* nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::operator new[](size_t sz, u32 align);
@@ -41305,9 +41834,9 @@ s32 nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::ReadPacket(CPacket* pPac
 // nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003ff710 - 0x003ff76f (95 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41330,9 +41859,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::getAll
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::MyDTI::newInstance at 0x004114f4-0x0041151d (called at S2CImplement.inc:686)
-// void* nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::operator new[](size_t sz, u32 align);
@@ -41391,9 +41922,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE:
 // nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x004114f0 - 0x00411543 (83 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41416,9 +41947,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::MyDTI::newInstance at 0x003e0c74-0x003e0c9d (called at S2CImplement.inc:31)
-// void* nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::operator new[](size_t sz, u32 align);
@@ -41478,9 +42011,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::oper
 // nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e0c70 - 0x003e0cc8 (88 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41503,9 +42036,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::getAllocator(
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::MyDTI::newInstance at 0x003e7484-0x003e74ad (called at S2CImplement.inc:120)
-// void* nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::operator new[](size_t sz, u32 align);
@@ -41568,9 +42103,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::operat
 // nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e7480 - 0x003e74d9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41593,9 +42128,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::MyDTI::newInstance at 0x003e7394-0x003e73bd (called at S2CImplement.inc:119)
-// void* nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::operator new[](size_t sz, u32 align);
@@ -41651,9 +42188,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::operator 
 // nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e7390 - 0x003e73e1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_USE_BAG_ITEM_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41676,9 +42213,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::getAllocator() 
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::MyDTI::newInstance at 0x003e7664-0x003e768d (called at S2CImplement.inc:122)
-// void* nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::operator new[](size_t sz, u32 align);
@@ -41734,9 +42273,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::operator
 // nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003e7660 - 0x003e76b1 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41759,9 +42298,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_WARP_RES::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_WARP_RES::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_WARP_RES::MyDTI::newInstance at 0x003f2154-0x003f217d (called at S2CImplement.inc:263)
-// void* nUserSession::CPacket_S2C_WARP_RES::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_WARP_RES::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_WARP_RES::operator new[](size_t sz, u32 align);
@@ -41823,9 +42364,9 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_WARP_RES::operator delete(v
 // nUserSession::CPacket_S2C_WARP_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003f2150 - 0x003f21a9 (89 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_WARP_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_WARP_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_WARP_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_WARP_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41924,9 +42465,9 @@ __attribute__((weak)) s32 nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::Re
 // nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410a30 - 0x00410ab8 (136 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES;
 }
 
 // No out-of-line body: no code in the ELF
@@ -41949,9 +42490,11 @@ inline MtAllocator* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::getAllocato
 // No out-of-line body: no code in the ELF
 // void nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::MyDTI::newInstance at 0x00410944-0x0041096d (called at S2CImplement.inc:674)
-// void* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::operator new[](size_t sz, u32 align);
@@ -42007,8 +42550,8 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::oper
 // nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00410940 - 0x00410991 (81 bytes)
-__attribute__((weak)) MtObject* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::MyDTI::newInstance() const {
-    DDON_STUB("nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::MyDTI::newInstance")
-    return nullptr;
+MtObject* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE;
 }
 

@@ -1527,9 +1527,8 @@ __attribute__((weak)) void MtProperty::callEvent() const {
 
 // Address: 0x00d625f0 - 0x00d62617 (39 bytes)
 void MtProperty::registCustom(MtProperty::Custom* pcustom) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     MtProperty::Custom* * p0 = ::MtProperty::mpCustom;
     u32 i = static_cast<u32>(0);
     do {
@@ -1544,19 +1543,18 @@ void MtProperty::registCustom(MtProperty::Custom* pcustom) {
 
 // Address: 0x00d62620 - 0x00d6267b (91 bytes)
 MtProperty::Custom* MtProperty::getCustom(MT_CTSTR name) {
-    // local: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i0_3 = static_cast<unsigned int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0xd6263a, 0xd6266f)) is the counter this loop steps (DWARF's stale constant 0)
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     for (MtProperty::Custom* * p0_8 = ::MtProperty::mpCustom;;) {
         if ((*p0_8) != static_cast<MtProperty::Custom*>(nullptr)) {
             if (::strcmp((*p0_8)->getName(), name) == static_cast<int>(0)) {
                 return *p0_8;
             }
         }
-        if ((i0_3 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(15)) {
-            i0_3 += static_cast<unsigned int>(1);
+        if ((i + static_cast<u32>(1)) <= static_cast<u32>(15)) {
+            i += static_cast<u32>(1);
             p0_8 += static_cast<int>(1);
         } else {
             break;

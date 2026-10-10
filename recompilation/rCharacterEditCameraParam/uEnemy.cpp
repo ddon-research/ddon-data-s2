@@ -20,6 +20,7 @@
 #include "../shared/cpActionManager.h"
 #include "../rPawnAIAction/cpActionRequest.h"
 #include "cpCorePointCtrl.h"
+#include "../shared/cpEffectStatusManager.h"
 #include "../shared/cpEnemyThink.h"
 #include "../shared/cpErosionEnemy.h"
 #include "../shared/cpErosionEnemyBase.h"
@@ -212,7 +213,7 @@ __attribute__((weak)) void uEnemy::before() {
 
 // Address: 0x008f3ab0 - 0x008f3b21 (113 bytes)
 void uEnemy::updatePtr() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uCharacter::updatePtr();
     if (this->mpEnemyThink != static_cast<cpEnemyThink*>(nullptr)) {
@@ -228,7 +229,7 @@ void uEnemy::updatePtr() {
 
 // Address: 0x008f3b30 - 0x008f3ba7 (119 bytes)
 void uEnemy::updateObjStatus() {
-    // local: u32 errOst;
+    // DWARF local not rendered: u32 errOst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uCharacter::updateObjStatus();
     if (((this->::uDDOModel::mObjStatus >> static_cast<u64>(8)) & static_cast<u64>(2)) != static_cast<u64>(0)) {
@@ -416,11 +417,55 @@ void uEnemy::setupContextCondition(bool recvFlag) {
 }
 
 // Address: 0x008f2050 - 0x008f2234 (484 bytes)
-__attribute__((weak)) void uEnemy::setupContextEnemyStatusChange(bool recvFlag) {
-    // local: cpStatusChange* pcStatusChange;
-    // local: u32 i;
-    DDON_STUB("uEnemy::setupContextEnemyStatusChange")
-    /* stub */
+void uEnemy::setupContextEnemyStatusChange(bool recvFlag) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    cpStatusChange* pcStatusChange = this->::uDDOModel::getStatusChangePtr();
+    if (pcStatusChange != static_cast<cpStatusChange*>(nullptr)) {
+        // inferred: the value carried to 0x8f20f9; no location-less local in scope fits
+        cContextCharacter* v1_4;
+        // inferred: the value carried to 0x8f20f9; no location-less local in scope fits
+        cContextInstance* v1_5;
+        if (::cContextInterface::getEnemyStatusGroupNum(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter) == static_cast<u32>(0)) {
+            v1_4 = this->::uDDOModel::mContextInterface.mpContextCharacter;
+            v1_5 = this->::uDDOModel::mContextInterface.mpContextInstance;
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_3 = static_cast<unsigned int>(0);
+            // inferred: the value the loop at 0x8f20a0 carries; no location-less local in scope fits
+            cContextCharacter* v0_4 = this->::uDDOModel::mContextInterface.mpContextCharacter;
+            // inferred: the value the loop at 0x8f20a0 carries; no location-less local in scope fits
+            for (cContextInstance* v0_5 = this->::uDDOModel::mContextInterface.mpContextInstance;;) {
+                // inferred: a temporary for the result of the call at 0x8f20a2, used once; no DWARF local holds it
+                u32 t0 = ::cContextInterface::getEnemyStatusGroup(v0_5, v0_4, i0_3);
+                pcStatusChange->::cpStatusChange::setGroup_SubGroup(t0, ::cContextInterface::getEnemyStatusSubGroup(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter, i0_3));
+                if ((i0_3 + static_cast<unsigned int>(1)) < ::cContextInterface::getEnemyStatusGroupNum(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter)) {
+                    i0_3 += static_cast<unsigned int>(1);
+                    v0_4 = this->::uDDOModel::mContextInterface.mpContextCharacter;
+                    v0_5 = this->::uDDOModel::mContextInterface.mpContextInstance;
+                } else {
+                    v1_4 = this->::uDDOModel::mContextInterface.mpContextCharacter;
+                    v1_5 = this->::uDDOModel::mContextInterface.mpContextInstance;
+                    break;
+                }
+            }
+        }
+        pcStatusChange->::cpStatusChange::setEnemyStatusChange(static_cast<u32>(3), ::cContextInterface::getEnemyBitCtrlCollision(v1_5, v1_4));
+        pcStatusChange->::cpStatusChange::setEnemyStatusChange(static_cast<u32>(2), ::cContextInterface::getEnemyCtrRegionSelectNo(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter));
+        pcStatusChange->::cpStatusChange::setEnemyStatusChange(static_cast<u32>(4), ::cContextInterface::getEnemyBitCtrParts(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter));
+        pcStatusChange->::cpStatusChange::setEnemyStatusChange(static_cast<u32>(5), ::cContextInterface::getEnemyWorkRate(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter));
+        pcStatusChange->::cpStatusChange::setEnemyStatusChange(static_cast<u32>(7), ::cContextInterface::getEnemyScale(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter));
+        pcStatusChange->::cpStatusChange::setEnemyStatusChange(static_cast<u32>(10), ::cContextInterface::getEnemyBitCtrlMontage(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter));
+        pcStatusChange->::cpStatusChange::setEnemyStatusChange(static_cast<u32>(11), ::cContextInterface::getEnemyBitCtrlSyncBit(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter));
+        if (recvFlag == false) {
+            pcStatusChange->::cpStatusChange::checkStatusChangeBit(true);
+            pcStatusChange->::cpStatusChange::copyStatusOldBit();
+            if (this->::uDDOModel::mpEffectStatusManager != static_cast<cpEffectStatusManager*>(nullptr)) {
+                this->::uDDOModel::mpEffectStatusManager->::cpEffectStatusManager::after();
+                return;
+            }
+        }
+    }
 }
 
 // Address: 0x008f2240 - 0x008f2256 (22 bytes)
@@ -592,7 +637,7 @@ __attribute__((weak)) void uEnemy::callbackChanceDown() {
 
 // Address: 0x008fa900 - 0x008fa918 (24 bytes)
 void uEnemy::callbackGetUpFromChanceDown() {
-    // local: cpErosionSuperEnemy* pErosionSuperEnemy;
+    // DWARF local not rendered: cpErosionSuperEnemy* pErosionSuperEnemy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uEnemy::getErosionEnemyBase() == static_cast<cpErosionEnemyBase*>(nullptr)) {
         return;
@@ -660,7 +705,7 @@ void uEnemy::callbackDamageAfter_calc(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008f91f0 - 0x008f9230 (64 bytes)
 void uEnemy::callbackDamageAfter_apply(cHitInfoAfter* pHitInfo) {
-    // local: cpErosionEnemy* pCpErosionEnemy;
+    // DWARF local not rendered: cpErosionEnemy* pCpErosionEnemy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;
@@ -717,7 +762,7 @@ __attribute__((weak)) void uEnemy::callbackGuard_apply(cHitInfo* pHitInfo) {
 
 // Address: 0x008f8990 - 0x008f89c9 (57 bytes)
 void uEnemy::callbackChecked(cHitInfo* pHitInfo) {
-    // local: cpErosionEnemyBase* pErosionEnemy;
+    // DWARF local not rendered: cpErosionEnemyBase* pErosionEnemy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uCharacter::callbackChecked(pHitInfo);
     if (this->::uEnemy::getErosionEnemyBase() != static_cast<cpErosionEnemyBase*>(nullptr)) {
@@ -871,10 +916,6 @@ __attribute__((weak)) void uEnemy::callbackReqOcdAction(cOcdInfo& OcdInfo, bool 
 
 // Address: 0x008fafd0 - 0x008fb063 (147 bytes)
 void uEnemy::callbackRegionBreakMasterSlave(u32 regionNo) {
-    // local: cpHpDamageCtrl* pHpDamageCtrl;
-    // local: cParentRegionStatus* pRegion;
-    // local: P_REGION_CATEGORY category;
-    // local: cpErosionEnemyBase* pErosionEnemy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cpHpDamageCtrl* pHpDamageCtrl = this->::uDDOModel::getHpDamageCtrlPtr();
     if (pHpDamageCtrl == static_cast<cpHpDamageCtrl*>(nullptr)) {
@@ -916,9 +957,8 @@ void uEnemy::callbackRegionRegenerateMasterSlave(u32 regionNo, nRegionStatus::P_
 
 // Address: 0x008fa170 - 0x008fa201 (145 bytes)
 void uEnemy::callbackCheck(cHitInfo* pHitInfo) {
-    // local: const cCollNode* pNode;
-    // local: uHuman* pHm;
-    // local: u16 nodeID;
+    // DWARF local not rendered: uHuman* pHm;
+    // DWARF local not rendered: u16 nodeID;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uDDOModel::callbackCheck(pHitInfo);
     // inferred: a temporary for the value the load at 0x8fa185 read, used 3 times; no DWARF local holds it
@@ -987,7 +1027,7 @@ __attribute__((weak)) void uEnemy::applyOcdAdjEm(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008faf30 - 0x008faf55 (37 bytes)
 void uEnemy::callbackChangeErosionCurrentLevel(nErosionEnemyBase::EROSION_LEVEL level, nErosionEnemyBase::EROSION_LEVEL oldLevel) {
-    // local: cpStatusChange* pStatusChange;
+    // DWARF local not rendered: cpStatusChange* pStatusChange;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getStatusChangePtr() == static_cast<cpStatusChange*>(nullptr)) {
         return;
@@ -1267,7 +1307,7 @@ __attribute__((weak)) bool uEnemy::isAnimal(nEnemy::ENEMY_ID emId) {
 
 // Address: 0x008f8350 - 0x008f8376 (38 bytes)
 bool uEnemy::isShakedActionEnemy() const {
-    // local: cCharParamEnemy* pEnemyParam;
+    // DWARF local not rendered: cCharParamEnemy* pEnemyParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpCharParamEnemy != static_cast<rCharParamEnemy*>(nullptr)) {
         if (this->mpCharParamEnemy->::rCharParamEnemy::getCharParamEnemy() != static_cast<cCharParamEnemy*>(nullptr)) {
@@ -1307,7 +1347,7 @@ bool uEnemy::isRageNow() const {
 
 // Address: 0x008f5df0 - 0x008f5e16 (38 bytes)
 bool uEnemy::isSwitchShakeToDown() const {
-    // local: cCharParamEnemy* pParam;
+    // DWARF local not rendered: cCharParamEnemy* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpCharParamEnemy != static_cast<rCharParamEnemy*>(nullptr)) {
         if (this->mpCharParamEnemy->::rCharParamEnemy::getCharParamEnemy() != static_cast<cCharParamEnemy*>(nullptr)) {
@@ -1336,7 +1376,7 @@ cBlowShrinkInfo* uEnemy::getShakInfoForGuage() const {
 
 // Address: 0x008fc340 - 0x008fc366 (38 bytes)
 bool uEnemy::isUseAdvBgmEnemy() const {
-    // local: cCharParamEnemy* pParam;
+    // DWARF local not rendered: cCharParamEnemy* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpCharParamEnemy != static_cast<rCharParamEnemy*>(nullptr)) {
         if (this->mpCharParamEnemy->::rCharParamEnemy::getCharParamEnemy() != static_cast<cCharParamEnemy*>(nullptr)) {
@@ -1583,14 +1623,14 @@ __attribute__((weak)) void uEnemy::setResource(u32 resType, cResource* pResource
 
 // Address: 0x008fbd70 - 0x008fbd86 (22 bytes)
 nEnemy::ENEMY_BODY_SIZE uEnemy::getBodySize() {
-    // local: u32 size;
+    // DWARF local not rendered: u32 size;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<nEnemy::ENEMY_BODY_SIZE>(::cContextInterface::getBodySize(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter));
 }
 
 // Address: 0x008fb410 - 0x008fb42a (26 bytes)
 void uEnemy::setLv(u32 Lv) {
-    // local: cContextInterface& pContext;
+    // DWARF local not rendered: cContextInterface& pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     ::cContextInterface::setLv(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<s32>(Lv));
 }
@@ -1670,7 +1710,7 @@ __attribute__((weak)) bool uEnemy::setStatusChangeCnsBoneScale(u32 no, u32 joint
 
 // Address: 0x008f80f0 - 0x008f8282 (402 bytes)
 void uEnemy::setEmParamFromResToContext(const cCharParamEnemy* pEmParam) {
-    // local: cContextInterface& pContext;
+    // DWARF local not rendered: cContextInterface& pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pEmParam == static_cast<const cCharParamEnemy*>(nullptr)) {
         return;
@@ -1704,9 +1744,9 @@ void uEnemy::makeDamageAttackInfo(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x008fb580 - 0x008fb633 (179 bytes)
 void uEnemy::makeDamageDefenceInfo(cHitInfoAfter* pHitInfo) {
-    // local: cpErosionSuperEnemy* pErosionSuperEnemy;
-    // local: cHpDamageInfo& damageInfo;
-    // local: f32 adjParam;
+    // DWARF local not rendered: cpErosionSuperEnemy* pErosionSuperEnemy;
+    // DWARF local not rendered: cHpDamageInfo& damageInfo;
+    // DWARF local not rendered: f32 adjParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;
@@ -1963,7 +2003,7 @@ void uEnemy::receiveCorePointSlaveMsg(const nRegionStatus::stCorePointSlaveMsg& 
 
 // Address: 0x008fbee0 - 0x008fbf15 (53 bytes)
 void uEnemy::callSwayedSuccessSe() {
-    // local: rSoundRequest* pRes;
+    // DWARF local not rendered: rSoundRequest* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((this->::uDDOModel::mObjStatusOld & static_cast<u64>(131072)) != static_cast<u64>(0)) {
     } else {
@@ -2158,7 +2198,7 @@ bool uEnemy::isActiveShakeChanceTime(nObjCollision::SHAKE_CHANCE_TYPE chanceType
 
 // Address: 0x008fc470 - 0x008fc4f7 (135 bytes)
 void uEnemy::activateShakeChanceTime(nObjCollision::SHAKE_CHANCE_TYPE chanceType) {
-    // local: stShakeChanceInfo& info;
+    // DWARF local not rendered: stShakeChanceInfo& info;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpCharParamEnemy == static_cast<rCharParamEnemy*>(nullptr)) {
         return;
@@ -2245,11 +2285,174 @@ __attribute__((weak)) bool uEnemy::isEnemyFreeEnchant() const {
 
 // Address: 0x008f5820 - 0x008f59a9 (393 bytes)
 __attribute__((weak)) void uEnemy::updateEnchantColInfo() {
-    // local: s32 i;
-    // local: s32 i;
-    // local: s32 i;
-    DDON_STUB("uEnemy::updateEnchantColInfo")
-    /* stub */
+    // DWARF local not rendered: s32 i;
+    // DWARF local not rendered: s32 i;
+    // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mEnchaColUidListIndex < this->mEnchaColUidListBottom) {
+        s32 i;
+        if (this->mEnchaColUidListIndex <= static_cast<s32>(-1)) {
+            i = this->mEnchaColUidListBottom;
+        } else {
+            // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
+            for (int i0_0 = static_cast<int>(0);;) {
+                // inferred: a temporary for the value the load at 0x8f5850 read, used 3 times; no DWARF local holds it
+                f32 t0 = this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantIntervalTime;
+                if (t0 > 0.0f) {
+                    // inferred: a temporary for the value the load at 0x8f5867 read, used twice; no DWARF local holds it
+                    f32 t1 = this->::cUnit::mDeltaTime;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantIntervalTime = t0 - t1;
+                    if (0.0f > this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantIntervalTime) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantIntervalTime = 0.0f;
+                        // inferred: a temporary for the value the load at 0x8f587c read, used twice; no DWARF local holds it
+                        bool t2 = this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantAreaOld = t2;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea = false;
+                        if (t2 == false) {
+                            this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mCanReEnchant = true;
+                        }
+                        if (i0_0 < this->mEnchaColUidListIndex) {
+                            i0_0 = i0_0 + static_cast<int>(1);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        // inferred: a temporary for the value the load at 0x8f587c read, used twice; no DWARF local holds it
+                        bool t2 = this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantAreaOld = t2;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea = false;
+                        if (t2 == false) {
+                            this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mCanReEnchant = true;
+                        }
+                        if (i0_0 < this->mEnchaColUidListIndex) {
+                            i0_0 = i0_0 + static_cast<int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    // inferred: a temporary for the value the load at 0x8f587c read, used twice; no DWARF local holds it
+                    bool t2 = this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantAreaOld = t2;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea = false;
+                    if (t2 == false) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mCanReEnchant = true;
+                    }
+                    if (i0_0 < this->mEnchaColUidListIndex) {
+                        i0_0 = i0_0 + static_cast<int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            i = this->mEnchaColUidListBottom;
+        }
+        if (i > static_cast<s32>(15)) {
+        } else {
+            // inferred: the value the loop at 0x8f58d0 carries; no location-less local in scope fits
+            for (s32 v3_0 = i;;) {
+                // inferred: a temporary for the value the load at 0x8f58dd read, used 3 times; no DWARF local holds it
+                f32 t3 = this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantIntervalTime;
+                if (t3 > 0.0f) {
+                    // inferred: a temporary for the value the load at 0x8f58f4 read, used twice; no DWARF local holds it
+                    f32 t4 = this->::cUnit::mDeltaTime;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantIntervalTime = t3 - t4;
+                    if (0.0f > this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantIntervalTime) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantIntervalTime = 0.0f;
+                        // inferred: a temporary for the value the load at 0x8f5909 read, used twice; no DWARF local holds it
+                        bool t5 = this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantAreaOld = t5;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                        if (t5 == false) {
+                            this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                        }
+                        if ((v3_0 + static_cast<s32>(1)) != static_cast<s32>(16)) {
+                            v3_0 += static_cast<s32>(1);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        // inferred: a temporary for the value the load at 0x8f5909 read, used twice; no DWARF local holds it
+                        bool t5 = this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantAreaOld = t5;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                        if (t5 == false) {
+                            this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                        }
+                        if ((v3_0 + static_cast<s32>(1)) != static_cast<s32>(16)) {
+                            v3_0 += static_cast<s32>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    // inferred: a temporary for the value the load at 0x8f5909 read, used twice; no DWARF local holds it
+                    bool t5 = this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantAreaOld = t5;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                    if (t5 == false) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                    }
+                    if ((v3_0 + static_cast<s32>(1)) != static_cast<s32>(16)) {
+                        v3_0 += static_cast<s32>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    } else {
+        // inferred: the value the loop at 0x8f5940 carries; no location-less local in scope fits
+        for (s32 v5_1 = this->mEnchaColUidListIndex;;) {
+            // inferred: a temporary for the value the load at 0x8f594d read, used 3 times; no DWARF local holds it
+            f32 t6 = this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantIntervalTime;
+            if (t6 > 0.0f) {
+                // inferred: a temporary for the value the load at 0x8f5964 read, used twice; no DWARF local holds it
+                f32 t7 = this->::cUnit::mDeltaTime;
+                this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantIntervalTime = t6 - t7;
+                if (0.0f > this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantIntervalTime) {
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantIntervalTime = 0.0f;
+                    // inferred: a temporary for the value the load at 0x8f5979 read, used twice; no DWARF local holds it
+                    bool t8 = this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantAreaOld = t8;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                    if (t8 == false) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                    }
+                    if (this->mEnchaColUidListBottom < v5_1) {
+                        v5_1 += static_cast<s32>(-1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    // inferred: a temporary for the value the load at 0x8f5979 read, used twice; no DWARF local holds it
+                    bool t8 = this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantAreaOld = t8;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                    if (t8 == false) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                    }
+                    if (this->mEnchaColUidListBottom < v5_1) {
+                        v5_1 += static_cast<s32>(-1);
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                // inferred: a temporary for the value the load at 0x8f5979 read, used twice; no DWARF local holds it
+                bool t8 = this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea;
+                this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantAreaOld = t8;
+                this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                if (t8 == false) {
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                }
+                if (this->mEnchaColUidListBottom < v5_1) {
+                    v5_1 += static_cast<s32>(-1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (271 bytes)

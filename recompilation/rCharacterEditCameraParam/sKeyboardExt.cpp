@@ -74,7 +74,7 @@ sKeyboardExt::~sKeyboardExt() {
 
 // Address: 0x007dd740 - 0x007dd79f (95 bytes)
 void sKeyboardExt::move() {
-    // local: u32 currentType;
+    // DWARF local not rendered: u32 currentType;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->::sKeyboard::move();
     if (this->mKeyStateClearNum != static_cast<u32>(0)) {

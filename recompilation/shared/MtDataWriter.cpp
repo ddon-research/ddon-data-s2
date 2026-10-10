@@ -88,9 +88,13 @@ void MtDataWriter::writeU64(u64 n) {
 }
 
 // Address: 0x00dc2580 - 0x00dc25ba (58 bytes)
-__attribute__((weak)) void MtDataWriter::writeS16(s16 n) {
-    DDON_STUB("MtDataWriter::writeS16")
-    /* stub */
+void MtDataWriter::writeS16(s16 n) {
+    // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
+    if ((this->mSeekPt + static_cast<u32>(1)) >= this->mBufsiz) {
+        this->flush();
+    }
+    *reinterpret_cast<unsigned short*>(&this->mBuffer[this->mSeekPt]) = static_cast<unsigned short>(n);
+    this->mSeekPt = this->mSeekPt + static_cast<u32>(2);
 }
 
 // Address: 0x00dc25c0 - 0x00dc25f7 (55 bytes)
@@ -114,17 +118,25 @@ void MtDataWriter::writeS64(s64 n) {
 }
 
 // Address: 0x00dc2640 - 0x00dc2679 (57 bytes)
-__attribute__((weak)) void MtDataWriter::writeF32(f32 n) {
-    // local: u32 v;
-    DDON_STUB("MtDataWriter::writeF32")
-    /* stub */
+void MtDataWriter::writeF32(f32 n) {
+    // DWARF local not rendered: u32 v;
+    // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
+    if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
+        this->flush();
+    }
+    *reinterpret_cast<unsigned int*>(&this->mBuffer[this->mSeekPt]) = *reinterpret_cast<unsigned int*>(&n);
+    this->mSeekPt = this->mSeekPt + static_cast<u32>(4);
 }
 
 // Address: 0x00dc2680 - 0x00dc26bb (59 bytes)
-__attribute__((weak)) void MtDataWriter::writeF64(f64 n) {
-    // local: u64 v;
-    DDON_STUB("MtDataWriter::writeF64")
-    /* stub */
+void MtDataWriter::writeF64(f64 n) {
+    // DWARF local not rendered: u64 v;
+    // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
+    if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
+        this->flush();
+    }
+    *reinterpret_cast<unsigned long*>(&this->mBuffer[this->mSeekPt]) = *reinterpret_cast<unsigned long*>(&n);
+    this->mSeekPt = this->mSeekPt + static_cast<u32>(8);
 }
 
 // Address: 0x00dc26c0 - 0x00dc26c9 (9 bytes)
@@ -157,9 +169,9 @@ void MtDataWriter::writeV4(const MtFloat4& ft4) {
 }
 
 // Address: 0x00dc26e0 - 0x00dc2717 (55 bytes)
-__attribute__((weak)) void MtDataWriter::writeString(MT_CTSTR str) {
-    DDON_STUB("MtDataWriter::writeString")
-    /* stub */
+void MtDataWriter::writeString(MT_CTSTR str) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->write(static_cast<const void*>(str), static_cast<u32>(::strlen(str) + static_cast<size_t>(1)));
 }
 
 // Address: 0x00dc2720 - 0x00dc2795 (117 bytes)

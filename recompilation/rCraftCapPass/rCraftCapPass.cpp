@@ -6,6 +6,7 @@
 #include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -162,12 +163,22 @@ inline void rCraftCapPass::operator delete(void* p_addr) {
 
 // Address: 0x00659040 - 0x006590e5 (165 bytes)
 bool rCraftCapPass::loadData(MtDataReader& in, cCraftCapPassData* pData) {
-    // Approximate from the ELF: a byte stored between two folded calls (struct-path TBAA keeps a value the ELF reads again); the body oracle reports this body.
-    pData->mRecipeId = in.readU32();
-    pData->mStartLv = in.readU16();
-    pData->mLvCap = in.readU16();
-    pData->mVer = in.readU16();
-    pData->mRound = in.::MtDataReader::readU8();
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mRecipeId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mStartLv);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLvCap);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mVer);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mRound);
     pData->mType = in.::MtDataReader::readU8();
     return true;
 }
@@ -214,4 +225,8 @@ template const cCraftCapPassData* rTbl2<cCraftCapPassData>::getData(unsigned int
 // Instance at 0x01a812c0 - 0x01a812c4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cCraftCapPassData>::getDataNum() const;
+
+// Instance at 0x01a81450 - 0x01a814a8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCraftCapPassData>::~rTbl2();
 

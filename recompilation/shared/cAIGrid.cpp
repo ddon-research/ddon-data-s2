@@ -404,7 +404,7 @@ __attribute__((weak)) const s32* cAIGrid::getGridValue(s32 x, s32 z) const {
 
 // Address: 0x00021bc0 - 0x00021bdf (31 bytes)
 const s32* cAIGrid::getGridValue(s32 index) const {
-    // local: s32 num;
+    // DWARF local not rendered: s32 num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (index > static_cast<s32>(-1)) {
         if (index < (this->mGridZNum * this->mGridXNum)) {

@@ -413,11 +413,66 @@ __attribute__((weak)) void cMenuSupportList::moveList(u32 listNum) {
 }
 
 // Address: 0x0014fd60 - 0x0014fe16 (182 bytes)
-__attribute__((weak)) void cMenuSupportList::createList(u32 listNum) {
-    // local: u32 i;
-    // local: u32 i;
-    DDON_STUB("cMenuSupportList::createList")
-    /* stub */
+void cMenuSupportList::createList(u32 listNum) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->mSortListCount = static_cast<u32>(0);
+    this->mListNum = listNum;
+    this->::cMenuSupportMenu::mMenuNum = static_cast<u32>(0);
+    this->mPageNo = static_cast<s32>(0);
+    this->mReqRemake = false;
+    // inferred: the value the loop at 0x14fda0 carries; no location-less local in scope fits
+    s32* v0_1 = this->mpSortList;
+    if (v0_1 != static_cast<s32*>(nullptr)) {
+        // inferred: the value carried to 0x14fdbb; no location-less local in scope fits
+        u32 v2_0;
+        // inferred: the value carried to 0x14fdbb; no location-less local in scope fits
+        u32 v2_3;
+        if (this->mListMax != static_cast<u32>(0)) {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_2 = static_cast<unsigned int>(0);
+            // inferred: the value carried to 0x14fdb3; no location-less local in scope fits
+            u32 v1_0;
+            for (;;) {
+                v0_1[i0_2] = static_cast<int>(0);
+                v1_0 = this->mListMax;
+                if ((i0_2 + static_cast<unsigned int>(1)) < v1_0) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+            v2_0 = v1_0;
+            v2_3 = this->mListNum;
+        } else {
+            v2_0 = static_cast<u32>(0);
+            v2_3 = listNum;
+        }
+        if (v2_3 != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x14fdd4 carries; no location-less local in scope fits
+            u32 v3_0 = v2_0;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
+                if (this->mSortListCount >= v3_0) {
+                    break;
+                } else {
+                    if (this->::cMenuSupport::mpParentMenu->checkListFilter(i3_3) != false) {
+                        this->mpSortList[this->mSortListCount] = static_cast<int>(i3_3);
+                        this->mSortListCount = this->mSortListCount + static_cast<u32>(1);
+                    }
+                    if ((i3_3 + static_cast<unsigned int>(1)) >= this->mListNum) {
+                        break;
+                    } else {
+                        v3_0 = this->mListMax;
+                        i3_3 += static_cast<unsigned int>(1);
+                    }
+                }
+            }
+        }
+        this->::cMenuSupportList::createMenuList();
+        this->mIsRemakeList = true;
+    }
 }
 
 // Address: 0x00150020 - 0x001500fb (219 bytes)
@@ -684,7 +739,6 @@ __attribute__((weak)) void cMenuSupportMenu::updateMenu() {
 
 // Address: 0x0014f5a0 - 0x0014f62c (140 bytes)
 void cMenuSupportMenu::moveMenu(s32 cursorOrderId) {
-    // local: cCursor cursor;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cCursor cursor;
     cursor.::cCursor::setupY(static_cast<s32>(0), static_cast<s32>(this->mMenuNum - static_cast<u32>(1)), true, false, true, true);
@@ -745,14 +799,14 @@ void cMenuSupportMenu::addMenuList(s32 menuId) {
 
 // Address: 0x0014f6c0 - 0x0014f6e6 (38 bytes)
 void cMenuSupportMenu::convertMenuId(s32 from, s32 to) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mMenuNum != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x14f6d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x14f6d0 carries; no location-less local in scope fits
         s32* v0_1 = this->mpMenuList;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i0_0 = static_cast<unsigned int>(0);
-        // inferred: the value the loop at 0x14f6d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x14f6d0 carries; no location-less local in scope fits
         for (u32 v0_2 = this->mMenuNum;;) {
             if (v0_1[i0_0] == from) {
                 v0_1[i0_0] = to;
@@ -783,17 +837,16 @@ void cMenuSupportMenu::convertMenuId(s32 from, s32 to) {
 
 // Address: 0x0014f6f0 - 0x0014f713 (35 bytes)
 s32 cMenuSupportMenu::getIndexFromMenuId(s32 menuId) {
-    // local: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mMenuNum != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
-        unsigned int i1 = static_cast<unsigned int>(0);
+        // inferred: DWARF's location-less 'i' (lexical block [0x14f6f0, 0x14f710)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
         do {
-            if (this->mpMenuList[i1] == menuId) {
-                return static_cast<s32>(i1);
+            if (this->mpMenuList[i] == menuId) {
+                return static_cast<s32>(i);
             }
-            i1 += static_cast<unsigned int>(1);
-        } while (i1 < this->mMenuNum);
+            i += static_cast<u32>(1);
+        } while (i < this->mMenuNum);
     }
     return static_cast<s32>(0);
 }

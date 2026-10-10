@@ -738,8 +738,8 @@ __attribute__((weak)) u32 uEffectExt::getCollFinishMaterialFlag(sCollision::Tria
 
 // Address: 0x008e8be0 - 0x008e8c0e (46 bytes)
 f32 uEffectExt::correctModelEnvMapPower(cParticleGenerator* pGenerator, const MtVector3& Pos, f32 OrgEnvMapPower) {
-    // local: u32 no;
-    // local: ZONE_PARAM* pZoneParam;
+    // DWARF local not rendered: u32 no;
+    // DWARF local not rendered: ZONE_PARAM* pZoneParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mCorrectColorParam.mpZoneParam != static_cast<uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr)) {
         if ((&this->mCorrectColorParam.mpZoneParam[pGenerator->::cParticleManager::mManagerNo]) != static_cast<uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM*>(nullptr)) {

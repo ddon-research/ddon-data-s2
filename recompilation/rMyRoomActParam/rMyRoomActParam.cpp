@@ -245,3 +245,7 @@ template const cMyRoomActParam* rTbl2<cMyRoomActParam>::getData(unsigned int) co
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cMyRoomActParam>::getDataNum() const;
 
+// Instance at 0x01a9da50 - 0x01a9daa8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cMyRoomActParam>::~rTbl2();
+

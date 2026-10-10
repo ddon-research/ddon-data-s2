@@ -700,7 +700,6 @@ __attribute__((weak)) uControl* sSetManager::createControlInstance(u32 ctrlType,
 
 // Address: 0x00845040 - 0x008450b2 (114 bytes)
 uDDOModel* sSetManager::createCharacterInstance(uControl* pCtrl) {
-    // local: uDDOModel* pMod;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pCtrl != static_cast<uControl*>(nullptr)) {
         uDDOModel* pMod = this->::sSetManager::createUnit(pCtrl->mCtrlType, pCtrl->::uControl::getUniqueId(), pCtrl->::uControl::getUnitId());
@@ -1176,7 +1175,7 @@ __attribute__((weak)) void sSetManager::createPawnExpeditionRewardDrop(const u32
 
 // Address: 0x0083ee30 - 0x0083efbf (399 bytes)
 void sSetManager::clearPawnExpeditionAllRewardDrop() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mPawnExpeditionUnitIdToBoxIdAry[0] = static_cast<unsigned int>(99999);
     ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(this->mPawnExpeditionOmControlAry[0]);

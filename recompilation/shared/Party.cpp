@@ -6,6 +6,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -77,9 +78,9 @@ __attribute__((weak)) void CDataPartyListInfo::operator delete(void* p_addr) {
 // CDataPartyListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b8f10 - 0x003b8f96 (134 bytes)
-__attribute__((weak)) MtObject* CDataPartyListInfo::MyDTI::newInstance() const {
-    DDON_STUB("CDataPartyListInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPartyListInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPartyListInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -219,9 +220,9 @@ __attribute__((weak)) void CDataPartyMemberMaxNum::operator delete(void* p_addr)
 // CDataPartyMemberMaxNum::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003b91d0 - 0x003b9218 (72 bytes)
-__attribute__((weak)) MtObject* CDataPartyMemberMaxNum::MyDTI::newInstance() const {
-    DDON_STUB("CDataPartyMemberMaxNum::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataPartyMemberMaxNum::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataPartyMemberMaxNum;
 }
 
 // No out-of-line body: no code in the ELF

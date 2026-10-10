@@ -81,9 +81,9 @@ __attribute__((weak)) void cStageCtrl::createProperty(MtPropertyList& s) {
 void cStageCtrl::clear() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mAreaArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x56e9a0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x56e9a0 carries; no location-less local in scope fits
         u32 v0_0 = this->mAreaArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mAreaArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mAreaArray.::MtArray::mpArray[i0_3];

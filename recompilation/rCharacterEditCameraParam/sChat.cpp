@@ -142,7 +142,7 @@ bool sChat::checkChatOk() {
 
 // Address: 0x00747690 - 0x007476be (46 bytes)
 void sChat::setKeyboardSetting(MT_CTSTR pMsgDefault) {
-    // local: s32 char_num;
+    // DWARF local not rendered: s32 char_num;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     ::sKeyboardInterface::getInstance()->::sKeyboardInterface::setKeyboardSetting(static_cast<sKeyboardInterface::KEYBOARD_TYPE>(2), "", (pMsgDefault == static_cast<MT_CTSTR>(nullptr)) ? "" : pMsgDefault, static_cast<s32>(32));
 }

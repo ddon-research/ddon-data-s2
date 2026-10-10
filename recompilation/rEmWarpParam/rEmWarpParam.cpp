@@ -6,6 +6,7 @@
 #include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -150,13 +151,17 @@ inline void rEmWarpParam::operator delete(void* p_addr) {
 
 // Address: 0x0066a3d0 - 0x0066a451 (129 bytes)
 bool rEmWarpParam::loadData(MtDataReader& r, cEmWarpParam* pData) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     pData->mWarpDist[0] = r.readF32();
     pData->mWarpDist[1] = r.readF32();
     pData->mWarpDist[2] = r.readF32();
-    pData->mGroundCheckDist = r.readF32();
-    pData->mIsGroundCheckExtend = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mGroundCheckDist);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIsGroundCheckExtend);
     return true;
 }
 
@@ -202,4 +207,8 @@ template const cEmWarpParam* rTbl2<cEmWarpParam>::getData(unsigned int) const;
 // Instance at 0x01a89420 - 0x01a89424 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cEmWarpParam>::getDataNum() const;
+
+// Instance at 0x01a895c0 - 0x01a89618 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cEmWarpParam>::~rTbl2();
 

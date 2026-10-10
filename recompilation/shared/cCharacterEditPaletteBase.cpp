@@ -2,8 +2,8 @@
 #include <new>
 #include "cCharacterEditPaletteBase.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -60,9 +60,15 @@
 // Address: 0x0004cd70 - 0x0004cdab (59 bytes)
 bool cCharacterEditPaletteBase::loadData(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mIconNo = r.readU32();
-    this->mReleaseVersion = r.readU32();
-    this->mFlag = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mIconNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mReleaseVersion);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mFlag);
     return true;
 }
 

@@ -148,7 +148,7 @@ void cParentRegionStatus::setHpMax(HP_DATATYPE hpMax) {
 
 // Address: 0x00150860 - 0x0015088a (42 bytes)
 void cParentRegionStatus::setIsDead(bool flag) {
-    // local: cContextInterface& pContext;
+    // DWARF local not rendered: cContextInterface& pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
         return;
@@ -189,7 +189,7 @@ HP_DATATYPE cParentRegionStatus::getHpMax() const {
 
 // Address: 0x00150820 - 0x0015084a (42 bytes)
 bool cParentRegionStatus::isDead() const {
-    // local: cContextInterface& pContext;
+    // DWARF local not rendered: cContextInterface& pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
         return ::cContextInterface::isDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
@@ -210,8 +210,8 @@ bool cParentRegionStatus::isMainRegion() const {
 
 // Address: 0x00150cf0 - 0x00150df2 (258 bytes)
 bool cParentRegionStatus::healHp(HP_DATATYPE addHp, bool isForce) {
-    // local: HP_DATATYPE hp;
-    // local: HP_DATATYPE hpMax;
+    // DWARF local not rendered: HP_DATATYPE hp;
+    // DWARF local not rendered: HP_DATATYPE hpMax;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (isForce == false) {
         if (this->mpOwnerHpDmageCtrl != static_cast<cpHpDamageCtrl*>(nullptr)) {
@@ -311,8 +311,8 @@ __attribute__((weak)) f32 cParentRegionStatus::getHpRate() const {
 
 // Address: 0x00150e80 - 0x00150f48 (200 bytes)
 void cParentRegionStatus::regenerateMaster(HP_DATATYPE addHp) {
-    // local: HP_DATATYPE hp;
-    // local: HP_DATATYPE hpMax;
+    // DWARF local not rendered: HP_DATATYPE hp;
+    // DWARF local not rendered: HP_DATATYPE hpMax;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
         return;
@@ -336,7 +336,7 @@ void cParentRegionStatus::regenerateMaster(HP_DATATYPE addHp) {
 
 // Address: 0x00151170 - 0x00151194 (36 bytes)
 void cParentRegionStatus::regenerateMasterSlave() {
-    // local: uEnemy* pEnemy;
+    // DWARF local not rendered: uEnemy* pEnemy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpOwnerModel == static_cast<uDDOModel*>(nullptr)) {
         return;

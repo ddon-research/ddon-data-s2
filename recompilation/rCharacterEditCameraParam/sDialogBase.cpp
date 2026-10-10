@@ -122,7 +122,7 @@ MtUI* sDialogBase::createUI(MtProperty& prop) {
 
 // Address: 0x00767a30 - 0x00767a55 (37 bytes)
 bool sDialogBase::isDialogExecute() {
-    // local: stInfo& info;
+    // DWARF local not rendered: stInfo& info;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return (this->mInfoOrderTbl[0] > static_cast<int>(-1)) && ((this->mInfo[this->mInfoOrderTbl[0]].state != static_cast<nDialog::STATE>(0)) && (this->mInfo[this->mInfoOrderTbl[0]].state != static_cast<nDialog::STATE>(6)));
 }
@@ -198,12 +198,11 @@ __attribute__((weak)) void sDialogBase::callbackCommonDialog(s32 result) {
 
 // Address: 0x007679e0 - 0x00767a12 (50 bytes)
 nDialog::stInfo* sDialogBase::getInfo(u32 handle) {
-    // local: s32 i;
-    // local: stInfo* pInfo;
+    // DWARF local not rendered: stInfo* pInfo;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
-    int i1 = static_cast<int>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: DWARF's location-less 'i' (lexical block [0x7679f0, 0x767a11)) is the counter this loop steps (DWARF's stale constant 0)
+    s32 i = static_cast<s32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     nDialog::stInfo* p2 = &this->mInfo[0];
     do {
         if (p2->state != static_cast<nDialog::STATE>(0)) {
@@ -212,9 +211,9 @@ nDialog::stInfo* sDialogBase::getInfo(u32 handle) {
                 return p2;
             }
         }
-        i1 += static_cast<int>(1);
+        i += static_cast<s32>(1);
         p2 += static_cast<int>(1);
-    } while ((i1 + static_cast<int>(0)) <= static_cast<int>(7));
+    } while ((i + static_cast<s32>(0)) <= static_cast<s32>(7));
     return static_cast<nDialog::stInfo*>(nullptr);
 }
 
@@ -360,8 +359,7 @@ __attribute__((weak)) void sDialogBase::callbackOffline() {
 
 // Address: 0x00768d00 - 0x00768d2b (43 bytes)
 s32 sDialogBase::convReturnMsgNo(s32 msgNo) {
-    // local: s32 retMsgNo;
-    // local: u32 i;
+    // DWARF local not rendered: s32 retMsgNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 i = static_cast<u32>(0);
     do {

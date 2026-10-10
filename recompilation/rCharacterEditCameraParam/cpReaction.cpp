@@ -166,7 +166,6 @@ __attribute__((weak)) bool cpReaction::isChoiceActNo() {
 
 // Address: 0x0019e880 - 0x0019e90b (139 bytes)
 u32 cpReaction::callbackShrink(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->mpModel->::uDDOModel::isMaster() != false) {
@@ -186,7 +185,6 @@ u32 cpReaction::callbackShrink(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0019eb70 - 0x0019ebfb (139 bytes)
 u32 cpReaction::callbackBlow(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->mpModel->::uDDOModel::isMaster() != false) {
@@ -206,7 +204,6 @@ u32 cpReaction::callbackBlow(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0019ec90 - 0x0019ed1b (139 bytes)
 u32 cpReaction::callbackDown(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->mpModel->::uDDOModel::isMaster() != false) {
@@ -226,7 +223,6 @@ u32 cpReaction::callbackDown(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0019ec00 - 0x0019ec8b (139 bytes)
 u32 cpReaction::callbackShake(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->mpModel->::uDDOModel::isMaster() != false) {
@@ -246,7 +242,7 @@ u32 cpReaction::callbackShake(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0019ed20 - 0x0019ee19 (249 bytes)
 u32 cpReaction::callbackRegionBreak(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
+    // DWARF local not rendered: u32 actNo;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->mpModel->::uDDOModel::isMaster() != false) {
@@ -435,7 +431,6 @@ u32 cpReaction::callbackRegionBreak(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0019efd0 - 0x0019f05b (139 bytes)
 u32 cpReaction::callbackRegionHit(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->mpModel->::uDDOModel::isMaster() != false) {
@@ -455,7 +450,6 @@ u32 cpReaction::callbackRegionHit(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0019ee20 - 0x0019eeab (139 bytes)
 u32 cpReaction::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->mpModel->::uDDOModel::isMaster() != false) {
@@ -475,7 +469,6 @@ u32 cpReaction::callbackDamageAfter(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x0019f060 - 0x0019f0eb (139 bytes)
 u32 cpReaction::callbackYoroyoro(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->mpModel->::uDDOModel::isMaster() != false) {

@@ -125,3 +125,80 @@ public:
     u16 m_usMotionFilter;  // offset: 0x80
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataEditInfo::CDataEditInfo() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usMotionFilter = static_cast<u16>(0);
+    this->m_usKoshiSize = static_cast<u16>(0);
+    this->m_usAnkleOffset = static_cast<u16>(0);
+    this->m_usFat = static_cast<u16>(0);
+    this->m_usMuscle = static_cast<u16>(0);
+    this->m_usBellySize = static_cast<u16>(0);
+    this->m_usTeatScale = static_cast<u16>(0);
+    this->m_usTekubiSize = static_cast<u16>(0);
+    this->m_usKoshiOffset = static_cast<u16>(0);
+    this->m_usHeadSize = static_cast<u16>(0);
+    this->m_usNeckOffset = static_cast<u16>(0);
+    this->m_usNeckScale = static_cast<u16>(0);
+    this->m_usUpperBodyScaleX = static_cast<u16>(0);
+    this->m_usWrinkleDetailNormalPower = static_cast<u16>(0);
+    this->m_usMuscleAlbedoBlendRate = static_cast<u16>(0);
+    this->m_usMuscleDetailNormalPower = static_cast<u16>(0);
+    this->m_usHeight = static_cast<u16>(0);
+    this->m_usEyebrowUVOffsetX = static_cast<u16>(0);
+    this->m_usEyebrowUVOffsetY = static_cast<u16>(0);
+    this->m_usWrinkle = static_cast<u16>(0);
+    this->m_usWrinkleAlbedoBlendRate = static_cast<u16>(0);
+    this->m_usHanaTakasa = static_cast<u16>(0);
+    this->m_usHanaKakudo = static_cast<u16>(0);
+    this->m_usKuchiHaba = static_cast<u16>(0);
+    this->m_usKuchiAtsusa = static_cast<u16>(0);
+    this->m_usErahoneJyouge = static_cast<u16>(0);
+    this->m_usErahoneHaba = static_cast<u16>(0);
+    this->m_usHanaJyouge = static_cast<u16>(0);
+    this->m_usHanaHaba = static_cast<u16>(0);
+    this->m_usMikenHaba = static_cast<u16>(0);
+    this->m_usHohoboneRyou = static_cast<u16>(0);
+    this->m_usHohoboneJyouge = static_cast<u16>(0);
+    this->m_usHohoniku = static_cast<u16>(0);
+    this->m_usMimiOokisa = static_cast<u16>(0);
+    this->m_usMimiMuki = static_cast<u16>(0);
+    this->m_usElfMimi = static_cast<u16>(0);
+    this->m_usMikenTakasa = static_cast<u16>(0);
+    this->m_usHitomiOokisa = static_cast<u16>(0);
+    this->m_usMeOokisa = static_cast<u16>(0);
+    this->m_usMeKaiten = static_cast<u16>(0);
+    this->m_usMayuKaiten = static_cast<u16>(0);
+    this->m_usHanakuchiJyouge = static_cast<u16>(0);
+    this->m_usAgoSakiHaba = static_cast<u16>(0);
+    this->m_usAgoZengo = static_cast<u16>(0);
+    this->m_usAgoSakiJyouge = static_cast<u16>(0);
+    this->m_usHitai = static_cast<u16>(0);
+    this->m_usMimiJyouge = static_cast<u16>(0);
+    this->m_usKannkaku = static_cast<u16>(0);
+    this->m_usMabisasiJyouge = static_cast<u16>(0);
+    this->m_ucColorHair = static_cast<u8>(0);
+    this->m_ucColorBeard = static_cast<u8>(0);
+    this->m_ucColorEyebrow = static_cast<u8>(0);
+    this->m_ucColorREye = static_cast<u8>(0);
+    this->m_ucColorLEye = static_cast<u8>(0);
+    this->m_ucColorMakeup = static_cast<u8>(0);
+    this->m_usSokutobu = static_cast<u16>(0);
+    this->m_ucBeard = static_cast<u8>(0);
+    this->m_ucMakeup = static_cast<u8>(0);
+    this->m_ucScar = static_cast<u8>(0);
+    this->m_ucEyePresetNo = static_cast<u8>(0);
+    this->m_ucNosePresetNo = static_cast<u8>(0);
+    this->m_ucMouthPresetNo = static_cast<u8>(0);
+    this->m_ucEyebrowTexNo = static_cast<u8>(0);
+    this->m_ucColorSkin = static_cast<u8>(0);
+    this->m_ucSex = static_cast<u8>(0);
+    this->m_ucVoice = static_cast<u8>(0);
+    this->m_usVoicePitch = static_cast<u16>(0);
+    this->m_ucPersonality = static_cast<u8>(0);
+    this->m_ucSpeechFreq = static_cast<u8>(0);
+    this->m_ucBodyType = static_cast<u8>(0);
+    this->m_ucHair = static_cast<u8>(0);
+}

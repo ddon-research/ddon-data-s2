@@ -222,15 +222,15 @@ __attribute__((weak)) bool MtBigInt::isZero() const {
 
 // Address: 0x00d768f0 - 0x00d7692c (60 bytes)
 u32 MtBigInt::getUsedByteSize() const {
-    // local: u32 i;
-    // local: u32 ret;
-    // local: word temp;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 ret;
+    // DWARF local not rendered: word temp;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_1 = static_cast<unsigned int>(132);
-    // inferred: the value carried to 0xd76911; DWARF names no local for it
+    // inferred: the value carried to 0xd76911; no location-less local in scope fits
     long unsigned int v1_0;
-    // inferred: the value carried to 0xd76911; DWARF names no local for it
+    // inferred: the value carried to 0xd76911; no location-less local in scope fits
     unsigned int v1_1;
     for (;;) {
         if (i0_1 == static_cast<unsigned int>(0)) {
@@ -245,11 +245,11 @@ u32 MtBigInt::getUsedByteSize() const {
             }
         }
     }
-    // inferred: the value the loop at 0xd76920 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xd76920 carries; no location-less local in scope fits
     long unsigned int v2_0 = v1_0;
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i2_2 = static_cast<unsigned int>(0);
-    // inferred: the value carried to 0xd76928; DWARF names no local for it
+    // inferred: the value carried to 0xd76928; no location-less local in scope fits
     unsigned int v3_2;
     for (;;) {
         if ((v2_0 >> static_cast<long unsigned int>(8)) != static_cast<long unsigned int>(0)) {
@@ -265,15 +265,15 @@ u32 MtBigInt::getUsedByteSize() const {
 
 // Address: 0x00d76930 - 0x00d7696d (61 bytes)
 u32 MtBigInt::getUsedBitSize() const {
-    // local: u32 i;
-    // local: u32 ret;
-    // local: word temp;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 ret;
+    // DWARF local not rendered: word temp;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_1 = static_cast<unsigned int>(132);
-    // inferred: the value carried to 0xd76951; DWARF names no local for it
+    // inferred: the value carried to 0xd76951; no location-less local in scope fits
     unsigned int v1_0;
-    // inferred: the value carried to 0xd76951; DWARF names no local for it
+    // inferred: the value carried to 0xd76951; no location-less local in scope fits
     long unsigned int v1_1;
     for (;;) {
         if (i0_1 == static_cast<unsigned int>(0)) {
@@ -288,11 +288,11 @@ u32 MtBigInt::getUsedBitSize() const {
             }
         }
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i2_0 = static_cast<unsigned int>(0);
-    // inferred: the value the loop at 0xd76960 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xd76960 carries; no location-less local in scope fits
     long unsigned int v2_2 = v1_1;
-    // inferred: the value carried to 0xd76967; DWARF names no local for it
+    // inferred: the value carried to 0xd76967; no location-less local in scope fits
     unsigned int v3_0;
     for (;;) {
         if ((v2_2 >> static_cast<long unsigned int>(1)) != static_cast<long unsigned int>(0)) {

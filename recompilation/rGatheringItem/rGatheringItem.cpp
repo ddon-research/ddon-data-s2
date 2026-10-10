@@ -3,9 +3,9 @@
 #include "rGatheringItem.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -151,8 +151,12 @@ inline void rGatheringItem::operator delete(void* p_addr) {
 // Address: 0x0067bac0 - 0x0067baee (46 bytes)
 bool rGatheringItem::loadData(MtDataReader& r, cGatheringItem* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mItemNo = r.readU32();
-    pData->mType = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mItemNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mType);
     return true;
 }
 
@@ -198,4 +202,8 @@ template const cGatheringItem* rTbl2<cGatheringItem>::getData(unsigned int) cons
 // Instance at 0x01a92860 - 0x01a92864 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cGatheringItem>::getDataNum() const;
+
+// Instance at 0x01a929e0 - 0x01a92a38 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cGatheringItem>::~rTbl2();
 

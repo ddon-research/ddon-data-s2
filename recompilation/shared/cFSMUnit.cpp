@@ -380,7 +380,7 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetHaveThing(MtObject* pParam, Mt
 
 // Address: 0x001f3af0 - 0x001f3b15 (37 bytes)
 u32 cFSMUnit::stateUpdateSetCallSeUnit(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetCallSe* pParamSetCallSe;
+    // DWARF local not rendered: cParamSetCallSe* pParamSetCallSe;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pParam != static_cast<MtObject*>(nullptr)) {
         this->mStartFrame = ::sMain::getInstance()->::sMain::getFrameTimer();

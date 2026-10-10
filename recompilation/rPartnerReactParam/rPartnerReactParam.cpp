@@ -3,9 +3,9 @@
 #include "rPartnerReactParam.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -171,12 +171,24 @@ inline void rPartnerReactParam::operator delete(void* p_addr) {
 // Address: 0x006b4dc0 - 0x006b4e4a (138 bytes)
 bool rPartnerReactParam::loadData(MtDataReader& in, cPartnerReactParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mIsNmlAct = in.::MtDataReader::readU8() != static_cast<u8>(0);
-    pData->mActNo = in.readU32();
-    pData->mNpcMotNo = in.readS16();
-    pData->mNpcMotNo2 = in.readS16();
-    pData->mNpcMotNo3 = in.readS16();
-    pData->mNpcMotNo4 = in.readS16();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mIsNmlAct);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mActNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNpcMotNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNpcMotNo2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNpcMotNo3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNpcMotNo4);
     return true;
 }
 
@@ -222,4 +234,8 @@ template const cPartnerReactParam* rTbl2<cPartnerReactParam>::getData(unsigned i
 // Instance at 0x01aa1f40 - 0x01aa1f44 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cPartnerReactParam>::getDataNum() const;
+
+// Instance at 0x01aa20d0 - 0x01aa2128 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cPartnerReactParam>::~rTbl2();
 

@@ -10505,6 +10505,8 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES : public ::CPacketDataBase
     {
+        // inferred: cNetGameServer::clearScreenShotCategory names nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES::m_CategoryList.::MtArray::mAutoDelete
+        friend class ::cNetGameServer;
     public:
         class MyDTI;
     public:
@@ -20871,8 +20873,1501 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_AREA_WARP_RES::CPacket_S2C_AREA_WARP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unRim = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unWarpPointID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::CPacket_S2C_BAZAAR_CANCEL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullBazaarId = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::CPacket_S2C_BAZAAR_EXHIBIT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullBazaarId = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unAdd = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unNum = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_usNum = static_cast<u16>(0);
+    this->m_unLow = static_cast<u32>(0);
+    this->m_unHigh = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unItemId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::CPacket_S2C_BAZAAR_PROCEEDS_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unItemId = static_cast<u32>(0);
+    this->m_unProceeds = static_cast<u32>(0);
+    this->m_ullBazaarId = static_cast<u64>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::CPacket_S2C_BAZAAR_PROCEEDS_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullBazaarId = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unProceeds = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullBazaarId = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES::CPacket_S2C_BOX_GACHA_BUY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES::CPacket_S2C_BOX_GACHA_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES::CPacket_S2C_BOX_GACHA_RESET_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::CPacket_S2C_BUY_AREA_QUEST_HINT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unUpdateGold = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::CPacket_S2C_BUY_SHOP_GOODS_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucPointType = static_cast<u8>(0);
+    this->m_unPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::CPacket_S2C_CANCEL_CRAFT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::CPacket_S2C_CHANGE_CAP_TO_GP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unGP = static_cast<u32>(0);
+    this->m_unCAP = static_cast<u32>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_unChangeListID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unGP = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucType = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unTotalExp = static_cast<u32>(0);
+    this->m_unAddExp = static_cast<u32>(0);
+    this->m_unExtraBonusExp = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_unLevel = static_cast<u32>(0);
+    this->m_unAddJobPoint = static_cast<u32>(0);
+    this->m_unTotalJobPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_unLevel = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::CPacket_S2C_CHARACTER_POINT_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucRevivePoint = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::CPacket_S2C_CHARACTER_REVIVE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::CPacket_S2C_CHARACTER_SEARCH_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::CPacket_S2C_CHARGE_REVIVE_POINT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucRevivePoint = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsDistribution = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::CPacket_S2C_CLAN_BASE_RELEASE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucState = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::CPacket_S2C_CLAN_CANCEL_JOIN_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nRequestId = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::CPacket_S2C_CLAN_CANCEL_JOIN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unClanPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unClanPoint = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unNpcId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::CPacket_S2C_CLAN_EXPEL_MEMBER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES::CPacket_S2C_CLAN_GET_HISTORY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_usMemberNum = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::CPacket_S2C_CLAN_INVITE_ACCEPT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_INVITE_RES::CPacket_S2C_CLAN_INVITE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::CPacket_S2C_CLAN_JOIN_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::CPacket_S2C_CLAN_LEAVE_MEMBER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::CPacket_S2C_CLAN_LEVEL_UP_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unClanLV = static_cast<u32>(0);
+    this->m_unNextClanPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unMemberID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::CPacket_S2C_CLAN_POINT_ADD_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unMoneyClanPoint = static_cast<u32>(0);
+    this->m_unClanPoint = static_cast<u32>(0);
+    this->m_unTotalClanPoint = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::CPacket_S2C_CLAN_QUEST_CLEAR_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::CPacket_S2C_CLAN_REGISTER_JOIN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unInviteId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unInviteID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unInviteId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unScoutEntryID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SEARCH_RES::CPacket_S2C_CLAN_SEARCH_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::CPacket_S2C_CLAN_SETTING_UPDATE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unRank = static_cast<u32>(0);
+    this->m_unPermission = static_cast<u32>(0);
+    this->m_unClanID = static_cast<u32>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unRank = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unMemberID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::CPacket_S2C_CLAN_UPDATE_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLAN_UPDATE_RES::CPacket_S2C_CLAN_UPDATE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::CPacket_S2C_CLIENT_CHALLENGE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_ucPasswordEnc[58] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[59] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[60] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[61] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[50] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[51] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[52] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[53] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[54] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[55] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[56] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[57] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[42] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[43] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[44] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[45] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[46] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[47] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[48] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[49] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[34] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[35] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[36] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[37] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[38] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[39] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[40] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[41] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[26] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[27] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[28] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[29] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[30] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[31] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[32] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[33] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[18] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[19] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[20] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[21] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[22] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[23] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[24] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[25] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[10] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[11] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[12] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[13] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[14] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[15] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[16] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[17] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[2] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[3] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[4] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[5] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[6] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[7] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[8] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[9] = static_cast<unsigned char>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucPasswordSrcSize = static_cast<u8>(0);
+    this->m_ucPasswordEncSize = static_cast<u8>(0);
+    this->m_ucPasswordEnc[0] = static_cast<unsigned char>(0);
+    this->m_ucPasswordEnc[1] = static_cast<unsigned char>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucFlag = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucFlag = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::CPacket_S2C_CONSUME_STORAGE_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::CPacket_S2C_CRAFT_EXP_UP_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unCraftRankLimit = static_cast<u32>(0);
+    this->m_unExtraBonusExp = static_cast<u32>(0);
+    this->m_unTotalExp = static_cast<u32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_unAddExp = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::CPacket_S2C_CRAFT_RANK_UP_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unAddCraftPoint = static_cast<u32>(0);
+    this->m_unTotalCraftPoint = static_cast<u32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_unCraftRank = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::CPacket_S2C_CRAFT_SKILL_UP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unUseCraftPoint = static_cast<u32>(0);
+    this->m_unRemainCraftPoint = static_cast<u32>(0);
+    this->m_unSkillType = static_cast<u32>(0);
+    this->m_unSkillLevel = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::CPacket_S2C_CRAFT_TIME_SAVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unRemainTime = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::CPacket_S2C_CREATE_MYPAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCycleContentsScheduleId = static_cast<u32>(0);
+    this->m_bIsEnable = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCycleContentsScheduleId = static_cast<u32>(0);
+    this->m_ucCategory = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucQuestType = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::CPacket_S2C_DEBUG_QUEST_RESET_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_unProcessNo = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_usProcessNo = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::CPacket_S2C_DELETE_FAVORITE_PAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::CPacket_S2C_DELETE_MYPAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DELIVER_ITEM_RES::CPacket_S2C_DELIVER_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_usProcessNo = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::CPacket_S2C_ENCOUNTER_PAWN_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENEMY_KILL_RES::CPacket_S2C_ENEMY_KILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unKillNum = static_cast<u32>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_unEnemyID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_usTimeOut = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unLeaveType = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullID = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unMaxMember = static_cast<u32>(0);
+    this->m_usTimeOut = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unNowMember = static_cast<u32>(0);
+    this->m_unMaxMember = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_usTimeOut = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucTotalNum = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucSlot = static_cast<u8>(0);
+    this->m_ucAddNum = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_bIsReceived = false;
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucAddNum = static_cast<u8>(0);
+    this->m_ucTotalNum = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_bIsReceived = false;
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucAddNum = static_cast<u8>(0);
+    this->m_ucTotalNum = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_FAVORITE_WARP_RES::CPacket_S2C_FAVORITE_WARP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unrim = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unWarpPointID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::CPacket_S2C_FINISH_CRAFT_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE::CPacket_S2C_FORT_DEFENSE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCycleContentsScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::CPacket_S2C_FURNITURE_LAYOUT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GACHA_BUY_RES::CPacket_S2C_GACHA_BUY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GACHA_LIST_RES::CPacket_S2C_GACHA_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::CPacket_S2C_GAME_TIME_BASEINFO_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_GameTimeBaseInfo.m_unOriginalWeek = static_cast<u32>(0);
+    this->m_GameTimeBaseInfo.m_unOriginalMoonAge = static_cast<u32>(0);
+    this->m_GameTimeBaseInfo.m_llOriginalGameTimeSec = static_cast<s64>(0);
+    this->m_GameTimeBaseInfo.m_llOriginalRealTimeSec = static_cast<s64>(0);
+    this->m_GameTimeBaseInfo.m_unGameTimeWeekDay = static_cast<u32>(0);
+    this->m_GameTimeBaseInfo.m_unGameTimeMoonAge = static_cast<u32>(0);
+    this->m_GameTimeBaseInfo.m_unGameTimeMonthDay = static_cast<u32>(0);
+    this->m_GameTimeBaseInfo.m_unGameTimeDayHour = static_cast<u32>(0);
+    this->m_GameTimeBaseInfo.m_unGameTimeOneDayMin = static_cast<u32>(0);
+    this->m_GameTimeBaseInfo.m_unGameTimeYearMonth = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::CPacket_S2C_GET_ABILITY_COST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unCostMax = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::CostMax() const {
     return this->m_unCostMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES::CPacket_S2C_GET_AREA_BONUS_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::CPacket_S2C_GET_AREA_INFO_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::CPacket_S2C_GET_AREA_POINT_DEBUG_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucSupplyGrade = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::CPacket_S2C_GET_AREA_SUPPLY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CAP_RES::CPacket_S2C_GET_CAP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_unCAP = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::CPacket_S2C_GET_CHEAT_INFO_REQ() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::CPacket_S2C_GET_CRAFT_PRODUCT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CPacket_S2C_GET_CRAFT_SETTING_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucCreateCountMax = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unReasonableCraftLv = static_cast<u32>(0);
+    this->m_unCraftItemLv = static_cast<u32>(0);
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -20881,11 +22376,2792 @@ inline u8 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CreateCountMax() cons
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unCycleContentsScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unCycleContentsScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unCycleContentsScheduleId = static_cast<u32>(0);
+    this->m_bIsAddRewardBox = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::CPacket_S2C_GET_DROP_ITEM_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::Id() const {
     return this->m_unId;
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::CPacket_S2C_GET_END_CONTENTS_GROUP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unGroupID = static_cast<u32>(0);
+    this->m_unEndContentsType = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_EXP_MODE_RES::CPacket_S2C_GET_EXP_MODE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucMode = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unSlotIDMax = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::CPacket_S2C_GET_GP_DETAIL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_GP_PERIOD_RES::CPacket_S2C_GET_GP_PERIOD_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_GP_RES::CPacket_S2C_GET_GP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_unGP = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+    this->m_usMilliseconds = static_cast<u16>(0);
+    this->m_ullRealTime = static_cast<u64>(0);
+    this->m_llUseLimit = static_cast<s64>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucResult = static_cast<u8>(0);
+    this->m_unValue = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unBaseID = static_cast<u32>(0);
+    this->m_ucNotCompleteQuestNum = static_cast<u8>(0);
+    this->m_ucGpCompletePriceGp = static_cast<u8>(0);
+    this->m_bGpCompleteEnable = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::CPacket_S2C_GET_LOT_QUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unLotQuestType = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::CPacket_S2C_GET_MAIN_QUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::CPacket_S2C_GET_MATCHING_PROFILE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_unLevel = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucListNum = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unStageId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::CPacket_S2C_GET_PAWN_ABILITY_COST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unCostMax = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::CostMax() const {
     return this->m_unCostMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucPointType = static_cast<u8>(0);
+    this->m_unPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES::CPacket_S2C_GET_PRIORITY_QUEST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucQuestType = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bValue = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullNextReloadTime = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_REAL_TIME_RES::CPacket_S2C_GET_REAL_TIME_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ullRealTime = static_cast<u64>(0);
+    this->m_usMilliseconds = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unRemainTime = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::CPacket_S2C_GET_REVIVE_POINT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucRevivePoint = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES::CPacket_S2C_GET_REWARD_BOX_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucListNum = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES::CPacket_S2C_GET_REWARD_BOX_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SERVER_LIST_RES::CPacket_S2C_GET_SERVER_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES::CPacket_S2C_GET_SET_ABILITY_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::CPacket_S2C_GET_SET_CONTEXT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unDistributeID = static_cast<u32>(0);
+    this->m_usAreaBaseMinLevel = static_cast<u16>(0);
+    this->m_usAreaBaseMaxLevel = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unSelectCharacterId = static_cast<u32>(0);
+    this->m_unDistributeId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::CPacket_S2C_GET_SET_QUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unDistributeID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES::CPacket_S2C_GET_SET_SKILL_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES::CPacket_S2C_GET_SHOP_GOODS_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES::CPacket_S2C_GET_SPOT_INFO_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::CPacket_S2C_GET_STAY_PRICE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucPointType = static_cast<u8>(0);
+    this->m_unPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unStageNo = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::CPacket_S2C_GET_WARP_POINT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_COURSE_END_NTC::CPacket_S2C_GP_COURSE_END_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCourseID = static_cast<u32>(0);
+    this->m_unannounceType = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::CPacket_S2C_GP_COURSE_EXTEND_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCourseID = static_cast<u32>(0);
+    this->m_ullFinishDateTime = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::CPacket_S2C_GP_COURSE_GET_VERSION_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_unVersion = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_ullFinishDateTime = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_unPrice = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bCanBuy = false;
+    this->m_unLineupId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bCanBuy = false;
+    this->m_unLineupId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_unLineupId = static_cast<u32>(0);
+    this->m_unBalance = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::CPacket_S2C_INSTANCE_AREA_RESET_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unJobId = static_cast<u32>(0);
+    this->m_ucJobValueType = static_cast<u8>(0);
+    this->m_unValue = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJobId = static_cast<u8>(0);
+    this->m_ucJobValueType = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::CPacket_S2C_JOIN_PARTY_MYPAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_usBlockNo = static_cast<u16>(0);
+    this->m_usProcessNo = static_cast<u16>(0);
+    this->m_usSequenceNo = static_cast<u16>(0);
+    this->m_unRequestCharacterId = static_cast<u32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucQuestProgressResult = static_cast<u8>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_usProcessNo = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LEARN_ABILITY_RES::CPacket_S2C_LEARN_ABILITY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucAbilityLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unNewJobPoint = static_cast<u32>(0);
+    this->m_unAbilityID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::CPacket_S2C_LEARN_NORMAL_SKILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_unSkillID = static_cast<u32>(0);
+    this->m_unNewJobPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::CPacket_S2C_LEARN_PAWN_ABILITY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucAbilityLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unNewJobPoint = static_cast<u32>(0);
+    this->m_unAbilityID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_unSkillID = static_cast<u32>(0);
+    this->m_unNewJobPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::CPacket_S2C_LEARN_PAWN_SKILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucSkillLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unNewJobPoint = static_cast<u32>(0);
+    this->m_unSkillID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LEARN_SKILL_RES::CPacket_S2C_LEARN_SKILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucSkillLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unNewJobPoint = static_cast<u32>(0);
+    this->m_unSkillID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unBaseID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::CPacket_S2C_LOADING_GET_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::CPacket_S2C_LOBBY_CHAT_MSG_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::CPacket_S2C_LOBBY_LEAVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucGP = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucRevivePoint = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::CPacket_S2C_LOST_PAWN_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_ucType = static_cast<u8>(0);
+    this->m_unValue = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_MAIL_DELETE_RES::CPacket_S2C_MAIL_DELETE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullId = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::CPacket_S2C_MAIL_GET_LIST_FOOT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::CPacket_S2C_MAIL_GET_LIST_HEAD_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unNum = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_MASTER_THROW_RES::CPacket_S2C_MASTER_THROW_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::CPacket_S2C_MOVE_IN_SERVER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_MOVE_ITEM_RES::CPacket_S2C_MOVE_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::CPacket_S2C_MY_ROOM_RELEASE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucListNum = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsMax = false;
+    this->m_bIsReceived = false;
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unRemainSec = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::CPacket_S2C_PARTNER_PAWN_SET_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::CPacket_S2C_PARTY_BREAKUP_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::CPacket_S2C_PARTY_BREAKUP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::CPacket_S2C_PARTY_CHANGE_HOST_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC::CPacket_S2C_PARTY_CHANGE_LEADER_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::CPacket_S2C_PARTY_CHANGE_LEADER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPartyId = static_cast<u32>(0);
+    this->m_ullContentNumber = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::CPacket_S2C_PARTY_INVITE_CANCEL_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::CPacket_S2C_PARTY_INVITE_CANCEL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::CPacket_S2C_PARTY_INVITE_ENTRY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::CPacket_S2C_PARTY_INVITE_FAIL_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_usServerId = static_cast<u16>(0);
+    this->m_unPartyId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::CPacket_S2C_PARTY_INVITE_REFUSE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_INVITE_RES::CPacket_S2C_PARTY_INVITE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unPartyId = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_usTimeoutSec = static_cast<u16>(0);
+    this->m_usServerId = static_cast<u16>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_JOIN_RES::CPacket_S2C_PARTY_JOIN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucMemberIndex = static_cast<u8>(0);
+    this->m_ullContentNumber = static_cast<u64>(0);
+    this->m_unPartyId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_LEAVE_RES::CPacket_S2C_PARTY_LEAVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::CPacket_S2C_PARTY_MEMBER_KICK_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucIsUndiscoverReward = static_cast<u8>(0);
+    this->m_ucIsHelpReward = static_cast<u8>(0);
+    this->m_ucIsPartyBonus = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_ucRandomRewardNum = static_cast<u8>(0);
+    this->m_ucChargeRewardNum = static_cast<u8>(0);
+    this->m_ucProgressBonusNum = static_cast<u8>(0);
+    this->m_ucIsRepeatReward = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unProgressCharacterId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PARTY_WARP_RES::CPacket_S2C_PARTY_WARP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::CPacket_S2C_PAWN_ABILITY_SET_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucSearchSpotType = static_cast<u8>(0);
+    this->m_bIsGoldenSally = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unGP = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_unLevel = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_unLevel = static_cast<u32>(0);
+    this->m_unAddJobPoint = static_cast<u32>(0);
+    this->m_unTotalJobPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::CPacket_S2C_PAWN_LIKABILITY_UP_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_LOST_RES::CPacket_S2C_PAWN_LOST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_bIsLost = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::CPacket_S2C_PAWN_POINT_REVIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucRevivePoint = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::CPacket_S2C_PAWN_REVIVE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PING_RES::CPacket_S2C_PING_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE::CPacket_S2C_PLAY_ADD_TIMER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ullPlayEndDateTime = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_END_RES::CPacket_S2C_PLAY_END_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::CPacket_S2C_PLAY_ENTRY_CANCEL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_ENTRY_RES::CPacket_S2C_PLAY_ENTRY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::CPacket_S2C_PLAY_INTERRUPT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_ucDeadlineSec = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsInterrupt = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ullPlayEndDateTime = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_START_RES::CPacket_S2C_PLAY_START_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE::CPacket_S2C_PLAY_START_TIMER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ullPlayEndDateTime = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::CPacket_S2C_PLAY_START_TIMER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE::CPacket_S2C_PLAY_STOP_TIMER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::CPacket_S2C_PLAY_TIMEUP_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE::CPacket_S2C_QUEST_CANCEL_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_CANCEL_RES::CPacket_S2C_QUEST_CANCEL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE::CPacket_S2C_QUEST_COMPLETE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucIsUndiscoverReward = static_cast<u8>(0);
+    this->m_ucIsHelpReward = static_cast<u8>(0);
+    this->m_ucIsPartyBonus = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_ucRandomRewardNum = static_cast<u8>(0);
+    this->m_ucChargeRewardNum = static_cast<u8>(0);
+    this->m_ucProgressBonusNum = static_cast<u8>(0);
+    this->m_ucIsRepeatReward = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::CPacket_S2C_QUEST_ENABLE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsEnable = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE::CPacket_S2C_QUEST_ORDER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_unQuestId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_ORDER_RES::CPacket_S2C_QUEST_ORDER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE::CPacket_S2C_QUEST_PHASE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unGroupId = static_cast<u32>(0);
+    this->m_unPhaseId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE::CPacket_S2C_QUEST_PROGRESS_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unProgressCharacterId = static_cast<u32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::CPacket_S2C_QUEST_PROGRESS_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucQuestProgressResult = static_cast<u8>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE::CPacket_S2C_QUEST_TIMER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_ucTimerNo = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::CPacket_S2C_QUICK_PARTY_CANCEL_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::CPacket_S2C_QUICK_PARTY_ENTRY_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::CPacket_S2C_QUICK_PARTY_ENTRY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::CPacket_S2C_QUICK_PARTY_READY_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_usTimeoutSec = static_cast<u16>(0);
+    this->m_unMaxMember = static_cast<u32>(0);
+    this->m_unPawnNum = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::CPacket_S2C_QUICK_PARTY_REGISTER_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unPartyId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::CPacket_S2C_QUICK_PARTY_REGISTER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_usTimeoutSec = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::CPacket_S2C_QUICK_PARTY_UNREADY_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::CPacket_S2C_RAID_BOSS_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unStageID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES::CPacket_S2C_RANKING_BOARD_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_llModified = static_cast<s64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unRank = static_cast<u32>(0);
+    this->m_llModified = static_cast<s64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::CPacket_S2C_RANKING_DATA_RANK_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unRank = static_cast<u32>(0);
+    this->m_llModified = static_cast<s64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::CPacket_S2C_REGISTER_FAVORITE_WARP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unWarpPointID = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unSlotNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::CPacket_S2C_REGISTER_PRESET_ABILITY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJobID = static_cast<u8>(0);
+    this->m_unRestOrb = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::CPacket_S2C_RELEASE_ORB_ELEMENT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unRestOrb = static_cast<u32>(0);
+    this->m_ucGainParamType = static_cast<u8>(0);
+    this->m_unGainParamValue = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unGainParamValue = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+    this->m_ucGainParamType = static_cast<u8>(0);
+    this->m_unRestOrb = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::CPacket_S2C_RENT_REGISTERED_PAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unTotalRim = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJobID = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::CPacket_S2C_RESET_JOBPOINT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::CPacket_S2C_RETURN_RENTED_PAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucListNum = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SELL_ITEM_RES::CPacket_S2C_SELL_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucPointType = static_cast<u8>(0);
+    this->m_unPoint = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::CPacket_S2C_SERVER_UI_COMMAND_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_ABILITY_RES::CPacket_S2C_SET_ABILITY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_unAbilityID = static_cast<u32>(0);
+    this->m_ucAbilityLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::CPacket_S2C_SET_ARISEN_PROFILE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::CPacket_S2C_SET_CONTEXT_BASE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::CPacket_S2C_SET_FAVORITE_PAWN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::CPacket_S2C_SET_MATCHING_PROFILE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::CPacket_S2C_SET_MESSAGE_SET_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::CPacket_S2C_SET_OBJECTIVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::CPacket_S2C_SET_OFF_ABILITY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::CPacket_S2C_SET_OFF_PAWN_SKILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::CPacket_S2C_SET_OFF_SKILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_nResult = static_cast<s32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unStageId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unStageId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::CPacket_S2C_SET_ONLINE_STATUS_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucStatusID = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::CPacket_S2C_SET_PAWN_ABILITY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_unAbilityID = static_cast<u32>(0);
+    this->m_ucAbilityLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::CPacket_S2C_SET_PAWN_PROFILE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::CPacket_S2C_SET_PAWN_SKILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unSkillID = static_cast<u32>(0);
+    this->m_ucSkillLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES::CPacket_S2C_SET_PRIORITY_QUEST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unQuestScheduleId = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::CPacket_S2C_SET_RAID_BOSS_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unRaidBossID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::CPacket_S2C_SET_SHORTCUT_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SET_SKILL_RES::CPacket_S2C_SET_SKILL_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucSlotNo = static_cast<u8>(0);
+    this->m_unSkillID = static_cast<u32>(0);
+    this->m_ucSkillLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES::CPacket_S2C_STAMP_BONUS_CHECK_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_nResult = static_cast<s32>(0);
+    this->m_usTotalStampNum = static_cast<u16>(0);
+    this->m_ucisRecieveBonusDaily = static_cast<u8>(0);
+    this->m_ucisRecieveBonusTotal = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::CPacket_S2C_STAMP_BONUS_GET_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_usTotalStampNum = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::CPacket_S2C_STAMP_BONUS_RECIEVE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_START_CRAFT_RES::CPacket_S2C_START_CRAFT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::CPacket_S2C_START_LANTERN_OTHER_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::CPacket_S2C_SUPPORT_POINT_USE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::CPacket_S2C_SYSTEM_MAIL_DELETE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullId = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unNum = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ullId = static_cast<u64>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::CPacket_S2C_TIME_UPDATE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unMaxLv = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unGP = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unTotalJobPoint = static_cast<u32>(0);
+    this->m_unAddJobPoint = static_cast<u32>(0);
+    this->m_unExtraBonusPoint = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucEquipType = static_cast<u8>(0);
+    this->m_ucEquipSlot = static_cast<u8>(0);
+    this->m_ucColor = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unCharacterId = static_cast<u32>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unItemID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+    this->m_ucEquipType = static_cast<u8>(0);
+    this->m_ucEquipSlot = static_cast<u8>(0);
+    this->m_unCharacterId = static_cast<u32>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bHideHead = false;
+    this->m_bHideLantern = false;
+    this->m_bHidePawnHead = false;
+    this->m_bHidePawnLantern = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bHide = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unResult = static_cast<u32>(0);
+    this->m_bHide = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucShareRange = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucJob = static_cast<u8>(0);
+    this->m_ucType = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+    this->m_unTotalPoint = static_cast<u32>(0);
+    this->m_unUpdatePoint = static_cast<u32>(0);
+    this->m_unExtraBonusPoint = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unCharacterId = static_cast<u32>(0);
+    this->m_ucRevivePoint = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::CPacket_S2C_USER_LIST_MAX_NUM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unMaxNum = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::CPacket_S2C_USE_BAG_ITEM_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unItemNum = static_cast<u32>(0);
+    this->m_unCharacterID = static_cast<u32>(0);
+    this->m_unItemID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::CPacket_S2C_USE_BAG_ITEM_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::CPacket_S2C_USE_JOB_ITEMS_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_WARP_RES::CPacket_S2C_WARP_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unrim = static_cast<u32>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unWarpPointID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::CPacket_S2C_WEATHER_FORECAST_GET_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unIntervalGameHour = static_cast<u32>(0);
+    this->m_unGameDayToEarthMin = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::CPacket_S2C_WEATHER_UPDATE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unWeatherID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
 }

@@ -337,35 +337,35 @@ void cOcdStatusParamRes::setFreeParam1(f32 FreeParam1) {
 
 // Address: 0x003a9b50 - 0x003a9b56 (6 bytes)
 f32 cOcdStatusParamRes::getEnduranceCheatCheck() const {
-    // local: f32 value;
+    // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mEnduranceCheatCheck;
 }
 
 // Address: 0x003a9b70 - 0x003a9b76 (6 bytes)
 f32 cOcdStatusParamRes::getActiveTimeCheatCheck() const {
-    // local: f32 value;
+    // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mActiveTimeCheatCheck;
 }
 
 // Address: 0x003a9b90 - 0x003a9b96 (6 bytes)
 f32 cOcdStatusParamRes::getCureValueCheatCheck() const {
-    // local: f32 value;
+    // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mCureValueCheatCheck;
 }
 
 // Address: 0x003a9bb0 - 0x003a9bb6 (6 bytes)
 f32 cOcdStatusParamRes::getFreeParam0CheatCheck() const {
-    // local: f32 value;
+    // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mFreeParam0CheatCheck;
 }
 
 // Address: 0x003a9bd0 - 0x003a9bd6 (6 bytes)
 f32 cOcdStatusParamRes::getFreeParam1CheatCheck() const {
-    // local: f32 value;
+    // DWARF local not rendered: f32 value;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mFreeParam1CheatCheck;
 }

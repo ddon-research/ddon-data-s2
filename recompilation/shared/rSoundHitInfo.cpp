@@ -3,11 +3,11 @@
 #include "rSoundHitInfo.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtDataWriter.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cResource.h"
+#include "nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -99,9 +99,7 @@ __attribute__((weak)) bool rSoundHitInfo::load(MtStream& in) {
 
 // Address: 0x006ee4f0 - 0x006ee5cd (221 bytes)
 bool rSoundHitInfo::save(MtStream& out) {
-    // local: MtDataWriter w;
-    // local: u32 i;
-    // local: cSoundHitInfo* pData;
+    // DWARF local not rendered: cSoundHitInfo* pData;
     // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     (&w)->writeS32(static_cast<s32>(4802643));
@@ -220,48 +218,102 @@ MtUI* rSoundHitInfo::cSoundHitInfo::createUI(MtProperty& prop) {
 // Address: 0x006edf00 - 0x006edffe (254 bytes)
 bool rSoundHitInfo::cSoundHitInfo::load(MtDataReader& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBody = in.readS32();
-    this->mBone = in.readS32();
-    this->mIron = in.readS32();
-    this->mStone = in.readS32();
-    this->mWood = in.readS32();
-    this->mWater = in.readS32();
-    this->mSmoke = in.readS32();
-    this->mAalche = in.readS32();
-    this->mIce = in.readS32();
-    this->mWeek1 = in.readS32();
-    this->mWeek2 = in.readS32();
-    this->mEtc00 = in.readS32();
-    this->mEtc01 = in.readS32();
-    this->mEtc02 = in.readS32();
-    this->mEtc03 = in.readS32();
-    this->mEtc04 = in.readS32();
-    this->mEtc05 = in.readS32();
-    this->mEtc06 = in.readS32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mBody);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mBone);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mIron);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mStone);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mWood);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mWater);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mSmoke);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mAalche);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mIce);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mWeek1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mWeek2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mEtc00);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mEtc01);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mEtc02);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mEtc03);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mEtc04);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mEtc05);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mEtc06);
     return true;
 }
 
 // Address: 0x006ee000 - 0x006ee0fe (254 bytes)
 __attribute__((weak)) bool rSoundHitInfo::cSoundHitInfo::save(MtDataWriter& out) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    out.writeS32(this->mBody);
-    out.writeS32(this->mBone);
-    out.writeS32(this->mIron);
-    out.writeS32(this->mStone);
-    out.writeS32(this->mWood);
-    out.writeS32(this->mWater);
-    out.writeS32(this->mSmoke);
-    out.writeS32(this->mAalche);
-    out.writeS32(this->mIce);
-    out.writeS32(this->mWeek1);
-    out.writeS32(this->mWeek2);
-    out.writeS32(this->mEtc00);
-    out.writeS32(this->mEtc01);
-    out.writeS32(this->mEtc02);
-    out.writeS32(this->mEtc03);
-    out.writeS32(this->mEtc04);
-    out.writeS32(this->mEtc05);
-    out.writeS32(this->mEtc06);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mBody);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mBone);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mIron);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mStone);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mWood);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mWater);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mSmoke);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mAalche);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mIce);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mWeek1);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mWeek2);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mEtc00);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mEtc01);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mEtc02);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mEtc03);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mEtc04);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mEtc05);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(out, this->mEtc06);
     return true;
 }
 

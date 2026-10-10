@@ -118,8 +118,7 @@ __attribute__((weak)) void uPlayer::update() {
 
 // Address: 0x00cb30d0 - 0x00cb3118 (72 bytes)
 void uPlayer::kill() {
-    // local: cContextInstHm* pInst;
-    // local: cPlayerLoadManager& loadMgr;
+    // DWARF local not rendered: cContextInstHm* pInst;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
         if (this->::uDDOModel::getCtrl()->mpContextInst != static_cast<cContextInstance*>(nullptr)) {

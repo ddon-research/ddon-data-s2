@@ -468,9 +468,10 @@ __attribute__((weak)) void sNetworkExt::setWorldServerTime(MtTime time, u16 msec
 // t64 sNetworkExt::getWorldServerTimeSec() const;
 
 // Address: 0x007ee2a0 - 0x007ee2df (63 bytes)
-__attribute__((weak)) void sNetworkExt::requestGetServerRealTime() {
-    DDON_STUB("sNetworkExt::requestGetServerRealTime")
-    /* stub */
+void sNetworkExt::requestGetServerRealTime() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::sendGetRealTime();
+    this->mUpdateTime = ::MtNetTime::mInstance.::MtNetTime::getTotalTime() + static_cast<MtNetTime::Total>(3600000);
 }
 
 // Address: 0x007ed740 - 0x007ed831 (241 bytes)
@@ -705,7 +706,7 @@ __attribute__((weak)) bool sNetworkExt::isClanIntervalMember(const CClanMemberIn
 
 // Address: 0x007ee640 - 0x007ee664 (36 bytes)
 u64 sNetworkExt::getClanIntervalRemainTime() {
-    // local: t64 remainTime;
+    // DWARF local not rendered: t64 remainTime;
     // Approximate from the ELF: a clamp the recompile turns around; the body oracle reports this body.
     if (this->mLastClanLeaveTime != static_cast<s64>(0)) {
         if (((this->mLastClanLeaveTime + this->mClanIntervalTime) - this->mWorldServerTime.mTime) <= static_cast<t64>(0)) {
@@ -953,12 +954,12 @@ __attribute__((weak)) void sNetworkExt::setClanMemberMax(u32 num) {
 void sNetworkExt::clearFriendInfo() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->mIsAppliedFriend = false;
-    // inferred: the value the loop at 0x7ece90 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x7ece90 carries; no location-less local in scope fits
     cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     if (v0_8->mFriendList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x7ece90 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x7ece90 carries; no location-less local in scope fits
         u32 v0_0 = v0_8->mFriendList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (v0_8->mFriendList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete v0_8->mFriendList.::MtArray::mpArray[i0_3];
@@ -979,9 +980,9 @@ void sNetworkExt::clearFriendInfo() {
     }
     v0_8->mFriendList.::MtArray::mLength = static_cast<u32>(0);
     if (v0_8->mApplyingFriendList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x7eced0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x7eced0 carries; no location-less local in scope fits
         u32 v2_0 = v0_8->mApplyingFriendList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (v0_8->mApplyingFriendList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete v0_8->mApplyingFriendList.::MtArray::mpArray[i2_3];
@@ -1007,9 +1008,9 @@ void sNetworkExt::clearFriendInfo() {
     v0_8->mApplyingFriendList.::MtArray::mBufsiz = static_cast<u32>(0);
     v0_8->mApplyingFriendList.::MtArray::mLength = static_cast<u32>(0);
     if (v0_8->mApprovingFriendList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x7ecf50 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x7ecf50 carries; no location-less local in scope fits
         u32 v4_0 = v0_8->mApprovingFriendList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
             if (v0_8->mApprovingFriendList.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
                 delete v0_8->mApprovingFriendList.::MtArray::mpArray[i4_3];
@@ -1367,13 +1368,13 @@ const sNetworkExt::stEntryInvitedInfo& sNetworkExt::getEntryInviteInfo(u32 index
 
 // Address: 0x007ef390 - 0x007ef3b9 (41 bytes)
 const sNetworkExt::stEntryInvitedInfo* sNetworkExt::getEntryInviteInfoRecent() const {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     int i0_1 = static_cast<int>(5);
-    // inferred: the value the loop at 0x7ef3a0 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x7ef3a0 carries; no location-less local in scope fits
     const sNetworkExt::stEntryInvitedInfo* v0_2 = &this->mEntryInvitedList[4];
-    // inferred: the value carried to 0x7ef3b8; DWARF names no local for it
+    // inferred: the value carried to 0x7ef3b8; no location-less local in scope fits
     const sNetworkExt::stEntryInvitedInfo* v1_0;
     for (;;) {
         if (v0_2->mHostInfo.m_unCharacterID != static_cast<u32>(0)) {
@@ -1414,11 +1415,11 @@ __attribute__((weak)) u32 sNetworkExt::getEntryInviteNum() {
 
 // Address: 0x007ef420 - 0x007ef44b (43 bytes)
 s32 sNetworkExt::getEntryInviteIdRecent() const {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     int i0_1 = static_cast<int>(5);
-    // inferred: the value the loop at 0x7ef430 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x7ef430 carries; no location-less local in scope fits
     for (const u32* v0_2 = &this->mEntryInvitedList[4].mHostInfo.m_unCharacterID;;) {
         if ((*v0_2) != static_cast<unsigned int>(0)) {
             return i0_1 - static_cast<int>(1);

@@ -412,8 +412,8 @@ __attribute__((weak)) void uHuman::setupContextParam() {
 
 // Address: 0x00c76700 - 0x00c767b3 (179 bytes)
 void uHuman::setupBeforeContext(bool initSet) {
-    // local: rParentRegionStatusParam* pParam;
-    // local: rChildRegionStatusParam* pParam;
+    // DWARF local not rendered: rParentRegionStatusParam* pParam;
+    // DWARF local not rendered: rChildRegionStatusParam* pParam;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->::uDDOModel::mGuardComponent.mpHpDamageCtrl == static_cast<cpHpDamageCtrl*>(nullptr)) {
         return;
@@ -449,7 +449,7 @@ __attribute__((weak)) void uHuman::setContextCalcParam(bool initSet) {
 
 // Address: 0x00c76b90 - 0x00c76c49 (185 bytes)
 void uHuman::setupContextEnemyClimb(bool recvFlag) {
-    // local: cContextInterface& pCon;
+    // DWARF local not rendered: cContextInterface& pCon;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mClimbEnemyUId = ::cContextInterface::getClimbEnemyUId(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter);
     this->mClimbJointNo = ::cContextInterface::getClimbEnemyJointNo(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter);
@@ -658,7 +658,7 @@ __attribute__((weak)) void uHuman::callbackMoveBegin() {
 
 // Address: 0x00c73e70 - 0x00c73e9f (47 bytes)
 void uHuman::callbackAfterUpdateMotion() {
-    // local: u32 seq;
+    // DWARF local not rendered: u32 seq;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (((this->::uDDOModel::getSequenceCtrlPtr()->::cpSequenceCtrl::getSequence(static_cast<u32>(1), static_cast<MOT_TYPE>(0)) >> static_cast<u32>(8)) & static_cast<u32>(16)) == static_cast<u32>(0)) {
         return;
@@ -678,10 +678,8 @@ __attribute__((weak)) bool uHuman::callbackHealedAfter_apply(cHitInfoAfter* pHit
 
 // Address: 0x00c80a70 - 0x00c80b3a (202 bytes)
 bool uHuman::callbackHealedAfter_apply_slave(cHitInfoAfter* pHitInfo) {
-    // local: bool hp_recover;
-    // local: HP_DATATYPE hp;
-    // local: HP_DATATYPE white;
-    // local: cContextInterface& pCon;
+    // DWARF local not rendered: bool hp_recover;
+    // DWARF local not rendered: cContextInterface& pCon;
     // Approximate from the ELF: a test whose arms are both empty; the body oracle reports this body.
     if ((this->::uDDOModel::mUnitId & static_cast<u32>(1024)) == static_cast<u32>(0)) {
         if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
@@ -834,9 +832,9 @@ __attribute__((weak)) void uHuman::callbackBlow(cHitInfoAfter* pHitInfo) {
 
 // Address: 0x00c81ae0 - 0x00c81b92 (178 bytes)
 bool uHuman::callbackShake(cHitInfoAfter* pHitInfo) {
-    // local: u32 actNo;
-    // local: bool ret;
-    // local: bool isEnemyClimb;
+    // DWARF local not rendered: u32 actNo;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool isEnemyClimb;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
         if (this->::uCharacter::callbackShake(pHitInfo) != false) {
@@ -1254,7 +1252,7 @@ __attribute__((weak)) void uHuman::initCharacterEdit() {
 
 // Address: 0x00c8ab40 - 0x00c8abf6 (182 bytes)
 void uHuman::initCharacterEditCommon(rCharacterEdit* pRes) {
-    // local: rMotionFilter* pRes;
+    // DWARF local not rendered: rMotionFilter* pRes;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->mpCharacterEdit == static_cast<cpCharacterEdit*>(nullptr)) {
         return;
@@ -1357,7 +1355,6 @@ __attribute__((weak)) void uHuman::calcSetSitEmoHandPos() {
 
 // Address: 0x00c8ac50 - 0x00c8acd3 (131 bytes)
 void uHuman::initHeadCtrl() {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uCharacter::mpHeadCtrl == static_cast<cpHeadCtrl*>(nullptr)) {
         return;
@@ -1385,7 +1382,6 @@ void uHuman::updateHeadCtrl() {
 
 // Address: 0x00c8ad00 - 0x00c8ad83 (131 bytes)
 void uHuman::initLegCtrl() {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uCharacter::mpLegCtrl == static_cast<cpLegCtrl*>(nullptr)) {
         return;
@@ -1413,7 +1409,7 @@ void uHuman::updateLegCtrl() {
 
 // Address: 0x00c8adb0 - 0x00c8ae93 (227 bytes)
 void uHuman::initShakeCtrl() {
-    // local: rShakeCtrl* pRes;
+    // DWARF local not rendered: rShakeCtrl* pRes;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0xc8adc5 read, used once; no DWARF local holds it
     sArchiveManager* t0 = ::sArchiveManager::getInstance();
@@ -1664,10 +1660,10 @@ __attribute__((weak)) void uHuman::requestIK(nIKCtrl::IK_TYPE ikType, const MtVe
 // bool uHuman::isOilPond();
 
 // Address: 0x00c8b3f0 - 0x00c8b40f (31 bytes)
-__attribute__((weak)) bool uHuman::isNowEmotion() {
-    // local: u32 nowAct;
-    DDON_STUB("uHuman::isNowEmotion")
-    return {};
+bool uHuman::isNowEmotion() {
+    // DWARF local not rendered: u32 nowAct;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return (this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(242)) <= static_cast<u32>(130);
 }
 
 // Address: 0x00c8b410 - 0x00c8b45b (75 bytes)
@@ -1838,15 +1834,14 @@ __attribute__((weak)) bool uHuman::isBattleModel() {
 }
 
 // Address: 0x00c8c770 - 0x00c8c78b (27 bytes)
-__attribute__((weak)) bool uHuman::isBringOM() {
-    // local: u32 actNo;
-    DDON_STUB("uHuman::isBringOM")
-    return {};
+bool uHuman::isBringOM() {
+    // DWARF local not rendered: u32 actNo;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return (this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(71)) <= static_cast<u32>(29);
 }
 
 // Address: 0x00c7a210 - 0x00c7a297 (135 bytes)
 bool uHuman::isInvolveOCDAction() {
-    // local: cpOcdCtrl* pOcdCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cpOcdCtrl* pOcdCtrl = this->::uDDOModel::getOcdCtrlPtr();
     if (pOcdCtrl != static_cast<cpOcdCtrl*>(nullptr)) {
@@ -1952,8 +1947,7 @@ __attribute__((weak)) bool uHuman::transWallClimbSub(const sCollision::TriangleI
 
 // Address: 0x00c75790 - 0x00c757ee (94 bytes)
 bool uHuman::transDashJumpCliff() {
-    // local: bool result;
-    // local: u32 actNo;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 actNo = this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
     if (actNo != static_cast<u32>(7)) {
@@ -1984,7 +1978,7 @@ __attribute__((weak)) void uHuman::correctFallPreventionPos(const MtVector3& pos
 
 // Address: 0x00c87850 - 0x00c878c3 (115 bytes)
 void uHuman::callbackReqOcdEndAction(u32 actNo, nAction::ACT_PRIO priority) {
-    // local: u32 NowAct;
+    // DWARF local not rendered: u32 NowAct;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::mGuardComponent.mpActMgr == static_cast<cpActionManager*>(nullptr)) {
         return;
@@ -2260,7 +2254,6 @@ __attribute__((weak)) u32 uHuman::getCustomSkillIdFromBowSkillType(u32 skillType
 
 // Address: 0x00c8aa50 - 0x00c8aae1 (145 bytes)
 void uHuman::checkOcdTouchTypeFromRecoverDC() {
-    // local: cpOcdCtrl* pOcdCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cpOcdCtrl* pOcdCtrl = this->::uDDOModel::getOcdCtrlPtr();
     if (pOcdCtrl == static_cast<cpOcdCtrl*>(nullptr)) {
@@ -2376,10 +2369,19 @@ __attribute__((weak)) void uHuman::setupIKEffectorSimple(nIKCtrl::IK_TYPE ikType
 }
 
 // Address: 0x00c6b320 - 0x00c6b36d (77 bytes)
-__attribute__((weak)) void uHuman::deleteAllCircle() {
-    // local: u32 ActNo;
-    DDON_STUB("uHuman::deleteAllCircle")
-    /* stub */
+void uHuman::deleteAllCircle() {
+    // DWARF local not rendered: u32 ActNo;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpContextPlayerInfo == static_cast<cContextPlayerInfo*>(nullptr)) {
+        return;
+    }
+    if (this->mpContextPlayerInfo->mCurrentJob_pri != static_cast<u8>(4)) {
+        return;
+    }
+    if ((this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() - static_cast<u32>(8213)) <= static_cast<u32>(2)) {
+    } else {
+        this->mpJob04->::cpJob04::clearAllCircle();
+    }
 }
 
 // Address: 0x00c6ae20 - 0x00c6ae42 (34 bytes)
@@ -2571,7 +2573,6 @@ void uHuman::startBlowUKEMIAcsept() {
 
 // Address: 0x00c6b080 - 0x00c6b140 (192 bytes)
 void uHuman::checkTransEngetsuGiri() {
-    // local: cpOcdCtrl* pOcdCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((this->::uDDOModel::mObjStatus & static_cast<u64>(16777217)) != static_cast<u64>(16777217)) {
         return;
@@ -2624,7 +2625,7 @@ void uHuman::setDrawingSword(bool flg) {
 
 // Address: 0x00c92a60 - 0x00c92aa5 (69 bytes)
 void uHuman::backupCommandTblList() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpKeyCommand == static_cast<cpKeyCommand*>(nullptr)) {
         return;
@@ -2637,7 +2638,7 @@ void uHuman::backupCommandTblList() {
 
 // Address: 0x00c92ab0 - 0x00c92b28 (120 bytes)
 void uHuman::recoverCommandTblList() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpKeyCommand == static_cast<cpKeyCommand*>(nullptr)) {
         return;
@@ -2994,8 +2995,7 @@ __attribute__((weak)) nHuman::HUMAN_JOB_ROLE uHuman::getJobRole() {
 
 // Address: 0x00c90370 - 0x00c903ea (122 bytes)
 void uHuman::createEquipUnit() {
-    // local: uControl* pCtrl;
-    // local: const cContextInstHm* pContext;
+    // DWARF local not rendered: const cContextInstHm* pContext;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     uControl* pCtrl = this->::uDDOModel::getCtrl();
     if (pCtrl != static_cast<uControl*>(nullptr)) {
@@ -3028,8 +3028,8 @@ void uHuman::createEquipUnit() {
 
 // Address: 0x00c907f0 - 0x00c9080b (27 bytes)
 void uHuman::createArmorUnit() {
-    // local: uControl* pCtrl;
-    // local: const cContextInstHm* pContext;
+    // DWARF local not rendered: uControl* pCtrl;
+    // DWARF local not rendered: const cContextInstHm* pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getCtrl() == static_cast<uControl*>(nullptr)) {
         return;
@@ -3042,8 +3042,8 @@ void uHuman::createArmorUnit() {
 
 // Address: 0x00c90810 - 0x00c9082b (27 bytes)
 void uHuman::createGunUnit() {
-    // local: uControl* pCtrl;
-    // local: const cContextInstHm* pContext;
+    // DWARF local not rendered: uControl* pCtrl;
+    // DWARF local not rendered: const cContextInstHm* pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::uDDOModel::getCtrl() == static_cast<uControl*>(nullptr)) {
         return;
@@ -3233,7 +3233,6 @@ __attribute__((weak)) void uHuman::setJobParam(rAdjustParam* pParam) {
 
 // Address: 0x00c766d0 - 0x00c766fd (45 bytes)
 f32 uHuman::getComAdjustParam(u32 index) const {
-    // local: cAdjustParam* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprComParam != static_cast<rAdjustParam*>(nullptr)) {
         cAdjustParam* pParam = this->mprComParam->getData(index);
@@ -3249,7 +3248,6 @@ f32 uHuman::getComAdjustParam(u32 index) const {
 
 // Address: 0x00c80f00 - 0x00c80f2d (45 bytes)
 f32 uHuman::getJobAdjustParam(u32 index) const {
-    // local: cAdjustParam* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprJobParam != static_cast<rAdjustParam*>(nullptr)) {
         cAdjustParam* pParam = this->mprJobParam->getData(index);
@@ -3271,7 +3269,7 @@ __attribute__((weak)) void uHuman::setStaminaDecTbl(u32 bank, rStaminaDecTbl* pP
 
 // Address: 0x00c82390 - 0x00c823b2 (34 bytes)
 cStaminaDecList* uHuman::getStaminaDecList(u32 bank, u32 tblIndex) const {
-    // local: cStaminaDecList* pParam;
+    // DWARF local not rendered: cStaminaDecList* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprStaminaDecTbl.elems[(bank <= static_cast<u32>(1)) ? bank : static_cast<u32>(0)] != static_cast<rStaminaDecTbl*>(nullptr)) {
         return this->mprStaminaDecTbl.elems[(bank <= static_cast<u32>(1)) ? bank : static_cast<u32>(0)]->::rStaminaDecTbl::getStaminaDecList(tblIndex);
@@ -3742,8 +3740,8 @@ __attribute__((weak)) bool uHuman::checkEnableMenuUIAct() {
 
 // Address: 0x00c8c460 - 0x00c8c770 (784 bytes)
 bool uHuman::cheackCanReqOcd(u32 id) {
-    // local: const u32 MAX_REDI;
-    // local: const cContextPlayerInfo* pCon;
+    // DWARF local not rendered: const u32 MAX_REDI;
+    // DWARF local not rendered: const cContextPlayerInfo* pCon;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if ((id - static_cast<u32>(4097)) <= static_cast<u32>(31)) {
         if (this->::uHuman::getContextPlayerInfo() != static_cast<cContextPlayerInfo*>(nullptr)) {
@@ -4180,7 +4178,7 @@ void uHuman::resetCstmMotionSe() {
 
 // Address: 0x00c8a350 - 0x00c8a38b (59 bytes)
 rSoundRequest* uHuman::getCommonShlSe() {
-    // local: u32 job;
+    // DWARF local not rendered: u32 job;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpContextPlayerInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
         if (this->mpContextPlayerInfo->mCurrentJob_pri == static_cast<u8>(8)) {
@@ -4392,7 +4390,7 @@ __attribute__((weak)) bool uHuman::isHajikareNow() const {
 
 // Address: 0x00c88f90 - 0x00c89028 (152 bytes)
 void uHuman::setFingerMotion() {
-    // local: u32 jobIndex;
+    // DWARF local not rendered: u32 jobIndex;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
         if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isJobActArea() != false) {
@@ -4559,12 +4557,12 @@ __attribute__((weak)) void uHuman::makeBlowShrinkAttackInfo(cBlowShrinkDmInfo* p
 
 // Address: 0x00c8f310 - 0x00c8f469 (345 bytes)
 void uHuman::makeOcdAttackInfo(cHitInfoAfter* pHitInfo) {
-    // local: f32 Poison;
-    // local: f32 Oil;
-    // local: f32 Sleep;
-    // local: f32 Seal;
-    // local: f32 Slow;
-    // local: u32 adjUid;
+    // DWARF local not rendered: f32 Poison;
+    // DWARF local not rendered: f32 Oil;
+    // DWARF local not rendered: f32 Sleep;
+    // DWARF local not rendered: f32 Seal;
+    // DWARF local not rendered: f32 Slow;
+    // DWARF local not rendered: u32 adjUid;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
         return;
@@ -4626,12 +4624,12 @@ __attribute__((weak)) void uHuman::makeOcdWepAttackInfo(cHitInfoAfter* pHitInfo)
 
 // Address: 0x00c7e530 - 0x00c7e798 (616 bytes)
 void uHuman::makeOcdAttackInfoCore(cOcdDamageInfo& ocdDamageInfo, cEquipData& equipData, rItemList::rItemParam& item, nCharacterData::EQUIP_SLOT_TYPE category) {
-    // local: u32 i;
-    // local: u32 OcdUID;
-    // local: stDamageData* pData;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 OcdUID;
+    // DWARF local not rendered: stDamageData* pData;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpContextPlayerInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_9 = static_cast<unsigned int>(0);;) {
             // inferred: a temporary for the result of the call at 0xc7e582, used twice; no DWARF local holds it
             cOcdDamageInfo::stDamageData* t0 = ocdDamageInfo.::cOcdDamageInfo::getOcdDataFromUID((i0_9 | static_cast<unsigned int>(4096)) + static_cast<unsigned int>(1));
@@ -5218,7 +5216,7 @@ __attribute__((weak)) void uHuman::adjustAbilityHealAttackInfo(cHitInfoAfter* pH
 
 // Address: 0x00c946e0 - 0x00c94757 (119 bytes)
 void uHuman::resetContext() {
-    // local: cContextInterface& pCon;
+    // DWARF local not rendered: cContextInterface& pCon;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     ::cContextInterface::setCustomWork(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u16>(0));
     ::cContextInterface::setCommonWork(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u16>(0));
@@ -5704,12 +5702,175 @@ __attribute__((weak)) void uHuman::moveCliffFallCheck() {
 }
 
 // Address: 0x00c7b850 - 0x00c7b9d9 (393 bytes)
-__attribute__((weak)) void uHuman::updateEnchantColInfo() {
-    // local: s32 i;
-    // local: s32 i;
-    // local: s32 i;
-    DDON_STUB("uHuman::updateEnchantColInfo")
-    /* stub */
+void uHuman::updateEnchantColInfo() {
+    // DWARF local not rendered: s32 i;
+    // DWARF local not rendered: s32 i;
+    // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mEnchaColUidListIndex < this->mEnchaColUidListBottom) {
+        s32 i;
+        if (this->mEnchaColUidListIndex <= static_cast<s32>(-1)) {
+            i = this->mEnchaColUidListBottom;
+        } else {
+            // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
+            for (int i0_0 = static_cast<int>(0);;) {
+                // inferred: a temporary for the value the load at 0xc7b880 read, used 3 times; no DWARF local holds it
+                f32 t0 = this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantIntervalTime;
+                if (t0 > 0.0f) {
+                    // inferred: a temporary for the value the load at 0xc7b897 read, used twice; no DWARF local holds it
+                    f32 t1 = this->::cUnit::mDeltaTime;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantIntervalTime = t0 - t1;
+                    if (0.0f > this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantIntervalTime) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantIntervalTime = 0.0f;
+                        // inferred: a temporary for the value the load at 0xc7b8ac read, used twice; no DWARF local holds it
+                        bool t2 = this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantAreaOld = t2;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea = false;
+                        if (t2 == false) {
+                            this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mCanReEnchant = true;
+                        }
+                        if (i0_0 < this->mEnchaColUidListIndex) {
+                            i0_0 = i0_0 + static_cast<int>(1);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        // inferred: a temporary for the value the load at 0xc7b8ac read, used twice; no DWARF local holds it
+                        bool t2 = this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantAreaOld = t2;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea = false;
+                        if (t2 == false) {
+                            this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mCanReEnchant = true;
+                        }
+                        if (i0_0 < this->mEnchaColUidListIndex) {
+                            i0_0 = i0_0 + static_cast<int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    // inferred: a temporary for the value the load at 0xc7b8ac read, used twice; no DWARF local holds it
+                    bool t2 = this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantAreaOld = t2;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mEnchantArea = false;
+                    if (t2 == false) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(15)) ? i0_0 : static_cast<int>(0)].mCanReEnchant = true;
+                    }
+                    if (i0_0 < this->mEnchaColUidListIndex) {
+                        i0_0 = i0_0 + static_cast<int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            i = this->mEnchaColUidListBottom;
+        }
+        if (i > static_cast<s32>(15)) {
+        } else {
+            // inferred: the value the loop at 0xc7b900 carries; no location-less local in scope fits
+            for (s32 v3_0 = i;;) {
+                // inferred: a temporary for the value the load at 0xc7b90d read, used 3 times; no DWARF local holds it
+                f32 t3 = this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantIntervalTime;
+                if (t3 > 0.0f) {
+                    // inferred: a temporary for the value the load at 0xc7b924 read, used twice; no DWARF local holds it
+                    f32 t4 = this->::cUnit::mDeltaTime;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantIntervalTime = t3 - t4;
+                    if (0.0f > this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantIntervalTime) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantIntervalTime = 0.0f;
+                        // inferred: a temporary for the value the load at 0xc7b939 read, used twice; no DWARF local holds it
+                        bool t5 = this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantAreaOld = t5;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                        if (t5 == false) {
+                            this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                        }
+                        if ((v3_0 + static_cast<s32>(1)) != static_cast<s32>(16)) {
+                            v3_0 += static_cast<s32>(1);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        // inferred: a temporary for the value the load at 0xc7b939 read, used twice; no DWARF local holds it
+                        bool t5 = this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantAreaOld = t5;
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                        if (t5 == false) {
+                            this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                        }
+                        if ((v3_0 + static_cast<s32>(1)) != static_cast<s32>(16)) {
+                            v3_0 += static_cast<s32>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    // inferred: a temporary for the value the load at 0xc7b939 read, used twice; no DWARF local holds it
+                    bool t5 = this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantAreaOld = t5;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                    if (t5 == false) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v3_0) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v3_0) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                    }
+                    if ((v3_0 + static_cast<s32>(1)) != static_cast<s32>(16)) {
+                        v3_0 += static_cast<s32>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    } else {
+        // inferred: the value the loop at 0xc7b970 carries; no location-less local in scope fits
+        for (s32 v5_1 = this->mEnchaColUidListIndex;;) {
+            // inferred: a temporary for the value the load at 0xc7b97d read, used 3 times; no DWARF local holds it
+            f32 t6 = this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantIntervalTime;
+            if (t6 > 0.0f) {
+                // inferred: a temporary for the value the load at 0xc7b994 read, used twice; no DWARF local holds it
+                f32 t7 = this->::cUnit::mDeltaTime;
+                this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantIntervalTime = t6 - t7;
+                if (0.0f > this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantIntervalTime) {
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantIntervalTime = 0.0f;
+                    // inferred: a temporary for the value the load at 0xc7b9a9 read, used twice; no DWARF local holds it
+                    bool t8 = this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantAreaOld = t8;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                    if (t8 == false) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                    }
+                    if (this->mEnchaColUidListBottom < v5_1) {
+                        v5_1 += static_cast<s32>(-1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    // inferred: a temporary for the value the load at 0xc7b9a9 read, used twice; no DWARF local holds it
+                    bool t8 = this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantAreaOld = t8;
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                    if (t8 == false) {
+                        this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                    }
+                    if (this->mEnchaColUidListBottom < v5_1) {
+                        v5_1 += static_cast<s32>(-1);
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                // inferred: a temporary for the value the load at 0xc7b9a9 read, used twice; no DWARF local holds it
+                bool t8 = this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea;
+                this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantAreaOld = t8;
+                this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mEnchantArea = false;
+                if (t8 == false) {
+                    this->mEnchantColList.elems[(static_cast<unsigned int>(v5_1) <= static_cast<unsigned int>(15)) ? static_cast<unsigned int>(v5_1) : static_cast<unsigned int>(0)].mCanReEnchant = true;
+                }
+                if (this->mEnchaColUidListBottom < v5_1) {
+                    v5_1 += static_cast<s32>(-1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (271 bytes)
@@ -5929,9 +6090,9 @@ __attribute__((weak)) void uHuman::setPawnTalkTouch(uDDOModel* pReqOwner) {
 
 // Address: 0x00c883f0 - 0x00c88418 (40 bytes)
 f32 uHuman::getCliffPivotOffsetY() {
-    // local: f32 base;
-    // local: f32 real;
-    // local: f32 sabun;
+    // DWARF local not rendered: f32 base;
+    // DWARF local not rendered: f32 real;
+    // DWARF local not rendered: f32 sabun;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return 217.0f + ((-180.0f) + (this->mpCharacterEdit->::cpCharacterEdit::getHeightScale() * 180.0f));
 }
@@ -5943,18 +6104,18 @@ f32 uHuman::getCliffPivotOffsetY() {
 
 // Address: 0x00c92f90 - 0x00c92fb8 (40 bytes)
 f32 uHuman::getWallClimbPivotOffsetY() {
-    // local: f32 base;
-    // local: f32 real;
-    // local: f32 sabun;
+    // DWARF local not rendered: f32 base;
+    // DWARF local not rendered: f32 real;
+    // DWARF local not rendered: f32 sabun;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return 100.0f + ((-180.0f) + (this->mpCharacterEdit->::cpCharacterEdit::getHeightScale() * 180.0f));
 }
 
 // Address: 0x00c6da50 - 0x00c6da91 (65 bytes)
 f32 uHuman::getHeightScaleRate() {
-    // local: f32 base;
-    // local: f32 real;
-    // local: f32 sabun;
+    // DWARF local not rendered: f32 base;
+    // DWARF local not rendered: f32 real;
+    // DWARF local not rendered: f32 sabun;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (((-180.0f) + (this->mpCharacterEdit->::cpCharacterEdit::getHeightScale() * 180.0f)) > 0.0f) {
         return ((-180.0f) + (this->mpCharacterEdit->::cpCharacterEdit::getHeightScale() * 180.0f)) / 30.0f;
@@ -5969,8 +6130,8 @@ f32 uHuman::getHeightScaleRate() {
 
 // Address: 0x00c92fc0 - 0x00c92fe0 (32 bytes)
 f32 uHuman::getHeightScaleValue() {
-    // local: f32 base;
-    // local: f32 real;
+    // DWARF local not rendered: f32 base;
+    // DWARF local not rendered: f32 real;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return (-180.0f) + (this->mpCharacterEdit->::cpCharacterEdit::getHeightScale() * 180.0f);
 }
@@ -5992,9 +6153,7 @@ __attribute__((weak)) void uHuman::callLevelUpDraw(u32 level) {
 // Address: 0x00c927c0 - 0x00c9290c (332 bytes)
 void uHuman::setEndDieAction() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
-    // inferred: a temporary for the result of the call at 0xc927d0, used twice; no DWARF local holds it
-    s32 t0 = this->::uDDOModel::getStateLivePtr()->::cpStateManager::getStateNo();
-    switch (static_cast<unsigned int>(t0 - static_cast<s32>(512))) {
+    switch (static_cast<unsigned int>(this->::uDDOModel::getStateLivePtr()->::cpStateManager::getStateNo() - static_cast<s32>(512))) {
         case static_cast<unsigned int>(0):
         {
             if (this->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(static_cast<u32>(4106)) != false) {
@@ -6189,7 +6348,7 @@ __attribute__((weak)) void uHuman::LeadToInvincible() {
 
 // Address: 0x00c92f30 - 0x00c92f88 (88 bytes)
 u32 uHuman::convertJobCommonMotion(u32 motNo, bool isBattle) {
-    // local: u32 jobMot;
+    // DWARF local not rendered: u32 jobMot;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (isBattle != false) {
         if (::cContextInterface::isCustomWork(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u16>(1)) != false) {
@@ -6241,7 +6400,6 @@ __attribute__((weak)) nHumanBow::stNetData uHuman::popBowUpNetData() {
 
 // Address: 0x00c931c0 - 0x00c93220 (96 bytes)
 void uHuman::pushBowUpNetData(const nHumanBow::stNetData& d) {
-    // local: u32 flag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 flag = ::cContextInterface::getBowNetUpdateFlag(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter);
     if (d.mIsFirstFrame != false) {
@@ -6270,7 +6428,6 @@ __attribute__((weak)) nHumanBow::stNetData uHuman::popBowLowNetData() {
 
 // Address: 0x00c932f0 - 0x00c93350 (96 bytes)
 void uHuman::pushBowLowNetData(const nHumanBow::stNetData& d) {
-    // local: u32 flag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 flag = ::cContextInterface::getBowNetUpdateFlag(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter);
     if (d.mIsFirstFrame != false) {
@@ -6351,7 +6508,7 @@ bool uHuman::checkCndCliffHang() {
 
 // Address: 0x00c92970 - 0x00c92a25 (181 bytes)
 void uHuman::draw(cDraw* pDraw) {
-    // local: bool baked;
+    // DWARF local not rendered: bool baked;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->isPossibleDrawFromDrawBuffer() == false) {
         if (this->::uDDOModel::isMaster() != false) {
@@ -6450,7 +6607,7 @@ __attribute__((weak)) bool uHuman::checkSupJob10InParty() {
 
 // Address: 0x00c94b40 - 0x00c94b5a (26 bytes)
 bool uHuman::isBakeWep() const {
-    // local: bool flg;
+    // DWARF local not rendered: bool flg;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpContextPlayerInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
         return this->mpContextPlayerInfo->mCurrentJob_pri == static_cast<u8>(9);
@@ -6461,7 +6618,7 @@ bool uHuman::isBakeWep() const {
 
 // Address: 0x00c94b60 - 0x00c94b85 (37 bytes)
 s32 uHuman::getBakeWepEnchantEffecyJoint() const {
-    // local: s32 joint_no;
+    // DWARF local not rendered: s32 joint_no;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpContextPlayerInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
         if (this->mpContextPlayerInfo->mCurrentJob_pri != static_cast<u8>(9)) {

@@ -300,7 +300,7 @@ __attribute__((weak)) bool MtCollision::intersect(const MtLineSegment& ls, const
 
 // Address: 0x00da7ef0 - 0x00da7f31 (65 bytes)
 bool MtCollision::intersect(const MtSphere& s0, const MtVector3& pos) {
-    // local: const f32 extent;
+    // DWARF local not rendered: const f32 extent;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return (s0.r * s0.r) >= ((((pos.x - s0.pos.x) * (pos.x - s0.pos.x)) + ((pos.y - s0.pos.y) * (pos.y - s0.pos.y))) + ((pos.z - s0.pos.z) * (pos.z - s0.pos.z)));
 }
@@ -331,12 +331,12 @@ __attribute__((weak)) bool MtCollision::intersect(const MtSphere& s0, const MtLi
 
 // Address: 0x00da8000 - 0x00da8046 (70 bytes)
 bool MtCollision::intersect(const MtSphere& s0, const MtSphere& s1) {
-    // local: const f32 extent;
-    // local: const f32 dot;
-    // local: const f32 extent2;
-    // local: const MtVector3& spos0;
-    // local: const MtVector3& spos1;
-    // local: const MtVector3 diff;
+    // DWARF local not rendered: const f32 extent;
+    // DWARF local not rendered: const f32 dot;
+    // DWARF local not rendered: const f32 extent2;
+    // DWARF local not rendered: const MtVector3& spos0;
+    // DWARF local not rendered: const MtVector3& spos1;
+    // DWARF local not rendered: const MtVector3 diff;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return ((s0.r + s1.r) * (s0.r + s1.r)) >= ((((s1.pos.x - s0.pos.x) * (s1.pos.x - s0.pos.x)) + ((s1.pos.y - s0.pos.y) * (s1.pos.y - s0.pos.y))) + ((s1.pos.z - s0.pos.z) * (s1.pos.z - s0.pos.z)));
 }
@@ -482,7 +482,6 @@ __attribute__((weak)) bool MtCollision::intersect(const MtCapsule& capsule, cons
 
 // Address: 0x00da8d00 - 0x00da8d36 (54 bytes)
 bool MtCollision::intersect(const MtAABB& aabb, const MtLine& line) {
-    // local: f32 line_t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 line_t;
     return ::MtCollision::intersect(aabb, line, &line_t);
@@ -490,7 +489,6 @@ bool MtCollision::intersect(const MtAABB& aabb, const MtLine& line) {
 
 // Address: 0x00da8f40 - 0x00da8f76 (54 bytes)
 bool MtCollision::intersect(const MtAABB& aabb, const MtRay& ray) {
-    // local: f32 line_t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 line_t;
     return ::MtCollision::intersect(aabb, ray, &line_t);
@@ -501,7 +499,6 @@ bool MtCollision::intersect(const MtAABB& aabb, const MtRay& ray) {
 
 // Address: 0x00da91b0 - 0x00da91e6 (54 bytes)
 bool MtCollision::intersect(const MtAABB& aabb, const MtLineSegment& ls) {
-    // local: f32 line_t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 line_t;
     return ::MtCollision::intersect(aabb, ls, &line_t);
@@ -833,7 +830,6 @@ __attribute__((weak)) bool MtCollision::intersect(const MtTriangle& tri0, const 
 
 // Address: 0x00daa960 - 0x00daa996 (54 bytes)
 bool MtCollision::intersect(const MtTriangle& tri, const MtLineSegment& ls, MtVector3& pos) {
-    // local: f32 t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 t;
     return ::MtCollision::intersect(tri, ls, pos, t);
@@ -1140,9 +1136,9 @@ __attribute__((weak)) bool MtCollision::intersect(const MtCylinder& cylinder0, c
 
 // Address: 0x00dae840 - 0x00dae8b5 (117 bytes)
 __attribute__((weak)) f32 MtCollision::sqrDistance(const MtLine& line, const MtVector3& pos, f32* pLine_t) {
-    // local: const f32 t;
-    // local: const MtVector3 diff;
-    // local: const MtVector3 result;
+    // DWARF local not rendered: const f32 t;
+    // DWARF local not rendered: const MtVector3 diff;
+    // DWARF local not rendered: const MtVector3 result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0xdae840 read, used twice; no DWARF local holds it
     const f32 t0 = pos.x;
@@ -1377,7 +1373,6 @@ __attribute__((weak)) f32 MtCollision::sqrDistance(const MtAABB& aabb, const MtV
 
 // Address: 0x00db1710 - 0x00db1746 (54 bytes)
 f32 MtCollision::sqrDistance(const MtAABB& aabb, const MtLineSegment& ls) {
-    // local: f32 line_t;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     f32 line_t;
     return ::MtCollision::sqrDistance(aabb, ls, &line_t);
@@ -4783,7 +4778,7 @@ __attribute__((weak)) void MtCollision::getCoGId2(MtCollisionUtil::MtVectorU4& r
 
 // Address: 0x00de2430 - 0x00de248f (95 bytes)
 u32 MtCollision::getVoronoiId(const MtAABB& aabb, const MtVector3& pos) {
-    // local: u32 voronoi_id;
+    // DWARF local not rendered: u32 voronoi_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (aabb.minpos.x > pos.x) {
         if (aabb.minpos.y > pos.y) {

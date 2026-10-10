@@ -195,7 +195,6 @@ __attribute__((weak)) s32 MtNet::PS4Psn::Context::moveStart(MtNetRequest* req) {
 
 // Address: 0x00ddbb70 - 0x00ddbc16 (166 bytes)
 s32 MtNet::PS4Psn::Context::moveFinalize(MtNetRequest* req) {
-    // local: s32 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0xddbb83, used 3 times; no DWARF local holds it
     s32 t0 = req->::MtNetRequest::getPhase();

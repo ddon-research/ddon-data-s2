@@ -225,12 +225,12 @@ __attribute__((weak)) bool cHitInfoAfter::checkAttackParamAttackId(u32 attackId)
 
 // Address: 0x0020bd60 - 0x0020bd96 (54 bytes)
 bool cHitInfoAfter::isWeakRegionDamage() const {
-    // local: const cAttackParam* pAtackParam;
-    // local: const cChildRegionStatus* pRegion;
-    // local: bool isPhysWeak;
-    // local: bool isElementWeak;
-    // local: u32 phsType;
-    // local: ELEMENT_TYPE elementType;
+    // DWARF local not rendered: const cAttackParam* pAtackParam;
+    // DWARF local not rendered: const cChildRegionStatus* pRegion;
+    // DWARF local not rendered: bool isPhysWeak;
+    // DWARF local not rendered: bool isElementWeak;
+    // DWARF local not rendered: u32 phsType;
+    // DWARF local not rendered: ELEMENT_TYPE elementType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
         if (this->mCommonInfo.mpChildRegion != static_cast<cChildRegionStatus*>(nullptr)) {

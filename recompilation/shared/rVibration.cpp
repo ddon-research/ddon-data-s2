@@ -76,11 +76,8 @@ MT_CTSTR rVibration::getExt() const {
 
 // Address: 0x01205b20 - 0x01205c85 (357 bytes)
 bool rVibration::load(MtStream& in) {
-    // local: bool result;
-    // local: u32 fileSize;
-    // local: u8* pTempBuff;
-    // local: u32 readSize;
-    // local: VIB_HEADER* pHeader;
+    // DWARF local not rendered: bool result;
+    // DWARF local not rendered: VIB_HEADER* pHeader;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff); pTempBuff's location [0x1205b68, 0x1205c4d) [0x1205c55, 0x1205c66) [0x1205c7d, 0x1205c85) covers its scope [0x1205b89, 0x1205c4d)
     u32 fileSize = in.getLength();
@@ -157,11 +154,8 @@ bool rVibration::load(MtStream& in) {
 
 // Address: 0x01205ca0 - 0x01205dc7 (295 bytes)
 bool rVibration::save(MtStream& out) {
-    // local: MtDataWriter w;
-    // local: u32 fileSize;
-    // local: u8* pTempBuff;
-    // local: u32 writeSize;
-    // local: VIB_HEADER* pHeader;
+    // DWARF local not rendered: u32 fileSize;
+    // DWARF local not rendered: VIB_HEADER* pHeader;
     // Approximate from the ELF: a bitfield unit stored one field at a time; a place read twice with no call between; a wider integer stored into a bitfield; the body oracle reports this body.
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff); declared on line 121 at function scope, its scope starts at the row 0x1205d1f (line 122); pTempBuff's location [0x1205d10, 0x1205d88) covers it from there through its last access
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));

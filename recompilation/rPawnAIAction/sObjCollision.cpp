@@ -422,7 +422,6 @@ __attribute__((weak)) const cDmVecWeightParam* sObjCollision::getDmVecWeightPara
 
 // Address: 0x007f7310 - 0x007f733d (45 bytes)
 f32 sObjCollision::getSystemParam(sObjCollision::SYS_PARAM_TYPE type) const {
-    // local: const cAdjustParam* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpSystemParamRes != static_cast<rAdjustParam*>(nullptr)) {
         const cAdjustParam* pData = this->mpSystemParamRes->getData(static_cast<u32>(type));
@@ -438,7 +437,6 @@ f32 sObjCollision::getSystemParam(sObjCollision::SYS_PARAM_TYPE type) const {
 
 // Address: 0x007f7340 - 0x007f736d (45 bytes)
 f32 sObjCollision::getPawnConstantParam(sObjCollision::PAWN_CONSTANT_PARAM type) const {
-    // local: const cAdjustParam* pData;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpPawnConstantParamRes != static_cast<rAdjustParam*>(nullptr)) {
         const cAdjustParam* pData = this->mpPawnConstantParamRes->getData(static_cast<u32>(type));
@@ -947,18 +945,16 @@ f32 sObjCollision::getHpDamageMin() const {
 
 // Address: 0x007f7680 - 0x007f7709 (137 bytes)
 f32 sObjCollision::findErosionCoreAddTime(f32 shakesRate) const {
-    // local: u32 dataNum;
-    // local: const cErosionShakeConvert* pLastData;
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value carried to 0x7f76fe; DWARF names no local for it
+    // inferred: the value carried to 0x7f76fe; no location-less local in scope fits
     f32 v2_9;
     if (this->mpErosionShakeConvert == static_cast<rErosionShakeConvert*>(nullptr)) {
         v2_9 = 0.0f;
     } else {
         u32 dataNum = this->mpErosionShakeConvert->getDataNum();
         if (dataNum != static_cast<u32>(0)) {
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             unsigned int i0_3 = static_cast<unsigned int>(0);
             const cErosionShakeConvert* pLastData;
             for (;;) {

@@ -182,7 +182,7 @@ void cpTinyChain::initActiveSequence(s32 pageNo, s32 indexNo, f32 blendSpeed) {
 
 // Address: 0x0053e690 - 0x0053e6ed (93 bytes)
 void cpTinyChain::updateActiveSequence() {
-    // local: f32 blend;
+    // DWARF local not rendered: f32 blend;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->::cpComponent::isActive() == false) {
         return;

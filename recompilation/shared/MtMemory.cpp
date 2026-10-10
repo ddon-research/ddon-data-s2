@@ -9,15 +9,15 @@
 
 // Address: 0x00d61bb0 - 0x00d61c1c (108 bytes)
 void MtMemory::terminateAllocator() {
-    // local: u32 ui;
-    // local: u32 ui;
+    // DWARF local not rendered: u32 ui;
+    // DWARF local not rendered: u32 ui;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     ::memset(static_cast<void*>(&::MtMemory::mpAllocatorType[static_cast<int>(1)]), static_cast<int>(0), static_cast<size_t>(504));
     if ((::MtMemory::mAllocatorNum) <= static_cast<unsigned int>(1)) {
     } else {
-        // inferred: the value the loop at 0xd61bf0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xd61bf0 carries; no location-less local in scope fits
         unsigned int v0_0 = ::MtMemory::mAllocatorNum;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(1);;) {
             if (::MtMemory::mpAllocator[i0_3] != static_cast<MtAllocator*>(nullptr)) {
                 delete ::MtMemory::mpAllocator[i0_3];

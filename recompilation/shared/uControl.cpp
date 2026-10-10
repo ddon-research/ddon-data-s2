@@ -128,7 +128,7 @@ __attribute__((weak)) uControl* uControl::createControl(u8 ctrlType, u32 gitk, u
 
 // Address: 0x008c7af0 - 0x008c7b96 (166 bytes)
 void uControl::sendMasterParam() {
-    // local: cContextInterface& context;
+    // DWARF local not rendered: cContextInterface& context;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mIsCommunicate == false) {
         return;
@@ -267,7 +267,7 @@ __attribute__((weak)) void uControl::disconnectModel(bool IsKillModel) {
 
 // Address: 0x008c7ba0 - 0x008c7bfb (91 bytes)
 bool uControl::isMaster() {
-    // local: cContextInterface& context;
+    // DWARF local not rendered: cContextInterface& context;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (::cContextInterface::getMasterChangeFlag(this->mContextInterface.mpContextInstance) != false) {
         // inferred: a temporary for the value the load at 0x8c7bc1 read, used once; no DWARF local holds it

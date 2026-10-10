@@ -90,11 +90,8 @@ __attribute__((weak)) bool rEffect2D::load(MtStream& in) {
 
 // Address: 0x011f2290 - 0x011f23bd (301 bytes)
 bool rEffect2D::save(MtStream& out) {
-    // local: MtDataWriter w;
-    // local: u32 fileSize;
-    // local: u8* pTempBuff;
-    // local: u32 writeSize;
-    // local: E2D_HEADER* pHeader;
+    // DWARF local not rendered: u32 fileSize;
+    // DWARF local not rendered: E2D_HEADER* pHeader;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rEffect2D::E2D_HEADER*>(pTempBuff); declared on line 375 at function scope, its scope starts at the row 0x11f2311 (line 376); pTempBuff's location [0x11f2302, 0x11f237e) covers it from there through its last access
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));

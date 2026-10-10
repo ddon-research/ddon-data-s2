@@ -388,7 +388,6 @@ void sMain::setPausePrivate(bool NewValue) {
 
 // Address: 0x01248740 - 0x012487c4 (132 bytes)
 bool sMain::save(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeXML(out, "XFramework Scene 1.0", static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0), static_cast<MtSerializer::ENCODING>(0));
@@ -396,7 +395,6 @@ bool sMain::save(MtStream& out) {
 
 // Address: 0x012487d0 - 0x01248867 (151 bytes)
 bool sMain::load(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (in.isReadable() != false) {
         MtSerializer sz(static_cast<s32>(65536));
@@ -408,7 +406,6 @@ bool sMain::load(MtStream& in) {
 
 // Address: 0x01248870 - 0x012488f7 (135 bytes)
 bool sMain::saveConfig(MtStream& out) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     return sz.::MtSerializer::serializeXML(out, "XFramework Config 1.0", static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(1), static_cast<MtSerializer::ENCODING>(0));
@@ -416,7 +413,6 @@ bool sMain::saveConfig(MtStream& out) {
 
 // Address: 0x01248900 - 0x0124899a (154 bytes)
 bool sMain::loadConfig(MtStream& in) {
-    // local: MtSerializer sz;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (in.isReadable() != false) {
         MtSerializer sz(static_cast<s32>(65536));

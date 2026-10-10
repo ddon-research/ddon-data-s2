@@ -516,10 +516,9 @@ __attribute__((weak)) rCharacterEditVoicePalette* cpCharacterEdit::getVoicePalet
 
 // Address: 0x004606e0 - 0x00460704 (36 bytes)
 bool cpCharacterEdit::isLoading() {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     bool* p2 = &this->mArcLoadReq[0];
     do {
         if ((*p2) != false) {

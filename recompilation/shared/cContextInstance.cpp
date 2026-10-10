@@ -538,7 +538,7 @@ __attribute__((weak)) bool cContextInstChar::isOcdTimerReset(u32 OcdUID) const {
 
 // Address: 0x00056e90 - 0x00056ebc (44 bytes)
 void cContextInstChar::resetOcdTimerReset() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mOcdTimerResetBit[6] = static_cast<unsigned int>(0);
     this->mOcdTimerResetBit[4] = static_cast<unsigned int>(0);

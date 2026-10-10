@@ -194,7 +194,6 @@ __attribute__((weak)) void cGUIUtility::makeItemName(MtString& rStr, MT_CTSTR na
 
 // Address: 0x002025a0 - 0x002025ce (46 bytes)
 MT_CTSTR cGUIUtility::getItemName(u32 item_id) {
-    // local: rItemParam* pParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rItemList::rItemParam* pParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(item_id);
     if (pParam != static_cast<rItemList::rItemParam*>(nullptr)) {
@@ -545,9 +544,9 @@ void cGUIUtility::copyParameter(cGUIInstance* pDest, cGUIInstance* pOrg, s32 fla
 
 // Address: 0x002044d0 - 0x00204516 (70 bytes)
 bool cGUIUtility::isEquipLantern() {
-    // local: uPlayer* const player;
-    // local: cEquipData& data;
-    // local: u16 param;
+    // DWARF local not rendered: uPlayer* const player;
+    // DWARF local not rendered: cEquipData& data;
+    // DWARF local not rendered: u16 param;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
         return ::cContextInterface::getContextEquip(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()->::uDDOModel::mContextInterface.mpContextInstance).::cEquipData::getEquip(static_cast<u8>(15), static_cast<u8>(0), true) != static_cast<u16>(0);
@@ -580,7 +579,6 @@ __attribute__((weak)) void cGUIUtility::convertNormalSkillLearnList(const Normal
 
 // Address: 0x00207100 - 0x00207139 (57 bytes)
 const rAcquirement::cNormalSkillData* cGUIUtility::getNormalSkillData(nHuman::JOB_ENUM JobId, u32 SkillNo) {
-    // local: cNormalSkillData* pskill;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cAcquirement::cNormalSkillData* pskill = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getNormalSkillData(static_cast<u32>(JobId));
     if (pskill != static_cast<cAcquirement::cNormalSkillData*>(nullptr)) {
@@ -1153,8 +1151,8 @@ __attribute__((weak)) void cGUIUtility::GetChargeEffectMessage(MtString& ret_str
 
 // Address: 0x002057b0 - 0x00205817 (103 bytes)
 bool cGUIUtility::IsChargeAttributeEnable(u32 attr) {
-    // local: u32 i;
-    // local: const E_GP_COURSE_EFFECT effect;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const E_GP_COURSE_EFFECT effect;
     // Approximate from the ELF: a load the way back re-reads, read at the head of the iteration; the body oracle reports this body.
     if (::sGame::getInstance()->mCharData.mCharData.mOption.mIsDispCharges == false) {
         return false;
@@ -1162,7 +1160,7 @@ bool cGUIUtility::IsChargeAttributeEnable(u32 attr) {
     if (attr == static_cast<u32>(0)) {
         return false;
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i3 = static_cast<unsigned int>(0);
     do {
         if (::sGame::getInstance()->::sGame::isChargeEffectAttr(static_cast<nGpCourse::E_GP_COURSE_EFFECT>(i3), attr) != false) {
@@ -1393,7 +1391,7 @@ __attribute__((weak)) void cGUIUtility::getKeyIconTag(nGUIExt::StringKeyCustomIc
 
 // Address: 0x00207820 - 0x00207886 (102 bytes)
 void cGUIUtility::getIconTag(nGUIExt::StringKeyCustomIconTag& outIconTag, nKeyCustom::KB_CUSTOM keyCustom, cGUIUtility::ICON_TAG_OUT_TYPE outType, cGUIUtility::ICON_TAG_JOINT_TYPE jointType, u32 flags) {
-    // local: const u8 act_plt_type;
+    // DWARF local not rendered: const u8 act_plt_type;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData().mOptionSys.mActPltType == static_cast<u8>(1)) {
         ::cGUIUtility::getKeyIconTag(outIconTag, keyCustom, outType, jointType, flags);
@@ -1559,8 +1557,8 @@ __attribute__((weak)) u32 cGUIUtility::getMyPawnTotalJobLevel(u32 PawnId) {
 
 // Address: 0x00205b60 - 0x00205b87 (39 bytes)
 bool cGUIUtility::IsDirectChat() {
-    // local: bool is_direct_chat;
-    // local: const stOptionDataSystem& option_system;
+    // DWARF local not rendered: bool is_direct_chat;
+    // DWARF local not rendered: const stOptionDataSystem& option_system;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (::sSavedata::getInstance() != static_cast<sSavedata*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x205b73, used twice; no DWARF local holds it
@@ -1650,7 +1648,7 @@ __attribute__((weak)) f32 cGUIUtility::GetCurseHpRate(const uCharacter* characte
 
 // Address: 0x00205fd0 - 0x00205fed (29 bytes)
 void cGUIUtility::SetCurseGaugeObj(cGUIObject* curseGaugeObj, f32 hpRate) {
-    // local: const bool is_curse;
+    // DWARF local not rendered: const bool is_curse;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (curseGaugeObj == static_cast<cGUIObject*>(nullptr)) {
         return;
@@ -1660,7 +1658,7 @@ void cGUIUtility::SetCurseGaugeObj(cGUIObject* curseGaugeObj, f32 hpRate) {
 
 // Address: 0x00204b50 - 0x00204b66 (22 bytes)
 bool cGUIUtility::IsValidOcdId(u32 ocdId) {
-    // local: const f32 icon_frame;
+    // DWARF local not rendered: const f32 icon_frame;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return ::uGUIBase::cReferenceUIIconStatus::GetIconFrameFromOcdId(ocdId) > 0.0f;
 }

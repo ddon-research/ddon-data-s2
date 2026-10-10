@@ -5,7 +5,6 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtDataReader.h"
-#include "MtDataWriter.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
@@ -15,6 +14,7 @@
 #include "cGeneralPoint.h"
 #include "cGeneralPointPtr.h"
 #include "cpInput.h"
+#include "nDDOIO.h"
 #include "nDDOUtility.h"
 #include "nPawn.h"
 #include "uCharacter.h"
@@ -105,15 +105,21 @@ __attribute__((weak)) void cPawnActInterBase::endInter() {
 // Address: 0x0042ef80 - 0x0042efae (46 bytes)
 void cPawnActInterBase::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mLifeFrame = r.readF32();
-    this->mDisableNotice = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mLifeFrame);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mDisableNotice);
 }
 
 // Address: 0x0042efb0 - 0x0042efe0 (48 bytes)
 void cPawnActInterBase::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeF32(this->mLifeFrame);
-    w.writeU32(this->mDisableNotice);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mLifeFrame);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mDisableNotice);
 }
 
 // Address: 0x0042efe0 - 0x0042efe1 (1 bytes)
@@ -789,8 +795,8 @@ __attribute__((weak)) cGeneralPoint* cPawnActInterIO::getTargetGeneralPoint(u32 
 
 // Address: 0x0042ecb0 - 0x0042ecc4 (20 bytes)
 cAITargetInfo* cPawnActInterIO::getNearEnemyTargetInfo(const MtVector3& pos, f32 maxLen) {
-    // local: cAITargetInfoArray* p_em_list;
-    // local: cAITargetInfo* p_near;
+    // DWARF local not rendered: cAITargetInfoArray* p_em_list;
+    // DWARF local not rendered: cAITargetInfo* p_near;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mInParam.mpEnemyList != static_cast<cAITargetInfoArray*>(nullptr)) {
         return this->mInParam.mpEnemyList->::cAITargetInfoArray::findNear(pos, maxLen);
@@ -922,7 +928,7 @@ cPawnActInterWaitFootwork::cPawnActInterWaitFootwork() {
 
 // Address: 0x00451830 - 0x00451854 (36 bytes)
 ACTINTER_CODERET cPawnActInterWaitFootwork::updateInter(cPawnActInterIO& param, uCharacter& owner) {
-    // local: uHuman* pHm;
+    // DWARF local not rendered: uHuman* pHm;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((owner.::uDDOModel::mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
         if (static_cast<uHuman*>(&owner)->::uHuman::isFootWork() != false) {

@@ -155,22 +155,22 @@ __attribute__((weak)) bool cBakeModel::setModel(rModel* pmod, bool material_flag
 
 // Address: 0x00031440 - 0x0003149d (93 bytes)
 void cBakeModel::buildJointIndexTable(uModel* pumodel) {
-    // local: u32 JointNum;
-    // local: const JOINT_INFO* JInfo;
-    // local: u32 i;
-    // local: u32 jno;
-    // local: u32 iMod;
+    // DWARF local not rendered: u32 JointNum;
+    // DWARF local not rendered: const JOINT_INFO* JInfo;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 jno;
+    // DWARF local not rendered: u32 iMod;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mpModel != static_cast<rModel*>(nullptr)) {
         if (pumodel != static_cast<uModel*>(nullptr)) {
             if (pumodel->::cUnit::isEnable() != false) {
                 if (pumodel->::uBaseModel::mpModel != static_cast<rModel*>(nullptr)) {
                     if (this->mpModel->::rModel::getJointNum() != static_cast<u32>(0)) {
-                        // inferred: the value the loop at 0x31480 carries; DWARF names no local for it
+                        // inferred: the value the loop at 0x31480 carries; no location-less local in scope fits
                         u32 v0_0 = this->mpModel->::rModel::getJointNum();
-                        // inferred: the pointer this loop steps by one element; DWARF names no local for it
+                        // inferred: the pointer this loop steps by one element; no location-less local in scope fits
                         const rModel::JOINT_INFO* p0_1 = this->mpModel->::rModel::getJointInfo();
-                        // inferred: the pointer this loop steps by one element; DWARF names no local for it
+                        // inferred: the pointer this loop steps by one element; no location-less local in scope fits
                         for (unsigned char* p0_3 = &this->mOrgToMod[0];;) {
                             *p0_3 = pumodel->mJointTable[p0_1->no];
                             if ((v0_0 - static_cast<u32>(1)) != static_cast<u32>(0)) {

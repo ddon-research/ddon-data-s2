@@ -3,9 +3,9 @@
 #include "rCraftUpGradeExp.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -147,7 +147,8 @@ inline void rCraftUpGradeExp::operator delete(void* p_addr) {
 // Address: 0x00659ee0 - 0x00659eff (31 bytes)
 bool rCraftUpGradeExp::loadData(MtDataReader& in, cCraftUpGradeExpData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mExpMax = in.readU64();
+    // inferred: reference argument from the copy's one access
+    ::nDDOIO::readData(in, pData->mExpMax);
     return true;
 }
 
@@ -193,4 +194,8 @@ template const cCraftUpGradeExpData* rTbl2<cCraftUpGradeExpData>::getData(unsign
 // Instance at 0x01a82120 - 0x01a82124 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cCraftUpGradeExpData>::getDataNum() const;
+
+// Instance at 0x01a82330 - 0x01a82388 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cCraftUpGradeExpData>::~rTbl2();
 

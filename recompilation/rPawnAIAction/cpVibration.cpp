@@ -66,7 +66,7 @@ inline void cpVibration::operator delete(void* p_addr) {
 
 // Address: 0x005405c0 - 0x00540647 (135 bytes)
 cpVibration::cpVibration() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsSeqCtrl = false;
     this->mpSeqCtrlModel = static_cast<uModel*>(nullptr);
@@ -85,7 +85,7 @@ cpVibration::cpVibration() {
 // Address: 0x00540650 - 0x005406cd (125 bytes)
 // Also emitted as: _ZN11cpVibrationD0Ev at 0x005406d0
 cpVibration::~cpVibration() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprVibration[0] != static_cast<rVibration*>(nullptr)) {
         this->mprVibration[0]->::cResource::release();

@@ -246,3 +246,7 @@ template const cWeaponResTable* rTbl2<cWeaponResTable>::getData(unsigned int) co
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cWeaponResTable>::getDataNum() const;
 
+// Instance at 0x01ab9150 - 0x01ab917a (42 bytes) of the generic rTbl2<T>::~rTbl2
+// Proven from the ELF: the body oracle checks this instance (022 D5).
+template rTbl2<cWeaponResTable>::~rTbl2();
+

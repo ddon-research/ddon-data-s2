@@ -9,6 +9,7 @@
 #include "../shared/MtObject.h"
 #include "../shared/cResPath.h"
 #include "../shared/cResource.h"
+#include "../shared/nDDOIO.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -275,15 +276,17 @@ MtUI* rEditStageParam::Info::createUI(MtProperty& prop) {
 
 // Address: 0x00661100 - 0x006612a8 (424 bytes)
 bool rEditStageParam::Info::load(MtDataReader& r) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     r.::MtDataReader::readString(&this->mModelSdl[0], static_cast<u32>(64));
     r.::MtDataReader::readString(&this->mFilterSdl[0], static_cast<u32>(64));
     r.::MtDataReader::readString(&this->mLightSdl[0], static_cast<u32>(64));
     r.::MtDataReader::readString(&this->mOmListSdl[0], static_cast<u32>(64));
     this->mReverb = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->mPlPos = r.readV3();
-    this->mPlRotY = r.readF32();
+    ::nDDOIO::readData(r, this->mPlRotY);
     r.::MtDataReader::readString(&this->mWeatherStageInfo[0], static_cast<u32>(64));
     r.::MtDataReader::readString(&this->mWeatherParamInfo[0], static_cast<u32>(64));
     this->mWeatherData[0].mWeatherID = r.readU32();
@@ -292,13 +295,27 @@ bool rEditStageParam::Info::load(MtDataReader& r) {
     this->mWeatherData[1].mWeatherID = r.readU32();
     this->mWeatherData[1].mHour = r.readU32();
     this->mWeatherData[1].mMinite = r.readU32();
-    this->mpSkyWep.::cResPathBase::mId = r.readU64();
-    this->mpRoomWep.::cResPathBase::mId = r.readU64();
-    this->mpEpv.::cResPathBase::mId = r.readU64();
-    this->mEpvIndexAlways = r.readS32();
-    this->mEpvIndexDay = r.readS32();
-    this->mEpvIndexNight = r.readS32();
-    this->mFlag = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mpSkyWep);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mpRoomWep);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mpEpv);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mEpvIndexAlways);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mEpvIndexDay);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mEpvIndexNight);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mFlag);
     return true;
 }
 
@@ -441,8 +458,8 @@ s32 rEditStageParam::Info::getEpvIndexNight() const {
 
 // Address: 0x006614d0 - 0x006614e0 (16 bytes)
 bool rEditStageParam::Info::isChangeTime() {
-    // local: u32 hour;
-    // local: u32 i;
+    // DWARF local not rendered: u32 hour;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mWeatherData[0].mHour != this->mWeatherData[1].mHour;
 }

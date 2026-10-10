@@ -169,8 +169,8 @@ void uGUIBoxGachaInfo::kill() {
 
 // Address: 0x009a2c40 - 0x009a2c53 (19 bytes)
 void uGUIBoxGachaInfo::setupListLot(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
-    // local: cLotInfo* pInfo;
-    // local: cLotList* pLot;
+    // DWARF local not rendered: cLotInfo* pInfo;
+    // DWARF local not rendered: cLotList* pLot;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pItemBase == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
         return;
@@ -196,8 +196,8 @@ __attribute__((weak)) void uGUIBoxGachaInfo::hideListLot(uGUIBase::cScrollListIt
 
 // Address: 0x009a2be0 - 0x009a2bf3 (19 bytes)
 void uGUIBoxGachaInfo::setupListItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
-    // local: cListInfo* pInfo;
-    // local: cListItem* pItem;
+    // DWARF local not rendered: cListInfo* pInfo;
+    // DWARF local not rendered: cListItem* pItem;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pItemBase == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
         return;

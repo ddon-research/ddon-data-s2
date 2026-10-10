@@ -881,7 +881,7 @@ __attribute__((weak)) void cGUIObjMessage::clearMessage() {
 
 // Address: 0x0108d630 - 0x0108d6d4 (164 bytes)
 void cGUIObjMessage::clearDrawMTag() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     (::sGUI::mpInstance)->::sGUI::freeVertexBuffer(this->mVertexObject);
     (::sGUI::mpInstance)->::sGUI::freeIndexBuffer(this->mIndexObject);
@@ -897,7 +897,6 @@ void cGUIObjMessage::clearDrawMTag() {
 
 // Address: 0x0108d6e0 - 0x0108d762 (130 bytes)
 void cGUIObjMessage::recalcFontSize() {
-    // local: cGUIMessageAnalyzer analyzer;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpMTag == static_cast<nGUI::MTAG*>(nullptr)) {
         return;

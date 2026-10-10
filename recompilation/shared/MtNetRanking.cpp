@@ -224,12 +224,10 @@ __attribute__((weak)) s32 MtNetRanking::startRequest(MtNetRequest* req) {
 
 // Address: 0x00dbd4d0 - 0x00dbd55c (140 bytes)
 s32 MtNetRanking::moveRequest(MtNetRequest* req) {
-    // local: s32 ret;
-    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // DWARF local not rendered: s32 ret;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (req != static_cast<MtNetRequest*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0xdbd4e5, used twice; no DWARF local holds it
-        s32 t0 = req->::MtNetRequest::getId();
-        switch (static_cast<unsigned int>(t0 - static_cast<s32>(2305))) {
+        switch (static_cast<unsigned int>(req->::MtNetRequest::getId() - static_cast<s32>(2305))) {
             case static_cast<unsigned int>(0):
             {
                 return this->::MtNetRanking::moveUpdate(req);
@@ -267,7 +265,6 @@ void MtNetRanking::endRequest(MtNetRequest* req) {
 
 // Address: 0x00dbecc0 - 0x00dbed5a (154 bytes)
 void MtNetRanking::startFailRequest(MtNetRequest* req) {
-    // local: MtNetError err;
     // Approximate from the ELF: a cast to the other signedness; code after a join copied into the arms; the body oracle reports this body.
     MtNetError err;
     req->getFatal(&err);

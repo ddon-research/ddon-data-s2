@@ -3,9 +3,9 @@
 #include "rHumanEnemyEquip.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -139,17 +139,39 @@ inline void rHumanEnemyEquip::operator delete(void* p_addr) {
 // Address: 0x0067e890 - 0x0067e933 (163 bytes)
 bool rHumanEnemyEquip::loadData(MtDataReader& r, cHumanEnemyEquip* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mId = r.readU32();
-    pData->mMainWeaponId = r.readU32();
-    pData->mSubWeaponId = r.readU32();
-    pData->mWearTopId = r.readU32();
-    pData->mWearBottomId = r.readU32();
-    pData->mHeadId = r.readU32();
-    pData->mArmorId = r.readU32();
-    pData->mHandId = r.readU32();
-    pData->mLegId = r.readU32();
-    pData->mAccessoryId = r.readU32();
-    pData->mJewelry = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mMainWeaponId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mSubWeaponId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mWearTopId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mWearBottomId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mHeadId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mArmorId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mHandId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mLegId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mAccessoryId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mJewelry);
     return true;
 }
 
@@ -195,4 +217,8 @@ template const cHumanEnemyEquip* rTbl2<cHumanEnemyEquip>::getData(unsigned int) 
 // Instance at 0x01a943f0 - 0x01a943f4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cHumanEnemyEquip>::getDataNum() const;
+
+// Instance at 0x01a945a0 - 0x01a945f8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cHumanEnemyEquip>::~rTbl2();
 

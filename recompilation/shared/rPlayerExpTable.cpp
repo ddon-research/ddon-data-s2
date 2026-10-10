@@ -3,10 +3,10 @@
 #include "rPlayerExpTable.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cResource.h"
+#include "nDDOIO.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -149,8 +149,12 @@ inline void rPlayerExpTable::operator delete(void* p_addr) {
 // Address: 0x006b5ef0 - 0x006b5f1e (46 bytes)
 bool rPlayerExpTable::loadData(MtDataReader& in, cPlayerExpTable* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mNeedExp = in.readU32();
-    pData->mGainJobPoint = in.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNeedExp);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mGainJobPoint);
     return true;
 }
 
@@ -202,4 +206,8 @@ template const cPlayerExpTable* rTbl2<cPlayerExpTable>::getData(unsigned int) co
 // Instance at 0x01aa2710 - 0x01aa2714 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cPlayerExpTable>::getDataNum() const;
+
+// Instance at 0x01aa2890 - 0x01aa28e8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cPlayerExpTable>::~rTbl2();
 

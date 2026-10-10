@@ -3,9 +3,9 @@
 #include "rLargeCameraParam.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -158,11 +158,21 @@ inline void rLargeCameraParam::operator delete(void* p_addr) {
 // Address: 0x00693120 - 0x0069319d (125 bytes)
 bool rLargeCameraParam::loadData(MtDataReader& in, cLargeCameraParam* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mEmId = in.readU32();
-    pData->mRange1 = in.readF32();
-    pData->mRange2 = in.readF32();
-    pData->mCamera = in.readU32();
-    pData->mGroup = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEmId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mRange1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mRange2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCamera);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mGroup);
     return true;
 }
 
@@ -208,4 +218,8 @@ template const cLargeCameraParam* rTbl2<cLargeCameraParam>::getData(unsigned int
 // Instance at 0x01a996c0 - 0x01a996c4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cLargeCameraParam>::getDataNum() const;
+
+// Instance at 0x01a99860 - 0x01a998b8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cLargeCameraParam>::~rTbl2();
 

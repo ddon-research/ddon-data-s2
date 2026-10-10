@@ -110,9 +110,8 @@ rStageAdjoinList::~rStageAdjoinList() {
 
 // Address: 0x006f1550 - 0x006f161e (206 bytes)
 bool rStageAdjoinList::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u32 dataVersion;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u32 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(4997459)) {

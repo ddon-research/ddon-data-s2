@@ -81,10 +81,10 @@ inline void sTalkManager::operator delete(void* p_addr) {
 
 // Address: 0x0085ac80 - 0x0085ad33 (179 bytes)
 void sTalkManager::setNpcWindowText(cTalkMsgData& MsgData) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (MsgData.::cTalkMsgData::getDispPageNum() != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (MsgData.::cTalkMsgData::getMessage() != static_cast<MT_CTSTR>(nullptr)) {
                 // inferred: a temporary for the value the load at 0x85acbd read, used once; no DWARF local holds it
@@ -230,7 +230,7 @@ __attribute__((weak)) uControl* sTalkManager::getNpcCtrl() const {
 
 // Address: 0x0085b730 - 0x0085b74e (30 bytes)
 s32 sTalkManager::getNpcId() const {
-    // local: cpTalk* pTalkCp;
+    // DWARF local not rendered: cpTalk* pTalkCp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpTalkTarget != static_cast<uDDOModel*>(nullptr)) {
         if (this->mpTalkTarget->mpTalk != static_cast<cpTalk*>(nullptr)) {
@@ -368,9 +368,9 @@ __attribute__((weak)) void sTalkManager::callQuestEventMsg(u32 msgType, u32 ques
 void sTalkManager::stopQuestEventMsg() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mTellQueue.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x85bcd0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x85bcd0 carries; no location-less local in scope fits
         u32 v0_0 = this->mTellQueue.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mTellQueue.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mTellQueue.::MtArray::mpArray[i0_3];
@@ -695,9 +695,9 @@ __attribute__((weak)) void sTalkManager::addSelectMember(u32 slot, CHAR_NAME nam
 void sTalkManager::clearSelectData() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mSelectData.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x85b2d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x85b2d0 carries; no location-less local in scope fits
         u32 v0_0 = this->mSelectData.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mSelectData.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mSelectData.::MtArray::mpArray[i0_3];
@@ -728,9 +728,9 @@ void sTalkManager::clearSelectData() {
 void sTalkManager::clearSelectMember() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mSelectMember.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x85c8a0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x85c8a0 carries; no location-less local in scope fits
         u32 v0_0 = this->mSelectMember.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mSelectMember.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mSelectMember.::MtArray::mpArray[i0_3];
@@ -842,9 +842,9 @@ void sTalkManager::finalGame() {
     this->mTellRno = static_cast<u8>(0);
     this->mTalkType = static_cast<u32>(0);
     if (this->mTellQueue.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x85d910 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x85d910 carries; no location-less local in scope fits
         u32 v0_0 = this->mTellQueue.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mTellQueue.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mTellQueue.::MtArray::mpArray[i0_3];

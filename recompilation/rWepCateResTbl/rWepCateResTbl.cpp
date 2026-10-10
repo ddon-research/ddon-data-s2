@@ -211,3 +211,7 @@ template const cWepCateResTbl* rTbl2<cWepCateResTbl>::getData(unsigned int) cons
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cWepCateResTbl>::getDataNum() const;
 
+// Instance at 0x01abc5a0 - 0x01abc5ca (42 bytes) of the generic rTbl2<T>::~rTbl2
+// Proven from the ELF: the body oracle checks this instance (022 D5).
+template rTbl2<cWepCateResTbl>::~rTbl2();
+

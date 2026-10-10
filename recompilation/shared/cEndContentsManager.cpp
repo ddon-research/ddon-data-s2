@@ -160,10 +160,9 @@ __attribute__((weak)) s32 cEndContentsManager::getEndContentsPurposeNo(u32 idx) 
 
 // Address: 0x000bae80 - 0x000baea5 (37 bytes)
 void cEndContentsManager::addEndContentsPurposeNo(u32 purposeNo) {
-    // local: u32 i;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     int* p1 = &this->mEndContentsPurpose[0];
     do {
         if ((*p1) == static_cast<int>(-1)) {
@@ -243,7 +242,7 @@ void cEndContentsManager::reqPlayStartDemoAfterJump() {
 
 // Address: 0x000baca0 - 0x000bacce (46 bytes)
 void cEndContentsManager::reset() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
     this->mEndContentsPurpose[2] = static_cast<int>(-1);
     this->mEndContentsPurpose[0] = static_cast<int>(-1);
@@ -427,9 +426,9 @@ __attribute__((weak)) void cEndContentsManager::addDistEndContents(const CTimeGa
 void cEndContentsManager::resetDistEndContentsList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mDistEndContentsList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xba940 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xba940 carries; no location-less local in scope fits
         u32 v0_0 = this->mDistEndContentsList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mDistEndContentsList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mDistEndContentsList.::MtArray::mpArray[i0_3];

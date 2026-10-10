@@ -5,7 +5,6 @@
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtDataReader.h"
-#include "../shared/MtDataWriter.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
@@ -112,9 +111,8 @@ __attribute__((weak)) bool rTutorialQuestGroup::save(MtStream& out) {
 
 // Address: 0x0070f350 - 0x0070f3fa (170 bytes)
 bool rTutorialQuestGroup::load(MtStream& in) {
-    // local: u32 header;
-    // local: MtDataReader r;
-    // local: u16 dataVersion;
+    // DWARF local not rendered: u32 header;
+    // DWARF local not rendered: u16 dataVersion;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     if ((&r)->readU32() == static_cast<u32>(4673876)) {
@@ -233,7 +231,9 @@ __attribute__((weak)) void rTutorialQuestGroup::cGroup::save(MtDataWriter& w) {
 // Address: 0x0070f8b0 - 0x0070f8da (42 bytes)
 void rTutorialQuestGroup::cGroup::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mGroupId = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mGroupId);
     ::nDDOIO::readMtArray(r, this->mQuestIds);
 }
 
@@ -327,13 +327,14 @@ __attribute__((weak)) void rTutorialQuestGroup::cGroup::cQuestId::createProperty
 // Address: 0x0070fb00 - 0x0070fb11 (17 bytes)
 void rTutorialQuestGroup::cGroup::cQuestId::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(this->mId);
+    ::nDDOIO::writeData(w, this->mId);
 }
 
 // Address: 0x0070fb20 - 0x0070fb3c (28 bytes)
 void rTutorialQuestGroup::cGroup::cQuestId::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mId = r.readU32();
+    // inferred: reference argument from the copy's one access
+    ::nDDOIO::readData(r, this->mId);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)

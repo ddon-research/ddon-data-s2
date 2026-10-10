@@ -4,7 +4,6 @@
 #include "MtAllocator.h"
 #include "MtCollection.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cUIObject.h"
@@ -34,10 +33,11 @@ const MtDTI& rAcquirement::cSkillLevelData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rAcquirement::cSkillLevelData::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
-//   in _ZNK12rAcquirement15cSkillLevelData5MyDTI11newInstanceEv at 0x0063d614-0x0063d63d (called at rAcquirement.cpp:23)
-//   in _ZN6nDDOIO11readMtArrayIN12rAcquirement15cSkillLevelDataEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a6f2a3-0x01a6f2cc (called at rAcquirement.cpp:23)
-// void* rAcquirement::cSkillLevelData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* rAcquirement::cSkillLevelData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cSkillLevelData::DTI)->memAlloc(sz, align, ::rAcquirement::cSkillLevelData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* rAcquirement::cSkillLevelData::operator new[](size_t sz, u32 align);
@@ -80,9 +80,9 @@ inline void rAcquirement::cSkillLevelData::operator delete(void* p_addr) {
 // rAcquirement::cSkillLevelData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0063d610 - 0x0063d663 (83 bytes)
-__attribute__((weak)) MtObject* rAcquirement::cSkillLevelData::MyDTI::newInstance() const {
-    DDON_STUB("rAcquirement::cSkillLevelData::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAcquirement::cSkillLevelData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::rAcquirement::cSkillLevelData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -107,9 +107,11 @@ const MtDTI& rAcquirement::cCustomSkillData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rAcquirement::cCustomSkillData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in rAcquirement::cCustomSkillData::MyDTI::newInstance at 0x0063d6e4-0x0063d70d (called at rAcquirement.cpp:24)
-// void* rAcquirement::cCustomSkillData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* rAcquirement::cCustomSkillData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cCustomSkillData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
 //   in rTbl2<rAcquirement::cCustomSkillData>::allocData at 0x01a706fc-0x01a70722 (called at rTbl2.h:215)
@@ -152,9 +154,9 @@ inline void rAcquirement::cCustomSkillData::operator delete(void* p_addr) {
 // rAcquirement::cCustomSkillData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0063d6e0 - 0x0063d75b (123 bytes)
-__attribute__((weak)) MtObject* rAcquirement::cCustomSkillData::MyDTI::newInstance() const {
-    DDON_STUB("rAcquirement::cCustomSkillData::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAcquirement::cCustomSkillData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::rAcquirement::cCustomSkillData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -179,9 +181,11 @@ const MtDTI& rAcquirement::cNormalSkillData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rAcquirement::cNormalSkillData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in rAcquirement::cNormalSkillData::MyDTI::newInstance at 0x0063d7d4-0x0063d7fd (called at rAcquirement.cpp:25)
-// void* rAcquirement::cNormalSkillData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* rAcquirement::cNormalSkillData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cNormalSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cNormalSkillData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
 //   in rTbl2<rAcquirement::cNormalSkillData>::loadCore at 0x01a6fcb3-0x01a6fce0 (called at rTbl2.h:215)
@@ -224,9 +228,9 @@ inline void rAcquirement::cNormalSkillData::operator delete(void* p_addr) {
 // rAcquirement::cNormalSkillData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0063d7d0 - 0x0063d829 (89 bytes)
-__attribute__((weak)) MtObject* rAcquirement::cNormalSkillData::MyDTI::newInstance() const {
-    DDON_STUB("rAcquirement::cNormalSkillData::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAcquirement::cNormalSkillData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::rAcquirement::cNormalSkillData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -249,10 +253,11 @@ const MtDTI& rAcquirement::cAbilityLevelData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rAcquirement::cAbilityLevelData::setAllocator(u32);
 
-// No out-of-line body: 2 inlined copies in 2 functions (82 bytes)
-//   in _ZNK12rAcquirement17cAbilityLevelData5MyDTI11newInstanceEv at 0x0063d8a4-0x0063d8cd (called at rAcquirement.cpp:26)
-//   in _ZN6nDDOIO11readMtArrayIN12rAcquirement17cAbilityLevelDataEEEvR12MtDataReaderR12MtTypedArrayIT_E at 0x01a6f503-0x01a6f52c (called at rAcquirement.cpp:26)
-// void* rAcquirement::cAbilityLevelData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* rAcquirement::cAbilityLevelData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityLevelData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityLevelData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* rAcquirement::cAbilityLevelData::operator new[](size_t sz, u32 align);
@@ -295,9 +300,9 @@ inline void rAcquirement::cAbilityLevelData::operator delete(void* p_addr) {
 // rAcquirement::cAbilityLevelData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0063d8a0 - 0x0063d8ed (77 bytes)
-__attribute__((weak)) MtObject* rAcquirement::cAbilityLevelData::MyDTI::newInstance() const {
-    DDON_STUB("rAcquirement::cAbilityLevelData::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAcquirement::cAbilityLevelData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::rAcquirement::cAbilityLevelData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -322,9 +327,11 @@ const MtDTI& rAcquirement::cAbilityData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rAcquirement::cAbilityData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in rAcquirement::cAbilityData::MyDTI::newInstance at 0x0063d964-0x0063d98d (called at rAcquirement.cpp:27)
-// void* rAcquirement::cAbilityData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* rAcquirement::cAbilityData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
 //   in rTbl2<rAcquirement::cAbilityData>::loadCore at 0x01a70033-0x01a70060 (called at rTbl2.h:215)
@@ -367,9 +374,9 @@ inline void rAcquirement::cAbilityData::operator delete(void* p_addr) {
 // rAcquirement::cAbilityData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0063d960 - 0x0063d9b3 (83 bytes)
-__attribute__((weak)) MtObject* rAcquirement::cAbilityData::MyDTI::newInstance() const {
-    DDON_STUB("rAcquirement::cAbilityData::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAcquirement::cAbilityData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::rAcquirement::cAbilityData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -394,9 +401,11 @@ const MtDTI& rAcquirement::cAbilityAddData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void rAcquirement::cAbilityAddData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in rAcquirement::cAbilityAddData::MyDTI::newInstance at 0x0063da34-0x0063da5d (called at rAcquirement.cpp:28)
-// void* rAcquirement::cAbilityAddData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* rAcquirement::cAbilityAddData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityAddData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
 //   in rTbl2<rAcquirement::cAbilityAddData>::allocData at 0x01a7050c-0x01a70532 (called at rTbl2.h:215)
@@ -439,9 +448,9 @@ inline void rAcquirement::cAbilityAddData::operator delete(void* p_addr) {
 // rAcquirement::cAbilityAddData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0063da30 - 0x0063daa3 (115 bytes)
-__attribute__((weak)) MtObject* rAcquirement::cAbilityAddData::MyDTI::newInstance() const {
-    DDON_STUB("rAcquirement::cAbilityAddData::MyDTI::newInstance")
-    return nullptr;
+MtObject* rAcquirement::cAbilityAddData::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::rAcquirement::cAbilityAddData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -493,9 +502,15 @@ inline void* rAcquirement::rCustomSkillData::operator new(size_t sz, u32 align) 
 // Address: 0x0063deb0 - 0x0063defa (74 bytes)
 bool rAcquirement::rCustomSkillData::loadData(MtDataReader& r, rAcquirement::cCustomSkillData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mId = r.readU16();
-    pData->mMsgNameIndex = r.readU16();
-    pData->mIconId = r.readU16();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mMsgNameIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIconId);
     ::nDDOIO::readMtArray(r, pData->mLvArray);
     return true;
 }
@@ -653,13 +668,27 @@ inline void rAcquirement::rAbilityData::operator delete(void* p_addr) {
 // Address: 0x0063e040 - 0x0063e0d9 (153 bytes)
 bool rAcquirement::rAbilityData::loadData(MtDataReader& r, rAcquirement::cAbilityData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mId = r.readU16();
-    pData->mMsgNameIndex = r.readU16();
-    pData->mMsgExpIndex = r.readU16();
-    pData->mIconId = r.readU16();
-    pData->mCost = r.readU16();
-    pData->mSortNo = r.readU16();
-    pData->mIsPawnDisable = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mMsgNameIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mMsgExpIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIconId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCost);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mSortNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIsPawnDisable);
     return true;
 }
 
@@ -735,8 +764,12 @@ inline void* rAcquirement::rAbilityAddData::operator new(size_t sz, u32 align) {
 // Address: 0x0063e0e0 - 0x0063e13e (94 bytes)
 bool rAcquirement::rAbilityAddData::loadData(MtDataReader& r, rAcquirement::cAbilityAddData* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mId = r.readU16();
-    pData->mSortCategory = r.::MtDataReader::readU8();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mSortCategory);
     ::nDDOIO::readMtArray(r, pData->mLvArray);
     return true;
 }
@@ -851,4 +884,20 @@ template unsigned int rTbl2<rAcquirement::cCustomSkillData>::getDataNum() const;
 // Instance at 0x01a6fc10 - 0x01a6fc14 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<rAcquirement::cNormalSkillData>::getDataNum() const;
+
+// Instance at 0x01a70840 - 0x01a708e1 (161 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<rAcquirement::cAbilityAddData>::~rTbl2();
+
+// Instance at 0x01a709a0 - 0x01a709f8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<rAcquirement::cAbilityData>::~rTbl2();
+
+// Instance at 0x01a70b20 - 0x01a70bc1 (161 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<rAcquirement::cCustomSkillData>::~rTbl2();
+
+// Instance at 0x01a70a60 - 0x01a70ab8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<rAcquirement::cNormalSkillData>::~rTbl2();
 

@@ -93,7 +93,7 @@ rFreeF32Tbl::~rFreeF32Tbl() {
 
 // Address: 0x006795c0 - 0x006795e3 (35 bytes)
 f32 rFreeF32Tbl::getIndexF32(u32 idx, f32 def) {
-    // local: f32* p_top;
+    // DWARF local not rendered: f32* p_top;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpHeader != static_cast<rFreeF32Tbl::stHeader*>(nullptr)) {
         if (idx < this->mpHeader->TagNum) {
@@ -121,7 +121,7 @@ __attribute__((weak)) MtVector4 rFreeF32Tbl::getIndexVec4(u32 idx, const MtVecto
 
 // Address: 0x006796a0 - 0x006796d3 (51 bytes)
 f32 rFreeF32Tbl::getTagF32(u32 tag, f32 def) {
-    // local: u32 idx;
+    // DWARF local not rendered: u32 idx;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the result of the call at 0x6796b1, used once; no DWARF local holds it
     u32 t0 = this->getTagIndex(tag);
@@ -159,23 +159,23 @@ __attribute__((weak)) MtVector4 rFreeF32Tbl::getTagVec4(u32 tag, const MtVector4
 
 // Address: 0x00679960 - 0x00679991 (49 bytes)
 u32 rFreeF32Tbl::getTagIndex(u32 tag) {
-    // local: stHeader* p_header;
-    // local: u32 i;
-    // local: stTag& val_tag;
+    // DWARF local not rendered: stHeader* p_header;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: stTag& val_tag;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value carried to 0x679990; DWARF names no local for it
+    // inferred: the value carried to 0x679990; no location-less local in scope fits
     u32 v2_0;
     if (this->mpHeader == static_cast<rFreeF32Tbl::stHeader*>(nullptr)) {
         v2_0 = static_cast<u32>(0);
     } else {
-        // inferred: the value the loop at 0x679980 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x679980 carries; no location-less local in scope fits
         u32 v0_2 = this->mpHeader->TagNum;
         if (v0_2 == static_cast<u32>(0)) {
             v2_0 = static_cast<u32>(0);
         } else {
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             unsigned int i0_0 = static_cast<unsigned int>(0);
-            // inferred: the pointer this loop steps by one element; DWARF names no local for it
+            // inferred: the pointer this loop steps by one element; no location-less local in scope fits
             for (rFreeF32Tbl::stTag* p0_1 = &this->mpHeader->Tags[0];;) {
                 if (p0_1->Tag == tag) {
                     v2_0 = i0_0;

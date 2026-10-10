@@ -80,7 +80,7 @@ cAIPawnAutoMotionNode::~cAIPawnAutoMotionNode() {
 
 // Address: 0x0063f230 - 0x0063f234 (4 bytes)
 u32 cAIPawnAutoMotionNode::getEMotActionNo() {
-    // local: u32 act_no;
+    // DWARF local not rendered: u32 act_no;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mEMotActionNo;
 }
@@ -268,9 +268,8 @@ MT_CTSTR rAIPawnAutoMotionTbl::getExt() const {
 
 // Address: 0x0063f460 - 0x0063f4e2 (130 bytes)
 bool rAIPawnAutoMotionTbl::load(MtStream& in) {
-    // local: MtDataReader r;
-    // local: u32 version;
-    // local: u32 magic;
+    // DWARF local not rendered: u32 version;
+    // DWARF local not rendered: u32 magic;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     (&r)->readU32();
@@ -409,4 +408,8 @@ template const cAIPawnAutoWordNode* rTbl2<cAIPawnAutoWordNode>::getData(unsigned
 // Instance at 0x01a71fa0 - 0x01a71fa4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cAIPawnAutoWordNode>::getDataNum() const;
+
+// Instance at 0x01a72200 - 0x01a7228e (142 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: the family's one template definition, for an instance the renderer refused (constitution 2.4.0); its verdict is reported; the body oracle reports this instance.
+template rTbl2<cAIPawnAutoWordNode>::~rTbl2();
 

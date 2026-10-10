@@ -6,6 +6,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtString.h"
 #include "cUIObject.h"
 #include "cUnit.h"
@@ -42,11 +43,11 @@ const MtDTI& nGUIItem::cItem::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void nGUIItem::cItem::setAllocator(u32);
 
-// No out-of-line body: 3 inlined copies in 3 functions (133 bytes)
-//   in nGUIItem::cItem::MyDTI::newInstance at 0x005dab34-0x005dab5d (called at nGUIItem.cpp:58)
-//   in nGUIItem::cItemList::loadList at 0x005dc1b6-0x005dc1e9 (called at nGUIItem.cpp:1014)
-//   in nGUIItem::cItemList::loadList at 0x005dc5b2-0x005dc5db (called at nGUIItem.cpp:1145)
-// void* nGUIItem::cItem::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nGUIItem::cItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nGUIItem::cItem::DTI)->memAlloc(sz, align, ::nGUIItem::cItem::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nGUIItem::cItem::operator new[](size_t sz, u32 align);
@@ -422,7 +423,7 @@ __attribute__((weak)) bool nGUIItem::cItem::isUse() {
 
 // Address: 0x005db880 - 0x005db897 (23 bytes)
 bool nGUIItem::cItem::isKeyItem() {
-    // local: bool is;
+    // DWARF local not rendered: bool is;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
         return this->mprItemParam->mCategory == static_cast<u8>(4);
@@ -480,9 +481,9 @@ __attribute__((weak)) nCharacterData::ITEM_BAG_TYPE nGUIItem::cItem::getItemBagT
 // nGUIItem::cItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x005dab30 - 0x005dabe5 (181 bytes)
-__attribute__((weak)) MtObject* nGUIItem::cItem::MyDTI::newInstance() const {
-    DDON_STUB("nGUIItem::cItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* nGUIItem::cItem::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nGUIItem::cItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -578,8 +579,6 @@ __attribute__((weak)) void nGUIItem::cItemList::loadList(cOmControl* pOmCtrl) {
 
 // Address: 0x005dc7d0 - 0x005dc87a (170 bytes)
 bool nGUIItem::cItemList::execSort(sItemManager::cItemBag::ITEM_CATEGORY cat, sItemManager::cSortParam::SORT_TYPE sortType, sItemManager::cSortParam::SORT_DIR sortDir) {
-    // local: ITEM_BAG_TYPE bagType;
-    // local: cItemBag* pItemBag;
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x5dc7f1 read, used twice; no DWARF local holds it
     sItemManager* t0 = ::sItemManager::getInstance();
@@ -768,9 +767,6 @@ __attribute__((weak)) nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType(sIte
 
 // Address: 0x005dd750 - 0x005dd80f (191 bytes)
 nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType(rItemList::ITEM_CATEGORY cat) {
-    // local: ITEM_BAG_TYPE Type;
-    // local: cItemBag* pBag;
-    // local: ITEM_CATEGORY category;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mTargetStorage == this->mChangeStorage) {
         return this->mBagType;

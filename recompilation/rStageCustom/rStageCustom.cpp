@@ -161,7 +161,6 @@ rStageCustomParts::Info* rStageCustom::getAreaInfo(s32 areaNo) const {
 
 // Address: 0x006f2e00 - 0x006f2e20 (32 bytes)
 s32 rStageCustom::getAreaNo(s32 index) const {
-    // local: Area* area;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     rStageCustom::Area* area = this->getArea(static_cast<u32>(index));
     if (area != static_cast<rStageCustom::Area*>(nullptr)) {

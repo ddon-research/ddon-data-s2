@@ -356,7 +356,7 @@ __attribute__((weak)) u32 uGUIUseItemBase::evCtrlChangeBoxCore(cControl::Message
 
 // Address: 0x00c68b50 - 0x00c68b6f (31 bytes)
 u32 uGUIUseItemBase::evCtrlChangeBox(cControl::Message* msg) {
-    // local: MSG_REASON reason;
+    // DWARF local not rendered: MSG_REASON reason;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (msg != static_cast<cControl::Message*>(nullptr)) {
         this->::uGUIUseItemBase::evCtrlChangeBoxCore(msg, (msg->reason == static_cast<nGUIExt::MSG_REASON>(8)) ? static_cast<nGUIExt::MSG_REASON>(0) : msg->reason);

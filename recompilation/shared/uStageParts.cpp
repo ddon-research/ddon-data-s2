@@ -99,7 +99,7 @@ __attribute__((weak)) void uStagePartsCtrl::setup() {
 
 // Address: 0x00d39150 - 0x00d391cc (124 bytes)
 void uStagePartsCtrl::move() {
-    // local: bool update;
+    // DWARF local not rendered: bool update;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uStagePartsCtrl::updateXZ();
     if (this->mOldX == this->mNowX) {
@@ -182,9 +182,8 @@ __attribute__((weak)) void uStagePartsCtrl::addAndLoadSplitArc(const s32 stageNo
 
 // Address: 0x00d39b50 - 0x00d39ba4 (84 bytes)
 bool uStagePartsCtrl::isSetup() {
-    // local: u32 idx;
-    // local: bool ans;
-    // local: uStagePartsMdl* pModel;
+    // DWARF local not rendered: bool ans;
+    // DWARF local not rendered: uStagePartsMdl* pModel;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (this->mIsSetup == false) {
         return false;
@@ -262,7 +261,6 @@ __attribute__((weak)) bool uStagePartsCtrl::isSbc(const s32 x, const s32 z) cons
 
 // Address: 0x00d3b110 - 0x00d3b13d (45 bytes)
 u32 uStagePartsCtrl::getAreaSize(u32 areaNo) const {
-    // local: Info* pinfo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpStageResource != static_cast<rStageCustom*>(nullptr)) {
         rStageCustomParts::Info* pinfo = this->mpStageResource->::rStageCustom::getAreaInfo(static_cast<s32>(areaNo));
@@ -323,9 +321,6 @@ __attribute__((weak)) s32 uStagePartsCtrl::getPartsIndexNo(const MtVector3& pos)
 
 // Address: 0x00d3b380 - 0x00d3b3fc (124 bytes)
 s32 uStagePartsCtrl::getPartsGroupNo(const MtVector3& pos) const {
-    // local: s32 x;
-    // local: s32 z;
-    // local: Area* pArea;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     s32 x = static_cast<s32>(0);
     s32 z = static_cast<s32>(0);
@@ -450,8 +445,7 @@ __attribute__((weak)) cSplitBgm* uStagePartsCtrl::getSplitBgmInfo(const MtVector
 
 // Address: 0x00d3b700 - 0x00d3b762 (98 bytes)
 uSoundOcclusion* uStagePartsCtrl::getSoundOcclusion() const {
-    // local: u32 j;
-    // local: uStagePartsMdl* pMdl;
+    // DWARF local not rendered: uStagePartsMdl* pMdl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpStageResource == static_cast<rStageCustom*>(nullptr)) {
         return static_cast<uSoundOcclusion*>(nullptr);
@@ -459,19 +453,19 @@ uSoundOcclusion* uStagePartsCtrl::getSoundOcclusion() const {
     if (this->mPartsDataAry.::MtArray::mLength == static_cast<u32>(0)) {
         return static_cast<uSoundOcclusion*>(nullptr);
     }
-    // inferred: the counter this loop steps; DWARF names no local for it
-    unsigned int i2 = static_cast<unsigned int>(0);
+    // inferred: DWARF's location-less 'j' (lexical block [0xd3b70c, 0xd3b759), [0xd3b75a, 0xd3b761)) is the counter this loop steps
+    u32 j = static_cast<u32>(0);
     do {
-        if (this->mPartsDataAry.::MtArray::mpArray[i2] != static_cast<MtObject*>(nullptr)) {
-            if (static_cast<cUnit*>(this->mPartsDataAry.::MtArray::mpArray[i2])->::cUnit::isEnable()) {
-                if (static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::mpArray[i2])->::uStagePartsMdl::getAreaIdx() != this->mNowZ) {
+        if (this->mPartsDataAry.::MtArray::mpArray[j] != static_cast<MtObject*>(nullptr)) {
+            if (static_cast<cUnit*>(this->mPartsDataAry.::MtArray::mpArray[j])->::cUnit::isEnable()) {
+                if (static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::mpArray[j])->::uStagePartsMdl::getAreaIdx() != this->mNowZ) {
                 } else {
-                    return static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::mpArray[i2])->::uStagePartsMdl::getSoundOcclusion();
+                    return static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::mpArray[j])->::uStagePartsMdl::getSoundOcclusion();
                 }
             }
         }
-        i2 += static_cast<unsigned int>(1);
-    } while (i2 < this->mPartsDataAry.::MtArray::mLength);
+        j += static_cast<u32>(1);
+    } while (j < this->mPartsDataAry.::MtArray::mLength);
     return static_cast<uSoundOcclusion*>(nullptr);
 }
 
@@ -932,8 +926,8 @@ __attribute__((weak)) void uStagePartsMdl::setResource() {
 
 // Address: 0x00d37e20 - 0x00d37f11 (241 bytes)
 void uStagePartsMdl::setCollisionType() {
-    // local: MtMatrix wmat;
-    // local: u32 i;
+    // DWARF local not rendered: MtMatrix wmat;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mScrSbcHandle[0] == static_cast<unsigned int>(4294967295)) {
     } else {

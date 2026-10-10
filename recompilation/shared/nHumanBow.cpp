@@ -62,7 +62,7 @@ inline void nHumanBow::cBowActParam::operator delete(void* p_addr) {
 
 // Address: 0x005f1770 - 0x005f1c3c (1228 bytes)
 nHumanBow::cBowActParam::cBowActParam() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: stores ahead of a subobject's inlined constructor; the body oracle reports this body.
     this->cameraNoCharge = static_cast<s32>(-1);
     this->cameraShotA = static_cast<s32>(-1);

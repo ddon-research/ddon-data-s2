@@ -58,3 +58,14 @@ public:
     b8 m_bIsLeader;  // offset: 0x12
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataQuickPartyMatching::CDataQuickPartyMatching() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_bIsLeader = false;
+    this->m_bIsJobBalance = false;
+    this->m_bIsLevelBalance = false;
+    this->m_unParam1 = static_cast<u32>(0);
+    this->m_unParam2 = static_cast<u32>(0);
+}

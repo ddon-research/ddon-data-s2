@@ -6,7 +6,6 @@
 #include "MtCollection.h"
 #include "MtColor.h"
 #include "MtDTI.h"
-#include "MtDataReader.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
@@ -15,6 +14,7 @@
 #include "cZoneLayout.h"
 #include "cZoneListenerEffect.h"
 #include "cZoneListenerMulti.h"
+#include "nDDOIO.h"
 #include "nDDOUtility.h"
 #include "rEffectProvider.h"
 #include "rOutlineParamList.h"
@@ -165,14 +165,30 @@ inline void rVfxLightInfluence::operator delete(void* p_addr) {
 // Address: 0x00778b00 - 0x00778b8c (140 bytes)
 bool rVfxLightInfluence::loadData(MtDataReader& in, cVfxLightInfluence* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mLightIntensity = in.readF32();
-    pData->mCustom1 = in.readF32();
-    pData->mCustom2 = in.readF32();
-    pData->mCustom3 = in.readF32();
-    pData->mCustom4 = in.readF32();
-    pData->mCustom6 = in.readF32();
-    pData->mEnv1 = in.readF32();
-    pData->mEnv2 = in.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLightIntensity);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustom1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustom2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustom3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustom4);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCustom6);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEnv1);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mEnv2);
     return true;
 }
 
@@ -383,14 +399,14 @@ MOVE_LINE sEffectExt::getEffectForceEventMoveLine() const {
 
 // Address: 0x0076d5c0 - 0x0076d5ea (42 bytes)
 uEffect* sEffectExt::newEffect() {
-    // local: uEffectExt* p;
+    // DWARF local not rendered: uEffectExt* p;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return new (static_cast<u32>(16)) ::uEffectExt;
 }
 
 // Address: 0x0076d5f0 - 0x0076d61a (42 bytes)
 uEffect2D* sEffectExt::newEffect2D() {
-    // local: uEffect2DExt* p;
+    // DWARF local not rendered: uEffect2DExt* p;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return new (static_cast<u32>(16)) ::uEffect2DExt;
 }
@@ -750,8 +766,8 @@ __attribute__((weak)) s32 sEffectExt::getErosionSuperCameraEpvIndex(rEffectProvi
 
 // Address: 0x00773950 - 0x00773978 (40 bytes)
 cEfcHandle* sEffectExt::setCommonEffect(s32 IndexNo, s32 ElementNo, const sEffectExt::EfcParam& param, uDDOModel* pOrigin, u32 comType) {
-    // local: rEffectProvider* pResource;
-    // local: cEfcHandle* pHandle;
+    // DWARF local not rendered: rEffectProvider* pResource;
+    // DWARF local not rendered: cEfcHandle* pHandle;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpCommonEPV[comType] != static_cast<rEffectProvider*>(nullptr)) {
         return this->::sEffectExt::setEffect(this->mpCommonEPV[comType], IndexNo, ElementNo, param, pOrigin);
@@ -801,7 +817,7 @@ __attribute__((weak)) void sEffectExt::setOcdEffect(uDDOModel* pParent, s32 join
 
 // Address: 0x00776030 - 0x00776048 (24 bytes)
 void sEffectExt::setPartsbreakEffect(uDDOModel* pTarget, u32 PartsNo, sEffectExt::EfcParam& pEfcParam, MtTypedArray<cEfcHandle>* pEffects) {
-    // local: u32 SetEffectType;
+    // DWARF local not rendered: u32 SetEffectType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (PartsNo == static_cast<u32>(0)) {
         return;
@@ -811,7 +827,7 @@ void sEffectExt::setPartsbreakEffect(uDDOModel* pTarget, u32 PartsNo, sEffectExt
 
 // Address: 0x00776200 - 0x00776218 (24 bytes)
 void sEffectExt::setPartsrevivalEffect(uDDOModel* pTarget, u32 PartsNo, sEffectExt::EfcParam& pEfcParam, MtTypedArray<cEfcHandle>* pEffects) {
-    // local: u32 SetEffectType;
+    // DWARF local not rendered: u32 SetEffectType;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (PartsNo == static_cast<u32>(0)) {
         return;
@@ -1149,10 +1165,48 @@ __attribute__((weak)) void sEffectExt::releaseEfcZone(u32 handle, u32 type) {
 }
 
 // Address: 0x00776610 - 0x007766ad (157 bytes)
-__attribute__((weak)) void sEffectExt::releaseEfcZoneAll() {
-    // local: u32 type;
-    DDON_STUB("sEffectExt::releaseEfcZoneAll")
-    /* stub */
+void sEffectExt::releaseEfcZoneAll() {
+    // DWARF local not rendered: u32 type;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->mZoneStack[0].::cZoneMultiStack::releaseZoneAll();
+    this->mZoneStack[1].::cZoneMultiStack::releaseZoneAll();
+    this->mZoneStack[2].::cZoneMultiStack::releaseZoneAll();
+    if (this->mZoneEffectUnitLayoutArray.::MtArray::mAutoDelete != false) {
+        // inferred: the value carried to 0x776689; no location-less local in scope fits
+        u32 v2_0;
+        if (this->mZoneEffectUnitLayoutArray.::MtArray::mLength != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x776660 carries; no location-less local in scope fits
+            u32 v0_0 = this->mZoneEffectUnitLayoutArray.::MtArray::mLength;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_3 = static_cast<unsigned int>(0);
+            // inferred: the value carried to 0x776685; no location-less local in scope fits
+            u32 v1_0;
+            for (;;) {
+                if (this->mZoneEffectUnitLayoutArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                    delete this->mZoneEffectUnitLayoutArray.::MtArray::mpArray[i0_3];
+                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mZoneEffectUnitLayoutArray.::MtArray::mLength) {
+                        v0_0 = this->mZoneEffectUnitLayoutArray.::MtArray::mLength;
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        v1_0 = this->mZoneEffectUnitLayoutArray.::MtArray::mLength;
+                        break;
+                    }
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        v1_0 = v0_0;
+                        break;
+                    }
+                }
+            }
+            v2_0 = v1_0;
+        } else {
+            v2_0 = static_cast<u32>(0);
+        }
+        ::memset(static_cast<void*>(this->mZoneEffectUnitLayoutArray.::MtArray::mpArray), static_cast<int>(0), static_cast<size_t>(v2_0) * static_cast<size_t>(8));
+    }
+    this->mZoneEffectUnitLayoutArray.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x007766b0 - 0x007766ca (26 bytes)
@@ -1216,7 +1270,7 @@ __attribute__((weak)) void sEffectExt::updateZoneEffectUnit() {
 
 // Address: 0x00776c50 - 0x00776cc4 (116 bytes)
 bool sEffectExt::getZoneCheckPos(MtVector3& ckPos) {
-    // local: uPlayer* pPlayer;
+    // DWARF local not rendered: uPlayer* pPlayer;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mUseZoneCheckPos != false) {
         ckPos.x = this->mZoneCheckPos.x;
@@ -1273,7 +1327,7 @@ __attribute__((weak)) u32 sEffectExt::getEnchantAttributeBit(uDDOModel* pParent)
 
 // Address: 0x0076da80 - 0x0076da94 (20 bytes)
 const cOutlineParam* sEffectExt::getOutlineParam(sEffectExt::OUTLINE no) {
-    // local: const cOutlineParam* op;
+    // DWARF local not rendered: const cOutlineParam* op;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mprOutlineParamList != static_cast<rOutlineParamList*>(nullptr)) {
         return this->mprOutlineParamList->::rOutlineParamList::getParam(no);
@@ -1510,7 +1564,7 @@ __attribute__((weak)) void sEffectExt::removeCameraEffect(cEfcHandle* pHandle, u
 
 // Address: 0x0076d080 - 0x0076d146 (198 bytes)
 void sEffectExt::removeEffect(cEfcHandle* pHandle, u32 endType) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHandle == static_cast<cEfcHandle*>(nullptr)) {
         return;
@@ -1534,7 +1588,7 @@ void sEffectExt::removeEffect(cEfcHandle* pHandle, u32 endType) {
 
 // Address: 0x0076d160 - 0x0076d226 (198 bytes)
 void sEffectExt::removeCameraEffect(cEfcHandle* pHandle, u32 endType) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pHandle == static_cast<cEfcHandle*>(nullptr)) {
         return;
@@ -2872,4 +2926,8 @@ template const cVfxLightInfluence* rTbl2<cVfxLightInfluence>::getData(unsigned i
 // Instance at 0x01ac39c0 - 0x01ac39c4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cVfxLightInfluence>::getDataNum() const;
+
+// Instance at 0x01ac3bc0 - 0x01ac3c18 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cVfxLightInfluence>::~rTbl2();
 

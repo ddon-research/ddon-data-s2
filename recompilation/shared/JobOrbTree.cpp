@@ -6,6 +6,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -148,8 +149,8 @@ __attribute__((weak)) void CDataJobOrbTreeStatus::operator delete(void* p_addr) 
 // CDataJobOrbTreeStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003de640 - 0x003de68f (79 bytes)
-__attribute__((weak)) MtObject* CDataJobOrbTreeStatus::MyDTI::newInstance() const {
-    DDON_STUB("CDataJobOrbTreeStatus::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataJobOrbTreeStatus::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataJobOrbTreeStatus;
 }
 

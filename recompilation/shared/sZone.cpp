@@ -99,9 +99,9 @@ __attribute__((weak)) void sZone::createProperty(MtPropertyList& s) {
 void sZone::reset() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mZoneLayoutArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x12b1170 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x12b1170 carries; no location-less local in scope fits
         u32 v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mZoneLayoutArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mZoneLayoutArray.::MtArray::mpArray[i0_3];
@@ -130,27 +130,26 @@ void sZone::reset() {
 
 // Address: 0x012b11e0 - 0x012b122d (77 bytes)
 void sZone::move() {
-    // local: const u32 ZoneLayoutNum;
-    // local: u32 i;
-    // local: cZoneLayout* pNowZoneLayout;
+    // DWARF local not rendered: const u32 ZoneLayoutNum;
+    // DWARF local not rendered: cZoneLayout* pNowZoneLayout;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mZoneLayoutArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x12b1207 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x12b1207 carries; no location-less local in scope fits
         u32 v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
-        unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the value the loop at 0x12b1207 carries; DWARF names no local for it
+        // inferred: DWARF's location-less 'i' (lexical block [0x12b11f1, 0x12b1222)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        // inferred: the value the loop at 0x12b1207 carries; no location-less local in scope fits
         for (u32 v0_8 = this->mZoneLayoutArray.::MtArray::mLength - static_cast<u32>(1);;) {
-            if (i0_3 < v0_0) {
-                if (this->mZoneLayoutArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<cZoneLayout*>(this->mZoneLayoutArray.::MtArray::mpArray[i0_3])->::cZoneLayout::move();
+            if (i < v0_0) {
+                if (this->mZoneLayoutArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                    static_cast<cZoneLayout*>(this->mZoneLayoutArray.::MtArray::mpArray[i])->::cZoneLayout::move();
                 }
             }
-            if (i0_3 == v0_8) {
+            if (i == v0_8) {
                 break;
             } else {
                 v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
-                i0_3 = i0_3 + static_cast<unsigned int>(1);
+                i = i + static_cast<u32>(1);
             }
         }
     }
@@ -158,27 +157,26 @@ void sZone::move() {
 
 // Address: 0x012b1230 - 0x012b1297 (103 bytes)
 void sZone::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    // local: const u32 ZoneLayoutNum;
-    // local: u32 i;
-    // local: cZoneLayout* pZoneLayout;
+    // DWARF local not rendered: const u32 ZoneLayoutNum;
+    // DWARF local not rendered: cZoneLayout* pZoneLayout;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mZoneLayoutArray.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x12b1267 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x12b1267 carries; no location-less local in scope fits
         u32 v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
-        unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the value the loop at 0x12b1267 carries; DWARF names no local for it
+        // inferred: DWARF's location-less 'i' (lexical block [0x12b124b, 0x12b1288)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        // inferred: the value the loop at 0x12b1267 carries; no location-less local in scope fits
         for (u32 v0_8 = this->mZoneLayoutArray.::MtArray::mLength - static_cast<u32>(1);;) {
-            if (i0_3 < v0_0) {
-                if (this->mZoneLayoutArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
-                    static_cast<cZoneLayout*>(this->mZoneLayoutArray.::MtArray::mpArray[i0_3])->::cZoneLayout::applyWorldOffset(offset, absolute_offset);
+            if (i < v0_0) {
+                if (this->mZoneLayoutArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                    static_cast<cZoneLayout*>(this->mZoneLayoutArray.::MtArray::mpArray[i])->::cZoneLayout::applyWorldOffset(offset, absolute_offset);
                 }
             }
-            if (i0_3 == v0_8) {
+            if (i == v0_8) {
                 break;
             } else {
                 v0_0 = this->mZoneLayoutArray.::MtArray::mLength;
-                i0_3 = i0_3 + static_cast<unsigned int>(1);
+                i = i + static_cast<u32>(1);
             }
         }
     }
@@ -204,7 +202,7 @@ void sZone::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_
 
 // Address: 0x012b12c0 - 0x012b12dd (29 bytes)
 void sZone::setQuaternion(u32 TargetZoneHandle, const MtQuaternion& NewZoneQuaternion) {
-    // local: cZoneLayout* pTargetLayout;
+    // DWARF local not rendered: cZoneLayout* pTargetLayout;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (TargetZoneHandle < this->mZoneLayoutArray.::MtArray::mLength) {
         if (this->mZoneLayoutArray.::MtArray::mpArray[TargetZoneHandle] != static_cast<MtObject*>(nullptr)) {

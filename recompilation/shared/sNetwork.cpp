@@ -83,9 +83,9 @@ sNetwork::~sNetwork() {
 
 // Address: 0x0124a1d0 - 0x0124a2bd (237 bytes)
 void sNetwork::reset() {
-    // local: s32 option;
-    // local: s32 service;
-    // local: u32 i;
+    // DWARF local not rendered: s32 option;
+    // DWARF local not rendered: s32 service;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if ((::sMain::mpInstance)->mExit != false) {
         ::MtNetCore::onGuideAppShutdown();
@@ -352,7 +352,7 @@ void sNetwork::bootupSession() {
 
 // Address: 0x0124b8b0 - 0x0124b986 (214 bytes)
 void sNetwork::shutdownSession() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpSession[0] == static_cast<nNetwork::Session*>(nullptr)) {
         if (this->mpSession[1] == static_cast<nNetwork::Session*>(nullptr)) {

@@ -417,7 +417,7 @@ __attribute__((weak)) void cpJob04::unLimitCircleAllActAir() {
 
 // Address: 0x004a6980 - 0x004a6a5c (220 bytes)
 void cpJob04::setHealSpotTimer(u32 skillLev) {
-    // local: f32 time;
+    // DWARF local not rendered: f32 time;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     switch (skillLev - static_cast<u32>(1)) {
         case static_cast<u32>(0):
@@ -534,7 +534,7 @@ void cpJob04::killHealSpot() {
 
 // Address: 0x004a6a70 - 0x004a6b4c (220 bytes)
 void cpJob04::setCureSpotTimer(u32 skillLev) {
-    // local: f32 time;
+    // DWARF local not rendered: f32 time;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     switch (skillLev - static_cast<u32>(1)) {
         case static_cast<u32>(0):
@@ -653,7 +653,7 @@ void cpJob04::killCureSpot() {
 
 // Address: 0x004a6b60 - 0x004a6c3c (220 bytes)
 void cpJob04::setEnergySpotTimer(u32 skillLev) {
-    // local: f32 time;
+    // DWARF local not rendered: f32 time;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     switch (skillLev - static_cast<u32>(1)) {
         case static_cast<u32>(0):
@@ -826,7 +826,7 @@ __attribute__((weak)) void cpJob04::deleteAtherCustomCircle(const cpJob04::CIRCL
 
 // Address: 0x004a7500 - 0x004a75b3 (179 bytes)
 void cpJob04::circleEnd(u32 act) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (static_cast<int>(act) <= static_cast<int>(8210)) {
         if (static_cast<int>(act) <= static_cast<int>(8200)) {
@@ -867,7 +867,7 @@ void cpJob04::circleEnd(u32 act) {
 
 // Address: 0x004a7870 - 0x004a7923 (179 bytes)
 void cpJob04::circleEndAir(u32 act) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (static_cast<int>(act) <= static_cast<int>(8211)) {
         if (static_cast<int>(act) <= static_cast<int>(8201)) {
@@ -1323,7 +1323,7 @@ __attribute__((weak)) bool cpJob04::canEndureInClimb() {
 
 // Address: 0x004a9550 - 0x004a957e (46 bytes)
 bool cpJob04::isCanCircleShiftAct() {
-    // local: u32 nowStateNo;
+    // DWARF local not rendered: u32 nowStateNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cpJobBase::mpHuman->::uDDOModel::getStateActionPtr()->::cpStateManager::getStateNo();
     return (this->::cpJobBase::mpHuman->::uDDOModel::mUnitId & static_cast<u32>(1024)) == static_cast<u32>(0);

@@ -108,7 +108,7 @@ sItemManager::~sItemManager() {
 
 // Address: 0x007d3bd0 - 0x007d3c0e (62 bytes)
 void sItemManager::move() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sItemManager::callMethod();
     if (this->mGPControl.mRepeatWaitTime > 0.0f) {
@@ -125,8 +125,7 @@ __attribute__((weak)) void sItemManager::reset() {
 
 // Address: 0x007d39c0 - 0x007d3a6b (171 bytes)
 void sItemManager::loadResource() {
-    // local: u32 tagId;
-    // local: rItemList* pItemList;
+    // DWARF local not rendered: rItemList* pItemList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7d39d5 read, used once; no DWARF local holds it
     sArchiveManager* t0 = ::sArchiveManager::getInstance();
@@ -768,7 +767,6 @@ __attribute__((weak)) void sItemManager::updateHideEquip(void* packet, u32 plTyp
 
 // Address: 0x007d9310 - 0x007d9397 (135 bytes)
 void sItemManager::reqKeyItemGetAnnounce(u32 ItemId) {
-    // local: rItemParam* pItemParam;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sItemManager::getInstance()->mpItemParamList == static_cast<rItemList*>(nullptr)) {
         return;
@@ -828,7 +826,6 @@ __attribute__((weak)) void sItemManager::noticeItemUpdate(ItemUpdateResultVec& l
 
 // Address: 0x007db870 - 0x007db8f4 (132 bytes)
 void sItemManager::loadItemNameGmd() {
-    // local: rGUIMessage* pReq;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7db884 read, used once; no DWARF local holds it
     sArchiveManager* t0 = ::sArchiveManager::getInstance();
@@ -1004,7 +1001,7 @@ __attribute__((weak)) u8 sItemManager::getSortBinaryIndex(nCharacterData::ITEM_B
 
 // Address: 0x007d3e90 - 0x007d3ee3 (83 bytes)
 void sItemManager::releaseSortBinary(u32 index, bool isUpdate) {
-    // local: bool isRelease;
+    // DWARF local not rendered: bool isRelease;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mSortData[index].mpSortData == static_cast<u16*>(nullptr)) {
         return;

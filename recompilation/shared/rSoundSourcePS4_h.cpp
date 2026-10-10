@@ -74,7 +74,7 @@ const MtDTI* rSoundSourceAT9::getDTINative() const {
 
 // Address: 0x01373f30 - 0x01373f3a (10 bytes)
 bool rSoundSourceAT9::checkNativeEncodeParameter(const u32 encodeParam) const {
-    // local: bool result;
+    // DWARF local not rendered: bool result;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mEncodeParam == encodeParam;
 }

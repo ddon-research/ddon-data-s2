@@ -266,10 +266,8 @@ __attribute__((weak)) void uGUIGauge::updateHunterArrow(uHuman* human) {
 
 // Address: 0x00b585e0 - 0x00b5873b (347 bytes)
 void uGUIGauge::setupAura() {
-    // local: cGUIInstAnimation* inst_msg_job04;
-    // local: u32 i;
-    // local: cGUIInstAnimation* inst_msg_job04_copy;
-    // local: Aura& aura;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: Aura& aura;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     cGUIInstAnimation* inst_msg_job04 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(206), false));
     if (inst_msg_job04 == static_cast<cGUIInstAnimation*>(nullptr)) {
@@ -317,8 +315,8 @@ void uGUIGauge::setupAura() {
 
 // Address: 0x00b59940 - 0x00b59a1e (222 bytes)
 void uGUIGauge::initAura() {
-    // local: u32 i;
-    // local: Aura& aura;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: Aura& aura;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mAuras.elems[0].mAuraType = static_cast<uGUIGauge::AuraType>(-1);
     if (this->mAuras.elems[0].mpINST_msg_job04 != static_cast<cGUIInstAnimation*>(nullptr)) {

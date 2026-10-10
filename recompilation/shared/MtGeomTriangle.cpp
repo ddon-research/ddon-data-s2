@@ -75,7 +75,7 @@ inline void MtGeomTriangle::operator delete(void* p_addr) {
 
 // Address: 0x01945140 - 0x01945206 (198 bytes)
 void MtGeomTriangle::load(MtDataReader& fin) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mTriangle.p0.x = fin.readF32();
     this->mTriangle.p1.x = fin.readF32();
@@ -93,7 +93,7 @@ void MtGeomTriangle::load(MtDataReader& fin) {
 
 // Address: 0x01945210 - 0x019452d8 (200 bytes)
 void MtGeomTriangle::save(MtDataWriter& fout) {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     fout.writeF32(this->mTriangle.p0.x);
     fout.writeF32(this->mTriangle.p1.x);

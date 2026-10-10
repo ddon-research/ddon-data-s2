@@ -12,6 +12,7 @@
 #include "../shared/cOmControl.h"
 #include "../shared/cResPath.h"
 #include "cSetInfoCoord.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rAIFSM.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -238,8 +239,10 @@ bool cSetInfoOmBadStatus::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mBadRadius = r.readF32();
     this->mBadHeight = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->mBadPos = r.readV3();
-    this->mBreakHitNum = r.readU32();
+    ::nDDOIO::readData(r, this->mBreakHitNum);
     return this->::cSetInfoOm::load(r);
 }
 
@@ -370,14 +373,17 @@ MtUI* cSetInfoOmBoard::createUI(MtProperty& prop) {
 // Address: 0x00565920 - 0x00565949 (41 bytes)
 bool cSetInfoOmBoard::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mBoardID = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mBoardID);
     return this->::cSetInfoOm::load(r);
 }
 
 // Address: 0x00565950 - 0x00565979 (41 bytes)
 bool cSetInfoOmBoard::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(this->mBoardID);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mBoardID);
     return this->::cSetInfoOm::save(w);
 }
 
@@ -812,14 +818,28 @@ MtUI* cSetInfoOmDoor::createUI(MtProperty& prop) {
 // Address: 0x00563870 - 0x00563940 (208 bytes)
 bool cSetInfoOmDoor::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbPRT = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mbPRT);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     this->mPRTPos = r.readV3();
-    this->mPRTScale = r.readF32();
-    this->mTextType = r.readU32();
-    this->mTextQuestNo = r.readU32();
-    this->mTextNo = r.readU32();
-    this->mQuestID = r.readU32();
-    this->::cSetInfoOm::mQuestFlag = r.readU32();
+    ::nDDOIO::readData(r, this->mPRTScale);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTextType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTextQuestNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTextNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mQuestID);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->::cSetInfoOm::mQuestFlag);
     return this->::cSetInfoOm::load(r);
 }
 
@@ -948,14 +968,17 @@ __attribute__((weak)) void cSetInfoOmElfSW::createToolProperty(MtPropertyList& s
 // Address: 0x005660f0 - 0x00566119 (41 bytes)
 bool cSetInfoOmElfSW::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mPLCount = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mPLCount);
     return this->::cSetInfoOm::load(r);
 }
 
 // Address: 0x00566120 - 0x00566149 (41 bytes)
 bool cSetInfoOmElfSW::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(this->mPLCount);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mPLCount);
     return this->::cSetInfoOm::save(w);
 }
 
@@ -1068,14 +1091,17 @@ __attribute__((weak)) void cSetInfoOmFall::createToolProperty(MtPropertyList& s)
 // Address: 0x005664e0 - 0x0056650b (43 bytes)
 bool cSetInfoOmFall::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mFallHeight = r.readF32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mFallHeight);
     return this->::cSetInfoOm::load(r);
 }
 
 // Address: 0x00566510 - 0x0056653b (43 bytes)
 bool cSetInfoOmFall::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeF32(this->mFallHeight);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mFallHeight);
     return this->::cSetInfoOm::save(w);
 }
 
@@ -1316,14 +1342,17 @@ __attribute__((weak)) void cSetInfoOmHakuryuu::createToolProperty(MtPropertyList
 // Address: 0x005682f0 - 0x00568319 (41 bytes)
 bool cSetInfoOmHakuryuu::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mStoneLevel = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mStoneLevel);
     return this->::cSetInfoOm::load(r);
 }
 
 // Address: 0x00568320 - 0x00568349 (41 bytes)
 bool cSetInfoOmHakuryuu::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(this->mStoneLevel);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mStoneLevel);
     return this->::cSetInfoOm::save(w);
 }
 
@@ -1442,14 +1471,17 @@ MtUI* cSetInfoOmHeal::createUI(MtProperty& prop) {
 // Address: 0x00562a70 - 0x00562a99 (41 bytes)
 bool cSetInfoOmHeal::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHealType = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mHealType);
     return this->::cSetInfoOm::load(r);
 }
 
 // Address: 0x00562aa0 - 0x00562ac9 (41 bytes)
 bool cSetInfoOmHeal::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(this->mHealType);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mHealType);
     return this->::cSetInfoOm::save(w);
 }
 
@@ -1568,14 +1600,17 @@ MtUI* cSetInfoOmLadder::createUI(MtProperty& prop) {
 // Address: 0x00562e70 - 0x00562e99 (41 bytes)
 bool cSetInfoOmLadder::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHeight = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mHeight);
     return this->::cSetInfoOm::load(r);
 }
 
 // Address: 0x00562ea0 - 0x00562ec9 (41 bytes)
 bool cSetInfoOmLadder::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(this->mHeight);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mHeight);
     return this->::cSetInfoOm::save(w);
 }
 
@@ -1688,9 +1723,15 @@ __attribute__((weak)) void cSetInfoOmLever::createToolProperty(MtPropertyList& s
 // Address: 0x00567e60 - 0x00567ec7 (103 bytes)
 bool cSetInfoOmLever::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mbReqLever = r.::MtDataReader::readU8() != static_cast<u8>(0);
-    this->mCamEvNo = r.readS32();
-    this->mFSMCamEv.::cResPathBase::mId = r.readU64();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mbReqLever);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mCamEvNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mFSMCamEv);
     return this->::cSetInfoOm::load(r);
 }
 
@@ -2066,18 +2107,27 @@ MtUI* cSetInfoOmText::createUI(MtProperty& prop) {
 // Address: 0x005671a0 - 0x005671e3 (67 bytes)
 bool cSetInfoOmText::load(MtDataReader& r) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTextNo = r.readU32();
-    this->mTextQuestNo = r.readU32();
-    this->mTextType = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTextNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTextQuestNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTextType);
     return this->::cSetInfoOm::load(r);
 }
 
 // Address: 0x005671f0 - 0x00567233 (67 bytes)
 bool cSetInfoOmText::save(MtDataWriter& w) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    w.writeU32(this->mTextNo);
-    w.writeU32(this->mTextQuestNo);
-    w.writeU32(this->mTextType);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mTextNo);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mTextQuestNo);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mTextType);
     return this->::cSetInfoOm::save(w);
 }
 
@@ -2448,10 +2498,16 @@ bool cSetInfoOmWarp::load(MtDataReader& r) {
     r.read(static_cast<void*>(&this->mFlagNo[0]), t3 * static_cast<u32>(4));
     // inferred: a temporary for the result of the call at 0x565273, used once; no DWARF local holds it
     u32 t4 = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
     r.read(static_cast<void*>(&this->mSpotId[0]), t4 * static_cast<u32>(4));
-    this->mTextType = r.readU32();
-    this->mTextQuestNo = r.readU32();
-    this->mTextNo = r.readU32();
+    ::nDDOIO::readData(r, this->mTextType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTextQuestNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTextNo);
     return this->::cSetInfoOm::load(r);
 }
 
@@ -2467,10 +2523,13 @@ bool cSetInfoOmWarp::save(MtDataWriter& w) {
     w.writeU32(static_cast<u32>(3));
     w.write(static_cast<const void*>(&this->mFlagNo[0]), static_cast<u32>(12));
     w.writeU32(static_cast<u32>(3));
+    // inferred: argument from a callee-saved register at the copy's entry
     w.write(static_cast<const void*>(&this->mSpotId[0]), static_cast<u32>(12));
-    w.writeU32(this->mTextType);
-    w.writeU32(this->mTextQuestNo);
-    w.writeU32(this->mTextNo);
+    ::nDDOIO::writeData(w, this->mTextType);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mTextQuestNo);
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::writeData(w, this->mTextNo);
     return this->::cSetInfoOm::save(w);
 }
 
@@ -2482,7 +2541,7 @@ __attribute__((weak)) bool cSetInfoOmWarp::applyInfo(cUnit* pu) const {
 
 // Address: 0x00565440 - 0x00565537 (247 bytes)
 bool cSetInfoOmWarp::applyParam(cOmControl::InputLot& param) const {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cSetInfoOm::applyParam(param);
     param.mStageNo[0] = this->mStageNo[0];

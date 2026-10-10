@@ -266,7 +266,7 @@ __attribute__((weak)) void sArchiveManager::moveArcLoaderLoadFinish(cArcLoaderBa
 
 // Address: 0x00720c60 - 0x00720c7b (27 bytes)
 cResource* sArchiveManager::createRes(u64 resId, u32 mode, bool warningOff) {
-    // local: cResource* p_res;
+    // DWARF local not rendered: cResource* p_res;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (resId != static_cast<u64>(0)) {
         return ::sResource::getInstance()->create(resId);
@@ -277,9 +277,6 @@ cResource* sArchiveManager::createRes(u64 resId, u32 mode, bool warningOff) {
 
 // Address: 0x00720c80 - 0x00720d18 (152 bytes)
 cResource* sArchiveManager::createRes(ARC_TAGID tag, ARC_SEARCHID searchId, u32 mode, bool warningOff) {
-    // local: cArchiveListNode* p_node;
-    // local: u64 res_id;
-    // local: cResource* p_res;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (tag != static_cast<ARC_TAGID>(0)) {
         // inferred: a temporary for the result of the call at 0x720c9c, used 3 times; no DWARF local holds it
@@ -374,7 +371,6 @@ __attribute__((weak)) u32 sArchiveManager::getTagLoadState(ARC_TAGID t) {
 
 // Address: 0x00720f30 - 0x00720f93 (99 bytes)
 MT_CTSTR sArchiveManager::getArchivePath(ARC_TAGID tag) {
-    // local: cArchiveListTag* p_tag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (tag != static_cast<ARC_TAGID>(0)) {
         // inferred: a temporary for the result of the call at 0x720f4a, used 3 times; no DWARF local holds it
@@ -406,7 +402,7 @@ MT_CTSTR sArchiveManager::getArchivePath(ARC_TAGID tag) {
 
 // Address: 0x00720b60 - 0x00720bc3 (99 bytes)
 bool sArchiveManager::isEnableArcTag(ARC_TAGID tagId) {
-    // local: cArchiveListTag* p_tag;
+    // DWARF local not rendered: cArchiveListTag* p_tag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (tagId != static_cast<ARC_TAGID>(0)) {
         // inferred: a temporary for the result of the call at 0x720b78, used 3 times; no DWARF local holds it
@@ -426,7 +422,6 @@ bool sArchiveManager::isEnableArcTag(ARC_TAGID tagId) {
 
 // Address: 0x00720bd0 - 0x00720c43 (115 bytes)
 bool sArchiveManager::isEnableArcRes(ARC_TAGID tagId, ARC_SEARCHID searchId) {
-    // local: cArchiveListNode* p_node;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (tagId != static_cast<ARC_TAGID>(0)) {
         // inferred: a temporary for the result of the call at 0x720bec, used 3 times; no DWARF local holds it
@@ -483,7 +478,6 @@ __attribute__((weak)) void sArchiveManager::loadAlaFile(u32 targetTagNo) {
 
 // Address: 0x00720af0 - 0x00720b60 (112 bytes)
 ARC_TAGID sArchiveManager::getArchiveListNodeOnTag(ARC_TAGID tagId, ARC_SEARCHID searchId) {
-    // local: cArchiveListNode* p_node;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (tagId != static_cast<ARC_TAGID>(0)) {
         // inferred: a temporary for the result of the call at 0x720b0c, used 3 times; no DWARF local holds it

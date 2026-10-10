@@ -212,7 +212,7 @@ __attribute__((weak)) bool sAreaExt::isLobby() const {
 
 // Address: 0x007221b0 - 0x007221cb (27 bytes)
 bool sAreaExt::isLobby(s32 stgNo) const {
-    // local: rStageList* list;
+    // DWARF local not rendered: rStageList* list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
         return this->::sAreaExt::getStageList()->::rStageList::isLobby(stgNo);
@@ -231,7 +231,7 @@ __attribute__((weak)) bool sAreaExt::isField() const {
 
 // Address: 0x00722240 - 0x0072225b (27 bytes)
 bool sAreaExt::isField(s32 stgNo) const {
-    // local: rStageList* list;
+    // DWARF local not rendered: rStageList* list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
         return this->::sAreaExt::getStageList()->::rStageList::isField(stgNo);
@@ -317,7 +317,7 @@ __attribute__((weak)) bool sAreaExt::isClanBaseArea(s32 stgNo) {
 
 // Address: 0x00722460 - 0x00722474 (20 bytes)
 u32 sAreaExt::getStageType(s32 stgNo) const {
-    // local: rStageList* list;
+    // DWARF local not rendered: rStageList* list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
         return this->::sAreaExt::getStageList()->::rStageList::getStageType(stgNo);
@@ -328,7 +328,7 @@ u32 sAreaExt::getStageType(s32 stgNo) const {
 
 // Address: 0x007226d0 - 0x007226e4 (20 bytes)
 u32 sAreaExt::getStageMsgId(s32 stgNo) const {
-    // local: rStageList* list;
+    // DWARF local not rendered: rStageList* list;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
         return this->::sAreaExt::getStageList()->::rStageList::getStageMsgId(stgNo);

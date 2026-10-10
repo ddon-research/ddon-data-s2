@@ -58,3 +58,15 @@ public:
     u32 m_unItemID;  // offset: 0x1c
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataGoodsParam::CDataGoodsParam() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unRequireFavorite = static_cast<u32>(0);
+    this->m_unItemID = static_cast<u32>(0);
+    this->m_unStock = static_cast<u32>(0);
+    this->m_unMaxStock = static_cast<u32>(0);
+    this->m_unIndex = static_cast<u32>(0);
+    this->m_unPrice = static_cast<u32>(0);
+}

@@ -187,7 +187,6 @@ __attribute__((weak)) void uGUIPopNumber01::setFlowId(uGUIPopNumber01::FLOW_ID f
 
 // Address: 0x00bb8a90 - 0x00bb8aed (93 bytes)
 void uGUIPopNumber01::moveInput() {
-    // local: const MODE numbox_mode;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpDialog != static_cast<uGUIBase*>(nullptr)) {
         return;

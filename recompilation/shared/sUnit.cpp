@@ -127,7 +127,6 @@ __attribute__((weak)) void sUnit::createProperty(MtPropertyList& s) {
 
 // Address: 0x012abae0 - 0x012abb42 (98 bytes)
 void sUnit::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    // local: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 i = static_cast<u32>(0);
     if ((::sUnit::mpInstance)->mLineNum != static_cast<u32>(0)) {
@@ -359,7 +358,7 @@ __attribute__((weak)) void sUnit::forceFlushDrawCommandCache() {
 
 // Address: 0x012ac800 - 0x012ac822 (34 bytes)
 void sUnit::updateDrawCommandCache() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mbDrawCommandCacheEnableUpdate == this->mbDrawCommandCacheEnable) {
     } else {
@@ -591,31 +590,28 @@ u32 sUnit::getMoveLineOrder(u32 i) {
 
 // Address: 0x012acad0 - 0x012acb31 (97 bytes)
 void sUnit::updateHardwareDispCtrl() {
-    // local: u32 LineNum;
-    // local: u32 LineIdx;
-    // local: cUnit* pUnit;
-    // local: cHardwareDispCtrl* pHDC;
+    // DWARF local not rendered: cHardwareDispCtrl* pHDC;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     u32 LineNum = this->mLineNum;
     if (LineNum != static_cast<u32>(0)) {
-        // inferred: the counter this loop steps; DWARF names no local for it
-        unsigned int i0_8 = static_cast<unsigned int>(0);
-        // inferred: the value the loop at 0x12acb04 carries; DWARF names no local for it
-        cUnit* v1_3;
+        // inferred: DWARF's location-less 'LineIdx' (lexical block [0x12acae8, 0x12acb28)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 LineIdx = static_cast<u32>(0);
+        // inferred: DWARF's location-less 'pUnit' (lexical block [0x12acaed, 0x12acb1a)) is the value the loop at 0x12acb04 carries
+        cUnit* pUnit;
         for (;;) {
-            v1_3 = this->mMoveLine[i0_8].mpTop;
+            pUnit = this->mMoveLine[LineIdx].mpTop;
             for (;;) {
-                if (v1_3 == static_cast<cUnit*>(nullptr)) {
+                if (pUnit == static_cast<cUnit*>(nullptr)) {
                     break;
                 } else {
-                    if (v1_3->mpHardwareDispCtrl != static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
-                        v1_3->mpHardwareDispCtrl->update();
+                    if (pUnit->mpHardwareDispCtrl != static_cast<cUnit::cHardwareDispCtrl*>(nullptr)) {
+                        pUnit->mpHardwareDispCtrl->update();
                     }
-                    v1_3 = v1_3->mpNextUnit;
+                    pUnit = pUnit->mpNextUnit;
                 }
             }
-            if (LineNum != (i0_8 + static_cast<unsigned int>(1))) {
-                i0_8 = i0_8 + static_cast<unsigned int>(1);
+            if (LineNum != (LineIdx + static_cast<u32>(1))) {
+                LineIdx = LineIdx + static_cast<u32>(1);
             } else {
                 break;
             }

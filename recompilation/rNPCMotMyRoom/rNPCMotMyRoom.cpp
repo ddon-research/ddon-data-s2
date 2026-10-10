@@ -231,7 +231,6 @@ __attribute__((weak)) u32 rNPCMotMyRoom::InfoBinary::getMotionNo(u32 idx, u8 sex
 
 // Address: 0x006afcc0 - 0x006afd02 (66 bytes)
 u8 rNPCMotMyRoom::InfoBinary::getProbability(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -247,7 +246,6 @@ u8 rNPCMotMyRoom::InfoBinary::getProbability(u32 idx) {
 
 // Address: 0x006afd10 - 0x006afd4c (60 bytes)
 s8 rNPCMotMyRoom::InfoBinary::getNext(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -263,7 +261,6 @@ s8 rNPCMotMyRoom::InfoBinary::getNext(u32 idx) {
 
 // Address: 0x006afd50 - 0x006afd8c (60 bytes)
 s8 rNPCMotMyRoom::InfoBinary::getCancel(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -279,7 +276,6 @@ s8 rNPCMotMyRoom::InfoBinary::getCancel(u32 idx) {
 
 // Address: 0x006afe50 - 0x006afe8d (61 bytes)
 u16 rNPCMotMyRoom::InfoBinary::getHaveItem(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -295,7 +291,6 @@ u16 rNPCMotMyRoom::InfoBinary::getHaveItem(u32 idx) {
 
 // Address: 0x006afe90 - 0x006afecb (59 bytes)
 s16 rNPCMotMyRoom::InfoBinary::getItemMotNo(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -311,7 +306,6 @@ s16 rNPCMotMyRoom::InfoBinary::getItemMotNo(u32 idx) {
 
 // Address: 0x006afd90 - 0x006afdcb (59 bytes)
 s16 rNPCMotMyRoom::InfoBinary::getWait(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -327,7 +321,6 @@ s16 rNPCMotMyRoom::InfoBinary::getWait(u32 idx) {
 
 // Address: 0x006afdd0 - 0x006afe0b (59 bytes)
 s16 rNPCMotMyRoom::InfoBinary::getRandomWait(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -343,7 +336,6 @@ s16 rNPCMotMyRoom::InfoBinary::getRandomWait(u32 idx) {
 
 // Address: 0x006afe10 - 0x006afe4c (60 bytes)
 s8 rNPCMotMyRoom::InfoBinary::getFrame(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);
@@ -359,7 +351,6 @@ s8 rNPCMotMyRoom::InfoBinary::getFrame(u32 idx) {
 
 // Address: 0x006afed0 - 0x006aff0b (59 bytes)
 s16 rNPCMotMyRoom::InfoBinary::getMessage(u32 idx) {
-    // local: MotDataBinary* data;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (idx < this->getMotListNum()) {
         rNPCMotMyRoom::InfoBinary::MotDataBinary* data = this->getMotList(idx);

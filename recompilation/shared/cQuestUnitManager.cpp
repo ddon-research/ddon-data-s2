@@ -8,7 +8,11 @@
 #include "MtObject.h"
 #include "cOmControl.h"
 #include "cResource.h"
+#include "cUnit.h"
 #include "../rQuestList/rQuestList.h"
+#include "sControlManager.h"
+#include "sOmManager.h"
+#include "uControl.h"
 #include "uControlNpc.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -95,12 +99,91 @@ __attribute__((weak)) void cQuestUnitGroup::move() {
 
 // Address: 0x001c7420 - 0x001c7555 (309 bytes)
 __attribute__((weak)) void cQuestUnitGroup::release() {
-    // local: u32 i;
-    // local: cOmControl* pOm;
-    // local: u32 i;
-    // local: uControlNpc* pNpc;
-    DDON_STUB("cQuestUnitGroup::release")
-    /* stub */
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cOmControl* pOm;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uControlNpc* pNpc;
+    // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpGroup != static_cast<cQuestGroup*>(nullptr)) {
+        if (this->mCtrlListOm.::MtArray::mLength != static_cast<u32>(0)) {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the value the load at 0x1c7457 read, used 3 times; no DWARF local holds it
+                MtObject* t0 = this->mCtrlListOm.::MtArray::getBuffer()[static_cast<int>(i0_3)];
+                if (t0 != static_cast<MtObject*>(nullptr)) {
+                    if (static_cast<cOmControl*>(t0)->::cOmControl::isEnableCtrl() != false) {
+                        ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(static_cast<cOmControl*>(t0));
+                    }
+                }
+                this->mCtrlListOm.::MtArray::getBuffer()[static_cast<int>(i0_3)] = static_cast<MtObject*>(nullptr);
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCtrlListOm.::MtArray::mLength) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+        if (this->mCtrlListNpc.::MtArray::mLength != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x1c74a0 carries; no location-less local in scope fits
+            u32 v2_0 = this->mCtrlListNpc.::MtArray::mLength;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+                if (this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)] != static_cast<MtObject*>(nullptr)) {
+                    if (static_cast<cUnit*>(this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)])->::cUnit::isEnable()) {
+                        ::sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)]));
+                        // inferred: a temporary for the value the load at 0x1c74ca read, used once; no DWARF local holds it
+                        u32 t1 = this->mCtrlListNpc.::MtArray::mLength;
+                        this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)] = static_cast<MtObject*>(nullptr);
+                        if ((i2_3 + static_cast<unsigned int>(1)) < t1) {
+                            v2_0 = t1;
+                            i2_3 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)] = static_cast<MtObject*>(nullptr);
+                        if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                            i2_3 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    this->mCtrlListNpc.::MtArray::getBuffer()[static_cast<int>(i2_3)] = static_cast<MtObject*>(nullptr);
+                    if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                        i2_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        if (this->mCtrlListOm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+            // inferred: a temporary for the result of the call at 0x1c74ea, used once; no DWARF local holds it
+            MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+            t2->memFree(static_cast<void*>(this->mCtrlListOm.::MtArray::mpArray));
+            this->mCtrlListOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+            this->mCtrlListOm.::MtArray::mBufsiz = static_cast<u32>(0);
+            this->mCtrlListOm.::MtArray::mLength = static_cast<u32>(0);
+            if (this->mCtrlListNpc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+                // inferred: a temporary for the result of the call at 0x1c7522, used once; no DWARF local holds it
+                MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+                t3->memFree(static_cast<void*>(this->mCtrlListNpc.::MtArray::mpArray));
+            }
+        } else {
+            this->mCtrlListOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+            this->mCtrlListOm.::MtArray::mBufsiz = static_cast<u32>(0);
+            this->mCtrlListOm.::MtArray::mLength = static_cast<u32>(0);
+            if (this->mCtrlListNpc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+                // inferred: a temporary for the result of the call at 0x1c7522, used once; no DWARF local holds it
+                MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+                t3->memFree(static_cast<void*>(this->mCtrlListNpc.::MtArray::mpArray));
+            }
+        }
+        this->mCtrlListNpc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+        this->mCtrlListNpc.::MtArray::mBufsiz = static_cast<u32>(0);
+        this->mCtrlListNpc.::MtArray::mLength = static_cast<u32>(0);
+    }
 }
 
 // Address: 0x001c77b0 - 0x001c7a50 (672 bytes)
@@ -244,8 +327,7 @@ __attribute__((weak)) void cQuestUnitManager::init(u32 questId, s32 stageNo, rQu
 
 // Address: 0x001c8d30 - 0x001c8d74 (68 bytes)
 void cQuestUnitManager::move() {
-    // local: u32 i;
-    // local: cQuestUnitGroup* group;
+    // DWARF local not rendered: cQuestUnitGroup* group;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     u32 i = static_cast<u32>(0);
     if (this->mGroupList.::MtArray::mLength != static_cast<u32>(0)) {
@@ -260,8 +342,8 @@ void cQuestUnitManager::move() {
 
 // Address: 0x001c8760 - 0x001c882b (203 bytes)
 void cQuestUnitManager::release() {
-    // local: u32 i;
-    // local: cQuestUnitGroup* group;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cQuestUnitGroup* group;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->mQuestId = static_cast<u32>(0);
     this->mStageNo = static_cast<s32>(0);
@@ -278,11 +360,11 @@ void cQuestUnitManager::release() {
         }
         return;
     } else {
-        // inferred: the value the loop at 0x1c8780 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1c8780 carries; no location-less local in scope fits
         u32 v0_0 = this->mGroupList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the value carried to 0x1c879f; DWARF names no local for it
+        // inferred: the value carried to 0x1c879f; no location-less local in scope fits
         u32 v1_0;
         for (;;) {
             if (this->mGroupList.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
@@ -316,9 +398,9 @@ void cQuestUnitManager::release() {
             }
             return;
         } else {
-            // inferred: the value the loop at 0x1c87b0 carries; DWARF names no local for it
+            // inferred: the value the loop at 0x1c87b0 carries; no location-less local in scope fits
             u32 v2_0 = v1_0;
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
                 if (this->mGroupList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                     delete this->mGroupList.::MtArray::mpArray[i2_3];

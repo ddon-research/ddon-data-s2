@@ -123,7 +123,7 @@ void uGeometry2::setup() {
 
 // Address: 0x01310eb0 - 0x01310eea (58 bytes)
 void uGeometry2::move() {
-    // local: Profile __profile;
+    // DWARF local not rendered: Profile __profile;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mOwnerSystem.::nCollisionUtil::cOwnerSystem::isEnableOwner() != false) {
         this->mGeometryArray.::rGeometry2::cGeometryArray::move();

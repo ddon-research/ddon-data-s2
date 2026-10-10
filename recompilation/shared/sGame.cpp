@@ -167,9 +167,9 @@ __attribute__((weak)) void cChargeEffectUID::setUIDNum(u32 num) {
 
 // Address: 0x00785870 - 0x0078589e (46 bytes)
 void cChargeEffectUID::resetChargeCount() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i0_0 = static_cast<unsigned int>(0);;) {
         if (this->mpRefChargeEffectUID != static_cast<u8*>(nullptr)) {
             if (i0_0 >= this->mNum) {
@@ -367,7 +367,6 @@ __attribute__((weak)) void sGame::initJoinLobby() {
 
 // Address: 0x00782410 - 0x00782467 (87 bytes)
 void sGame::reflectContextMyPlayer(cCharacterData* pData) {
-    // local: cContextInstHm* pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cContextInstHm* pContext = ::sContextManager::getInstance()->::sContextManager::getContextMyPlayer();
     if (pContext == static_cast<cContextInstHm*>(nullptr)) {
@@ -381,7 +380,7 @@ void sGame::reflectContextMyPlayer(cCharacterData* pData) {
 
 // Address: 0x00783f70 - 0x00783f91 (33 bytes)
 s32 sGame::getPlayerMemberIndex(uHuman* pPl) {
-    // local: const cContextInstHm* pContext;
+    // DWARF local not rendered: const cContextInstHm* pContext;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pPl != static_cast<uHuman*>(nullptr)) {
         return ::cContextInterface::getMemberIndex(static_cast<const cContextInstHm*>(pPl->::uDDOModel::getContextInst()));
@@ -395,7 +394,7 @@ s32 sGame::getPlayerMemberIndex(uHuman* pPl) {
 
 // Address: 0x00783fb0 - 0x00783fe1 (49 bytes)
 void sGame::createPlayerInstance() {
-    // local: bool isLobby;
+    // DWARF local not rendered: bool isLobby;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() != false) {
         this->::sGame::createPlayerInstance_Lobby();
@@ -485,7 +484,7 @@ __attribute__((weak)) void sGame::createPlayerInstance_Party() {
 
 // Address: 0x00782080 - 0x007820cc (76 bytes)
 s32 sGame::getNextStage() {
-    // local: s32 stageNo;
+    // DWARF local not rendered: s32 stageNo;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
         if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isStage() != false) {
@@ -729,7 +728,6 @@ void sGame::setReqStartPosNoPrivate(s32 NewValue) {
 
 // Address: 0x00783250 - 0x0078327a (42 bytes)
 f32 sGame::getBaseParam(u32 index) const {
-    // local: cAdjustParam* pPar;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpBaseParam != static_cast<rAdjustParam*>(nullptr)) {
         cAdjustParam* pPar = this->mpBaseParam->getData(index);
@@ -775,7 +773,6 @@ u32 sGame::getPlayerLvMax() const {
 
 // Address: 0x00786900 - 0x00786983 (131 bytes)
 void sGame::LoadPlayerExpTable() {
-    // local: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpExpTable != static_cast<rPlayerExpTable*>(nullptr)) {
         return;
@@ -1058,8 +1055,8 @@ __attribute__((weak)) void sGame::dispLimitJobPointLog(u32 jp, MT_CTSTR pawn_nam
 
 // Address: 0x007831a0 - 0x007831bc (28 bytes)
 u8 sGame::getReviveStock() {
-    // local: cContextInstHm* pInst;
-    // local: u8 reviveStock;
+    // DWARF local not rendered: cContextInstHm* pInst;
+    // DWARF local not rendered: u8 reviveStock;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return ::cContextInterface::getReviveStock(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
 }
@@ -1105,9 +1102,9 @@ __attribute__((weak)) void sGame::resetChargeFlagAll() {
 void sGame::clearChargeCourse() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x7846b0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x7846b0 carries; no location-less local in scope fits
         u32 v0_0 = this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mpArray[i0_3];
@@ -1133,9 +1130,9 @@ void sGame::clearChargeCourse() {
     this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength = static_cast<u32>(0);
     if (this->mPacketGPCourseInfo.m_Effects.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x784730 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x784730 carries; no location-less local in scope fits
         u32 v2_0 = this->mPacketGPCourseInfo.m_Effects.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mPacketGPCourseInfo.m_Effects.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mPacketGPCourseInfo.m_Effects.::MtArray::mpArray[i2_3];
@@ -1707,7 +1704,7 @@ __attribute__((weak)) void sGame::setContextPawn(const cCharacterData::stPawnDat
 
 // Address: 0x00783f10 - 0x00783f6e (94 bytes)
 void sGame::leavePawn(u32 pawnMemIndex) {
-    // local: const cContextInstHm* hum;
+    // DWARF local not rendered: const cContextInstHm* hum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(static_cast<s32>(pawnMemIndex)) == static_cast<cContextInstHm*>(nullptr)) {
         return;
@@ -1736,26 +1733,23 @@ void sGame::lostPawn(uDDOModel* pLostPawn) {
 
 // Address: 0x00786480 - 0x00786591 (273 bytes)
 __attribute__((weak)) void sGame::lostPawn(cContextInstance* pLostPawn) {
-    // local: s32 memberIndex;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0x786491, used once; no DWARF local holds it
     u8 t0 = ::cContextInterface::getPawnType(pLostPawn);
-    // inferred: a temporary for the value the load at 0x7864a0 read, used once; no DWARF local holds it
-    sNetwork* t2 = ::sNetwork::getInstance();
     // inferred: a temporary for the value the load at 0x7864a4 read, used once; no DWARF local holds it
-    cNetGameServer* t3 = static_cast<sNetworkExt*>(t2)->::sNetworkExt::getGameServer();
+    cNetGameServer* t2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     // inferred: a temporary for the result of the call at 0x7864ae, used once; no DWARF local holds it
-    u32 t4 = ::cContextInterface::getPawnId(pLostPawn);
+    u32 t3 = ::cContextInterface::getPawnId(pLostPawn);
     if (t0 == static_cast<u8>(1)) {
-        t3->::cNetGameServer::pawnLost(t4);
+        t2->::cNetGameServer::pawnLost(t3);
         ::sQuestManagerExt::getInstance()->::sQuestManagerExt::notifyLostMainPawn();
         s32 memberIndex = ::cContextInterface::getMemberIndex(pLostPawn);
         if (::cContextInterface::isPawnOwner(pLostPawn) != false) {
             if (::cContextInterface::getPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12)) == false) {
                 ::cContextInterface::setPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12), true);
                 // inferred: a temporary for the result of the call at 0x786519, used once; no DWARF local holds it
-                s32 t5 = ::cContextInterface::getMemberIndex(pLostPawn);
-                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t5, static_cast<u32>(25));
+                s32 t4 = ::cContextInterface::getMemberIndex(pLostPawn);
+                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t4, static_cast<u32>(25));
                 if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
                     ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
                     ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
@@ -1776,14 +1770,14 @@ __attribute__((weak)) void sGame::lostPawn(cContextInstance* pLostPawn) {
             }
         }
     } else {
-        t3->::cNetGameServer::rentalPawnLost(t4);
+        t2->::cNetGameServer::rentalPawnLost(t3);
         s32 memberIndex = ::cContextInterface::getMemberIndex(pLostPawn);
         if (::cContextInterface::isPawnOwner(pLostPawn) != false) {
             if (::cContextInterface::getPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12)) == false) {
                 ::cContextInterface::setPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12), true);
                 // inferred: a temporary for the result of the call at 0x786519, used once; no DWARF local holds it
-                s32 t5 = ::cContextInterface::getMemberIndex(pLostPawn);
-                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t5, static_cast<u32>(25));
+                s32 t4 = ::cContextInterface::getMemberIndex(pLostPawn);
+                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t4, static_cast<u32>(25));
                 if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
                     ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
                     ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
@@ -1845,9 +1839,9 @@ __attribute__((weak)) void sGame::jumpCharEdit(u32 type, u32 retStage, u32 retPo
 
 // Address: 0x00786680 - 0x007866b3 (51 bytes)
 void sGame::returnCharEdit() {
-    // local: const MtDTI* p_dti;
-    // local: u32 stage_no;
-    // local: u32 ret_pos;
+    // DWARF local not rendered: const MtDTI* p_dti;
+    // DWARF local not rendered: u32 stage_no;
+    // DWARF local not rendered: u32 ret_pos;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpCharEditReturnArea != static_cast<const MtDTI*>(nullptr)) {
         ::sArea::getInstance()->jump(*this->mpCharEditReturnArea);
@@ -2006,7 +2000,7 @@ rWeaponResTable* sGame::getWepResTable() {
 
 // Address: 0x00786b60 - 0x00786c30 (208 bytes)
 void sGame::createWepArcParam() {
-    // local: cResource* pRes;
+    // DWARF local not rendered: cResource* pRes;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x786b75 read, used once; no DWARF local holds it
     sArchiveManager* t0 = ::sArchiveManager::getInstance();
@@ -2079,25 +2073,23 @@ __attribute__((weak)) void sGame::createWepResIndex() {
 
 // Address: 0x00786dc0 - 0x00786e25 (101 bytes)
 cWeaponResTable* sGame::getWepResData(u32 tagId, u32 sex) {
-    // local: cWeaponResTable* pRes;
+    // DWARF local not rendered: cWeaponResTable* pRes;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    // inferred: a temporary for the value the load at 0x786dca read, used 3 times; no DWARF local holds it
-    u32* t0 = this->mpWepResIndexTbl;
-    if (t0 != static_cast<u32*>(nullptr)) {
+    if (this->mpWepResIndexTbl != static_cast<u32*>(nullptr)) {
         if (this->mpWepResTable != static_cast<rWeaponResTable*>(nullptr)) {
             // inferred: a temporary for the value the load at 0x786de5 read, used 3 times; no DWARF local holds it
-            unsigned int t1 = t0[tagId * static_cast<u32>(3)];
-            if (t1 == static_cast<unsigned int>(0)) {
+            unsigned int t0 = this->mpWepResIndexTbl[tagId * static_cast<u32>(3)];
+            if (t0 == static_cast<unsigned int>(0)) {
                 // inferred: a temporary for the value the load at 0x786df2 read, used twice; no DWARF local holds it
-                unsigned int t2 = t0[((tagId * static_cast<u32>(3)) + sex) + static_cast<u32>(1)];
-                if (t2 < this->mpWepResTable->getDataNum()) {
-                    return this->mpWepResTable->getData(t2);
+                unsigned int t1 = this->mpWepResIndexTbl[((tagId * static_cast<u32>(3)) + sex) + static_cast<u32>(1)];
+                if (t1 < this->mpWepResTable->getDataNum()) {
+                    return this->mpWepResTable->getData(t1);
                 } else {
                     return static_cast<cWeaponResTable*>(nullptr);
                 }
             } else {
-                if (t1 < this->mpWepResTable->getDataNum()) {
-                    return this->mpWepResTable->getData(t1);
+                if (t0 < this->mpWepResTable->getDataNum()) {
+                    return this->mpWepResTable->getData(t0);
                 } else {
                     return static_cast<cWeaponResTable*>(nullptr);
                 }
@@ -2112,29 +2104,27 @@ cWeaponResTable* sGame::getWepResData(u32 tagId, u32 sex) {
 
 // Address: 0x00786e40 - 0x00786eb5 (117 bytes)
 cWeaponResTable* sGame::getWepResData(rWeaponResTable* pWepResTable, u32 tagId, u32 sex) {
-    // local: cWeaponResTable* pRes;
+    // DWARF local not rendered: cWeaponResTable* pRes;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (pWepResTable != static_cast<rWeaponResTable*>(nullptr)) {
         if (tagId != static_cast<u32>(0)) {
-            // inferred: a temporary for the value the load at 0x786e57 read, used 4 times; no DWARF local holds it
+            // inferred: a temporary for the value the load at 0x786e57 read, used 6 times; no DWARF local holds it
             sGame* t0 = ::sGame::getInstance();
-            // inferred: a temporary for the value the load at 0x786e5a read, used 3 times; no DWARF local holds it
-            u32* t1 = t0->::sGame::getWepResIndexTbl();
-            if (t1 != static_cast<u32*>(nullptr)) {
+            if (t0->::sGame::getWepResIndexTbl() != static_cast<u32*>(nullptr)) {
                 if (t0->mpWepResTable != static_cast<rWeaponResTable*>(nullptr)) {
                     // inferred: a temporary for the value the load at 0x786e75 read, used 3 times; no DWARF local holds it
-                    unsigned int t2 = t1[tagId * static_cast<u32>(3)];
-                    if (t2 == static_cast<unsigned int>(0)) {
+                    unsigned int t1 = t0->::sGame::getWepResIndexTbl()[tagId * static_cast<u32>(3)];
+                    if (t1 == static_cast<unsigned int>(0)) {
                         // inferred: a temporary for the value the load at 0x786e82 read, used twice; no DWARF local holds it
-                        unsigned int t3 = t1[((tagId * static_cast<u32>(3)) + sex) + static_cast<u32>(1)];
-                        if (t3 < t0->mpWepResTable->getDataNum()) {
-                            return t0->mpWepResTable->getData(t3);
+                        unsigned int t2 = t0->::sGame::getWepResIndexTbl()[((tagId * static_cast<u32>(3)) + sex) + static_cast<u32>(1)];
+                        if (t2 < t0->mpWepResTable->getDataNum()) {
+                            return t0->mpWepResTable->getData(t2);
                         } else {
                             return static_cast<cWeaponResTable*>(nullptr);
                         }
                     } else {
-                        if (t2 < t0->mpWepResTable->getDataNum()) {
-                            return t0->mpWepResTable->getData(t2);
+                        if (t1 < t0->mpWepResTable->getDataNum()) {
+                            return t0->mpWepResTable->getData(t1);
                         } else {
                             return static_cast<cWeaponResTable*>(nullptr);
                         }
@@ -2353,7 +2343,7 @@ __attribute__((weak)) cStageToSpot* sGame::getStageToSpot(u32 stageNo) {
 
 // Address: 0x007878e0 - 0x00787926 (70 bytes)
 void sGame::setOpeningMovieLook(bool isLook, bool isSave) {
-    // local: stTitle* pTitleData;
+    // DWARF local not rendered: stTitle* pTitleData;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     this->mIsOpeningMovieLook = isLook;
     if (isLook == false) {
@@ -2466,8 +2456,7 @@ __attribute__((weak)) bool sGame::keepArc(rArchive* arc_ptr) {
 
 // Address: 0x00787fc0 - 0x0078800c (76 bytes)
 bool sGame::releaseKeepArc(rArchive* arc_ptr) {
-    // local: bool ret;
-    // local: u32 i;
+    // DWARF local not rendered: bool ret;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     if (arc_ptr == static_cast<rArchive*>(nullptr)) {
         return false;
@@ -2476,7 +2465,7 @@ bool sGame::releaseKeepArc(rArchive* arc_ptr) {
         return false;
     }
     u32 i = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     rArchive* * p1 = &this->mKeepArc[0];
     do {
         if (arc_ptr == (*p1)) {
@@ -2492,7 +2481,7 @@ bool sGame::releaseKeepArc(rArchive* arc_ptr) {
 
 // Address: 0x00787c70 - 0x00787d60 (240 bytes)
 void sGame::releaseKeepArc() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mKeepArc[0] == static_cast<rArchive*>(nullptr)) {
     } else {
@@ -2579,7 +2568,7 @@ __attribute__((weak)) void sGame::keepArcOm() {
 
 // Address: 0x00787de0 - 0x00787ec4 (228 bytes)
 void sGame::releaseKeepOm() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mKeepOm.::MtArray::mLength == static_cast<u32>(0)) {
         if (this->mKeepOm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
@@ -2590,11 +2579,11 @@ void sGame::releaseKeepOm() {
         this->mKeepOm.::MtArray::mLength = static_cast<u32>(0);
         return;
     } else {
-        // inferred: the value the loop at 0x787e00 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x787e00 carries; no location-less local in scope fits
         u32 v0_0 = this->mKeepOm.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i0_3 = static_cast<unsigned int>(0);
-        // inferred: the value carried to 0x787e34; DWARF names no local for it
+        // inferred: the value carried to 0x787e34; no location-less local in scope fits
         u32 v1_0;
         for (;;) {
             if (this->mKeepOm.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
@@ -2625,9 +2614,9 @@ void sGame::releaseKeepOm() {
             this->mKeepOm.::MtArray::mLength = static_cast<u32>(0);
             return;
         } else {
-            // inferred: the value the loop at 0x787e50 carries; DWARF names no local for it
+            // inferred: the value the loop at 0x787e50 carries; no location-less local in scope fits
             u32 v2_0 = v1_0;
-            // inferred: the counter this loop steps; DWARF names no local for it
+            // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
                 if (this->mKeepOm.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                     delete this->mKeepOm.::MtArray::mpArray[i2_3];

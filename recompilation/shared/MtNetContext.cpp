@@ -164,7 +164,7 @@ __attribute__((weak)) s32 MtNetContext::startRequest(MtNetRequest* req) {
 
 // Address: 0x00de6f70 - 0x00de6fc1 (81 bytes)
 s32 MtNetContext::moveRequest(MtNetRequest* req) {
-    // local: s32 ret;
+    // DWARF local not rendered: s32 ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (req != static_cast<MtNetRequest*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0xde6f85, used twice; no DWARF local holds it
@@ -199,7 +199,6 @@ void MtNetContext::endRequest(MtNetRequest* req) {
 
 // Address: 0x00de70c0 - 0x00de7126 (102 bytes)
 void MtNetContext::startFailRequest(MtNetRequest* req) {
-    // local: MtNetError err;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     MtNetError err;
     req->getFatal(&err);

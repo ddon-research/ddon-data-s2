@@ -6,7 +6,10 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "cContextPlayerInfo.h"
 #include "nHuman.h"
+#include "nHumanMsg.h"
+#include "sGame.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -1067,11 +1070,64 @@ void nJobParam::cJobInfo::copyData(const nJobParam::cJobInfo& src) {
 }
 
 // Address: 0x0006b1f0 - 0x0006b34c (348 bytes)
-__attribute__((weak)) void nJobParam::cJobInfo::initJobStatus(nHuman::JOB_ENUM job) {
-    // local: rJobBaseParam* pPar;
-    // local: cJobInfo* info;
-    DDON_STUB("nJobParam::cJobInfo::initJobStatus")
-    /* stub */
+void nJobParam::cJobInfo::initJobStatus(nHuman::JOB_ENUM job) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (::sGame::getInstance() == static_cast<sGame*>(nullptr)) {
+        return;
+    }
+    rJobBaseParam* pPar = ::sGame::getInstance()->::sGame::getJobBaseParam();
+    if (pPar == static_cast<rJobBaseParam*>(nullptr)) {
+        return;
+    }
+    nJobParam::cJobInfo* info = pPar->getData(::nHuman::getJobArrayIndex(job));
+    if (info == static_cast<nJobParam::cJobInfo*>(nullptr)) {
+        return;
+    }
+    this->mLv_pri = info->::nJobParam::cJobInfo::getLv();
+    this->mExp_pri = info->::nJobParam::cJobInfo::getExp();
+    this->mAtk_pri = info->mAtk_pri;
+    this->mDef_pri = info->mDef_pri;
+    this->mMAtk_pri = info->mMAtk_pri;
+    this->mMDef_pri = info->mMDef_pri;
+    this->mStrength_pri = info->mStrength_pri;
+    this->mDownPower_pri = info->mDownPower_pri;
+    this->mShakePower_pri = info->mShakePower_pri;
+    this->mStanPower_pri = info->mStanPower_pri;
+    this->mConstitution_pri = info->::nJobParam::cJobInfo::getConstitution();
+    this->mGuts_pri = info->::nJobParam::cJobInfo::getGuts();
+    this->mJobPoint_pri = info->::nJobParam::cJobInfo::getJobPoint();
+    this->mFireResist_pri = info->::nJobParam::cJobInfo::getFireResist();
+    this->mIceResist_pri = info->::nJobParam::cJobInfo::getIceResist();
+    this->mThunderResist_pri = info->::nJobParam::cJobInfo::getThunderResist();
+    this->mHolyResist_pri = info->::nJobParam::cJobInfo::getHolyResist();
+    this->mDarkResist_pri = info->::nJobParam::cJobInfo::getDarkResist();
+    this->mSpreadResist_pri = info->::nJobParam::cJobInfo::getSpreadResist();
+    this->mFreezeResist_pri = info->::nJobParam::cJobInfo::getFreezeResist();
+    this->mShockResist_pri = info->::nJobParam::cJobInfo::getShockResist();
+    this->mAbsorbResist_pri = info->::nJobParam::cJobInfo::getAbsorbResist();
+    this->mDarkElmResist_pri = info->::nJobParam::cJobInfo::getDarkElmResist();
+    this->mPoisonResist_pri = info->::nJobParam::cJobInfo::getPoisonResist();
+    this->mSlowResist_pri = info->::nJobParam::cJobInfo::getSlowResist();
+    this->mSleepResist_pri = info->::nJobParam::cJobInfo::getSleepResist();
+    this->mStunResist_pri = info->::nJobParam::cJobInfo::getStunResist();
+    this->mWetResist_pri = info->::nJobParam::cJobInfo::getWetResist();
+    this->mOilResist_pri = info->::nJobParam::cJobInfo::getOilResist();
+    this->mSealResist_pri = info->::nJobParam::cJobInfo::getSealResist();
+    this->mCurseResist_pri = info->::nJobParam::cJobInfo::getCurseResist();
+    this->mSoftResist_pri = info->::nJobParam::cJobInfo::getSoftResist();
+    this->mStoneResist_pri = info->::nJobParam::cJobInfo::getStoneResist();
+    this->mGoldResist_pri = info->::nJobParam::cJobInfo::getGoldResist();
+    this->mFireReduceResist_pri = info->::nJobParam::cJobInfo::getFireReduceResist();
+    this->mIceReduceResist_pri = info->::nJobParam::cJobInfo::getIceReduceResist();
+    this->mThunderReduceResist_pri = info->::nJobParam::cJobInfo::getThunderReduceResist();
+    this->mHolyReduceResist_pri = info->::nJobParam::cJobInfo::getHolyReduceResist();
+    this->mDarkReduceResist_pri = info->::nJobParam::cJobInfo::getDarkReduceResist();
+    this->mAtkDownResist_pri = info->::nJobParam::cJobInfo::getAtkDownResist();
+    this->mDefDownResist_pri = info->::nJobParam::cJobInfo::getDefDownResist();
+    this->mMAtkDownResist_pri = info->::nJobParam::cJobInfo::getMAtkDownResist();
+    this->mMDefDownResist_pri = info->::nJobParam::cJobInfo::getMDefDownResist();
+    this->mErosionResist_pri = info->::nJobParam::cJobInfo::getErosionResist();
+    this->mItemSealResist_pri = info->::nJobParam::cJobInfo::getItemSealResist();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (62 bytes)

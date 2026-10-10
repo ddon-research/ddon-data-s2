@@ -102,8 +102,8 @@ void cpEnemyReact::setup() {
 
 // Address: 0x001837c0 - 0x00183824 (100 bytes)
 void cpEnemyReact::move() {
-    // local: uDDOModel* p_owner;
-    // local: u32 i;
+    // DWARF local not rendered: uDDOModel* p_owner;
+    // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cpComponent::mActive == false) {
         return;

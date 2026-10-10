@@ -3,10 +3,10 @@
 #include "rIKCtrl.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
-#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResPath.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rCnsIK.h"
 #include "../shared/rFullbodyIKHuman2.h"
 #include "../shared/rTbl2.h"
@@ -157,7 +157,8 @@ rIKCtrl::~rIKCtrl() {
 // Address: 0x0067f7b0 - 0x0067f7ce (30 bytes)
 bool rIKCtrl::loadData(MtDataReader& r, cIKCtrl* pData) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    pData->mDummy = r.readU32();
+    // inferred: reference argument from the copy's one access
+    ::nDDOIO::readData(r, pData->mDummy);
     return true;
 }
 
@@ -209,4 +210,8 @@ template const cIKCtrl* rTbl2<cIKCtrl>::getData(unsigned int) const;
 // Instance at 0x01a953b0 - 0x01a953b4 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<cIKCtrl>::getDataNum() const;
+
+// Instance at 0x01a95560 - 0x01a955b8 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<cIKCtrl>::~rTbl2();
 

@@ -393,7 +393,7 @@ __attribute__((weak)) void cpErosionEnemy::callbackBreakErosionRegion(nRegionSta
 
 // Address: 0x00184ad0 - 0x00184b1a (74 bytes)
 bool cpErosionEnemy::callbackErosionCancel(cHitInfoAfter* pHitInfo) {
-    // local: cpOcdCtrl* pOcdCtrl;
+    // DWARF local not rendered: cpOcdCtrl* pOcdCtrl;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cpErosionEnemyBase::callbackErosionCancel(pHitInfo) != false) {
         if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::getOcdCtrlPtr() != static_cast<cpOcdCtrl*>(nullptr)) {
@@ -769,7 +769,7 @@ __attribute__((weak)) void cpErosionSuperEnemy::update() {
 
 // Address: 0x00186c10 - 0x00186ca2 (146 bytes)
 void cpErosionSuperEnemy::kill() {
-    // local: uEnemy* pOwnerEnemy;
+    // DWARF local not rendered: uEnemy* pOwnerEnemy;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cpErosionEnemy::kill();
     if (this->mprErosionSuperInfoRes != static_cast<rErosionSuperInfoRes*>(nullptr)) {

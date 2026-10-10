@@ -129,9 +129,9 @@ void sCraftManager::reset() {
     this->mCraftCtrl.mRecipeId = static_cast<u32>(0);
     this->mCraftRecipe.::cCraftRecipe::clearRecipeList();
     if (this->mRequest.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x761280 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x761280 carries; no location-less local in scope fits
         u32 v0_0 = this->mRequest.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mRequest.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mRequest.::MtArray::mpArray[i0_3];
@@ -229,7 +229,7 @@ MtTypedArray<CDataCommonU32>& sCraftManager::getCraftCreateRecipeList() {
 
 // Address: 0x007613c0 - 0x00761423 (99 bytes)
 void sCraftManager::loadCommonCraftResource() {
-    // local: cResource* pRes;
+    // DWARF local not rendered: cResource* pRes;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x7613d4 read, used once; no DWARF local holds it
     sArchiveManager* t0 = ::sArchiveManager::getInstance();
@@ -293,7 +293,6 @@ cCraftRecipe* sCraftManager::getCraftRecipe(u32 type) {
 
 // Address: 0x007617d0 - 0x00761805 (53 bytes)
 u32 sCraftManager::getItemNum(u32 target, u32 itemNo) {
-    // local: cItemBag* pBag;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     sItemManager::cItemBag* pBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(static_cast<nCharacterData::ITEM_BAG_TYPE>(target));
     if (pBag != static_cast<sItemManager::cItemBag*>(nullptr)) {
@@ -319,7 +318,7 @@ u32 sCraftManager::getSupportNumMax() {
 
 // Address: 0x00761960 - 0x00761972 (18 bytes)
 u32 sCraftManager::getSupportNumFromPassNum(u32 passNum) {
-    // local: u32 supportNum;
+    // DWARF local not rendered: u32 supportNum;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (passNum <= static_cast<u32>(2)) {
         return this->mMasterSupportNumData[passNum];
@@ -502,7 +501,7 @@ __attribute__((weak)) u32 sCraftManager::getMyPawnCraftState(u32 pawnId) {
 
 // Address: 0x00761d70 - 0x00761d88 (24 bytes)
 s32 sCraftManager::getMyPawnNum() {
-    // local: cPawnListVec& myPawnList;
+    // DWARF local not rendered: cPawnListVec& myPawnList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<s32>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mMyPawnList.::MtArray::mLength);
 }
@@ -576,7 +575,7 @@ __attribute__((weak)) bool sCraftManager::isMyPawn(u32 pawnId) {
 
 // Address: 0x00762e40 - 0x00762e58 (24 bytes)
 s32 sCraftManager::getRentalPawnNum() {
-    // local: cPawnListVec& RentalPawnList;
+    // DWARF local not rendered: cPawnListVec& RentalPawnList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<s32>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mRentedPawnList.::MtArray::mLength);
 }
@@ -1019,9 +1018,9 @@ __attribute__((weak)) sCraftManager::BAGGAGE_MATERIAL_STATE sCraftManager::waitB
 void sCraftManager::clearPlusItemList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mAddItemList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x7637c0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x7637c0 carries; no location-less local in scope fits
         u32 v0_0 = this->mAddItemList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mAddItemList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mAddItemList.::MtArray::mpArray[i0_3];
@@ -1118,10 +1117,9 @@ __attribute__((weak)) void sCraftManager::createProcessItemList(u32 listType) {
 
 // Address: 0x00763db0 - 0x00763dd6 (38 bytes)
 u32 sCraftManager::convEquipCategoryToIndex(nCharacterData::EQUIP_CATEGORY category) {
-    // local: u32 index;
     // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
     u32 index = static_cast<u32>(0);
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_CATEGORY* p2 = ::sCraftManager::mEquipCategoryTbl;
     do {
         if ((*p2) == category) {
@@ -1138,11 +1136,10 @@ u32 sCraftManager::convEquipCategoryToIndex(nCharacterData::EQUIP_CATEGORY categ
 
 // Address: 0x00763e70 - 0x00763eaa (58 bytes)
 u32 sCraftManager::getProcessItemCategoryNum(nCharacterData::EQUIP_CATEGORY category) {
-    // local: u32 index;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the pointer this loop steps by one element; DWARF names no local for it
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
     const nCharacterData::EQUIP_CATEGORY* p0_0 = ::sCraftManager::mEquipCategoryTbl;
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     unsigned int i0_1 = static_cast<unsigned int>(0);
     u32 index;
     for (;;) {
@@ -1290,7 +1287,6 @@ __attribute__((weak)) void sCraftManager::addCraftNotice(u32 pawnId) {
 
 // Address: 0x00764290 - 0x007642e3 (83 bytes)
 u64 sCraftManager::getCraftUpGradeExpMax(u32 rank) {
-    // local: cCraftUpGradeExpData* pExp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpCraftupGradeExp != static_cast<rCraftUpGradeExp*>(nullptr)) {
         if (rank < this->mpCraftupGradeExp->getDataNum()) {
@@ -1814,15 +1810,48 @@ void sCraftManager::cCraftPawnCtrl::resetSelectedCraftPawn() {
 }
 
 // Address: 0x00756c00 - 0x00756c54 (84 bytes)
-__attribute__((weak)) void sCraftManager::cCraftPawnCtrl::keepCraftPawn(u32 slotNo) {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::keepCraftPawn")
-    /* stub */
+void sCraftManager::cCraftPawnCtrl::keepCraftPawn(u32 slotNo) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mSelectSlotNo = static_cast<s32>(slotNo);
+    this->mKeepMainPawnId = this->mMainPawnId;
+    this->mKeepSupportPawnId1 = this->mSupportPawnId1;
+    this->mKeepSupportPawnId2 = this->mSupportPawnId2;
+    this->mKeepSupportPawnId3 = this->mSupportPawnId3;
+    switch (slotNo) {
+        case static_cast<u32>(0):
+        {
+            this->mMainPawnId = static_cast<u32>(0);
+            break;
+        }
+        case static_cast<u32>(1):
+        {
+            this->mSupportPawnId1 = static_cast<u32>(0);
+            break;
+        }
+        case static_cast<u32>(2):
+        {
+            this->mSupportPawnId2 = static_cast<u32>(0);
+            break;
+        }
+        case static_cast<u32>(3):
+        {
+            this->mSupportPawnId3 = static_cast<u32>(0);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // Address: 0x00756c60 - 0x00756c6b (11 bytes)
-__attribute__((weak)) void sCraftManager::cCraftPawnCtrl::returnKeepCraftPawn() {
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::returnKeepCraftPawn")
-    /* stub */
+void sCraftManager::cCraftPawnCtrl::returnKeepCraftPawn() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mMainPawnId = this->mKeepMainPawnId;
+    this->mSupportPawnId1 = this->mKeepSupportPawnId1;
+    this->mSupportPawnId2 = this->mKeepSupportPawnId2;
+    this->mSupportPawnId3 = this->mKeepSupportPawnId3;
 }
 
 // Address: 0x00756c70 - 0x00756c77 (7 bytes)
@@ -2075,7 +2104,7 @@ __attribute__((weak)) u32 sCraftManager::cCraftPawnCtrl::getPawnSkillLvSub(s32 p
 
 // Address: 0x00757330 - 0x00757388 (88 bytes)
 u32 sCraftManager::cCraftPawnCtrl::getPawnSkillLv(u32 slotNo, u32 skill, bool isZero) {
-    // local: s32 pawnId;
+    // DWARF local not rendered: s32 pawnId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (slotNo) {
         case static_cast<u32>(0):

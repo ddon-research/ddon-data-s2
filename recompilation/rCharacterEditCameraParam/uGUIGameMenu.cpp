@@ -285,7 +285,7 @@ __attribute__((weak)) void uGUIGameMenu::evSelectLoginBonus() {
 
 // Address: 0x00b4ece0 - 0x00b4ed08 (40 bytes)
 void uGUIGameMenu::evSelectTimeEvent() {
-    // local: const u32 event_achieve_id;
+    // DWARF local not rendered: const u32 event_achieve_id;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestOpenServerUI(static_cast<u32>(0));
     this->mIsServerUI = true;

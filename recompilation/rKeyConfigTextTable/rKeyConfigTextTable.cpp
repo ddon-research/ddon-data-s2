@@ -35,9 +35,11 @@ const MtDTI& nKeyConfigTextTable::cKeyText::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void nKeyConfigTextTable::cKeyText::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nKeyConfigTextTable::cKeyText::MyDTI::newInstance at 0x00690a74-0x00690a9d (called at rKeyConfigTextTable.cpp:25)
-// void* nKeyConfigTextTable::cKeyText::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nKeyConfigTextTable::cKeyText::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memAlloc(sz, align, ::nKeyConfigTextTable::cKeyText::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (45 bytes)
 //   in rTbl2<nKeyConfigTextTable::cKeyText>::loadCore at 0x01a982ff-0x01a9832c (called at rTbl2.h:215)
@@ -84,9 +86,9 @@ inline void nKeyConfigTextTable::cKeyText::operator delete(void* p_addr) {
 // nKeyConfigTextTable::cKeyText::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00690a70 - 0x00690ace (94 bytes)
-__attribute__((weak)) MtObject* nKeyConfigTextTable::cKeyText::MyDTI::newInstance() const {
-    DDON_STUB("nKeyConfigTextTable::cKeyText::MyDTI::newInstance")
-    return nullptr;
+MtObject* nKeyConfigTextTable::cKeyText::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nKeyConfigTextTable::cKeyText;
 }
 
 // No out-of-line body: no code in the ELF
@@ -244,4 +246,8 @@ template const nKeyConfigTextTable::cKeyText* rTbl2<nKeyConfigTextTable::cKeyTex
 // Instance at 0x01a98260 - 0x01a98264 (4 bytes) of the generic rTbl2<T>::getDataNum
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template unsigned int rTbl2<nKeyConfigTextTable::cKeyText>::getDataNum() const;
+
+// Instance at 0x01a98440 - 0x01a98498 (88 bytes) of the generic rTbl2<T>::~rTbl2
+// Approximate from the ELF: its one inlined call written as a call of the method, whose approximate generic body its family's unit holds (024 P13, D4): the recompile calls what the ELF inlined; the body oracle reports this instance.
+template rTbl2<nKeyConfigTextTable::cKeyText>::~rTbl2();
 

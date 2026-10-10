@@ -1084,8 +1084,8 @@ __attribute__((weak)) void uGUIAreaMaster::decideSuppliesReceive() {
 
 // Address: 0x0092e460 - 0x0092e568 (264 bytes)
 void uGUIAreaMaster::clearListHeader() {
-    // local: u32 i;
-    // local: stListHeader& header;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: stListHeader& header;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mList.mHeader[0].mpInstAnim), false);
     if (this->mList.mHeader[0].mpObjTexIcon != static_cast<cGUIObjTexture*>(nullptr)) {
@@ -1350,13 +1350,11 @@ void uGUIAreaMaster::callbackGetQuestList() {
 // Address: 0x00937200 - 0x0093723c (60 bytes)
 bool uGUIAreaMaster::requestBuyQuestInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    // inferred: a temporary for the value the load at 0x93720e read, used once; no DWARF local holds it
-    sNetwork* t0 = ::sNetwork::getInstance();
     // inferred: a temporary for the value the load at 0x937211 read, used once; no DWARF local holds it
-    cNetGameServer* t1 = static_cast<sNetworkExt*>(t0)->::sNetworkExt::getGameServer();
+    cNetGameServer* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     // inferred: a temporary for the value the load at 0x937218 read, used once; no DWARF local holds it
-    u32 t2 = this->mAreaId;
-    return t1->::cNetGameServer::buyAreaQuestInfo(t2, this->mScheduleId.::nQuest::SCHEDULE_ID::toU32());
+    u32 t1 = this->mAreaId;
+    return t0->::cNetGameServer::buyAreaQuestInfo(t1, this->mScheduleId.::nQuest::SCHEDULE_ID::toU32());
 }
 
 // Address: 0x00937240 - 0x0093725d (29 bytes)

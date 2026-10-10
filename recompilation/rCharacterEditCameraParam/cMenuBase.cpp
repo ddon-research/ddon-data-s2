@@ -18,6 +18,7 @@
 #include "../shared/cArcLoader.h"
 #include "../shared/cCharacterData.h"
 #include "../shared/cContextInstance.h"
+#include "../shared/cContextInterface.h"
 #include "../shared/cEndContentsManager.h"
 #include "cGUIUtility.h"
 #include "cMenuSupport.h"
@@ -33,6 +34,9 @@
 #include "../shared/rArchiveListArray.h"
 #include "../shared/rItemList.h"
 #include "../shared/sArchiveManager.h"
+#include "../rStageConnect/sArea.h"
+#include "../rStageConnect/sAreaExt.h"
+#include "../shared/sContextManager.h"
 #include "sCraftManager.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
@@ -43,9 +47,11 @@
 #include "../shared/sNetworkExt.h"
 #include "../shared/sPad.h"
 #include "../shared/sPadExt.h"
+#include "../shared/sPlayerManager.h"
 #include "../shared/sQuestManagerExt.h"
 #include "sSoundManager.h"
 #include "../shared/sUnit.h"
+#include "../shared/uDDOModel.h"
 #include "../shared/uGUIBase.h"
 #include "../shared/uGUIBaseExt.h"
 #include "uGUIBoughtBox.h"
@@ -58,6 +64,7 @@
 #include "uGUIPopTopSel.h"
 #include "uGUIRankUp.h"
 #include "uGUISystemMsg.h"
+#include "../shared/uHuman.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -1511,7 +1518,7 @@ __attribute__((weak)) void cMenuBase::setGUIWindowActive(bool isActive) {
 
 // Address: 0x000f0bd0 - 0x000f0d05 (309 bytes)
 __attribute__((weak)) void cMenuBase::initMenu() {
-    // local: s32 i;
+    // DWARF local not rendered: s32 i;
     // Approximate from the ELF: a constant over array elements; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (::sMenu::getInstance()->::sMenu::checkMoveMenu(this, false) != false) {
         this->exitMenu();
@@ -1536,9 +1543,9 @@ __attribute__((weak)) void cMenuBase::initMenu() {
     this->mMenuRno[1] = static_cast<int>(0);
     this->mCustomBasePrio = static_cast<u32>(4294967295);
     if (this->mMenuSupportList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xf0c70 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xf0c70 carries; no location-less local in scope fits
         u32 v0_0 = this->mMenuSupportList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mMenuSupportList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMenuSupportList.::MtArray::mpArray[i0_3];
@@ -1584,9 +1591,9 @@ __attribute__((weak)) void cMenuBase::exitMenu() {
     this->mNowMoveFlag = false;
     this->updatePtr();
     if (this->mMenuSupportList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xf0e30 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xf0e30 carries; no location-less local in scope fits
         u32 v0_0 = this->mMenuSupportList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mMenuSupportList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMenuSupportList.::MtArray::mpArray[i0_3];
@@ -2574,7 +2581,6 @@ cMenuCharacterList::~cMenuCharacterList() {
 
 // Address: 0x000f4d10 - 0x000f4dca (186 bytes)
 void cMenuCharacterList::initCharacterList(uGUIBase* pGUIRefMenu) {
-    // local: cMenuSupportList* pList;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::cMenuBase::initMenu();
     this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
@@ -5925,10 +5931,10 @@ cMenuGetCraftRecipeToServer::~cMenuGetCraftRecipeToServer() {
 
 // Address: 0x001337c0 - 0x001338e4 (292 bytes)
 nMenu::MENU_RET cMenuGetCraftRecipeToServer::moveGetCraftRecipeToServer() {
-    // local: s32& baseRno;
-    // local: NET_STAT stat;
-    // local: cCraftRecipeControl* pControl;
-    // local: cCraftRecipeControl* pControl;
+    // DWARF local not rendered: s32& baseRno;
+    // DWARF local not rendered: NET_STAT stat;
+    // DWARF local not rendered: cCraftRecipeControl* pControl;
+    // DWARF local not rendered: cCraftRecipeControl* pControl;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::cMenuBase::moveMenu();
     if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(1)) {
@@ -6929,9 +6935,9 @@ void cMenuGroupChatMemberList::exitMenu() {
         this->mpGUIActiveList = static_cast<uGUIBase*>(nullptr);
     }
     if (this->mMemberList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1311e0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1311e0 carries; no location-less local in scope fits
         u32 v0_0 = this->mMemberList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mMemberList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mMemberList.::MtArray::mpArray[i0_3];
@@ -6957,9 +6963,9 @@ void cMenuGroupChatMemberList::exitMenu() {
     this->mMemberList.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mMemberList.::MtArray::mLength = static_cast<u32>(0);
     if (this->mExcludeList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x131260 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x131260 carries; no location-less local in scope fits
         u32 v2_0 = this->mExcludeList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mExcludeList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mExcludeList.::MtArray::mpArray[i2_3];
@@ -7567,7 +7573,6 @@ __attribute__((weak)) bool cMenuKeyConfig::showGUI(uGUIKeyConfig& guiKeyConfig) 
 
 // Address: 0x00137300 - 0x001373fd (253 bytes)
 void cMenuKeyConfig::onClose(uGUIKeyConfig& guiKeyConfig) {
-    // local: cMenuDialogFlow* const dialog_flow;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mKeyCustomManagers.::nMenuKeyConfig::KeyCustomManagers::isExistOverlap() != false) {
         if (this->::cMenuBase::mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
@@ -7597,7 +7602,6 @@ void cMenuKeyConfig::onClose(uGUIKeyConfig& guiKeyConfig) {
 
 // Address: 0x00137410 - 0x001374e8 (216 bytes)
 void cMenuKeyConfig::onInitialize(uGUIKeyConfig& guiKeyConfig, u32 categoryListIndex) {
-    // local: cMenuDialogFlow* const dialog_flow;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cMenuBase::mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
         this->::cMenuBase::mpDialogFlow->::cMenuDialogFlow::initialize(static_cast<u32>(2));
@@ -7622,7 +7626,6 @@ void cMenuKeyConfig::onInitialize(uGUIKeyConfig& guiKeyConfig, u32 categoryListI
 
 // Address: 0x00137500 - 0x001375d8 (216 bytes)
 void cMenuKeyConfig::onBlankAll(uGUIKeyConfig& guiKeyConfig, u32 categoryListIndex) {
-    // local: cMenuDialogFlow* const dialog_flow;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->::cMenuBase::mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
         this->::cMenuBase::mpDialogFlow->::cMenuDialogFlow::initialize(static_cast<u32>(2));
@@ -7746,11 +7749,11 @@ __attribute__((weak)) void cMenuKeyConfig::setBlankAll(uGUIKeyConfig& guiKeyConf
 
 // Address: 0x00136da0 - 0x00136e5f (191 bytes)
 __attribute__((weak)) void cMenuKeyConfig::finalCheckBeforeExit() {
-    // local: bool is_exist_change_without_overlap;
-    // local: u32 category_list_index;
-    // local: cMenuDialogFlow* const dialog_flow;
+    // DWARF local not rendered: bool is_exist_change_without_overlap;
+    // DWARF local not rendered: u32 category_list_index;
+    // DWARF local not rendered: cMenuDialogFlow* const dialog_flow;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the counter this loop steps; DWARF names no local for it
+    // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
         if (this->mKeyCustomManagers.::nMenuKeyConfig::KeyCustomManagers::isExistOverlap(i0_3) == false) {
             if (this->mKeyCustomManagers.::nMenuKeyConfig::KeyCustomManagers::isExistChange(i0_3, true) != false) {
@@ -8594,8 +8597,7 @@ cMenuLeaveGroupChat::~cMenuLeaveGroupChat() {
 
 // Address: 0x0012fce0 - 0x0012ff5c (636 bytes)
 nMenu::MENU_RET cMenuLeaveGroupChat::moveLeaveGroupChat() {
-    // local: s32& baseRno;
-    // local: s32 choice;
+    // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::cMenuBase::moveMenu();
     switch (this->::cMenuBase::mMenuRno[0]) {
@@ -10394,18 +10396,18 @@ cMenuPartyList::~cMenuPartyList() {
 
 // Address: 0x000f4520 - 0x000f4653 (307 bytes)
 void cMenuPartyList::initPartyList(uGUIBase* pGUIRefMenu) {
-    // local: cMenuSupportList* pList;
+    // DWARF local not rendered: cMenuSupportList* pList;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     this->::cMenuBase::initMenu();
     this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
     this->mSearchSetting.::cCharacterData::stSearchFilterSetting::setDefaultData();
     this->mSearchSetting.::cCharacterData::stSearchFilterSetting::initSearchFilter(static_cast<s32>(0));
-    // inferred: the value the loop at 0xf4580 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xf4580 carries; no location-less local in scope fits
     cNetGameServer* v0_10 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     if (v0_10->mPartyListInfoVec.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xf4580 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xf4580 carries; no location-less local in scope fits
         u32 v0_0 = v0_10->mPartyListInfoVec.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (v0_10->mPartyListInfoVec.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete v0_10->mPartyListInfoVec.::MtArray::mpArray[i0_3];
@@ -10469,12 +10471,12 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPartyList::movePartyList() {
 // Address: 0x000fd400 - 0x000fd4ae (174 bytes)
 void cMenuPartyList::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0xfd430 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xfd430 carries; no location-less local in scope fits
     cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     if (v0_8->mPartyListInfoVec.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xfd430 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xfd430 carries; no location-less local in scope fits
         u32 v0_0 = v0_8->mPartyListInfoVec.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (v0_8->mPartyListInfoVec.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete v0_8->mPartyListInfoVec.::MtArray::mpArray[i0_3];
@@ -10857,7 +10859,7 @@ __attribute__((weak)) bool cMenuPartyMemberList::isReqMember(s32 cursorIndex) {
 
 // Address: 0x000fa510 - 0x000fa592 (130 bytes)
 s32 cMenuPartyMemberList::getPartyMemberIndex(s32 cursorIndex) {
-    // local: s32 menuId;
+    // DWARF local not rendered: s32 menuId;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
         if (this->::cMenuBase::mpList == static_cast<cMenuSupportList*>(nullptr)) {
@@ -10880,10 +10882,27 @@ s32 cMenuPartyMemberList::getPartyMemberIndex(s32 cursorIndex) {
 }
 
 // Address: 0x000fa5a0 - 0x000fa61c (124 bytes)
-__attribute__((weak)) s32 cMenuPartyMemberList::getReqMemberIndex(s32 cursorIndex) {
-    // local: s32 menuId;
-    DDON_STUB("cMenuPartyMemberList::getReqMemberIndex")
-    return {};
+s32 cMenuPartyMemberList::getReqMemberIndex(s32 cursorIndex) {
+    // DWARF local not rendered: s32 menuId;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (::sMenu::getInstance()->::sMenu::checkMoveMenu(static_cast<cMenuBase*>(this), false) != false) {
+        if (this->::cMenuBase::mpList == static_cast<cMenuSupportList*>(nullptr)) {
+            if (this->::cMenuBase::mpMenu != static_cast<cMenuSupportMenu*>(nullptr)) {
+                return this->::cMenuBase::mpMenu->::cMenuSupportMenu::getMenuId(cursorIndex) - static_cast<s32>(8);
+            } else {
+                if (static_cast<unsigned int>(cursorIndex) < this->::cMenuBase::mMenuNum) {
+                    if (this->::cMenuBase::mpMenuList != static_cast<s32*>(nullptr)) {
+                        return this->::cMenuBase::mpMenuList[(cursorIndex <= static_cast<s32>(-1)) ? static_cast<s32>(0) : cursorIndex] - static_cast<int>(8);
+                    }
+                }
+                return static_cast<s32>(-8);
+            }
+        } else {
+            return this->::cMenuBase::mpList->::cMenuSupportMenu::getMenuId(cursorIndex) - static_cast<s32>(8);
+        }
+    } else {
+        return static_cast<s32>(-8);
+    }
 }
 
 // Address: 0x000f5350 - 0x000f53e4 (148 bytes)
@@ -11332,12 +11351,12 @@ cMenuPawnHistory::~cMenuPawnHistory() {
 // Address: 0x00104810 - 0x001048be (174 bytes)
 void cMenuPawnHistory::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0x104840 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x104840 carries; no location-less local in scope fits
     cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     if (v0_8->mPawnHistoryList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x104840 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x104840 carries; no location-less local in scope fits
         u32 v0_0 = v0_8->mPawnHistoryList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (v0_8->mPawnHistoryList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete v0_8->mPawnHistoryList.::MtArray::mpArray[i0_3];
@@ -12300,12 +12319,12 @@ __attribute__((weak)) nMenu::MENU_RET cMenuPawnSearch::movePawnSearch() {
 // Address: 0x001019a0 - 0x00101b4e (430 bytes)
 void cMenuPawnSearch::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0x1019d0 carries; DWARF names no local for it
+    // inferred: the value the loop at 0x1019d0 carries; no location-less local in scope fits
     cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     if (v0_8->mRegisterdPawnList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x1019d0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x1019d0 carries; no location-less local in scope fits
         u32 v0_0 = v0_8->mRegisterdPawnList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (v0_8->mRegisterdPawnList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete v0_8->mRegisterdPawnList.::MtArray::mpArray[i0_3];
@@ -12331,9 +12350,9 @@ void cMenuPawnSearch::exitMenu() {
     v0_8->mRegisterdPawnList.::MtArray::mBufsiz = static_cast<u32>(0);
     v0_8->mRegisterdPawnList.::MtArray::mLength = static_cast<u32>(0);
     if (this->mExcludeList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x101a50 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x101a50 carries; no location-less local in scope fits
         u32 v2_0 = this->mExcludeList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
             if (this->mExcludeList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mExcludeList.::MtArray::mpArray[i2_3];
@@ -12359,9 +12378,9 @@ void cMenuPawnSearch::exitMenu() {
     this->mExcludeList.::MtArray::mBufsiz = static_cast<u32>(0);
     this->mExcludeList.::MtArray::mLength = static_cast<u32>(0);
     if (this->mList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0x101ad0 carries; DWARF names no local for it
+        // inferred: the value the loop at 0x101ad0 carries; no location-less local in scope fits
         u32 v4_0 = this->mList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
             if (this->mList.::MtArray::mpArray[i4_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mList.::MtArray::mpArray[i4_3];
@@ -12926,7 +12945,7 @@ __attribute__((weak)) void cMenuQuickMatchCancel::initQuickMatchCancel(uGUIBase*
 
 // Address: 0x000feb70 - 0x000fec98 (296 bytes)
 nMenu::MENU_RET cMenuQuickMatchCancel::moveQuickMatchCancel() {
-    // local: s32& baseRno;
+    // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::cMenuBase::moveMenu();
     if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(1)) {
@@ -13141,7 +13160,7 @@ cMenuQuickMatchRetry::~cMenuQuickMatchRetry() {
 
 // Address: 0x000ff400 - 0x000ff511 (273 bytes)
 nMenu::MENU_RET cMenuQuickMatchRetry::moveQuickMatchRetry() {
-    // local: s32& baseRno;
+    // DWARF local not rendered: s32& baseRno;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::cMenuBase::moveMenu();
     if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(1)) {
@@ -13500,7 +13519,6 @@ __attribute__((weak)) void cMenuReadyCheck::initReadyCheck(u32 type) {
 
 // Address: 0x00125a90 - 0x00125ac1 (49 bytes)
 nMenu::MENU_RET cMenuReadyCheck::moveReadyCheck() {
-    // local: MENU_RET ret;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     nMenu::MENU_RET ret = this->::cMenuReadyCheck::moveReadyCheckCore();
     if (ret == static_cast<nMenu::MENU_RET>(2)) {
@@ -13511,7 +13529,7 @@ nMenu::MENU_RET cMenuReadyCheck::moveReadyCheck() {
 
 // Address: 0x001266a0 - 0x001266a8 (8 bytes)
 bool cMenuReadyCheck::isReadyWait() {
-    // local: s32& baseRno;
+    // DWARF local not rendered: s32& baseRno;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->::cMenuBase::mMenuRno[0] == static_cast<int>(6);
 }
@@ -14092,9 +14110,9 @@ __attribute__((weak)) nMenu::MENU_RET cMenuSearchFilter::moveSearchFilter() {
 void cMenuSearchFilter::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mExcludeList.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xfc060 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xfc060 carries; no location-less local in scope fits
         u32 v0_0 = this->mExcludeList.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (this->mExcludeList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete this->mExcludeList.::MtArray::mpArray[i0_3];
@@ -14302,8 +14320,8 @@ void cMenuServerList::exitMenu() {
 
 // Address: 0x00125340 - 0x0012536d (45 bytes)
 s32 cMenuServerList::getServerIndex(u32 i) {
-    // local: s32 serverIndex;
-    // local: u32 sortIndex;
+    // DWARF local not rendered: s32 serverIndex;
+    // DWARF local not rendered: u32 sortIndex;
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (this->::cMenuBase::mpMenuList != static_cast<s32*>(nullptr)) {
         if (static_cast<unsigned int>((this->::cMenuBase::mMenuCursor[1] * static_cast<int>(256)) + this->::cMenuBase::mpMenuList[i]) < this->mSortListCount) {
@@ -14815,12 +14833,12 @@ __attribute__((weak)) nMenu::MENU_RET cMenuSimplePartyReq::moveSimplePartyReq() 
 // Address: 0x000fcd00 - 0x000fcdae (174 bytes)
 void cMenuSimplePartyReq::exitMenu() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: the value the loop at 0xfcd30 carries; DWARF names no local for it
+    // inferred: the value the loop at 0xfcd30 carries; no location-less local in scope fits
     cNetGameServer* v0_8 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     if (v0_8->mPartyListInfoVec.::MtArray::mLength != static_cast<u32>(0)) {
-        // inferred: the value the loop at 0xfcd30 carries; DWARF names no local for it
+        // inferred: the value the loop at 0xfcd30 carries; no location-less local in scope fits
         u32 v0_0 = v0_8->mPartyListInfoVec.::MtArray::mLength;
-        // inferred: the counter this loop steps; DWARF names no local for it
+        // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
             if (v0_8->mPartyListInfoVec.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
                 delete v0_8->mPartyListInfoVec.::MtArray::mpArray[i0_3];
@@ -15343,16 +15361,111 @@ __attribute__((weak)) void cMenuSubMenu::createMenuList() {
 // const cContextInstHm* cMenuSubMenu::searchContext(u32 charId, u32 pawnId, bool partyOnly);
 
 // Address: 0x0011a710 - 0x0011a870 (352 bytes)
-__attribute__((weak)) uDDOModel* cMenuSubMenu::searchUnit(u32 charId, u32 pawnId) {
-    // local: u32 searchId;
-    // local: s32 hmType;
-    // local: const cContextInstHm* pInst;
-    // local: u32 i;
-    // local: const cContextInstHm* pInstLobby;
-    // local: u32 i;
-    // local: const cContextInstHm* pInstParty;
-    DDON_STUB("cMenuSubMenu::searchUnit")
-    return nullptr;
+uDDOModel* cMenuSubMenu::searchUnit(u32 charId, u32 pawnId) {
+    // DWARF local not rendered: u32 searchId;
+    // DWARF local not rendered: s32 hmType;
+    // DWARF local not rendered: const cContextInstHm* pInst;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cContextInstHm* pInstLobby;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cContextInstHm* pInstParty;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x11a849; no location-less local in scope fits
+    cContextInstHm* v4_13;
+    if (charId == static_cast<u32>(0)) {
+        if (pawnId == static_cast<u32>(0)) {
+            return static_cast<uDDOModel*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x11a80a, used 3 times; no DWARF local holds it
+                cContextInstHm* t2 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i3_3, true);
+                if (t2 != static_cast<cContextInstHm*>(nullptr)) {
+                    if (::cContextInterface::getHumanType(t2) == static_cast<u8>(1)) {
+                        if (pawnId != ::cContextInterface::getPawnId(t2)) {
+                            if ((i3_3 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
+                                return static_cast<uDDOModel*>(nullptr);
+                            } else {
+                                i3_3 += static_cast<unsigned int>(1);
+                            }
+                        } else {
+                            v4_13 = t2;
+                            break;
+                        }
+                    } else {
+                        if ((i3_3 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
+                            return static_cast<uDDOModel*>(nullptr);
+                        } else {
+                            i3_3 += static_cast<unsigned int>(1);
+                        }
+                    }
+                } else {
+                    if ((i3_3 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
+                        return static_cast<uDDOModel*>(nullptr);
+                    } else {
+                        i3_3 += static_cast<unsigned int>(1);
+                    }
+                }
+            }
+        }
+    } else {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i2_11;
+        if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() == false) {
+            i2_11 = static_cast<unsigned int>(0);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x11a75b, used 3 times; no DWARF local holds it
+                cContextInstHm* t0 = ::sContextManager::getInstance()->::sContextManager::getContextPlayerIndex(i0_3, true);
+                if (t0 != static_cast<cContextInstHm*>(nullptr)) {
+                    if (::cContextInterface::getHumanType(t0) == static_cast<u8>(0)) {
+                        if (charId == ::cContextInterface::getPlCharacterId(t0)) {
+                            v4_13 = t0;
+                            return ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(v4_13);
+                        }
+                    }
+                }
+                if ((i0_3 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(99)) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+            i2_11 = static_cast<unsigned int>(0);
+        }
+        for (;;) {
+            // inferred: a temporary for the result of the call at 0x11a7a2, used 3 times; no DWARF local holds it
+            cContextInstHm* t1 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i2_11, true);
+            if (t1 != static_cast<cContextInstHm*>(nullptr)) {
+                if (::cContextInterface::getHumanType(t1) == static_cast<u8>(0)) {
+                    if (charId != ::cContextInterface::getPlCharacterId(t1)) {
+                        if ((i2_11 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
+                            return static_cast<uDDOModel*>(nullptr);
+                        } else {
+                            i2_11 += static_cast<unsigned int>(1);
+                        }
+                    } else {
+                        v4_13 = t1;
+                        break;
+                    }
+                } else {
+                    if ((i2_11 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
+                        return static_cast<uDDOModel*>(nullptr);
+                    } else {
+                        i2_11 += static_cast<unsigned int>(1);
+                    }
+                }
+            } else {
+                if ((i2_11 + static_cast<unsigned int>(1)) > static_cast<unsigned int>(7)) {
+                    return static_cast<uDDOModel*>(nullptr);
+                } else {
+                    i2_11 += static_cast<unsigned int>(1);
+                }
+            }
+        }
+    }
+    return ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(v4_13);
 }
 
 // No out-of-line body: 7 inlined copies in 1 function (197 bytes)

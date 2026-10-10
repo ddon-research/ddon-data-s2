@@ -183,7 +183,7 @@ nCollision::cScrCollisionMoveMatrix::cScrCollisionMoveMatrix() {
 // Address: 0x01185720 - 0x011857d0 (176 bytes)
 // Also emitted as: _ZN10nCollision23cScrCollisionMoveMatrixD0Ev at 0x011857d0
 nCollision::cScrCollisionMoveMatrix::~cScrCollisionMoveMatrix() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->maFlgAllocateMatrix[0] != false) {
         // inferred: a temporary for the value the load at 0x118573e read, used once; no DWARF local holds it
@@ -367,7 +367,7 @@ void nCollision::cScrCollisionMoveMatrix::freeMatrixByID(u32 id) {
 
 // Address: 0x01185cc0 - 0x01185d6f (175 bytes)
 void nCollision::cScrCollisionMoveMatrix::initMatrixAll() {
-    // local: u32 i;
+    // DWARF local not rendered: u32 i;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->mFlgMoveEnable = false;
     this->mFlgMatResetSet = true;

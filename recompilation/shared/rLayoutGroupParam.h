@@ -761,6 +761,20 @@ inline bool cGroupParam::getIsLoadLotRes() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cGroupParam::EmSetInfo::EmSetInfo() {
+    this->mID = static_cast<u32>(0);
+    this->mLayerNo = static_cast<u32>(0);
+    this->mRepopTimer = 0.0f;
+    this->mSubGroupId = static_cast<u32>(0);
+    this->mHmRandom = static_cast<u32>(0);
+    this->mMontageRandom = static_cast<u32>(0);
+    this->mTblIndex = static_cast<s32>(-1);
+    this->mIsWaitGather = false;
+    this->mOmUID = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cGroupParam::OmSetInfo::OmSetInfo() {
     this->mID = static_cast<u32>(0);
     this->mStatus = static_cast<u32>(0);

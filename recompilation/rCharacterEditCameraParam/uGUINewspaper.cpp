@@ -285,7 +285,7 @@ u32 uGUINewspaper::evCtrlNewsCmnLR(cControl::Message* pMsg) {
 
 // Address: 0x00b83d50 - 0x00b83e93 (323 bytes)
 u32 uGUINewspaper::evCtrlNewsCmnClick(cControl::Message* pMsg) {
-    // local: u32 changeSE;
+    // DWARF local not rendered: u32 changeSE;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pMsg != static_cast<cControl::Message*>(nullptr)) {
         if (pMsg->click_vol != static_cast<s32>(3)) {
@@ -867,8 +867,7 @@ __attribute__((weak)) void uGUINewspaper::initNews() {
 
 // Address: 0x00b7dba0 - 0x00b7de1e (638 bytes)
 void uGUINewspaper::initEventPop() {
-    // local: cGUIObject* pObj;
-    // local: cGUIObjMessage* pmsg;
+    // DWARF local not rendered: cGUIObjMessage* pmsg;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the result of the call at 0xb7dbb4, used 3 times; no DWARF local holds it
     cGUIInstance* t0 = this->getInstance(static_cast<u32>(229), false);
@@ -1359,9 +1358,29 @@ __attribute__((weak)) void uGUINewspaper::setType(s32 Type) {
 }
 
 // Address: 0x00b84570 - 0x00b8471a (426 bytes)
-__attribute__((weak)) void uGUINewspaper::setButtonGuide(s32 guideType) {
-    DDON_STUB("uGUINewspaper::setButtonGuide")
-    /* stub */
+void uGUINewspaper::setButtonGuide(s32 guideType) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::clearGuide();
+    if (guideType != static_cast<s32>(3)) {
+        if (guideType != static_cast<s32>(2)) {
+            if (static_cast<unsigned int>(guideType) <= static_cast<unsigned int>(1)) {
+                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE>(7));
+                if (this->mEventNum > static_cast<s32>(0)) {
+                    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(62), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(20)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+                }
+                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(63), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(61)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+            }
+        } else {
+            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE>(7));
+            if (this->mEventNum > static_cast<s32>(0)) {
+                this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(62), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(20)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+            }
+            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(64), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(55)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addBtnIcon(this->mGuide.::uGUIBase::cReferenceUIBtnGuide::getGuideNum() - static_cast<u32>(1), static_cast<nKeyCustom::KB_CUSTOM>(65));
+        }
+    } else {
+        this->mGuide.::uGUIBase::cReferenceUIBtnGuide::addGuide(static_cast<nKeyCustom::KB_CUSTOM>(62), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->mpGMDRes, static_cast<u32>(21)), static_cast<nGUIExt::ICONTAGKB>(1), static_cast<MT_CTSTR>(nullptr), false);
+    }
 }
 
 // Address: 0x00b811d0 - 0x00b817ac (1500 bytes)
@@ -1398,7 +1417,7 @@ __attribute__((weak)) void uGUINewspaper::updateAreaQuestListDisp(uGUIBase::cScr
 
 // Address: 0x00b83970 - 0x00b83986 (22 bytes)
 void uGUINewspaper::updateAreaQuestListHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cScrollQuestDispList* pdisp;
+    // DWARF local not rendered: cScrollQuestDispList* pdisp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
         return;
@@ -1732,7 +1751,7 @@ __attribute__((weak)) void uGUINewspaper::updateEventJoinButton() {
 
 // Address: 0x00b82eb0 - 0x00b82fb0 (256 bytes)
 bool uGUINewspaper::isEnableJoinContents() {
-    // local: bool isEnable;
+    // DWARF local not rendered: bool isEnable;
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
     if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEnableCycleQuest() != false) {
         if (this->mIsEnableJoinContentsButton != false) {
@@ -2499,7 +2518,6 @@ __attribute__((weak)) bool uGUINewspaper::moveWarpDialog() {
 
 // Address: 0x00b8a640 - 0x00b8a670 (48 bytes)
 bool uGUINewspaper::questwarpRequestServer() {
-    // local: const CDataAreaWarpPoint* pwarp;
     // Proven from the ELF: the body oracle checks this body (022 D5).
     const CDataAreaWarpPoint* pwarp = this->::uGUINewspaper::getWarpInfo();
     if (pwarp != static_cast<const CDataAreaWarpPoint*>(nullptr)) {

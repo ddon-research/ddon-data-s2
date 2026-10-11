@@ -1300,8 +1300,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13480,
       "ItemName" : {
         "En" : "Unappraised Star Trinket (General)",
@@ -1309,8 +1309,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13479,
       "ItemName" : {
         "En" : "Unappraised Star Trinket (Soldier)",

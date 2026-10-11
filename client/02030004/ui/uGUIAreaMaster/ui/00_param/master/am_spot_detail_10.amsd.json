@@ -1167,8 +1167,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10672,
       "ItemName" : {
         "En" : "Unspecified Material",
@@ -1517,8 +1517,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11807,
       "ItemName" : {
         "En" : "High Quality Slimy Leather•11807",
@@ -1526,8 +1526,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11806,
       "ItemName" : {
         "En" : "Slimy Hide•11806",
@@ -1581,8 +1581,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10673,
       "ItemName" : {
         "En" : "Unspecified Crest",
@@ -1641,8 +1641,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10676,
       "ItemName" : {
         "En" : "Unspecified Jewelry",
@@ -1701,8 +1701,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10672,
       "ItemName" : {
         "En" : "Unspecified Material",
@@ -1761,8 +1761,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10672,
       "ItemName" : {
         "En" : "Unspecified Material",
@@ -1793,8 +1793,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10676,
       "ItemName" : {
         "En" : "Unspecified Jewelry",

@@ -828,8 +828,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10673,
       "ItemName" : {
         "En" : "Unspecified Crest",
@@ -1509,8 +1509,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10672,
       "ItemName" : {
         "En" : "Unspecified Material",
@@ -1754,8 +1754,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11794,
       "ItemName" : {
         "En" : "Bristly Felt•11794",
@@ -1763,8 +1763,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11793,
       "ItemName" : {
         "En" : "Ancient Beast Pelt•11793",
@@ -1837,8 +1837,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10673,
       "ItemName" : {
         "En" : "Unspecified Crest",
@@ -1883,8 +1883,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10672,
       "ItemName" : {
         "En" : "Unspecified Material",
@@ -1915,8 +1915,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10672,
       "ItemName" : {
         "En" : "Unspecified Material",
@@ -1961,8 +1961,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : true,
-      "IsFeature" : false,
+      "IsCannotPawnTake" : false,
+      "IsFeature" : true,
       "ItemId" : 10673,
       "ItemName" : {
         "En" : "Unspecified Crest",

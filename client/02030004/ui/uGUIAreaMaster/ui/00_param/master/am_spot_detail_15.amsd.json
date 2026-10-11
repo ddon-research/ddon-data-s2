@@ -544,8 +544,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13483,
       "ItemName" : {
         "En" : "Unappraised Flower Trinket (Soldier)",
@@ -752,8 +752,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 15913,
       "ItemName" : {
         "En" : "Carved Potsherd•15913",
@@ -993,8 +993,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 15919,
       "ItemName" : {
         "En" : "Twisted Iron Scrap•15919",
@@ -1169,8 +1169,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13487,
       "ItemName" : {
         "En" : "Unappraised Wind Trinket (Soldier)",
@@ -1340,8 +1340,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13487,
       "ItemName" : {
         "En" : "Unappraised Wind Trinket (Soldier)",
@@ -1526,8 +1526,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13488,
       "ItemName" : {
         "En" : "Unappraised Wind Trinket (General)",
@@ -1535,8 +1535,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13487,
       "ItemName" : {
         "En" : "Unappraised Wind Trinket (Soldier)",
@@ -1701,8 +1701,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13487,
       "ItemName" : {
         "En" : "Unappraised Wind Trinket (Soldier)",
@@ -1928,8 +1928,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 15981,
       "ItemName" : {
         "En" : "古代ソテツ〈15981〉",
@@ -2034,8 +2034,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 13483,
       "ItemName" : {
         "En" : "Unappraised Flower Trinket (Soldier)",
@@ -2322,8 +2322,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 15933,
       "ItemName" : {
         "En" : "Giant Scale•15933",

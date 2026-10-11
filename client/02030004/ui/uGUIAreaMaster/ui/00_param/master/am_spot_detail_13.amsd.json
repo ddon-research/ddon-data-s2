@@ -725,8 +725,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11505,
       "ItemName" : {
         "En" : "Ice Cube•11505",
@@ -734,8 +734,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11504,
       "ItemName" : {
         "En" : "Ice Cube Fragment•11504",
@@ -933,8 +933,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11509,
       "ItemName" : {
         "En" : "Black Gunpowder•11509",
@@ -942,8 +942,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11508,
       "ItemName" : {
         "En" : "Saltpetre Chunk•11508",
@@ -1132,8 +1132,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11765,
       "ItemName" : {
         "En" : "Foreign Scroll•11765",
@@ -1141,8 +1141,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11764,
       "ItemName" : {
         "En" : "Grimoire Scrap•11764",
@@ -1330,8 +1330,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11507,
       "ItemName" : {
         "En" : "Stone Arm•11507",
@@ -1339,8 +1339,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11506,
       "ItemName" : {
         "En" : "Rock Finger•11506",
@@ -1552,8 +1552,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11776,
       "ItemName" : {
         "En" : "Luminescent Stalactite•11776",
@@ -1561,8 +1561,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11775,
       "ItemName" : {
         "En" : "Stalactite Tip•11775",
@@ -1737,8 +1737,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11796,
       "ItemName" : {
         "En" : "Phindymer Resin•11796",
@@ -1746,8 +1746,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11795,
       "ItemName" : {
         "En" : "Phyton Liquid•11795",
@@ -1880,8 +1880,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11767,
       "ItemName" : {
         "En" : "Luminescent Silver Moss•11767",
@@ -1889,8 +1889,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11766,
       "ItemName" : {
         "En" : "Silver Moss•11766",
@@ -2291,8 +2291,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11790,
       "ItemName" : {
         "En" : "Stone Bouquet•11790",
@@ -2300,8 +2300,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11789,
       "ItemName" : {
         "En" : "Pebble Bud•11789",
@@ -2402,8 +2402,8 @@
     } ],
     "ItemArray" : [ {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11798,
       "ItemName" : {
         "En" : "Light Green Moss Paper•11798",
@@ -2411,8 +2411,8 @@
       }
     }, {
       "@class" : "org.sehkah.ddon.tools.extractor.season2.logic.resource.entity.ui.uGUIAreaMaster.SpotItemData",
-      "IsCannotPawnTake" : false,
-      "IsFeature" : true,
+      "IsCannotPawnTake" : true,
+      "IsFeature" : false,
       "ItemId" : 11797,
       "ItemName" : {
         "En" : "Ball Moss•11797",

@@ -129,29 +129,20 @@ __attribute__((weak)) void MtNetContext::cbAnsFinalize(MtNetRequest* req) {
 // Address: 0x00de6d00 - 0x00de6d5a (90 bytes)
 bool MtNetContext::canMoveRequest(MtNetRequest* req) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    // inferred: a temporary for the result of the call at 0xde6d0c, used 3 times; no DWARF local holds it
+    // inferred: a temporary for the result of the call at 0xde6d0c, used twice; no DWARF local holds it
     s32 t0 = req->::MtNetRequest::getId();
     if (t0 == static_cast<s32>(258)) {
-        // inferred: a temporary for the result of the call at 0xde6d24, used twice; no DWARF local holds it
-        bool t1 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(257));
-        if (t1 != false) {
+        if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(257)) != false) {
             return false;
-        } else {
-            return true;
         }
     } else {
         if (t0 == static_cast<s32>(257)) {
-            // inferred: a temporary for the result of the call at 0xde6d44, used twice; no DWARF local holds it
-            bool t2 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(258));
-            if (t2 != false) {
+            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(258)) != false) {
                 return false;
-            } else {
-                return true;
             }
-        } else {
-            return true;
         }
     }
+    return true;
 }
 
 // Address: 0x00de6dc0 - 0x00de6e81 (193 bytes)

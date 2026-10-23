@@ -11,6 +11,7 @@
 #include "MtPrimitive3D.h"
 #include "../rCharacterEditCameraParam/cGUIMessageAnalyzer.h"
 #include "nGUI.h"
+#include "../rCharacterEditCameraParam/nGUIDraw.h"
 #include "../rGUI/rGUI.h"
 #include "sGUI.h"
 #include "uGUI.h"
@@ -295,6 +296,427 @@ __attribute__((weak)) void cGUIObj2D::calcBoundingPosition(MtVector3* pPosition,
 // Address: 0x01081f80 - 0x01081f83 (3 bytes)
 MtObject* cGUIObj2D::MyDTI::newInstance() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
+    return nullptr;
+}
+
+// No out-of-line body: no code in the ELF
+// MtDTI* cGUIObjChildAnimationRoot::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjChildAnimationRoot::usage();
+
+// Address: 0x01b731d0 - 0x01b731d8 (8 bytes)
+const MtDTI& cGUIObjChildAnimationRoot::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return cGUIObjChildAnimationRoot::DTI;
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// MtAllocator* cGUIObjChildAnimationRoot::getAllocator();
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjChildAnimationRoot::setAllocator(u32);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void* cGUIObjChildAnimationRoot::operator new(size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* cGUIObjChildAnimationRoot::operator new[](size_t sz, u32 align);
+
+// Address: 0x01084b00 - 0x01084b04 (4 bytes)
+void* cGUIObjChildAnimationRoot::operator new(size_t sz, void* p_addr) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return p_addr;
+}
+
+// No out-of-line body: no code in the ELF
+// void* cGUIObjChildAnimationRoot::operator new[](size_t sz, void* p_addr);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void cGUIObjChildAnimationRoot::operator delete(void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjChildAnimationRoot::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjChildAnimationRoot::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjChildAnimationRoot::operator delete[](void* p_addr, u32 align);
+
+// Address: 0x01084b60 - 0x01084d2c (460 bytes)
+cGUIObjChildAnimationRoot::cGUIObjChildAnimationRoot() {
+    DDON_STUB("cGUIObjChildAnimationRoot::cGUIObjChildAnimationRoot")
+    /* stub */
+}
+
+// Address: 0x01084d30 - 0x01084dd7 (167 bytes)
+// Also emitted as: _ZN25cGUIObjChildAnimationRootD0Ev at 0x01084de0
+cGUIObjChildAnimationRoot::~cGUIObjChildAnimationRoot() {
+    DDON_STUB("cGUIObjChildAnimationRoot::~cGUIObjChildAnimationRoot")
+    /* stub */
+}
+
+// Address: 0x01084ec0 - 0x01084ec5 (5 bytes)
+MtUI* cGUIObjChildAnimationRoot::createUI(MtProperty& prop) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::MtObject::createUI(prop);
+}
+
+// Address: 0x01084ed0 - 0x010850e1 (529 bytes)
+__attribute__((weak)) void cGUIObjChildAnimationRoot::createProperty(MtPropertyList& s) {
+    DDON_STUB("cGUIObjChildAnimationRoot::createProperty")
+    /* stub */
+}
+
+// Address: 0x01b731e0 - 0x01b731e3 (3 bytes)
+bool cGUIObjChildAnimationRoot::isDrawableStatic() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return true;
+}
+
+// Address: 0x01085120 - 0x0108515c (60 bytes)
+void cGUIObjChildAnimationRoot::setChildSequenceId(u32 id) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mSequenceId = id;
+    if (this->mpChildRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+        return;
+    }
+    if (this->mpChildRoot->mpPlayingSequence != static_cast<nGUI::SEQUENCE*>(nullptr)) {
+        if (this->mpChildRoot->mpPlayingSequence->id == id) {
+        } else {
+            this->mChildAnimCurrentFrame = 0.0f;
+            this->mpChildRoot->::cGUIObjRoot::setSequenceId(id);
+        }
+    } else {
+        if (id == static_cast<u32>(4294967295)) {
+        } else {
+            this->mChildAnimCurrentFrame = 0.0f;
+            this->mpChildRoot->::cGUIObjRoot::setSequenceId(id);
+        }
+    }
+}
+
+// Address: 0x010850f0 - 0x01085117 (39 bytes)
+u32 cGUIObjChildAnimationRoot::getChildSequenceId() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpChildRoot != static_cast<cGUIObjRoot*>(nullptr)) {
+        if (this->mpChildRoot->mpPlayingSequence != static_cast<nGUI::SEQUENCE*>(nullptr)) {
+            return this->mpChildRoot->mpPlayingSequence->id;
+        } else {
+            return static_cast<u32>(4294967295);
+        }
+    } else {
+        return this->mSequenceId;
+    }
+}
+
+// Address: 0x01b728a0 - 0x01b728c0 (32 bytes)
+void cGUIObjChildAnimationRoot::setChildAnimationCurrentFrameForProperty(s32 frame) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpChildRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+        return;
+    }
+    this->mChildAnimCurrentFrame = static_cast<float>(frame);
+    this->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame2(static_cast<cGUIObject*>(this->mpChildRoot), static_cast<float>(frame));
+}
+
+// Address: 0x01085160 - 0x0108517a (26 bytes)
+void cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(f32 frame) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpChildRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+        return;
+    }
+    this->mChildAnimCurrentFrame = frame;
+    this->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame2(static_cast<cGUIObject*>(this->mpChildRoot), frame);
+}
+
+// No out-of-line body: 2 inlined copies in 2 functions (23 bytes)
+//   in uGUIQuestActive::contentCheckAnimationAddTime at 0x00beb7f3-0x00beb7fb (called at cGUIUtility.h:411)
+//   in uGUIQuestActive::contentEventAddTime at 0x00bec01f-0x00bec02e (called at cGUIUtility.h:411)
+// f32 cGUIObjChildAnimationRoot::getChildAnimationCurrentFrame() const;
+
+// Address: 0x01b72880 - 0x01b72896 (22 bytes)
+void cGUIObjChildAnimationRoot::setChildAnimationPlay(bool v) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mChildAnimPlay = v;
+}
+
+// Address: 0x01b72870 - 0x01b7287a (10 bytes)
+bool cGUIObjChildAnimationRoot::isChildAnimationPlay() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mChildAnimPlay;
+}
+
+// Address: 0x01b731f0 - 0x01b73268 (120 bytes)
+__attribute__((weak)) MtAABB cGUIObjChildAnimationRoot::calcBoundingBox() const {
+    DDON_STUB("cGUIObjChildAnimationRoot::calcBoundingBox")
+    __builtin_unreachable();
+}
+
+// No out-of-line body: 50 inlined copies in 17 functions (1526 bytes)
+//   in uGUIActionPalette::setup at 0x0091c5f6-0x0091c60c (called at uGUIActionPalette.cpp:410)
+//   in uGUIActionPalette::setup at 0x0091c611-0x0091c618, 0x0091c61d-0x0091c62c (called at uGUIActionPalette.cpp:411)
+//   in uGUIActionPalette::setup at 0x0091c631-0x0091c638, 0x0091c642-0x0091c653 (called at uGUIActionPalette.cpp:412)
+//   and 47 more (every copy is in <bundle>.inlined.json)
+// cGUIObject* cGUIObjChildAnimationRoot::getChildAnimationObjectFromId(u32 id) const;
+
+// No out-of-line body: no code in the ELF
+// cGUIObject* cGUIObjChildAnimationRoot::getChildAnimationObjectFromName(MT_CTSTR) const;
+
+// Address: 0x01085280 - 0x010852b6 (54 bytes)
+bool cGUIObjChildAnimationRoot::isChildAnimationEnd() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpChildRoot != static_cast<cGUIObjRoot*>(nullptr)) {
+        if (this->mpChildRoot->mpPlayingSequence != static_cast<nGUI::SEQUENCE*>(nullptr)) {
+            return this->mChildAnimCurrentFrame >= static_cast<float>(this->mpChildRoot->mpPlayingSequence->frameCount);
+        } else {
+            return this->mChildAnimCurrentFrame >= 0.0f;
+        }
+    } else {
+        return true;
+    }
+}
+
+// No out-of-line body: no code in the ELF
+// u32 cGUIObjChildAnimationRoot::getInsideAllocateSize() const;
+
+// Address: 0x01b73270 - 0x01b732aa (58 bytes)
+__attribute__((weak)) void cGUIObjChildAnimationRoot::init() {
+    DDON_STUB("cGUIObjChildAnimationRoot::init")
+    /* stub */
+}
+
+// Address: 0x01b732b0 - 0x01b7332b (123 bytes)
+__attribute__((weak)) void cGUIObjChildAnimationRoot::initProperty() {
+    DDON_STUB("cGUIObjChildAnimationRoot::initProperty")
+    /* stub */
+}
+
+// Address: 0x010852d0 - 0x0108533d (109 bytes)
+__attribute__((weak)) void cGUIObjChildAnimationRoot::play(f32 delta) {
+    DDON_STUB("cGUIObjChildAnimationRoot::play")
+    /* stub */
+}
+
+// Address: 0x01b73330 - 0x01b73342 (18 bytes)
+void cGUIObjChildAnimationRoot::draw(nGUI::Draw& drawObj) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpChildRoot == static_cast<cGUIObjRoot*>(nullptr)) {
+        return;
+    }
+    this->mpChildRoot->::cGUIObjRoot::msgDraw(drawObj);
+}
+
+// Address: 0x01b73350 - 0x01b7338f (63 bytes)
+__attribute__((weak)) void cGUIObjChildAnimationRoot::calcMatrix(const MtMatrix& wmat) {
+    DDON_STUB("cGUIObjChildAnimationRoot::calcMatrix")
+    /* stub */
+}
+
+// Address: 0x01b73390 - 0x01b733b1 (33 bytes)
+__attribute__((weak)) bool cGUIObjChildAnimationRoot::checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const {
+    DDON_STUB("cGUIObjChildAnimationRoot::checkHit")
+    return {};
+}
+
+// Address: 0x010851e0 - 0x01085278 (152 bytes)
+__attribute__((weak)) void cGUIObjChildAnimationRoot::setParentResolutionAdjust(u32 type) {
+    DDON_STUB("cGUIObjChildAnimationRoot::setParentResolutionAdjust")
+    /* stub */
+}
+
+// Address: 0x01085180 - 0x010851d2 (82 bytes)
+__attribute__((weak)) void cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame2(cGUIObject* pObject, f32 frame) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    pObject->::cGUIObject::setCurrentFrame(frame, true);
+    // inferred: DWARF's location-less 'pChild' (function scope) is the value the loop at 0x10851c4 carries
+    for (cGUIObject* pChild = pObject->mpChild;;) {
+        if (pChild == static_cast<cGUIObject*>(nullptr)) {
+            break;
+        } else {
+            this->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame2(pChild, frame);
+            pChild = pChild->mpNext;
+        }
+    }
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void cGUIObjChildAnimationRoot::setInstanceId(u32 id);
+
+// Address: 0x01085340 - 0x01085423 (227 bytes)
+__attribute__((weak)) void cGUIObjChildAnimationRoot::setExtendData(void* pData) {
+    // local: u32 animationId;
+    // local: bool IsAllocByPlacementNew;
+    DDON_STUB("cGUIObjChildAnimationRoot::setExtendData")
+    /* stub */
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// bool cGUIObjChildAnimationRoot::isDeleteObjectBuffer() const;
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void cGUIObjChildAnimationRoot::setDeleteObjectBuffer(bool IsDelete);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// cGUIObjChildAnimationRoot::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x01084ab0 - 0x01084af0 (64 bytes)
+__attribute__((weak)) MtObject* cGUIObjChildAnimationRoot::MyDTI::newInstance() const {
+    DDON_STUB("cGUIObjChildAnimationRoot::MyDTI::newInstance")
+    return nullptr;
+}
+
+// No out-of-line body: no code in the ELF
+// MtDTI* cGUIObjColorAdjust::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjColorAdjust::usage();
+
+// Address: 0x01b735c0 - 0x01b735c8 (8 bytes)
+const MtDTI& cGUIObjColorAdjust::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return cGUIObjColorAdjust::DTI;
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// MtAllocator* cGUIObjColorAdjust::getAllocator();
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjColorAdjust::setAllocator(u32);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void* cGUIObjColorAdjust::operator new(size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* cGUIObjColorAdjust::operator new[](size_t sz, u32 align);
+
+// Address: 0x010819b0 - 0x010819b4 (4 bytes)
+void* cGUIObjColorAdjust::operator new(size_t sz, void* p_addr) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return p_addr;
+}
+
+// No out-of-line body: no code in the ELF
+// void* cGUIObjColorAdjust::operator new[](size_t sz, void* p_addr);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void cGUIObjColorAdjust::operator delete(void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjColorAdjust::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjColorAdjust::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void cGUIObjColorAdjust::operator delete[](void* p_addr, u32 align);
+
+// Address: 0x01081a10 - 0x01081b4e (318 bytes)
+cGUIObjColorAdjust::cGUIObjColorAdjust() {
+    DDON_STUB("cGUIObjColorAdjust::cGUIObjColorAdjust")
+    /* stub */
+}
+
+// Address: 0x01081b50 - 0x01081bb1 (97 bytes)
+// Also emitted as: _ZN18cGUIObjColorAdjustD1Ev at 0x0107edf0
+// Also emitted as: _ZN18cGUIObjColorAdjustD2Ev at 0x0107edf0
+cGUIObjColorAdjust::~cGUIObjColorAdjust() {
+    DDON_STUB("cGUIObjColorAdjust::~cGUIObjColorAdjust")
+    /* stub */
+}
+
+// Address: 0x01081bc0 - 0x01081bc5 (5 bytes)
+MtUI* cGUIObjColorAdjust::createUI(MtProperty& prop) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::MtObject::createUI(prop);
+}
+
+// Address: 0x01081bd0 - 0x01081e23 (595 bytes)
+__attribute__((weak)) void cGUIObjColorAdjust::createProperty(MtPropertyList& s) {
+    DDON_STUB("cGUIObjColorAdjust::createProperty")
+    /* stub */
+}
+
+// Address: 0x01b735d0 - 0x01b735d3 (3 bytes)
+bool cGUIObjColorAdjust::isDrawableStatic() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return true;
+}
+
+// Address: 0x01081e30 - 0x01081e4e (30 bytes)
+__attribute__((weak)) void cGUIObjColorAdjust::setColorControl(u32 type) {
+    DDON_STUB("cGUIObjColorAdjust::setColorControl")
+    /* stub */
+}
+
+// Address: 0x01b72670 - 0x01b7267a (10 bytes)
+u32 cGUIObjColorAdjust::getColorControl() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mColorControl;
+}
+
+// Address: 0x01081e50 - 0x01081e5d (13 bytes)
+__attribute__((weak)) void cGUIObjColorAdjust::setColorScale(const MtVector4& color) {
+    DDON_STUB("cGUIObjColorAdjust::setColorScale")
+    /* stub */
+}
+
+// Address: 0x01b72680 - 0x01b72690 (16 bytes)
+MtVector4 cGUIObjColorAdjust::getColorScale() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mColorScale;
+}
+
+// Address: 0x01b726a0 - 0x01b726a9 (9 bytes)
+void cGUIObjColorAdjust::setAmbientColor(const MtColor& color) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mAmbientColor.rgba = color.rgba;
+}
+
+// Address: 0x01b72690 - 0x01b7269c (12 bytes)
+__attribute__((weak)) MtColor cGUIObjColorAdjust::getAmbientColor() const {
+    DDON_STUB("cGUIObjColorAdjust::getAmbientColor")
+    __builtin_unreachable();
+}
+
+// Address: 0x01b726c0 - 0x01b726c9 (9 bytes)
+void cGUIObjColorAdjust::setSaturation(f32 v) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mColorScale.w = v;
+}
+
+// Address: 0x01b726b0 - 0x01b726b9 (9 bytes)
+f32 cGUIObjColorAdjust::getSaturation() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mColorScale.w;
+}
+
+// Address: 0x01081e60 - 0x01081f4e (238 bytes)
+__attribute__((weak)) void cGUIObjColorAdjust::beginDraw(nGUI::Draw& drawObj) {
+    // local: MtVector4 ambientColor;
+    DDON_STUB("cGUIObjColorAdjust::beginDraw")
+    /* stub */
+}
+
+// Address: 0x01081f50 - 0x01081f7c (44 bytes)
+void cGUIObjColorAdjust::endDraw(nGUI::Draw& drawObj) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if ((this->mColorControl & static_cast<u32>(15)) == static_cast<u32>(1)) {
+        drawObj.::nGUI::Draw::setColorAttribute(false, 0.0f);
+    } else {
+        if ((this->mColorControl & static_cast<u32>(15)) == static_cast<u32>(0)) {
+            drawObj.::nGUI::Draw::popColorConstantBuffer();
+        }
+    }
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// cGUIObjColorAdjust::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x01081830 - 0x01081998 (360 bytes)
+__attribute__((weak)) MtObject* cGUIObjColorAdjust::MyDTI::newInstance() const {
+    DDON_STUB("cGUIObjColorAdjust::MyDTI::newInstance")
     return nullptr;
 }
 
@@ -1932,7 +2354,7 @@ void cGUIObjTexture::setTextureId(u32 id) {
     if (this->::cGUIObject::mpResource != static_cast<rGUI*>(nullptr)) {
         if (this->mTextureId != id) {
             this->mTextureId = id;
-            // inferred: a temporary for the result of the call at 0x1087723, used 3 times; no DWARF local holds it
+            // inferred: a temporary for the result of the call at 0x1087723, used twice; no DWARF local holds it
             nGUI::TEXTURE* t0 = this->::cGUIObject::mpResource->::rGUI::getTextureFromId(id);
             if ((this->mpTexture = t0) != static_cast<nGUI::TEXTURE*>(nullptr)) {
                 if (t0->pTexture == static_cast<rTexture*>(nullptr)) {

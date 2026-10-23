@@ -145,22 +145,22 @@ void uGUIRetry::kill() {
         this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
         this->::uGUIBase::kill();
         // inferred: a temporary for the value the load at 0xc1f0c1 read, used 4 times; no DWARF local holds it
-        uGUIRetrySelect* t2 = this->mpGUISelect;
-        if (t2 != static_cast<uGUIRetrySelect*>(nullptr)) {
-            if (t2->mpListCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                t2->mpListCtrl->setCurrentPos(static_cast<s32>(2), false);
+        uGUIRetrySelect* t0 = this->mpGUISelect;
+        if (t0 != static_cast<uGUIRetrySelect*>(nullptr)) {
+            if (t0->mpListCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                t0->mpListCtrl->setCurrentPos(static_cast<s32>(2), false);
             }
-            t2->::uGUIRetrySelect::setFlowId(static_cast<u32>(3));
+            t0->::uGUIRetrySelect::setFlowId(static_cast<u32>(3));
         }
     } else {
         this->::uGUIBase::kill();
         // inferred: a temporary for the value the load at 0xc1f0c1 read, used 4 times; no DWARF local holds it
-        uGUIRetrySelect* t2 = this->mpGUISelect;
-        if (t2 != static_cast<uGUIRetrySelect*>(nullptr)) {
-            if (t2->mpListCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
-                t2->mpListCtrl->setCurrentPos(static_cast<s32>(2), false);
+        uGUIRetrySelect* t0 = this->mpGUISelect;
+        if (t0 != static_cast<uGUIRetrySelect*>(nullptr)) {
+            if (t0->mpListCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                t0->mpListCtrl->setCurrentPos(static_cast<s32>(2), false);
             }
-            t2->::uGUIRetrySelect::setFlowId(static_cast<u32>(3));
+            t0->::uGUIRetrySelect::setFlowId(static_cast<u32>(3));
         }
     }
 }

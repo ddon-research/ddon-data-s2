@@ -7,11 +7,13 @@
 #include "MtObject.h"
 #include "cLayoutSet.h"
 #include "cNetGameServer.h"
+#include "cOmControl.h"
 #include "cResource.h"
 #include "rLayout.h"
 #include "rLayoutGroupParam.h"
 #include "sNetwork.h"
 #include "sNetworkExt.h"
+#include "sOmManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -177,9 +179,25 @@ __attribute__((weak)) bool cLayoutSetOm::deleteAllUnit() {
 }
 
 // Address: 0x002d7c30 - 0x002d7c7b (75 bytes)
-__attribute__((weak)) void cLayoutSetOm::deleteUnit(MtObject* pObj) {
-    DDON_STUB("cLayoutSetOm::deleteUnit")
-    /* stub */
+void cLayoutSetOm::deleteUnit(MtObject* pObj) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a temporary for the result of the call at 0x2d7c3f, used once; no DWARF local holds it
+    const MtDTI& t0 = pObj->getDTI();
+    // inferred: the value the loop at 0x2d7c4d carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::cOmControl::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x2d7c4d carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(static_cast<cOmControl*>(pObj));
+            return;
+        } else {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

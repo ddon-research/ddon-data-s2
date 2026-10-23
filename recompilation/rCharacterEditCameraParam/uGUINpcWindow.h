@@ -19,6 +19,7 @@ class cGUIInstance;
 class cGUIObject;
 class rGUI;
 class rGUIMessage;
+class sGUIExt;
 
 // Declarations
 class uGUINpcWindow;
@@ -33,6 +34,8 @@ using u32 = unsigned int;
 
 class uGUINpcWindow : public uGUISystemMsg
 {
+    // inferred: sGUIExt::setNpcWindowInfo names uGUINpcWindow::mNpcGender
+    friend class sGUIExt;
 public:
     class MyDTI;
 public:
@@ -132,3 +135,9 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uGUINpcWindow::reqUpdateDisp() {
+    this->mReqUpdateDisp = true;
+}

@@ -138,11 +138,9 @@ void cpErosionEnemySmall::update() {
     if (this->::cpErosionEnemyBase::mpEnemy->getThinkMode() == static_cast<u32>(1)) {
         if (this->::cpErosionEnemyBase::mpEnemy->::uCharacter::isReturnTerritoryFlag() == false) {
             if (this->::cpErosionEnemySmall::getErosionCancelStatus() == static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(2)) {
-                // inferred: a temporary for the result of the call at 0x154af7, used twice; no DWARF local holds it
+                // inferred: a temporary for the result of the call at 0x154af7, used once; no DWARF local holds it
                 f32 t0 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-                // inferred: a temporary for the value the load at 0x154afc read, used twice; no DWARF local holds it
-                f32 t1 = this->mErosionCancelWaitTimer;
-                this->mErosionCancelWaitTimer = t1 - t0;
+                this->mErosionCancelWaitTimer = this->mErosionCancelWaitTimer - t0;
                 if (0.0f >= this->mErosionCancelWaitTimer) {
                     this->mErosionCancelWaitTimer = this->mErosionCancelWaitTimerMax;
                     this->mErosionCancelStatus = static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(1);
@@ -153,11 +151,9 @@ void cpErosionEnemySmall::update() {
                 this->::cpErosionEnemySmall::updateErosionMode();
             } else {
                 if (this->::cpErosionEnemySmall::getErosionCancelStatus() == static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(1)) {
-                    // inferred: a temporary for the result of the call at 0x154b4a, used twice; no DWARF local holds it
-                    f32 t2 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-                    // inferred: a temporary for the value the load at 0x154b4f read, used twice; no DWARF local holds it
-                    f32 t3 = this->mErosionCancelTimer;
-                    this->mErosionCancelTimer = t3 - t2;
+                    // inferred: a temporary for the result of the call at 0x154b4a, used once; no DWARF local holds it
+                    f32 t1 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
+                    this->mErosionCancelTimer = this->mErosionCancelTimer - t1;
                     if (0.0f >= this->mErosionCancelTimer) {
                         this->mErosionCancelTimer = this->mErosionCancelTimerMax;
                         this->mErosionCancelStatus = static_cast<nErosionEnemySmall::EROSION_SMALL_STATUS>(0);

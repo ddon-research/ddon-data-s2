@@ -88,15 +88,15 @@ MtUI* rSoundSequenceSe::createUI(MtProperty& prop) {
 
 // Address: 0x006fc300 - 0x006fc3c1 (193 bytes)
 bool rSoundSequenceSe::load(MtStream& in) {
-    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     MtSerializer sz(static_cast<s32>(65536));
     if (sz.::MtSerializer::deserializeBinary(in, static_cast<u16>(1), static_cast<MtObject*>(this), static_cast<MtSerializer::MODE>(0)) != static_cast<MtObject*>(nullptr)) {
         // inferred: a temporary for the value the load at 0x6fc35b read, used 4 times; no DWARF local holds it
-        rSoundRequest* t1 = this->mpRequest;
-        if (t1 != static_cast<rSoundRequest*>(nullptr)) {
-            if (t1->::cResource::isIntermediate()) {
-                this->mpRequest = static_cast<rSoundRequest*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(t1), static_cast<u32>(1)));
-                t1->::cResource::release();
+        rSoundRequest* t0 = this->mpRequest;
+        if (t0 != static_cast<rSoundRequest*>(nullptr)) {
+            if (t0->::cResource::isIntermediate()) {
+                this->mpRequest = static_cast<rSoundRequest*>(::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(t0), static_cast<u32>(1)));
+                t0->::cResource::release();
             }
         }
         return true;

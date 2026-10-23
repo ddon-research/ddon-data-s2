@@ -28,6 +28,7 @@ class rAdjustParam;
 class rBowActParamList;
 class rOcdStatusParamRes;
 class rPrologueHmStatus;
+class sCameraExt;
 class sEffectExt;
 class sOmManager;
 class uBaseModel;
@@ -51,6 +52,8 @@ class sPlayerManager : public sUnitManager
 {
     // inferred: cAreaHit::move names sPlayerManager::mpInstance
     friend class cAreaHit;
+    // inferred: sCameraExt::requestExGameCameraCmnActResource names sPlayerManager::mpMyPlayer
+    friend class sCameraExt;
     // inferred: sEffectExt::getZoneCheckPos names sPlayerManager::mpInstance
     friend class sEffectExt;
     // inferred: sOmManager::isCreatableUnit names sPlayerManager::mpMyPlayer

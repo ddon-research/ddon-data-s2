@@ -69,9 +69,7 @@ rCameraList::~rCameraList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11c2158 read, used once; no DWARF local holds it
     rCameraList::CAMERA_LIST_HDR* t0 = this->mpHdr;
-    // inferred: a temporary for the result of the call at 0x11c2163, used once; no DWARF local holds it
-    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rCameraList::DTI);
-    t1->memFree(static_cast<void*>(t0));
+    ::MtMemoryAllocator::getAllocator(::rCameraList::DTI)->memFree(static_cast<void*>(t0));
     this->mpHdr = static_cast<rCameraList::CAMERA_LIST_HDR*>(nullptr);
 }
 
@@ -107,9 +105,7 @@ void rCameraList::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11c220a read, used once; no DWARF local holds it
     rCameraList::CAMERA_LIST_HDR* t0 = this->mpHdr;
-    // inferred: a temporary for the result of the call at 0x11c2215, used once; no DWARF local holds it
-    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rCameraList::DTI);
-    t1->memFree(static_cast<void*>(t0));
+    ::MtMemoryAllocator::getAllocator(::rCameraList::DTI)->memFree(static_cast<void*>(t0));
     this->mpHdr = static_cast<rCameraList::CAMERA_LIST_HDR*>(nullptr);
 }
 

@@ -67,9 +67,7 @@ rSoundCurveSet::~rSoundCurveSet() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x1370808 read, used once; no DWARF local holds it
     void* t0 = this->mpRawData;
-    // inferred: a temporary for the result of the call at 0x1370816, used once; no DWARF local holds it
-    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rSoundCurveSet::DTI);
-    t1->memFree(t0);
+    ::MtMemoryAllocator::getAllocator(::rSoundCurveSet::DTI)->memFree(t0);
 }
 
 // Address: 0x013708b0 - 0x01370a38 (392 bytes)

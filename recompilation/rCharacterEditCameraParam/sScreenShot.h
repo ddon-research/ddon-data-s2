@@ -252,3 +252,9 @@ public:
 inline sScreenShot* sScreenShot::getInstance() {
     return ::sScreenShot::mpInstance;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline bool sScreenShot::isRequest() {
+    return this->mIsSShotReq != false;
+}

@@ -2,6 +2,7 @@
 #include <new>
 #include "sMain.h"
 #include "MtAllocator.h"
+#include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemory.h"
 #include "MtMemoryAllocator.h"
@@ -11,7 +12,9 @@
 #include "MtPropertyList.h"
 #include "MtSerializer.h"
 #include "MtStream.h"
+#include "MtString.h"
 #include "MtSynchronize.h"
+#include "cResource.h"
 #include "cSystem.h"
 #include "sApp.h"
 #ifndef DDON_STUB
@@ -465,9 +468,20 @@ void sMain::freeDefaultMemory() {
 }
 
 // Address: 0x01246e20 - 0x01246ecf (175 bytes)
-__attribute__((weak)) void sMain::initMemory() {
-    DDON_STUB("sMain::initMemory")
-    /* stub */
+void sMain::initMemory() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x1246e34, used once; no DWARF local holds it
+    MtAllocator* t0 = ::MtMemoryAllocator::getAllocator(::cResource::DTI);
+    t0->mAttr = ::MtMemoryAllocator::getAllocator(::cResource::DTI)->mAttr | static_cast<u16>(2);
+    // inferred: a temporary for the result of the call at 0x1246e5a, used once; no DWARF local holds it
+    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::cSystem::DTI);
+    t1->mAttr = ::MtMemoryAllocator::getAllocator(::cSystem::DTI)->mAttr | static_cast<u16>(2);
+    ::MtMemory::mpAllocatorType[static_cast<int>(7)]->mAttr = ::MtMemory::mpAllocatorType[static_cast<int>(7)]->mAttr | static_cast<u16>(2);
+    (::MtString::mpAllocator)->mAttr = (::MtString::mpAllocator)->mAttr | static_cast<u16>(2);
+    // inferred: a temporary for the result of the call at 0x1246e9f, used once; no DWARF local holds it
+    MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
+    t2->mAttr = ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->mAttr | static_cast<u16>(2);
+    ::MtMemory::mpAllocatorType[static_cast<int>(1)]->mAttr = ::MtMemory::mpAllocatorType[static_cast<int>(1)]->mAttr | static_cast<u16>(2);
 }
 
 // Address: 0x01b9fe90 - 0x01b9fe98 (8 bytes)

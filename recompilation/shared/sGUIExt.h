@@ -89,6 +89,7 @@ class cGUIMessageAnalyzer;
 class cGUIObjMessage;
 class cGUIObjPolygon;
 class cItemParam;
+class cMenuMatchingProfile;
 class cPcTouchAction;
 class cServerUIClientControl;
 class cTbl2ChatMacro;
@@ -119,6 +120,8 @@ class rTblMenuComm;
 class rTexture;
 class rTextureJpeg;
 class rWarpLocation;
+class sGame;
+class sTalkManager;
 class uCharacter;
 class uGUI;
 class uGUIActionPalette;
@@ -146,12 +149,16 @@ class uGUIHudJob10Gauge;
 class uGUIIndicator;
 class uGUIInfo;
 class uGUIInputText;
+class uGUIItemBase01;
 class uGUIJobMaster;
 class uGUILoading;
 class uGUIMap;
 class uGUIMouseOverCursor;
 class uGUIMousePointer;
+class uGUINewspaper;
 class uGUINpcWindow;
+class uGUIPSStore;
+class uGUIPhoto;
 class uGUIPlace;
 class uGUIPointer;
 class uGUIPopCmd01;
@@ -170,6 +177,7 @@ class uGUITelop;
 class uGUITextHud;
 class uGUITouchTargetSelector;
 class uGUITutorialAnnounce;
+class uHuman;
 class uPlayer;
 
 // Declarations
@@ -214,6 +222,24 @@ using u8 = unsigned char;
 
 class sGUIExt : public sGUI
 {
+    // inferred: cMenuMatchingProfile::exitMenu names sGUIExt::mpSingletonMenu
+    friend class cMenuMatchingProfile;
+    // inferred: nGUIItem::cItem::equip names sGUIExt::mpEquipList
+    friend class nGUIItem::cItem;
+    // inferred: sGame::initDecideCharacter names sGUIExt::mDispGuideNo
+    friend class sGame;
+    // inferred: sTalkManager::deleteGUISingleton names sGUIExt::mpSingletonMenu
+    friend class sTalkManager;
+    // inferred: uGUICommunityList::kill names sGUIExt::mpGUICommunityList
+    friend class uGUICommunityList;
+    // inferred: uGUIItemBase01::updateWaitSort names sGUIExt::mpEquipList
+    friend class uGUIItemBase01;
+    // inferred: uGUINewspaper::questwarpCallBack names sGUIExt::mJumpStageNo
+    friend class uGUINewspaper;
+    // inferred: uGUIPhoto::setup names sGUIExt::mIsPhotoMode
+    friend class uGUIPhoto;
+    // inferred: uHuman::isNowBoosting names sGUIExt::mIsEnableMenuUI
+    friend class uHuman;
 public:
     enum INFO_FLAG
     {
@@ -542,6 +568,8 @@ public:
 public:
     class cMousePointer : public MtObject
     {
+        // inferred: uGUIPSStore::psstoreEventShiftStation names sGUIExt::mMouse.mIsMouseMode
+        friend class uGUIPSStore;
     public:
         enum
         {
@@ -802,7 +830,7 @@ public:
 public:
     class cChat : public MtObject
     {
-        // inferred: sGUIExt::isChatMenuUI names sGUIExt::mChat.mpGUIChat
+        // inferred: sGUIExt::noticeChatLogReset names sGUIExt::mChat.mpGUIChat
         friend class sGUIExt;
     public:
         enum
@@ -1099,8 +1127,10 @@ public:
 public:
     class cMap : public MtObject
     {
-        // inferred: sGUIExt::getMapModeMini names sGUIExt::mMap.mModeMini
+        // inferred: sGUIExt::createMapGrid names sGUIExt::mMap.mMapType
         friend class sGUIExt;
+        // inferred: uGUIMap::changeLandType names sGUIExt::mMap.mPos2CenterMenuOfsReq.x
+        friend class uGUIMap;
     public:
         enum
         {
@@ -1503,6 +1533,8 @@ public:
 public:
     class cSCM : public MtObject
     {
+        // inferred: uGUIMap::moveInput names sGUIExt::mSCM.mMode
+        friend class uGUIMap;
     public:
         enum
         {
@@ -3258,6 +3290,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void sGUIExt::onTouchActEnableMenu() {
+    this->mIsTouchActEnableMenu = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rGUIMessage* sGUIExt::getMsgEnemyName() const {
     return this->mpMsgEnemyName;
 }
@@ -3280,6 +3318,12 @@ inline rGUIMessage* sGUIExt::getMsgSystemLog() const {
 // Inline, no code of its own: checked where it is inlined.
 inline rSoundRequest* sGUIExt::getSndReqCmn() const {
     return this->mpSndReqCmn;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline bool sGUIExt::isItemDetailVisibleDetail() {
+    return this->mIsItemDetailVisibleDefault;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -3311,6 +3355,18 @@ inline uGUIChat* sGUIExt::cChat::getGUIChat() {
 // Inline, no code of its own: checked where it is inlined.
 inline sGUIExt::cSEPlayer::cSEPlayer() {
     this->mpRes = static_cast<rSoundRequest*>(nullptr);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline uGUIMap* sGUIExt::cMap::getGUIMap() {
+    return this->mpGUIMap;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline f32 sGUIExt::cLifeGaugeWork::getLostTimerRate() const {
+    return this->mLostTimerRate;
 }
 
 // Inline, no code of its own: checked where it is inlined.

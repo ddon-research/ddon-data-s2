@@ -17,6 +17,7 @@ class MtPropertyList;
 class MtQuaternion;
 class MtUI;
 class MtVector3;
+class aStage;
 class cArcLoaderBase;
 class cContextCharacter;
 class cContextInstHm;
@@ -84,6 +85,8 @@ using u8 = unsigned char;
 
 class cContextInterface : public MtObject
 {
+    // inferred: aStage::addFSMCamEvFromName names uDDOModel::mContextInterface.mpContextInstance
+    friend class aStage;
     // inferred: cGUIUtility::isEquipLantern names uDDOModel::mContextInterface.mpContextInstance
     friend class cGUIUtility;
     // inferred: cParentRegionStatus::setHp names uDDOModel::mContextInterface.mpContextInstance
@@ -112,9 +115,9 @@ class cContextInterface : public MtObject
     friend class sSetManager;
     // inferred: uCharacter::setupActPreInit names uDDOModel::mContextInterface.mpContextInstance
     friend class uCharacter;
-    // inferred: uControl::sendMasterParam names uControl::mContextInterface.mpContextInstance
+    // inferred: uControl::disconnectModel names uDDOModel::mContextInterface.mpContextInstance
     friend class uControl;
-    // inferred: uControlNpc::setPawnId names uControl::mContextInterface.mpContextInstance
+    // inferred: uControlNpc::setup names uControl::mContextInterface.mpContextInstance
     friend class uControlNpc;
     // inferred: uDDOModel::setTarget names uDDOModel::mContextInterface.mpContextInstance
     friend class uDDOModel;

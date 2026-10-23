@@ -397,7 +397,19 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cEquipData::getTShieldStorage() const {
+    return static_cast<u32>(this->mKindParamU8[2] * static_cast<int>(1000));
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline nEquipAbilityInfo::cEquipAbilityData::cEquipAbilityData() {
     this->mId = static_cast<u32>(0);
     this->mLv = static_cast<s32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 nEquipAbilityInfo::cEquipAbilityData::getID() const {
+    return this->mId;
 }

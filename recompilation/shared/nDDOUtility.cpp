@@ -15,8 +15,11 @@
 #include "uGUIBase.h"
 #include "../rCharacterEditCameraParam/uGUIChat.h"
 #include "../rCharacterEditCameraParam/uGUIGauge.h"
+#include "../rCharacterEditCameraParam/uGUIGaugeArts.h"
+#include "../rCharacterEditCameraParam/uGUIGaugeArtsV01_03.h"
 #include "../rCharacterEditCameraParam/uGUIKeyConfig.h"
 #include "../rCharacterEditCameraParam/uGUIPopTopSel.h"
+#include "../rCharacterEditCameraParam/uGUIQuestActive.h"
 #include "uHuman.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)

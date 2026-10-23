@@ -136,3 +136,9 @@ public:
     static const u32 MAX_STORAGE_PATH = 64;
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cNetStorage::getComId() {
+    return this->mComId;
+}

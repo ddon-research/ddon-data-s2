@@ -107,12 +107,24 @@ f32 nDDOMath::calcAngLimit(f32 ang) {
 }
 
 // Address: 0x005b1c60 - 0x005b1cc1 (97 bytes)
-__attribute__((weak)) f32 nDDOMath::calcXZAngle(const MtVector3& v0, const MtVector3& v1) {
-    // local: f32 x0;
-    // local: f32 z0;
-    // local: f32 ang;
-    DDON_STUB("nDDOMath::calcXZAngle")
-    return {};
+f32 nDDOMath::calcXZAngle(const MtVector3& v0, const MtVector3& v1) {
+    // DWARF local not rendered: f32 x0;
+    // DWARF local not rendered: f32 z0;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    f32 ang = ::atan2f(v1.x - v0.x, v1.z - v0.z);
+    if (ang >= 0.0f) {
+        if ((ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))) >= 3.1415927f) {
+            return (-6.2831855f) + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))));
+        } else {
+            return ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)));
+        }
+    } else {
+        if ((6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))))) >= 3.1415927f) {
+            return (-6.2831855f) + (6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f)))));
+        } else {
+            return 6.2831855f + (ang - (6.2831855f * static_cast<float>(static_cast<int>(ang / 6.2831855f))));
+        }
+    }
 }
 
 // Address: 0x005b1cd0 - 0x005b1e57 (391 bytes)

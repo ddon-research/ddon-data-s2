@@ -117,17 +117,15 @@ void rBrowserFont::clear() {
 
 // Address: 0x00648d90 - 0x00648e58 (200 bytes)
 bool rBrowserFont::load(MtStream& in) {
-    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     MtDataReader r(in, static_cast<u32>(4096));
     this->clear();
     if (r.::MtDataReader::readU32() == static_cast<u32>(538181632)) {
         this->mFontSize = r.::MtDataReader::readU32();
-        // inferred: a temporary for the result of the call at 0x648df3, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rBrowserFont::DTI);
-        // inferred: a temporary for the result of the call at 0x648e06, used 3 times; no DWARF local holds it
-        void* t2 = t1->memAlloc(this->mFontSize, static_cast<u32>(16));
-        if ((this->mpFontData = t2) != static_cast<void*>(nullptr)) {
-            r.::MtDataReader::read(t2, this->mFontSize);
+        // inferred: a temporary for the result of the call at 0x648e06, used twice; no DWARF local holds it
+        void* t0 = ::MtMemoryAllocator::getAllocator(::rBrowserFont::DTI)->memAlloc(this->mFontSize, static_cast<u32>(16));
+        if ((this->mpFontData = t0) != static_cast<void*>(nullptr)) {
+            r.::MtDataReader::read(t0, this->mFontSize);
         }
         return true;
     } else {

@@ -28,6 +28,7 @@ class cGUIObjPolygon;
 class cGUIObjTexture;
 class rGUI;
 class rSoundRequest;
+class sGUIExt;
 class uGUIItemBase01;
 
 // Declarations
@@ -44,6 +45,8 @@ using u32 = unsigned int;
 
 class uGUISystemMsg : public uGUIBase
 {
+    // inferred: sGUIExt::setSystemMsgMode names uGUISystemMsg::mMode
+    friend class sGUIExt;
     // inferred: uGUIItemBase01::evOnlineShop names uGUISystemMsg::mMode
     friend class uGUIItemBase01;
 public:

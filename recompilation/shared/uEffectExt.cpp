@@ -1192,10 +1192,11 @@ __attribute__((weak)) MtObject* uEffectExt::MyDTI::newInstance() const {
 //   in uEffectExt::buildCorrectColorFromZone at 0x008e3cbf-0x008e3ce0 (called at uEffectExt.cpp:1377)
 // void* uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator new[](size_t s);
 
-// No out-of-line body: 2 inlined copies in 2 functions (48 bytes)
-//   in uEffectExt::~uEffectExt at 0x008e393f-0x008e3957 (called at uEffectExt.cpp:198)
-//   in uEffectExt::buildCorrectColorFromZone at 0x008e3abe-0x008e3ad6 (called at uEffectExt.cpp:1360)
-// void uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
+    ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI)->memFree(padr);
+}
 
 // No out-of-line body: no code in the ELF
 // void* uEffectExt::CORRECT_COLOR_PARAM::GENERAL_PARAM::operator new(size_t);
@@ -1285,10 +1286,11 @@ __attribute__((weak)) MtObject* uEffectExt::MyDTI::newInstance() const {
 //   in uEffectExt::buildWindParamFromZone at 0x008e5425-0x008e5442 (called at uEffectExt.cpp:2324)
 // void* uEffectExt::CORRECT_WIND_PARAM::ZONE_WIND_PARAM::operator new[](size_t s);
 
-// No out-of-line body: 2 inlined copies in 2 functions (48 bytes)
-//   in uEffectExt::~uEffectExt at 0x008e3978-0x008e3990 (called at uEffectExt.cpp:201)
-//   in uEffectExt::buildWindParamFromZone at 0x008e52bd-0x008e52d5 (called at uEffectExt.cpp:2275)
-// void uEffectExt::CORRECT_WIND_PARAM::ZONE_WIND_PARAM::operator delete[](void* padr);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uEffectExt::CORRECT_WIND_PARAM::ZONE_WIND_PARAM::operator delete[](void* padr) {
+    ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI)->memFree(padr);
+}
 
 // No out-of-line body: 10 inlined copies in 5 functions (310 bytes)
 //   in uEffectExt::MyDTI::newInstance at 0x008e3306-0x008e3325 (called at uEffectExt.cpp:74)

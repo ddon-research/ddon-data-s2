@@ -13,6 +13,8 @@
 #include "../rStageConnect/sArea.h"
 #include "sCamera.h"
 #include "sCameraExt.h"
+#include "sGUI.h"
+#include "sGUIExt.h"
 #include "sTalkManager.h"
 #include "uCameraBase.h"
 #include "uCameraGame.h"
@@ -76,9 +78,20 @@ void cFSMBase::callbackUpdate() {
 }
 
 // Address: 0x001e0f90 - 0x001e0feb (91 bytes)
-__attribute__((weak)) u32 cFSMBase::stateCallMessage(MtObject* pParam, MtObject* pCaller) {
-    DDON_STUB("cFSMBase::stateCallMessage")
-    return {};
+u32 cFSMBase::stateCallMessage(MtObject* pParam, MtObject* pCaller) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a2
+    if (this->mIsDispMsg == false) {
+        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isTelopFSMEnd() == false) {
+            this->mIsDispMsg = true;
+        }
+        if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
+            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mbFsmEventPlay == false) {
+                this->mIsDispMsg = true;
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e0f20 - 0x001e0f8c (108 bytes)
@@ -89,9 +102,20 @@ __attribute__((weak)) u32 cFSMBase::stateUpdateCallMessage(MtObject* pParam, MtO
 }
 
 // Address: 0x001e0ff0 - 0x001e104b (91 bytes)
-__attribute__((weak)) u32 cFSMBase::stateCallMessageFortDef_Common(MtObject* pParam, MtObject* pCaller) {
-    DDON_STUB("cFSMBase::stateCallMessageFortDef_Common")
-    return {};
+u32 cFSMBase::stateCallMessageFortDef_Common(MtObject* pParam, MtObject* pCaller) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a2
+    if (this->mIsDispMsg == false) {
+        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isTelopFSMEnd() == false) {
+            this->mIsDispMsg = true;
+        }
+        if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
+            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mbFsmEventPlay == false) {
+                this->mIsDispMsg = true;
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e1050 - 0x001e113e (238 bytes)
@@ -106,9 +130,20 @@ __attribute__((weak)) u32 cFSMBase::stateUpdateCallMessageFortDef_Common(MtObjec
 }
 
 // Address: 0x001e1140 - 0x001e119b (91 bytes)
-__attribute__((weak)) u32 cFSMBase::stateCallMessageFortDef_BattleStart(MtObject* pParam, MtObject* pCaller) {
-    DDON_STUB("cFSMBase::stateCallMessageFortDef_BattleStart")
-    return {};
+u32 cFSMBase::stateCallMessageFortDef_BattleStart(MtObject* pParam, MtObject* pCaller) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a2
+    if (this->mIsDispMsg == false) {
+        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isTelopFSMEnd() == false) {
+            this->mIsDispMsg = true;
+        }
+        if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
+            if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mbFsmEventPlay == false) {
+                this->mIsDispMsg = true;
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e11a0 - 0x001e1286 (230 bytes)

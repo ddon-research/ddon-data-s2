@@ -530,10 +530,28 @@ __attribute__((weak)) MtVector3 cContextInterface::getCliffPos(const cContextIns
 // void cContextInterface::setCliffPos(const MtVector3& pos);
 
 // Address: 0x0005a910 - 0x0005a959 (73 bytes)
-__attribute__((weak)) void cContextInterface::setCliffPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setCliffPos")
-    /* stub */
+void cContextInterface::setCliffPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5a928, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5a936 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5a936 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setCliffPos(pos);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 6 inlined copies in 2 functions (96 bytes)
@@ -598,10 +616,28 @@ __attribute__((weak)) MtVector3 cContextInterface::getCliffStartPos(const cConte
 // void cContextInterface::setCliffStartPos(const MtVector3& pos);
 
 // Address: 0x0005aaf0 - 0x0005ab39 (73 bytes)
-__attribute__((weak)) void cContextInterface::setCliffStartPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setCliffStartPos")
-    /* stub */
+void cContextInterface::setCliffStartPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5ab08, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5ab16 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5ab16 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setCliffStartPos(pos);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 6 inlined copies in 2 functions (96 bytes)
@@ -638,10 +674,28 @@ __attribute__((weak)) MtVector3 cContextInterface::getCliffStartOldPos(const cCo
 // void cContextInterface::setCliffStartOldPos(const MtVector3& pos);
 
 // Address: 0x0005ac10 - 0x0005ac59 (73 bytes)
-__attribute__((weak)) void cContextInterface::setCliffStartOldPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setCliffStartOldPos")
-    /* stub */
+void cContextInterface::setCliffStartOldPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5ac28, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5ac36 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5ac36 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setCliffStartOldPos(pos);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 6 inlined copies in 2 functions (96 bytes)
@@ -680,10 +734,28 @@ __attribute__((weak)) MtVector3 cContextInterface::getWallClimbPos(const cContex
 // void cContextInterface::setWallClimbPos(const MtVector3& pos);
 
 // Address: 0x0005ad30 - 0x0005ad79 (73 bytes)
-__attribute__((weak)) void cContextInterface::setWallClimbPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setWallClimbPos")
-    /* stub */
+void cContextInterface::setWallClimbPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5ad48, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5ad56 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5ad56 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setWallClimbPos(pos);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 6 inlined copies in 2 functions (96 bytes)
@@ -746,10 +818,28 @@ __attribute__((weak)) MtVector3 cContextInterface::getWallClimbLandPos(const cCo
 // void cContextInterface::setWallClimbLandPos(const MtVector3& pos);
 
 // Address: 0x0005af10 - 0x0005af59 (73 bytes)
-__attribute__((weak)) void cContextInterface::setWallClimbLandPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setWallClimbLandPos")
-    /* stub */
+void cContextInterface::setWallClimbLandPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5af28, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5af36 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5af36 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setWallClimbLandPos(pos);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 6 inlined copies in 2 functions (96 bytes)
@@ -816,10 +906,28 @@ __attribute__((weak)) MtVector3 cContextInterface::getTargetPos(const cContextIn
 // void cContextInterface::setTargetPos(const MtVector3& pos);
 
 // Address: 0x0005b0d0 - 0x0005b119 (73 bytes)
-__attribute__((weak)) void cContextInterface::setTargetPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setTargetPos")
-    /* stub */
+void cContextInterface::setTargetPos(cContextInstance* pInst, cContextCharacter* pChara, const MtVector3& pos) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5b0e8, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5b0f6 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5b0f6 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setTargetPos(pos);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 4 inlined copies in 2 functions (58 bytes)
@@ -1009,10 +1117,28 @@ __attribute__((weak)) bool cContextInterface::isDead(const cContextInstance* pIn
 // void cContextInterface::setIsDead(bool isDead, u32 i);
 
 // Address: 0x0005b5a0 - 0x0005b5ff (95 bytes)
-__attribute__((weak)) void cContextInterface::setIsDead(cContextInstance* pInst, cContextCharacter* pChara, bool isDead, u32 i) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setIsDead")
-    /* stub */
+void cContextInterface::setIsDead(cContextInstance* pInst, cContextCharacter* pChara, bool isDead, u32 i) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5b5be, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5b5cc carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5b5cc carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setIsDead(isDead, i);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (41 bytes)
@@ -1149,10 +1275,28 @@ __attribute__((weak)) HP_DATATYPE cContextInterface::getHpMax(const cContextInst
 // void cContextInterface::setHpMax(HP_DATATYPE hp, u32 i);
 
 // Address: 0x0005ba20 - 0x0005ba7e (94 bytes)
-__attribute__((weak)) void cContextInterface::setHpMax(cContextInstance* pInst, cContextCharacter* pChara, HP_DATATYPE hp, u32 i) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setHpMax")
-    /* stub */
+void cContextInterface::setHpMax(cContextInstance* pInst, cContextCharacter* pChara, HP_DATATYPE hp, u32 i) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5ba3e, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5ba4c carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5ba4c carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setHpMax(hp, i);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (21 bytes)
@@ -1171,10 +1315,28 @@ __attribute__((weak)) bool cContextInterface::getIsDeadCheatCheck(const cContext
 // HP_DATATYPE cContextInterface::getHpCheatCheck(u32 i) const;
 
 // Address: 0x0005bad0 - 0x0005bb1b (75 bytes)
-__attribute__((weak)) HP_DATATYPE cContextInterface::getHpCheatCheck(const cContextInstance* pInst, const cContextCharacter* pChara, u32 i) {
-    // local: const cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::getHpCheatCheck")
-    return {};
+HP_DATATYPE cContextInterface::getHpCheatCheck(const cContextInstance* pInst, const cContextCharacter* pChara, u32 i) {
+    // DWARF local not rendered: const cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<const cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5bae8, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5baf6 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5baf6 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->::cContextInstChar::getHpCheatCheck(i);
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<HP_DATATYPE>(0);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (22 bytes)
@@ -1404,10 +1566,28 @@ __attribute__((weak)) const nObjCondition::stOcdActiveMsg& cContextInterface::ge
 // void cContextInterface::makeOcdMsgArray();
 
 // Address: 0x0005e310 - 0x0005e356 (70 bytes)
-__attribute__((weak)) void cContextInterface::makeOcdMsgArray(cContextInstance* pInst, cContextCharacter* pChara) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::makeOcdMsgArray")
-    /* stub */
+void cContextInterface::makeOcdMsgArray(cContextInstance* pInst, cContextCharacter* pChara) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e324, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e332 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e332 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::makeOcdMsgArray();
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -1463,17 +1643,53 @@ __attribute__((weak)) const nObjCondition::stOcdActiveData& cContextInterface::g
 // void cContextInterface::setOcdActiveData(u32 bank, u32 index, const nObjCondition::stOcdActiveData& data, bool isTimerReset);
 
 // Address: 0x0005e430 - 0x0005e492 (98 bytes)
-__attribute__((weak)) void cContextInterface::setOcdActiveData(cContextInstance* pInst, cContextCharacter* pChara, u32 OcdUID, const nObjCondition::stOcdActiveData& data, bool isTimerReset) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setOcdActiveData")
-    /* stub */
+void cContextInterface::setOcdActiveData(cContextInstance* pInst, cContextCharacter* pChara, u32 OcdUID, const nObjCondition::stOcdActiveData& data, bool isTimerReset) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e452, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e460 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e460 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setOcdActiveData(OcdUID, data, isTimerReset);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x0005e4a0 - 0x0005e517 (119 bytes)
-__attribute__((weak)) void cContextInterface::setOcdActiveData(cContextInstance* pInst, cContextCharacter* pChara, u32 bank, u32 index, const nObjCondition::stOcdActiveData& data, bool isTimerReset) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setOcdActiveData")
-    /* stub */
+void cContextInterface::setOcdActiveData(cContextInstance* pInst, cContextCharacter* pChara, u32 bank, u32 index, const nObjCondition::stOcdActiveData& data, bool isTimerReset) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e4c8, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e4d6 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e4d6 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setOcdActiveData(bank, index, data, isTimerReset);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (25 bytes)
@@ -1485,10 +1701,28 @@ __attribute__((weak)) void cContextInterface::setOcdActiveData(cContextInstance*
 // void cContextInterface::setOcdActiveTimer(u32 bank, u32 index, f32 timer);
 
 // Address: 0x0005e680 - 0x0005e6df (95 bytes)
-__attribute__((weak)) void cContextInterface::setOcdActiveTimer(cContextInstance* pInst, cContextCharacter* pChara, u32 OcdUID, f32 timer) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setOcdActiveTimer")
-    /* stub */
+void cContextInterface::setOcdActiveTimer(cContextInstance* pInst, cContextCharacter* pChara, u32 OcdUID, f32 timer) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: a frame slot read as the DWARF object it holds; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e6a1, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e6b4 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e6b4 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setOcdActiveTimer(OcdUID, timer);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x0005e6e0 - 0x0005e748 (104 bytes)
@@ -1506,10 +1740,28 @@ __attribute__((weak)) void cContextInterface::setOcdActiveTimer(cContextInstance
 // f32 cContextInterface::getOcdActiveTimer(u32, u32) const;
 
 // Address: 0x0005e620 - 0x0005e66d (77 bytes)
-__attribute__((weak)) f32 cContextInterface::getOcdActiveTimer(const cContextInstance* pInst, const cContextCharacter* pChara, u32 OcdUID) {
-    // local: const cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::getOcdActiveTimer")
-    return {};
+f32 cContextInterface::getOcdActiveTimer(const cContextInstance* pInst, const cContextCharacter* pChara, u32 OcdUID) {
+    // DWARF local not rendered: const cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<const cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e638, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e646 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e646 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->::cContextInstChar::getOcdActiveTimer(OcdUID);
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return 0.0f;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1520,10 +1772,28 @@ __attribute__((weak)) f32 cContextInterface::getOcdActiveTimer(const cContextIns
 // void cContextInterface::setOcdAllTimerResetFlag(bool flag);
 
 // Address: 0x0005e750 - 0x0005e79a (74 bytes)
-__attribute__((weak)) void cContextInterface::setOcdAllTimerResetFlag(cContextInstance* pInst, cContextCharacter* pChara, bool flag) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::setOcdAllTimerResetFlag")
-    /* stub */
+void cContextInterface::setOcdAllTimerResetFlag(cContextInstance* pInst, cContextCharacter* pChara, bool flag) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e768, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e776 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e776 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::setOcdAllTimerResetFlag(flag);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (21 bytes)
@@ -1559,10 +1829,28 @@ __attribute__((weak)) bool cContextInterface::isOcdTimerReset(const cContextInst
 // void cContextInterface::resetOcdTimerReset();
 
 // Address: 0x0005e850 - 0x0005e896 (70 bytes)
-__attribute__((weak)) void cContextInterface::resetOcdTimerReset(cContextInstance* pInst, cContextCharacter* pChara) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::resetOcdTimerReset")
-    /* stub */
+void cContextInterface::resetOcdTimerReset(cContextInstance* pInst, cContextCharacter* pChara) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e864, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e872 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e872 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::resetOcdTimerReset();
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (43 bytes)
@@ -1571,20 +1859,56 @@ __attribute__((weak)) void cContextInterface::resetOcdTimerReset(cContextInstanc
 // void cContextInterface::resetOcdActiveDataAll(bool isImmuneReset);
 
 // Address: 0x0005e520 - 0x0005e56a (74 bytes)
-__attribute__((weak)) void cContextInterface::resetOcdActiveDataAll(cContextInstance* pInst, cContextCharacter* pChara, bool isImmuneReset) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::resetOcdActiveDataAll")
-    /* stub */
+void cContextInterface::resetOcdActiveDataAll(cContextInstance* pInst, cContextCharacter* pChara, bool isImmuneReset) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e538, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e546 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e546 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::resetOcdActiveDataAll(isImmuneReset);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
 // void cContextInterface::resetOcdActiveDataGoodStatus();
 
 // Address: 0x0005e570 - 0x0005e5b6 (70 bytes)
-__attribute__((weak)) void cContextInterface::resetOcdActiveDataGoodStatus(cContextInstance* pInst, cContextCharacter* pChara) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::resetOcdActiveDataGoodStatus")
-    /* stub */
+void cContextInterface::resetOcdActiveDataGoodStatus(cContextInstance* pInst, cContextCharacter* pChara) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e584, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e592 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e592 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::resetOcdActiveDataGoodStatus();
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (72 bytes)
@@ -2908,10 +3232,28 @@ __attribute__((weak)) void cContextInterface::setLostTimer(cContextInstance* pIn
 // void cContextInterface::subLostTimer();
 
 // Address: 0x0005cc90 - 0x0005ccd6 (70 bytes)
-__attribute__((weak)) void cContextInterface::subLostTimer(cContextInstance* pInst, cContextCharacter* pChara) {
-    // local: cContextInstHm* pInstHm;
-    DDON_STUB("cContextInterface::subLostTimer")
-    /* stub */
+void cContextInterface::subLostTimer(cContextInstance* pInst, cContextCharacter* pChara) {
+    // DWARF local not rendered: cContextInstHm* pInstHm;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5cca4, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5ccb2 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstHm::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5ccb2 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstHm*>(pInst)->::cContextInstHm::subLostTime();
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (48 bytes)
@@ -3994,10 +4336,28 @@ __attribute__((weak)) void cContextInterface::setEnemyStartWaitChange(cContextIn
 // void cContextInterface::addCorePointMsg(const cCorePointMsg* pMsg);
 
 // Address: 0x0005dfd0 - 0x0005e019 (73 bytes)
-__attribute__((weak)) void cContextInterface::addCorePointMsg(cContextInstance* pInst, cContextCharacter* pChara, const cCorePointMsg* pMsg) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::addCorePointMsg")
-    /* stub */
+void cContextInterface::addCorePointMsg(cContextInstance* pInst, cContextCharacter* pChara, const cCorePointMsg* pMsg) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5dfe8, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5dff6 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5dff6 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::addCorePointMsg(pMsg);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (45 bytes)
@@ -4006,10 +4366,28 @@ __attribute__((weak)) void cContextInterface::addCorePointMsg(cContextInstance* 
 // u32 cContextInterface::getUnSendedCorePointMsgNum() const;
 
 // Address: 0x0005e020 - 0x0005e068 (72 bytes)
-__attribute__((weak)) u32 cContextInterface::getUnSendedCorePointMsgNum(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    // local: const cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::getUnSendedCorePointMsgNum")
-    return {};
+u32 cContextInterface::getUnSendedCorePointMsgNum(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    // DWARF local not rendered: const cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<const cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e034, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e042 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e042 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->::cContextInstChar::getUnSendedCorePointMsgNum();
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (57 bytes)
@@ -4018,10 +4396,28 @@ __attribute__((weak)) u32 cContextInterface::getUnSendedCorePointMsgNum(const cC
 // cCorePointMsg* cContextInterface::getUnSendedTopCorePointMsg() const;
 
 // Address: 0x0005e070 - 0x0005e0b8 (72 bytes)
-__attribute__((weak)) cCorePointMsg* cContextInterface::getUnSendedTopCorePointMsg(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    // local: const cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::getUnSendedTopCorePointMsg")
-    return nullptr;
+cCorePointMsg* cContextInterface::getUnSendedTopCorePointMsg(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    // DWARF local not rendered: const cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<const cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e084, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e092 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e092 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->::cContextInstChar::getUnSendedTopCorePointMsg();
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<cCorePointMsg*>(nullptr);
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (74 bytes)
@@ -4031,10 +4427,28 @@ __attribute__((weak)) cCorePointMsg* cContextInterface::getUnSendedTopCorePointM
 // u32 cContextInterface::getCorePointMsgNum() const;
 
 // Address: 0x0005e0c0 - 0x0005e108 (72 bytes)
-__attribute__((weak)) u32 cContextInterface::getCorePointMsgNum(const cContextInstance* pInst, const cContextCharacter* pChara) {
-    // local: const cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::getCorePointMsgNum")
-    return {};
+u32 cContextInterface::getCorePointMsgNum(const cContextInstance* pInst, const cContextCharacter* pChara) {
+    // DWARF local not rendered: const cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<const cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e0d4, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e0e2 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e0e2 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->::cContextInstChar::getCorePointMsgNum();
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (86 bytes)
@@ -4044,10 +4458,28 @@ __attribute__((weak)) u32 cContextInterface::getCorePointMsgNum(const cContextIn
 // cCorePointMsg* cContextInterface::getCorePointMsg(u32 index) const;
 
 // Address: 0x0005e110 - 0x0005e15b (75 bytes)
-__attribute__((weak)) cCorePointMsg* cContextInterface::getCorePointMsg(const cContextInstance* pInst, const cContextCharacter* pChara, u32 index) {
-    // local: const cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::getCorePointMsg")
-    return nullptr;
+cCorePointMsg* cContextInterface::getCorePointMsg(const cContextInstance* pInst, const cContextCharacter* pChara, u32 index) {
+    // DWARF local not rendered: const cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<const cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e128, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e136 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e136 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<const cContextInstChar*>(pInst)->::cContextInstChar::getCorePointMsg(index);
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<cCorePointMsg*>(nullptr);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (54 bytes)
@@ -4056,10 +4488,28 @@ __attribute__((weak)) cCorePointMsg* cContextInterface::getCorePointMsg(const cC
 // void cContextInterface::eraseCorePointMsg(u32 index);
 
 // Address: 0x0005e160 - 0x0005e1a9 (73 bytes)
-__attribute__((weak)) void cContextInterface::eraseCorePointMsg(cContextInstance* pInst, cContextCharacter* pChara, u32 index) {
-    // local: cContextInstChar* pInstChar;
-    DDON_STUB("cContextInterface::eraseCorePointMsg")
-    /* stub */
+void cContextInterface::eraseCorePointMsg(cContextInstance* pInst, cContextCharacter* pChara, u32 index) {
+    // DWARF local not rendered: cContextInstChar* pInstChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x5e178, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x5e186 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstChar::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x5e186 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstChar*>(pInst)->::cContextInstChar::eraseCorePointMsg(index);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (12 bytes)
@@ -5660,9 +6110,27 @@ __attribute__((weak)) MtVector3 cContextInterface::getLastSafePos(const cContext
 // void cContextInterface::setLastSafePos(const MtVector3& pos);
 
 // Address: 0x000603e0 - 0x00060429 (73 bytes)
-__attribute__((weak)) void cContextInterface::setLastSafePos(cContextInstance* pInst, const MtVector3& pos) {
-    DDON_STUB("cContextInterface::setLastSafePos")
-    /* stub */
+void cContextInterface::setLastSafePos(cContextInstance* pInst, const MtVector3& pos) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cContextInstance*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x603f8, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x60406 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstHm::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x60406 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cContextInstHm*>(pInst)->::cContextInstHm::setLastSafePos(pos);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00060430 - 0x0006043b (11 bytes)
@@ -6124,9 +6592,35 @@ __attribute__((weak)) void cContextInterface::setElementCoverDamageRate(cContext
 // f32 cContextInterface::getFJobWork0() const;
 
 // Address: 0x00060e10 - 0x00060e5e (78 bytes)
-__attribute__((weak)) f32 cContextInterface::getFJobWork0(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getFJobWork0")
-    return {};
+f32 cContextInterface::getFJobWork0(const cContextInstance* pInst) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x60e57; no location-less local in scope fits
+    f32 v2_7;
+    if (pInst == static_cast<const cContextInstance*>(nullptr)) {
+        v2_7 = 0.0f;
+    } else {
+        // inferred: a temporary for the result of the call at 0x60e28, used twice; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x60e40 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstHm::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x60e40 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_7 = static_cast<const cContextInstHm*>(pInst)->::cContextInstHm::getFJobWork0();
+    }
+    return v2_7;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -6156,9 +6650,35 @@ __attribute__((weak)) void cContextInterface::setFJobWork0(cContextInstance* pIn
 // f32 cContextInterface::getFJobWork1() const;
 
 // Address: 0x00060ed0 - 0x00060f1e (78 bytes)
-__attribute__((weak)) f32 cContextInterface::getFJobWork1(const cContextInstance* pInst) {
-    DDON_STUB("cContextInterface::getFJobWork1")
-    return {};
+f32 cContextInterface::getFJobWork1(const cContextInstance* pInst) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x60f17; no location-less local in scope fits
+    f32 v2_7;
+    if (pInst == static_cast<const cContextInstance*>(nullptr)) {
+        v2_7 = 0.0f;
+    } else {
+        // inferred: a temporary for the result of the call at 0x60ee8, used twice; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x60f00 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cContextInstHm::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x60f00 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_7 = 0.0f;
+                    return v2_7;
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_7 = static_cast<const cContextInstHm*>(pInst)->::cContextInstHm::getFJobWork1();
+    }
+    return v2_7;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)

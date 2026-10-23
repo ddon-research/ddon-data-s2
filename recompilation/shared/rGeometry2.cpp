@@ -543,9 +543,14 @@ bool rGeometry2::cGeometry::isActive() const {
 }
 
 // Address: 0x0121b010 - 0x0121b046 (54 bytes)
-__attribute__((weak)) void rGeometry2::cGeometry::setActive(bool FlgSetActive) {
-    DDON_STUB("rGeometry2::cGeometry::setActive")
-    /* stub */
+void rGeometry2::cGeometry::setActive(bool FlgSetActive) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->isActive() == false) {
+        if ((FlgSetActive == false) == false) {
+            this->::rGeometry2::cGeometry::updateAttachGeometry();
+        }
+    }
+    this->::nCollision::cObjectBase::setActive(FlgSetActive);
 }
 
 // Address: 0x0121b050 - 0x0121b290 (576 bytes)

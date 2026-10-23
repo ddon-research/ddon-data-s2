@@ -54,6 +54,8 @@ class uGUIMyRoomPopup;
 
 // Declarations
 class cGUIObj2D;
+class cGUIObjChildAnimationRoot;
+class cGUIObjColorAdjust;
 class cGUIObjMessage;
 class cGUIObjNull;
 class cGUIObjPolygon;
@@ -73,8 +75,10 @@ using u8 = unsigned char;
 
 class cGUIObject : public MtObject
 {
-    // inferred: cGUIInstAnimation::invisible calls cGUIObject::msgInvisible
+    // inferred: cGUIInstAnimation::setCurrentFrame names cGUIObject::mpChild
     friend class cGUIInstAnimation;
+    // inferred: cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame2 names cGUIObject::mpChild
+    friend class cGUIObjChildAnimationRoot;
     // inferred: cGUIObjMessage::getValidResolutionAdjust names cGUIObject::mParentResolutionAdjust
     friend class cGUIObjMessage;
     // inferred: cGUIObjRoot::triggerEvent names cGUIObject::mpUnit
@@ -323,6 +327,56 @@ public:
     static const u32 CTRLPNT_LT = 0;
     static const u32 CTRLPNT_H_MASK = 3;
     static const u32 CTRLPNT_V_MASK = 12;
+};
+
+class cGUIObjColorAdjust : public cGUIObject
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cGUIObjColorAdjust();
+    virtual ~cGUIObjColorAdjust();
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual bool isDrawableStatic() const;  // vtable slot 6
+    void setColorControl(u32 type);
+    u32 getColorControl() const;
+    void setColorScale(const MtVector4& color);
+    MtVector4 getColorScale() const;
+    void setAmbientColor(const MtColor& color);
+    MtColor getAmbientColor() const;
+    void setSaturation(f32 v);
+    f32 getSaturation() const;
+protected:
+    virtual void beginDraw(nGUI::Draw& drawObj);  // vtable slot 12
+    virtual void endDraw(nGUI::Draw& drawObj);  // vtable slot 14
+private:
+    u32 mColorControl : 4;  // offset: 0xa0
+    u32 padding : 28;  // offset: 0xa0
+    MtColor mAmbientColor;  // offset: 0xa4
+    MtVector4 mColorScale;  // offset: 0xb0
+public:
+    static MyDTI DTI;
 };
 
 class cGUIObjMessage : public cGUIObj2D
@@ -653,6 +707,8 @@ class cGUIObjRoot : public cGUIObject
 {
     // inferred: cGUIInstAnimation::getSequenceId names cGUIObjRoot::mpPlayingSequence
     friend class cGUIInstAnimation;
+    // inferred: cGUIObjChildAnimationRoot::getChildSequenceId names cGUIObjRoot::mpPlayingSequence
+    friend class cGUIObjChildAnimationRoot;
 public:
     class MyDTI;
 public:
@@ -795,6 +851,80 @@ private:
 public:
     static MyDTI DTI;
 };
+
+class cGUIObjChildAnimationRoot : public cGUIObjNull
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cGUIObjChildAnimationRoot();
+    virtual ~cGUIObjChildAnimationRoot();
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual bool isDrawableStatic() const;  // vtable slot 6
+    void setChildSequenceId(u32 id);
+    u32 getChildSequenceId() const;
+    void setChildAnimationCurrentFrameForProperty(s32 frame);
+    void setChildAnimationCurrentFrame(f32 frame);
+    f32 getChildAnimationCurrentFrame() const;
+    void setChildAnimationPlay(bool v);
+    bool isChildAnimationPlay() const;
+    virtual MtAABB calcBoundingBox() const;  // vtable slot 7
+    cGUIObject* getChildAnimationObjectFromId(u32 id) const;
+    cGUIObject* getChildAnimationObjectFromName(MT_CTSTR) const;
+    bool isChildAnimationEnd() const;
+    u32 getInsideAllocateSize() const;
+protected:
+    virtual void init();  // vtable slot 9
+    virtual void initProperty();  // vtable slot 10
+    virtual void play(f32 delta);  // vtable slot 11
+    virtual void draw(nGUI::Draw& drawObj);  // vtable slot 13
+    virtual void calcMatrix(const MtMatrix& wmat);  // vtable slot 15
+    virtual bool checkHit(const MtVector3& pt, f32 ratio, const MtRay* const pRay) const;  // vtable slot 16
+    virtual void setParentResolutionAdjust(u32 type);  // vtable slot 19
+    void setChildAnimationCurrentFrame2(cGUIObject* pObject, f32 frame);
+    void setInstanceId(u32 id);
+private:
+    virtual void setExtendData(void* pData);  // vtable slot 22
+    bool isDeleteObjectBuffer() const;
+    void setDeleteObjectBuffer(bool IsDelete);
+private:
+    u32 mChildAnimPlay : 1;  // offset: 0xe0
+    u32 mDelete_pObjectBuffer : 1;  // offset: 0xe0
+    u32 padding : 30;  // offset: 0xe0
+    u32 mSequenceId;  // offset: 0xe4
+    cGUIObject* * mpObject;  // offset: 0xe8
+    cGUIObjRoot* mpChildRoot;  // offset: 0xf0
+    f32 mChildAnimCurrentFrame;  // offset: 0xf8
+public:
+    static MyDTI DTI;
+};
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline f32 cGUIObjChildAnimationRoot::getChildAnimationCurrentFrame() const {
+    return this->mChildAnimCurrentFrame;
+}
 
 // Inline, no code of its own: checked where it is inlined.
 inline f32 cGUIObjMessage::getMessageWidth() const {

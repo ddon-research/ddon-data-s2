@@ -183,7 +183,9 @@ void cpTinyChain::initActiveSequence(s32 pageNo, s32 indexNo, f32 blendSpeed) {
 // Address: 0x0053e690 - 0x0053e6ed (93 bytes)
 void cpTinyChain::updateActiveSequence() {
     // DWARF local not rendered: f32 blend;
-    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // Approximate from the ELF: a load named after a store only its type keeps apart; a value a join carries, assigned on each way in; the body oracle reports this body.
+    // inferred: a temporary for the value a join carries at 0x53e6cd, assigned on each way in; no DWARF local holds it
+    float j0;
     if (this->::cpComponent::isActive() == false) {
         return;
     }
@@ -194,16 +196,14 @@ void cpTinyChain::updateActiveSequence() {
         return;
     }
     if (this->mpSequenceCtrl->::cpSequenceCtrl::checkSequence(static_cast<u32>(this->mCheckSeqIndex), static_cast<u32>(this->mCheckSeqPageNo), static_cast<MOT_TYPE>(0)) == false) {
-        // inferred: a temporary for the value the load at 0x53e6d1 read, used once; no DWARF local holds it
-        f32 t0 = this->mBlendSpeedChain;
-        this->mpCnsTinyChain->::uConstraint::mBlend = 1.0f;
-        this->mpCnsTinyChain->::uConstraint::mBlendSpeed = t0;
+        j0 = 1.0f;
     } else {
-        // inferred: a temporary for the value the load at 0x53e6d1 read, used once; no DWARF local holds it
-        f32 t0 = this->mBlendSpeedChain;
-        this->mpCnsTinyChain->::uConstraint::mBlend = 0.0f;
-        this->mpCnsTinyChain->::uConstraint::mBlendSpeed = t0;
+        j0 = 0.0f;
     }
+    // inferred: a temporary for the value the load at 0x53e6d1 read, used once; no DWARF local holds it
+    f32 t0 = this->mBlendSpeedChain;
+    this->mpCnsTinyChain->::uConstraint::mBlend = j0;
+    this->mpCnsTinyChain->::uConstraint::mBlendSpeed = t0;
 }
 
 // No out-of-line body: no code in the ELF

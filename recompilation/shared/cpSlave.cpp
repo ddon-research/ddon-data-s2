@@ -10,7 +10,6 @@
 #include "cUnit.h"
 #include "cpComponent.h"
 #include "cpThinkBase.h"
-#include "sMain.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -222,59 +221,13 @@ __attribute__((weak)) u32 cpSlave::getMoveAction() {
 }
 
 // Address: 0x00535db0 - 0x00535f17 (359 bytes)
-void cpSlave::interpolatePos() {
-    // DWARF local not rendered: MtVector3 add;
-    // DWARF local not rendered: MtVector3 pos;
-    // DWARF local not rendered: MtVector3 pos;
-    // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
-    if (this->mForceSetPos != false) {
-        this->mpModel->resetPos(this->mMoveTargetPos);
-        this->mForceSetPos = false;
-        this->mInterpolatePosTimer = 0.0f;
-    } else {
-        // inferred: a temporary for the value the load at 0x535de9 read, used 9 times; no DWARF local holds it
-        f32 t0 = this->mInterpolatePosTimer;
-        if (0.0f >= t0) {
-        } else {
-            f32 deltaTime = ::sMain::getInstance()->mDeltaTime;
-            if (0.2f >= (t0 - deltaTime)) {
-                if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-                    // inferred: a temporary for the value the load at 0x535ee0 read, used once; no DWARF local holds it
-                    f32 t4 = this->mInterpolateVec.y;
-                    // inferred: a temporary for the value the load at 0x535ee8 read, used once; no DWARF local holds it
-                    f32 t5 = this->mInterpolateVec.z;
-                    this->mpModel->::uCoord::mPos.x = this->mpModel->::uCoord::mPos.x + this->mInterpolateVec.x;
-                    this->mpModel->::uCoord::mPos.y = this->mpModel->::uCoord::mPos.y + t4;
-                    this->mpModel->::uCoord::mPos.z = this->mpModel->::uCoord::mPos.z + t5;
-                    this->mpModel->::uCoord::mPos.pad_ = 0.0f;
-                    this->mInterpolatePosTimer = 0.0f;
-                } else {
-                    this->mInterpolatePosTimer = 0.0f;
-                }
-            } else {
-                // inferred: a temporary for the value the load at 0x535e28 read, used twice; no DWARF local holds it
-                f32 t1 = this->mInterpolateVec.x;
-                // inferred: a temporary for the value the load at 0x535e34 read, used twice; no DWARF local holds it
-                f32 t2 = this->mInterpolateVec.y;
-                // inferred: a temporary for the value the load at 0x535e40 read, used twice; no DWARF local holds it
-                f32 t3 = this->mInterpolateVec.z;
-                if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
-                    this->mpModel->::uCoord::mPos.x = this->mpModel->::uCoord::mPos.x + (t1 * (deltaTime / t0));
-                    this->mpModel->::uCoord::mPos.y = this->mpModel->::uCoord::mPos.y + (t2 * (deltaTime / t0));
-                    this->mpModel->::uCoord::mPos.z = this->mpModel->::uCoord::mPos.z + (t3 * (deltaTime / t0));
-                    this->mpModel->::uCoord::mPos.pad_ = 0.0f;
-                    this->mInterpolateVec.x = this->mInterpolateVec.x - (t1 * (deltaTime / t0));
-                    this->mInterpolateVec.y = this->mInterpolateVec.y - (t2 * (deltaTime / t0));
-                    this->mInterpolateVec.z = this->mInterpolateVec.z - (t3 * (deltaTime / t0));
-                } else {
-                    this->mInterpolateVec.x = t1 - (t1 * (deltaTime / t0));
-                    this->mInterpolateVec.y = t2 - (t2 * (deltaTime / t0));
-                    this->mInterpolateVec.z = t3 - (t3 * (deltaTime / t0));
-                }
-                this->mInterpolatePosTimer = t0 - deltaTime;
-            }
-        }
-    }
+__attribute__((weak)) void cpSlave::interpolatePos() {
+    // local: f32 deltaTime;
+    // local: MtVector3 add;
+    // local: MtVector3 pos;
+    // local: MtVector3 pos;
+    DDON_STUB("cpSlave::interpolatePos")
+    /* stub */
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (271 bytes)

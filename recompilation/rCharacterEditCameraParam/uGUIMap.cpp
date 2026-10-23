@@ -11,6 +11,8 @@
 #include "../shared/MtPrimitive2D.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/cUIObject.h"
 #include "../shared/nQuest.h"
@@ -20,6 +22,7 @@
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/sGame.h"
+#include "sMarker.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -267,9 +270,25 @@ __attribute__((weak)) void uGUIMap::updateDisp() {
 // s32 uGUIMap::getLandType();
 
 // Address: 0x00b6adf0 - 0x00b6ae79 (137 bytes)
-__attribute__((weak)) void uGUIMap::changeLandType() {
-    DDON_STUB("uGUIMap::changeLandType")
-    /* stub */
+void uGUIMap::changeLandType() {
+    // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ab0
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ab4
+    // inferred: a temporary for the result of the call at 0xb6ae0a, used once; no DWARF local holds it
+    u32 t0 = ::sMarker::getInstance()->::sMarker::getDispFieldAreaIdFromLandId(static_cast<u32>(this->mLandType));
+    // inferred: a temporary for the result of the call at 0xb6ae14, used once; no DWARF local holds it
+    MT_CTSTR t1 = ::sMarker::getInstance()->::sMarker::getFieldAreaName(t0);
+    if (this->mpObjMsgLand != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mpObjMsgLand), t1, static_cast<u32>(0), false);
+    }
+    static_cast<sGUIExt*>(::sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.x = 0.0f;
+    static_cast<sGUIExt*>(::sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.y = 0.0f;
+    this->mUpdFrmQstInfo = 0.0f;
+    this->mUpdFrmLMInfo = 0.0f;
+    this->mUpdFrmPatchInfo = 0.0f;
+    this->mUpdFrmNpcClsInfo = 0.0f;
+    this->mUpdFrmEMInfo = 0.0f;
+    this->mUpdFrmOMInfo = 0.0f;
 }
 
 // Address: 0x00b758e0 - 0x00b75987 (167 bytes)
@@ -321,9 +340,42 @@ void uGUIMap::updateExit() {
 }
 
 // Address: 0x00b70820 - 0x00b708db (187 bytes)
-__attribute__((weak)) void uGUIMap::moveInput() {
-    DDON_STUB("uGUIMap::moveInput")
-    /* stub */
+void uGUIMap::moveInput() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5dc8
+    if (this->mpSubMenu != static_cast<uGUIPopCmd01*>(nullptr)) {
+        return;
+    }
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mSCM.mMode == static_cast<u32>(2)) {
+        return;
+    }
+    this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::execute();
+    if (this->mpCtrl == static_cast<cControl*>(nullptr)) {
+    } else {
+        this->mpCtrl->execute();
+    }
+    if (this->mpCtrlMapType == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+    } else {
+        this->mpCtrlMapType->execute();
+    }
+    if (this->mpCtrlSubMenu == static_cast<cControl*>(nullptr)) {
+    } else {
+        this->mpCtrlSubMenu->execute();
+    }
+    if (this->mpCtrlZoom == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+    } else {
+        this->mpCtrlZoom->execute();
+    }
+    if (this->mpCtrlMarkerIdx == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+    } else {
+        this->mpCtrlMarkerIdx->execute();
+    }
+    if (this->mpCtrlMarker == static_cast<cControl*>(nullptr)) {
+    } else {
+        this->mpCtrlMarker->execute();
+    }
+    this->::uGUIMap::zoomInput();
+    this->::uGUIMap::markerInput();
 }
 
 // Address: 0x00b6a290 - 0x00b6a2a2 (18 bytes)
@@ -715,9 +767,29 @@ void uGUIMap::execPosition() {
 }
 
 // Address: 0x00b755a0 - 0x00b755f4 (84 bytes)
-__attribute__((weak)) void uGUIMap::execFooter() {
-    DDON_STUB("uGUIMap::execFooter")
-    /* stub */
+void uGUIMap::execFooter() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpInstMask != static_cast<cGUIInstScissorMask*>(nullptr)) {
+        if (this->mpInstFooter != static_cast<cGUIInstance*>(nullptr)) {
+            // inferred: a temporary for the result of the call at 0xb755c2, used once; no DWARF local holds it
+            const MtDTI& t0 = this->mpInstFooter->getDTI();
+            // inferred: the value the loop at 0xb755d0 carries; no location-less local in scope fits
+            MT_CTSTR v0_1 = ::cGUIInstAnimation::DTI.::MtDTI::mName;
+            // inferred: the value the loop at 0xb755d0 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 == v0_0->mName) {
+                    this->::uGUIMap::updateDispAreaName();
+                    return;
+                } else {
+                    if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00b75730 - 0x00b75769 (57 bytes)

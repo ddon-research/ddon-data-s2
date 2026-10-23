@@ -19,7 +19,7 @@
 #include "../shared/cCharacterData.h"
 #include "../shared/cContextInstance.h"
 #include "../shared/cContextInterface.h"
-#include "../shared/cEndContentsManager.h"
+#include "cEndContentsManager.h"
 #include "cGUIUtility.h"
 #include "cMenuSupport.h"
 #include "../shared/cNetGameServer.h"
@@ -520,7 +520,7 @@ void cMenuAreaMaster::initAreaMaster() {
     if (t0 != (::sArchiveManager::INVALID_TICKET)) {
         return;
     }
-    // inferred: a temporary for the result of the call at 0x1225f9, used 3 times; no DWARF local holds it
+    // inferred: a temporary for the result of the call at 0x1225f9, used twice; no DWARF local holds it
     TICKET t1 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
     if (t0 == (this->mArcTicket = t1)) {
         return;
@@ -7580,10 +7580,10 @@ void cMenuKeyConfig::onClose(uGUIKeyConfig& guiKeyConfig) {
             cMenuDialogFlow* const dialog_flow = this->::cMenuBase::mpDialogFlow;
             if (dialog_flow != static_cast<cMenuDialogFlow* const>(nullptr)) {
                 // inferred: a temporary for the result of the call at 0x137366, used once; no DWARF local holds it
-                MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(482));
+                MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(482));
                 // inferred: a temporary for the result of the call at 0x13737f, used once; no DWARF local holds it
-                MT_CTSTR t2 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(483));
-                dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(2), t1, static_cast<s32>(1), t2, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(4)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+                MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(483));
+                dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(2), t0, static_cast<s32>(1), t1, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(4)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
                 this->::cMenuBase::mMenuRno[0] = static_cast<int>(5);
                 guiKeyConfig.::uGUIBaseExt::pauseInput(true);
             } else {
@@ -7608,10 +7608,10 @@ void cMenuKeyConfig::onInitialize(uGUIKeyConfig& guiKeyConfig, u32 categoryListI
         cMenuDialogFlow* const dialog_flow = this->::cMenuBase::mpDialogFlow;
         if (dialog_flow != static_cast<cMenuDialogFlow* const>(nullptr)) {
             // inferred: a temporary for the result of the call at 0x13745e, used once; no DWARF local holds it
-            MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(490));
+            MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(490));
             // inferred: a temporary for the result of the call at 0x137477, used once; no DWARF local holds it
-            MT_CTSTR t2 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1));
-            dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t1, static_cast<s32>(1), t2, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+            MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1));
+            dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(1), t1, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
             this->::cMenuBase::mMenuRno[0] = static_cast<int>(4);
             guiKeyConfig.::uGUIBaseExt::pauseInput(true);
         } else {
@@ -7632,10 +7632,10 @@ void cMenuKeyConfig::onBlankAll(uGUIKeyConfig& guiKeyConfig, u32 categoryListInd
         cMenuDialogFlow* const dialog_flow = this->::cMenuBase::mpDialogFlow;
         if (dialog_flow != static_cast<cMenuDialogFlow* const>(nullptr)) {
             // inferred: a temporary for the result of the call at 0x13754e, used once; no DWARF local holds it
-            MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(500));
+            MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(500));
             // inferred: a temporary for the result of the call at 0x137567, used once; no DWARF local holds it
-            MT_CTSTR t2 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1));
-            dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t1, static_cast<s32>(1), t2, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
+            MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(1));
+            dialog_flow->::cMenuDialogFlow::setDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(1), t1, static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(2)), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), false);
             this->::cMenuBase::mMenuRno[0] = static_cast<int>(8);
             guiKeyConfig.::uGUIBaseExt::pauseInput(true);
         } else {
@@ -7760,9 +7760,9 @@ __attribute__((weak)) void cMenuKeyConfig::finalCheckBeforeExit() {
                 if (this->::cMenuBase::mpDialogFlow != static_cast<cMenuDialogFlow*>(nullptr)) {
                     this->::cMenuBase::mpDialogFlow->::cMenuDialogFlow::initialize(static_cast<u32>(0));
                     // inferred: a temporary for the value the load at 0x136e02 read, used twice; no DWARF local holds it
-                    cMenuDialogFlow* t2 = this->::cMenuBase::mpDialogFlow;
-                    if (t2 != static_cast<cMenuDialogFlow*>(nullptr)) {
-                        t2->::cMenuDialogFlow::setDialogNoCancel(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(497)), static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
+                    cMenuDialogFlow* t0 = this->::cMenuBase::mpDialogFlow;
+                    if (t0 != static_cast<cMenuDialogFlow*>(nullptr)) {
+                        t0->::cMenuDialogFlow::setDialogNoCancel(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(497)), static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
                     }
                     this->::cMenuBase::mMenuRno[0] = static_cast<int>(7);
                     return;
@@ -8613,7 +8613,7 @@ nMenu::MENU_RET cMenuLeaveGroupChat::moveLeaveGroupChat() {
             if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
                 this->::cMenuBase::mpGUISystemMsg->kill();
                 this->::cMenuBase::mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-                // inferred: a temporary for the result of the call at 0x12ff14, used 3 times; no DWARF local holds it
+                // inferred: a temporary for the result of the call at 0x12ff14, used twice; no DWARF local holds it
                 uGUISystemMsg* t4 = ::cGUIUtility::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(1), t1, t2, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isChatMenuUISubMenu());
                 if ((this->::cMenuBase::mpGUISystemMsg = t4) != static_cast<uGUISystemMsg*>(nullptr)) {
                     t4->::uGUIBase::mBasePointerPrio = this->getNextBasePointerPrio();
@@ -8622,7 +8622,7 @@ nMenu::MENU_RET cMenuLeaveGroupChat::moveLeaveGroupChat() {
                     return static_cast<nMenu::MENU_RET>(0);
                 }
             } else {
-                // inferred: a temporary for the result of the call at 0x12ff14, used 3 times; no DWARF local holds it
+                // inferred: a temporary for the result of the call at 0x12ff14, used twice; no DWARF local holds it
                 uGUISystemMsg* t4 = ::cGUIUtility::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t0, static_cast<s32>(1), t1, t2, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isChatMenuUISubMenu());
                 if ((this->::cMenuBase::mpGUISystemMsg = t4) != static_cast<uGUISystemMsg*>(nullptr)) {
                     t4->::uGUIBase::mBasePointerPrio = this->getNextBasePointerPrio();
@@ -8678,7 +8678,7 @@ nMenu::MENU_RET cMenuLeaveGroupChat::moveLeaveGroupChat() {
                     if (this->::cMenuBase::mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
                         this->::cMenuBase::mpGUISystemMsg->kill();
                         this->::cMenuBase::mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
-                        // inferred: a temporary for the result of the call at 0x12ff14, used 3 times; no DWARF local holds it
+                        // inferred: a temporary for the result of the call at 0x12ff14, used twice; no DWARF local holds it
                         uGUISystemMsg* t4 = ::cGUIUtility::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t3, static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isChatMenuUISubMenu());
                         if ((this->::cMenuBase::mpGUISystemMsg = t4) != static_cast<uGUISystemMsg*>(nullptr)) {
                             t4->::uGUIBase::mBasePointerPrio = this->getNextBasePointerPrio();
@@ -8687,7 +8687,7 @@ nMenu::MENU_RET cMenuLeaveGroupChat::moveLeaveGroupChat() {
                             return static_cast<nMenu::MENU_RET>(0);
                         }
                     } else {
-                        // inferred: a temporary for the result of the call at 0x12ff14, used 3 times; no DWARF local holds it
+                        // inferred: a temporary for the result of the call at 0x12ff14, used twice; no DWARF local holds it
                         uGUISystemMsg* t4 = ::cGUIUtility::reqDialog(static_cast<nGUIExt::REQ_DIALOG_TYPE>(0), t3, static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isChatMenuUISubMenu());
                         if ((this->::cMenuBase::mpGUISystemMsg = t4) != static_cast<uGUISystemMsg*>(nullptr)) {
                             t4->::uGUIBase::mBasePointerPrio = this->getNextBasePointerPrio();
@@ -10036,9 +10036,19 @@ __attribute__((weak)) nMenu::MENU_RET cMenuMatchingProfile::moveMatchingProfile(
 }
 
 // Address: 0x000f1d20 - 0x000f1d6e (78 bytes)
-__attribute__((weak)) void cMenuMatchingProfile::exitMenu() {
-    DDON_STUB("cMenuMatchingProfile::exitMenu")
-    /* stub */
+void cMenuMatchingProfile::exitMenu() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
+    if (this->::cMenuBase::mpGUIMenu != static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu) {
+        if (this->::cMenuBase::mpGUIMenu != static_cast<uGUIBase*>(nullptr)) {
+            this->::cMenuBase::mpGUIMenu->kill();
+            this->::cMenuBase::mpGUIMenu = static_cast<uGUIBase*>(nullptr);
+        }
+    } else {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::killSingletonMenu();
+        this->::cMenuBase::mpGUIMenu = static_cast<uGUIBase*>(nullptr);
+    }
+    this->::cMenuBase::exitMenu();
 }
 
 // No out-of-line body: no code in the ELF
@@ -10427,9 +10437,7 @@ void cMenuPartyList::initPartyList(uGUIBase* pGUIRefMenu) {
         }
     }
     if (v0_10->mPartyListInfoVec.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0xf45b9, used once; no DWARF local holds it
-        MtAllocator* t0 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-        t0->memFree(static_cast<void*>(v0_10->mPartyListInfoVec.::MtArray::mpArray));
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(v0_10->mPartyListInfoVec.::MtArray::mpArray));
         v0_10->mPartyListInfoVec.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
         v0_10->mPartyListInfoVec.::MtArray::mBufsiz = static_cast<u32>(0);
         v0_10->mPartyListInfoVec.::MtArray::mLength = static_cast<u32>(0);
@@ -15378,7 +15386,7 @@ uDDOModel* cMenuSubMenu::searchUnit(u32 charId, u32 pawnId) {
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i3_3 = static_cast<unsigned int>(0);;) {
-                // inferred: a temporary for the result of the call at 0x11a80a, used 3 times; no DWARF local holds it
+                // inferred: a temporary for the result of the call at 0x11a80a, used 4 times; no DWARF local holds it
                 cContextInstHm* t2 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i3_3, true);
                 if (t2 != static_cast<cContextInstHm*>(nullptr)) {
                     if (::cContextInterface::getHumanType(t2) == static_cast<u8>(1)) {
@@ -15416,7 +15424,7 @@ uDDOModel* cMenuSubMenu::searchUnit(u32 charId, u32 pawnId) {
         } else {
             // inferred: the counter this loop steps; no location-less local in scope fits
             for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                // inferred: a temporary for the result of the call at 0x11a75b, used 3 times; no DWARF local holds it
+                // inferred: a temporary for the result of the call at 0x11a75b, used 4 times; no DWARF local holds it
                 cContextInstHm* t0 = ::sContextManager::getInstance()->::sContextManager::getContextPlayerIndex(i0_3, true);
                 if (t0 != static_cast<cContextInstHm*>(nullptr)) {
                     if (::cContextInterface::getHumanType(t0) == static_cast<u8>(0)) {
@@ -15435,7 +15443,7 @@ uDDOModel* cMenuSubMenu::searchUnit(u32 charId, u32 pawnId) {
             i2_11 = static_cast<unsigned int>(0);
         }
         for (;;) {
-            // inferred: a temporary for the result of the call at 0x11a7a2, used 3 times; no DWARF local holds it
+            // inferred: a temporary for the result of the call at 0x11a7a2, used 4 times; no DWARF local holds it
             cContextInstHm* t1 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i2_11, true);
             if (t1 != static_cast<cContextInstHm*>(nullptr)) {
                 if (::cContextInterface::getHumanType(t1) == static_cast<u8>(0)) {

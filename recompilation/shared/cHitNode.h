@@ -130,3 +130,9 @@ inline const cCollNode* cHitNode::getCollNode() const {
 inline const cAttackParam* cHitNode::getAttackParam() const {
     return this->mpAttackParam;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cHitNode::getUID() const {
+    return this->mUID;
+}

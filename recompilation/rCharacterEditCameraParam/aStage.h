@@ -28,6 +28,7 @@ class MtVector3;
 class cArcLoaderBase;
 class cCamExParam;
 class cDayNightColorFogParam;
+class cFSMBase;
 class cFSMTaskCtrl;
 class cOmTreeControl;
 class cPlDeadFlow;
@@ -52,6 +53,9 @@ class uColorCorrectFilter;
 class uDDOModel;
 class uGUIClock;
 class uGUICredit;
+class uGUIGaugeEnemy;
+class uGUIGaugeNpc;
+class uGUIGaugeNpcBase;
 class uGUIMapMini;
 class uGUIQuickParty;
 class uLargeEnemyCamera;
@@ -84,6 +88,14 @@ using u8 = unsigned char;
 
 class aStage : public cArea
 {
+    // inferred: cFSMBase::stateCallMessage names aStage::mbFsmEventPlay
+    friend class cFSMBase;
+    // inferred: uGUIGaugeEnemy::draw names aStage::mEventBusy
+    friend class uGUIGaugeEnemy;
+    // inferred: uGUIGaugeNpc::draw names aStage::mEventBusy
+    friend class uGUIGaugeNpc;
+    // inferred: uGUIGaugeNpcBase::draw names aStage::mEventBusy
+    friend class uGUIGaugeNpcBase;
 public:
     enum MOVE_PROFILE
     {

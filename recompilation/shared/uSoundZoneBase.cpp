@@ -349,12 +349,26 @@ void uSoundZoneBase::sync() {
 }
 
 // Address: 0x00d4fc40 - 0x00d4fcd1 (145 bytes)
-__attribute__((weak)) void uSoundZoneBase::setupFromResource(rZone* pRes) {
-    // local: const MtDTI* pGroupManagerDTI;
-    // local: cSoundZoneListener* pListener;
-    // local: cZoneLayout* pZone;
-    DDON_STUB("uSoundZoneBase::setupFromResource")
-    /* stub */
+void uSoundZoneBase::setupFromResource(rZone* pRes) {
+    // DWARF local not rendered: cZoneLayout* pZone;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pRes == static_cast<rZone*>(nullptr)) {
+        return;
+    }
+    if (this->mZoneHandle != (::cZoneLayout::INVALID_HANDLE)) {
+        ::sZone::getInstance()->::sZone::deleteZoneHandle(this->mZoneHandle);
+        const MtDTI* pGroupManagerDTI = this->getGroupManagerDTI();
+        this->mZoneHandle = ::sZone::getInstance()->::sZone::addZoneLayout(pRes, pGroupManagerDTI);
+        cSoundZoneListener* pListener = this->getZoneListener();
+        ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
+        this->getZoneListener();
+    } else {
+        const MtDTI* pGroupManagerDTI = this->getGroupManagerDTI();
+        this->mZoneHandle = ::sZone::getInstance()->::sZone::addZoneLayout(pRes, pGroupManagerDTI);
+        cSoundZoneListener* pListener = this->getZoneListener();
+        ::sZone::getInstance()->::sZone::addListener(static_cast<cZoneListener*>(pListener), this->mZoneHandle);
+        this->getZoneListener();
+    }
 }
 
 // Address: 0x00d4fd00 - 0x00d4fdbe (190 bytes)
@@ -367,7 +381,7 @@ void uSoundZoneBase::setupFromResource(rZone* pRes, const MtVector3& pos) {
     if (this->mZoneHandle != (::cZoneLayout::INVALID_HANDLE)) {
         ::sZone::getInstance()->::sZone::deleteZoneHandle(this->mZoneHandle);
         const MtDTI* pGroupManagerDTI = this->getGroupManagerDTI();
-        // inferred: a temporary for the result of the call at 0xd4fd57, used 4 times; no DWARF local holds it
+        // inferred: a temporary for the result of the call at 0xd4fd57, used 3 times; no DWARF local holds it
         u32 t0 = ::sZone::getInstance()->::sZone::addZoneLayout(pRes, pGroupManagerDTI);
         this->mZoneHandle = t0;
         if (this->mZoneHandle < ::sZone::getInstance()->mZoneLayoutArray.::MtArray::mLength) {
@@ -388,7 +402,7 @@ void uSoundZoneBase::setupFromResource(rZone* pRes, const MtVector3& pos) {
         }
     } else {
         const MtDTI* pGroupManagerDTI = this->getGroupManagerDTI();
-        // inferred: a temporary for the result of the call at 0xd4fd57, used 4 times; no DWARF local holds it
+        // inferred: a temporary for the result of the call at 0xd4fd57, used 3 times; no DWARF local holds it
         u32 t0 = ::sZone::getInstance()->::sZone::addZoneLayout(pRes, pGroupManagerDTI);
         this->mZoneHandle = t0;
         if (this->mZoneHandle < ::sZone::getInstance()->mZoneLayoutArray.::MtArray::mLength) {

@@ -15,7 +15,7 @@
 #include "../rCharacterEditCameraParam/cGUIFloorManager.h"
 #include "cLayoutSet.h"
 #include "cPawnQuestManager.h"
-#include "cPlayPointInfo.h"
+#include "../rCharacterEditCameraParam/cPlayPointInfo.h"
 #include "cQuestPhaseEvent.h"
 #include "../rCharacterEditCameraParam/cQuestResourceLoadManager.h"
 #include "cQuestTask.h"

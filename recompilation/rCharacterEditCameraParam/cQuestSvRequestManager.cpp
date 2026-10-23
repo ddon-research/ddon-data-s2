@@ -6,10 +6,13 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/cNetGameServer.h"
 #include "../shared/cQuestFunctionManagerBAse.h"
 #include "cQuestResourceLoadManager.h"
 #include "cQuestSvRequest.h"
 #include "../shared/nQuest.h"
+#include "../shared/sNetwork.h"
+#include "../shared/sNetworkExt.h"
 #include "../shared/sQuestManagerExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -106,11 +109,11 @@ bool cQuestSvRequestManager::isEmpty() const {
 }
 
 // Address: 0x001c3a10 - 0x001c3a36 (38 bytes)
-__attribute__((weak)) bool cQuestSvRequestManager::canReqQuestProgres() const {
-    // local: const bool isProgress;
-    // local: const bool isReqChangeLeader;
-    DDON_STUB("cQuestSvRequestManager::canReqQuestProgres")
-    return {};
+bool cQuestSvRequestManager::canReqQuestProgres() const {
+    // DWARF local not rendered: const bool isProgress;
+    // DWARF local not rendered: const bool isReqChangeLeader;
+    // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
+    return (this->mpQuestProgressReq == static_cast<cQuestSvReqQuestProgress*>(nullptr)) && (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[43] != static_cast<sNetworkExt::NET_STAT>(1));
 }
 
 // Address: 0x001c35e0 - 0x001c36f7 (279 bytes)

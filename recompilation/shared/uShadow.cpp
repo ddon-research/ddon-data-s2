@@ -471,9 +471,55 @@ void uShadow::setTargetLightEnable(bool e) {
 }
 
 // Address: 0x00f6ad10 - 0x00f6ae31 (289 bytes)
-__attribute__((weak)) void uShadow::setManagedType(u32 type) {
-    DDON_STUB("uShadow::setManagedType")
-    /* stub */
+void uShadow::setManagedType(u32 type) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mManagedType == type) {
+    } else {
+        if (this->mpDepthMap == static_cast<nDraw::Texture*>(nullptr)) {
+        } else {
+            this->mpDepthMap->release();
+            this->mpDepthMap = static_cast<nDraw::Texture*>(nullptr);
+        }
+        if (this->mpTempMap == static_cast<nDraw::Texture*>(nullptr)) {
+        } else {
+            this->mpTempMap->release();
+            this->mpTempMap = static_cast<nDraw::Texture*>(nullptr);
+        }
+        if (this->mpDepthTempMap == static_cast<nDraw::Texture*>(nullptr)) {
+        } else {
+            this->mpDepthTempMap->release();
+            this->mpDepthTempMap = static_cast<nDraw::Texture*>(nullptr);
+        }
+        if (this->mpDepthStencil == static_cast<nDraw::Texture*>(nullptr)) {
+        } else {
+            this->mpDepthStencil->release();
+            this->mpDepthStencil = static_cast<nDraw::Texture*>(nullptr);
+        }
+        if (this->mpDepthMapCache == static_cast<nDraw::Texture*>(nullptr)) {
+        } else {
+            this->mpDepthMapCache->release();
+            this->mpDepthMapCache = static_cast<nDraw::Texture*>(nullptr);
+        }
+        if (this->mpDepthStencilCache == static_cast<nDraw::Texture*>(nullptr)) {
+        } else {
+            this->mpDepthStencilCache->release();
+            this->mpDepthStencilCache = static_cast<nDraw::Texture*>(nullptr);
+        }
+        this->releaseShadowMapSub();
+        this->mpTempMap = static_cast<nDraw::Texture*>(nullptr);
+        this->mpDepthMap = static_cast<nDraw::Texture*>(nullptr);
+        this->mpDepthStencilCache = static_cast<nDraw::Texture*>(nullptr);
+        this->mpDepthMapCache = static_cast<nDraw::Texture*>(nullptr);
+        this->mpDepthStencil = static_cast<nDraw::Texture*>(nullptr);
+        if (type != static_cast<u32>(0)) {
+        } else {
+            this->mDrawEnable = true;
+        }
+        this->mManagedType = type;
+        this->mCacheCounter = static_cast<u32>(0);
+        this->mValidShadowMapCache = false;
+        this->createShadowMap();
+    }
 }
 
 // Address: 0x01b64310 - 0x01b64317 (7 bytes)

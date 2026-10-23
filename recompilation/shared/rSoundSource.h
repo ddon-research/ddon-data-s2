@@ -21,6 +21,7 @@ class MtProperty;
 class MtPropertyList;
 class MtStream;
 class MtUI;
+class rSoundSourceStreamAT9;
 
 // Declarations
 class rSoundSource;
@@ -38,6 +39,8 @@ using u8 = unsigned char;
 
 class rSoundSource : public cResource
 {
+    // inferred: rSoundSourceStreamAT9::prepareToBuffer names rSoundSource::mOpenCtr
+    friend class rSoundSourceStreamAT9;
 public:
     enum Format
     {

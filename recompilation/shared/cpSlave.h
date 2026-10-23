@@ -134,3 +134,10 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpSlave::setInterpolateMoveSpeed(f32 max, f32 min) {
+    this->mMoveMaxSpeed = max;
+    this->mMoveMinSpeed = min;
+}

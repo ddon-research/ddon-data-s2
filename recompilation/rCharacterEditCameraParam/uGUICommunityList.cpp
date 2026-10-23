@@ -123,9 +123,12 @@ __attribute__((weak)) void uGUICommunityList::setup() {
 }
 
 // Address: 0x00a49360 - 0x00a49391 (49 bytes)
-__attribute__((weak)) void uGUICommunityList::kill() {
-    DDON_STUB("uGUICommunityList::kill")
-    /* stub */
+void uGUICommunityList::kill() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x3348
+    this->::uGUIBase::kill();
+    static_cast<sGUIExt*>(::sGUI::getInstance())->mpGUICommunityList = static_cast<uGUICommunityList*>(nullptr);
+    this->mClearFlag = true;
 }
 
 // Address: 0x00a49700 - 0x00a49705 (5 bytes)

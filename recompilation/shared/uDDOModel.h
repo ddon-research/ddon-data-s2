@@ -28,6 +28,7 @@ class MtObject;
 class MtPropertyList;
 class MtQuaternion;
 class MtVector3;
+class aStage;
 class cAsyncArc;
 class cAttackParam;
 class cBlowShrinkDmInfo;
@@ -149,6 +150,8 @@ using u16 = unsigned short;
 
 class uDDOModel : public uModel
 {
+    // inferred: aStage::addFSMCamEvFromName names uDDOModel::mContextInterface.mpContextInstance
+    friend class aStage;
     // inferred: cGUIUtility::isEquipLantern names uDDOModel::mContextInterface.mpContextInstance
     friend class cGUIUtility;
     // inferred: cParentRegionStatus::setHp names uDDOModel::mContextInterface.mpContextInstance
@@ -187,7 +190,7 @@ class uDDOModel : public uModel
     friend class sAIPawnSys;
     // inferred: uCharacter::setupActPreInit names uDDOModel::mGuardComponent.mpActMgr
     friend class uCharacter;
-    // inferred: uControl::connectModel names uDDOModel::mpCtrl
+    // inferred: uControl::disconnectModel names uDDOModel::mpCtrl
     friend class uControl;
     // inferred: uEnemy::setupContextEnemyStatusChange names uDDOModel::mContextInterface.mpContextInstance
     friend class uEnemy;
@@ -960,6 +963,11 @@ inline uControl* uDDOModel::getCtrl() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline cpWorkRate* uDDOModel::getWorkRatePtr() const {
+    return this->mGuardComponent.mpWorkRate;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpObjCollisionBase* uDDOModel::getObjCollisionPtr() const {
     return this->mGuardComponent.mpObjCollision;
 }
@@ -1042,6 +1050,11 @@ inline cpKeepAtkAdjust* uDDOModel::getKeepAtkAdjustPtr() const {
 // Inline, no code of its own: checked where it is inlined.
 inline cpStatusChange* uDDOModel::getStatusChangePtr() const {
     return this->mGuardComponent.mpStatusChange;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline cpPawnThink* uDDOModel::getPawnThinkPtr() const {
+    return this->mGuardComponent.mpPawnThink;
 }
 
 // Inline, no code of its own: checked where it is inlined.

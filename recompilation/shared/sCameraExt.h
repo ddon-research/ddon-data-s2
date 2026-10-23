@@ -213,3 +213,15 @@ public:
 private:
     static const f32 DEF_GAME_SCREEN_RECT_V_RATIO;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void sCameraExt::resetBehindPlayer() {
+    this->mSetBehindPlayer = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void sCameraExt::resetRateFix() {
+    this->mRateFix = false;
+}

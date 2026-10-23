@@ -283,3 +283,21 @@ inline u32 cpJob03::getArrowNum() const {
 inline rSoundRequest* cpJob03::getShlCommonSe() {
     return this->mpShlCommonSe;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline f32 cpJob03::getRangeSpeed() {
+    return this->mRangeSpeed;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cpJob03::getCS14RendaCount() const {
+    return this->mCS14RendaCount;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline f32 cpJob03::getCS14RendaRemainTime() const {
+    return this->mCS14RendaRemainTime;
+}

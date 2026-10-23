@@ -163,14 +163,14 @@ void cpJob10::reset() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     this->::cpJobBase::reset();
     // inferred: a temporary for the value the load at 0x18a9ce read, used 3 times; no DWARF local holds it
-    uHuman* t2 = this->::cpJobBase::mpHuman;
-    if (t2 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = this->::cpJobBase::mpHuman;
+    if (t0 == static_cast<uHuman*>(nullptr)) {
         return;
     }
-    if (t2->::uDDOModel::isMaster() == false) {
+    if (t0->::uDDOModel::isMaster() == false) {
         return;
     }
-    if ((t2->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
         return;
     }
     static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteHudJob10Gauge();
@@ -806,10 +806,12 @@ void cpJob10::reqPoseSpritBarrier() {
 // void cpJob10::reqUnPoseSpritBarrier();
 
 // Address: 0x00190b00 - 0x00190b2d (45 bytes)
-__attribute__((weak)) bool cpJob10::isSpritBarrierCharged() {
-    // local: f32 MAX_SPRITFORCE;
-    DDON_STUB("cpJob10::isSpritBarrierCharged")
-    return {};
+bool cpJob10::isSpritBarrierCharged() {
+    // DWARF local not rendered: f32 MAX_SPRITFORCE;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x190b12, used once; no DWARF local holds it
+    f32 t1 = this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(43));
+    return this->mBarrierChargeForce >= t1;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1097,10 +1099,11 @@ inline void cpJob10::cSpiritManager::operator delete(void* p_addr) {
 //   in cpJob10::reqAttackChargeSpirit at 0x0018d2f4-0x0018d2fe (called at cpJob10.cpp:683)
 // void cpJob10::cSpiritManager::attack(f32 addval);
 
-// No out-of-line body: 2 inlined copies in 2 functions (20 bytes)
-//   in cpJob10::callbackDamageTest at 0x0018e252-0x0018e25c (called at cpJob10.cpp:790)
-//   in cpJob10::callbackCaughtTest at 0x0018e3b2-0x0018e3bc (called at cpJob10.cpp:831)
-// void cpJob10::cSpiritManager::dodge();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob10::cSpiritManager::dodge() {
+    this->mpStateNow->dodge();
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (68 bytes)
 //   in cpJob10::setupJobDataSafeArea at 0x0018a5b1-0x0018a5f5 (called at cpJob10.cpp:373)

@@ -7,10 +7,10 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cCycleQuestManagerBase.h"
-#include "cEndContentsManager.h"
+#include "../rCharacterEditCameraParam/cEndContentsManager.h"
 #include "cNetGameServer.h"
 #include "../rLayout/cNetSessionManager.h"
-#include "cPlayPointInfo.h"
+#include "../rCharacterEditCameraParam/cPlayPointInfo.h"
 #include "cQuestManagerBase.h"
 #include "cQuestPhaseManager.h"
 #include "cQuestPhaseState.h"
@@ -927,7 +927,7 @@ void cQuestTask::setQuestLogDetail(const u32& clearNum) {
 }
 
 // Address: 0x0054ed40 - 0x0054ed4c (12 bytes)
-u32 cQuestTask::getClearNum() const {
+__attribute__((weak)) u32 cQuestTask::getClearNum() const {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return static_cast<const ::cQuestTaskParam&>(this->mTaskParam).::cQuestTaskParam::getClearNum();
 }
@@ -1302,10 +1302,14 @@ bool cQuestTask::isPreWaitDeliver() const {
 }
 
 // Address: 0x0054f5c0 - 0x0054f5f6 (54 bytes)
-__attribute__((weak)) bool cQuestTask::isDelete() const {
-    // local: const bool isErase;
-    DDON_STUB("cQuestTask::isDelete")
-    return {};
+bool cQuestTask::isDelete() const {
+    // DWARF local not rendered: const bool isErase;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x54f5d9, used once; no DWARF local holds it
+    bool t0 = this->mTaskParam.::cQuestTaskParam::checkTaskState(static_cast<u32>(3));
+    // inferred: a temporary for the result of the call at 0x54f5e9, used once; no DWARF local holds it
+    bool t1 = this->mTaskParam.::cQuestTaskParam::checkTaskState(static_cast<u32>(4));
+    return t0 || t1;
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (46 bytes)
@@ -1435,10 +1439,16 @@ __attribute__((weak)) bool cQuestTask::isValid() const {
 }
 
 // Address: 0x0054e880 - 0x0054e89c (28 bytes)
-__attribute__((weak)) void cQuestTask::setLeaderOrder(bool isOrder) {
-    // local: cQuestPersonalData* pData;
-    DDON_STUB("cQuestTask::setLeaderOrder")
-    /* stub */
+void cQuestTask::setLeaderOrder(bool isOrder) {
+    // DWARF local not rendered: cQuestPersonalData* pData;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
+        return;
+    }
+    if ((isOrder == false) != false) {
+        return;
+    }
+    this->mpLeaderData->mIsOrder = isOrder;
 }
 
 // Address: 0x0054e440 - 0x0054e49b (91 bytes)
@@ -2096,7 +2106,7 @@ __attribute__((weak)) void cQuestTask::moveProcess() {
 // Address: 0x00551e20 - 0x00551e72 (82 bytes)
 bool cQuestTask::canProgress() const {
     // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
-    // inferred: a temporary for the result of the call at 0x551e32, used 3 times; no DWARF local holds it
+    // inferred: a temporary for the result of the call at 0x551e32, used twice; no DWARF local holds it
     bool t0 = this->mTaskParam.::cQuestTaskParam::checkTaskState(static_cast<u32>(0));
     if ((*((t0 == false) ? (&this->mpMyData) : (&this->mpLeaderData))) != static_cast<cQuestPersonalData*>(nullptr)) {
         if ((*((t0 == false) ? (&this->mpMyData) : (&this->mpLeaderData)))->::cQuestPersonalData::hasOrdered() != false) {
@@ -3646,10 +3656,10 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkPrt(s32 stageNo, s32 
 }
 
 // Address: 0x001ae470 - 0x001ae49a (42 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkClearcount(s32 minCount, s32 maxCount, s32 param03, s32 param04) {
-    // local: const s32 clearNum;
-    DDON_STUB("cQuestTask::cQuestProcess::checkClearcount")
-    return {};
+bool cQuestTask::cQuestProcess::checkClearcount(s32 minCount, s32 maxCount, s32 param03, s32 param04) {
+    // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
+    const s32 clearNum = this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::getClearNum();
+    return (maxCount >= clearNum) && (clearNum >= minCount);
 }
 
 // Address: 0x001ae4a0 - 0x001ae4a3 (3 bytes)
@@ -3680,24 +3690,36 @@ bool cQuestTask::cQuestProcess::checkOrderDecide(s32 npcId, s32 param02, s32 par
 }
 
 // Address: 0x001ae910 - 0x001ae951 (65 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsEndCycle(s32 param01, s32 param02, s32 param03, s32 param04) {
-    // local: const bool result;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsEndCycle")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsEndCycle(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // DWARF local not rendered: const bool result;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x1ae92e, used once; no DWARF local holds it
+    bool t0 = static_cast<cCycleQuestManagerBase*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(6)))->::cCycleQuestManagerBase::isClear();
+    // inferred: a temporary for the result of the call at 0x1ae945, used once; no DWARF local holds it
+    bool t1 = static_cast<cCycleQuestManagerBase*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(7)))->::cCycleQuestManagerBase::isClear();
+    return t0 || t1;
 }
 
 // Address: 0x001ae960 - 0x001ae9a1 (65 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsInterruptCycle(s32 param01, s32 param02, s32 param03, s32 param04) {
-    // local: const bool result;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsInterruptCycle")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsInterruptCycle(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // DWARF local not rendered: const bool result;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x1ae97e, used once; no DWARF local holds it
+    bool t0 = static_cast<cCycleQuestManagerBase*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(6)))->::cCycleQuestManagerBase::isInterrupt();
+    // inferred: a temporary for the result of the call at 0x1ae995, used once; no DWARF local holds it
+    bool t1 = static_cast<cCycleQuestManagerBase*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(7)))->::cCycleQuestManagerBase::isInterrupt();
+    return t0 || t1;
 }
 
 // Address: 0x001ae9b0 - 0x001ae9f1 (65 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsFailedCycle(s32 param01, s32 param02, s32 param03, s32 param04) {
-    // local: const bool result;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsFailedCycle")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsFailedCycle(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // DWARF local not rendered: const bool result;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x1ae9ce, used once; no DWARF local holds it
+    bool t0 = static_cast<cCycleQuestManagerBase*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(6)))->::cCycleQuestManagerBase::isFailed();
+    // inferred: a temporary for the result of the call at 0x1ae9e5, used once; no DWARF local holds it
+    bool t1 = static_cast<cCycleQuestManagerBase*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(7)))->::cCycleQuestManagerBase::isFailed();
+    return t0 || t1;
 }
 
 // Address: 0x001aea00 - 0x001aea03 (3 bytes)
@@ -3839,19 +3861,27 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkClearcount02(s32 div,
 }
 
 // Address: 0x001af850 - 0x001af891 (65 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIngameTimeRangeEq(s32 minTime, s32 maxTime, s32 param03, s32 param04) {
-    // local: bool result;
-    // local: s32 hour;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIngameTimeRangeEq")
-    return {};
+bool cQuestTask::cQuestProcess::checkIngameTimeRangeEq(s32 minTime, s32 maxTime, s32 param03, s32 param04) {
+    // DWARF local not rendered: bool result;
+    // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
+    s32 hour = ::sGame::getInstance()->::sGame::getGameHour();
+    if (maxTime < minTime) {
+        return (hour >= minTime) || (hour < maxTime);
+    } else {
+        return (hour >= minTime) && (hour < maxTime);
+    }
 }
 
 // Address: 0x001af8a0 - 0x001af8e3 (67 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIngameTimeRangeNotEq(s32 minTime, s32 maxTime, s32 param03, s32 param04) {
-    // local: bool result;
-    // local: s32 hour;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIngameTimeRangeNotEq")
-    return {};
+bool cQuestTask::cQuestProcess::checkIngameTimeRangeNotEq(s32 minTime, s32 maxTime, s32 param03, s32 param04) {
+    // DWARF local not rendered: bool result;
+    // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
+    s32 hour = ::sGame::getInstance()->::sGame::getGameHour();
+    if (maxTime < minTime) {
+        return ((hour >= minTime) || (hour < maxTime)) == false;
+    } else {
+        return ((hour >= minTime) && (hour < maxTime)) == false;
+    }
 }
 
 // Address: 0x001af8f0 - 0x001af949 (89 bytes)
@@ -4104,9 +4134,9 @@ bool cQuestTask::cQuestProcess::checkEmDieForRandomDungeon(s32 stageNo, s32 enem
     // inferred: a temporary for the result of the call at 0x1b11d7, used twice; no DWARF local holds it
     u32 t0 = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getKilledEnemyNum(static_cast<u32>(stageNo), static_cast<u32>(enemyId));
     // inferred: a temporary for the value the load at 0x1b11dc read, used twice; no DWARF local holds it
-    u32 t2 = this->mDieEmNum;
-    this->mDieEmNum = t2 + t0;
-    return (t2 + t0) >= static_cast<unsigned int>(enemyNum);
+    u32 t1 = this->mDieEmNum;
+    this->mDieEmNum = t1 + t0;
+    return (t1 + t0) >= static_cast<unsigned int>(enemyNum);
 }
 
 // Address: 0x001b1200 - 0x001b131b (283 bytes)
@@ -4449,9 +4479,9 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsLostMainPawn(s32 pa
 }
 
 // Address: 0x001b2890 - 0x001b28a7 (23 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsFullOrderQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsFullOrderQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsFullOrderQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isBlankMyOrder() == false;
 }
 
 // Address: 0x001b28b0 - 0x001b28db (43 bytes)
@@ -4628,9 +4658,9 @@ bool cQuestTask::cQuestProcess::checkIsOrderMyQuest(s32 param01, s32 param02, s3
 }
 
 // Address: 0x001b2e20 - 0x001b2e34 (20 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsNotOrderMyQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsNotOrderMyQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsNotOrderMyQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::isOrder() == false;
 }
 
 // Address: 0x001b2e40 - 0x001b2e68 (40 bytes)
@@ -4766,9 +4796,9 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsExistDividePlayer(s
 }
 
 // Address: 0x001b3470 - 0x001b3487 (23 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkNotDividePlayer(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkNotDividePlayer")
-    return {};
+bool cQuestTask::cQuestProcess::checkNotDividePlayer(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isSucceededDevide() == false;
 }
 
 // Address: 0x001b3490 - 0x001b35ca (314 bytes)
@@ -4828,9 +4858,9 @@ bool cQuestTask::cQuestProcess::checkIsHoldingPeriodCycleContents(s32 param01, s
 }
 
 // Address: 0x001b3790 - 0x001b37a7 (23 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsNotHoldingPeriodCycleContents(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsNotHoldingPeriodCycleContents")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsNotHoldingPeriodCycleContents(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isHoldingAnyCycleContents() == false;
 }
 
 // Address: 0x001b37b0 - 0x001b37bf (15 bytes)
@@ -4840,10 +4870,23 @@ bool cQuestTask::cQuestProcess::checkIsResetInstanceArea(s32 param01, s32 param0
 }
 
 // Address: 0x001b37c0 - 0x001b3819 (89 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkCheckMoonAge(s32 moonAgeStart, s32 moonAgeEnd, s32 param03, s32 param04) {
-    // local: s32 moonAge;
-    DDON_STUB("cQuestTask::cQuestProcess::checkCheckMoonAge")
-    return {};
+bool cQuestTask::cQuestProcess::checkCheckMoonAge(s32 moonAgeStart, s32 moonAgeEnd, s32 param03, s32 param04) {
+    // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
+    s32 moonAge = ::sGame::getInstance()->::sGame::getMoonAge();
+    if (moonAgeStart == moonAgeEnd) {
+        return moonAgeStart == moonAge;
+    } else {
+        if (moonAgeEnd < moonAgeStart) {
+            if (moonAgeStart <= static_cast<s32>(30)) {
+                if (moonAgeEnd <= static_cast<s32>(30)) {
+                    return (moonAgeEnd >= moonAge) || (moonAge >= moonAgeStart);
+                }
+            }
+            return false;
+        } else {
+            return (moonAgeEnd >= moonAge) && (moonAge >= moonAgeStart);
+        }
+    }
 }
 
 // Address: 0x001b3820 - 0x001b3875 (85 bytes)

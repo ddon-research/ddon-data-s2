@@ -17,6 +17,7 @@ class MtProperty;
 class MtPropertyList;
 class MtString;
 class MtUI;
+class aStage;
 class rArchive;
 
 // Declarations
@@ -32,6 +33,8 @@ using u32 = unsigned int;
 
 class cArea : public MtObject
 {
+    // inferred: aStage::setFsmEvent names cArea::mCs
+    friend class aStage;
 public:
     class MyDTI;
 public:
@@ -103,7 +106,6 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline bool cArea::isInit() {
     return this->mInit;
 }

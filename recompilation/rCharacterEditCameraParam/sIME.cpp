@@ -5,6 +5,73 @@
 #define DDON_STUB(name)
 #endif
 
+// Address: 0x007c1b60 - 0x007c1b77 (23 bytes)
+nIME::CandidateDispInfo::CandidateDispInfo() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mListNum = static_cast<u32>(0);
+    this->mListSelectIndex = static_cast<u32>(0);
+}
+
+// Address: 0x007c1b80 - 0x007c1b81 (1 bytes)
+// Also emitted as: _ZN4nIME17CandidateDispInfoD0Ev at 0x007c1b90
+nIME::CandidateDispInfo::~CandidateDispInfo() {
+    // Empty in the binary (a single `ret`).
+}
+
+// Address: 0x007c1ba0 - 0x007c1ba9 (9 bytes)
+void nIME::CandidateDispInfo::clear() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mListNum = static_cast<u32>(0);
+    this->mListSelectIndex = static_cast<u32>(0);
+}
+
+// No out-of-line body: 2 inlined copies in 2 functions (10 bytes)
+//   in nIMEPS4::CandidateDispInfo::operator= at 0x007c211c-0x007c211f (called at sIMEPS4.cpp:165)
+//   in sIMEPS4::eventHandler at 0x007c2b11-0x007c2b18 (called at sIMEPS4.cpp:479)
+// void nIME::CandidateDispInfo::setListNum(u32 listNum);
+
+// No out-of-line body: 2 inlined copies in 2 functions (10 bytes)
+//   in nIMEPS4::CandidateDispInfo::operator= at 0x007c2122-0x007c2125 (called at sIMEPS4.cpp:166)
+//   in sIMEPS4::eventHandler at 0x007c2b18-0x007c2b1f (called at sIMEPS4.cpp:480)
+// void nIME::CandidateDispInfo::setListSelectIndex(u32 listSelectIndex);
+
+// No out-of-line body: 2 inlined copies in 2 functions (6 bytes)
+//   in nInputText::CandidateList::getCandidateListCount at 0x00616ab0-0x00616ab3 (called at nInputText.cpp:784)
+//   in nIMEPS4::CandidateDispInfo::operator= at 0x007c2119-0x007c211c (called at sIMEPS4.cpp:165)
+// u32 nIME::CandidateDispInfo::getListNum() const;
+
+// No out-of-line body: 2 inlined copies in 2 functions (6 bytes)
+//   in nInputText::CandidateList::getCandidateListSelectIndex at 0x00616ac0-0x00616ac3 (called at nInputText.cpp:798)
+//   in nIMEPS4::CandidateDispInfo::operator= at 0x007c211f-0x007c2122 (called at sIMEPS4.cpp:166)
+// u32 nIME::CandidateDispInfo::getListSelectIndex() const;
+
+// No out-of-line body: no code in the ELF
+// u32 nIME::CandidateDispInfo::getPageNum() const;
+
+// No out-of-line body: no code in the ELF
+// u32 nIME::CandidateDispInfo::getDispPageIndex() const;
+
+// Address: 0x007c1bd0 - 0x007c1bfb (43 bytes)
+__attribute__((weak)) u32 nIME::CandidateDispInfo::getDispStartIndex() const {
+    // local: u32 disp_start_index;
+    // local: const u32 disp_num_max;
+    DDON_STUB("nIME::CandidateDispInfo::getDispStartIndex")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// u32 nIME::CandidateDispInfo::getDispIndex() const;
+
+// Address: 0x007c1c10 - 0x007c1c8d (125 bytes)
+__attribute__((weak)) u32 nIME::CandidateDispInfo::getDispNum() const {
+    // local: u32 disp_num;
+    // local: const u32 list_num;
+    // local: const u32 disp_num_max;
+    // local: const u32 disp_start_index;
+    DDON_STUB("nIME::CandidateDispInfo::getDispNum")
+    return {};
+}
+
 // Address: 0x007c1b30 - 0x007c1b3f (15 bytes)
 nIME::InputInfo::InputInfo() {
     // Proven from the ELF: the body oracle checks this body (022 D5).

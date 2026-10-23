@@ -65,7 +65,7 @@ public:
 public:
     class cInGameGroupManager : public MtObject
     {
-        // inferred: cZoneLayout::getGlobalLayoutElementNum names cZoneLayout::cInGameGroupManager::mpResourceGroupManager
+        // inferred: cZoneLayout::getGlobalLayoutElement names cZoneLayout::cInGameGroupManager::mpResourceGroupManager
         friend class cZoneLayout;
         // inferred: nZone::cLayoutElement::isEnable names cZoneLayout::cInGameGroupManager::mFlgEnable
         friend class nZone::cLayoutElement;
@@ -268,3 +268,9 @@ public:
     static const u32 INVALID_HANDLE;
     static const MtString INVALID_PATH;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cZoneLayout::cInGameGroupManager::isEnable() const {
+    return this->mFlgEnable;
+}

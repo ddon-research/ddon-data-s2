@@ -18,8 +18,13 @@ class cArea;
 class cFSMBase;
 class cLayoutSet;
 class cNetGameServer;
+namespace nSessionManager { class cNetSessionManager; }
 class sGame;
 class uControlNpc;
+class uGUIGaugeEnemy;
+class uGUIGaugeNpc;
+class uGUIGaugeNpcBase;
+class uGUINewspaper;
 class uGUIPopTopSel;
 class uHuman;
 
@@ -38,16 +43,26 @@ class sArea : public cSystem
 {
     // inferred: aStage::getJointAreaNo names sArea::mpArea[2]
     friend class aStage;
-    // inferred: cFSMBase::isMessageEnded names sArea::mpArea[2]
+    // inferred: cFSMBase::stateCallMessage names sArea::mpArea[2]
     friend class cFSMBase;
     // inferred: cLayoutSet::isSplitSbc names sArea::mpArea[2]
     friend class cLayoutSet;
     // inferred: cNetGameServer::updateMyRoomBgm names sArea::mpArea[2]
     friend class cNetGameServer;
+    // inferred: nSessionManager::cNetSessionManager::endQuickMatch names sArea::mpArea[2]
+    friend class nSessionManager::cNetSessionManager;
     // inferred: sGame::getNextStage names sArea::mpArea[2]
     friend class sGame;
     // inferred: uControlNpc::isUseMotionListLight names sArea::mpArea[2]
     friend class uControlNpc;
+    // inferred: uGUIGaugeEnemy::draw names sArea::mpArea[2]
+    friend class uGUIGaugeEnemy;
+    // inferred: uGUIGaugeNpc::draw names sArea::mpArea[2]
+    friend class uGUIGaugeNpc;
+    // inferred: uGUIGaugeNpcBase::draw names sArea::mpArea[2]
+    friend class uGUIGaugeNpcBase;
+    // inferred: uGUINewspaper::questwarpCallBack names sArea::mpArea[2]
+    friend class uGUINewspaper;
     // inferred: uGUIPopTopSel::isExitEntryBoard names sArea::mpArea[2]
     friend class uGUIPopTopSel;
     // inferred: uHuman::initBake names sArea::mpArea[2]

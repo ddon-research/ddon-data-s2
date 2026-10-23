@@ -449,6 +449,12 @@ inline bool cControl::getFocus() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cControl::setNoMoveNoEvent() {
+    this->mIsSetNoMoveEvent = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline s32 cControl::getItemNum() const {
     return this->mItemNum;
 }

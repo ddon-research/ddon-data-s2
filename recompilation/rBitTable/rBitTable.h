@@ -111,3 +111,9 @@ inline cBitTable::cBitTable() {
     this->mBitData = static_cast<BitData>(0);
     this->mCommandType = static_cast<u32>(0);
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline BitData cBitTable::getBitData() const {
+    return this->mBitData;
+}

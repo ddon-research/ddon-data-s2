@@ -265,3 +265,12 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uGUIInfo::eventDecide() {
+    if (this->mFlowId != static_cast<u32>(3)) {
+        return;
+    }
+    this->mInfoResult = static_cast<u32>(1);
+}

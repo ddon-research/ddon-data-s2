@@ -10,8 +10,6 @@
 struct MtFloat3;
 struct MtFloat4;
 class MtStream;
-class cEditParam;
-class cStorageDataEdit;
 
 // Declarations
 class MtDataWriter;
@@ -38,10 +36,6 @@ using uintptr = __uintptr_t;
 
 class MtDataWriter
 {
-    // inferred: cEditParam::save names MtDataWriter::mSeekPt
-    friend class cEditParam;
-    // inferred: cStorageDataEdit::save names MtDataWriter::mSeekPt
-    friend class cStorageDataEdit;
 public:
     struct Frame;
     struct Label;

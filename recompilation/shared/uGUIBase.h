@@ -84,6 +84,7 @@ class rGUIMessage;
 class rSoundRequest;
 class rTexture;
 class sGUIExt;
+class sTalkManager;
 class uGUIAreaMaster;
 class uGUIBoughtBox;
 class uGUIBoxGachaInfo;
@@ -92,7 +93,9 @@ class uGUICaplinkFriendList;
 class uGUICaplinkMenuBase;
 class uGUICaplinkProfile;
 class uGUICaplinkTalk;
+class uGUIChargesHUD;
 class uGUIGPShop;
+class uGUIGaugeSkill;
 class uGUIGiveAndTake;
 class uGUIInfo;
 class uGUIItemBase01;
@@ -145,6 +148,8 @@ class uGUIBase : public uGUI
     friend class cMenuLeaveGroupChat;
     // inferred: sGUIExt::isTelopFSMEnd names uGUIBase::mResult
     friend class sGUIExt;
+    // inferred: sTalkManager::isEndGUISingleton names uGUIBase::mResult
+    friend class sTalkManager;
     // inferred: uGUIAreaMaster::setupWindowActive names uGUIBase::mIsWindowActive
     friend class uGUIAreaMaster;
     // inferred: uGUIBoughtBox::setTitle names uGUIBase::mpGUIMsgs.elems[0]
@@ -939,6 +944,8 @@ public:
 public:
     class cInputGuideMonitor
     {
+        // inferred: uGUIGaugeSkill::rendaStart names uGUIGaugeSkill::mInputGuideMonitor.mLastActPltType
+        friend class uGUIGaugeSkill;
     public:
         cInputGuideMonitor();
         void reset();
@@ -1471,7 +1478,7 @@ public:
         T mpOrgInst;  // offset: 0x20
     };
 public:
-    // Layout verified against DWARF for cExGUIMessageObj<64>
+    // Layout verified against DWARF for cExGUIMessageObj<256>, cExGUIMessageObj<64>
     template <unsigned int _size>
     class cExGUIMessageObj : public uGUIBase::cSupportBase
     {
@@ -1499,7 +1506,7 @@ public:
         friend class uGUICaplinkProfile;
         // inferred: uGUIGPShop::shiftHistoryList names uGUIGPShop::mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIGPShop;
-        // inferred: uGUINewspaper::initRankingActiveControl names uGUINewspaper::mRankingScrollbar.mCursor.::uGUIBase::cSupportInstAnim::mpInstance
+        // inferred: uGUINewspaper::updateRanking names uGUINewspaper::mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUINewspaper;
         // inferred: uGUIPhoto::initFrame names uGUIPhoto::mCursor.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIPhoto;
@@ -2903,6 +2910,8 @@ public:
 public:
     class cReferenceUIChargesInfo : public uGUIBase::cReferenceUIBase
     {
+        // inferred: uGUIChargesHUD::addData names uGUIChargesHUD::mRefCharges[1].mSizeWFix
+        friend class uGUIChargesHUD;
     public:
         enum
         {
@@ -6055,6 +6064,24 @@ inline bool uGUIBase::isAttachedResource() const {
 // Inline, no code of its own: checked where it is inlined.
 inline rEmblemColorTable* uGUIBase::getEmblemColorTableRes() const {
     return this->mpEmblemColorTable;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline rGUIMessage* uGUIBase::getMsgPlayStyleItem() const {
+    return this->mpMsgPlayStyleItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline rGUIMessage* uGUIBase::getMsgClanProfileItem() const {
+    return this->mpMsgClanProfileItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline nGUIExt::stWindowActive& uGUIBase::getWindowActive() {
+    return this->mWindowActive;
 }
 
 // Inline, no code of its own: checked where it is inlined.

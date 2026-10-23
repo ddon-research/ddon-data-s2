@@ -6,10 +6,13 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cUnit.h"
+#include "cpErosionEnemy.h"
+#include "../rCharacterEditCameraParam/cpStatusChange.h"
 #include "nErosionEnemy.h"
 #include "nRegionStatus.h"
 #include "rErosionRegion.h"
 #include "uCharacter.h"
+#include "uDDOModel.h"
 #include "../rCharacterEditCameraParam/uEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -203,9 +206,25 @@ __attribute__((weak)) void cErosionRegion::breakErosion() {
 }
 
 // Address: 0x000c9e80 - 0x000c9ede (94 bytes)
-__attribute__((weak)) void cErosionRegion::setupContextErosion(bool recvFlag, bool initSet) {
-    DDON_STUB("cErosionRegion::setupContextErosion")
-    /* stub */
+void cErosionRegion::setupContextErosion(bool recvFlag, bool initSet) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (initSet != false) {
+        if (this->mInitState != static_cast<nErosionEnemy::EROSION_REGION_INIT_STATE>(2)) {
+            if (this->mpErosionEnemy->mErosionInitType == static_cast<nErosionEnemy::EROSION_INIT_TYPE>(1)) {
+                this->::cErosionRegion::changeStateBreak(recvFlag == false);
+            } else {
+                this->::cErosionRegion::changeStateGenerate(recvFlag == false);
+            }
+        } else {
+            this->::cErosionRegion::changeStateBreak(recvFlag == false);
+        }
+    } else {
+        if (this->mpEnemy->::uDDOModel::isDead(static_cast<u32>(this->mRegionNo)) != false) {
+            this->::cErosionRegion::changeStateBreak(recvFlag == false);
+        } else {
+            this->::cErosionRegion::changeStateGenerate(recvFlag == false);
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -232,18 +251,98 @@ __attribute__((weak)) void cErosionRegion::setupContextErosion(bool recvFlag, bo
 
 // Address: 0x000ca030 - 0x000ca180 (336 bytes)
 __attribute__((weak)) void cErosionRegion::changeStateGenerate(bool isSetup) {
-    // local: cpStatusChange* pCpStatusChange;
-    // local: bool isToContext;
-    DDON_STUB("cErosionRegion::changeStateGenerate")
-    /* stub */
+    // DWARF local not rendered: bool isToContext;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    this->mErosionMode = static_cast<nErosionEnemy::EROSION_MODE>(2);
+    cpStatusChange* pCpStatusChange = this->mpEnemy->::uDDOModel::getStatusChangePtr();
+    if (pCpStatusChange == static_cast<cpStatusChange*>(nullptr)) {
+        return;
+    }
+    if (this->mpEnemy->::uDDOModel::isMaster() == false) {
+        return;
+    }
+    switch (static_cast<unsigned int>(this->mErosionRegionRes.::cErosionRegionRes::getRegionCategory() - static_cast<s32>(1))) {
+        case static_cast<unsigned int>(0):
+        {
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(33), true, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(32), false, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(40), true, isSetup == false);
+            break;
+        }
+        case static_cast<unsigned int>(1):
+        {
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(35), true, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(34), false, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(41), true, isSetup == false);
+            break;
+        }
+        case static_cast<unsigned int>(2):
+        {
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(37), true, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(36), false, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(42), true, isSetup == false);
+            break;
+        }
+        case static_cast<unsigned int>(3):
+        {
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(39), true, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(38), false, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(43), true, isSetup == false);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // Address: 0x000c9ee0 - 0x000ca02c (332 bytes)
 __attribute__((weak)) void cErosionRegion::changeStateBreak(bool isSetup) {
-    // local: cpStatusChange* pCpStatusChange;
-    // local: bool isToContext;
-    DDON_STUB("cErosionRegion::changeStateBreak")
-    /* stub */
+    // DWARF local not rendered: bool isToContext;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    this->mErosionMode = static_cast<nErosionEnemy::EROSION_MODE>(1);
+    cpStatusChange* pCpStatusChange = this->mpEnemy->::uDDOModel::getStatusChangePtr();
+    if (pCpStatusChange == static_cast<cpStatusChange*>(nullptr)) {
+        return;
+    }
+    if (this->mpEnemy->::uDDOModel::isMaster() == false) {
+        return;
+    }
+    switch (static_cast<unsigned int>(this->mErosionRegionRes.::cErosionRegionRes::getRegionCategory() - static_cast<s32>(1))) {
+        case static_cast<unsigned int>(0):
+        {
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(33), false, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(32), true, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(40), false, isSetup == false);
+            break;
+        }
+        case static_cast<unsigned int>(1):
+        {
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(35), false, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(34), true, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(41), false, isSetup == false);
+            break;
+        }
+        case static_cast<unsigned int>(2):
+        {
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(37), false, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(36), true, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(42), false, isSetup == false);
+            break;
+        }
+        case static_cast<unsigned int>(3):
+        {
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(39), false, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeCollisionBitProg(static_cast<u32>(38), true, isSetup == false);
+            pCpStatusChange->::cpStatusChange::changeMontageBitProg(static_cast<u32>(43), false, isSetup == false);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (27 bytes)

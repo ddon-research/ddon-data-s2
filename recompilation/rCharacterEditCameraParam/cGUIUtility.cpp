@@ -15,6 +15,8 @@
 #include "../shared/nKeyCustom.h"
 #include "../shared/nQuest.h"
 #include "../shared/rItemList.h"
+#include "../rStageConnect/sArea.h"
+#include "../rStageConnect/sAreaExt.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/sGame.h"
@@ -972,11 +974,15 @@ __attribute__((weak)) void cGUIUtility::addChildUnit(uGUIBase* pParent, uGUIBase
 }
 
 // Address: 0x00204740 - 0x00204777 (55 bytes)
-__attribute__((weak)) MT_CTSTR cGUIUtility::GetStageName(s32 stageNo) {
-    // local: const u32 stage_msg_id;
-    // local: const MT_CTSTR stage_msg;
-    DDON_STUB("cGUIUtility::GetStageName")
-    return {};
+MT_CTSTR cGUIUtility::GetStageName(s32 stageNo) {
+    // DWARF local not rendered: const MT_CTSTR stage_msg;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
+        const u32 stage_msg_id = static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::getStageMsgId(stageNo);
+        return static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getStageName(stage_msg_id);
+    } else {
+        return "";
+    }
 }
 
 // Address: 0x00204780 - 0x00204835 (181 bytes)

@@ -172,6 +172,12 @@ inline f32 cOcdStatusParamRes::getCureWaitTime() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParamRes::setCureWaitTime(f32 value) {
+    this->mCureWaitTime = value;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline f32 cOcdStatusParamRes::getEndurancePrivate() const {
     return this->mEndurance;
 }

@@ -4,10 +4,12 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtNetCore.h"
 #include "MtNetObject.h"
 #include "MtNetRanking.h"
 #include "MtObject.h"
 #include "cStateMachine.h"
+#include "sNetwork.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -203,9 +205,30 @@ void nNetwork::nRanking::Object::setFatal(s32 no, s32 cause, s32 native) {
 // void nNetwork::nRanking::Object::setCurrentState(s32 state);
 
 // Address: 0x01365fb0 - 0x01366057 (167 bytes)
-__attribute__((weak)) void nNetwork::nRanking::Object::createDriver() {
-    DDON_STUB("nNetwork::nRanking::Object::createDriver")
-    /* stub */
+void nNetwork::nRanking::Object::createDriver() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpDriver != static_cast<MtNetRanking*>(nullptr)) {
+        return;
+    }
+    if ((::sNetwork::mpInstance)->::sNetwork::isServiceStart() == false) {
+        return;
+    }
+    // inferred: a temporary for the result of the call at 0x1365fe1, used twice; no DWARF local holds it
+    u32 t0 = (::sNetwork::mpInstance)->::sNetwork::getServiceUserIndex();
+    if (this->mUserIndex != t0) {
+        return;
+    }
+    if ((::sNetwork::mpInstance)->::sNetwork::getContext(t0, static_cast<s32>(0)) == static_cast<MtNetContext*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x1366006 read, used once; no DWARF local holds it
+    MtNetCore* t1 = ::MtNetCore::mpInstance;
+    // inferred: a temporary for the result of the call at 0x136601f, used twice; no DWARF local holds it
+    MtNetRanking* t2 = t1->::MtNetCore::newRanking((::sNetwork::mpInstance)->::sNetwork::getContext(this->mUserIndex, static_cast<s32>(0)));
+    if ((this->mpDriver = t2) == static_cast<MtNetRanking*>(nullptr)) {
+        return;
+    }
+    this->mpDriver->::MtNetRanking::addListener(static_cast<MtNetRanking::Listener*>(&this->mDriveListener));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

@@ -41,7 +41,9 @@ namespace nJobParam { class cHumanBaseInfo; }
 namespace nJobParam { class cJobInfo; }
 namespace nNet { struct stClanEmblem; }
 namespace nSessionManager { class cNetSessionManager; }
+class sGame;
 class sNetworkExt;
+class uGUIEngageInfo;
 
 // Declarations
 class cCharacterData;
@@ -73,8 +75,12 @@ class cCharacterData : public MtObject
     friend class cpJob02;
     // inferred: nSessionManager::cNetSessionManager::createFlow names sGame::mCharData.mCharData.mMatchProfile.mInviteWait
     friend class nSessionManager::cNetSessionManager;
+    // inferred: sGame::initDecideCharacter names sGame::mCharData.mCharData.mOption.mIsClanNtc
+    friend class sGame;
     // inferred: sNetworkExt::isClanLeader names sGame::mCharData.mCharData.mCardClan.mMyPost
     friend class sNetworkExt;
+    // inferred: uGUIEngageInfo::updateWait names sGame::mCharData.mCharData.mOption.mIsEngageDisp
+    friend class uGUIEngageInfo;
 public:
     enum
     {

@@ -9,6 +9,8 @@
 #include "../shared/MtObject.h"
 #include "../shared/MtString.h"
 #include "../shared/Warp.h"
+#include "aStage.h"
+#include "cArea.h"
 #include "../shared/cControl.h"
 #include "../shared/cGUIControlMgr.h"
 #include "../shared/cGUIInstance.h"
@@ -21,6 +23,8 @@
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
 #include "../shared/rGUIMessage.h"
+#include "../rWarpLocation/rWarpLocation.h"
+#include "../rStageConnect/sArea.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/sNetwork.h"
@@ -869,7 +873,7 @@ __attribute__((weak)) void uGUINewspaper::initNews() {
 void uGUINewspaper::initEventPop() {
     // DWARF local not rendered: cGUIObjMessage* pmsg;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
-    // inferred: a temporary for the result of the call at 0xb7dbb4, used 3 times; no DWARF local holds it
+    // inferred: a temporary for the result of the call at 0xb7dbb4, used twice; no DWARF local holds it
     cGUIInstance* t0 = this->getInstance(static_cast<u32>(229), false);
     if ((this->mpEventPop = static_cast<cGUIInstNull*>(t0)) != static_cast<cGUIInstNull*>(nullptr)) {
         t0->::cGUIInstance::setVisible(false);
@@ -1444,9 +1448,29 @@ __attribute__((weak)) void uGUINewspaper::updateNews() {
 }
 
 // Address: 0x00b86b50 - 0x00b86bf4 (164 bytes)
-__attribute__((weak)) void uGUINewspaper::updateRanking() {
-    DDON_STUB("uGUINewspaper::updateRanking")
-    /* stub */
+void uGUINewspaper::updateRanking() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
+    if (this->mMode == static_cast<s32>(4)) {
+        if (this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+            this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+        }
+        this->::uGUINewspaper::updateRewardRankingCommandButtonCursor();
+    } else {
+        if (this->mMode == static_cast<s32>(3)) {
+            if (this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+                this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(true);
+            }
+        } else {
+            if (this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+                this->mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+            }
+        }
+    }
+    this->mAreaListCursor.::uGUIBase::cReferenceUIVlCursor::update();
+    this->mAreaScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+    this->mRankingScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+    this->::uGUINewspaper::updateRewardRankingCommandButton();
 }
 
 // Address: 0x00b86e10 - 0x00b86f86 (374 bytes)
@@ -1774,9 +1798,7 @@ bool uGUINewspaper::isEnableJoinContents() {
                                 // inferred: a temporary for the result of the call at 0xb82f7e, used twice; no DWARF local holds it
                                 const nQuest::cCycleContentsInfo* t1 = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getHoldingCycleContentsInfo(static_cast<u32>(this->mNowEventNo));
                                 if (t1 != static_cast<const nQuest::cCycleContentsInfo*>(nullptr)) {
-                                    // inferred: a temporary for the result of the call at 0xb82f8b, used twice; no DWARF local holds it
-                                    nQuest::CYCLE_CONTENTS_PERIOD t2 = t1->::nQuest::cCycleContentsInfo::getCycleContentsPeriodRealTime();
-                                    if (t2 != static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(2)) {
+                                    if (t1->::nQuest::cCycleContentsInfo::getCycleContentsPeriodRealTime() != static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(2)) {
                                         this->mNoEntryType = static_cast<u32>(5);
                                         return false;
                                     } else {
@@ -2528,12 +2550,42 @@ bool uGUINewspaper::questwarpRequestServer() {
 }
 
 // Address: 0x00b8a670 - 0x00b8a740 (208 bytes)
-__attribute__((weak)) void uGUINewspaper::questwarpCallBack() {
-    // local: const CDataAreaWarpPoint* pwarp;
-    // local: u32 num;
-    // local: u32 idx;
-    DDON_STUB("uGUINewspaper::questwarpCallBack")
-    /* stub */
+void uGUINewspaper::questwarpCallBack() {
+    // DWARF local not rendered: u32 idx;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x98d0
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x98d4
+    const CDataAreaWarpPoint* pwarp = this->::uGUINewspaper::getWarpInfo();
+    if (pwarp != static_cast<const CDataAreaWarpPoint*>(nullptr)) {
+        u32 num = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getWarpInfoNum();
+        if (num != static_cast<u32>(0)) {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0xb8a6b6, used once; no DWARF local holds it
+                const cWarpLocation* t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getWarpInfo(i0_3);
+                if (t0->mId == pwarp->m_unWarpPointID) {
+                    // inferred: a temporary for the value the load at 0xb8a6da read, used 3 times; no DWARF local holds it
+                    sGUI* t1 = ::sGUI::getInstance();
+                    // inferred: a temporary for the value the load at 0xb8a6e8 read, used once; no DWARF local holds it
+                    const s32 t2 = static_cast<sGUIExt*>(t1)->::sGUIExt::getWarpInfo(i0_3)->mStageNo;
+                    // inferred: a temporary for the value the load at 0xb8a6f7 read, used once; no DWARF local holds it
+                    const u32 t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getWarpInfo(i0_3)->mPosNo;
+                    static_cast<sGUIExt*>(t1)->mJumpStageNo = t2;
+                    static_cast<sGUIExt*>(t1)->mJumpPosNo = static_cast<s32>(t3);
+                    static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::requestMenuJump();
+                    this->::uGUIBase::mBaseF = this->::uGUIBase::mBaseF | static_cast<u32>(8);
+                    this->end();
+                    return;
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < num) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00b82a60 - 0x00b82af9 (153 bytes)

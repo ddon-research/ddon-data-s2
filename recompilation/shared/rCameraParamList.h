@@ -19,6 +19,7 @@ class MtStream;
 class MtString;
 class cCamExParam;
 class rCameraList;
+class sCameraExt;
 
 // Declarations
 class rCameraParamList;
@@ -33,6 +34,8 @@ using u8 = unsigned char;
 
 class rCameraParamList : public cResource
 {
+    // inferred: sCameraExt::requestExGameCameraJobResource names rCameraParamList::mParamList.mLength
+    friend class sCameraExt;
 public:
     class MyDTI;
 public:

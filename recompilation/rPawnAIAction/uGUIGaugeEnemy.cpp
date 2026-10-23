@@ -6,12 +6,15 @@
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
+#include "../rCharacterEditCameraParam/aStage.h"
+#include "../rCharacterEditCameraParam/cArea.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/nGUIExt.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../rStageConnect/sArea.h"
 #include "../shared/sOmManager.h"
 #include "../shared/uCharacter.h"
 #include "../shared/uDDOModel.h"
@@ -224,9 +227,17 @@ __attribute__((weak)) void uGUIGaugeEnemy::moveAfter() {
 }
 
 // Address: 0x00b5dc10 - 0x00b5dc35 (37 bytes)
-__attribute__((weak)) void uGUIGaugeEnemy::draw(cDraw* pDraw) {
-    DDON_STUB("uGUIGaugeEnemy::draw")
-    /* stub */
+void uGUIGaugeEnemy::draw(cDraw* pDraw) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a aStage member read past the end of cArea, which DWARF gives no other deriving class a member at 0x2a0
+    if (::sArea::getInstance()->mpArea[2] != static_cast<cArea*>(nullptr)) {
+        if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->mEventBusy != false) {
+        } else {
+            this->::uGUIBase::draw(pDraw);
+        }
+    } else {
+        this->::uGUIBase::draw(pDraw);
+    }
 }
 
 // Address: 0x00b5dc40 - 0x00b5dc65 (37 bytes)

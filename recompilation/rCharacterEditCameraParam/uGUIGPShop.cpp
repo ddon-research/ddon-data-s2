@@ -252,10 +252,20 @@ void uGUIGPShop::kill() {
 }
 
 // Address: 0x00aac2b0 - 0x00aac31f (111 bytes)
-__attribute__((weak)) void uGUIGPShop::adjustScale() {
-    // local: f32 scale;
-    DDON_STUB("uGUIGPShop::adjustScale")
-    /* stub */
+void uGUIGPShop::adjustScale() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::adjustScale();
+    if (this->mpGPConfirm != static_cast<uGUIGPConfirm*>(nullptr)) {
+        return;
+    }
+    if (this->mpGPDialog != static_cast<uGUIGPShopDialog*>(nullptr)) {
+        return;
+    }
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isExecBrowser() == false) {
+        return;
+    }
+    f32 scale = this->getScaleForDefaultResolution(1.0f);
+    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setBrowserPos(this->mBrowserPos.x * scale, this->mBrowserPos.y * scale);
 }
 
 // Address: 0x00aac320 - 0x00aac4c0 (416 bytes)
@@ -351,9 +361,23 @@ __attribute__((weak)) void uGUIGPShop::updateNoUse() {
 }
 
 // Address: 0x00ab0690 - 0x00ab0714 (132 bytes)
-__attribute__((weak)) void uGUIGPShop::updateHistory() {
-    DDON_STUB("uGUIGPShop::updateHistory")
-    /* stub */
+void uGUIGPShop::updateHistory() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mClose.::uGUIBase::cReferenceUICloseBtn::update();
+    this->::uGUIGPShop::updateGP();
+    this->::uGUIGPShop::manageExecBrowser();
+    if (this->mIsBrowserLowPriority != false) {
+        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() != false) {
+            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::resetPriorityBrowser();
+        } else {
+            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setLowPriorityBrowser();
+        }
+    } else {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::resetPriorityBrowser();
+    }
+    this->mStatusMenuCursor.::uGUIBase::cReferenceUIVlCursor::update();
+    this->mHistoryScrollbar.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+    this->::uGUIGPShop::updateStatusMenuPointer();
 }
 
 // No out-of-line body: no code in the ELF
@@ -806,9 +830,9 @@ u32 uGUIGPShop::evCtrlShopMouseClick(cControl::Message* pMsg) {
     if (pMsg != static_cast<cControl::Message*>(nullptr)) {
         this->mShopControl.::cGUIControlMgr::setCurrentPos(static_cast<u32>(4), pMsg->mouse_hit_id);
         // inferred: a temporary for the value the load at 0xab0f78 read, used twice; no DWARF local holds it
-        s32 t1 = pMsg->click_vol;
-        this->mShopCursorX = t1;
-        if (t1 != static_cast<s32>(0)) {
+        s32 t0 = pMsg->click_vol;
+        this->mShopCursorX = t0;
+        if (t0 != static_cast<s32>(0)) {
             this->::uGUIBase::setInputEvent(static_cast<u32>(77));
         } else {
             this->::uGUIBase::setInputEvent(static_cast<u32>(76));

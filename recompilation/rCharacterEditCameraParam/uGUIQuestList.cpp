@@ -849,11 +849,31 @@ __attribute__((weak)) void uGUIQuestList::setupItemIcon(u32& count, u32 id, u32 
 }
 
 // Address: 0x00c09720 - 0x00c097d8 (184 bytes)
-__attribute__((weak)) void uGUIQuestList::setupBonusPos(uGUIQuestList::stBonusItem& bonus, s32& bonus_pos, s32& list_pos, s32& length) {
-    // local: const u32 line_num;
-    // local: const u32 bonus_length;
-    DDON_STUB("uGUIQuestList::setupBonusPos")
-    /* stub */
+void uGUIQuestList::setupBonusPos(uGUIQuestList::stBonusItem& bonus, s32& bonus_pos, s32& list_pos, s32& length) {
+    // Approximate from the ELF: a place read twice with no call between; a value a join carries, assigned on each way in; the body oracle reports this body.
+    // inferred: a temporary for the value a join carries at 0xc09772, assigned on each way in; no DWARF local holds it
+    u32 j0;
+    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(bonus.mpInstNull), true);
+    if (bonus.mpInstNull != static_cast<cGUIInstNull*>(nullptr)) {
+        bonus.mpInstNull->::cGUIInstNull::setPositionY(static_cast<float>(bonus_pos));
+    }
+    if (bonus.mpObjMsgCaption != static_cast<cGUIObjMessage*>(nullptr)) {
+        const u32 line_num = bonus.mpObjMsgCaption->::cGUIObjMessage::getLineNum(static_cast<u32>(0));
+        j0 = line_num;
+    } else {
+        j0 = static_cast<u32>(0);
+    }
+    // inferred: a temporary for the value the load at 0xc09772 read, used 3 times; no DWARF local holds it
+    s32 t0 = this->mVar.param_bonus_line_y;
+    const u32 bonus_length = this->mVar.param_bonus_title_y;
+    bonus_pos = static_cast<int>((bonus_length + (bonus_pos)) + (j0 * t0));
+    list_pos = static_cast<int>((bonus_length + (list_pos)) + (j0 * t0));
+    if (bonus.mpObjPolyLine != static_cast<cGUIObjPolygon*>(nullptr)) {
+        bonus.mpObjPolyLine->::cGUIObj2D::setPositionY(static_cast<float>(bonus_length + (j0 * t0)));
+    }
+    this->::uGUIQuestList::addInfo(static_cast<cGUIInstance*>(bonus.mpInstNull), static_cast<cGUIObject*>(nullptr), list_pos, length, false);
+    bonus_pos = this->mVar.param_bonus_margin + (bonus_pos);
+    list_pos = this->mVar.param_bonus_margin + (list_pos);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)

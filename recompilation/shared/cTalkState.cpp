@@ -86,9 +86,11 @@ nTalk::TALK_STATE cTalkState::getState() const {
 }
 
 // Address: 0x001cb1f0 - 0x001cb20c (28 bytes)
-__attribute__((weak)) bool cTalkState::shouldTransition() const {
-    DDON_STUB("cTalkState::shouldTransition")
-    return {};
+bool cTalkState::shouldTransition() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x1cb1fc, used once; no DWARF local holds it
+    nTalk::TALK_STATE t0 = this->getState();
+    return this->mNextState != t0;
 }
 
 // Address: 0x001cb210 - 0x001cb218 (8 bytes)

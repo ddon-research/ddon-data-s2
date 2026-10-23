@@ -52,10 +52,12 @@
 #include "cpMotionSe.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
+#include "cpPawnThink.h"
 #include "cpSafePos.h"
 #include "cpScrCollision.h"
 #include "cpSequenceCtrl.h"
 #include "../rPawnAIAction/cpShakeCtrl.h"
+#include "cpSlave.h"
 #include "cpStateManager.h"
 #include "cpTransparencyCtrl.h"
 #include "cpjob10.h"
@@ -82,6 +84,7 @@
 #include "rRegionStatusParam.h"
 #include "../rShakeCtrl/rShakeCtrl.h"
 #include "rStaminaDecTbl.h"
+#include "sAIPawnSys.h"
 #include "sArchiveManager.h"
 #include "../rStageConnect/sArea.h"
 #include "../rStageConnect/sAreaExt.h"
@@ -680,10 +683,12 @@ __attribute__((weak)) bool uHuman::callbackHealedAfter_apply(cHitInfoAfter* pHit
 bool uHuman::callbackHealedAfter_apply_slave(cHitInfoAfter* pHitInfo) {
     // DWARF local not rendered: bool hp_recover;
     // DWARF local not rendered: cContextInterface& pCon;
-    // Approximate from the ELF: a test whose arms are both empty; the body oracle reports this body.
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a test whose arms are both empty; the body oracle reports this body.
     if ((this->::uDDOModel::mUnitId & static_cast<u32>(1024)) == static_cast<u32>(0)) {
         if (pHitInfo != static_cast<cHitInfoAfter*>(nullptr)) {
-            if (this->::uDDOModel::isDamageAttrActive(static_cast<u32>(16)) != false) {
+            // inferred: a temporary for the result of the call at 0xc80aa0, used twice; no DWARF local holds it
+            bool t0 = this->::uDDOModel::isDamageAttrActive(static_cast<u32>(16));
+            if (t0 != false) {
                 return false;
             } else {
                 if (pHitInfo->mHealedInfo.mHpHealVal > 0.0f) {
@@ -1262,16 +1267,14 @@ void uHuman::initCharacterEditCommon(rCharacterEdit* pRes) {
     }
     this->mpCharacterEdit->::cpCharacterEdit::setResource(pRes);
     this->mpCharacterEdit->::cpCharacterEdit::updateBody(true);
-    // inferred: a temporary for the result of the call at 0xc8ab8c, used twice; no DWARF local holds it
-    cpComponent* t0 = this->::uDDOModel::mComponentMgr.::cComponentManager::find(::cpMotionFilter::DTI, true);
-    if ((this->mpMotionFilter = static_cast<cpMotionFilter*>(t0)) == static_cast<cpMotionFilter*>(nullptr)) {
+    if ((this->mpMotionFilter = static_cast<cpMotionFilter*>(this->::uDDOModel::mComponentMgr.::cComponentManager::find(::cpMotionFilter::DTI, true))) == static_cast<cpMotionFilter*>(nullptr)) {
         return;
     }
     // inferred: a temporary for the result of the call at 0xc8abbd, used 3 times; no DWARF local holds it
-    cResource* t1 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("Human", "RES_ID_MOTION_FILTER_MOT_FILTER", static_cast<u32>(1), false);
-    if (t1 != static_cast<cResource*>(nullptr)) {
-        this->mpMotionFilter->::cpMotionFilter::setResource(static_cast<rMotionFilter*>(t1));
-        t1->::cResource::release();
+    cResource* t0 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("Human", "RES_ID_MOTION_FILTER_MOT_FILTER", static_cast<u32>(1), false);
+    if (t0 != static_cast<cResource*>(nullptr)) {
+        this->mpMotionFilter->::cpMotionFilter::setResource(static_cast<rMotionFilter*>(t0));
+        t0->::cResource::release();
     }
     this->mpMotionFilter->::cpMotionFilter::init();
 }
@@ -1422,36 +1425,36 @@ void uHuman::initShakeCtrl() {
             this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t2), static_cast<u32>(0));
             t2->::cResource::release();
             // inferred: a temporary for the value the load at 0xc8ae22 read, used once; no DWARF local holds it
-            sArchiveManager* t4 = ::sArchiveManager::getInstance();
+            sArchiveManager* t3 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0xc8ae2d, used once; no DWARF local holds it
-            ARC_TAGID t5 = ::rArchiveListArray::convTagId("Human");
+            ARC_TAGID t4 = ::rArchiveListArray::convTagId("Human");
             // inferred: a temporary for the result of the call at 0xc8ae4f, used 3 times; no DWARF local holds it
-            cResource* t6 = t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_HUMAN_ICE_SHAKE_CTRL"), static_cast<u32>(1), false);
+            cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_HUMAN_ICE_SHAKE_CTRL"), static_cast<u32>(1), false);
             if (this->::uCharacter::mpShakeCtrl != static_cast<cpShakeCtrl*>(nullptr)) {
-                if (t6 != static_cast<cResource*>(nullptr)) {
-                    this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t6), static_cast<u32>(1));
-                    t6->::cResource::release();
+                if (t5 != static_cast<cResource*>(nullptr)) {
+                    this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t5), static_cast<u32>(1));
+                    t5->::cResource::release();
                 }
             } else {
-                if (t6 != static_cast<cResource*>(nullptr)) {
-                    t6->::cResource::release();
+                if (t5 != static_cast<cResource*>(nullptr)) {
+                    t5->::cResource::release();
                 }
             }
         } else {
             // inferred: a temporary for the value the load at 0xc8ae22 read, used once; no DWARF local holds it
-            sArchiveManager* t4 = ::sArchiveManager::getInstance();
+            sArchiveManager* t3 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0xc8ae2d, used once; no DWARF local holds it
-            ARC_TAGID t5 = ::rArchiveListArray::convTagId("Human");
+            ARC_TAGID t4 = ::rArchiveListArray::convTagId("Human");
             // inferred: a temporary for the result of the call at 0xc8ae4f, used 3 times; no DWARF local holds it
-            cResource* t6 = t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_HUMAN_ICE_SHAKE_CTRL"), static_cast<u32>(1), false);
+            cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_HUMAN_ICE_SHAKE_CTRL"), static_cast<u32>(1), false);
             if (this->::uCharacter::mpShakeCtrl != static_cast<cpShakeCtrl*>(nullptr)) {
-                if (t6 != static_cast<cResource*>(nullptr)) {
-                    this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t6), static_cast<u32>(1));
-                    t6->::cResource::release();
+                if (t5 != static_cast<cResource*>(nullptr)) {
+                    this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t5), static_cast<u32>(1));
+                    t5->::cResource::release();
                 }
             } else {
-                if (t6 != static_cast<cResource*>(nullptr)) {
-                    t6->::cResource::release();
+                if (t5 != static_cast<cResource*>(nullptr)) {
+                    t5->::cResource::release();
                 }
             }
         }
@@ -1459,36 +1462,36 @@ void uHuman::initShakeCtrl() {
         if (t2 != static_cast<cResource*>(nullptr)) {
             t2->::cResource::release();
             // inferred: a temporary for the value the load at 0xc8ae22 read, used once; no DWARF local holds it
-            sArchiveManager* t4 = ::sArchiveManager::getInstance();
+            sArchiveManager* t3 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0xc8ae2d, used once; no DWARF local holds it
-            ARC_TAGID t5 = ::rArchiveListArray::convTagId("Human");
+            ARC_TAGID t4 = ::rArchiveListArray::convTagId("Human");
             // inferred: a temporary for the result of the call at 0xc8ae4f, used 3 times; no DWARF local holds it
-            cResource* t6 = t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_HUMAN_ICE_SHAKE_CTRL"), static_cast<u32>(1), false);
+            cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_HUMAN_ICE_SHAKE_CTRL"), static_cast<u32>(1), false);
             if (this->::uCharacter::mpShakeCtrl != static_cast<cpShakeCtrl*>(nullptr)) {
-                if (t6 != static_cast<cResource*>(nullptr)) {
-                    this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t6), static_cast<u32>(1));
-                    t6->::cResource::release();
+                if (t5 != static_cast<cResource*>(nullptr)) {
+                    this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t5), static_cast<u32>(1));
+                    t5->::cResource::release();
                 }
             } else {
-                if (t6 != static_cast<cResource*>(nullptr)) {
-                    t6->::cResource::release();
+                if (t5 != static_cast<cResource*>(nullptr)) {
+                    t5->::cResource::release();
                 }
             }
         } else {
             // inferred: a temporary for the value the load at 0xc8ae22 read, used once; no DWARF local holds it
-            sArchiveManager* t4 = ::sArchiveManager::getInstance();
+            sArchiveManager* t3 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0xc8ae2d, used once; no DWARF local holds it
-            ARC_TAGID t5 = ::rArchiveListArray::convTagId("Human");
+            ARC_TAGID t4 = ::rArchiveListArray::convTagId("Human");
             // inferred: a temporary for the result of the call at 0xc8ae4f, used 3 times; no DWARF local holds it
-            cResource* t6 = t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_HUMAN_ICE_SHAKE_CTRL"), static_cast<u32>(1), false);
+            cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_HUMAN_ICE_SHAKE_CTRL"), static_cast<u32>(1), false);
             if (this->::uCharacter::mpShakeCtrl != static_cast<cpShakeCtrl*>(nullptr)) {
-                if (t6 != static_cast<cResource*>(nullptr)) {
-                    this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t6), static_cast<u32>(1));
-                    t6->::cResource::release();
+                if (t5 != static_cast<cResource*>(nullptr)) {
+                    this->::uCharacter::mpShakeCtrl->::cpShakeCtrl::setResource(static_cast<rShakeCtrl*>(t5), static_cast<u32>(1));
+                    t5->::cResource::release();
                 }
             } else {
-                if (t6 != static_cast<cResource*>(nullptr)) {
-                    t6->::cResource::release();
+                if (t5 != static_cast<cResource*>(nullptr)) {
+                    t5->::cResource::release();
                 }
             }
         }
@@ -1781,11 +1784,43 @@ __attribute__((weak)) bool uHuman::isCantBoostSpirit(nKeyCommand::stGenericParam
 }
 
 // Address: 0x00c76630 - 0x00c766cc (156 bytes)
-__attribute__((weak)) bool uHuman::isNowBoosting(nKeyCommand::stGenericParam& param) {
-    // local: bool result;
-    // local: u32 nowAct;
-    DDON_STUB("uHuman::isNowBoosting")
-    return {};
+bool uHuman::isNowBoosting(nKeyCommand::stGenericParam& param) {
+    // DWARF local not rendered: bool result;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x2244
+    if (this->::uDDOModel::isMaster() != false) {
+        if ((this->::uDDOModel::mUnitId & static_cast<u32>(8)) != static_cast<u32>(0)) {
+            if (static_cast<sGUIExt*>(::sGUI::getInstance())->mIsEnableMenuUI != false) {
+                return false;
+            }
+        }
+    }
+    if (this->mpContextPlayerInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
+        if (this->mpContextPlayerInfo->mCurrentJob_pri == static_cast<u8>(10)) {
+            u32 nowAct = ::nHumanActUtility::getActionNo(*this);
+            if ((nowAct - static_cast<u32>(8208)) > static_cast<u32>(1)) {
+                if (nowAct != static_cast<u32>(4124)) {
+                    if (this->mpJob10->::cpJob10::isBoosting() != false) {
+                        if (this->mpJob10 != static_cast<cpJob10*>(nullptr)) {
+                            return this->mpJob10->::cpJob10::checkCanEndBoost();
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00c76390 - 0x00c76477 (231 bytes)
@@ -1841,7 +1876,7 @@ bool uHuman::isBringOM() {
 }
 
 // Address: 0x00c7a210 - 0x00c7a297 (135 bytes)
-bool uHuman::isInvolveOCDAction() {
+__attribute__((weak)) bool uHuman::isInvolveOCDAction() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     cpOcdCtrl* pOcdCtrl = this->::uDDOModel::getOcdCtrlPtr();
     if (pOcdCtrl != static_cast<cpOcdCtrl*>(nullptr)) {
@@ -2821,13 +2856,47 @@ void uHuman::setBowUpperDir(const MtVector3& dir) {
 // bool uHuman::isOldCustomWork(u16 work);
 
 // Address: 0x00c93fc0 - 0x00c9403e (126 bytes)
-__attribute__((weak)) void uHuman::checkCancellableAction() {
-    // local: bool flg;
-    // local: u32 nowAct;
-    // local: s32 state;
-    // local: cpOcdCtrl* pOcdCtrl;
-    DDON_STUB("uHuman::checkCancellableAction")
-    /* stub */
+void uHuman::checkCancellableAction() {
+    // DWARF local not rendered: bool flg;
+    // DWARF local not rendered: cpOcdCtrl* pOcdCtrl;
+    // Approximate from the ELF: a temporary declared in several branches; a test whose arms are both empty; the body oracle reports this body.
+    u32 nowAct = this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
+    if ((nowAct - static_cast<u32>(27)) <= static_cast<u32>(3)) {
+        // inferred: a temporary for the result of the call at 0xc93fe7, used once; no DWARF local holds it
+        bool t0 = this->::uHuman::isInvolveOCDAction();
+        s32 state = this->::uDDOModel::getStateActionPtr()->::cpStateManager::getStateNo();
+        if (t0 == false) {
+        }
+        if (((state == static_cast<s32>(263)) || (state == static_cast<s32>(265))) == false) {
+        }
+        this->mIsCancellableAction = false;
+    } else {
+        if (nowAct == static_cast<u32>(182)) {
+            // inferred: a temporary for the result of the call at 0xc93fe7, used once; no DWARF local holds it
+            bool t0 = this->::uHuman::isInvolveOCDAction();
+            s32 state = this->::uDDOModel::getStateActionPtr()->::cpStateManager::getStateNo();
+            if (t0 == false) {
+            }
+            if (((state == static_cast<s32>(263)) || (state == static_cast<s32>(265))) == false) {
+            }
+            this->mIsCancellableAction = false;
+        } else {
+            // inferred: a temporary for the result of the call at 0xc93fe7, used once; no DWARF local holds it
+            bool t0 = this->::uHuman::isInvolveOCDAction();
+            s32 state = this->::uDDOModel::getStateActionPtr()->::cpStateManager::getStateNo();
+            if (t0 == false) {
+                if (((state == static_cast<s32>(263)) || (state == static_cast<s32>(265))) == false) {
+                    this->mIsCancellableAction = true;
+                } else {
+                    this->mIsCancellableAction = false;
+                }
+            } else {
+                if (((state == static_cast<s32>(263)) || (state == static_cast<s32>(265))) == false) {
+                }
+                this->mIsCancellableAction = false;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (27 bytes)
@@ -3733,9 +3802,15 @@ bool uHuman::checkGuardModeCancel() {
 }
 
 // Address: 0x00c8c420 - 0x00c8c45a (58 bytes)
-__attribute__((weak)) bool uHuman::checkEnableMenuUIAct() {
-    DDON_STUB("uHuman::checkEnableMenuUIAct")
-    return {};
+bool uHuman::checkEnableMenuUIAct() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x2244
+    if (this->::uDDOModel::isMaster() != false) {
+        if ((this->::uDDOModel::mUnitId & static_cast<u32>(8)) != static_cast<u32>(0)) {
+            return static_cast<sGUIExt*>(::sGUI::getInstance())->mIsEnableMenuUI == false;
+        }
+    }
+    return true;
 }
 
 // Address: 0x00c8c460 - 0x00c8c770 (784 bytes)
@@ -4020,9 +4095,16 @@ __attribute__((weak)) void uHuman::effectCondistionFromScr() {
 }
 
 // Address: 0x00c891d0 - 0x00c89247 (119 bytes)
-__attribute__((weak)) void uHuman::setMaster(bool is_master) {
-    DDON_STUB("uHuman::setMaster")
-    /* stub */
+void uHuman::setMaster(bool is_master) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uDDOModel::setMaster(is_master);
+    if (this->mpKeyCommand != static_cast<cpKeyCommand*>(nullptr)) {
+        this->mpKeyCommand->setActive(this->::uDDOModel::isMaster());
+    }
+    if (this->::uDDOModel::getSlavePtr() == static_cast<cpSlave*>(nullptr)) {
+        return;
+    }
+    this->::uDDOModel::getSlavePtr()->setActive(this->::uDDOModel::isMaster() == false);
 }
 
 // Address: 0x00c74400 - 0x00c74412 (18 bytes)
@@ -4282,8 +4364,8 @@ void uHuman::requestTouchReleaseEventEnd() {
     }
     this->::uDDOModel::mpTouchTarget->requestReleaseTouch(static_cast<uDDOModel*>(this), static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(5));
     // inferred: a temporary for the value the load at 0xc8a947 read, used once; no DWARF local holds it
-    uDDOModel* t1 = this->::uDDOModel::mpTouchTarget;
-    if (t1 != this->::uDDOModel::getTarget()) {
+    uDDOModel* t0 = this->::uDDOModel::mpTouchTarget;
+    if (t0 != this->::uDDOModel::getTarget()) {
     } else {
         this->::uDDOModel::setTarget(static_cast<uDDOModel*>(nullptr));
     }
@@ -6207,9 +6289,17 @@ void uHuman::setEndDieAction() {
 }
 
 // Address: 0x00c92910 - 0x00c92965 (85 bytes)
-__attribute__((weak)) void uHuman::requestHumanHighPriorityAction(u32 actNo) {
-    DDON_STUB("uHuman::requestHumanHighPriorityAction")
-    /* stub */
+void uHuman::requestHumanHighPriorityAction(u32 actNo) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::uDDOModel::isMaster() != false) {
+        if ((this->::uDDOModel::mUnitId & static_cast<u32>(8)) != static_cast<u32>(0)) {
+            this->mAutoRunInfo.mIsActive = false;
+            this->mAutoRunInfo.mIsTranseRequest = false;
+            this->mAutoRunInfo.mIsRequesetTimer = 0.0f;
+            this->mAutoRunInfo.mpTarget = static_cast<uDDOModel*>(nullptr);
+        }
+    }
+    this->::uDDOModel::getActionRequestPtr()->mHighPriorityActionReq = actNo;
 }
 
 // Address: 0x00c913e0 - 0x00c916d4 (756 bytes)
@@ -6452,10 +6542,11 @@ __attribute__((weak)) nHumanBow::stNetData uHuman::popBowPeriodNetData() {
 }
 
 // Address: 0x00c93400 - 0x00c93452 (82 bytes)
-__attribute__((weak)) void uHuman::pushBowPeriodNetData(const nHumanBow::stNetData& d) {
-    // local: u32 flag;
-    DDON_STUB("uHuman::pushBowPeriodNetData")
-    /* stub */
+void uHuman::pushBowPeriodNetData(const nHumanBow::stNetData& d) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    u32 flag = ::cContextInterface::getBowNetUpdateFlag(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter);
+    ::cContextInterface::setBowNetUpdateFlag(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter, flag | static_cast<u32>(4));
+    ::cContextInterface::pushBowPeriodNetData(this->::uDDOModel::mContextInterface.mpContextInstance, this->::uDDOModel::mContextInterface.mpContextCharacter, d);
 }
 
 // Address: 0x00c93460 - 0x00c93476 (22 bytes)
@@ -6801,11 +6892,23 @@ __attribute__((weak)) void uHuman::checkCalcCharge() {
 }
 
 // Address: 0x00c95060 - 0x00c950c2 (98 bytes)
-__attribute__((weak)) void uHuman::setPawnEscapeInvincible() {
-    // local: cpPawnThink* pPawnThink;
-    // local: f32 inv_time;
-    DDON_STUB("uHuman::setPawnEscapeInvincible")
-    /* stub */
+void uHuman::setPawnEscapeInvincible() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if ((this->::uDDOModel::mUnitId & static_cast<u32>(64)) == static_cast<u32>(0)) {
+        return;
+    }
+    cpPawnThink* pPawnThink = this->::uDDOModel::getPawnThinkPtr();
+    if (pPawnThink == static_cast<cpPawnThink*>(nullptr)) {
+        return;
+    }
+    if (pPawnThink->::cpPawnThink::isNowEscapeThink() == false) {
+        return;
+    }
+    f32 inv_time = ::sAIPawnSys::getInstance()->::sAIPawnSys::getPawnPrmF32("ESCAPE_JUMP_INV_TIME", 30.0f);
+    if (this->mInvincibleTime >= inv_time) {
+    } else {
+        this->mInvincibleTime = inv_time;
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (27 bytes)

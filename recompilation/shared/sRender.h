@@ -52,6 +52,7 @@ struct pthread;
 class sApp;
 namespace sce { namespace Gnm { class ClipControl; } }
 namespace sce { namespace Gnmx { class LightweightGfxContext; } }
+class uGUIPhoto;
 class uMotionBlurFilter;
 
 // Declarations
@@ -96,6 +97,8 @@ class sRender : public cSystem
     friend class cUnit;
     // inferred: sApp::execute names sRender::mpInstance
     friend class sApp;
+    // inferred: uGUIPhoto::setup names sRender::mpInstance
+    friend class uGUIPhoto;
     // inferred: uMotionBlurFilter::draw names sRender::mpInstance
     friend class uMotionBlurFilter;
 public:
@@ -835,3 +838,13 @@ private:
     static s32 mPhotoExportThreadActive;
     static s32 mSSTrigger;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+inline sRender* sRender::getInstance() {
+    return ::sRender::mpInstance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool sRender::getRenderDetailControl() {
+    return this->mRenderDetailControlEnable;
+}

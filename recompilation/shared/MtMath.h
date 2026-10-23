@@ -4,8 +4,6 @@
 #include <cstddef>
 
 // Forward declarations
-class MtAABB;
-class MtCollision;
 struct MtFloat2A;
 struct MtFloat4A;
 class MtGeomAABB;
@@ -26,6 +24,7 @@ class cContextInterface;
 class cCustomWeatherParam;
 class cGroupParam;
 class cJumpParamCtrl;
+class cMenuEntryBoardItemList;
 class cPlActWpnBow;
 class cSetInfoOmBadStatus;
 class cSetInfoOmDoor;
@@ -38,11 +37,10 @@ class cpHeadCtrl;
 class cpHugeble;
 class cpHumanWarpCtrl;
 class cpJob02;
+class cpJob06;
 class cpJob09;
 class cpObjCollisionBase;
 class cpShakeCtrl;
-class cpSlave;
-namespace nShlStick { class cStickObjectCtrl; }
 namespace nZone { class ShapeInfoPanel; }
 class rNavigationMesh;
 class sCollision;
@@ -410,10 +408,6 @@ public:
 
 class alignas(16) MtVector3
 {
-    // inferred: MtAABB::getSurfaceVertex names MtVector3::pad_
-    friend class MtAABB;
-    // inferred: MtCollision::getAABBVertex names MtVector3::pad_
-    friend class MtCollision;
     // inferred: MtGeomAABB::load names MtGeomAABB::mAABB.minpos.pad_
     friend class MtGeomAABB;
     // inferred: MtGeomCapsule::load names MtGeomCapsule::mCapsule.p0.pad_
@@ -444,6 +438,8 @@ class alignas(16) MtVector3
     friend class cGroupParam;
     // inferred: cJumpParamCtrl::updatePadAdjustPos names uCoord::mPos.pad_
     friend class cJumpParamCtrl;
+    // inferred: cMenuEntryBoardItemList::initEntryBoardItemList names cMenuEntryBoardItemList::mRecruitPos.pad_
+    friend class cMenuEntryBoardItemList;
     // inferred: cPlActWpnBow::initLow_Wait names uDDOModel::mVelocity.pad_
     friend class cPlActWpnBow;
     // inferred: cSetInfoOmBadStatus::applyParam names cOmControl::InputLot::mBadPos.pad_
@@ -468,16 +464,14 @@ class alignas(16) MtVector3
     friend class cpHumanWarpCtrl;
     // inferred: cpJob02::update names uHuman::mCameraExPos.pad_
     friend class cpJob02;
+    // inferred: cpJob06::setCS12EffectPos names uCoord::mPos.pad_
+    friend class cpJob06;
     // inferred: cpJob09::resetEffectCtrlData names cpJob09::mAlchemyCoreOfset.pad_
     friend class cpJob09;
     // inferred: cpObjCollisionBase::objAdjust names MtVector3::pad_
     friend class cpObjCollisionBase;
     // inferred: cpShakeCtrl::shake names cpShakeCtrl::mDir.pad_
     friend class cpShakeCtrl;
-    // inferred: cpSlave::interpolatePos names uCoord::mPos.pad_
-    friend class cpSlave;
-    // inferred: nShlStick::cStickObjectCtrl::storeStickInfo names nShlStick::cStickObjectCtrl::mCapsule.p0.pad_
-    friend class nShlStick::cStickObjectCtrl;
     // inferred: nZone::ShapeInfoPanel::reversePanelDirection names nZone::ShapeInfoPanel::mVertex[1].pad_
     friend class nZone::ShapeInfoPanel;
     // inferred: rNavigationMesh::setNodeInfo names rNavigationMesh::nodeInfo::mAABB.minpos.pad_

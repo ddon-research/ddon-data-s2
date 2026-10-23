@@ -634,11 +634,11 @@ void uGUICaplinkFriendList::initSearch() {
     if (this->mMode != static_cast<u32>(0)) {
         this->::uGUICaplinkFriendList::setFlowProcess(static_cast<u32>(20));
         // inferred: a temporary for the value the load at 0x9bca47 read, used once; no DWARF local holds it
-        cGUIObjMessage* t1 = this->mMain.mpObjMsgTitle;
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(7)), static_cast<u32>(0), false);
+        cGUIObjMessage* t0 = this->mMain.mpObjMsgTitle;
+        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(7)), static_cast<u32>(0), false);
         // inferred: a temporary for the value the load at 0x9bca7c read, used once; no DWARF local holds it
-        cGUIObjMessage* t3 = this->mMain.mpObjMsgTitleSub;
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t3), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(26)), static_cast<u32>(0), false);
+        cGUIObjMessage* t1 = this->mMain.mpObjMsgTitleSub;
+        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(26)), static_cast<u32>(0), false);
         this->::uGUIBase::setMessageHorizontalInterval(static_cast<cGUIObj2D*>(this->mMain.mpObjMsgTitle), static_cast<cGUIObj2D*>(this->mMain.mpObjMsgTitleSub), 8.0f, true);
         this->::uGUICaplinkFriendList::clearList();
         this->mMain.mButton[0].::uGUIBase::cReferenceUIButton::setMessage(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(115)));

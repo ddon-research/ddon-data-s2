@@ -702,32 +702,24 @@ cBVHCollision::cWorkBuildOnlineFast::~cWorkBuildOnlineFast() {
         // inferred: a temporary for the value the load at 0x132c94e read, used twice; no DWARF local holds it
         MtAABB* t0 = this->mpLocalAABB;
         if (t0 != static_cast<MtAABB*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x132c95e, used once; no DWARF local holds it
-            MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI);
-            t1->memFree(static_cast<void*>(t0));
+            ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI)->memFree(static_cast<void*>(t0));
             // inferred: a temporary for the value the load at 0x132c96f read, used twice; no DWARF local holds it
-            cBVHCollision::JobParamOfLine* t4 = this->mpStackOnlineBuildAll;
-            if (t4 != static_cast<cBVHCollision::JobParamOfLine*>(nullptr)) {
-                // inferred: a temporary for the result of the call at 0x132c97f, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI);
-                t5->memFree(static_cast<void*>(t4));
+            cBVHCollision::JobParamOfLine* t1 = this->mpStackOnlineBuildAll;
+            if (t1 != static_cast<cBVHCollision::JobParamOfLine*>(nullptr)) {
+                ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI)->memFree(static_cast<void*>(t1));
             }
         } else {
             // inferred: a temporary for the value the load at 0x132c96f read, used twice; no DWARF local holds it
-            cBVHCollision::JobParamOfLine* t4 = this->mpStackOnlineBuildAll;
-            if (t4 != static_cast<cBVHCollision::JobParamOfLine*>(nullptr)) {
-                // inferred: a temporary for the result of the call at 0x132c97f, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI);
-                t5->memFree(static_cast<void*>(t4));
+            cBVHCollision::JobParamOfLine* t1 = this->mpStackOnlineBuildAll;
+            if (t1 != static_cast<cBVHCollision::JobParamOfLine*>(nullptr)) {
+                ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI)->memFree(static_cast<void*>(t1));
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x132c96f read, used twice; no DWARF local holds it
-        cBVHCollision::JobParamOfLine* t4 = this->mpStackOnlineBuildAll;
-        if (t4 != static_cast<cBVHCollision::JobParamOfLine*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x132c97f, used once; no DWARF local holds it
-            MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI);
-            t5->memFree(static_cast<void*>(t4));
+        cBVHCollision::JobParamOfLine* t1 = this->mpStackOnlineBuildAll;
+        if (t1 != static_cast<cBVHCollision::JobParamOfLine*>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI)->memFree(static_cast<void*>(t1));
         }
     }
 }

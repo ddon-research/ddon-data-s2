@@ -466,3 +466,8 @@ protected:
 // Inline, no code of its own: checked where it is inlined.
 inline cStorageDataBase::cStorageDataBase() {
 }
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool sSavedataExt::isCheckTrophySize() {
+    return this->mIsCheckTrophySize;
+}

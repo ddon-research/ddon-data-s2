@@ -307,3 +307,18 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cCycleQuestManagerBase::getJumpStartPos() {
+    return this->mStartPos;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cCycleQuestManagerBase::resetFlag() {
+    this->mIsClear = false;
+    this->mIsInterrupt = false;
+    this->mIsFailed = false;
+    this->mIsStart = false;
+}

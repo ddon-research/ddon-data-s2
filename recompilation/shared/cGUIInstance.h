@@ -37,6 +37,7 @@ class rGUI;
 class uGUI;
 class uGUIBase;
 class uGUIGauge;
+class uGUIHudCustomSkillPallet;
 class uGUIMapMini;
 class uGUIPhoto;
 
@@ -63,6 +64,8 @@ class cGUIInstance : public MtObject
     friend class cGUIInstAnimVariable;
     // inferred: uGUI::updateInstanceMatrix names cGUIInstance::mAttr
     friend class uGUI;
+    // inferred: uGUIHudCustomSkillPallet::setupInstances names cGUIInstance::mPriority
+    friend class uGUIHudCustomSkillPallet;
 public:
     class MyDTI;
 public:
@@ -605,6 +608,12 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline f32 cGUIInstAnimation::getCurrentFrame() const {
+    return this->mCurrentFrame;
+}
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body

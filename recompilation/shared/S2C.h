@@ -212,6 +212,7 @@ class MtObject;
 class MtString;
 class cGatherItemList;
 class cMenuCharacterList;
+class cMenuEntryBoardItemList;
 class cNetGameServer;
 class sCraftManager;
 class sQuestManagerExt;
@@ -222,6 +223,7 @@ namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_REWARD_RECEIVE_RES; }
+namespace nUserSession { class CPacket_S2C_ACTIVATE_JOB_ORDER_RES; }
 namespace nUserSession { class CPacket_S2C_AREA_WARP_RES; }
 namespace nUserSession { class CPacket_S2C_BAZAAR_CANCEL_RES; }
 namespace nUserSession { class CPacket_S2C_BAZAAR_EXHIBIT_RES; }
@@ -346,6 +348,7 @@ namespace nUserSession { class CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC; }
 namespace nUserSession { class CPacket_S2C_FAVORITE_WARP_RES; }
 namespace nUserSession { class CPacket_S2C_FINISH_CRAFT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE; }
+namespace nUserSession { class CPacket_S2C_FINISH_LANTERN_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FORT_DEFENSE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE; }
@@ -463,6 +466,7 @@ namespace nUserSession { class CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_GET_VERSION_RES; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_START_NTC; }
+namespace nUserSession { class CPacket_S2C_GP_COURSE_START_PARTY_NTC; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES; }
 namespace nUserSession { class CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES; }
@@ -646,6 +650,7 @@ namespace nUserSession { class CPacket_S2C_STAMP_BONUS_GET_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_STAMP_BONUS_RECIEVE_RES; }
 namespace nUserSession { class CPacket_S2C_START_CRAFT_RES; }
 namespace nUserSession { class CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE; }
+namespace nUserSession { class CPacket_S2C_START_LANTERN_NOTICE; }
 namespace nUserSession { class CPacket_S2C_START_LANTERN_OTHER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_SUPPORT_POINT_GET_RATE_RES; }
 namespace nUserSession { class CPacket_S2C_SUPPORT_POINT_USE_RES; }
@@ -946,6 +951,55 @@ namespace nUserSession {
         MtTypedArray<CDataAchieveRewardCommon> m_RecievedRewardList;  // offset: 0x10
         MtTypedArray<CDataAchieveRewardCommon> m_RewardList;  // offset: 0x30
         bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ACTIVATE_JOB_ORDER_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ACTIVATE_JOB_ORDER_RES();
+        s32 WritePacket(CPacket*, s32, u8, u8, u32, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u8 JobID() const;
+        u8 RewardType() const;
+        u32 RewardNo() const;
+        u8 RewardLv() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u8 m_ucJobID;  // offset: 0x10
+        u8 m_ucRewardType;  // offset: 0x11
+        u32 m_unRewardNo;  // offset: 0x14
+        u8 m_ucRewardLv;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x19
     public:
         static MyDTI DTI;
     };
@@ -5694,6 +5748,8 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES : public ::CPacketDataBase
     {
+        // inferred: cMenuEntryBoardItemList::initEntryBoardItemList names nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::m_EntryItemList.::MtArray::mLength
+        friend class ::cMenuEntryBoardItemList;
     public:
         class MyDTI;
     public:
@@ -6328,6 +6384,45 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         u32 m_unCharacterID;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_FINISH_LANTERN_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_FINISH_LANTERN_NOTICE();
+        s32 WritePacket(CPacket*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        bool m_bIsReceived;  // offset: 0xa
     public:
         static MyDTI DTI;
     };
@@ -11565,6 +11660,53 @@ namespace nUserSession {
         u64 m_ullFinishDateTime;  // offset: 0x10
         u32 m_unannounceType;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x1c
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GP_COURSE_START_PARTY_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GP_COURSE_START_PARTY_NTC();
+        s32 WritePacket(CPacket*, u8, u32, u32, u64);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 MemberIndex() const;
+        u32 CourseID() const;
+        u32 announceType() const;
+        u64 FinishDateTime() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucMemberIndex;  // offset: 0xa
+        u32 m_unCourseID;  // offset: 0xc
+        u32 m_unannounceType;  // offset: 0x10
+        u64 m_ullFinishDateTime;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x20
     public:
         static MyDTI DTI;
     };
@@ -19596,6 +19738,47 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_START_LANTERN_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_START_LANTERN_NOTICE();
+        s32 WritePacket(CPacket*, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 RemainTime() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unRemainTime;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_START_LANTERN_OTHER_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -20910,6 +21093,19 @@ inline nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::CPacket_S2C_AC
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::CPacket_S2C_ACTIVATE_JOB_ORDER_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_ucJobID = static_cast<u8>(0);
+    this->m_ucRewardType = static_cast<u8>(0);
+    this->m_unRewardNo = static_cast<u32>(0);
+    this->m_ucRewardLv = static_cast<u8>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline nUserSession::CPacket_S2C_AREA_WARP_RES::CPacket_S2C_AREA_WARP_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_usError = static_cast<u16>(0);
@@ -22092,6 +22288,14 @@ inline nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::CPacket_S2C_
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::CPacket_S2C_FINISH_LANTERN_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_usError = static_cast<u16>(0);
@@ -22371,6 +22575,12 @@ inline nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CPacket_S2C_GET_CRAFT_SE
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CraftItemLv() const {
+    return this->m_unCraftItemLv;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u8 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CreateCountMax() const {
     return this->m_ucCreateCountMax;
 }
@@ -22460,6 +22670,12 @@ inline nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::CPacket_S2C_GET_END
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline CEndContentsGroup& nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::EndContentsGroup() {
+    return this->m_EndContentsGroup;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nUserSession::CPacket_S2C_GET_EXP_MODE_RES::CPacket_S2C_GET_EXP_MODE_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
@@ -22477,6 +22693,12 @@ inline nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::CPacket_S2C_G
     this->m_nResult = static_cast<s32>(0);
     this->m_unSlotIDMax = static_cast<u32>(0);
     this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::SlotIDMax() const {
+    return this->m_unSlotIDMax;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -23006,6 +23228,12 @@ inline nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::CPacket_S2C_GET_SET_QUE
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::DistributeID() const {
+    return this->m_unDistributeID;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
@@ -23142,6 +23370,18 @@ inline nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::CPacket_S2C_GP_COURS
     this->m_usError = static_cast<u16>(0);
     this->m_unResult = static_cast<u32>(0);
     this->m_unVersion = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::CPacket_S2C_GP_COURSE_START_PARTY_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_ucMemberIndex = static_cast<u8>(0);
+    this->m_unCourseID = static_cast<u32>(0);
+    this->m_unannounceType = static_cast<u32>(0);
+    this->m_ullFinishDateTime = static_cast<u64>(0);
     this->m_bIsReceived = false;
 }
 
@@ -24348,6 +24588,12 @@ inline nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::CPacket_S2C_RANK
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline const MtTypedArray<CDataRankingData>& nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::RankingData() const {
+    return this->m_RankingData;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
@@ -24867,6 +25113,15 @@ inline nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::CPacket_S2C_S
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_usError = static_cast<u16>(0);
     this->m_unCharacterID = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_START_LANTERN_NOTICE::CPacket_S2C_START_LANTERN_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_unRemainTime = static_cast<u32>(0);
     this->m_bIsReceived = false;
 }
 

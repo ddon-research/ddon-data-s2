@@ -194,43 +194,43 @@ cParticle* cParticleGenerator::closeParticle(cParticle* pParticle) {
     // DWARF local not rendered: cParticle* pNext;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     pParticle->::cParticle::kill();
-    // inferred: a temporary for the value the load at 0x10a4ea8 read, used 4 times; no DWARF local holds it
-    cParticle* t1 = pParticle->mpNext;
+    // inferred: a temporary for the value the load at 0x10a4ea8 read, used 3 times; no DWARF local holds it
+    cParticle* t0 = pParticle->mpNext;
     if (pParticle->mpPrev != static_cast<cParticle*>(nullptr)) {
-        pParticle->mpPrev->mpNext = t1;
+        pParticle->mpPrev->mpNext = t0;
         // inferred: a temporary for the value the load at 0x10a4eb5 read, used 3 times; no DWARF local holds it
-        cParticle* t2 = pParticle->mpNext;
-        if (t2 != static_cast<cParticle*>(nullptr)) {
-            t2->mpPrev = pParticle->mpPrev;
+        cParticle* t1 = pParticle->mpNext;
+        if (t1 != static_cast<cParticle*>(nullptr)) {
+            t1->mpPrev = pParticle->mpPrev;
             if (this->mpStockTopParticle != static_cast<cParticle*>(nullptr)) {
                 // inferred: a temporary for the value the load at 0x10a4efa read, used twice; no DWARF local holds it
-                cParticle* t3 = this->mpStockBotParticle;
-                pParticle->mpPrev = t3;
-                t3->mpNext = pParticle;
+                cParticle* t2 = this->mpStockBotParticle;
+                pParticle->mpPrev = t2;
+                t2->mpNext = pParticle;
                 this->mpStockBotParticle = pParticle;
                 // inferred: a temporary for the value the load at 0x10a4f0f read, used once; no DWARF local holds it
-                cParticle* t4 = pParticle->mpNext;
+                cParticle* t3 = pParticle->mpNext;
                 pParticle->mpNext = static_cast<cParticle*>(nullptr);
-                return t4;
+                return t3;
             } else {
                 pParticle->mpPrev = static_cast<cParticle*>(nullptr);
                 this->mpStockBotParticle = pParticle;
                 this->mpStockTopParticle = pParticle;
                 pParticle->mpNext = static_cast<cParticle*>(nullptr);
-                return t2;
+                return t1;
             }
         } else {
             this->mpMoveBotParticle = pParticle->mpPrev;
             if (this->mpStockTopParticle != static_cast<cParticle*>(nullptr)) {
                 // inferred: a temporary for the value the load at 0x10a4efa read, used twice; no DWARF local holds it
-                cParticle* t3 = this->mpStockBotParticle;
-                pParticle->mpPrev = t3;
-                t3->mpNext = pParticle;
+                cParticle* t2 = this->mpStockBotParticle;
+                pParticle->mpPrev = t2;
+                t2->mpNext = pParticle;
                 this->mpStockBotParticle = pParticle;
                 // inferred: a temporary for the value the load at 0x10a4f0f read, used once; no DWARF local holds it
-                cParticle* t4 = pParticle->mpNext;
+                cParticle* t3 = pParticle->mpNext;
                 pParticle->mpNext = static_cast<cParticle*>(nullptr);
-                return t4;
+                return t3;
             } else {
                 pParticle->mpPrev = static_cast<cParticle*>(nullptr);
                 this->mpStockBotParticle = pParticle;
@@ -240,38 +240,38 @@ cParticle* cParticleGenerator::closeParticle(cParticle* pParticle) {
             }
         }
     } else {
-        this->mpMoveTopParticle = t1;
+        this->mpMoveTopParticle = t0;
         if (this->mpMoveTopParticle != static_cast<cParticle*>(nullptr)) {
-            t1->mpPrev = static_cast<cParticle*>(nullptr);
+            t0->mpPrev = static_cast<cParticle*>(nullptr);
             if (this->mpStockTopParticle != static_cast<cParticle*>(nullptr)) {
                 // inferred: a temporary for the value the load at 0x10a4efa read, used twice; no DWARF local holds it
-                cParticle* t3 = this->mpStockBotParticle;
-                pParticle->mpPrev = t3;
-                t3->mpNext = pParticle;
+                cParticle* t2 = this->mpStockBotParticle;
+                pParticle->mpPrev = t2;
+                t2->mpNext = pParticle;
                 this->mpStockBotParticle = pParticle;
                 // inferred: a temporary for the value the load at 0x10a4f0f read, used once; no DWARF local holds it
-                cParticle* t4 = pParticle->mpNext;
+                cParticle* t3 = pParticle->mpNext;
                 pParticle->mpNext = static_cast<cParticle*>(nullptr);
-                return t4;
+                return t3;
             } else {
                 pParticle->mpPrev = static_cast<cParticle*>(nullptr);
                 this->mpStockBotParticle = pParticle;
                 this->mpStockTopParticle = pParticle;
                 pParticle->mpNext = static_cast<cParticle*>(nullptr);
-                return t1;
+                return t0;
             }
         } else {
             this->mpMoveBotParticle = static_cast<cParticle*>(nullptr);
             if (this->mpStockTopParticle != static_cast<cParticle*>(nullptr)) {
                 // inferred: a temporary for the value the load at 0x10a4efa read, used twice; no DWARF local holds it
-                cParticle* t3 = this->mpStockBotParticle;
-                pParticle->mpPrev = t3;
-                t3->mpNext = pParticle;
+                cParticle* t2 = this->mpStockBotParticle;
+                pParticle->mpPrev = t2;
+                t2->mpNext = pParticle;
                 this->mpStockBotParticle = pParticle;
                 // inferred: a temporary for the value the load at 0x10a4f0f read, used once; no DWARF local holds it
-                cParticle* t4 = pParticle->mpNext;
+                cParticle* t3 = pParticle->mpNext;
                 pParticle->mpNext = static_cast<cParticle*>(nullptr);
-                return t4;
+                return t3;
             } else {
                 pParticle->mpPrev = static_cast<cParticle*>(nullptr);
                 this->mpStockBotParticle = pParticle;

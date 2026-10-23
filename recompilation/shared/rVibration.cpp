@@ -94,17 +94,13 @@ bool rVibration::load(MtStream& in) {
                         u32 t0 = reinterpret_cast<rVibration::VIB_HEADER*>(pTempBuff)->ParamBuffSize;
                         if (t0 != static_cast<u32>(0)) {
                             if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
-                                // inferred: a temporary for the result of the call at 0x1205bdf, used once; no DWARF local holds it
-                                MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rVibration::DTI);
-                                t1->memFree(static_cast<void*>(this->mpParamBuff));
+                                ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memFree(static_cast<void*>(this->mpParamBuff));
                                 this->mpParamBuff = static_cast<u8*>(nullptr);
                                 this->mParamBuffSize = static_cast<u32>(0);
-                                // inferred: a temporary for the result of the call at 0x1205c08, used once; no DWARF local holds it
-                                MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::rVibration::DTI);
-                                // inferred: a temporary for the result of the call at 0x1205c1b, used 3 times; no DWARF local holds it
-                                void* t3 = t2->memAlloc(t0, static_cast<u32>(16));
-                                if ((this->mpParamBuff = static_cast<u8*>(t3)) != static_cast<u8*>(nullptr)) {
-                                    ::memset(t3, static_cast<int>(0), t0);
+                                // inferred: a temporary for the result of the call at 0x1205c1b, used twice; no DWARF local holds it
+                                void* t1 = ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memAlloc(t0, static_cast<u32>(16));
+                                if ((this->mpParamBuff = static_cast<u8*>(t1)) != static_cast<u8*>(nullptr)) {
+                                    ::memset(t1, static_cast<int>(0), t0);
                                     this->mParamBuffSize = t0;
                                     ::memcpy(static_cast<void*>(this->mpParamBuff), static_cast<const void*>(&pTempBuff[static_cast<int>(16)]), t0);
                                     ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));
@@ -115,12 +111,10 @@ bool rVibration::load(MtStream& in) {
                                 }
                             } else {
                                 this->mParamBuffSize = static_cast<u32>(0);
-                                // inferred: a temporary for the result of the call at 0x1205c08, used once; no DWARF local holds it
-                                MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::rVibration::DTI);
-                                // inferred: a temporary for the result of the call at 0x1205c1b, used 3 times; no DWARF local holds it
-                                void* t3 = t2->memAlloc(t0, static_cast<u32>(16));
-                                if ((this->mpParamBuff = static_cast<u8*>(t3)) != static_cast<u8*>(nullptr)) {
-                                    ::memset(t3, static_cast<int>(0), t0);
+                                // inferred: a temporary for the result of the call at 0x1205c1b, used twice; no DWARF local holds it
+                                void* t1 = ::MtMemoryAllocator::getAllocator(::rVibration::DTI)->memAlloc(t0, static_cast<u32>(16));
+                                if ((this->mpParamBuff = static_cast<u8*>(t1)) != static_cast<u8*>(nullptr)) {
+                                    ::memset(t1, static_cast<int>(0), t0);
                                     this->mParamBuffSize = t0;
                                     ::memcpy(static_cast<void*>(this->mpParamBuff), static_cast<const void*>(&pTempBuff[static_cast<int>(16)]), t0);
                                     ::MtMemory::mpAllocatorType[static_cast<int>(7)]->memFree(static_cast<void*>(pTempBuff));

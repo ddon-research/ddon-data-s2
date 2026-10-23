@@ -634,9 +634,60 @@ inline cThinkMgrName::cTargetLink::cTargetLink() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::setActionNo_NoGet() {
+    if (this->mpOldTopSelectThinkTbl != this->mpTopSelectThinkTbl) {
+        this->mpOldTopSelectThinkTbl = this->mpTempOldSelectThinkTbl;
+        this->mpOldSelectThinkTbl = this->mpTempOldTopSelectThinkTbl;
+        this->mOldSelectIdxNo = this->mTempOldSelectIdxNo;
+        this->mOldSelectTraceIdxNo = this->mTempOldSelectTraceIdxNo;
+        this->mbNextFlg = this->mbTempNextFlg;
+    }
+    this->mbComboFlg = false;
+    this->mbOwFlg = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::flgClr() {
+    this->mbComboFlg = false;
+    this->mbNextFlg = false;
+    this->mbOwFlg = false;
+    this->mbActTrueFlg = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::clrComboFlg() {
+    this->mbComboFlg = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::clrOwFlg() {
+    this->mbOwFlg = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool cThinkMgrName::cThinkMgr::isActTrue() {
     return this->mbActTrueFlg;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::clrNextFlg() {
+    this->mbNextFlg = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cThinkMgrName::cThinkMgr::getbackNextFlgTbl() {
+    this->mpOldTopSelectThinkTbl = this->mpTempOldSelectThinkTbl;
+    this->mpOldSelectThinkTbl = this->mpTempOldTopSelectThinkTbl;
+    this->mOldSelectIdxNo = this->mTempOldSelectIdxNo;
+    this->mOldSelectTraceIdxNo = this->mTempOldSelectTraceIdxNo;
+    this->mbNextFlg = this->mbTempNextFlg;
 }
 
 // Inline, no code of its own: checked where it is inlined.

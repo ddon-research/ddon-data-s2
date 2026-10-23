@@ -30,6 +30,7 @@ struct SceNpOnlineId;
 struct SceNpPartyMemberVoiceInfo;
 struct SceNpTitleId;
 struct SceNpTitleSecret;
+namespace nNetwork { namespace nRanking { class Object; } }
 
 // Declarations
 class MtNetCore;
@@ -60,6 +61,8 @@ class MtNetCore : public MtNetObject
 {
     // inferred: MtNet::PS4Psn::Context::isIpObtained names MtNetCore::mpInstance
     friend class MtNet::PS4Psn::Context;
+    // inferred: nNetwork::nRanking::Object::createDriver names MtNetCore::mpInstance
+    friend class nNetwork::nRanking::Object;
 public:
     enum
     {

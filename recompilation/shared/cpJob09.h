@@ -440,8 +440,47 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob09::endSpAlchemy() {
+    this->mIsSpAlchmy = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob09::resetSpAlchemyInputStat() {
+    this->mSpAlchemyInputStat = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cpJob09::getSpAlchemyJustCount() const {
+    return this->mSpAlchemyJustCount;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob09::clearGUIElementChange() {
+    if (this->mGUIDispState != static_cast<cpJob09::GUI_STATE>(2)) {
+        return;
+    }
+    this->mGUIDispState = static_cast<cpJob09::GUI_STATE>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob09::resetBurstInfo() {
+    this->mBurstShlAlchemyValue = 0.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cpJob09::isGrazeEntry() const {
     return this->mIsGrazeEntry;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob09::flgOnCurrentCreateCSShl() {
+    this->mFlgCurrentCreateCSShl = true;
 }
 
 // Inline, no code of its own: checked where it is inlined.

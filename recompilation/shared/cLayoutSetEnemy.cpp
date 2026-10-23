@@ -11,6 +11,8 @@
 #include "rLayoutGroupParam.h"
 #include "../rStageConnect/sArea.h"
 #include "../rStageConnect/sAreaExt.h"
+#include "sControlManager.h"
+#include "uControl.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -150,9 +152,25 @@ __attribute__((weak)) bool cLayoutSetEnemy::deleteAllUnit() {
 }
 
 // Address: 0x002d5820 - 0x002d586f (79 bytes)
-__attribute__((weak)) void cLayoutSetEnemy::deleteUnit(MtObject* pObj) {
-    DDON_STUB("cLayoutSetEnemy::deleteUnit")
-    /* stub */
+void cLayoutSetEnemy::deleteUnit(MtObject* pObj) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a temporary for the result of the call at 0x2d582f, used once; no DWARF local holds it
+    const MtDTI& t0 = pObj->getDTI();
+    // inferred: the value the loop at 0x2d583d carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::uControl::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x2d583d carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            ::sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(pObj));
+            return;
+        } else {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

@@ -195,6 +195,12 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline sMarker* sMarker::getInstance() {
+    return ::sMarker::mpInstance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sMarker::cLoadResource::cLoadResource() {
     this->mDataType = static_cast<sMarker::DATA_TYPE>(0);
 }

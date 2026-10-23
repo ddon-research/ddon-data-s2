@@ -159,26 +159,13 @@ __attribute__((weak)) void cQuestUnitGroup::release() {
             }
         }
         if (this->mCtrlListOm.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x1c74ea, used once; no DWARF local holds it
-            MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-            t2->memFree(static_cast<void*>(this->mCtrlListOm.::MtArray::mpArray));
-            this->mCtrlListOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mCtrlListOm.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mCtrlListOm.::MtArray::mLength = static_cast<u32>(0);
-            if (this->mCtrlListNpc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                // inferred: a temporary for the result of the call at 0x1c7522, used once; no DWARF local holds it
-                MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-                t3->memFree(static_cast<void*>(this->mCtrlListNpc.::MtArray::mpArray));
-            }
-        } else {
-            this->mCtrlListOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mCtrlListOm.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mCtrlListOm.::MtArray::mLength = static_cast<u32>(0);
-            if (this->mCtrlListNpc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                // inferred: a temporary for the result of the call at 0x1c7522, used once; no DWARF local holds it
-                MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-                t3->memFree(static_cast<void*>(this->mCtrlListNpc.::MtArray::mpArray));
-            }
+            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCtrlListOm.::MtArray::mpArray));
+        }
+        this->mCtrlListOm.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+        this->mCtrlListOm.::MtArray::mBufsiz = static_cast<u32>(0);
+        this->mCtrlListOm.::MtArray::mLength = static_cast<u32>(0);
+        if (this->mCtrlListNpc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCtrlListNpc.::MtArray::mpArray));
         }
         this->mCtrlListNpc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
         this->mCtrlListNpc.::MtArray::mBufsiz = static_cast<u32>(0);

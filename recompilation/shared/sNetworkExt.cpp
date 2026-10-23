@@ -787,9 +787,10 @@ __attribute__((weak)) bool sNetworkExt::isClanMember(u32 characterId) {
 }
 
 // Address: 0x007ee870 - 0x007ee887 (23 bytes)
-__attribute__((weak)) const ClanMemberInfoVec& sNetworkExt::getMyClanMemberListRef() {
-    DDON_STUB("sNetworkExt::getMyClanMemberListRef")
-    __builtin_unreachable();
+const ClanMemberInfoVec& sNetworkExt::getMyClanMemberListRef() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the method's own class: a sNetworkExt member read past the end of the class its pointer is typed with
+    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->mpGameServer->mMyClanMemberList;
 }
 
 // Address: 0x007ee6d0 - 0x007ee717 (71 bytes)

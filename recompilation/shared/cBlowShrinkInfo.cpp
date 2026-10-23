@@ -85,24 +85,20 @@ cBlowShrinkInfo::cBlowShrinkInfo() {
 void cBlowShrinkInfo::update(f32 deltaTime) {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (this->mIsTimerActive == false) {
-        // inferred: a temporary for the value the load at 0x33dbf read, used twice; no DWARF local holds it
+        // inferred: a temporary for the value the load at 0x33dbf read, used once; no DWARF local holds it
         f32 t0 = this->mCureSpeed;
-        // inferred: a temporary for the value the load at 0x33dc4 read, used twice; no DWARF local holds it
+        // inferred: a temporary for the value the load at 0x33dc4 read, used once; no DWARF local holds it
         f32 t1 = this->mCureSpeedRateResult;
-        // inferred: a temporary for the result of the call at 0x33ddd, used twice; no DWARF local holds it
-        f32 t3 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-        // inferred: a temporary for the value the load at 0x33deb read, used twice; no DWARF local holds it
-        f32 t4 = this->mEndurance;
-        this->mEndurance = t4 + (t3 * (t0 * t1));
+        // inferred: a temporary for the result of the call at 0x33ddd, used once; no DWARF local holds it
+        f32 t2 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
+        this->mEndurance = this->mEndurance + (t2 * (t0 * t1));
         if (this->mEndurance > this->mEnduranceMax) {
             this->mEndurance = this->mEnduranceMax;
         }
         if (this->mIsTimerActive != false) {
-            // inferred: a temporary for the result of the call at 0x33e1a, used twice; no DWARF local holds it
-            f32 t6 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-            // inferred: a temporary for the value the load at 0x33e1f read, used twice; no DWARF local holds it
-            f32 t7 = this->mResetTimer;
-            this->mResetTimer = t7 + t6;
+            // inferred: a temporary for the result of the call at 0x33e1a, used once; no DWARF local holds it
+            f32 t3 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
+            this->mResetTimer = this->mResetTimer + t3;
             if (this->mResetTimer > this->mResetTimerMax) {
                 this->mEndurance = this->mEnduranceMax;
                 this->mIsTimerActive = false;
@@ -110,11 +106,9 @@ void cBlowShrinkInfo::update(f32 deltaTime) {
             }
         }
     } else {
-        // inferred: a temporary for the result of the call at 0x33e1a, used twice; no DWARF local holds it
-        f32 t6 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-        // inferred: a temporary for the value the load at 0x33e1f read, used twice; no DWARF local holds it
-        f32 t7 = this->mResetTimer;
-        this->mResetTimer = t7 + t6;
+        // inferred: a temporary for the result of the call at 0x33e1a, used once; no DWARF local holds it
+        f32 t3 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
+        this->mResetTimer = this->mResetTimer + t3;
         if (this->mResetTimer > this->mResetTimerMax) {
             this->mEndurance = this->mEnduranceMax;
             this->mIsTimerActive = false;

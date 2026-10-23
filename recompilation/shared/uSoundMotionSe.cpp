@@ -9,6 +9,7 @@
 #include "cUnit.h"
 #include "../rSoundAttributeSe/rSoundAttributeSe.h"
 #include "rSoundMotionSe.h"
+#include "rSoundRequest.h"
 #include "rSoundStreamRequest.h"
 #include "sCollision.h"
 #include "sSound.h"
@@ -116,9 +117,9 @@ uSoundMotionSe::uSoundMotionSe() {
     this->mMotSeq[0] = static_cast<unsigned int>(0);
     this->mMotSeq[1] = static_cast<unsigned int>(0);
     // inferred: a temporary for the result of the call at 0xd2021d, used twice; no DWARF local holds it
-    void* t1 = ::uSoundMotionSe::getAllocator()->memAlloc(static_cast<size_t>(208), static_cast<u32>(16));
-    this->mpAttributeRequest = static_cast<rSoundRequest* *>(t1);
-    ::memset(t1, static_cast<int>(0), static_cast<size_t>(208));
+    void* t0 = ::uSoundMotionSe::getAllocator()->memAlloc(static_cast<size_t>(208), static_cast<u32>(16));
+    this->mpAttributeRequest = static_cast<rSoundRequest* *>(t0);
+    ::memset(t0, static_cast<int>(0), static_cast<size_t>(208));
     this->setMotSeSeqPageNo(static_cast<u8>(3));
     this->setMotSeSeqStartIndex(static_cast<u8>(0));
     this->setMotSeSeqNum(static_cast<u8>(32));
@@ -230,9 +231,28 @@ rSoundRequest* uSoundMotionSe::getAttributeRequest(u32 index) {
 }
 
 // Address: 0x00d20460 - 0x00d2050a (170 bytes)
-__attribute__((weak)) void uSoundMotionSe::setAttributeRequest(rSoundRequest* pReq, u32 index, bool isClear) {
-    DDON_STUB("uSoundMotionSe::setAttributeRequest")
-    /* stub */
+void uSoundMotionSe::setAttributeRequest(rSoundRequest* pReq, u32 index, bool isClear) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index <= static_cast<u32>(25)) {
+        if (pReq != this->mpAttributeRequest[index]) {
+            if (this->mpAttributeRequest[index] != static_cast<rSoundRequest*>(nullptr)) {
+                if ((isClear == false) == false) {
+                    this->mpAttributeRequest[index]->::cResource::release();
+                    this->mpAttributeRequest[index] = static_cast<rSoundRequest*>(nullptr);
+                }
+            }
+            if (pReq != static_cast<rSoundRequest*>(nullptr)) {
+                if (isClear == false) {
+                    if (this->mpAttributeRequest[index] != static_cast<rSoundRequest*>(nullptr)) {
+                        this->mpAttributeRequest[index]->::cResource::release();
+                        this->mpAttributeRequest[index] = static_cast<rSoundRequest*>(nullptr);
+                    }
+                }
+                this->mpAttributeRequest[index] = pReq;
+                this->mpAttributeRequest[index]->::cResource::addRef();
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

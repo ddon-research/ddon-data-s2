@@ -196,7 +196,9 @@ class cMenuPartyList;
 class cMenuPawnHistory;
 class cMenuPawnSearch;
 class cMenuQuickMatchRetry;
+class cMenuReadyEntryBoardItem;
 class cMenuSimplePartyReq;
+class cQuestSvRequestManager;
 namespace nJobParam { class cHumanBaseInfo; }
 namespace nJobParam { class cJobInfo; }
 namespace nNet { struct stPawnFeedback; }
@@ -2481,15 +2483,19 @@ class cNetGameServer : public MtObject
     friend class cMenuPawnSearch;
     // inferred: cMenuQuickMatchRetry::moveQuickMatchRetry names cNetGameServer::mQuickPartySetting
     friend class cMenuQuickMatchRetry;
+    // inferred: cMenuReadyEntryBoardItem::moveReadyEntryBoardItem names cNetGameServer::mStatus[400]
+    friend class cMenuReadyEntryBoardItem;
     // inferred: cMenuSimplePartyReq::exitMenu names cNetGameServer::mPartyListInfoVec.::MtArray::mLength
     friend class cMenuSimplePartyReq;
-    // inferred: nSessionManager::cNetSessionManager::isPartyLeader names cNetGameServer::mLeaderCharacterId
+    // inferred: cQuestSvRequestManager::canReqQuestProgres names cNetGameServer::mStatus[43]
+    friend class cQuestSvRequestManager;
+    // inferred: nSessionManager::cNetSessionManager::endQuickMatch names cNetGameServer::mInvitedPosNo
     friend class nSessionManager::cNetSessionManager;
     // inferred: sContextManager::move names cNetGameServer::mIsResetInstanceArea
     friend class sContextManager;
     // inferred: sCraftManager::getMyPawnNum names cNetGameServer::mMyPawnList.::MtArray::mLength
     friend class sCraftManager;
-    // inferred: sGame::isMySelfCharacterId names cNetGameServer::mLobbyCharacterId
+    // inferred: sGame::initDecideCharacter names cNetGameServer::mDeathPenaltyWait
     friend class sGame;
     // inferred: sNetworkExt::clearFriendInfo names cNetGameServer::mFriendList.::MtArray::mLength
     friend class sNetworkExt;
@@ -5127,9 +5133,43 @@ inline s32 cNetGameServer::getSelfIndex() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline u32 cNetGameServer::getInvitedStageNo() {
+    return this->mInvitedStageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 cNetGameServer::getInvitedPosOffset() {
+    return this->mInvitedPosOffset;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nNet::QUICK_MATCH_TYPE cNetGameServer::getLastQuickType() {
     return this->mQuickPartyType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline EquipJobItemVec& cNetGameServer::getEquipJobItemListRef() {
+    return this->mRecvEquipJobItemList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline QuestProcessStateVec* cNetGameServer::getQuestProcessStateList() {
+    return this->mpQuestProcessStateList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cNetGameServer::getRequestQuestScheduleId() const {
+    return this->mQuestScheduleId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cNetGameServer::getGachaPrice() const {
+    return this->mGachaPrice;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -5160,6 +5200,24 @@ inline bool cNetGameServer::getRecvGPShopCanBuyPawn() {
 // Inline, no code of its own: checked where it is inlined.
 inline bool cNetGameServer::getRecvGPShopCanBuyPawnVoice() {
     return this->mIsGPShopCanBuyPawnVoice;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline MailInfoVec& cNetGameServer::getMailListRef() {
+    return this->mMailList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline MailInfoVec& cNetGameServer::getSysMailListRef() {
+    return this->mSysMailList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline CharacterListElementVec& cNetGameServer::getGroupChatMemberListRef() {
+    return this->mGroupChatMemberList;
 }
 
 // Inline, no code of its own: checked where it is inlined.

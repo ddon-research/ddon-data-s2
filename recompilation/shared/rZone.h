@@ -38,7 +38,7 @@ using u32 = unsigned int;
 
 class rZone : public cResource
 {
-    // inferred: cZoneLayout::getGlobalLayoutElementNum names rZone::mGlobalLayoutIndexArrayNum
+    // inferred: cZoneLayout::getGlobalLayoutElement names rZone::mGlobalLayoutIndexArrayNum
     friend class cZoneLayout;
     // inferred: nZone::cLayoutElement::getShapeInfoResource names rZone::mLayoutElementsNum
     friend class nZone::cLayoutElement;

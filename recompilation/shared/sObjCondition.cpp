@@ -197,11 +197,9 @@ void sObjCondition::releaseResource() {
 // Address: 0x007f8010 - 0x007f80cb (187 bytes)
 __attribute__((weak)) void sObjCondition::cheatCheck() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    // inferred: a temporary for the result of the call at 0x7f8028, used twice; no DWARF local holds it
-    f32 t1 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-    // inferred: a temporary for the value the load at 0x7f802d read, used twice; no DWARF local holds it
-    f32 t2 = this->mSendInterval;
-    this->mSendInterval = t2 + t1;
+    // inferred: a temporary for the result of the call at 0x7f8028, used once; no DWARF local holds it
+    f32 t0 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
+    this->mSendInterval = this->mSendInterval + t0;
     if (450.0f > this->mSendInterval) {
     } else {
         if (this->mCntCheatOcdAlter_PL != static_cast<u32>(0)) {

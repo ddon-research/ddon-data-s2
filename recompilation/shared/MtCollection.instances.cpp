@@ -7,6 +7,7 @@
 #include "Character.h"
 #include "CharacterCommon.h"
 #include "CharacterParam.h"
+#include "Cheat.h"
 #include "Clan.h"
 #include "Common.h"
 #include "Community.h"
@@ -54,7 +55,7 @@
 #include "cLayoutSet.h"
 #include "cNetGameServer.h"
 #include "cPawnQuestManager.h"
-#include "cPlayPointInfo.h"
+#include "../rCharacterEditCameraParam/cPlayPointInfo.h"
 #include "cQuestPhaseEvent.h"
 #include "../rCharacterEditCameraParam/cQuestResourceLoadManager.h"
 #include "cQuestTask.h"
@@ -263,6 +264,10 @@ template MtTypedArray<CDataCharacterMessage>::~MtTypedArray();
 // Instance at 0x01960a20 - 0x01960a25 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template MtTypedArray<CDataCharacterMsgSet>::~MtTypedArray();
+
+// Instance at 0x019c3250 - 0x019c3255 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray
+// Proven from the ELF: the body oracle checks this instance (022 D5).
+template MtTypedArray<CDataCheatInfo>::~MtTypedArray();
 
 // Instance at 0x01a01070 - 0x01a01075 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray
 // Proven from the ELF: the body oracle checks this instance (022 D5).
@@ -1071,10 +1076,6 @@ template MtTypedArray<nEquipAbilityInfo::cEquipAbilityData>::~MtTypedArray();
 // Instance at 0x01987970 - 0x01987975 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray
 // Proven from the ELF: the body oracle checks this instance (022 D5).
 template MtTypedArray<nQuest::SCHEDULE_ID>::~MtTypedArray();
-
-// Instance at 0x01aff8c0 - 0x01aff8c5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray
-// Proven from the ELF: the body oracle checks this instance (022 D5).
-template MtTypedArray<nQuest::cGUIActiveData>::~MtTypedArray();
 
 // Instance at 0x01aff940 - 0x01aff945 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray
 // Proven from the ELF: the body oracle checks this instance (022 D5).

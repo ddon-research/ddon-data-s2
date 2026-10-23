@@ -13,6 +13,7 @@
 #include "rModel.h"
 #include "sBakingJointOrder.h"
 #include "uArmor.h"
+#include "uDDOModel.h"
 #include "uModel.h"
 #include "uWeapon.h"
 #ifndef DDON_STUB
@@ -101,11 +102,56 @@ __attribute__((weak)) void cpEquip::setup() {
 }
 
 // Address: 0x00479ec0 - 0x0047a03f (383 bytes)
-__attribute__((weak)) void cpEquip::move() {
-    // local: u32 i;
-    // local: u32 i;
-    DDON_STUB("cpEquip::move")
-    /* stub */
+void cpEquip::move() {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->::cpComponent::mActive == false) {
+        return;
+    } else {
+        if (this->::cpComponent::mpOwner != static_cast<MtObject*>(nullptr)) {
+            // inferred: a temporary for the result of the call at 0x479edb, used once; no DWARF local holds it
+            const MtDTI& t0 = this->::cpComponent::mpOwner->getDTI();
+            // inferred: the value the loop at 0x479ee9 carries; no location-less local in scope fits
+            MT_CTSTR v0_1 = ::uDDOModel::DTI.::MtDTI::mName;
+            // inferred: the value the loop at 0x479ee9 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    this->::cpEquip::updateWeaponCtrl();
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mUpdateEquipPresetReq != false) {
+        this->mUpdateEquipPresetReq = false;
+        this->::cpEquip::updateEquipPreset();
+        this->mPresetOption = static_cast<u32>(0);
+    }
+    this->mWeapon[0].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mWeapon[1].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mWeapon[2].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mWeapon[3].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mArmor[0].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mArmor[1].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mArmor[2].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mArmor[3].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mArmor[4].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mArmor[5].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mArmor[6].::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mHair.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mMakeup.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mBeard.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mUnderwear.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mUnderwear2.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mLantern.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
+    this->mNpcItem.::cpEquip::cEquipInfo::move(static_cast<cpEquip* const>(this));
 }
 
 // Address: 0x0047aa10 - 0x0047aa15 (5 bytes)
@@ -194,7 +240,7 @@ void cpEquip::setHair(uArmor* pHair) {
         this->mHair.mpWepResData = pHair->::uArmor::getArchiveInfo();
         this->mHair.mpModel = static_cast<uModel*>(pHair);
         this->mHair.mpOwner = pHair->::uArmor::getOwner();
-        // inferred: a temporary for the value the load at 0x47bd87 read, used 3 times; no DWARF local holds it
+        // inferred: a temporary for the value the load at 0x47bd87 read, used twice; no DWARF local holds it
         rModel* t0 = pHair->::uArmor::getModelRes();
         this->mHair.mpModelRes = t0;
         if (this->mHair.mpModelRes != static_cast<rModel*>(nullptr)) {
@@ -231,7 +277,7 @@ void cpEquip::setBeard(uArmor* pBeard) {
         this->mBeard.mpWepResData = pBeard->::uArmor::getArchiveInfo();
         this->mBeard.mpModel = static_cast<uModel*>(pBeard);
         this->mBeard.mpOwner = pBeard->::uArmor::getOwner();
-        // inferred: a temporary for the value the load at 0x47be97 read, used 3 times; no DWARF local holds it
+        // inferred: a temporary for the value the load at 0x47be97 read, used twice; no DWARF local holds it
         rModel* t0 = pBeard->::uArmor::getModelRes();
         this->mBeard.mpModelRes = t0;
         if (this->mBeard.mpModelRes != static_cast<rModel*>(nullptr)) {
@@ -267,7 +313,7 @@ void cpEquip::setMakeup(uArmor* pMakeup) {
         this->mMakeup.mpWepResData = pMakeup->::uArmor::getArchiveInfo();
         this->mMakeup.mpModel = static_cast<uModel*>(pMakeup);
         this->mMakeup.mpOwner = pMakeup->::uArmor::getOwner();
-        // inferred: a temporary for the value the load at 0x47bfa7 read, used 3 times; no DWARF local holds it
+        // inferred: a temporary for the value the load at 0x47bfa7 read, used twice; no DWARF local holds it
         rModel* t0 = pMakeup->::uArmor::getModelRes();
         this->mMakeup.mpModelRes = t0;
         if (this->mMakeup.mpModelRes != static_cast<rModel*>(nullptr)) {
@@ -303,7 +349,7 @@ void cpEquip::setUnderwear(uArmor* pUnderwear) {
         this->mUnderwear.mpWepResData = pUnderwear->::uArmor::getArchiveInfo();
         this->mUnderwear.mpModel = static_cast<uModel*>(pUnderwear);
         this->mUnderwear.mpOwner = pUnderwear->::uArmor::getOwner();
-        // inferred: a temporary for the value the load at 0x47c0b7 read, used 3 times; no DWARF local holds it
+        // inferred: a temporary for the value the load at 0x47c0b7 read, used twice; no DWARF local holds it
         rModel* t0 = pUnderwear->::uArmor::getModelRes();
         this->mUnderwear.mpModelRes = t0;
         if (this->mUnderwear.mpModelRes != static_cast<rModel*>(nullptr)) {
@@ -337,7 +383,7 @@ void cpEquip::setUnderwear2(uArmor* pUnderwear2) {
         this->mUnderwear2.mpWepResData = pUnderwear2->::uArmor::getArchiveInfo();
         this->mUnderwear2.mpModel = static_cast<uModel*>(pUnderwear2);
         this->mUnderwear2.mpOwner = pUnderwear2->::uArmor::getOwner();
-        // inferred: a temporary for the value the load at 0x47c1c7 read, used 3 times; no DWARF local holds it
+        // inferred: a temporary for the value the load at 0x47c1c7 read, used twice; no DWARF local holds it
         rModel* t0 = pUnderwear2->::uArmor::getModelRes();
         this->mUnderwear2.mpModelRes = t0;
         if (this->mUnderwear2.mpModelRes != static_cast<rModel*>(nullptr)) {

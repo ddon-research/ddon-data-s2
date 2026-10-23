@@ -293,54 +293,54 @@ void uGUIPointer::adjustScale() {
     }
     f32 fScaleRate = this->getScaleForDefaultResolution(1.0f);
     // inferred: a temporary for the value the load at 0xb4aa8c read, used 4 times; no DWARF local holds it
-    cGUIInstNull* t1 = this->mpInstNullPointer;
-    if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
-        t1->::cGUIInstNull::setScaleX(fScaleRate);
-        t1->::cGUIInstNull::setScaleY(fScaleRate);
-        t1->::cGUIInstNull::setScaleZ(fScaleRate);
+    cGUIInstNull* t0 = this->mpInstNullPointer;
+    if (t0 != static_cast<cGUIInstNull*>(nullptr)) {
+        t0->::cGUIInstNull::setScaleX(fScaleRate);
+        t0->::cGUIInstNull::setScaleY(fScaleRate);
+        t0->::cGUIInstNull::setScaleZ(fScaleRate);
         // inferred: a temporary for the value the load at 0xb4aac9 read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t3 = this->mpInstNullPopCmd;
-        if (t3 != static_cast<cGUIInstNull*>(nullptr)) {
-            t3->::cGUIInstNull::setScaleX(fScaleRate);
-            t3->::cGUIInstNull::setScaleY(fScaleRate);
-            t3->::cGUIInstNull::setScaleZ(fScaleRate);
+        cGUIInstNull* t1 = this->mpInstNullPopCmd;
+        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
+            t1->::cGUIInstNull::setScaleX(fScaleRate);
+            t1->::cGUIInstNull::setScaleY(fScaleRate);
+            t1->::cGUIInstNull::setScaleZ(fScaleRate);
             // inferred: a temporary for the value the load at 0xb4ab06 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t5 = this->mpInstNullGuide;
-            if (t5 != static_cast<cGUIInstNull*>(nullptr)) {
-                t5->::cGUIInstNull::setScaleX(fScaleRate);
-                t5->::cGUIInstNull::setScaleY(fScaleRate);
-                t5->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = this->mpInstNullGuide;
+            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
+                t2->::cGUIInstNull::setScaleX(fScaleRate);
+                t2->::cGUIInstNull::setScaleY(fScaleRate);
+                t2->::cGUIInstNull::setScaleZ(fScaleRate);
             }
         } else {
             // inferred: a temporary for the value the load at 0xb4ab06 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t5 = this->mpInstNullGuide;
-            if (t5 != static_cast<cGUIInstNull*>(nullptr)) {
-                t5->::cGUIInstNull::setScaleX(fScaleRate);
-                t5->::cGUIInstNull::setScaleY(fScaleRate);
-                t5->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = this->mpInstNullGuide;
+            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
+                t2->::cGUIInstNull::setScaleX(fScaleRate);
+                t2->::cGUIInstNull::setScaleY(fScaleRate);
+                t2->::cGUIInstNull::setScaleZ(fScaleRate);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0xb4aac9 read, used 4 times; no DWARF local holds it
-        cGUIInstNull* t3 = this->mpInstNullPopCmd;
-        if (t3 != static_cast<cGUIInstNull*>(nullptr)) {
-            t3->::cGUIInstNull::setScaleX(fScaleRate);
-            t3->::cGUIInstNull::setScaleY(fScaleRate);
-            t3->::cGUIInstNull::setScaleZ(fScaleRate);
+        cGUIInstNull* t1 = this->mpInstNullPopCmd;
+        if (t1 != static_cast<cGUIInstNull*>(nullptr)) {
+            t1->::cGUIInstNull::setScaleX(fScaleRate);
+            t1->::cGUIInstNull::setScaleY(fScaleRate);
+            t1->::cGUIInstNull::setScaleZ(fScaleRate);
             // inferred: a temporary for the value the load at 0xb4ab06 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t5 = this->mpInstNullGuide;
-            if (t5 != static_cast<cGUIInstNull*>(nullptr)) {
-                t5->::cGUIInstNull::setScaleX(fScaleRate);
-                t5->::cGUIInstNull::setScaleY(fScaleRate);
-                t5->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = this->mpInstNullGuide;
+            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
+                t2->::cGUIInstNull::setScaleX(fScaleRate);
+                t2->::cGUIInstNull::setScaleY(fScaleRate);
+                t2->::cGUIInstNull::setScaleZ(fScaleRate);
             }
         } else {
             // inferred: a temporary for the value the load at 0xb4ab06 read, used 4 times; no DWARF local holds it
-            cGUIInstNull* t5 = this->mpInstNullGuide;
-            if (t5 != static_cast<cGUIInstNull*>(nullptr)) {
-                t5->::cGUIInstNull::setScaleX(fScaleRate);
-                t5->::cGUIInstNull::setScaleY(fScaleRate);
-                t5->::cGUIInstNull::setScaleZ(fScaleRate);
+            cGUIInstNull* t2 = this->mpInstNullGuide;
+            if (t2 != static_cast<cGUIInstNull*>(nullptr)) {
+                t2->::cGUIInstNull::setScaleX(fScaleRate);
+                t2->::cGUIInstNull::setScaleY(fScaleRate);
+                t2->::cGUIInstNull::setScaleZ(fScaleRate);
             }
         }
     }

@@ -147,9 +147,31 @@ __attribute__((weak)) void uCnsTinyChain::applyWorldOffset(const MtVector3& offs
 }
 
 // Address: 0x01010b00 - 0x01010b65 (101 bytes)
-__attribute__((weak)) void uCnsTinyChain::setResource(cResource* pRes) {
-    DDON_STUB("uCnsTinyChain::setResource")
-    /* stub */
+void uCnsTinyChain::setResource(cResource* pRes) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pRes != static_cast<cResource*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x1010b18, used once; no DWARF local holds it
+        const MtDTI& t0 = pRes->getDTI();
+        // inferred: the value the loop at 0x1010b26 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::rCnsTinyChain::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x1010b26 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                this->::uCnsTinyChain::setCnsTinyChainRes(static_cast<rCnsTinyChain*>(pRes));
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mpResource != static_cast<rCnsTinyChain*>(nullptr)) {
+        this->mpResource->::cResource::release();
+        this->mpResource = static_cast<rCnsTinyChain*>(nullptr);
+    }
 }
 
 // Address: 0x01010fb0 - 0x01010fb8 (8 bytes)

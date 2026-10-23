@@ -556,11 +556,9 @@ void cpCorePointCtrl::checkSlaveMsg() {
     // DWARF local not rendered: cContextInterface& context;
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->mIsWaitTimerActive != false) {
-        // inferred: a temporary for the result of the call at 0x17e111, used twice; no DWARF local holds it
+        // inferred: a temporary for the result of the call at 0x17e111, used once; no DWARF local holds it
         f32 t0 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-        // inferred: a temporary for the value the load at 0x17e116 read, used twice; no DWARF local holds it
-        f32 t1 = this->mSlaveMsgWaitTimer;
-        this->mSlaveMsgWaitTimer = t1 - t0;
+        this->mSlaveMsgWaitTimer = this->mSlaveMsgWaitTimer - t0;
         if (0.0f > this->mSlaveMsgWaitTimer) {
             this->mSlaveMsgWaitTimer = this->mSlaveMsgWaitTimeMax;
             this->mIsWaitTimerActive = false;

@@ -69,14 +69,10 @@ rSoundDirectionalSet::~rSoundDirectionalSet() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11fa8ab read, used once; no DWARF local holds it
     u16* t0 = this->mpIdToIndexTbl;
-    // inferred: a temporary for the result of the call at 0x11fa8bc, used once; no DWARF local holds it
-    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI);
-    t1->memFree(static_cast<void*>(t0));
+    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI)->memFree(static_cast<void*>(t0));
     // inferred: a temporary for the value the load at 0x11fa8cd read, used once; no DWARF local holds it
-    void* t3 = this->mpRawData;
-    // inferred: a temporary for the result of the call at 0x11fa8d7, used once; no DWARF local holds it
-    MtAllocator* t4 = ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI);
-    t4->memFree(t3);
+    void* t1 = this->mpRawData;
+    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI)->memFree(t1);
 }
 
 // Address: 0x011fa990 - 0x011facec (860 bytes)

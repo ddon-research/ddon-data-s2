@@ -188,35 +188,27 @@ nCollision::cScrCollisionMoveMatrix::~cScrCollisionMoveMatrix() {
     if (this->maFlgAllocateMatrix[0] != false) {
         // inferred: a temporary for the value the load at 0x118573e read, used once; no DWARF local holds it
         MtMatrix* t0 = this->mpaMatrix[0];
-        // inferred: a temporary for the result of the call at 0x1185749, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-        t1->memFree(static_cast<void*>(t0));
+        ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t0));
         this->mpaMatrix[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
         this->mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
         if (this->maFlgAllocateMatrix[1] != false) {
             // inferred: a temporary for the value the load at 0x118576f read, used once; no DWARF local holds it
-            MtMatrix* t2 = this->mpaMatrix[1];
-            // inferred: a temporary for the result of the call at 0x118577a, used once; no DWARF local holds it
-            MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-            t3->memFree(static_cast<void*>(t2));
+            MtMatrix* t1 = this->mpaMatrix[1];
+            ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t1));
             this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             if (this->maFlgAllocateMatrix[2] != false) {
                 // inferred: a temporary for the value the load at 0x11857a0 read, used once; no DWARF local holds it
-                MtMatrix* t4 = this->mpaMatrix[2];
-                // inferred: a temporary for the result of the call at 0x11857ab, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-                t5->memFree(static_cast<void*>(t4));
+                MtMatrix* t2 = this->mpaMatrix[2];
+                ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
                 this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
                 this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         } else {
             if (this->maFlgAllocateMatrix[2] != false) {
                 // inferred: a temporary for the value the load at 0x11857a0 read, used once; no DWARF local holds it
-                MtMatrix* t4 = this->mpaMatrix[2];
-                // inferred: a temporary for the result of the call at 0x11857ab, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-                t5->memFree(static_cast<void*>(t4));
+                MtMatrix* t2 = this->mpaMatrix[2];
+                ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
                 this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
                 this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
@@ -224,28 +216,22 @@ nCollision::cScrCollisionMoveMatrix::~cScrCollisionMoveMatrix() {
     } else {
         if (this->maFlgAllocateMatrix[1] != false) {
             // inferred: a temporary for the value the load at 0x118576f read, used once; no DWARF local holds it
-            MtMatrix* t2 = this->mpaMatrix[1];
-            // inferred: a temporary for the result of the call at 0x118577a, used once; no DWARF local holds it
-            MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-            t3->memFree(static_cast<void*>(t2));
+            MtMatrix* t1 = this->mpaMatrix[1];
+            ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t1));
             this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             if (this->maFlgAllocateMatrix[2] != false) {
                 // inferred: a temporary for the value the load at 0x11857a0 read, used once; no DWARF local holds it
-                MtMatrix* t4 = this->mpaMatrix[2];
-                // inferred: a temporary for the result of the call at 0x11857ab, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-                t5->memFree(static_cast<void*>(t4));
+                MtMatrix* t2 = this->mpaMatrix[2];
+                ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
                 this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
                 this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
         } else {
             if (this->maFlgAllocateMatrix[2] != false) {
                 // inferred: a temporary for the value the load at 0x11857a0 read, used once; no DWARF local holds it
-                MtMatrix* t4 = this->mpaMatrix[2];
-                // inferred: a temporary for the result of the call at 0x11857ab, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-                t5->memFree(static_cast<void*>(t4));
+                MtMatrix* t2 = this->mpaMatrix[2];
+                ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
                 this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
                 this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             }
@@ -344,9 +330,7 @@ void nCollision::cScrCollisionMoveMatrix::freeMatrixByID(u32 id) {
     if (this->maFlgAllocateMatrix[id] != false) {
         // inferred: a temporary for the value the load at 0x1185fc7 read, used once; no DWARF local holds it
         MtMatrix* t0 = this->mpaMatrix[id];
-        // inferred: a temporary for the result of the call at 0x1185fd3, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-        t1->memFree(static_cast<void*>(t0));
+        ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t0));
         this->maFlgAllocateMatrix[id] = false;
         this->mpaMatrix[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
         this->mpaMatrixInverse[id] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
@@ -374,27 +358,21 @@ void nCollision::cScrCollisionMoveMatrix::initMatrixAll() {
     if (this->maFlgAllocateMatrix[0] != false) {
         // inferred: a temporary for the value the load at 0x1185cd9 read, used once; no DWARF local holds it
         MtMatrix* t0 = this->mpaMatrix[0];
-        // inferred: a temporary for the result of the call at 0x1185ce4, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-        t1->memFree(static_cast<void*>(t0));
+        ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t0));
         this->maFlgAllocateMatrix[0] = false;
         this->mpaMatrix[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
         this->mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
         if (this->maFlgAllocateMatrix[1] != false) {
             // inferred: a temporary for the value the load at 0x1185d0e read, used once; no DWARF local holds it
-            MtMatrix* t2 = this->mpaMatrix[1];
-            // inferred: a temporary for the result of the call at 0x1185d19, used once; no DWARF local holds it
-            MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-            t3->memFree(static_cast<void*>(t2));
+            MtMatrix* t1 = this->mpaMatrix[1];
+            ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t1));
             this->maFlgAllocateMatrix[1] = false;
             this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             if (this->maFlgAllocateMatrix[2] != false) {
                 // inferred: a temporary for the value the load at 0x1185d3c read, used once; no DWARF local holds it
-                MtMatrix* t4 = this->mpaMatrix[2];
-                // inferred: a temporary for the result of the call at 0x1185d47, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-                t5->memFree(static_cast<void*>(t4));
+                MtMatrix* t2 = this->mpaMatrix[2];
+                ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
                 this->maFlgAllocateMatrix[2] = false;
                 this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
                 this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
@@ -407,10 +385,8 @@ void nCollision::cScrCollisionMoveMatrix::initMatrixAll() {
             this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             if (this->maFlgAllocateMatrix[2] != false) {
                 // inferred: a temporary for the value the load at 0x1185d3c read, used once; no DWARF local holds it
-                MtMatrix* t4 = this->mpaMatrix[2];
-                // inferred: a temporary for the result of the call at 0x1185d47, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-                t5->memFree(static_cast<void*>(t4));
+                MtMatrix* t2 = this->mpaMatrix[2];
+                ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
                 this->maFlgAllocateMatrix[2] = false;
                 this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
                 this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
@@ -424,19 +400,15 @@ void nCollision::cScrCollisionMoveMatrix::initMatrixAll() {
         this->mpaMatrixInverse[0] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
         if (this->maFlgAllocateMatrix[1] != false) {
             // inferred: a temporary for the value the load at 0x1185d0e read, used once; no DWARF local holds it
-            MtMatrix* t2 = this->mpaMatrix[1];
-            // inferred: a temporary for the result of the call at 0x1185d19, used once; no DWARF local holds it
-            MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-            t3->memFree(static_cast<void*>(t2));
+            MtMatrix* t1 = this->mpaMatrix[1];
+            ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t1));
             this->maFlgAllocateMatrix[1] = false;
             this->mpaMatrix[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             if (this->maFlgAllocateMatrix[2] != false) {
                 // inferred: a temporary for the value the load at 0x1185d3c read, used once; no DWARF local holds it
-                MtMatrix* t4 = this->mpaMatrix[2];
-                // inferred: a temporary for the result of the call at 0x1185d47, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-                t5->memFree(static_cast<void*>(t4));
+                MtMatrix* t2 = this->mpaMatrix[2];
+                ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
                 this->maFlgAllocateMatrix[2] = false;
                 this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
                 this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
@@ -449,10 +421,8 @@ void nCollision::cScrCollisionMoveMatrix::initMatrixAll() {
             this->mpaMatrixInverse[1] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
             if (this->maFlgAllocateMatrix[2] != false) {
                 // inferred: a temporary for the value the load at 0x1185d3c read, used once; no DWARF local holds it
-                MtMatrix* t4 = this->mpaMatrix[2];
-                // inferred: a temporary for the result of the call at 0x1185d47, used once; no DWARF local holds it
-                MtAllocator* t5 = ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI);
-                t5->memFree(static_cast<void*>(t4));
+                MtMatrix* t2 = this->mpaMatrix[2];
+                ::MtMemoryAllocator::getAllocator(::nCollision::cScrCollisionMoveMatrix::DTI)->memFree(static_cast<void*>(t2));
                 this->maFlgAllocateMatrix[2] = false;
                 this->mpaMatrix[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;
                 this->mpaMatrixInverse[2] = &::nCollision::cScrCollisionMoveMatrix::msMatIdentity;

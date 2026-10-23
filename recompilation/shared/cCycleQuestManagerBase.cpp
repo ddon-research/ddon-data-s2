@@ -83,9 +83,9 @@ bool cCycleQuestManagerBase::isDemoNow() const {
 }
 
 // Address: 0x00074f70 - 0x00074f86 (22 bytes)
-__attribute__((weak)) bool cCycleQuestManagerBase::isPlayNow() const {
-    DDON_STUB("cCycleQuestManagerBase::isPlayNow")
-    return {};
+bool cCycleQuestManagerBase::isPlayNow() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return (this->mR0 | static_cast<u8>(2)) != static_cast<u8>(2);
 }
 
 // Address: 0x00074f90 - 0x00074f9b (11 bytes)

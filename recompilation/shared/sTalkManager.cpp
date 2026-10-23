@@ -185,24 +185,40 @@ uGUIBase* sTalkManager::setGUISingleton(uGUIBase* pGUI) {
 }
 
 // Address: 0x0085b580 - 0x0085b5bf (63 bytes)
-__attribute__((weak)) void sTalkManager::deleteGUISingleton() {
-    DDON_STUB("sTalkManager::deleteGUISingleton")
-    /* stub */
+void sTalkManager::deleteGUISingleton() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
+    if (this->mpGUISingletonMenu != static_cast<uGUIBase*>(nullptr)) {
+        if (this->mpGUISingletonMenu == static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu) {
+            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::killSingletonMenu();
+        }
+    }
+    this->mpGUISingletonMenu = static_cast<uGUIBase*>(nullptr);
 }
 
 // Address: 0x0085b5c0 - 0x0085b5e4 (36 bytes)
-__attribute__((weak)) bool sTalkManager::isMoveGUISingleton() {
-    DDON_STUB("sTalkManager::isMoveGUISingleton")
-    return {};
+bool sTalkManager::isMoveGUISingleton() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
+    return (this->mpGUISingletonMenu != static_cast<uGUIBase*>(nullptr)) && (this->mpGUISingletonMenu == static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu);
 }
 
 // No out-of-line body: no code in the ELF
 // bool sTalkManager::isMoveGUISingleton(uGUIBase* pGUI);
 
 // Address: 0x0085b600 - 0x0085b62d (45 bytes)
-__attribute__((weak)) bool sTalkManager::isEndGUISingleton() {
-    DDON_STUB("sTalkManager::isEndGUISingleton")
-    return {};
+bool sTalkManager::isEndGUISingleton() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
+    if (this->mpGUISingletonMenu != static_cast<uGUIBase*>(nullptr)) {
+        if (this->mpGUISingletonMenu != static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu) {
+            return true;
+        } else {
+            return this->mpGUISingletonMenu->mResult == static_cast<uGUIBase::GUI_RESULT>(1);
+        }
+    } else {
+        return true;
+    }
 }
 
 // Address: 0x0085b630 - 0x0085b6b5 (133 bytes)

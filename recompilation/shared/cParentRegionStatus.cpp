@@ -215,26 +215,22 @@ bool cParentRegionStatus::healHp(HP_DATATYPE addHp, bool isForce) {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (isForce == false) {
         if (this->mpOwnerHpDmageCtrl != static_cast<cpHpDamageCtrl*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x150d11, used twice; no DWARF local holds it
-            bool t0 = this->mpOwnerHpDmageCtrl->::cpHpDamageCtrl::isDeadDying();
-            if (t0 != false) {
+            if (this->mpOwnerHpDmageCtrl->::cpHpDamageCtrl::isDeadDying() != false) {
                 return false;
             } else {
                 if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                    // inferred: a temporary for the result of the call at 0x150d43, used twice; no DWARF local holds it
-                    bool t1 = ::cContextInterface::isDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
-                    if (t1 != false) {
+                    if (::cContextInterface::isDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo) != false) {
                         return false;
                     } else {
                         if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
                             // inferred: a temporary for the result of the call at 0x150d71, used twice; no DWARF local holds it
-                            HP_DATATYPE t2 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+                            HP_DATATYPE t0 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
                             if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
                                 // inferred: a temporary for the result of the call at 0x150d96, used twice; no DWARF local holds it
-                                HP_DATATYPE t3 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
-                                if (t2 < t3) {
+                                HP_DATATYPE t1 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+                                if (t0 < t1) {
                                     if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                                        ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t3 < (addHp + t2)) ? t3 : (addHp + t2), this->mNo);
+                                        ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), this->mNo);
                                     }
                                     return true;
                                 } else {
@@ -254,13 +250,13 @@ bool cParentRegionStatus::healHp(HP_DATATYPE addHp, bool isForce) {
         } else {
             if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
                 // inferred: a temporary for the result of the call at 0x150d71, used twice; no DWARF local holds it
-                HP_DATATYPE t2 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+                HP_DATATYPE t0 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
                 if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
                     // inferred: a temporary for the result of the call at 0x150d96, used twice; no DWARF local holds it
-                    HP_DATATYPE t3 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
-                    if (t2 < t3) {
+                    HP_DATATYPE t1 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+                    if (t0 < t1) {
                         if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                            ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t3 < (addHp + t2)) ? t3 : (addHp + t2), this->mNo);
+                            ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), this->mNo);
                         }
                         return true;
                     } else {
@@ -276,13 +272,13 @@ bool cParentRegionStatus::healHp(HP_DATATYPE addHp, bool isForce) {
     } else {
         if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
             // inferred: a temporary for the result of the call at 0x150d71, used twice; no DWARF local holds it
-            HP_DATATYPE t2 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+            HP_DATATYPE t0 = ::cContextInterface::getHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
             if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
                 // inferred: a temporary for the result of the call at 0x150d96, used twice; no DWARF local holds it
-                HP_DATATYPE t3 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
-                if (t2 < t3) {
+                HP_DATATYPE t1 = ::cContextInterface::getHpMax(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo);
+                if (t0 < t1) {
                     if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
-                        ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t3 < (addHp + t2)) ? t3 : (addHp + t2), this->mNo);
+                        ::cContextInterface::setHp(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, (t1 < (addHp + t0)) ? t1 : (addHp + t0), this->mNo);
                     }
                     return true;
                 } else {

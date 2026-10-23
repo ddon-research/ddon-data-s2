@@ -2189,14 +2189,10 @@ __attribute__((weak)) nMenu::MENU_RET cMenuClanMemberList::moveClanMemberList() 
 bool cMenuClanMemberList::isMyClan() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->mClanId != static_cast<u32>(0)) {
-        // inferred: a temporary for the result of the call at 0x142d53, used twice; no DWARF local holds it
-        bool t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isBelongClan();
-        if (t0 != false) {
+        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isBelongClan() != false) {
             // inferred: a temporary for the value the load at 0x142d5c read, used once; no DWARF local holds it
-            u32 t1 = this->mClanId;
-            // inferred: a temporary for the result of the call at 0x142d65, used twice; no DWARF local holds it
-            u32 t2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getMyClanId();
-            if (t1 != t2) {
+            u32 t0 = this->mClanId;
+            if (t0 != static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getMyClanId()) {
                 return false;
             } else {
                 return true;

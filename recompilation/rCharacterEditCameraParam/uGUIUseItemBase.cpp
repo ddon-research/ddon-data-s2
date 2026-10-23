@@ -236,7 +236,7 @@ u32 uGUIUseItemBase::callbackSortMenu(MtObject* pCaller, MtObject* pData) {
     if (this->mpUnitPopCmd2 != static_cast<uGUIPopCmd01*>(nullptr)) {
         this->mpUnitPopCmd2->kill();
         this->mpUnitPopCmd2 = static_cast<uGUIPopCmd01*>(nullptr);
-        // inferred: a temporary for the result of the call at 0xc6859e, used 3 times; no DWARF local holds it
+        // inferred: a temporary for the result of the call at 0xc6859e, used twice; no DWARF local holds it
         uGUIPopCmd01* t0 = this->::uGUIBase::createPopCmd01(false);
         if ((this->mpUnitPopCmd2 = t0) != static_cast<uGUIPopCmd01*>(nullptr)) {
             t0->setSleepUnit(static_cast<uGUIBase*>(this));
@@ -245,7 +245,7 @@ u32 uGUIUseItemBase::callbackSortMenu(MtObject* pCaller, MtObject* pData) {
         }
         return static_cast<u32>(0);
     } else {
-        // inferred: a temporary for the result of the call at 0xc6859e, used 3 times; no DWARF local holds it
+        // inferred: a temporary for the result of the call at 0xc6859e, used twice; no DWARF local holds it
         uGUIPopCmd01* t0 = this->::uGUIBase::createPopCmd01(false);
         if ((this->mpUnitPopCmd2 = t0) != static_cast<uGUIPopCmd01*>(nullptr)) {
             t0->setSleepUnit(static_cast<uGUIBase*>(this));

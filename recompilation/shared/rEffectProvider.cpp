@@ -667,7 +667,7 @@ void rEffectProvider::EffectElement::setEffectList(rEffectList* pEffectList, u32
             }
             if (pEffectList != static_cast<rEffectList*>(nullptr)) {
                 if (pEffectList->::cResource::isIntermediate()) {
-                    // inferred: a temporary for the result of the call at 0x662c12, used 4 times; no DWARF local holds it
+                    // inferred: a temporary for the result of the call at 0x662c12, used 3 times; no DWARF local holds it
                     cResource* t0 = ::sResource::getInstance()->::sResource::createNative(static_cast<cResource*>(pEffectList), static_cast<u32>(1));
                     if ((this->mpEffectList[no] = static_cast<rEffectList*>(t0)) != static_cast<rEffectList*>(nullptr)) {
                         t0->::cResource::addRef();

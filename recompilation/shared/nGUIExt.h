@@ -18,6 +18,7 @@ namespace nGUIExt { struct JobParam; }
 namespace nGUIExt { class OcdIconInterface; }
 namespace nGUIExt { struct OcdIconParam; }
 namespace nGUIExt { struct stMsgAnalyzerWork; }
+namespace nGUIExt { struct stNormalSkill; }
 namespace nGUIExt { struct stWindowActive; }
 
 namespace nGUIExt {
@@ -314,6 +315,17 @@ namespace nGUIExt {
         bool mEnable;  // offset: 0x0
         s32 mAnalyzeNum;  // offset: 0x4
         MtString mAnalyzeMsg;  // offset: 0x8
+    };
+}  // namespace nGUIExt
+
+namespace nGUIExt {
+    struct stNormalSkill
+    {
+    public:
+        void clear();
+    public:
+        u32 mSkillNo;  // offset: 0x0
+        nHuman::HM_SKILL_LV mSkillLv;  // offset: 0x4
     };
 }  // namespace nGUIExt
 

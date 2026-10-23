@@ -22,6 +22,7 @@ class MtPropertyList;
 class MtString;
 class MtUI;
 class MtVector3;
+class cScenario;
 namespace nZone { class ShapeInfoAABB; }
 namespace nZone { class ShapeInfoArea; }
 namespace nZone { class ShapeInfoBase; }
@@ -178,6 +179,8 @@ public:
 
 class cAreaHit : public MtObject
 {
+    // inferred: cScenario::createArea names cAreaHit::mpOwner
+    friend class cScenario;
 public:
     class MyDTI;
 public:
@@ -280,3 +283,13 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool cAreaHit::isEnable() {
+    return this->mbEnable;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline AreaHitShape* cAreaHit::getShapePtr() const {
+    return this->mpShape;
+}

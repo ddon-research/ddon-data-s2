@@ -191,7 +191,7 @@ void cNetLoginServer::reqErrorDialog(u32 comId, s32 errNo) {
 bool cNetLoginServer::isDispErrorDialog() {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (::sDialogBase::getInstance() != static_cast<sDialogBase*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x37e96c, used 5 times; no DWARF local holds it
+        // inferred: a temporary for the result of the call at 0x37e96c, used 4 times; no DWARF local holds it
         nDialog::stInfo* t0 = ::sDialogBase::getInstance()->::sDialogBase::getInfo(this->mErrorDialogHandle);
         if (t0 != static_cast<nDialog::stInfo*>(nullptr)) {
             if (t0->state != static_cast<nDialog::STATE>(0)) {
@@ -757,10 +757,17 @@ __attribute__((weak)) void cNetLoginServer::copyRecvCharacterDataFromList(cChara
 // void cNetLoginServer::setCreateCharacterUpdateTime();
 
 // Address: 0x00380fb0 - 0x00380ffb (75 bytes)
-__attribute__((weak)) bool cNetLoginServer::isCreateCharacterTimeOut() {
-    // local: Total now_time;
-    DDON_STUB("cNetLoginServer::isCreateCharacterTimeOut")
-    return {};
+bool cNetLoginServer::isCreateCharacterTimeOut() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
+        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
+            if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
+                MtNetTime::Total now_time = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
+                return (this->mCreateCharacterUpdateTime + static_cast<MtNetTime::Total>(60000)) < now_time;
+            }
+        }
+    }
+    return true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (112 bytes)
@@ -769,9 +776,34 @@ __attribute__((weak)) bool cNetLoginServer::isCreateCharacterTimeOut() {
 
 // Address: 0x0037ed40 - 0x0037ee14 (212 bytes)
 __attribute__((weak)) void cNetLoginServer::updateRTT() {
-    // local: Total total_time;
-    DDON_STUB("cNetLoginServer::updateRTT")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getLoginServer()->mpConnection == static_cast<cSeedLoginSvConnection*>(nullptr)) {
+        return;
+    }
+    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getLoginServer()->mpConnection->::cSeedServerConnection::mConnStatus != static_cast<cSeedServerConnection::eConnStatus>(4)) {
+        return;
+    }
+    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getLoginServer()->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() == false) {
+        return;
+    }
+    MtNetTime::Total total_time = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
+    if ((this->mLastSendPingTime + static_cast<MtNetTime::Total>(10000)) < total_time) {
+        this->mStatus[3] = static_cast<sNetworkExt::NET_STAT>(4);
+        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(3));
+        this->mErrorCode[3] = static_cast<nError::ERROR_CODE>(33000);
+        if (this->mpConnection != static_cast<cSeedLoginSvConnection*>(nullptr)) {
+            if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
+                if (this->mpConnection->::cSeedLoginSvConnection::isLoginSuccess() != false) {
+                    if (this->mpConnection->::cSeedLoginSvConnection::Send_C2L_PING_REQ() != static_cast<s32>(0)) {
+                        this->mStatus[3] = static_cast<sNetworkExt::NET_STAT>(1);
+                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(3));
+                        this->mComTimer[3] = -1.0f;
+                        this->mLastSendPingTime = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
+                    }
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -831,10 +863,11 @@ nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC* cNetLoginServer::getGetEr
     return this->mpConnection->mpGetErrorMessageListPacket;
 }
 
-// No out-of-line body: 2 inlined copies in 2 functions (28 bytes)
-//   in cNetLoginServer::isPrologueCharacter at 0x00381a40-0x00381a4e (called at cNetLoginServer.cpp:2386)
-//   in cNetLoginServer::copyRecvCharacterDataFromList at 0x00381ac8-0x00381ad6 (called at cNetLoginServer.cpp:2404)
-// nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES* cNetLoginServer::getGetCharacterListPacket();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES* cNetLoginServer::getGetCharacterListPacket() {
+    return this->mpConnection->mpGetCharacterListPacket;
+}
 
 // Address: 0x00381600 - 0x0038160f (15 bytes)
 nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC* cNetLoginServer::getNextConnectServerPacket() {

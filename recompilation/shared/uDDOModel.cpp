@@ -246,10 +246,43 @@ __attribute__((weak)) void uDDOModel::setupContextTarget(bool recvFlag) {
 }
 
 // Address: 0x008d7b70 - 0x008d7c1c (172 bytes)
-__attribute__((weak)) void uDDOModel::setupContextStateLive(bool recvFlag) {
-    // local: bool setupFlag;
-    DDON_STUB("uDDOModel::setupContextStateLive")
-    /* stub */
+void uDDOModel::setupContextStateLive(bool recvFlag) {
+    // DWARF local not rendered: bool setupFlag;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    switch (::cContextInterface::getStateLive(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter) - static_cast<u32>(512)) {
+        case static_cast<u32>(0):
+        {
+            if ((this->mUnitId & static_cast<u32>(1026)) != static_cast<u32>(0)) {
+            } else {
+                this->callbackRespawn(recvFlag == false);
+            }
+            break;
+        }
+        case static_cast<u32>(1):
+        {
+            this->callbackInjured(recvFlag == false);
+            break;
+        }
+        case static_cast<u32>(2):
+        {
+            this->callbackLost(recvFlag == false);
+            break;
+        }
+        case static_cast<u32>(3):
+        {
+            this->callbackLostEnd(recvFlag == false);
+            break;
+        }
+        case static_cast<u32>(4):
+        {
+            this->callbackReturnTerritory(recvFlag == false);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // Address: 0x008d7c20 - 0x008d7c36 (22 bytes)
@@ -620,17 +653,17 @@ void uDDOModel::throwMaster(s32 index) {
         if (this->mpCtrl->::cUnit::isEnable()) {
             this->mpCtrl->::uControl::sendMasterParam();
             // inferred: a temporary for the value the load at 0x8d8fde read, used once; no DWARF local holds it
-            sSetManager* t1 = ::sSetManager::getInstance();
-            t1->::sSetManager::sendThrowMaster(::cContextInterface::getUniqueId(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter), index);
+            sSetManager* t0 = ::sSetManager::getInstance();
+            t0->::sSetManager::sendThrowMaster(::cContextInterface::getUniqueId(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter), index);
         } else {
             // inferred: a temporary for the value the load at 0x8d8fde read, used once; no DWARF local holds it
-            sSetManager* t1 = ::sSetManager::getInstance();
-            t1->::sSetManager::sendThrowMaster(::cContextInterface::getUniqueId(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter), index);
+            sSetManager* t0 = ::sSetManager::getInstance();
+            t0->::sSetManager::sendThrowMaster(::cContextInterface::getUniqueId(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter), index);
         }
     } else {
         // inferred: a temporary for the value the load at 0x8d8fde read, used once; no DWARF local holds it
-        sSetManager* t1 = ::sSetManager::getInstance();
-        t1->::sSetManager::sendThrowMaster(::cContextInterface::getUniqueId(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter), index);
+        sSetManager* t0 = ::sSetManager::getInstance();
+        t0->::sSetManager::sendThrowMaster(::cContextInterface::getUniqueId(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter), index);
     }
 }
 
@@ -2845,15 +2878,15 @@ __attribute__((weak)) nCatch::CATCH_TYPE uDDOModel::getCatchType() {
 }
 
 // Address: 0x008dc480 - 0x008dc48d (13 bytes)
-__attribute__((weak)) void uDDOModel::clearHitEffectFlag(cHitInfoAfter& HitInfo) {
-    DDON_STUB("uDDOModel::clearHitEffectFlag")
-    /* stub */
+void uDDOModel::clearHitEffectFlag(cHitInfoAfter& HitInfo) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    HitInfo.mCommonInfo.mpAttackParam->mEffectFlag2 = HitInfo.mCommonInfo.mpAttackParam->mEffectFlag2 | static_cast<u16>(6);
 }
 
 // Address: 0x008dc490 - 0x008dc49d (13 bytes)
-__attribute__((weak)) void uDDOModel::clearHitSEFlag(cHitInfoAfter& HitInfo) {
-    DDON_STUB("uDDOModel::clearHitSEFlag")
-    /* stub */
+void uDDOModel::clearHitSEFlag(cHitInfoAfter& HitInfo) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    HitInfo.mCommonInfo.mpAttackParam->mSeFlag2 = HitInfo.mCommonInfo.mpAttackParam->mSeFlag2 | static_cast<u16>(3);
 }
 
 // Address: 0x008dc4a0 - 0x008dc4b3 (19 bytes)
@@ -3157,19 +3190,12 @@ void uDDOModel::releaseAsyncArc() {
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if (this->mAsyncArc.::MtArray::mLength == static_cast<u32>(0)) {
         if (this->mAsyncArc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x8d6967, used once; no DWARF local holds it
-            MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-            t1->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
-            this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
-            return;
-        } else {
-            this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-            this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
-            this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
-            return;
+            ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
         }
+        this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+        this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
+        this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
+        return;
     } else {
         // inferred: the counter this loop steps; no location-less local in scope fits
         unsigned int i0_3 = static_cast<unsigned int>(0);
@@ -3189,19 +3215,12 @@ void uDDOModel::releaseAsyncArc() {
         }
         if (v1_0 == static_cast<u32>(0)) {
             if (this->mAsyncArc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                // inferred: a temporary for the result of the call at 0x8d6967, used once; no DWARF local holds it
-                MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-                t1->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
-                this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
-                this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
-                return;
-            } else {
-                this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
-                this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
-                return;
+                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
             }
+            this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+            this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
+            this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
+            return;
         } else {
             // inferred: the value the loop at 0x8d6930 carries; no location-less local in scope fits
             u32 v2_0 = v1_0;
@@ -3224,19 +3243,12 @@ void uDDOModel::releaseAsyncArc() {
                 }
             }
             if (this->mAsyncArc.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
-                // inferred: a temporary for the result of the call at 0x8d6967, used once; no DWARF local holds it
-                MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::MtArray::DTI);
-                t1->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
-                this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
-                this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
-                return;
-            } else {
-                this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
-                this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
-                this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
-                return;
+                ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAsyncArc.::MtArray::mpArray));
             }
+            this->mAsyncArc.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+            this->mAsyncArc.::MtArray::mBufsiz = static_cast<u32>(0);
+            this->mAsyncArc.::MtArray::mLength = static_cast<u32>(0);
+            return;
         }
     }
 }

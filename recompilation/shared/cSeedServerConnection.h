@@ -82,7 +82,7 @@ class cSeedServerConnection : public MtObject
 {
     // inferred: cNetGameServer::isLogin names cSeedServerConnection::mConnStatus
     friend class cNetGameServer;
-    // inferred: cNetLoginServer::isConnectServer names cSeedServerConnection::mConnStatus
+    // inferred: cNetLoginServer::updateRTT names cSeedServerConnection::mConnStatus
     friend class cNetLoginServer;
 public:
     enum eConnStatus

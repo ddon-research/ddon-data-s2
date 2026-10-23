@@ -9,9 +9,11 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/MtString.h"
+#include "../shared/S2C.h"
 #include "../shared/cCharacterData.h"
 #include "cGUIContentsExecutor.h"
 #include "cMenuBase.h"
+#include "cMenuSupport.h"
 #include "../shared/cNetGameServer.h"
 #include "../rLayout/cNetSessionManager.h"
 #include "../shared/cUnit.h"
@@ -19,6 +21,7 @@
 #include "../shared/nNet.h"
 #include "../shared/sNetwork.h"
 #include "../shared/sNetworkExt.h"
+#include "../shared/sQuestManagerExt.h"
 #include "../shared/uGUIBase.h"
 #include "uGUIDialogTextBox.h"
 #include "uGUIEntryBoard.h"
@@ -690,10 +693,56 @@ cMenuEntryBoardItemList::~cMenuEntryBoardItemList() {
 }
 
 // Address: 0x0014bd90 - 0x0014bf24 (404 bytes)
-__attribute__((weak)) void cMenuEntryBoardItemList::initEntryBoardItemList(u64 boardId, bool solo) {
-    // local: cMenuSupportList* pList;
-    DDON_STUB("cMenuEntryBoardItemList::initEntryBoardItemList")
-    /* stub */
+void cMenuEntryBoardItemList::initEntryBoardItemList(u64 boardId, bool solo) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cMenuBase::initMenu();
+    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
+    this->mBoardId = boardId;
+    this->mIsSolo = solo;
+    if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isSaveEntrySearchFilterSave() != false) {
+        ::sQuestManagerExt::getInstance()->::sQuestManagerExt::loadEntrySearchFilter(this->mSearchSetting);
+        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearEntryBoardItemListPacket();
+        ::nNet::resetEntryBoardInfo(this->mBoardInfo);
+        this->::cMenuBase::mpGUIMenu = this->::cMenuBase::registerGUI(::uGUIEntryBoard::DTI, ::cMenuBase::DEFAULT_GUI_LINE, ::cMenuBase::DEFAULT_GUI_GROUP);
+        cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(100), static_cast<u32>(7), static_cast<u32>(9));
+        if (pList != static_cast<cMenuSupportList*>(nullptr)) {
+            pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(7));
+            pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(8));
+            this->::cMenuBase::createList(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getEntryBoardItemListPacket()->m_EntryItemList.::MtArray::mLength);
+        }
+        this->::cMenuBase::setListCursor(this->::cMenuBase::getIndexFromMenuId(static_cast<s32>(7)));
+        this->mRecruitPos.x = ::MtVector3::Zero.x;
+        this->mRecruitPos.y = ::MtVector3::Zero.y;
+        this->mRecruitPos.z = ::MtVector3::Zero.z;
+        this->mRecruitPos.pad_ = 0.0f;
+        this->mSearchPos.x = ::MtVector3::Zero.x;
+        this->mSearchPos.y = ::MtVector3::Zero.y;
+    } else {
+        this->mSearchSetting.::cCharacterData::stSearchFilterSetting::setDefaultData();
+        this->mSearchSetting.::cCharacterData::stSearchFilterSetting::initSearchFilter(static_cast<s32>(5));
+        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearEntryBoardItemListPacket();
+        ::nNet::resetEntryBoardInfo(this->mBoardInfo);
+        this->::cMenuBase::mpGUIMenu = this->::cMenuBase::registerGUI(::uGUIEntryBoard::DTI, ::cMenuBase::DEFAULT_GUI_LINE, ::cMenuBase::DEFAULT_GUI_GROUP);
+        cMenuSupportList* pList = this->::cMenuBase::setupSupportList(static_cast<u32>(100), static_cast<u32>(7), static_cast<u32>(9));
+        if (pList != static_cast<cMenuSupportList*>(nullptr)) {
+            pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(7));
+            pList->::cMenuSupportList::addBelowMenu(static_cast<s32>(8));
+            this->::cMenuBase::createList(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getEntryBoardItemListPacket()->m_EntryItemList.::MtArray::mLength);
+        }
+        this->::cMenuBase::setListCursor(this->::cMenuBase::getIndexFromMenuId(static_cast<s32>(7)));
+        this->mRecruitPos.x = ::MtVector3::Zero.x;
+        this->mRecruitPos.y = ::MtVector3::Zero.y;
+        this->mRecruitPos.z = ::MtVector3::Zero.z;
+        this->mRecruitPos.pad_ = 0.0f;
+        this->mSearchPos.x = ::MtVector3::Zero.x;
+        this->mSearchPos.y = ::MtVector3::Zero.y;
+    }
+    this->mSearchPos.z = ::MtVector3::Zero.z;
+    this->mSearchPos.pad_ = 0.0f;
+    this->mbJumpMemberList = false;
+    this->mbReturnList = false;
+    this->mBeforeSearch = true;
+    this->mbEnableCtrl = true;
 }
 
 // Address: 0x0014bf30 - 0x0014c710 (2016 bytes)
@@ -1664,11 +1713,44 @@ void cMenuReadyEntryBoardItem::initReadyEntryBoardItem() {
 }
 
 // Address: 0x0014ad20 - 0x0014adb9 (153 bytes)
-__attribute__((weak)) nMenu::MENU_RET cMenuReadyEntryBoardItem::moveReadyEntryBoardItem() {
-    // local: s32& baseRno;
-    // local: u32 statusId;
-    DDON_STUB("cMenuReadyEntryBoardItem::moveReadyEntryBoardItem")
-    return {};
+nMenu::MENU_RET cMenuReadyEntryBoardItem::moveReadyEntryBoardItem() {
+    // DWARF local not rendered: s32& baseRno;
+    // DWARF local not rendered: u32 statusId;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x167b
+    this->::cMenuBase::moveMenu();
+    if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(2)) {
+        if (this->::cMenuBase::mMenuRno[0] != static_cast<int>(1)) {
+            if (this->::cMenuBase::mMenuRno[0] == static_cast<int>(0)) {
+                this->::cMenuBase::mMenuRno[0] = static_cast<int>(1);
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::readyEntryBoardItem();
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[400] == static_cast<sNetworkExt::NET_STAT>(4)) {
+                    this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
+                } else {
+                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[400] == static_cast<sNetworkExt::NET_STAT>(2)) {
+                        static_cast<sNetworkExt*>(::sNetwork::getInstance())->mEntryBoardReady = true;
+                        return static_cast<nMenu::MENU_RET>(1);
+                    }
+                }
+            }
+        } else {
+            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[400] == static_cast<sNetworkExt::NET_STAT>(4)) {
+                this->::cMenuBase::mMenuRno[0] = static_cast<int>(2);
+            } else {
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mStatus[400] == static_cast<sNetworkExt::NET_STAT>(2)) {
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mEntryBoardReady = true;
+                    return static_cast<nMenu::MENU_RET>(1);
+                }
+            }
+        }
+        return static_cast<nMenu::MENU_RET>(0);
+    } else {
+        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isDispErrorDialog() != false) {
+            return static_cast<nMenu::MENU_RET>(0);
+        } else {
+            return static_cast<nMenu::MENU_RET>(2);
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

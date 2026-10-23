@@ -7,6 +7,7 @@
 struct MtFloat2;
 struct MtFloat3;
 class sAIPawnTalkMgr;
+class sEffect;
 
 // Declarations
 class MtRandom;
@@ -25,6 +26,8 @@ class MtRandom
     friend f32 nDDOMath::random(f32 min, f32 max);
     // inferred: sAIPawnTalkMgr::lotAIPawnTalkWaitFrame calls MtRandom::nrand
     friend class sAIPawnTalkMgr;
+    // inferred: sEffect::getRandomU32 calls MtRandom::nrand
+    friend class sEffect;
 public:
     MtRandom();
     MtRandom(u32 seed);

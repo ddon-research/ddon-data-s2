@@ -167,6 +167,8 @@ public:
 
 class cContextInstChar : public cContextInstance
 {
+    // inferred: cContextInterface::setCliffPos calls cContextInstChar::setCliffPos
+    friend class cContextInterface;
 public:
     class MyDTI;
 public:
@@ -697,6 +699,30 @@ public:
     nDDOGame::ELEMENT_TYPE mElementCoverType;  // offset: 0x4180
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cContextInstHm::getSex() const {
+    return this->mSex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline s32 cContextInstHm::getMemberIndex() const {
+    return this->mMemberIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline f32 cContextInstHm::getFJobWork0() const {
+    return this->mFJobWork0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline f32 cContextInstHm::getFJobWork1() const {
+    return this->mFJobWork1;
+}
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: a bit-test accessor's polarity, true when its bits are set: none of its 34 DWARF copies materializes its result

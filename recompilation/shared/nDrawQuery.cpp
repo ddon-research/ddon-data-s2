@@ -142,8 +142,7 @@ __attribute__((weak)) void nDraw::Query::resume() {
 // Address: 0x013491c0 - 0x013491c5 (5 bytes)
 // Also emitted as: _ZN5nDraw5QueryD0Ev at 0x013491d0
 nDraw::Query::~Query() {
-    DDON_STUB("nDraw::Query::~Query")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // No out-of-line body: no code in the ELF

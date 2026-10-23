@@ -864,28 +864,21 @@ bool cAIFSM::Core::ClusterWork::setCluster(cAIFSMCluster* pCluster) {
     this->mpCluster = pCluster;
     if (pCluster != static_cast<cAIFSMCluster*>(nullptr)) {
         if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x103046e, used once; no DWARF local holds it
-            MtAllocator* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI);
-            t0->memFree(static_cast<void*>(this->mTransitionOnceStateList));
+            ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
             this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
             this->mTransitionOnceStateListLength = static_cast<u32>(0);
             this->mTransitionOnceStateNum = static_cast<u32>(0);
             u32 onceNodeNum = pCluster->::cAIFSMCluster::getNodeNumWithSetting(static_cast<u32>(8));
             if (onceNodeNum != static_cast<u32>(0)) {
                 if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-                    // inferred: a temporary for the result of the call at 0x10304c3, used once; no DWARF local holds it
-                    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI);
-                    t1->memFree(static_cast<void*>(this->mTransitionOnceStateList));
+                    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
                     this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
                     this->mTransitionOnceStateListLength = static_cast<u32>(0);
                     this->mTransitionOnceStateNum = static_cast<u32>(0);
-                    // inferred: a temporary for the result of the call at 0x10304ec, used once; no DWARF local holds it
-                    MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI);
-                    // inferred: a temporary for the result of the call at 0x1030506, used 3 times; no DWARF local holds it
-                    void* t3 = t2->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
-                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t3)) != static_cast<u32*>(nullptr)) {
-                        // inferred: a temporary for the result of the call at 0x103051b, used once; no DWARF local holds it
-                        void* t4 = ::memset(t3, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
+                    // inferred: a temporary for the result of the call at 0x1030506, used twice; no DWARF local holds it
+                    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
+                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) != static_cast<u32*>(nullptr)) {
+                        ::memset(t0, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
                         this->mTransitionOnceStateListLength = onceNodeNum;
                         this->mTransitionOnceStateNum = static_cast<u32>(0);
                         return true;
@@ -896,13 +889,10 @@ bool cAIFSM::Core::ClusterWork::setCluster(cAIFSMCluster* pCluster) {
                     this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
                     this->mTransitionOnceStateListLength = static_cast<u32>(0);
                     this->mTransitionOnceStateNum = static_cast<u32>(0);
-                    // inferred: a temporary for the result of the call at 0x10304ec, used once; no DWARF local holds it
-                    MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI);
-                    // inferred: a temporary for the result of the call at 0x1030506, used 3 times; no DWARF local holds it
-                    void* t3 = t2->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
-                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t3)) != static_cast<u32*>(nullptr)) {
-                        // inferred: a temporary for the result of the call at 0x103051b, used once; no DWARF local holds it
-                        void* t4 = ::memset(t3, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
+                    // inferred: a temporary for the result of the call at 0x1030506, used twice; no DWARF local holds it
+                    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
+                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) != static_cast<u32*>(nullptr)) {
+                        ::memset(t0, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
                         this->mTransitionOnceStateListLength = onceNodeNum;
                         this->mTransitionOnceStateNum = static_cast<u32>(0);
                         return true;
@@ -920,19 +910,14 @@ bool cAIFSM::Core::ClusterWork::setCluster(cAIFSMCluster* pCluster) {
             u32 onceNodeNum = pCluster->::cAIFSMCluster::getNodeNumWithSetting(static_cast<u32>(8));
             if (onceNodeNum != static_cast<u32>(0)) {
                 if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-                    // inferred: a temporary for the result of the call at 0x10304c3, used once; no DWARF local holds it
-                    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI);
-                    t1->memFree(static_cast<void*>(this->mTransitionOnceStateList));
+                    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
                     this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
                     this->mTransitionOnceStateListLength = static_cast<u32>(0);
                     this->mTransitionOnceStateNum = static_cast<u32>(0);
-                    // inferred: a temporary for the result of the call at 0x10304ec, used once; no DWARF local holds it
-                    MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI);
-                    // inferred: a temporary for the result of the call at 0x1030506, used 3 times; no DWARF local holds it
-                    void* t3 = t2->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
-                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t3)) != static_cast<u32*>(nullptr)) {
-                        // inferred: a temporary for the result of the call at 0x103051b, used once; no DWARF local holds it
-                        void* t4 = ::memset(t3, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
+                    // inferred: a temporary for the result of the call at 0x1030506, used twice; no DWARF local holds it
+                    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
+                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) != static_cast<u32*>(nullptr)) {
+                        ::memset(t0, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
                         this->mTransitionOnceStateListLength = onceNodeNum;
                         this->mTransitionOnceStateNum = static_cast<u32>(0);
                         return true;
@@ -943,13 +928,10 @@ bool cAIFSM::Core::ClusterWork::setCluster(cAIFSMCluster* pCluster) {
                     this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
                     this->mTransitionOnceStateListLength = static_cast<u32>(0);
                     this->mTransitionOnceStateNum = static_cast<u32>(0);
-                    // inferred: a temporary for the result of the call at 0x10304ec, used once; no DWARF local holds it
-                    MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI);
-                    // inferred: a temporary for the result of the call at 0x1030506, used 3 times; no DWARF local holds it
-                    void* t3 = t2->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
-                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t3)) != static_cast<u32*>(nullptr)) {
-                        // inferred: a temporary for the result of the call at 0x103051b, used once; no DWARF local holds it
-                        void* t4 = ::memset(t3, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
+                    // inferred: a temporary for the result of the call at 0x1030506, used twice; no DWARF local holds it
+                    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4), static_cast<u32>(16));
+                    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) != static_cast<u32*>(nullptr)) {
+                        ::memset(t0, static_cast<int>(0), static_cast<size_t>(onceNodeNum) * static_cast<size_t>(4));
                         this->mTransitionOnceStateListLength = onceNodeNum;
                         this->mTransitionOnceStateNum = static_cast<u32>(0);
                         return true;
@@ -1630,37 +1612,22 @@ u32 cAIFSMData::ClusterLog::getTransitionOnceStateNum() const {
 
 // Address: 0x01b6aa50 - 0x01b6aadd (141 bytes)
 void cAIFSMData::ClusterLog::setTransitionOnceStateNum(u32 num) {
-    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
     if (this->mTransitionOnceStateList != static_cast<u32*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x1b6aa6e, used once; no DWARF local holds it
-        MtAllocator* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI);
-        t0->memFree(static_cast<void*>(this->mTransitionOnceStateList));
-        this->mTransitionOnceStateNum = static_cast<u32>(0);
-        this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-        if (num != static_cast<u32>(0)) {
-            // inferred: a temporary for the result of the call at 0x1b6aa9b, used once; no DWARF local holds it
-            MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI);
-            // inferred: a temporary for the result of the call at 0x1b6aab5, used 3 times; no DWARF local holds it
-            void* t2 = t1->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(4), static_cast<u32>(16));
-            if ((this->mTransitionOnceStateList = static_cast<u32*>(t2)) != static_cast<u32*>(nullptr)) {
-                this->mTransitionOnceStateNum = num;
-                ::memset(t2, static_cast<int>(0), static_cast<size_t>(num) * static_cast<size_t>(4));
-            }
-        }
-    } else {
-        this->mTransitionOnceStateNum = static_cast<u32>(0);
-        this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
-        if (num != static_cast<u32>(0)) {
-            // inferred: a temporary for the result of the call at 0x1b6aa9b, used once; no DWARF local holds it
-            MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI);
-            // inferred: a temporary for the result of the call at 0x1b6aab5, used 3 times; no DWARF local holds it
-            void* t2 = t1->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(4), static_cast<u32>(16));
-            if ((this->mTransitionOnceStateList = static_cast<u32*>(t2)) != static_cast<u32*>(nullptr)) {
-                this->mTransitionOnceStateNum = num;
-                ::memset(t2, static_cast<int>(0), static_cast<size_t>(num) * static_cast<size_t>(4));
-            }
-        }
+        ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI)->memFree(static_cast<void*>(this->mTransitionOnceStateList));
     }
+    this->mTransitionOnceStateNum = static_cast<u32>(0);
+    this->mTransitionOnceStateList = static_cast<u32*>(nullptr);
+    if (num == static_cast<u32>(0)) {
+        return;
+    }
+    // inferred: a temporary for the result of the call at 0x1b6aab5, used twice; no DWARF local holds it
+    void* t0 = ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI)->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(4), static_cast<u32>(16));
+    if ((this->mTransitionOnceStateList = static_cast<u32*>(t0)) == static_cast<u32*>(nullptr)) {
+        return;
+    }
+    this->mTransitionOnceStateNum = num;
+    ::memset(t0, static_cast<int>(0), static_cast<size_t>(num) * static_cast<size_t>(4));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

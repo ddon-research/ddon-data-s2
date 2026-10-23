@@ -68,6 +68,8 @@ class sNetworkExt;
 class uControl;
 class uDDOModel;
 class uFade;
+class uGUIEngageInfo;
+class uGUIPhoto;
 class uHuman;
 
 // Declarations
@@ -144,7 +146,7 @@ public:
 
 class sGame : public cSystem
 {
-    // inferred: aStage::resetTutorialEquip names sGame::mpInstance
+    // inferred: aStage::addFSMCamEvFromName names sGame::mIsGameOverLobby
     friend class aStage;
     // inferred: cGUIUtility::IsChargeAttributeEnable names sGame::mCharData.mCharData.mOption.mIsDispCharges
     friend class cGUIUtility;
@@ -152,10 +154,14 @@ class sGame : public cSystem
     friend class cpJob02;
     // inferred: nNetBase::cNetBase::castMsgAddress names sGame::mpInstance
     friend class nNetBase::cNetBase;
-    // inferred: nSessionManager::cNetSessionManager::createFlow names sGame::mCharData.mCharData.mMatchProfile.mInviteWait
+    // inferred: nSessionManager::cNetSessionManager::endQuickMatch names sGame::mIsReqChangeServer
     friend class nSessionManager::cNetSessionManager;
     // inferred: sNetworkExt::isClanLeader names sGame::mCharData.mCharData.mCardClan.mMyPost
     friend class sNetworkExt;
+    // inferred: uGUIEngageInfo::updateWait names sGame::mCharData.mCharData.mOption.mIsEngageDisp
+    friend class uGUIEngageInfo;
+    // inferred: uGUIPhoto::setup names sGame::mDisableActionPlayer
+    friend class uGUIPhoto;
 public:
     enum ANNOUNCE_TIME
     {
@@ -727,9 +733,21 @@ inline s32 sGame::getReqStageNo() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline s32 sGame::getReqStartPosNo() const {
+    return this->mGuardData.mReqStartPosNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline s32 sGame::getStageNoOld() const {
     return this->mStageNoOld;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline s32 sGame::getReturnStageNo() const {
+    return this->mReturnStageNo;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -748,9 +766,21 @@ inline cPlayPointInfo* sGame::getPlayPointInfo() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline nNetBase::cNetBase* sGame::getNetBase() {
+    return this->mpNetRpc;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline u32* sGame::getWepResIndexTbl() {
     return this->mpWepResIndexTbl;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cTalkMsgData* sGame::getExmineMsgData() const {
+    return this->mpCommonMsgData;
 }
 
 // Inline, no code of its own: checked where it is inlined.

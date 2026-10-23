@@ -8,6 +8,8 @@
 #include "MtObject.h"
 #include "MtTime.h"
 #include "nQuest.h"
+#include "sNetwork.h"
+#include "sNetworkExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -505,10 +507,15 @@ __attribute__((weak)) bool cQuestTaskParam::checkTaskState(u32 questState) const
 }
 
 // Address: 0x001c6890 - 0x001c68b4 (36 bytes)
-__attribute__((weak)) bool cQuestTaskParam::isEndDistribution() const {
-    // local: t64 endDistTime;
-    DDON_STUB("cQuestTaskParam::isEndDistribution")
-    return {};
+bool cQuestTaskParam::isEndDistribution() const {
+    // DWARF local not rendered: t64 endDistTime;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1120
+    if (this->mEndDistributionData.::MtTime::getTime() != static_cast<t64>(0)) {
+        return this->mEndDistributionData.::MtTime::getTime() < static_cast<sNetworkExt*>(::sNetwork::getInstance())->mWorldServerTime.mTime;
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: no code in the ELF

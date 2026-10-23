@@ -16,6 +16,8 @@
 #include "../rHumanEnemyEquip/rHumanEnemyEquip.h"
 #include "../rHumanEnemyPreset/rHumanEnemyPreset.h"
 #include "sUnitManager.h"
+#include "uBaseModel.h"
+#include "../rCharacterEditCameraParam/uEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -206,10 +208,28 @@ u32 sEnemyManager::getLodDistDataKindNum() {
 }
 
 // Address: 0x00779c10 - 0x00779c5b (75 bytes)
-__attribute__((weak)) u32 sEnemyManager::getLodDistDataKind(uBaseModel* bm) {
-    // local: uEnemy* p_em;
-    DDON_STUB("sEnemyManager::getLodDistDataKind")
-    return {};
+u32 sEnemyManager::getLodDistDataKind(uBaseModel* bm) {
+    // DWARF local not rendered: uEnemy* p_em;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (bm != static_cast<uBaseModel*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x779c24, used once; no DWARF local holds it
+        const MtDTI& t0 = bm->getDTI();
+        // inferred: the value the loop at 0x779c32 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uEnemy::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x779c32 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<u32>(static_cast<uEnemy*>(bm)->::uEnemy::getBodySize());
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<u32>(1);
 }
 
 // Address: 0x00779c60 - 0x00779cdd (125 bytes)
@@ -253,14 +273,52 @@ __attribute__((weak)) const cHumanEnemyEquip* sEnemyManager::getHumanEnemyEquipD
 }
 
 // Address: 0x00779e30 - 0x00779f17 (231 bytes)
-__attribute__((weak)) const cHumanEnemyCustomSkill* sEnemyManager::getHumanEnemyCustomSkill(u32 presetId) const {
-    // local: cHumanEnemyPreset* pPre;
-    // local: u32 i;
-    // local: cHumanEnemyPreset* pData;
-    // local: u32 i;
-    // local: cHumanEnemyCustomSkill* pData;
-    DDON_STUB("sEnemyManager::getHumanEnemyCustomSkill")
-    return nullptr;
+const cHumanEnemyCustomSkill* sEnemyManager::getHumanEnemyCustomSkill(u32 presetId) const {
+    // DWARF local not rendered: cHumanEnemyPreset* pPre;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cHumanEnemyPreset* pData;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cHumanEnemyCustomSkill* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mprHumanEmPriset != static_cast<rHumanEnemyPreset*>(nullptr)) {
+        if (this->mprHumanEmPriset->getDataNum() != static_cast<u32>(0)) {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_3 = static_cast<unsigned int>(0);
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i2_11;
+            for (;;) {
+                // inferred: the value the loop at 0x779ec0 carries; the location-less local in scope that fits is declared on no line of the value's writes
+                cHumanEnemyPreset* v2_10 = this->mprHumanEmPriset->getData(i0_3);
+                if (v2_10->mId != presetId) {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mprHumanEmPriset->getDataNum()) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v2_10 != static_cast<cHumanEnemyPreset*>(nullptr)) {
+                        if (this->mprHumanEmCustomSkill->getDataNum() != static_cast<u32>(0)) {
+                            i2_11 = static_cast<unsigned int>(0);
+                            for (;;) {
+                                if (this->mprHumanEmCustomSkill->getData(i2_11)->mId == v2_10->mCustomSkillListId) {
+                                    return this->mprHumanEmCustomSkill->getData(i2_11);
+                                } else {
+                                    if ((i2_11 + static_cast<unsigned int>(1)) < this->mprHumanEmCustomSkill->getDataNum()) {
+                                        i2_11 += static_cast<unsigned int>(1);
+                                    } else {
+                                        goto loop_779e70_end;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+            loop_779e70_end:;
+        }
+    }
+    return static_cast<const cHumanEnemyCustomSkill*>(nullptr);
 }
 
 // Address: 0x00779f20 - 0x00779fa7 (135 bytes)

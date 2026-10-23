@@ -8,6 +8,60 @@
 #define DDON_STUB(name)
 #endif
 
+// Address: 0x00616a20 - 0x00616a25 (5 bytes)
+nInputText::CandidateList::CandidateList() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+}
+
+// Address: 0x00616a30 - 0x00616a35 (5 bytes)
+nInputText::CandidateList::~CandidateList() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+}
+
+// No out-of-line body: 2 inlined copies in 2 functions (20 bytes)
+//   in nInputText::Context::Context at 0x00616bb3-0x00616bbb (called at nInputText.cpp:821)
+//   in nInputText::Context::clear at 0x00616c4a-0x00616c56 (called at nInputText.cpp:821)
+// void nInputText::CandidateList::clear();
+
+// Address: 0x00616a50 - 0x00616a68 (24 bytes)
+__attribute__((weak)) nInputText::CandidateList& nInputText::CandidateList::operator=(const nInputText::CandidateList& other) {
+    DDON_STUB("nInputText::CandidateList::operator=")
+    __builtin_unreachable();
+}
+
+// No out-of-line body: no code in the ELF
+// u32 nInputText::CandidateList::getDispNumMax() const;
+
+// Address: 0x00616a80 - 0x00616a85 (5 bytes)
+__attribute__((weak)) u32 nInputText::CandidateList::getDispStartIndex() const {
+    DDON_STUB("nInputText::CandidateList::getDispStartIndex")
+    return {};
+}
+
+// Address: 0x00616a90 - 0x00616a95 (5 bytes)
+__attribute__((weak)) u32 nInputText::CandidateList::getDispNum() const {
+    DDON_STUB("nInputText::CandidateList::getDispNum")
+    return {};
+}
+
+// Address: 0x00616aa0 - 0x00616aa5 (5 bytes)
+MT_CWSTR nInputText::CandidateList::getDispString(u32 dispIndex) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<const ::nIMEPS4::CandidateDispInfo&>(this->mCandidateDispInfo).::nIMEPS4::CandidateDispInfo::getDispString(dispIndex);
+}
+
+// Address: 0x00616ab0 - 0x00616ab4 (4 bytes)
+u32 nInputText::CandidateList::getCandidateListCount() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mCandidateDispInfo.::nIME::CandidateDispInfo::mListNum;
+}
+
+// Address: 0x00616ac0 - 0x00616ac4 (4 bytes)
+u32 nInputText::CandidateList::getCandidateListSelectIndex() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mCandidateDispInfo.::nIME::CandidateDispInfo::mListSelectIndex;
+}
+
 // Address: 0x00616920 - 0x00616979 (89 bytes)
 nInputText::ConvertInfo::ConvertInfo() {
     DDON_STUB("nInputText::ConvertInfo::ConvertInfo")

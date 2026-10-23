@@ -4,9 +4,9 @@
 #include <cstddef>
 
 // Dependencies
-#include "MtCollection.h"
-#include "MtDTI.h"
-#include "MtObject.h"
+#include "../shared/MtCollection.h"
+#include "../shared/MtDTI.h"
+#include "../shared/MtObject.h"
 
 // Forward declarations
 class MtAllocator;

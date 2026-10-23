@@ -20,8 +20,7 @@ MtNetBuffer::MtNetBuffer() {
 // Address: 0x00db31f0 - 0x00db31f5 (5 bytes)
 // Also emitted as: _ZN11MtNetBufferD0Ev at 0x00db3200
 MtNetBuffer::~MtNetBuffer() {
-    DDON_STUB("MtNetBuffer::~MtNetBuffer")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x00db3220 - 0x00db33b7 (407 bytes)

@@ -38,16 +38,28 @@ class cAITreeBase;
 class cAIUserProcess;
 class cAIUserProcessCallback;
 class cBVHCollision;
+class cContextInterface;
 class cDynamicBVHCollision;
+class cGUIInstAnimation;
 class cGeomConvexHull;
 class cGridCollision;
 class cHttpClient;
+class cLayoutSetEnemy;
+class cLayoutSetOm;
+class cOmControl;
 class cPrim;
 class cPrimBuffer;
+class cPrimBufferManager;
 class cPrimTagList;
+class cPrimTexHandleManager;
 class cUnit;
 class cWebsocketClient;
 class cZoneLayout;
+class cpEquip;
+class cpHumanWarpCtrl;
+class cpJob09;
+class cpJobBase;
+class cpSoftBody;
 namespace nCaplink { class Object; }
 namespace nCaplink { class cAchievementExtendedInfo; }
 namespace nCaplink { class cAchievementListInfo; }
@@ -65,6 +77,7 @@ namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
 namespace nNetwork { class Connect; }
 namespace nNetwork { class Match; }
+namespace nNetwork { class RpcNetSystem_RouteKey; }
 namespace nNetwork { class SessionDatabase; }
 namespace nNetwork { class Storage; }
 namespace nNetwork { class Transport; }
@@ -92,23 +105,30 @@ class rScheduler;
 class rSoundBank;
 class rSoundCurveSet;
 class rSoundDirectionalSet;
+class rSoundSourceStreamAT9;
 class rSoundStreamSourcePackage;
 class rStarCatalog;
 class rSwingModel;
 class rVibration;
 class sApp;
+class sEnemyManager;
+class sGUIExt;
 class sGpuParticle;
+class sPlatformUtil;
 class sPrimitive;
 class sShadow;
 class sUserManager;
 class sZone;
 class uBaseModel;
+class uCharacter;
 class uCnsJointOffset;
 class uCnsTinyChain;
 class uDynamicSbc;
 class uEffect;
 class uEffect2D;
 class uFreeCamera;
+class uGUIBase;
+class uGUIMap;
 class uGeometry2;
 class uGeometry2Group;
 class uGeometry2GroupCollider;
@@ -203,26 +223,50 @@ class MtDTI
     friend class cAIUserProcessCallback;
     // inferred: cBVHCollision::operator new names MtDTI::mID
     friend class cBVHCollision;
+    // inferred: cContextInterface::setCliffPos names MtDTI::mName
+    friend class cContextInterface;
     // inferred: cDynamicBVHCollision::operator new names MtDTI::mID
     friend class cDynamicBVHCollision;
+    // inferred: cGUIInstAnimation::setCurrentFrame names MtDTI::mName
+    friend class cGUIInstAnimation;
     // inferred: cGeomConvexHull::operator new names MtDTI::mID
     friend class cGeomConvexHull;
     // inferred: cGridCollision::operator new names MtDTI::mID
     friend class cGridCollision;
     // inferred: cHttpClient::operator new names MtDTI::mID
     friend class cHttpClient;
+    // inferred: cLayoutSetEnemy::deleteUnit names MtDTI::mName
+    friend class cLayoutSetEnemy;
+    // inferred: cLayoutSetOm::deleteUnit names MtDTI::mName
+    friend class cLayoutSetOm;
+    // inferred: cOmControl::getGatherItemList names MtDTI::mName
+    friend class cOmControl;
     // inferred: cPrim::operator new names MtDTI::mID
     friend class cPrim;
     // inferred: cPrimBuffer::operator new names MtDTI::mID
     friend class cPrimBuffer;
+    // inferred: cPrimBufferManager::operator new names MtDTI::mID
+    friend class cPrimBufferManager;
     // inferred: cPrimTagList::operator new names MtDTI::mID
     friend class cPrimTagList;
+    // inferred: cPrimTexHandleManager::operator new names MtDTI::mID
+    friend class cPrimTexHandleManager;
     // inferred: cUnit::getName names MtDTI::mName
     friend class cUnit;
     // inferred: cWebsocketClient::operator new names MtDTI::mID
     friend class cWebsocketClient;
     // inferred: cZoneLayout::operator new names MtDTI::mID
     friend class cZoneLayout;
+    // inferred: cpEquip::move names MtDTI::mName
+    friend class cpEquip;
+    // inferred: cpHumanWarpCtrl::setOwner names MtDTI::mName
+    friend class cpHumanWarpCtrl;
+    // inferred: cpJob09::callbackCreateShl names MtDTI::mName
+    friend class cpJob09;
+    // inferred: cpJobBase::setOwner names MtDTI::mName
+    friend class cpJobBase;
+    // inferred: cpSoftBody::setOwner names MtDTI::mName
+    friend class cpSoftBody;
     // inferred: nCaplink::Object::operator new names MtDTI::mID
     friend class nCaplink::Object;
     // inferred: nCaplink::cAchievementExtendedInfo::operator new names MtDTI::mID
@@ -257,6 +301,8 @@ class MtDTI
     friend class nNetwork::Connect;
     // inferred: nNetwork::Match::operator new names MtDTI::mID
     friend class nNetwork::Match;
+    // inferred: nNetwork::RpcNetSystem_RouteKey::operator new names MtDTI::mID
+    friend class nNetwork::RpcNetSystem_RouteKey;
     // inferred: nNetwork::SessionDatabase::operator new names MtDTI::mID
     friend class nNetwork::SessionDatabase;
     // inferred: nNetwork::Storage::operator new names MtDTI::mID
@@ -311,6 +357,8 @@ class MtDTI
     friend class rSoundCurveSet;
     // inferred: rSoundDirectionalSet::operator new names MtDTI::mID
     friend class rSoundDirectionalSet;
+    // inferred: rSoundSourceStreamAT9::prepareToBuffer names MtDTI::mID
+    friend class rSoundSourceStreamAT9;
     // inferred: rSoundStreamSourcePackage::operator new names MtDTI::mID
     friend class rSoundStreamSourcePackage;
     // inferred: rStarCatalog::operator new names MtDTI::mID
@@ -321,8 +369,14 @@ class MtDTI
     friend class rVibration;
     // inferred: sApp::operator new names MtDTI::mID
     friend class sApp;
+    // inferred: sEnemyManager::getLodDistDataKind names MtDTI::mName
+    friend class sEnemyManager;
+    // inferred: sGUIExt::getFocusMap names MtDTI::mName
+    friend class sGUIExt;
     // inferred: sGpuParticle::operator new names MtDTI::mID
     friend class sGpuParticle;
+    // inferred: sPlatformUtil::operator new names MtDTI::mID
+    friend class sPlatformUtil;
     // inferred: sPrimitive::operator new names MtDTI::mID
     friend class sPrimitive;
     // inferred: sShadow::operator new names MtDTI::mID
@@ -333,6 +387,8 @@ class MtDTI
     friend class sZone;
     // inferred: uBaseModel::operator new names MtDTI::mID
     friend class uBaseModel;
+    // inferred: uCharacter::getNamedParam names MtDTI::mName
+    friend class uCharacter;
     // inferred: uCnsJointOffset::operator new names MtDTI::mID
     friend class uCnsJointOffset;
     // inferred: uCnsTinyChain::operator new names MtDTI::mID
@@ -345,6 +401,10 @@ class MtDTI
     friend class uEffect2D;
     // inferred: uFreeCamera::operator new names MtDTI::mID
     friend class uFreeCamera;
+    // inferred: uGUIBase::setMessageColor names MtDTI::mName
+    friend class uGUIBase;
+    // inferred: uGUIMap::execFooter names MtDTI::mName
+    friend class uGUIMap;
     // inferred: uGeometry2::operator new names MtDTI::mID
     friend class uGeometry2;
     // inferred: uGeometry2Group::operator new names MtDTI::mID

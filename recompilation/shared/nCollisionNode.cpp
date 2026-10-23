@@ -384,9 +384,15 @@ __attribute__((weak)) void nCollision::cCollisionNode::callbackGeometryDelete(u3
 // size_t nCollision::cCollisionNode::memSize(void*);
 
 // Address: 0x0118f100 - 0x0118f116 (22 bytes)
-__attribute__((weak)) bool nCollision::cCollisionNode::isSetupMove(bool FlgSetupUpdate) {
-    DDON_STUB("nCollision::cCollisionNode::isSetupMove")
-    return {};
+bool nCollision::cCollisionNode::isSetupMove(bool FlgSetupUpdate) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mFlgSetup == false) {
+        if ((FlgSetupUpdate == false) == false) {
+            this->mFlgSetup = true;
+            return true;
+        }
+    }
+    return this->mFlgSetup == false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1409,25 +1415,17 @@ uModel* nCollision::cGeometryJointGroup::getAttachModel() const {
 
 // Address: 0x01192020 - 0x011920a5 (133 bytes)
 void nCollision::cGeometryJointGroup::setUniqueIDTableNumForInside(u32 num) {
-    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mUniqueIDTableNum == num) {
         return;
     }
     // inferred: a temporary for the value the load at 0x1192039 read, used twice; no DWARF local holds it
     u32* t0 = this->mpUniqueIDTable;
     if (t0 != static_cast<u32*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x119204c, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI);
-        t1->memFree(static_cast<void*>(t0));
+        ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI)->memFree(static_cast<void*>(t0));
         this->mpUniqueIDTable = static_cast<u32*>(nullptr);
-        // inferred: a temporary for the result of the call at 0x1192076, used once; no DWARF local holds it
-        MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI);
-        this->mpUniqueIDTable = static_cast<u32*>(t2->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(4), static_cast<u32>(16)));
-    } else {
-        // inferred: a temporary for the result of the call at 0x1192076, used once; no DWARF local holds it
-        MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI);
-        this->mpUniqueIDTable = static_cast<u32*>(t2->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(4), static_cast<u32>(16)));
     }
+    this->mpUniqueIDTable = static_cast<u32*>(::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI)->memAlloc(static_cast<size_t>(num) * static_cast<size_t>(4), static_cast<u32>(16)));
     this->mUniqueIDTableNum = num;
 }
 

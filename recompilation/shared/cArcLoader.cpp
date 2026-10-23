@@ -252,9 +252,15 @@ void cArcLoaderBase::offPickedFlag() {
 }
 
 // Address: 0x00024910 - 0x00024923 (19 bytes)
-__attribute__((weak)) void cArcLoaderBase::setRetFlagArcLoader(bool isCancel, bool isFailed) {
-    DDON_STUB("cArcLoaderBase::setRetFlagArcLoader")
-    /* stub */
+void cArcLoaderBase::setRetFlagArcLoader(bool isCancel, bool isFailed) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (isCancel != false) {
+        this->mRetFlag = this->mRetFlag | static_cast<u8>(1);
+    } else {
+        if (isFailed != false) {
+            this->mRetFlag = this->mRetFlag | static_cast<u8>(2);
+        }
+    }
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (13 bytes)

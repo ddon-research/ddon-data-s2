@@ -751,9 +751,33 @@ __attribute__((weak)) void cGUIInstAnimation::setParentResolutionAdjust(u32 type
 
 // Address: 0x01071eb0 - 0x01071f39 (137 bytes)
 __attribute__((weak)) void cGUIInstAnimation::setCurrentFrame(cGUIObject* pObject, f32 frame, bool changeFixFrame) {
-    // local: cGUIObject* pChild;
-    DDON_STUB("cGUIInstAnimation::setCurrentFrame")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    pObject->::cGUIObject::setCurrentFrame(frame, changeFixFrame);
+    // inferred: a temporary for the result of the call at 0x1071edf, used once; no DWARF local holds it
+    const MtDTI& t0 = pObject->getDTI();
+    // inferred: the value the loop at 0x1071eed carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::cGUIObjChildAnimationRoot::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x1071eed carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            return;
+        } else {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+    // inferred: DWARF's location-less 'pChild' (function scope) is the value the loop at 0x1071f27 carries
+    for (cGUIObject* pChild = pObject->mpChild;;) {
+        if (pChild == static_cast<cGUIObject*>(nullptr)) {
+            break;
+        } else {
+            this->::cGUIInstAnimation::setCurrentFrame(pChild, frame, changeFixFrame);
+            pChild = pChild->mpNext;
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

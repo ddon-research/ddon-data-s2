@@ -539,11 +539,9 @@ void cpErosionEnemy::updateErosionRegenerateTimer() {
         return;
     }
     this->mErosionRegenerateTimerRate = this->::cpErosionEnemy::calcErosionTimerRate();
-    // inferred: a temporary for the result of the call at 0x184717, used twice; no DWARF local holds it
-    f32 t1 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
-    // inferred: a temporary for the value the load at 0x184724 read, used twice; no DWARF local holds it
-    f32 t2 = this->mErosionRegenerateTimer;
-    this->mErosionRegenerateTimer = t2 - (this->mErosionRegenerateTimerRate * t1);
+    // inferred: a temporary for the result of the call at 0x184717, used once; no DWARF local holds it
+    f32 t0 = ::sWorkRate::getInstance()->::sWorkRate::calc(static_cast<u32>(3));
+    this->mErosionRegenerateTimer = this->mErosionRegenerateTimer - (this->mErosionRegenerateTimerRate * t0);
     if (0.0f >= this->mErosionRegenerateTimer) {
         this->mErosionRegenerateTimer = 0.0f;
         this->mErosionTimerState = static_cast<nErosionEnemy::EROSION_TIMER_STATE>(1);

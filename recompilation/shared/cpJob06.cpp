@@ -8,9 +8,10 @@
 #include "cEfcHandle.h"
 #include "cGeneralPointPtr.h"
 #include "cHitInfoAfter.h"
+#include "cNetGameServer.h"
 #include "cUnit.h"
 #include "cpActionManager.h"
-#include "cpChantCommand.h"
+#include "../rCharacterEditCameraParam/cpChantCommand.h"
 #include "cpEffectProvider.h"
 #include "cpJobBase.h"
 #include "nDDOUtility.h"
@@ -20,6 +21,9 @@
 #include "sCollisionExt.h"
 #include "sEffect.h"
 #include "sEffectExt.h"
+#include "sMain.h"
+#include "sNetwork.h"
+#include "sNetworkExt.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #ifndef DDON_STUB
@@ -454,9 +458,28 @@ __attribute__((weak)) bool cpJob06::checkSkillLevel(s32 ActNo, nHuman::HM_SKILL_
 
 // Address: 0x004aedf0 - 0x004aee8e (158 bytes)
 __attribute__((weak)) void cpJob06::checkCheatMgcBigDamage() {
-    // local: f32 rate;
-    DDON_STUB("cpJob06::checkCheatMgcBigDamage")
-    /* stub */
+    // DWARF local not rendered: f32 rate;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::cpJobBase::mpHuman->::uDDOModel::isMaster() == false) {
+        return;
+    }
+    if (0.0f >= this->mCheckInterval) {
+        // inferred: a temporary for the result of the call at 0x4aee36, used once; no DWARF local holds it
+        f32 t0 = this->::cpJobBase::mpHuman->mpChantCommand->::cpChantCommand::getBounusAtkRate();
+        if (t0 >= 2.0f) {
+            this->mCheckInterval = 1800.0f;
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(16));
+        } else {
+            // inferred: a temporary for the result of the call at 0x4aee50, used once; no DWARF local holds it
+            f32 t1 = this->::cpJobBase::mpHuman->mpChantCommand->::cpChantCommand::getBounusAtkRateForGui();
+            if (t1 >= 2.0f) {
+                this->mCheckInterval = 1800.0f;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(16));
+            }
+        }
+    } else {
+        this->mCheckInterval = this->mCheckInterval - ::sMain::getInstance()->mDeltaTime;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)
@@ -560,9 +583,18 @@ __attribute__((weak)) void cpJob06::setCS12EffectScale(f32 val) {
 }
 
 // Address: 0x004af950 - 0x004af9b1 (97 bytes)
-__attribute__((weak)) void cpJob06::setCS12EffectPos(const MtVector3& pos) {
-    DDON_STUB("cpJob06::setCS12EffectPos")
-    /* stub */
+void cpJob06::setCS12EffectPos(const MtVector3& pos) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpEfcCS12Unit != static_cast<uDDOModel*>(nullptr)) {
+        this->mpEfcCS12Unit->::uCoord::mPos.x = pos.x;
+        this->mpEfcCS12Unit->::uCoord::mPos.y = pos.y;
+        this->mpEfcCS12Unit->::uCoord::mPos.z = pos.z;
+        this->mpEfcCS12Unit->::uCoord::mPos.pad_ = 0.0f;
+    }
+    this->mCS12Pos.x = pos.x;
+    this->mCS12Pos.y = pos.y;
+    this->mCS12Pos.z = pos.z;
+    this->mCS12Pos.pad_ = 0.0f;
 }
 
 // Address: 0x004af9c0 - 0x004af9c8 (8 bytes)

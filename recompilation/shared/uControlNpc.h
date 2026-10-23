@@ -14,6 +14,7 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class MtString;
+class cpHpDamageCtrl;
 class cpTalk;
 class uDDOModel;
 class uNpc;
@@ -35,6 +36,8 @@ using u8 = unsigned char;
 
 class uControlNpc : public uControl
 {
+    // inferred: cpHpDamageCtrl::callbackDamageAfter_calc names uControlNpc::mJobLv
+    friend class cpHpDamageCtrl;
     // inferred: cpTalk::startFaceMot names uControlNpc::mIsEyeClose
     friend class cpTalk;
     // inferred: uNpc::controlLantern names uControlNpc::mIsFsmEventNpc

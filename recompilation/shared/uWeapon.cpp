@@ -8,6 +8,9 @@
 #include "MtMemoryAllocator.h"
 #include "cUnit.h"
 #include "nWeapon.h"
+#include "../rNpcConstItem/rNpcConstItem.h"
+#include "sGame.h"
+#include "sNpcManager.h"
 #include "uBaseModel.h"
 #include "uCnsWeapon.h"
 #include "uDDOModel.h"
@@ -90,14 +93,14 @@ __attribute__((weak)) uWeapon* uWeapon::createWeaponModel(nWeapon::OTHER_MODEL_I
 }
 
 // Address: 0x00d59300 - 0x00d59353 (83 bytes)
-__attribute__((weak)) uWeapon* uWeapon::createWeaponModel(nWeapon::NPC_ITEM_INDEX index, uModel* pParent) {
-    // local: cNpcConstItem* pConstItem;
-    // local: u32 mtag;
-    // local: u32 offset;
-    // local: cWeaponResTable* pWepResData;
-    // local: uWeapon* pWpn;
-    DDON_STUB("uWeapon::createWeaponModel")
-    return nullptr;
+uWeapon* uWeapon::createWeaponModel(nWeapon::NPC_ITEM_INDEX index, uModel* pParent) {
+    // DWARF local not rendered: cWeaponResTable* pWepResData;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    cNpcConstItem* pConstItem = ::sNpcManager::getInstance()->::sNpcManager::getNpcConstItem(static_cast<u32>(index));
+    u32 mtag = pConstItem->::cNpcConstItem::getMTag();
+    u32 offset = pConstItem->::cNpcConstItem::getOffset();
+    uWeapon* pWpn = ::uWeapon::createWeaponModelCore(offset, ::sGame::getInstance()->::sGame::getWepResData(mtag, static_cast<u32>(0)), pParent, static_cast<nWeapon::MODEL_TYPE>(2), static_cast<u8>(0), static_cast<s8>(-1));
+    return pWpn;
 }
 
 // Address: 0x00d58e40 - 0x00d592f5 (1205 bytes)

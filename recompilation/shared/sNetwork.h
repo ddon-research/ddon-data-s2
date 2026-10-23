@@ -57,17 +57,19 @@ using u64 = __uint64_t;
 
 class sNetwork : public cSystem
 {
-    // inferred: cNetGameServer::startEquipGradeUp names sNetwork::mpInstance
+    // inferred: cNetGameServer::move names sNetwork::mpInstance
     friend class cNetGameServer;
     // inferred: nNetwork::Context::reset calls sNetwork::notifyServiceStateChange
     friend class nNetwork::Context;
     // inferred: nNetwork::Session::~Session names sNetwork::mpInstance
     friend class nNetwork::Session;
+    // inferred: nNetwork::nRanking::Object::createDriver names sNetwork::mpInstance
+    friend class nNetwork::nRanking::Object;
     // inferred: nSessionManager::cNetSessionManager::setup names sNetwork::mpSession[0]
     friend class nSessionManager::cNetSessionManager;
     // inferred: sEventManager::setSyncReadyEvent names sNetwork::mpInstance
     friend class sEventManager;
-    // inferred: sGame::isMySelfPartyMemberIndex names sNetwork::mpInstance
+    // inferred: sGame::initDecideCharacter names sNetwork::mpInstance
     friend class sGame;
 public:
     enum

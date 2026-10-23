@@ -38,13 +38,17 @@ class MtTime;
 class MtUI;
 struct SceNpId;
 class cCharacterData;
+class cMenuReadyEntryBoardItem;
 class cNetGameServer;
 class cNetLoginServer;
 class cNetStorage;
+class cQuestTaskParam;
 namespace nNet { class cProgress; }
 namespace nNet { struct stClanEmblem; }
 namespace nNet { struct stEntryBoardItemInfo; }
 namespace nSessionManager { class cNetSessionManager; }
+class sGame;
+class sSavedataExt;
 
 // Declarations
 class sNetworkExt;
@@ -74,6 +78,16 @@ using u8 = unsigned char;
 
 class sNetworkExt : public sNetwork
 {
+    // inferred: cMenuReadyEntryBoardItem::moveReadyEntryBoardItem names sNetworkExt::mEntryBoardReady
+    friend class cMenuReadyEntryBoardItem;
+    // inferred: cQuestTaskParam::isEndDistribution names sNetworkExt::mWorldServerTime
+    friend class cQuestTaskParam;
+    // inferred: nSessionManager::cNetSessionManager::endQuickMatch names sNetworkExt::mReserveJoinParty
+    friend class nSessionManager::cNetSessionManager;
+    // inferred: sGame::initDecideCharacter names sNetworkExt::mReserveJob
+    friend class sGame;
+    // inferred: sSavedataExt::beginHddSpaceCheck names sNetworkExt::mAchievementBootup
+    friend class sSavedataExt;
 public:
     enum LOGIN_RNO
     {

@@ -22,6 +22,7 @@ class MtStream;
 class MtString;
 class MtUI;
 class MtVector3;
+class sCameraExt;
 
 // Declarations
 class cQuakeParam;
@@ -99,6 +100,8 @@ public:
 
 class rCameraQuakeList : public cResource
 {
+    // inferred: sCameraExt::setQuake names rCameraQuakeList::mQuakeList.mpArray
+    friend class sCameraExt;
 public:
     class MyDTI;
 public:

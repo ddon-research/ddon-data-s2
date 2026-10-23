@@ -813,9 +813,7 @@ __attribute__((weak)) void uEffect::releaseGenerator() {
                 }
             }
         }
-        // inferred: a temporary for the result of the call at 0xfcb089, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::uEffect::DTI);
-        t1->memFree(static_cast<void*>(this->mJoint));
+        ::MtMemoryAllocator::getAllocator(::uEffect::DTI)->memFree(static_cast<void*>(this->mJoint));
         this->mpChildUnitBuff = static_cast<u8*>(nullptr);
         this->mJoint = static_cast<cEffectJoint*>(nullptr);
     }

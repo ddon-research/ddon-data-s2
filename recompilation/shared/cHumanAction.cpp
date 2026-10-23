@@ -121,13 +121,13 @@ void cHumanActBase::final() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     this->::cAction::final();
     // inferred: a temporary for the value the load at 0x22db0f read, used 3 times; no DWARF local holds it
-    uHuman* t2 = this->mpHuman;
-    if (t2 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = this->mpHuman;
+    if (t0 == static_cast<uHuman*>(nullptr)) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x22db20, used once; no DWARF local holds it
-    f32 t3 = t2->::uHuman::getComAdjustParam(static_cast<u32>(1));
-    t2->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t3);
+    f32 t1 = t0->::uHuman::getComAdjustParam(static_cast<u32>(1));
+    t0->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t1);
     this->mpHuman->mIsBeforeAttackHit = false;
     this->mpHuman->mIsBeforeGuarded = false;
     this->mpHuman->mIsRecevedDamage = false;
@@ -387,13 +387,13 @@ void cHumanActSetNpcMotMyRoom::final() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     this->::cAction::final();
     // inferred: a temporary for the value the load at 0x25595f read, used 3 times; no DWARF local holds it
-    uHuman* t2 = this->::cHumanActBase::mpHuman;
-    if (t2 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = this->::cHumanActBase::mpHuman;
+    if (t0 == static_cast<uHuman*>(nullptr)) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x255970, used once; no DWARF local holds it
-    f32 t3 = t2->::uHuman::getComAdjustParam(static_cast<u32>(1));
-    t2->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t3);
+    f32 t1 = t0->::uHuman::getComAdjustParam(static_cast<u32>(1));
+    t0->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t1);
     this->::cHumanActBase::mpHuman->mIsBeforeAttackHit = false;
     this->::cHumanActBase::mpHuman->mIsBeforeGuarded = false;
     this->::cHumanActBase::mpHuman->mIsRecevedDamage = false;
@@ -514,13 +514,13 @@ void cHumanActSetNpcMotion::final() {
     // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     this->::cAction::final();
     // inferred: a temporary for the value the load at 0x24e1ff read, used 3 times; no DWARF local holds it
-    uHuman* t2 = this->::cHumanActBase::mpHuman;
-    if (t2 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = this->::cHumanActBase::mpHuman;
+    if (t0 == static_cast<uHuman*>(nullptr)) {
         return;
     }
     // inferred: a temporary for the result of the call at 0x24e210, used once; no DWARF local holds it
-    f32 t3 = t2->::uHuman::getComAdjustParam(static_cast<u32>(1));
-    t2->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t3);
+    f32 t1 = t0->::uHuman::getComAdjustParam(static_cast<u32>(1));
+    t0->::uDDOModel::setDefaultRotateSpeed(0.017453294f * t1);
     this->::cHumanActBase::mpHuman->mIsBeforeAttackHit = false;
     this->::cHumanActBase::mpHuman->mIsBeforeGuarded = false;
     this->::cHumanActBase::mpHuman->mIsRecevedDamage = false;

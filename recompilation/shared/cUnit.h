@@ -64,7 +64,7 @@ class cUnit : public MtObject
     friend class cpJob02;
     // inferred: cpJob06::decreaseCS14Timer names cUnit::mDeltaTime
     friend class cpJob06;
-    // inferred: sUnit::addBottom names cUnit::mUnitGroup
+    // inferred: sUnit::remove names cUnit::mMoveLine
     friend class sUnit;
     // inferred: uArmor::setup names cUnit::mDrawMode
     friend class uArmor;

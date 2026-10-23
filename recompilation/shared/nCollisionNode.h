@@ -639,3 +639,9 @@ namespace nCollision {
         static const u32 INVALID_ID = 4294967295;
     };
 }  // namespace nCollision
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline MtObject* nCollision::cCollisionNodeObject::getOwner() const {
+    return this->mpOwner;
+}

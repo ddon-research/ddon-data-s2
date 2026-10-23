@@ -298,7 +298,7 @@ void uGUIPSStore::setupHistoryCommon() {
     // inferred: a temporary for the result of the call at 0xbe5fb7, used twice; no DWARF local holds it
     cGUIInstance* t0 = this->getInstance(static_cast<u32>(56), false);
     if (t0 != static_cast<cGUIInstance*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0xbe5fcd, used 3 times; no DWARF local holds it
+        // inferred: a temporary for the result of the call at 0xbe5fcd, used twice; no DWARF local holds it
         cGUIObject* t1 = this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(2));
         if ((this->mpHistoryCaption = static_cast<cGUIObjMessage*>(t1)) != static_cast<cGUIObjMessage*>(nullptr)) {
             t1->::cGUIObject::setVisible(false);
@@ -667,17 +667,50 @@ __attribute__((weak)) void uGUIPSStore::setupItemUseDialog() {
 // void uGUIPSStore::psstoreEventHistLClick();
 
 // Address: 0x00be8390 - 0x00be8445 (181 bytes)
-__attribute__((weak)) void uGUIPSStore::psstoreEventShiftStation() {
-    // local: s32 posIndex;
-    DDON_STUB("uGUIPSStore::psstoreEventShiftStation")
-    /* stub */
+void uGUIPSStore::psstoreEventShiftStation() {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x350
+    if (this->mStationItemNum != static_cast<s32>(0)) {
+        s32 posIndex = this->mCategoryCtrlMgr.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0));
+        if (static_cast<unsigned int>(posIndex) <= static_cast<unsigned int>(1)) {
+            if (this->mCategoryItem[posIndex].pInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+                this->mCategoryItem[posIndex].pInst->::cGUIInstAnimation::setSequenceId(static_cast<u32>(5));
+            }
+        }
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(4));
+        this->::uGUIPSStore::setFlow(static_cast<s32>(0));
+        if (this->mStationScrlList.::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+            if (static_cast<sGUIExt*>(::sGUI::getInstance())->mMouse.mIsMouseMode != false) {
+            } else {
+                this->mStationScrlList.::uGUIBase::cScrollList::setListPos(static_cast<u32>(this->mStationScrlList.::uGUIBase::cScrollList::getCtrl()->::cControl::getCurrentPos()), false);
+            }
+        }
+    } else {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(20));
+    }
 }
 
 // Address: 0x00be8450 - 0x00be850c (188 bytes)
-__attribute__((weak)) void uGUIPSStore::psstoreEventShiftHistory() {
-    // local: s32 posIndex;
-    DDON_STUB("uGUIPSStore::psstoreEventShiftHistory")
-    /* stub */
+void uGUIPSStore::psstoreEventShiftHistory() {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x350
+    if (this->mHistoryItemNum != static_cast<s32>(0)) {
+        s32 posIndex = this->mCategoryCtrlMgr.::cGUIControlMgr::getCurrentPos(static_cast<u32>(0));
+        if (static_cast<unsigned int>(posIndex) <= static_cast<unsigned int>(1)) {
+            if (this->mCategoryItem[posIndex].pInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+                this->mCategoryItem[posIndex].pInst->::cGUIInstAnimation::setSequenceId(static_cast<u32>(5));
+            }
+        }
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(4));
+        this->::uGUIPSStore::setFlow(static_cast<s32>(1));
+        if (static_cast<sGUIExt*>(::sGUI::getInstance())->mMouse.mIsMouseMode == false) {
+            if (this->mHistoryScrlList.::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                this->mHistoryScrlList.::uGUIBase::cScrollList::setListPos(static_cast<u32>(this->mHistoryScrlList.::uGUIBase::cScrollList::getCtrl()->::cControl::getCurrentPos()), false);
+            }
+        }
+    } else {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(20));
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (47 bytes)

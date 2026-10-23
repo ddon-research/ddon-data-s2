@@ -244,9 +244,31 @@ void uControl::connectModel(uDDOModel* pModel) {
 }
 
 // Address: 0x008c7860 - 0x008c78cc (108 bytes)
-__attribute__((weak)) void uControl::disconnectModel(bool IsKillModel) {
-    DDON_STUB("uControl::disconnectModel")
-    /* stub */
+void uControl::disconnectModel(bool IsKillModel) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the value the load at 0x8c786a read, used 7 times; no DWARF local holds it
+    uDDOModel* t0 = this->mpModel;
+    if (t0 != static_cast<uDDOModel*>(nullptr)) {
+        if (t0->::cUnit::isEnable()) {
+            if ((IsKillModel == false) == false) {
+                t0->kill();
+                // inferred: a temporary for the value the load at 0x8c7892 read, used 5 times; no DWARF local holds it
+                uDDOModel* t1 = this->mpModel;
+                t1->mpCtrl = static_cast<uControl*>(nullptr);
+                t1->mContextInterface.mpContextInstance = t1->::uDDOModel::getContextInst();
+                t1->mContextInterface.mpContextCharacter = t1->::uDDOModel::getContext();
+            } else {
+                t0->mpCtrl = static_cast<uControl*>(nullptr);
+                t0->mContextInterface.mpContextInstance = t0->::uDDOModel::getContextInst();
+                t0->mContextInterface.mpContextCharacter = t0->::uDDOModel::getContext();
+            }
+        } else {
+            t0->mpCtrl = static_cast<uControl*>(nullptr);
+            t0->mContextInterface.mpContextInstance = t0->::uDDOModel::getContextInst();
+            t0->mContextInterface.mpContextCharacter = t0->::uDDOModel::getContext();
+        }
+    }
+    this->mpModel = static_cast<uDDOModel*>(nullptr);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (55 bytes)
@@ -272,9 +294,7 @@ bool uControl::isMaster() {
     if (::cContextInterface::getMasterChangeFlag(this->mContextInterface.mpContextInstance) != false) {
         // inferred: a temporary for the value the load at 0x8c7bc1 read, used once; no DWARF local holds it
         sGame* t0 = ::sGame::getInstance();
-        // inferred: a temporary for the result of the call at 0x8c7bd5, used twice; no DWARF local holds it
-        bool t1 = t0->::sGame::isMySelfPartyMemberIndex(::cContextInterface::getMasterIndex(this->mContextInterface.mpContextInstance));
-        if (t1 == false) {
+        if (t0->::sGame::isMySelfPartyMemberIndex(::cContextInterface::getMasterIndex(this->mContextInterface.mpContextInstance)) == false) {
             return false;
         } else {
             return true;

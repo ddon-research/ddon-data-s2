@@ -43,6 +43,7 @@ class rTable;
 class rTexture;
 class rTextureJpeg;
 class rVibration;
+class sResource;
 class sSoundExt;
 class uCnsDDOIK;
 
@@ -115,6 +116,8 @@ class cResource : public MtObject
     friend class rTextureJpeg;
     // inferred: rVibration::rVibration names cResource::mAttr
     friend class rVibration;
+    // inferred: sResource::addRef names cResource::mRefCount
+    friend class sResource;
     // inferred: sSoundExt::checkNoStopStream names cResource::mID
     friend class sSoundExt;
     // inferred: uCnsDDOIK::getName names cResource::mPath[0]

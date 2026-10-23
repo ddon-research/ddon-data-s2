@@ -1515,13 +1515,30 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline uDDOModel* uHuman::getLastTouchTarget() const {
+    return this->mpLastTouchTarget;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::onFixSafePos() {
+    this->mIsFixSafePos = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::onCanShlConst() {
+    this->mIsCanShlConst = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool uHuman::isCanSetEmotion() {
     return this->mIsCanSetEmotion;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline s32 uHuman::getClimbJointNo() const {
     return this->mClimbJointNo;
 }
@@ -1532,8 +1549,32 @@ inline cContextPlayerInfo* uHuman::getContextPlayerInfo() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::onUsingDamageProtect() {
+    this->mIsUsingDamageProtect = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::offUsingDamageProtect() {
+    this->mIsUsingDamageProtect = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline f32 uHuman::getInvincibleTime() const {
     return this->mInvincibleTime;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uHuman::countupJob09FrightBoardAir() {
+    this->mJob09AirFrightBoardCount = this->mJob09AirFrightBoardCount + static_cast<u32>(1);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline f32 uHuman::getCheckCheatChageNow_Gi() const {
+    return this->mCheckCheatChageNow_Gi;
 }
 
 // Inline, no code of its own: checked where it is inlined.

@@ -12,6 +12,7 @@
 class MtAllocator;
 class MtCriticalSection;
 class MtDTI;
+class MtNetMediator;
 class MtPropertyList;
 
 // Declarations
@@ -258,6 +259,8 @@ public:
 
 class MtNetObject : public MtObject
 {
+    // inferred: MtNetMediator::setLibsslContextId names MtNetObject::mCS
+    friend class MtNetMediator;
 public:
     class MyDTI;
     class ScopedLock;

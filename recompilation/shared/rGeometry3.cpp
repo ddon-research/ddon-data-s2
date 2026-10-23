@@ -188,22 +188,14 @@ u32 rGeometry3::getGroupUniqueIDNumForIO() {
 
 // Address: 0x0121dd10 - 0x0121dd8d (125 bytes)
 void rGeometry3::setGroupUniqueIDNumForIO(u32 UniqueIDNum) {
-    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x121dd20 read, used twice; no DWARF local holds it
     u32* t0 = this->mpUniqueIDTable;
     if (t0 != static_cast<u32*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x121dd33, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rGeometry3::DTI);
-        t1->memFree(static_cast<void*>(t0));
+        ::MtMemoryAllocator::getAllocator(::rGeometry3::DTI)->memFree(static_cast<void*>(t0));
         this->mpUniqueIDTable = static_cast<u32*>(nullptr);
-        // inferred: a temporary for the result of the call at 0x121dd5e, used once; no DWARF local holds it
-        MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::rGeometry3::DTI);
-        this->mpUniqueIDTable = static_cast<u32*>(t2->memAlloc(UniqueIDNum * static_cast<u32>(4), static_cast<u32>(16)));
-    } else {
-        // inferred: a temporary for the result of the call at 0x121dd5e, used once; no DWARF local holds it
-        MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::rGeometry3::DTI);
-        this->mpUniqueIDTable = static_cast<u32*>(t2->memAlloc(UniqueIDNum * static_cast<u32>(4), static_cast<u32>(16)));
     }
+    this->mpUniqueIDTable = static_cast<u32*>(::MtMemoryAllocator::getAllocator(::rGeometry3::DTI)->memAlloc(UniqueIDNum * static_cast<u32>(4), static_cast<u32>(16)));
     this->mUniqueIDNum = UniqueIDNum;
 }
 

@@ -120,9 +120,9 @@ bool cpBakeJoint::setRenewalEnvelope() {
     if (this->mpModel != static_cast<uModel*>(nullptr)) {
         ::sScene::getInstance()->::sScene::releaseEnvelope(this->mpModel->::uModel::getEnvelopeHandle());
         // inferred: a temporary for the value the load at 0x17b42e read, used twice; no DWARF local holds it
-        uModel* t1 = this->mpModel;
-        t1->mEnvelopeHandle = static_cast<u32>(4294967295);
-        t1->mEnvelopeHandle = ::sScene::getInstance()->::sScene::createEnvelope(this->mSkinJointNum);
+        uModel* t0 = this->mpModel;
+        t0->mEnvelopeHandle = static_cast<u32>(4294967295);
+        t0->mEnvelopeHandle = ::sScene::getInstance()->::sScene::createEnvelope(this->mSkinJointNum);
         if (this->mpModel->mEnvelopeHandle != static_cast<u32>(4294967295)) {
             this->mIsBaked = true;
             return true;
@@ -139,9 +139,9 @@ bool cpBakeJoint::setOriginalEnvelope() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     ::sScene::getInstance()->::sScene::releaseEnvelope(this->mpModel->::uModel::getEnvelopeHandle());
     // inferred: a temporary for the value the load at 0x17b4a9 read, used 3 times; no DWARF local holds it
-    uModel* t1 = this->mpModel;
-    t1->mEnvelopeHandle = static_cast<u32>(4294967295);
-    t1->mEnvelopeHandle = ::sScene::getInstance()->::sScene::createEnvelope(t1->::uBaseModel::mpModel->::rModel::getJointNum());
+    uModel* t0 = this->mpModel;
+    t0->mEnvelopeHandle = static_cast<u32>(4294967295);
+    t0->mEnvelopeHandle = ::sScene::getInstance()->::sScene::createEnvelope(t0->::uBaseModel::mpModel->::rModel::getJointNum());
     ::sBakingJointOrder::getInstance()->::sBakingJointOrder::returnBakeQueue(this->mHandle);
     this->mHandle = static_cast<sBakingJointOrder::BAKE_HANDLE>(4294967295);
     ::sBakingJointOrder::getInstance()->::sBakingJointOrder::removeProtectUnits(static_cast<cUnit*>(this->mpModel));

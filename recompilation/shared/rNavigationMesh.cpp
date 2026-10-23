@@ -88,12 +88,12 @@ __attribute__((weak)) bool rNavigationMesh::save(MtStream& out) {
 
 // Address: 0x011da680 - 0x011da77d (253 bytes)
 bool rNavigationMesh::load(MtStream& in) {
-    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11da6b3 read, used once; no DWARF local holds it
-    u32 t1 = (::sResource::mpInstance)->mRNavigationMeshDataReaderBufferSizeKB;
+    u32 t0 = (::sResource::mpInstance)->mRNavigationMeshDataReaderBufferSizeKB;
     // inferred: a temporary for the result of the call at 0x11da6c2, used once; no DWARF local holds it
-    u32 t2 = in.getLength();
-    MtDataReader r(in, (t2 < (t1 * static_cast<u32>(1024))) ? t2 : (t1 * static_cast<u32>(1024)));
+    u32 t1 = in.getLength();
+    MtDataReader r(in, (t1 < (t0 * static_cast<u32>(1024))) ? t1 : (t0 * static_cast<u32>(1024)));
     this->mCoreHeader.magic = r.::MtDataReader::readU32();
     this->mCoreHeader.version = r.::MtDataReader::readU32();
     this->mCoreHeader.type = r.::MtDataReader::readU32();

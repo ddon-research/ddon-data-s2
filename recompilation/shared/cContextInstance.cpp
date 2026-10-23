@@ -1129,9 +1129,9 @@ void cContextInstHm::entryParty() {
 }
 
 // Address: 0x000592b0 - 0x000592b5 (5 bytes)
-__attribute__((weak)) void cContextInstHm::removeParty() {
-    DDON_STUB("cContextInstHm::removeParty")
-    /* stub */
+void cContextInstHm::removeParty() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cContextInstance::mIsValid = this->::cContextInstance::mIsValid & static_cast<u8>(247);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

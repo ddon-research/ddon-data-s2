@@ -100,21 +100,21 @@ void sOccluderEx::move() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::sOccluderEx::updateCameraArea();
     // inferred: a temporary for the value the load at 0x7f8abf read, used 3 times; no DWARF local holds it
-    rOccluderEx* t2 = this->mprOCC;
-    if (t2 == static_cast<rOccluderEx*>(nullptr)) {
+    rOccluderEx* t0 = this->mprOCC;
+    if (t0 == static_cast<rOccluderEx*>(nullptr)) {
         return;
     }
-    if (t2->::rOccluderEx::getArea(this->mCameraAreaNo) != static_cast<sOccluderEx::Area*>(nullptr)) {
+    if (t0->::rOccluderEx::getArea(this->mCameraAreaNo) != static_cast<sOccluderEx::Area*>(nullptr)) {
         // inferred: a temporary for the result of the call at 0x7f8ae9, used twice; no DWARF local holds it
-        sOccluderEx::Area* t3 = t2->::rOccluderEx::getArea(this->mCameraAreaNo);
-        if (t3 != static_cast<sOccluderEx::Area*>(nullptr)) {
-            this->::sOccluder::setResource(t3->mprOCC);
+        sOccluderEx::Area* t1 = t0->::rOccluderEx::getArea(this->mCameraAreaNo);
+        if (t1 != static_cast<sOccluderEx::Area*>(nullptr)) {
+            this->::sOccluder::setResource(t1->mprOCC);
         }
     } else {
         // inferred: a temporary for the result of the call at 0x7f8ae9, used twice; no DWARF local holds it
-        sOccluderEx::Area* t3 = t2->::rOccluderEx::getArea(static_cast<u32>(0));
-        if (t3 != static_cast<sOccluderEx::Area*>(nullptr)) {
-            this->::sOccluder::setResource(t3->mprOCC);
+        sOccluderEx::Area* t1 = t0->::rOccluderEx::getArea(static_cast<u32>(0));
+        if (t1 != static_cast<sOccluderEx::Area*>(nullptr)) {
+            this->::sOccluder::setResource(t1->mprOCC);
         }
     }
 }

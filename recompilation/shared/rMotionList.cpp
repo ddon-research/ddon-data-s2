@@ -101,9 +101,7 @@ void rMotionList::clear() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11d8a9a read, used once; no DWARF local holds it
     rMotionList::MOTION_LIST_HDR* t0 = this->mpHdr;
-    // inferred: a temporary for the result of the call at 0x11d8aa5, used once; no DWARF local holds it
-    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rMotionList::DTI);
-    t1->memFree(static_cast<void*>(t0));
+    ::MtMemoryAllocator::getAllocator(::rMotionList::DTI)->memFree(static_cast<void*>(t0));
     this->mpHdr = static_cast<rMotionList::MOTION_LIST_HDR*>(nullptr);
 }
 
@@ -113,9 +111,7 @@ rMotionList::~rMotionList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x11d89f8 read, used once; no DWARF local holds it
     rMotionList::MOTION_LIST_HDR* t0 = this->mpHdr;
-    // inferred: a temporary for the result of the call at 0x11d8a03, used once; no DWARF local holds it
-    MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rMotionList::DTI);
-    t1->memFree(static_cast<void*>(t0));
+    ::MtMemoryAllocator::getAllocator(::rMotionList::DTI)->memFree(static_cast<void*>(t0));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

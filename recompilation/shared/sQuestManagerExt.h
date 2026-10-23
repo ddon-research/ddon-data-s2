@@ -1420,6 +1420,11 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+inline bool sQuestManagerExt::isSaveEntrySearchFilterSave() {
+    return this->mIsSaveEntrySearchFilterSave;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sQuestManagerExt* sQuestManagerExt::getInstance() {
     return ::sQuestManagerExt::mpInstance;
 }

@@ -31,6 +31,7 @@ namespace nNetBase { class cNetBase; }
 namespace nNetMsgData { struct stNetPos; }
 class rArchive;
 class sSetManager;
+class uCharacter;
 class uControlNpc;
 class uDDOModel;
 class uNpc;
@@ -59,7 +60,9 @@ class uControl : public cUnit
     friend class cpErosionEnemySmall;
     // inferred: sSetManager::createCharacterInstance names uControl::mCtrlType
     friend class sSetManager;
-    // inferred: uControlNpc::setPawnId names uControl::mContextInterface.mpContextInstance
+    // inferred: uCharacter::getNamedParam names uControl::mCtrlType
+    friend class uCharacter;
+    // inferred: uControlNpc::setup names uControl::mContextInterface.mpContextInstance
     friend class uControlNpc;
     // inferred: uNpc::isAttend names uControl::mCtrlType
     friend class uNpc;

@@ -165,20 +165,27 @@ __attribute__((weak)) void cContextPlayerInfo::setBaseInfo(const nJobParam::cHum
 // void cContextPlayerInfo::addExp(nHuman::JOB_ENUM jobNo, u64 exp, bool ui);
 
 // Address: 0x000660a0 - 0x00066119 (121 bytes)
-__attribute__((weak)) void cContextPlayerInfo::setExp(nHuman::JOB_ENUM jobNo, u64 exp, u64 addExp, u64 extraExp, bool ui) {
-    // local: u32 index;
-    DDON_STUB("cContextPlayerInfo::setExp")
-    /* stub */
+void cContextPlayerInfo::setExp(nHuman::JOB_ENUM jobNo, u64 exp, u64 addExp, u64 extraExp, bool ui) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    u32 index = ::nHuman::getJobArrayIndex(jobNo);
+    this->mJobInfoList.elems[(index <= static_cast<u32>(9)) ? index : static_cast<u32>(0)].mExp_pri = exp;
+    if (addExp == static_cast<u64>(0)) {
+        return;
+    }
+    if (ui == false) {
+        return;
+    }
+    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::addGainInfoQueue(static_cast<u32>(0), static_cast<s32>(addExp), static_cast<s32>(extraExp));
 }
 
 // No out-of-line body: no code in the ELF
 // u64 cContextPlayerInfo::getExp(nHuman::JOB_ENUM jobNo) const;
 
 // Address: 0x00066130 - 0x00066160 (48 bytes)
-__attribute__((weak)) void cContextPlayerInfo::setJobPoint(nHuman::JOB_ENUM jobNo, u64 jp) {
-    // local: u32 index;
-    DDON_STUB("cContextPlayerInfo::setJobPoint")
-    /* stub */
+void cContextPlayerInfo::setJobPoint(nHuman::JOB_ENUM jobNo, u64 jp) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    u32 index = ::nHuman::getJobArrayIndex(jobNo);
+    this->mJobInfoList.elems[(index <= static_cast<u32>(9)) ? index : static_cast<u32>(0)].mJobPoint_pri = jp;
 }
 
 // No out-of-line body: no code in the ELF

@@ -9,9 +9,11 @@
 // Forward declarations
 class MtPoint;
 class MtRect;
+namespace nIMEPS4 { class CandidateDispInfo; }
 namespace nIMEPS4 { class InputInfo; }
 
 // Declarations
+namespace nInputText { struct CandidateList; }
 namespace nInputText { struct ConvertInfo; }
 namespace nInputText { class cUnicodeString; }
 
@@ -35,6 +37,25 @@ using MT_WSTR = MT_WCHAR*;
 using f32 = float;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+namespace nInputText {
+    struct CandidateList
+    {
+    public:
+        CandidateList();
+        ~CandidateList();
+        void clear();
+        nInputText::CandidateList& operator=(const nInputText::CandidateList& other);
+        u32 getDispNumMax() const;
+        u32 getDispStartIndex() const;
+        u32 getDispNum() const;
+        MT_CWSTR getDispString(u32 dispIndex) const;
+        u32 getCandidateListCount() const;
+        u32 getCandidateListSelectIndex() const;
+    public:
+        nIMEPS4::CandidateDispInfo mCandidateDispInfo;  // offset: 0x0
+    };
+}  // namespace nInputText
 
 namespace nInputText {
     class cUnicodeString

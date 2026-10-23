@@ -614,7 +614,7 @@ void uGUIMyRoomBase::setupAfterLoad() {
     this->setPlay(true);
     this->::uGUIBase::setFlowAndInit(static_cast<u32>(3), false);
     this->mpINST_Null_main = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(347), false));
-    // inferred: a temporary for the result of the call at 0xb29a23, used 3 times; no DWARF local holds it
+    // inferred: a temporary for the result of the call at 0xb29a23, used twice; no DWARF local holds it
     cGUIInstance* t0 = this->getInstance(static_cast<u32>(348), false);
     this->mpINST_Null_pop = static_cast<cGUIInstNull*>(t0);
     if (this->mpINST_Null_main != static_cast<cGUIInstNull*>(nullptr)) {

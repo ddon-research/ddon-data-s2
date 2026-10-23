@@ -9,6 +9,7 @@
 #include "cContextInterface.h"
 #include "cEquipData.h"
 #include "cResource.h"
+#include "cpEquip.h"
 #include "nWeapon.h"
 #include "rItemList.h"
 #include "rSoundRequest.h"
@@ -20,6 +21,7 @@
 #include "uControl.h"
 #include "uControlNpc.h"
 #include "uHuman.h"
+#include "uModel.h"
 #include "uWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -87,11 +89,56 @@ cPlayerLoadManager::~cPlayerLoadManager() {
 }
 
 // Address: 0x004cb310 - 0x004cb420 (272 bytes)
-__attribute__((weak)) void cPlayerLoadManager::createWeaponEx(uHuman* pPl, u32 index, nWeapon::WEAPON_CATEGORY wepCategory, cWeaponResTable* pWepResData, u8 partsPatern, s8 colorPatern) {
-    // local: u32 main_or_sub;
-    // local: uWeapon* pWeapon;
-    DDON_STUB("cPlayerLoadManager::createWeaponEx")
-    /* stub */
+void cPlayerLoadManager::createWeaponEx(uHuman* pPl, u32 index, nWeapon::WEAPON_CATEGORY wepCategory, cWeaponResTable* pWepResData, u8 partsPatern, s8 colorPatern) {
+    // DWARF local not rendered: uWeapon* pWeapon;
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a temporary for the result of the call at 0x4cb333, used once; no DWARF local holds it
+    bool t0 = ::cEquipData::isWepCategory(static_cast<nCharacterData::EQUIP_SLOT_TYPE>(index));
+    if (pWepResData == static_cast<cWeaponResTable*>(nullptr)) {
+        return;
+    }
+    if ((t0 == false) != false) {
+        return;
+    }
+    u32 main_or_sub = ::cEquipData::convEquipCateToIndex(static_cast<nCharacterData::EQUIP_SLOT_TYPE>(index));
+    // inferred: a temporary for the result of the call at 0x4cb372, used 3 times; no DWARF local holds it
+    uWeapon* t1 = ::uWeapon::createWeaponModel(wepCategory, pWepResData, static_cast<uModel*>(pPl), static_cast<nWeapon::MODEL_TYPE>(0), partsPatern, colorPatern);
+    if (t1 != static_cast<uWeapon*>(nullptr)) {
+        if (pPl->::uDDOModel::mpEquip != static_cast<cpEquip*>(nullptr)) {
+            pPl->::uDDOModel::mpEquip->::cpEquip::setWeapon(main_or_sub, t1);
+            t1->::uDDOModel::mDDOModelFlag = static_cast<u32>(2);
+        }
+    }
+    if (wepCategory == static_cast<nWeapon::WEAPON_CATEGORY>(7)) {
+        // inferred: a temporary for the result of the call at 0x4cb3e0, used 3 times; no DWARF local holds it
+        uWeapon* t2 = ::uWeapon::createWeaponModel(static_cast<nWeapon::WEAPON_CATEGORY>(10), pWepResData, static_cast<uModel*>(pPl), static_cast<nWeapon::MODEL_TYPE>(1), static_cast<u8>(0), static_cast<s8>(-1));
+        if (t2 != static_cast<uWeapon*>(nullptr)) {
+            if (pPl->::uDDOModel::mpEquip != static_cast<cpEquip*>(nullptr)) {
+                pPl->::uDDOModel::mpEquip->::cpEquip::setWeapon(main_or_sub + static_cast<u32>(2), t2);
+                t2->::uDDOModel::mDDOModelFlag = static_cast<u32>(2);
+            }
+        }
+    } else {
+        if (wepCategory == static_cast<nWeapon::WEAPON_CATEGORY>(6)) {
+            // inferred: a temporary for the result of the call at 0x4cb3e0, used 3 times; no DWARF local holds it
+            uWeapon* t2 = ::uWeapon::createWeaponModel(static_cast<nWeapon::WEAPON_CATEGORY>(6), pWepResData, static_cast<uModel*>(pPl), static_cast<nWeapon::MODEL_TYPE>(1), partsPatern, colorPatern);
+            if (t2 != static_cast<uWeapon*>(nullptr)) {
+                if (pPl->::uDDOModel::mpEquip != static_cast<cpEquip*>(nullptr)) {
+                    pPl->::uDDOModel::mpEquip->::cpEquip::setWeapon(main_or_sub + static_cast<u32>(2), t2);
+                    t2->::uDDOModel::mDDOModelFlag = static_cast<u32>(2);
+                }
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0x4cb3e0, used 3 times; no DWARF local holds it
+            uWeapon* t2 = ::uWeapon::createWeaponModel(wepCategory, pWepResData, static_cast<uModel*>(pPl), static_cast<nWeapon::MODEL_TYPE>(1), static_cast<u8>(0), static_cast<s8>(-1));
+            if (t2 != static_cast<uWeapon*>(nullptr)) {
+                if (pPl->::uDDOModel::mpEquip != static_cast<cpEquip*>(nullptr)) {
+                    pPl->::uDDOModel::mpEquip->::cpEquip::setWeapon(main_or_sub + static_cast<u32>(2), t2);
+                    t2->::uDDOModel::mDDOModelFlag = static_cast<u32>(2);
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x004cb510 - 0x004cb5f9 (233 bytes)
@@ -173,40 +220,30 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
     // DWARF local not rendered: ARC_TAGID tag_id;
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     if (pContext != static_cast<cContextInstance*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x4c9a72, used twice; no DWARF local holds it
-        bool t0 = ::cContextInterface::getContextEquip(pContext).::cEquipData::isEquipChangeAll(static_cast<u8>(1), true);
-        if (t0 == false) {
-            // inferred: a temporary for the result of the call at 0x4c9a85, used twice; no DWARF local holds it
-            u8 t1 = ::cContextInterface::getHumanType(pContext);
-            if (t1 == static_cast<u8>(1)) {
+        if (::cContextInterface::getContextEquip(pContext).::cEquipData::isEquipChangeAll(static_cast<u8>(1), true) == false) {
+            if (::cContextInterface::getHumanType(pContext) == static_cast<u8>(1)) {
                 if (this->mArcTicket[17].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                     if (this->mArcTicket[18].::cArcLoaderBase::mNum == static_cast<u8>(0)) {
                         // inferred: a temporary for the value the load at 0x4c9ab5 read, used once; no DWARF local holds it
-                        sSound* t2 = ::sSound::getInstance();
+                        sSound* t0 = ::sSound::getInstance();
                         // inferred: a temporary for the result of the call at 0x4c9abf, used once; no DWARF local holds it
-                        u32 t3 = ::cContextInterface::getSex(pContext);
+                        u32 t1 = ::cContextInterface::getSex(pContext);
                         // inferred: a temporary for the result of the call at 0x4c9aca, used once; no DWARF local holds it
-                        u8 t4 = ::cContextInterface::getVoice(pContext);
-                        // inferred: a temporary for the result of the call at 0x4c9ae8, used twice; no DWARF local holds it
-                        ARC_TAGID t5 = static_cast<sSoundExt*>(t2)->::sSoundExt::createPawnVoiceArcTag(t3, t4, ::cContextInterface::getPawnPersonality(pContext));
-                        if (t5 == static_cast<ARC_TAGID>(0)) {
+                        u8 t2 = ::cContextInterface::getVoice(pContext);
+                        if (static_cast<sSoundExt*>(t0)->::sSoundExt::createPawnVoiceArcTag(t1, t2, ::cContextInterface::getPawnPersonality(pContext)) == static_cast<ARC_TAGID>(0)) {
                             if (this->mArcTicket[19].::cArcLoaderBase::mNum == static_cast<u8>(0)) {
                                 // inferred: a temporary for the value the load at 0x4c9b06 read, used once; no DWARF local holds it
-                                sTalkManager* t6 = ::sTalkManager::getInstance();
-                                // inferred: a temporary for the result of the call at 0x4c9b19, used twice; no DWARF local holds it
-                                ARC_TAGID t7 = t6->::sTalkManager::createPawnTalkArcTag(static_cast<u32>(0), ::cContextInterface::getPawnPersonality(pContext));
-                                if (t7 == static_cast<ARC_TAGID>(0)) {
+                                sTalkManager* t3 = ::sTalkManager::getInstance();
+                                if (t3->::sTalkManager::createPawnTalkArcTag(static_cast<u32>(0), ::cContextInterface::getPawnPersonality(pContext)) == static_cast<ARC_TAGID>(0)) {
                                     if (this->mArcTicket[20].::cArcLoaderBase::mNum == static_cast<u8>(0)) {
                                         // inferred: a temporary for the value the load at 0x4c9b33 read, used once; no DWARF local holds it
-                                        sSound* t8 = ::sSound::getInstance();
+                                        sSound* t4 = ::sSound::getInstance();
                                         // inferred: a temporary for the result of the call at 0x4c9b39, used once; no DWARF local holds it
-                                        u32 t9 = ::cContextInterface::getSex(pContext);
-                                        // inferred: a temporary for the result of the call at 0x4c9b52, used twice; no DWARF local holds it
-                                        ARC_TAGID t10 = static_cast<sSoundExt*>(t8)->::sSoundExt::createPawnTalkVoiceArcTag(t9, ::cContextInterface::getVoice(pContext));
-                                        if (t10 == static_cast<ARC_TAGID>(0)) {
+                                        u32 t5 = ::cContextInterface::getSex(pContext);
+                                        if (static_cast<sSoundExt*>(t4)->::sSoundExt::createPawnTalkVoiceArcTag(t5, ::cContextInterface::getVoice(pContext)) == static_cast<ARC_TAGID>(0)) {
                                             // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                                            u8 t11 = ::cContextInterface::getHumanType(pContext);
-                                            if (t11 == static_cast<u8>(0)) {
+                                            u8 t6 = ::cContextInterface::getHumanType(pContext);
+                                            if (t6 == static_cast<u8>(0)) {
                                                 if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                                                     return this->mFlagCsLoadRequest != false;
                                                 } else {
@@ -220,8 +257,8 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                                         }
                                     } else {
                                         // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                                        u8 t11 = ::cContextInterface::getHumanType(pContext);
-                                        if (t11 == static_cast<u8>(0)) {
+                                        u8 t6 = ::cContextInterface::getHumanType(pContext);
+                                        if (t6 == static_cast<u8>(0)) {
                                             if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                                                 return this->mFlagCsLoadRequest != false;
                                             } else {
@@ -237,15 +274,13 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                             } else {
                                 if (this->mArcTicket[20].::cArcLoaderBase::mNum == static_cast<u8>(0)) {
                                     // inferred: a temporary for the value the load at 0x4c9b33 read, used once; no DWARF local holds it
-                                    sSound* t8 = ::sSound::getInstance();
+                                    sSound* t4 = ::sSound::getInstance();
                                     // inferred: a temporary for the result of the call at 0x4c9b39, used once; no DWARF local holds it
-                                    u32 t9 = ::cContextInterface::getSex(pContext);
-                                    // inferred: a temporary for the result of the call at 0x4c9b52, used twice; no DWARF local holds it
-                                    ARC_TAGID t10 = static_cast<sSoundExt*>(t8)->::sSoundExt::createPawnTalkVoiceArcTag(t9, ::cContextInterface::getVoice(pContext));
-                                    if (t10 == static_cast<ARC_TAGID>(0)) {
+                                    u32 t5 = ::cContextInterface::getSex(pContext);
+                                    if (static_cast<sSoundExt*>(t4)->::sSoundExt::createPawnTalkVoiceArcTag(t5, ::cContextInterface::getVoice(pContext)) == static_cast<ARC_TAGID>(0)) {
                                         // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                                        u8 t11 = ::cContextInterface::getHumanType(pContext);
-                                        if (t11 == static_cast<u8>(0)) {
+                                        u8 t6 = ::cContextInterface::getHumanType(pContext);
+                                        if (t6 == static_cast<u8>(0)) {
                                             if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                                                 return this->mFlagCsLoadRequest != false;
                                             } else {
@@ -259,8 +294,8 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                                     }
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                                    u8 t11 = ::cContextInterface::getHumanType(pContext);
-                                    if (t11 == static_cast<u8>(0)) {
+                                    u8 t6 = ::cContextInterface::getHumanType(pContext);
+                                    if (t6 == static_cast<u8>(0)) {
                                         if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                                             return this->mFlagCsLoadRequest != false;
                                         } else {
@@ -277,21 +312,17 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                     } else {
                         if (this->mArcTicket[19].::cArcLoaderBase::mNum == static_cast<u8>(0)) {
                             // inferred: a temporary for the value the load at 0x4c9b06 read, used once; no DWARF local holds it
-                            sTalkManager* t6 = ::sTalkManager::getInstance();
-                            // inferred: a temporary for the result of the call at 0x4c9b19, used twice; no DWARF local holds it
-                            ARC_TAGID t7 = t6->::sTalkManager::createPawnTalkArcTag(static_cast<u32>(0), ::cContextInterface::getPawnPersonality(pContext));
-                            if (t7 == static_cast<ARC_TAGID>(0)) {
+                            sTalkManager* t3 = ::sTalkManager::getInstance();
+                            if (t3->::sTalkManager::createPawnTalkArcTag(static_cast<u32>(0), ::cContextInterface::getPawnPersonality(pContext)) == static_cast<ARC_TAGID>(0)) {
                                 if (this->mArcTicket[20].::cArcLoaderBase::mNum == static_cast<u8>(0)) {
                                     // inferred: a temporary for the value the load at 0x4c9b33 read, used once; no DWARF local holds it
-                                    sSound* t8 = ::sSound::getInstance();
+                                    sSound* t4 = ::sSound::getInstance();
                                     // inferred: a temporary for the result of the call at 0x4c9b39, used once; no DWARF local holds it
-                                    u32 t9 = ::cContextInterface::getSex(pContext);
-                                    // inferred: a temporary for the result of the call at 0x4c9b52, used twice; no DWARF local holds it
-                                    ARC_TAGID t10 = static_cast<sSoundExt*>(t8)->::sSoundExt::createPawnTalkVoiceArcTag(t9, ::cContextInterface::getVoice(pContext));
-                                    if (t10 == static_cast<ARC_TAGID>(0)) {
+                                    u32 t5 = ::cContextInterface::getSex(pContext);
+                                    if (static_cast<sSoundExt*>(t4)->::sSoundExt::createPawnTalkVoiceArcTag(t5, ::cContextInterface::getVoice(pContext)) == static_cast<ARC_TAGID>(0)) {
                                         // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                                        u8 t11 = ::cContextInterface::getHumanType(pContext);
-                                        if (t11 == static_cast<u8>(0)) {
+                                        u8 t6 = ::cContextInterface::getHumanType(pContext);
+                                        if (t6 == static_cast<u8>(0)) {
                                             if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                                                 return this->mFlagCsLoadRequest != false;
                                             } else {
@@ -305,8 +336,8 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                                     }
                                 } else {
                                     // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                                    u8 t11 = ::cContextInterface::getHumanType(pContext);
-                                    if (t11 == static_cast<u8>(0)) {
+                                    u8 t6 = ::cContextInterface::getHumanType(pContext);
+                                    if (t6 == static_cast<u8>(0)) {
                                         if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                                             return this->mFlagCsLoadRequest != false;
                                         } else {
@@ -322,15 +353,13 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                         } else {
                             if (this->mArcTicket[20].::cArcLoaderBase::mNum == static_cast<u8>(0)) {
                                 // inferred: a temporary for the value the load at 0x4c9b33 read, used once; no DWARF local holds it
-                                sSound* t8 = ::sSound::getInstance();
+                                sSound* t4 = ::sSound::getInstance();
                                 // inferred: a temporary for the result of the call at 0x4c9b39, used once; no DWARF local holds it
-                                u32 t9 = ::cContextInterface::getSex(pContext);
-                                // inferred: a temporary for the result of the call at 0x4c9b52, used twice; no DWARF local holds it
-                                ARC_TAGID t10 = static_cast<sSoundExt*>(t8)->::sSoundExt::createPawnTalkVoiceArcTag(t9, ::cContextInterface::getVoice(pContext));
-                                if (t10 == static_cast<ARC_TAGID>(0)) {
+                                u32 t5 = ::cContextInterface::getSex(pContext);
+                                if (static_cast<sSoundExt*>(t4)->::sSoundExt::createPawnTalkVoiceArcTag(t5, ::cContextInterface::getVoice(pContext)) == static_cast<ARC_TAGID>(0)) {
                                     // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                                    u8 t11 = ::cContextInterface::getHumanType(pContext);
-                                    if (t11 == static_cast<u8>(0)) {
+                                    u8 t6 = ::cContextInterface::getHumanType(pContext);
+                                    if (t6 == static_cast<u8>(0)) {
                                         if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                                             return this->mFlagCsLoadRequest != false;
                                         } else {
@@ -344,8 +373,8 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                                 }
                             } else {
                                 // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                                u8 t11 = ::cContextInterface::getHumanType(pContext);
-                                if (t11 == static_cast<u8>(0)) {
+                                u8 t6 = ::cContextInterface::getHumanType(pContext);
+                                if (t6 == static_cast<u8>(0)) {
                                     if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                                         return this->mFlagCsLoadRequest != false;
                                     } else {
@@ -362,8 +391,8 @@ bool cPlayerLoadManager::isPlLoad(cContextInstance* pContext) {
                 }
             } else {
                 // inferred: a temporary for the result of the call at 0x4c9b5e, used twice; no DWARF local holds it
-                u8 t11 = ::cContextInterface::getHumanType(pContext);
-                if (t11 == static_cast<u8>(0)) {
+                u8 t6 = ::cContextInterface::getHumanType(pContext);
+                if (t6 == static_cast<u8>(0)) {
                     if (this->mArcTicket[35].::cArcLoaderBase::mNum != static_cast<u8>(0)) {
                         return this->mFlagCsLoadRequest != false;
                     } else {

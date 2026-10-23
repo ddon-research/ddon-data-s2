@@ -5,6 +5,7 @@
 
 // Forward declarations
 class MtString;
+class cQuestTaskParam;
 class sNetworkExt;
 struct tm;
 
@@ -23,6 +24,8 @@ using t64 = time_t;
 
 class MtTime
 {
+    // inferred: cQuestTaskParam::isEndDistribution names MtTime::mTime
+    friend class cQuestTaskParam;
     // inferred: sNetworkExt::getClanIntervalRemainTime names MtTime::mTime
     friend class sNetworkExt;
 public:
@@ -56,3 +59,8 @@ private:
     static tm mTm;
     static t64 mTmTime;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+inline t64 MtTime::getTime() const {
+    return this->mTime;
+}

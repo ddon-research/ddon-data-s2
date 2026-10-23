@@ -730,9 +730,9 @@ __attribute__((weak)) nGUIExt::OCD_ICON_CATEGORY uGUIGauge::IOcdIcon::getOcdIcon
 }
 
 // Address: 0x00b5c600 - 0x00b5c610 (16 bytes)
-__attribute__((weak)) nGUIExt::OcdIconParam& uGUIGauge::IOcdIcon::refOcdIconParam(u32 paramIndex) {
-    DDON_STUB("uGUIGauge::IOcdIcon::refOcdIconParam")
-    __builtin_unreachable();
+nGUIExt::OcdIconParam& uGUIGauge::IOcdIcon::refOcdIconParam(u32 paramIndex) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mGaugeInfo.mStatusInfos[paramIndex].mParam;
 }
 
 // Address: 0x00b5c610 - 0x00b5c61f (15 bytes)

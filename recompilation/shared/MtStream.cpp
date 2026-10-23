@@ -316,8 +316,12 @@ MtMemoryStream::MtMemoryStream(u32 bufsiz, u32 mode, MtAllocator* pallocator) {
 
 // Address: 0x00dd34c0 - 0x00dd34fc (60 bytes)
 MtMemoryStream::MtMemoryStream(void* pbuf, u32 bufsiz, u32 mode) {
-    DDON_STUB("MtMemoryStream::MtMemoryStream")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mMode = ((((mode & static_cast<u32>(4)) == static_cast<u32>(0)) || (bufsiz == static_cast<u32>(0))) == false) ? (mode & static_cast<u32>(4294967291)) : mode;
+    this->mSeekPt = static_cast<u32>(0);
+    this->mBuffer = static_cast<u8*>(pbuf);
+    this->mLength = bufsiz;
+    this->mBufferOverflow = static_cast<u32>(0);
 }
 
 // Address: 0x00dd3500 - 0x00dd3542 (66 bytes)

@@ -7,6 +7,8 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtNetSession.h"
 #include "../shared/MtObject.h"
+#include "../rCharacterEditCameraParam/aStage.h"
+#include "../rCharacterEditCameraParam/cArea.h"
 #include "../shared/cContextInterface.h"
 #include "../shared/cNetGameServer.h"
 #include "../rCharacterEdit/cNetSerializer.h"
@@ -16,6 +18,7 @@
 #include "../shared/nNet.h"
 #include "../shared/nNetworkSession.h"
 #include "../shared/nNetworkSessionListener.h"
+#include "../rStageConnect/sArea.h"
 #include "../shared/sContextManager.h"
 #include "../rCharacterEditCameraParam/sFlag.h"
 #include "../shared/sGame.h"
@@ -793,16 +796,15 @@ __attribute__((weak)) bool nSessionManager::cNetSessionManager::joinLobbyFlow(nN
 
 // Address: 0x003917e0 - 0x003918fc (284 bytes)
 bool nSessionManager::cNetSessionManager::finalLobbyFlow(nNet::cProgress& progress) {
-    // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0xe50
     switch (progress.mState) {
         case static_cast<nNet::STATE>(0):
         {
-            // inferred: a temporary for the value the load at 0x391811 read, used 4 times; no DWARF local holds it
-            nSessionManager::cNetSessionManager* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager();
-            if (t0->mQuickMatchRno != static_cast<s32>(0)) {
-                t0->mIsNowQuickMatch = false;
-                t0->mQuickMatchTimer = 0.0f;
-                t0->mQuickMatchRno = static_cast<s32>(0);
+            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mIsNowQuickMatch = false;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchTimer = 0.0f;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno = static_cast<s32>(0);
                 if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyMembers.::MtArray::mLength != static_cast<u32>(0)) {
                     this->::nSessionManager::cNetSessionManager::initFinalFlow(static_cast<s32>(1), false);
                     if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::leaveLobbyRequest() != false) {
@@ -971,10 +973,20 @@ void nSessionManager::cNetSessionManager::unreadyQuickMatch() {
 }
 
 // Address: 0x0038eec0 - 0x0038ef4a (138 bytes)
-__attribute__((weak)) void nSessionManager::cNetSessionManager::endQuickMatch() {
-    // local: u32 posNo;
-    DDON_STUB("nSessionManager::cNetSessionManager::endQuickMatch")
-    /* stub */
+void nSessionManager::cNetSessionManager::endQuickMatch() {
+    // DWARF local not rendered: u32 posNo;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x167f
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1680
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1684
+    this->mIsNowQuickMatch = false;
+    this->mQuickMatchTimer = 0.0f;
+    this->mQuickMatchRno = static_cast<s32>(0);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mReserveJoinParty = true;
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mIsQuickPartyJoin = true;
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mReserveJob = this->::nSessionManager::cNetSessionManager::getQuickMatchJob();
+    static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::requestStageJump(static_cast<s32>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getInvitedStageNo()), static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mInvitedPosNo + (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getInvitedPosOffset() & static_cast<u32>(3)), static_cast<u32>(0), false);
+    ::sGame::getInstance()->mIsReqChangeServer = true;
 }
 
 // Address: 0x0038ef50 - 0x0038f168 (536 bytes)
@@ -1084,26 +1096,26 @@ void nSessionManager::cNetSessionManager::endReadyAction() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(4), static_cast<u32>(14), false, true, false);
     // inferred: a temporary for the value the load at 0x38f66d read, used 4 times; no DWARF local holds it
-    uPlayer* t1 = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer();
-    if (t1 != static_cast<uPlayer*>(nullptr)) {
-        if (t1->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-            if (t1->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
-                t1->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
+    uPlayer* t0 = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer();
+    if (t0 != static_cast<uPlayer*>(nullptr)) {
+        if (t0->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
+            if (t0->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
+                t0->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
             }
         }
     }
     // inferred: the counter this loop steps; no location-less local in scope fits
     for (unsigned int i0_11 = static_cast<unsigned int>(0);;) {
         // inferred: a temporary for the result of the call at 0x38f6b2, used twice; no DWARF local holds it
-        cContextInstHm* t2 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i0_11, true);
-        if (::cContextInterface::isPawnOwner(t2) != false) {
+        cContextInstHm* t1 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerIndex(i0_11, true);
+        if (::cContextInterface::isPawnOwner(t1) != false) {
             // inferred: a temporary for the result of the call at 0x38f6cd, used 5 times; no DWARF local holds it
-            uHuman* t3 = ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(t2);
-            if (t3 != static_cast<uHuman*>(nullptr)) {
-                if (t3->::cUnit::isEnable()) {
-                    if (t3->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
-                        if (t3->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
-                            t3->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
+            uHuman* t2 = ::sPlayerManager::getInstance()->::sPlayerManager::getPlayer(t1);
+            if (t2 != static_cast<uHuman*>(nullptr)) {
+                if (t2->::cUnit::isEnable()) {
+                    if (t2->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
+                        if (t2->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(373)) {
+                            t2->::uDDOModel::getActionRequestPtr()->mRequestActionReq = static_cast<u32>(374);
                         }
                     }
                 }

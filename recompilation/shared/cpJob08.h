@@ -112,3 +112,9 @@ public:
 inline rSoundRequest* cpJob08::getShlCommonSe() {
     return this->mpShlCommonSe;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpJob08::setLockOnCharge2Max(f32 time) {
+    this->mLockOnCharge2Max = time;
+}

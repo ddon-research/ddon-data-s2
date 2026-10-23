@@ -3,10 +3,12 @@
 #include "cHitGeom.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
+#include "MtGeomOBB.h"
 #include "MtGeometry3D.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "rCollGeom.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -222,9 +224,14 @@ __attribute__((weak)) void cHitGeom::setCapsule(const MtCapsule& capsule) {
 }
 
 // Address: 0x000dd540 - 0x000dd558 (24 bytes)
-__attribute__((weak)) const MtOBB* cHitGeom::getOBB() const {
-    DDON_STUB("cHitGeom::getOBB")
-    return nullptr;
+const MtOBB* cHitGeom::getOBB() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a MtGeomOBB member read past the end of MtGeomConvex, which DWARF gives no other deriving class a member at 0x10
+    if (this->mpSrcGeom->mShape == static_cast<u8>(2)) {
+        return &static_cast<MtGeomOBB*>(this->mpGeom)->mOBB;
+    } else {
+        return static_cast<const MtOBB*>(nullptr);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (68 bytes)

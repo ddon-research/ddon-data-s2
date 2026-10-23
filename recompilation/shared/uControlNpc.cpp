@@ -8,7 +8,9 @@
 #include "../rCharacterEditCameraParam/aStage.h"
 #include "../rCharacterEditCameraParam/cArea.h"
 #include "cContextInterface.h"
+#include "cEditParam.h"
 #include "cPlayerLoadManager.h"
+#include "../rCharacterEdit/rCharacterEdit.h"
 #include "../rStageConnect/sArea.h"
 #include "../rStageConnect/sAreaExt.h"
 #include "sGame.h"
@@ -91,9 +93,18 @@ __attribute__((weak)) void uControlNpc::updatePtr() {
 }
 
 // Address: 0x008cb010 - 0x008cb075 (101 bytes)
-__attribute__((weak)) void uControlNpc::setup() {
-    DDON_STUB("uControlNpc::setup")
-    /* stub */
+void uControlNpc::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uControl::setup();
+    this->mIsDispWepMain = true;
+    this->mIsDispWepSub = true;
+    this->::uControlNpc::setupNpcLedgerParam();
+    if (this->getNpcId() == static_cast<s32>(9012)) {
+        this->mIsInvincible = false;
+        this->mIsDisableTouchAction = true;
+    }
+    ::cContextInterface::getCharacterEdit(this->::uControl::mContextInterface.mpContextInstance)->mpEditParam->mUnitType = static_cast<u32>(2);
+    this->mIsSetup = true;
 }
 
 // Address: 0x008cb640 - 0x008cb7d4 (404 bytes)

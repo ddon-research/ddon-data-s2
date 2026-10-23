@@ -272,18 +272,18 @@ __attribute__((weak)) void cpJob05::callbackAttackTest_ShlNotify(cHitInfo* pHitI
 void cpJob05::callbackCatch_Shl(cShlNotifyInfo* pInfo) {
     // DWARF local not rendered: s32 jntNo;
     // DWARF local not rendered: cContextInterface& pInterface;
-    // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a temporary for the value the load at 0x4ac5fa read, used twice; no DWARF local holds it
     uDDOModel* t0 = pInfo->mpDfdModel;
-    // inferred: a temporary for the value the load at 0x4ac602 read, used once; no DWARF local holds it
-    const cCollGeom* t1 = pInfo->mpDfdGeom->mpSrcGeom;
+    // inferred: a temporary for the value the load at 0x4ac606 read, used once; no DWARF local holds it
+    const s16 t1 = pInfo->mpDfdGeom->mpSrcGeom->mJnt0;
     // inferred: a temporary for the value the load at 0x4ac60a read, used 5 times; no DWARF local holds it
     uHuman* t2 = this->::cpJobBase::mpHuman;
     t2->mpClimbEnemy = t0;
     // inferred: a temporary for the value the load at 0x4ac615 read, used twice; no DWARF local holds it
     u32 t3 = t0->::cUnit::getUnitParam();
     t2->mClimbEnemyUId = t3;
-    t2->mClimbJointNo = t1->mJnt0;
+    t2->mClimbJointNo = t1;
     ::cContextInterface::setClimbEnemyUId(t2->::uDDOModel::mContextInterface.mpContextInstance, t2->::uDDOModel::mContextInterface.mpContextCharacter, t3);
     ::cContextInterface::setClimbEnemyJointNo(t2->::uDDOModel::mContextInterface.mpContextInstance, t2->::uDDOModel::mContextInterface.mpContextCharacter, this->::cpJobBase::mpHuman->::uHuman::getClimbJointNo());
 }

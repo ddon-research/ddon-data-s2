@@ -328,6 +328,16 @@ inline bool cHitInfoAfter::isCalcHpDamage() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline bool cHitInfoAfter::isCalcShrinkBlow() const {
+    return this->mIsShrinkBlow;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool cHitInfoAfter::isCalcShake() const {
+    return this->mIsShake;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool cHitInfoAfter::isCalcOcd() const {
     return this->mIsOcd;
 }

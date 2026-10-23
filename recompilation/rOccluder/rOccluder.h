@@ -19,6 +19,7 @@ class MtPropertyList;
 class MtStream;
 class MtUI;
 class MtVector3;
+class sOccluder;
 
 // Declarations
 class rOccluder;
@@ -33,6 +34,8 @@ using u32 = unsigned int;
 
 class rOccluder : public cResource
 {
+    // inferred: sOccluder::add names rOccluder::mOccluderCount
+    friend class sOccluder;
 public:
     class MyDTI;
     class cQuad;

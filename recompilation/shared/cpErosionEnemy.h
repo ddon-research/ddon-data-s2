@@ -139,6 +139,8 @@ public:
 
 class cpErosionEnemy : public cpErosionEnemyBase
 {
+    // inferred: cErosionRegion::setupContextErosion names cpErosionEnemy::mErosionInitType
+    friend class cErosionRegion;
     // inferred: cpHpDamageCtrl::regionErosionRegenerateCateInit names cpErosionEnemy::mErosionProgression
     friend class cpHpDamageCtrl;
 public:

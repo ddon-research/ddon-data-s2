@@ -73,20 +73,14 @@ rSwingModel::~rSwingModel() {
     // inferred: a temporary for the value the load at 0x11e1358 read, used twice; no DWARF local holds it
     rSwingModel::PRIMITIVE_QUANT_INFO* t0 = this->mpPrimQuantInfo;
     if (t0 != static_cast<rSwingModel::PRIMITIVE_QUANT_INFO*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x11e1368, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rSwingModel::DTI);
-        t1->memFree(static_cast<void*>(t0));
+        ::MtMemoryAllocator::getAllocator(::rSwingModel::DTI)->memFree(static_cast<void*>(t0));
         this->mpPrimQuantInfo = static_cast<rSwingModel::PRIMITIVE_QUANT_INFO*>(nullptr);
-        if (this->mpVertexBuffer != static_cast<nDraw::VertexBuffer*>(nullptr)) {
-            this->mpVertexBuffer->release();
-            this->mpVertexBuffer = static_cast<nDraw::VertexBuffer*>(nullptr);
-        }
-    } else {
-        if (this->mpVertexBuffer != static_cast<nDraw::VertexBuffer*>(nullptr)) {
-            this->mpVertexBuffer->release();
-            this->mpVertexBuffer = static_cast<nDraw::VertexBuffer*>(nullptr);
-        }
     }
+    if (this->mpVertexBuffer == static_cast<nDraw::VertexBuffer*>(nullptr)) {
+        return;
+    }
+    this->mpVertexBuffer->release();
+    this->mpVertexBuffer = static_cast<nDraw::VertexBuffer*>(nullptr);
 }
 
 // Address: 0x011e1430 - 0x011e190d (1245 bytes)

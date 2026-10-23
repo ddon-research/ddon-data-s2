@@ -28,18 +28,22 @@
 #include "../rPawnAIAction/cpShakeCtrl.h"
 #include "cpStateManager.h"
 #include "../rPawnAIAction/cpVibration.h"
+#include "cpWorkRate.h"
 #include "nDDOModel.h"
 #include "nDDOUtility.h"
 #include "nErosionEnemyBase.h"
 #include "nObjCollision.h"
 #include "rAttackParam.h"
 #include "rMotionParam.h"
+#include "sQuestManagerExt.h"
 #include "sSetManager.h"
 #include "uBaseModel.h"
+#include "uControl.h"
+#include "uControlEnemy.h"
 #include "uCoord.h"
 #include "uDDOModel.h"
 #include "../rPawnAIAction/uGUIGaugeEnemy.h"
-#include "../rPawnAIAction/uGUIGaugeNpc.h"
+#include "uGUIGaugeNpc.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -1154,10 +1158,41 @@ __attribute__((weak)) bool uCharacter::isExecRouteAction(cAISvPathFinding::Node&
 // void uCharacter::setAdvantage(bool flag);
 
 // Address: 0x0089d130 - 0x0089d1f5 (197 bytes)
-__attribute__((weak)) void uCharacter::startStopSloTimer(f32 rate, f32 time, bool is_attacker, nObjCollision::UNIT_INV_THROUGH_TYPE invThroughType) {
-    // local: f32 currentSpeed;
-    DDON_STUB("uCharacter::startStopSloTimer")
-    /* stub */
+void uCharacter::startStopSloTimer(f32 rate, f32 time, bool is_attacker, nObjCollision::UNIT_INV_THROUGH_TYPE invThroughType) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::uDDOModel::mGuardComponent.mpWorkRate == static_cast<cpWorkRate*>(nullptr)) {
+        return;
+    }
+    if (1.1920929e-7f > time) {
+    } else {
+        if (this->::uDDOModel::isDamageAttrActive_Through(static_cast<nObjCollision::DAMAGE_ATTR_ENUM>(21), invThroughType) == false) {
+            if (this->mIsHitStopSlow != false) {
+                f32 currentSpeed = this->::uDDOModel::getWorkRatePtr()->::cpWorkRate::getSpeed(static_cast<cpWorkRate::RATE_INDEX>(0));
+                if (1.1920929e-7f > currentSpeed) {
+                    if (this->mHitStopSlowTimer > time) {
+                    } else {
+                        this->mIsHitStopSlow = true;
+                        this->mIsHitStopAttacker = is_attacker;
+                        this->mHitStopRno = static_cast<u32>(0);
+                        this->mHitStopSlowTimer = time;
+                        this->::uDDOModel::getWorkRatePtr()->::cpWorkRate::setSpeed(rate, static_cast<cpWorkRate::RATE_INDEX>(0));
+                    }
+                } else {
+                    this->mIsHitStopSlow = true;
+                    this->mIsHitStopAttacker = is_attacker;
+                    this->mHitStopRno = static_cast<u32>(0);
+                    this->mHitStopSlowTimer = time;
+                    this->::uDDOModel::getWorkRatePtr()->::cpWorkRate::setSpeed(rate, static_cast<cpWorkRate::RATE_INDEX>(0));
+                }
+            } else {
+                this->mIsHitStopSlow = true;
+                this->mIsHitStopAttacker = is_attacker;
+                this->mHitStopRno = static_cast<u32>(0);
+                this->mHitStopSlowTimer = time;
+                this->::uDDOModel::getWorkRatePtr()->::cpWorkRate::setSpeed(rate, static_cast<cpWorkRate::RATE_INDEX>(0));
+            }
+        }
+    }
 }
 
 // No out-of-line body: 6 inlined copies in 6 functions (42 bytes)
@@ -1604,10 +1639,38 @@ void uCharacter::setNamedId(u32 namedId) {
 // void uCharacter::changeNamedId(u32 namedId);
 
 // Address: 0x0089cce0 - 0x0089cd5e (126 bytes)
-__attribute__((weak)) cNamedParam* uCharacter::getNamedParam() const {
-    // local: uControlEnemy* pCtrlEm;
-    DDON_STUB("uCharacter::getNamedParam")
-    return nullptr;
+cNamedParam* uCharacter::getNamedParam() const {
+    // DWARF local not rendered: uControlEnemy* pCtrlEm;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a uControlEnemy member read past the end of uControl, which DWARF gives no other deriving class a member at 0x2a8
+    // inferred: the value the loop at 0x89cd0a carries; no location-less local in scope fits
+    uControl* v0_3 = this->::uDDOModel::getCtrl();
+    if (v0_3 != static_cast<uControl*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x89ccfc, used once; no DWARF local holds it
+        const MtDTI& t0 = v0_3->getDTI();
+        // inferred: the value the loop at 0x89cd0a carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uControlEnemy::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x89cd0a carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                if (static_cast<uControlEnemy*>(v0_3)->mRaidBossID != static_cast<u32>(0)) {
+                    if (this->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
+                        if (this->::uDDOModel::getCtrl()->mCtrlType == static_cast<u8>(32)) {
+                            return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getRaidBossEnemyParam(static_cast<uControlEnemy*>(this->::uDDOModel::getCtrl())->::uControlEnemy::getRaidBossID());
+                        }
+                    }
+                }
+                return this->mpNamedParam;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return this->mpNamedParam;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)

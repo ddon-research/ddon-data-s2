@@ -189,29 +189,20 @@ __attribute__((weak)) void MtNetRanking::cbAnsGetAttachFail(MtNetRequest* req, M
 // Address: 0x00dbd260 - 0x00dbd2ba (90 bytes)
 bool MtNetRanking::canMoveRequest(MtNetRequest* req) {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
-    // inferred: a temporary for the result of the call at 0xdbd26c, used 3 times; no DWARF local holds it
+    // inferred: a temporary for the result of the call at 0xdbd26c, used twice; no DWARF local holds it
     s32 t0 = req->::MtNetRequest::getId();
     if (t0 == static_cast<s32>(2307)) {
-        // inferred: a temporary for the result of the call at 0xdbd284, used twice; no DWARF local holds it
-        bool t1 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(2306));
-        if (t1 != false) {
+        if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(2306)) != false) {
             return false;
-        } else {
-            return true;
         }
     } else {
         if (t0 == static_cast<s32>(2306)) {
-            // inferred: a temporary for the result of the call at 0xdbd2a4, used twice; no DWARF local holds it
-            bool t2 = this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(2307));
-            if (t2 != false) {
+            if (this->mRequestController.::MtNetRequestController::isMove(static_cast<s32>(2307)) != false) {
                 return false;
-            } else {
-                return true;
             }
-        } else {
-            return true;
         }
     }
+    return true;
 }
 
 // Address: 0x00dbd320 - 0x00dbd3ec (204 bytes)
@@ -265,18 +256,18 @@ void MtNetRanking::endRequest(MtNetRequest* req) {
 
 // Address: 0x00dbecc0 - 0x00dbed5a (154 bytes)
 void MtNetRanking::startFailRequest(MtNetRequest* req) {
-    // Approximate from the ELF: a cast to the other signedness; code after a join copied into the arms; the body oracle reports this body.
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     MtNetError err;
     req->getFatal(&err);
-    // inferred: a temporary for the result of the call at 0xdbecf1, used 4 times; no DWARF local holds it
-    s32 t1 = req->::MtNetRequest::getId();
-    if (static_cast<unsigned int>(t1 - static_cast<s32>(2306)) <= static_cast<unsigned int>(1)) {
+    // inferred: a temporary for the result of the call at 0xdbecf1, used 3 times; no DWARF local holds it
+    s32 t0 = req->::MtNetRequest::getId();
+    if (static_cast<unsigned int>(t0 - static_cast<s32>(2306)) <= static_cast<unsigned int>(1)) {
         this->::MtNetRanking::cbAnsGetScoreListFail(req, &err);
     } else {
-        if (t1 == static_cast<s32>(2309)) {
+        if (t0 == static_cast<s32>(2309)) {
             this->::MtNetRanking::cbAnsGetAttachFail(req, &err);
         } else {
-            if (t1 == static_cast<s32>(2305)) {
+            if (t0 == static_cast<s32>(2305)) {
                 this->::MtNetRanking::cbAnsUpdateFail(req, &err);
             }
         }

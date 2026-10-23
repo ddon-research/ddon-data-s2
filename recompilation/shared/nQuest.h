@@ -2637,3 +2637,33 @@ inline nQuest::cTargetEnemyInfo::cTargetEnemyInfo() {
     this->mStageNo = static_cast<u32>(0);
     this->mGroupNo = static_cast<u32>(0);
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 nQuest::cPartyBonusInfo::getGoldRaito() const {
+    return this->mGoldRatio;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 nQuest::cPartyBonusInfo::getExpRatio() const {
+    return this->mExpRatio;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 nQuest::cPartyBonusInfo::getRimRatio() const {
+    return this->mRimRatio;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 nQuest::cPartyBonusInfo::getAreaPointRatio() const {
+    return this->mAreaPointRatio;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline bool nQuest::cPartyBonusInfo::hasReceived() const {
+    return this->mHasReceived != false;
+}

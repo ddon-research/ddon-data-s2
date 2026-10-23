@@ -24,6 +24,7 @@
 #include "../rCharacterEditCameraParam/cGUIUtility.h"
 #include "cGUIVariable.h"
 #include "cInputTextKeyboardHook.h"
+#include "../rCharacterEditCameraParam/cQuestSvRequestManager.h"
 #include "cResource.h"
 #include "cUIObject.h"
 #include "cUnit.h"
@@ -1070,9 +1071,12 @@ __attribute__((weak)) void uGUIBase::setWindowActive(bool IsActive) {
 // cGUIInstAnimation* uGUIBase::getActiveBar();
 
 // Address: 0x00951390 - 0x009513b5 (37 bytes)
-__attribute__((weak)) void uGUIBase::setFocusForActiveBar(bool IsActive) {
-    DDON_STUB("uGUIBase::setFocusForActiveBar")
-    /* stub */
+void uGUIBase::setFocusForActiveBar(bool IsActive) {
+    // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
+    if (this->mpActiveBar == static_cast<cGUIInstAnimation*>(nullptr)) {
+        return;
+    }
+    this->mpActiveBar->::cGUIInstance::setVisible(IsActive && (this->mIsActiveBarForceDispOff == false));
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (22 bytes)
@@ -1184,15 +1188,57 @@ cGUIInstance* uGUIBase::getInstance(const u32 id, bool isAssert) const {
 }
 
 // Address: 0x00953950 - 0x009539be (110 bytes)
-__attribute__((weak)) void uGUIBase::setSequenceId(cGUIInstAnimation* pInstAnim, u32 uSeqId, bool bReset) {
-    DDON_STUB("uGUIBase::setSequenceId")
-    /* stub */
+void uGUIBase::setSequenceId(cGUIInstAnimation* pInstAnim, u32 uSeqId, bool bReset) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x95396e, used once; no DWARF local holds it
+        const MtDTI& t0 = pInstAnim->getDTI();
+        // inferred: the value the loop at 0x95397c carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cGUIInstAnimation::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x95397c carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                pInstAnim->::cGUIInstAnimation::setSequenceId(uSeqId);
+                if (bReset != false) {
+                    pInstAnim->resetCurrentFrame();
+                }
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00954a40 - 0x00954aae (110 bytes)
-__attribute__((weak)) void uGUIBase::setSequenceId(cGUIObjChildAnimationRoot* pInst, u32 uSeqId, bool bReset) {
-    DDON_STUB("uGUIBase::setSequenceId")
-    /* stub */
+void uGUIBase::setSequenceId(cGUIObjChildAnimationRoot* pInst, u32 uSeqId, bool bReset) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInst != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x954a5e, used once; no DWARF local holds it
+        const MtDTI& t0 = pInst->getDTI();
+        // inferred: the value the loop at 0x954a6c carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cGUIObjChildAnimationRoot::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x954a6c carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                pInst->::cGUIObjChildAnimationRoot::setChildSequenceId(uSeqId);
+                if (bReset != false) {
+                    pInst->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(0.0f);
+                }
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -1547,10 +1593,28 @@ void uGUIBase::setMsgAnalyzerWork(u32 uIdx, s32 sAnalyzeNum) {
 // void uGUIBase::clearMessageObjectTree(cGUIObject* pObj);
 
 // Address: 0x00953260 - 0x009532a9 (73 bytes)
-__attribute__((weak)) void uGUIBase::setMessageColor(cGUIObject* pObj, const MtColor& color) {
-    // local: cGUIObjMessage* pMes;
-    DDON_STUB("uGUIBase::setMessageColor")
-    /* stub */
+void uGUIBase::setMessageColor(cGUIObject* pObj, const MtColor& color) {
+    // DWARF local not rendered: cGUIObjMessage* pMes;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pObj != static_cast<cGUIObject*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x953278, used once; no DWARF local holds it
+        const MtDTI& t0 = pObj->getDTI();
+        // inferred: the value the loop at 0x953286 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::cGUIObjMessage::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x953286 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                static_cast<cGUIObjMessage*>(pObj)->::cGUIObjMessage::setColor(color);
+                return;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00952440 - 0x0095289c (1116 bytes)
@@ -1992,9 +2056,17 @@ __attribute__((weak)) bool uGUIBase::autoWrapMessage(MT_STR pDst, MT_CTSTR pSrc,
 // void uGUIBase::setSuspendCtrl();
 
 // Address: 0x0094fee0 - 0x0094ff08 (40 bytes)
-__attribute__((weak)) bool uGUIBase::isNoRegistSystemCallBack() {
-    DDON_STUB("uGUIBase::isNoRegistSystemCallBack")
-    return {};
+bool uGUIBase::isNoRegistSystemCallBack() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mGUIExtNetMgrUseId != static_cast<u32>(0)) {
+        return false;
+    } else {
+        if (this->mpItemMgrRequest != static_cast<sItemManager::stRequest*>(nullptr)) {
+            return false;
+        } else {
+            return ::cQuestSvRequestManager::hasRequest(static_cast<const MtObject*>(this)) == false;
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (70 bytes)
@@ -9140,42 +9212,42 @@ void uGUIBase::cReferenceUIIconItem::setScale(f32 scale) {
         pInst->::cGUIInstNull::setScaleX(scale);
         pInst->::cGUIInstNull::setScaleY(scale);
         // inferred: a temporary for the value the load at 0x95d32b read, used 3 times; no DWARF local holds it
-        cGUIInstAnimation* t1 = this->mpInstances.elems[1];
-        if (t1 != static_cast<cGUIInstAnimation*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(scale);
-            t1->::cGUIInstNull::setScaleY(scale);
+        cGUIInstAnimation* t0 = this->mpInstances.elems[1];
+        if (t0 != static_cast<cGUIInstAnimation*>(nullptr)) {
+            t0->::cGUIInstNull::setScaleX(scale);
+            t0->::cGUIInstNull::setScaleY(scale);
             // inferred: a temporary for the value the load at 0x95d358 read, used 3 times; no DWARF local holds it
-            cGUIInstAnimation* t3 = this->mpInstances.elems[2];
-            if (t3 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                t3->::cGUIInstNull::setScaleX(scale);
-                t3->::cGUIInstNull::setScaleY(scale);
+            cGUIInstAnimation* t1 = this->mpInstances.elems[2];
+            if (t1 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                t1->::cGUIInstNull::setScaleX(scale);
+                t1->::cGUIInstNull::setScaleY(scale);
             }
         } else {
             // inferred: a temporary for the value the load at 0x95d358 read, used 3 times; no DWARF local holds it
-            cGUIInstAnimation* t3 = this->mpInstances.elems[2];
-            if (t3 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                t3->::cGUIInstNull::setScaleX(scale);
-                t3->::cGUIInstNull::setScaleY(scale);
+            cGUIInstAnimation* t1 = this->mpInstances.elems[2];
+            if (t1 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                t1->::cGUIInstNull::setScaleX(scale);
+                t1->::cGUIInstNull::setScaleY(scale);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x95d32b read, used 3 times; no DWARF local holds it
-        cGUIInstAnimation* t1 = this->mpInstances.elems[1];
-        if (t1 != static_cast<cGUIInstAnimation*>(nullptr)) {
-            t1->::cGUIInstNull::setScaleX(scale);
-            t1->::cGUIInstNull::setScaleY(scale);
+        cGUIInstAnimation* t0 = this->mpInstances.elems[1];
+        if (t0 != static_cast<cGUIInstAnimation*>(nullptr)) {
+            t0->::cGUIInstNull::setScaleX(scale);
+            t0->::cGUIInstNull::setScaleY(scale);
             // inferred: a temporary for the value the load at 0x95d358 read, used 3 times; no DWARF local holds it
-            cGUIInstAnimation* t3 = this->mpInstances.elems[2];
-            if (t3 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                t3->::cGUIInstNull::setScaleX(scale);
-                t3->::cGUIInstNull::setScaleY(scale);
+            cGUIInstAnimation* t1 = this->mpInstances.elems[2];
+            if (t1 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                t1->::cGUIInstNull::setScaleX(scale);
+                t1->::cGUIInstNull::setScaleY(scale);
             }
         } else {
             // inferred: a temporary for the value the load at 0x95d358 read, used 3 times; no DWARF local holds it
-            cGUIInstAnimation* t3 = this->mpInstances.elems[2];
-            if (t3 != static_cast<cGUIInstAnimation*>(nullptr)) {
-                t3->::cGUIInstNull::setScaleX(scale);
-                t3->::cGUIInstNull::setScaleY(scale);
+            cGUIInstAnimation* t1 = this->mpInstances.elems[2];
+            if (t1 != static_cast<cGUIInstAnimation*>(nullptr)) {
+                t1->::cGUIInstNull::setScaleX(scale);
+                t1->::cGUIInstNull::setScaleY(scale);
             }
         }
     }
@@ -12593,7 +12665,7 @@ void uGUIBase::cArcLoader::load() {
         this->mIsLoading = false;
         this->mIsComplete = false;
         if (this->mArcTagIdReq != static_cast<ARC_TAGID>(1)) {
-            // inferred: a temporary for the result of the call at 0x956385, used 4 times; no DWARF local holds it
+            // inferred: a temporary for the result of the call at 0x956385, used 3 times; no DWARF local holds it
             TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
             if (t1 != (this->mTicket = t2)) {
                 // inferred: a temporary for the value the load at 0x956393 read, used twice; no DWARF local holds it
@@ -12611,7 +12683,7 @@ void uGUIBase::cArcLoader::load() {
         this->mIsLoading = false;
         this->mIsComplete = false;
         if (this->mArcTagIdReq != static_cast<ARC_TAGID>(1)) {
-            // inferred: a temporary for the result of the call at 0x956385, used 4 times; no DWARF local holds it
+            // inferred: a temporary for the result of the call at 0x956385, used 3 times; no DWARF local holds it
             TICKET t2 = ::sArchiveManager::getInstance()->::sArchiveManager::IssueTicket();
             if (t0 != (this->mTicket = t2)) {
                 // inferred: a temporary for the value the load at 0x956393 read, used twice; no DWARF local holds it
@@ -12784,85 +12856,15 @@ __attribute__((weak)) void uGUIBase::cReferenceUINumBox::setMode(uGUIBase::cRefe
 // uGUIBase::cReferenceUINumBox::MODE uGUIBase::cReferenceUINumBox::getModeOld() const;
 
 // Address: 0x00976490 - 0x00976542 (178 bytes)
-void uGUIBase::cReferenceUINumBox::pushLArrow(s32 AddNum) {
-    // Approximate from the ELF: a value compared with itself plus another; the body oracle reports this body.
-    // inferred: a temporary for the value the load at 0x97649f read, used 5 times; no DWARF local holds it
-    s32 t0 = this->::uGUIBase::cReferenceUINumBox::getCurrentNum();
-    if (this->mMinNum == t0) {
-        return;
-    }
-    if (this->mMinNum == this->mMaxNum) {
-        this->mCurrentNum = this->mMinNum;
-        this->mGrayOutType = static_cast<u32>(3);
-        this->mIsChangeNum = true;
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-    } else {
-        if (this->mMinNum < (AddNum + t0)) {
-            if ((AddNum + t0) < this->mMaxNum) {
-                this->mCurrentNum = AddNum + t0;
-                this->mGrayOutType = static_cast<u32>(0);
-                if (t0 != this->mCurrentNum) {
-                    this->mIsChangeNum = true;
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-                }
-            } else {
-                this->mCurrentNum = this->mMaxNum;
-                this->mGrayOutType = static_cast<u32>(2);
-                if (t0 != this->mMaxNum) {
-                    this->mIsChangeNum = true;
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-                }
-            }
-        } else {
-            this->mCurrentNum = this->mMinNum;
-            this->mGrayOutType = static_cast<u32>(1);
-            this->mIsChangeNum = true;
-            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-        }
-    }
-    this->::uGUIBase::cReferenceUINumBox::dispRefresh();
-    this->mIsPushAllowL = true;
+__attribute__((weak)) void uGUIBase::cReferenceUINumBox::pushLArrow(s32 AddNum) {
+    DDON_STUB("uGUIBase::cReferenceUINumBox::pushLArrow")
+    /* stub */
 }
 
 // Address: 0x00976550 - 0x00976602 (178 bytes)
-void uGUIBase::cReferenceUINumBox::pushRArrow(s32 AddNum) {
-    // Approximate from the ELF: a value compared with itself plus another; the body oracle reports this body.
-    // inferred: a temporary for the value the load at 0x97655f read, used 5 times; no DWARF local holds it
-    s32 t0 = this->::uGUIBase::cReferenceUINumBox::getCurrentNum();
-    if (this->mMaxNum == t0) {
-        return;
-    }
-    if (this->mMaxNum == this->mMinNum) {
-        this->mCurrentNum = this->mMaxNum;
-        this->mGrayOutType = static_cast<u32>(3);
-        this->mIsChangeNum = true;
-        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-    } else {
-        if (this->mMinNum < (AddNum + t0)) {
-            if ((AddNum + t0) < this->mMaxNum) {
-                this->mCurrentNum = AddNum + t0;
-                this->mGrayOutType = static_cast<u32>(0);
-                if (t0 != this->mCurrentNum) {
-                    this->mIsChangeNum = true;
-                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-                }
-            } else {
-                this->mCurrentNum = this->mMaxNum;
-                this->mGrayOutType = static_cast<u32>(2);
-                this->mIsChangeNum = true;
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-            }
-        } else {
-            this->mCurrentNum = this->mMinNum;
-            this->mGrayOutType = static_cast<u32>(1);
-            if (t0 != this->mMinNum) {
-                this->mIsChangeNum = true;
-                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
-            }
-        }
-    }
-    this->::uGUIBase::cReferenceUINumBox::dispRefresh();
-    this->mIsPushAllowR = true;
+__attribute__((weak)) void uGUIBase::cReferenceUINumBox::pushRArrow(s32 AddNum) {
+    DDON_STUB("uGUIBase::cReferenceUINumBox::pushRArrow")
+    /* stub */
 }
 
 // No out-of-line body: no code in the ELF

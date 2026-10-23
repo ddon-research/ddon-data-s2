@@ -517,6 +517,121 @@ __attribute__((weak)) MtObject* nUserSession::CPacket_S2C_ACHIEVEMENT_REWARD_REC
 }
 
 // No out-of-line body: no code in the ELF
+// MtDTI* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::usage();
+
+// Address: 0x01a057f0 - 0x01a057f8 (8 bytes)
+const MtDTI& nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::DTI;
+}
+
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline MtAllocator* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::DTI);
+}
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::setAllocator(u32);
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::DTI.::MtDTI::getID());
+}
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator new[](size_t sz, void* p_addr);
+
+// Address: 0x003f98b0 - 0x003f98da (42 bytes)
+__attribute__((weak)) void nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator delete(void* p_addr) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    ::nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::getAllocator()->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator delete[](void* p_addr, u32 align);
+
+// No out-of-line body: 4 inlined copies in 2 functions (206 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_ACTIVATE_JOB_ORDER_RES at 0x003046e1-0x00304718 (called at cNetGameServer.cpp:32683)
+//   in cSeedGameSvConnection::OnPacket_S2C_ACTIVATE_JOB_ORDER_RES at 0x003046e1-0x00304718 (called at S2C.h:18354)
+//   in nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::MyDTI::newInstance at 0x003f983d-0x003f986d (called at S2CImplement.inc:369)
+//   and 1 more (every copy is in <bundle>.inlined.json)
+// nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::CPacket_S2C_ACTIVATE_JOB_ORDER_RES();
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::WritePacket(CPacket*, s32, u8, u8, u32, u8);
+
+// Address: 0x019dab80 - 0x019dac19 (153 bytes)
+s32 nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::ReadPacket(CPacket* pPacket) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (::nPacket::Read(*pPacket, this->m_usError) != static_cast<int>(0)) {
+        if (::nPacket::Read(*pPacket, this->m_nResult) != static_cast<int>(0)) {
+            if (::nPacket::Read(*pPacket, this->m_ucJobID) != static_cast<int>(0)) {
+                if (::nPacket::Read(*pPacket, this->m_ucRewardType) != static_cast<int>(0)) {
+                    if (::nPacket::Read(*pPacket, this->m_unRewardNo) != static_cast<int>(0)) {
+                        if (::nPacket::Read(*pPacket, this->m_ucRewardLv) != static_cast<int>(0)) {
+                            this->m_bIsReceived = true;
+                            return static_cast<s32>(1);
+                        }
+                    }
+                }
+            }
+        }
+        return this->m_usError != static_cast<u16>(0);
+    } else {
+        return static_cast<s32>(0);
+    }
+}
+
+// No out-of-line body: 1 inlined copy in 1 function (11 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_ACTIVATE_JOB_ORDER_RES at 0x00304728-0x00304733 (called at cNetGameServer.cpp:32683)
+// u16 nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::Error() const;
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::Result() const;
+
+// No out-of-line body: no code in the ELF
+// u8 nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::JobID() const;
+
+// No out-of-line body: no code in the ELF
+// u8 nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::RewardType() const;
+
+// No out-of-line body: no code in the ELF
+// u32 nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::RewardNo() const;
+
+// No out-of-line body: no code in the ELF
+// u8 nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::RewardLv() const;
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (114 bytes)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x00424d70-0x00424da9 (called at S2CImplement.inc:369)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x00424d70-0x00424da9 (called at S2C.h:18345)
+// nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x003f9810 - 0x003f9872 (98 bytes)
+MtObject* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES;
+}
+
+// No out-of-line body: no code in the ELF
 // MtDTI* nUserSession::CPacket_S2C_AREA_WARP_RES::getMyDTIPtr();
 
 // No out-of-line body: no code in the ELF
@@ -11822,6 +11937,87 @@ MtObject* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::MyDTI::ne
 }
 
 // No out-of-line body: no code in the ELF
+// MtDTI* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::usage();
+
+// Address: 0x019f7a20 - 0x019f7a28 (8 bytes)
+const MtDTI& nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::DTI;
+}
+
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline MtAllocator* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::DTI);
+}
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::setAllocator(u32);
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::DTI.::MtDTI::getID());
+}
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator new[](size_t sz, void* p_addr);
+
+// Address: 0x0040ddb0 - 0x0040ddda (42 bytes)
+__attribute__((weak)) void nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator delete(void* p_addr) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    ::nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::getAllocator()->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator delete[](void* p_addr, u32 align);
+
+// No out-of-line body: 4 inlined copies in 2 functions (106 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_FINISH_LANTERN_NOTICE at 0x0032a55e-0x0032a57b (called at cNetGameServer.cpp:35882)
+//   in cSeedGameSvConnection::OnPacket_S2C_FINISH_LANTERN_NOTICE at 0x0032a55e-0x0032a57b (called at S2C.h:31503)
+//   in nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::MyDTI::newInstance at 0x0040dd5d-0x0040dd75 (called at S2CImplement.inc:633)
+//   and 1 more (every copy is in <bundle>.inlined.json)
+// nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::CPacket_S2C_FINISH_LANTERN_NOTICE();
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::WritePacket(CPacket*);
+
+// No out-of-line body: 1 inlined copy in 1 function (26 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_FINISH_LANTERN_NOTICE at 0x0032a57b-0x0032a595 (called at cNetGameServer.cpp:35882)
+// s32 nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::ReadPacket(CPacket* pPacket);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::Error() const;
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (114 bytes)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x00428838-0x00428871 (called at S2CImplement.inc:633)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x00428838-0x00428871 (called at S2C.h:31499)
+// nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x0040dd30 - 0x0040dd7a (74 bytes)
+MtObject* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE;
+}
+
+// No out-of-line body: no code in the ELF
 // MtDTI* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::getMyDTIPtr();
 
 // No out-of-line body: no code in the ELF
@@ -22764,6 +22960,118 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_START_NTC::operat
 __attribute__((weak)) MtObject* nUserSession::CPacket_S2C_GP_COURSE_START_NTC::MyDTI::newInstance() const {
     DDON_STUB("nUserSession::CPacket_S2C_GP_COURSE_START_NTC::MyDTI::newInstance")
     return nullptr;
+}
+
+// No out-of-line body: no code in the ELF
+// MtDTI* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::usage();
+
+// Address: 0x01a107c0 - 0x01a107c8 (8 bytes)
+const MtDTI& nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::DTI;
+}
+
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::DTI);
+}
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::setAllocator(u32);
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::DTI.::MtDTI::getID());
+}
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator new[](size_t sz, void* p_addr);
+
+// Address: 0x003fe780 - 0x003fe7aa (42 bytes)
+__attribute__((weak)) void nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator delete(void* p_addr) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    ::nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::getAllocator()->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator delete[](void* p_addr, u32 align);
+
+// No out-of-line body: 4 inlined copies in 2 functions (210 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_GP_COURSE_START_PARTY_NTC at 0x0030c4f0-0x0030c527 (called at cNetGameServer.cpp:29051)
+//   in cSeedGameSvConnection::OnPacket_S2C_GP_COURSE_START_PARTY_NTC at 0x0030c4f0-0x0030c527 (called at S2C.h:21806)
+//   in nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::MyDTI::newInstance at 0x003fe70d-0x003fe73f (called at S2CImplement.inc:437)
+//   and 1 more (every copy is in <bundle>.inlined.json)
+// nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::CPacket_S2C_GP_COURSE_START_PARTY_NTC();
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::WritePacket(CPacket*, u8, u32, u32, u64);
+
+// Address: 0x019d7dd0 - 0x019d7e59 (137 bytes)
+s32 nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::ReadPacket(CPacket* pPacket) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (::nPacket::Read(*pPacket, this->m_usError) != static_cast<int>(0)) {
+        if (::nPacket::Read(*pPacket, this->m_ucMemberIndex) != static_cast<int>(0)) {
+            if (::nPacket::Read(*pPacket, this->m_unCourseID) != static_cast<int>(0)) {
+                if (::nPacket::Read(*pPacket, this->m_unannounceType) != static_cast<int>(0)) {
+                    if (::nPacket::Read(*pPacket, this->m_ullFinishDateTime) != static_cast<int>(0)) {
+                        this->m_bIsReceived = true;
+                        return static_cast<s32>(1);
+                    }
+                }
+            }
+        }
+        return this->m_usError != static_cast<u16>(0);
+    } else {
+        return static_cast<s32>(0);
+    }
+}
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::Error() const;
+
+// No out-of-line body: no code in the ELF
+// u8 nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::MemberIndex() const;
+
+// No out-of-line body: 1 inlined copy in 1 function (3 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_GP_COURSE_START_PARTY_NTC at 0x0030c5a6-0x0030c5a9 (called at cNetGameServer.cpp:29059)
+// u32 nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::CourseID() const;
+
+// No out-of-line body: 1 inlined copy in 1 function (13 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_GP_COURSE_START_PARTY_NTC at 0x0030c541-0x0030c54e (called at cNetGameServer.cpp:29055)
+// u32 nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::announceType() const;
+
+// No out-of-line body: 1 inlined copy in 1 function (4 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_GP_COURSE_START_PARTY_NTC at 0x0030c5a9-0x0030c5ad (called at cNetGameServer.cpp:29059)
+// u64 nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::FinishDateTime() const;
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (114 bytes)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x00425c94-0x00425ccd (called at S2CImplement.inc:437)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x00425c94-0x00425ccd (called at S2C.h:21798)
+// nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x003fe6e0 - 0x003fe744 (100 bytes)
+MtObject* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC;
 }
 
 // No out-of-line body: no code in the ELF
@@ -39836,6 +40144,91 @@ __attribute__((weak)) void nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_N
 MtObject* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::MyDTI::newInstance() const {
     // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
     return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE;
+}
+
+// No out-of-line body: no code in the ELF
+// MtDTI* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_START_LANTERN_NOTICE::usage();
+
+// Address: 0x019f7a40 - 0x019f7a48 (8 bytes)
+const MtDTI& nUserSession::CPacket_S2C_START_LANTERN_NOTICE::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return nUserSession::CPacket_S2C_START_LANTERN_NOTICE::DTI;
+}
+
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline MtAllocator* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_LANTERN_NOTICE::DTI);
+}
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_START_LANTERN_NOTICE::setAllocator(u32);
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_LANTERN_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_LANTERN_NOTICE::DTI.::MtDTI::getID());
+}
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator new[](size_t sz, void* p_addr);
+
+// Address: 0x0040dcd0 - 0x0040dcfa (42 bytes)
+__attribute__((weak)) void nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator delete(void* p_addr) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    ::nUserSession::CPacket_S2C_START_LANTERN_NOTICE::getAllocator()->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator delete[](void* p_addr, u32 align);
+
+// No out-of-line body: 4 inlined copies in 2 functions (142 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_START_LANTERN_NOTICE at 0x0032a401-0x0032a425, 0x0032a438-0x0032a43c (called at cNetGameServer.cpp:35853)
+//   in cSeedGameSvConnection::OnPacket_S2C_START_LANTERN_NOTICE at 0x0032a401-0x0032a425, 0x0032a438-0x0032a43c (called at S2C.h:31463)
+//   in nUserSession::CPacket_S2C_START_LANTERN_NOTICE::MyDTI::newInstance at 0x0040dc6d-0x0040dc8c (called at S2CImplement.inc:632)
+//   and 1 more (every copy is in <bundle>.inlined.json)
+// nUserSession::CPacket_S2C_START_LANTERN_NOTICE::CPacket_S2C_START_LANTERN_NOTICE();
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_S2C_START_LANTERN_NOTICE::WritePacket(CPacket*, u32);
+
+// No out-of-line body: 1 inlined copy in 1 function (48 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_START_LANTERN_NOTICE at 0x0032a425-0x0032a438, 0x0032a43c-0x0032a44c, 0x0032a451-0x0032a45e (called at cNetGameServer.cpp:35853)
+// s32 nUserSession::CPacket_S2C_START_LANTERN_NOTICE::ReadPacket(CPacket* pPacket);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_S2C_START_LANTERN_NOTICE::Error() const;
+
+// No out-of-line body: 1 inlined copy in 1 function (5 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_START_LANTERN_NOTICE at 0x0032a44c-0x0032a451 (called at cNetGameServer.cpp:35858)
+// u32 nUserSession::CPacket_S2C_START_LANTERN_NOTICE::RemainTime() const;
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_S2C_START_LANTERN_NOTICE::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (114 bytes)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x004287ff-0x00428838 (called at S2CImplement.inc:632)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x004287ff-0x00428838 (called at S2C.h:31458)
+// nUserSession::CPacket_S2C_START_LANTERN_NOTICE::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x0040dc40 - 0x0040dc91 (81 bytes)
+MtObject* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nUserSession::CPacket_S2C_START_LANTERN_NOTICE;
 }
 
 // No out-of-line body: no code in the ELF

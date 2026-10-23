@@ -10,6 +10,7 @@
 #include "cContextInterface.h"
 #include "cEfcHandle.h"
 #include "cEquipData.h"
+#include "cHitInfoAfter.h"
 #include "cpActionManager.h"
 #include "cpDDMrlMgr.h"
 #include "cpJobBase.h"
@@ -222,14 +223,14 @@ void cpJob09::callbackAttack(cHitInfo* pHitInfo) {
     this->::cpJob09::addAlchemyValue(pHitInfo);
     this->::cpJob09::storeCS03Target(pHitInfo);
     // inferred: a temporary for the value the load at 0x4b6e70 read, used 3 times; no DWARF local holds it
-    uHuman* t2 = this->::cpJobBase::mpHuman;
-    if (t2 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = this->::cpJobBase::mpHuman;
+    if (t0 == static_cast<uHuman*>(nullptr)) {
         return;
     }
-    if (t2->::uDDOModel::isMaster() == false) {
+    if (t0->::uDDOModel::isMaster() == false) {
         return;
     }
-    if ((t2->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
         return;
     }
     if (this->::cpJobBase::mpHuman == static_cast<uHuman*>(nullptr)) {
@@ -244,10 +245,56 @@ void cpJob09::callbackAttack(cHitInfo* pHitInfo) {
 }
 
 // Address: 0x004b9220 - 0x004b92b2 (146 bytes)
-__attribute__((weak)) void cpJob09::callbackCreateShl(uShlBase* pShl) {
-    // local: uShlAlchemy* pAlcShl;
-    DDON_STUB("cpJob09::callbackCreateShl")
-    /* stub */
+void cpJob09::callbackCreateShl(uShlBase* pShl) {
+    // DWARF local not rendered: uShlAlchemy* pAlcShl;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a temporary for the result of the call at 0x4b9231, used once; no DWARF local holds it
+    bool t0 = this->::cpJobBase::mpHuman->::uDDOModel::isMaster();
+    if (pShl == static_cast<uShlBase*>(nullptr)) {
+        return;
+    } else {
+        if ((t0 == false) == false) {
+            return;
+        } else {
+            // inferred: a temporary for the result of the call at 0x4b9245, used once; no DWARF local holds it
+            const MtDTI& t1 = pShl->getDTI();
+            // inferred: the value the loop at 0x4b9253 carries; no location-less local in scope fits
+            MT_CTSTR v0_1 = ::uShlAlchemy::DTI.::MtDTI::mName;
+            // inferred: the value the loop at 0x4b9253 carries; no location-less local in scope fits
+            const MtDTI* v0_0 = &t1;
+            // inferred: the value the loop at 0x4b9278 carries; no location-less local in scope fits
+            const MtDTI* v2_0;
+            for (;;) {
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        return;
+                    }
+                } else {
+                    // inferred: a temporary for the result of the call at 0x4b926a, used once; no DWARF local holds it
+                    const MtDTI& t2 = pShl->getDTI();
+                    // inferred: the value the loop at 0x4b9278 carries; no location-less local in scope fits
+                    MT_CTSTR v2_1 = ::uShlAlchemyCS03::DTI.::MtDTI::mName;
+                    v2_0 = &t2;
+                    for (;;) {
+                        if (v2_1 == v2_0->mName) {
+                            return;
+                        } else {
+                            if (v2_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                                v2_0 = v2_0->mpParent;
+                            } else {
+                                this->::cpJob09::addAlchemyShl(static_cast<uShlAlchemy*>(pShl), false);
+                                static_cast<uShlAlchemy*>(pShl)->::uShlAlchemy::addAlchemyValue(150.0f, true);
+                                return;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x004b8fc0 - 0x004b9210 (592 bytes)
@@ -800,10 +847,10 @@ void cpJob09::endGoldBody() {
     this->mGoldBodyStUseRate = 1.0f;
     this->::cpJobBase::mpHuman->::uDDOModel::mpDDMrlMgr->::cpDDMrlMgr::requestAilmentShader(static_cast<u32>(0), static_cast<u32>(500));
     // inferred: a temporary for the value the load at 0x4bae29 read, used once; no DWARF local holds it
-    sSound* t1 = ::sSound::getInstance();
+    sSound* t0 = ::sSound::getInstance();
     // inferred: a temporary for the result of the call at 0x4bae3c, used once; no DWARF local holds it
-    rSoundRequest* t2 = this->::cpJobBase::mpHuman->::uDDOModel::mpMotionSe->::cpMotionSe::getRequest(static_cast<u32>(2));
-    static_cast<sSoundExt*>(t1)->::sSoundExt::requestSeEx(t2, static_cast<u32>(100), static_cast<MtObject*>(this->::cpJobBase::mpHuman), static_cast<const uCoord*>(this->::cpJobBase::mpHuman), static_cast<s32>(2));
+    rSoundRequest* t1 = this->::cpJobBase::mpHuman->::uDDOModel::mpMotionSe->::cpMotionSe::getRequest(static_cast<u32>(2));
+    static_cast<sSoundExt*>(t0)->::sSoundExt::requestSeEx(t1, static_cast<u32>(100), static_cast<MtObject*>(this->::cpJobBase::mpHuman), static_cast<const uCoord*>(this->::cpJobBase::mpHuman), static_cast<s32>(2));
 }
 
 // Address: 0x004bae70 - 0x004baee4 (116 bytes)
@@ -1049,9 +1096,21 @@ __attribute__((weak)) void cpJob09::makeDamageAttackInfoCS13(cHitInfoAfter* pHit
 }
 
 // Address: 0x004bbdd0 - 0x004bbe2f (95 bytes)
-__attribute__((weak)) bool cpJob09::canGraze(cHitInfoAfter* pHitInfo) const {
-    DDON_STUB("cpJob09::canGraze")
-    return {};
+bool cpJob09::canGraze(cHitInfoAfter* pHitInfo) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pHitInfo->mHpDamageInfo.mDamage > 0.0f) {
+        return false;
+    } else {
+        if (pHitInfo->::cHitInfoAfter::checkAttackParamGuard(static_cast<nObjCollision::GUARD_ANGLE_TYPE>(2)) != false) {
+            return false;
+        } else {
+            if (pHitInfo->::cHitInfoAfter::checkAttackParamAttackId(static_cast<u32>(6)) != false) {
+                return false;
+            } else {
+                return pHitInfo->::cHitInfoAfter::checkAttackParamAttackId(static_cast<u32>(70)) == false;
+            }
+        }
+    }
 }
 
 // Address: 0x004b5e00 - 0x004b5f19 (281 bytes)
@@ -1086,10 +1145,45 @@ __attribute__((weak)) void cpJob09::updateGraze() {
 // f32 cpJob09::getNextGrazeTimer() const;
 
 // Address: 0x004bbd30 - 0x004bbdcf (159 bytes)
-__attribute__((weak)) void cpJob09::startGraze() {
-    // local: f32 nextTimer;
-    DDON_STUB("cpJob09::startGraze")
-    /* stub */
+void cpJob09::startGraze() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cpJobBase::mpHuman->::uDDOModel::addInvType(static_cast<nObjCollision::UNIT_INV_TYPE>(22));
+    this->mIsGraze = true;
+    if (this->mGrazeCount != static_cast<u32>(2)) {
+        if (this->mGrazeCount == static_cast<u32>(1)) {
+            f32 nextTimer = this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(67));
+            if (nextTimer > this->mGrazeTimer) {
+                this->mGrazeTimer = nextTimer;
+            }
+            this->mGrazeCount = this->mGrazeCount + static_cast<u32>(1);
+            this->::cpJobBase::mpHuman->::uDDOModel::requestOutline(static_cast<u32>(19));
+        } else {
+            if (this->mGrazeCount == static_cast<u32>(0)) {
+                f32 nextTimer = this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(65));
+                if (nextTimer > this->mGrazeTimer) {
+                    this->mGrazeTimer = nextTimer;
+                }
+                this->mGrazeCount = this->mGrazeCount + static_cast<u32>(1);
+                this->::cpJobBase::mpHuman->::uDDOModel::requestOutline(static_cast<u32>(19));
+            } else {
+                f32 nextTimer = this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(69));
+                if (nextTimer > this->mGrazeTimer) {
+                    this->mGrazeTimer = nextTimer;
+                }
+                this->mGrazeCount = this->mGrazeCount + static_cast<u32>(1);
+                this->::cpJobBase::mpHuman->::uDDOModel::requestOutline(static_cast<u32>(19));
+            }
+        }
+    } else {
+        f32 nextTimer = this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(68));
+        if (nextTimer > this->mGrazeTimer) {
+            this->mGrazeTimer = nextTimer;
+        }
+        this->mGrazeCount = this->mGrazeCount + static_cast<u32>(1);
+        this->::cpJobBase::mpHuman->::uDDOModel::requestOutline(static_cast<u32>(19));
+    }
+    this->mGrazeEntryTimer = 0.0f;
+    this->mIsGrazeEntry = false;
 }
 
 // Address: 0x004bb390 - 0x004bb947 (1463 bytes)
@@ -1187,14 +1281,14 @@ void cpJob09::callbackAttackSubShellCommon(cHitInfo* pHitInfo) {
     this->::cpJob09::addAlchemyValue(pHitInfo);
     this->::cpJob09::storeCS03Target(pHitInfo);
     // inferred: a temporary for the value the load at 0x4b6f00 read, used 3 times; no DWARF local holds it
-    uHuman* t2 = this->::cpJobBase::mpHuman;
-    if (t2 == static_cast<uHuman*>(nullptr)) {
+    uHuman* t0 = this->::cpJobBase::mpHuman;
+    if (t0 == static_cast<uHuman*>(nullptr)) {
         return;
     }
-    if (t2->::uDDOModel::isMaster() == false) {
+    if (t0->::uDDOModel::isMaster() == false) {
         return;
     }
-    if ((t2->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+    if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
         return;
     }
     if (this->::cpJobBase::mpHuman == static_cast<uHuman*>(nullptr)) {

@@ -231,9 +231,69 @@ void cpSoftBody::setActive(bool isFlag) {
 // bool cpSoftBody::isActive();
 
 // Address: 0x00538710 - 0x005387b1 (161 bytes)
-__attribute__((weak)) void cpSoftBody::setOwner(MtObject* pOwner) {
-    DDON_STUB("cpSoftBody::setOwner")
-    /* stub */
+void cpSoftBody::setOwner(MtObject* pOwner) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->::cpComponent::mpOwner = pOwner;
+    // inferred: a temporary for the result of the call at 0x53872a, used once; no DWARF local holds it
+    const MtDTI& t0 = pOwner->getDTI();
+    // inferred: the value the loop at 0x538738 carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::uModel::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x538738 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 != v0_0->mName) {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            this->mpOwnerModel = static_cast<uModel*>(pOwner);
+            break;
+        }
+    }
+    // inferred: a temporary for the result of the call at 0x538753, used once; no DWARF local holds it
+    const MtDTI& t1 = pOwner->getDTI();
+    // inferred: the value the loop at 0x538761 carries; no location-less local in scope fits
+    MT_CTSTR v2_1 = ::uDDOModel::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x538761 carries; no location-less local in scope fits
+    const MtDTI* v2_0 = &t1;
+    // inferred: the value the loop at 0x538790 carries; no location-less local in scope fits
+    const MtDTI* v4_0;
+    // inferred: the value the loop at 0x538790 carries; no location-less local in scope fits
+    MT_CTSTR v4_1;
+    for (;;) {
+        if (v2_1 != v2_0->mName) {
+            if (v2_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v2_0 = v2_0->mpParent;
+            } else {
+                return;
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0x538778, used twice; no DWARF local holds it
+            const MtDTI& t2 = pOwner->getDTI();
+            v4_1 = ::uDDOModel::DTI.::MtDTI::mName;
+            if (v4_1 == t2.mName) {
+                this->mpOwnerDDOModel = static_cast<uDDOModel*>(pOwner);
+                return;
+            } else {
+                v4_0 = &t2;
+                break;
+            }
+        }
+    }
+    for (;;) {
+        if (v4_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+            this->mpOwnerDDOModel = static_cast<uDDOModel*>(nullptr);
+            return;
+        } else {
+            if (v4_1 != v4_0->mpParent->mName) {
+                v4_0 = v4_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+    this->mpOwnerDDOModel = static_cast<uDDOModel*>(pOwner);
 }
 
 // No out-of-line body: no code in the ELF

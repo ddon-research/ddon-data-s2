@@ -27,6 +27,7 @@ namespace nGUIItem { struct cLoadCategory; }
 namespace nGUIItem { struct cLoadOption; }
 namespace nGUIItem { struct cSwitchStorage; }
 class uGUIBase;
+class uGUIItemBase01;
 
 // Declarations
 namespace nGUIItem { class cItem; }
@@ -200,6 +201,8 @@ namespace nGUIItem {
 namespace nGUIItem {
     class cItemList : public ::cUIObject
     {
+        // inferred: uGUIItemBase01::updateWaitSort names uGUIUseItemBase::mItemList.mWaitFlag
+        friend class ::uGUIItemBase01;
     public:
         class MyDTI;
     public:

@@ -217,6 +217,12 @@ inline u32 cCraftRecipe::cCraftRecipeList::getRecipeId() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cCraftRecipe::cCraftRecipeList::getRankNo() const {
+    return this->mRank;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 cCraftRecipe::cCraftRecipeList::getBagType() const {
     return this->mBagType;
 }

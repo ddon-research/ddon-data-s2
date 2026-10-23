@@ -11,8 +11,12 @@
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
 #include "../shared/rGUIMessage.h"
+#include "../shared/sCamera.h"
+#include "../shared/sCameraExt.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
+#include "../shared/sGame.h"
+#include "../shared/sRender.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
@@ -162,9 +166,23 @@ __attribute__((weak)) void uGUIPhoto::updatePtr() {
 }
 
 // Address: 0x00b3d9e0 - 0x00b3da9c (188 bytes)
-__attribute__((weak)) void uGUIPhoto::setup() {
-    DDON_STUB("uGUIPhoto::setup")
-    /* stub */
+void uGUIPhoto::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5dc
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(11)), true);
+    this->mControls.::cGUIControlMgr::setup(static_cast<uGUIBase*>(this));
+    this->setPlay(true);
+    this->::uGUIPhoto::initCommon();
+    static_cast<sGUIExt*>(::sGUI::getInstance())->mIsPhotoMode = true;
+    static_cast<sCameraExt*>(::sCamera::getInstance())->::sCameraExt::setPhotoMode();
+    ::sGame::getInstance()->mDisableActionPlayer = true;
+    this->::uGUIPhoto::initPhoto();
+    this->mIsRenderDetailControl = ::sRender::getInstance()->::sRender::getRenderDetailControl();
+    ::sRender::getInstance()->::sRender::setRenderDetailControl(false);
 }
 
 // Address: 0x00b3e550 - 0x00b3e617 (199 bytes)

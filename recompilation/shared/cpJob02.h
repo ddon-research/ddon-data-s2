@@ -274,6 +274,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline const MtVector3& cpJob02::getWireHitPos() const {
+    return this->mWireHitPos;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cpJob02::cKaenKoromoInfo::cKaenKoromoInfo() {
     this->mTimer = 0.0f;
     this->mDamageTimer = 0.0f;

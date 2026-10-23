@@ -74,25 +74,19 @@ rGUIIconInfo::~rGUIIconInfo() {
     // inferred: a temporary for the value the load at 0x1377928 read, used twice; no DWARF local holds it
     MT_CHAR* t0 = this->mpNameBuffer;
     if (t0 != static_cast<MT_CHAR*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x137793b, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI);
-        t1->memFree(static_cast<void*>(t0));
+        ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t0));
         this->mpNameBuffer = static_cast<MT_CHAR*>(nullptr);
         // inferred: a temporary for the value the load at 0x1377957 read, used twice; no DWARF local holds it
-        nGUI::ICON_INFO* t2 = this->mpIconInfo;
-        if (t2 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x1377967, used once; no DWARF local holds it
-            MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI);
-            t3->memFree(static_cast<void*>(t2));
+        nGUI::ICON_INFO* t1 = this->mpIconInfo;
+        if (t1 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
             this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
         }
     } else {
         // inferred: a temporary for the value the load at 0x1377957 read, used twice; no DWARF local holds it
-        nGUI::ICON_INFO* t2 = this->mpIconInfo;
-        if (t2 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x1377967, used once; no DWARF local holds it
-            MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI);
-            t3->memFree(static_cast<void*>(t2));
+        nGUI::ICON_INFO* t1 = this->mpIconInfo;
+        if (t1 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
             this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
         }
     }
@@ -129,25 +123,19 @@ void rGUIIconInfo::clear() {
     // inferred: a temporary for the value the load at 0x1377e7a read, used twice; no DWARF local holds it
     MT_CHAR* t0 = this->mpNameBuffer;
     if (t0 != static_cast<MT_CHAR*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x1377e8d, used once; no DWARF local holds it
-        MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI);
-        t1->memFree(static_cast<void*>(t0));
+        ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t0));
         this->mpNameBuffer = static_cast<MT_CHAR*>(nullptr);
         // inferred: a temporary for the value the load at 0x1377ea9 read, used twice; no DWARF local holds it
-        nGUI::ICON_INFO* t2 = this->mpIconInfo;
-        if (t2 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x1377eb9, used once; no DWARF local holds it
-            MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI);
-            t3->memFree(static_cast<void*>(t2));
+        nGUI::ICON_INFO* t1 = this->mpIconInfo;
+        if (t1 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
             this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
         }
     } else {
         // inferred: a temporary for the value the load at 0x1377ea9 read, used twice; no DWARF local holds it
-        nGUI::ICON_INFO* t2 = this->mpIconInfo;
-        if (t2 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
-            // inferred: a temporary for the result of the call at 0x1377eb9, used once; no DWARF local holds it
-            MtAllocator* t3 = ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI);
-            t3->memFree(static_cast<void*>(t2));
+        nGUI::ICON_INFO* t1 = this->mpIconInfo;
+        if (t1 != static_cast<nGUI::ICON_INFO*>(nullptr)) {
+            ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(static_cast<void*>(t1));
             this->mpIconInfo = static_cast<nGUI::ICON_INFO*>(nullptr);
         }
     }

@@ -14,6 +14,8 @@ class MtCriticalSection;
 class MtDTI;
 struct MtNetError;
 class MtObject;
+class cNetGameServer;
+class cNetLoginServer;
 namespace nNetwork { class Member; }
 class sNetwork;
 class sNetworkExt;
@@ -204,7 +206,11 @@ private:
 
 class MtNetTime
 {
-    // inferred: nNetwork::Member::setTalking names MtNetTime::mInstance
+    // inferred: cNetGameServer::move names MtNetTime::mInstance
+    friend class cNetGameServer;
+    // inferred: cNetLoginServer::updateRTT names MtNetTime::mInstance
+    friend class cNetLoginServer;
+    // inferred: nNetwork::Member::isTalking names MtNetTime::mInstance
     friend class nNetwork::Member;
     // inferred: sNetworkExt::requestGetServerRealTime names MtNetTime::mInstance
     friend class sNetworkExt;

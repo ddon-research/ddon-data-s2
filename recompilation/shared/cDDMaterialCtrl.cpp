@@ -10,9 +10,11 @@
 #include "MtObject.h"
 #include "cBakeModel.h"
 #include "cUnit.h"
+#include "nDDOMath.h"
 #include "nDrawMaterial.h"
 #include "sEffectExt.h"
 #include "sOmManager.h"
+#include "sWeatherManager.h"
 #include "uBaseModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -976,11 +978,15 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::init(uBas
 }
 
 // Address: 0x000854e0 - 0x0008553c (92 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::update() {
-    // local: f32 NightRate;
-    // local: f32 SpecularRate;
-    DDON_STUB("cDDMaterialCtrl::cShaderDataStatusAilments::update")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataStatusAilments::update() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mResetFactorS = this->::cDDMaterialCtrl::cShaderDataStatusAilments::getFactorS();
+    if (::sWeatherManager::getInstance() == static_cast<sWeatherManager*>(nullptr)) {
+        return;
+    }
+    f32 NightRate = ::sWeatherManager::getInstance()->::sWeatherManager::getDayNightBlendRate();
+    f32 SpecularRate = ::nDDOMath::lerp(1.0f, 4.0f, NightRate);
+    this->mFactorS = this->mFactorS * (1.0f / SpecularRate);
 }
 
 // Address: 0x01964da0 - 0x01964da4 (4 bytes)

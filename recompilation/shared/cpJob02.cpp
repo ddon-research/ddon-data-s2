@@ -108,66 +108,38 @@ void cpJob02::before() {
 
 // Address: 0x0049b100 - 0x0049b22e (302 bytes)
 void cpJob02::update() {
-    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
     this->::cpJobBase::update();
     this->mKaenkoromoInfo.::cpJob02::cKaenKoromoInfo::update(*this->::cpJobBase::mpHuman);
     this->::cpJob02::updateLookAtPos();
     this->::cpJob02::updateLockOnMode();
-    // inferred: a temporary for the value the load at 0x49b12f read, used 3 times; no DWARF local holds it
-    f32 t0 = this->mCustom06WaitTime;
     // inferred: a temporary for the value the load at 0x49b137 read, used 3 times; no DWARF local holds it
-    uHuman* t1 = this->::cpJobBase::mpHuman;
-    if (t0 > 0.0f) {
-        // inferred: a temporary for the value the load at 0x49b145 read, used twice; no DWARF local holds it
-        f32 t2 = t1->::cUnit::mDeltaTime;
-        this->mCustom06WaitTime = t0 - t2;
+    uHuman* t0 = this->::cpJobBase::mpHuman;
+    if (this->mCustom06WaitTime > 0.0f) {
+        this->mCustom06WaitTime = this->mCustom06WaitTime - t0->::cUnit::mDeltaTime;
         if (0.0f > this->mCustom06WaitTime) {
             this->mCustom06WaitTime = 0.0f;
         }
-        if (t1->::uDDOModel::isMaster() != false) {
-            if ((t1->::uDDOModel::mUnitId & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                if (this->mIsCs10HitCamera != false) {
-                    // inferred: a temporary for the value the load at 0x49b192 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mCs10HitCameraTimer;
-                    // inferred: a temporary for the value the load at 0x49b19a read, used twice; no DWARF local holds it
-                    f32 t4 = this->::cpJobBase::mpHuman->::cUnit::mDeltaTime;
-                    this->mCs10HitCameraTimer = t3 - t4;
-                    if (0.0f >= this->mCs10HitCameraTimer) {
-                        this->mIsCs10HitCamera = false;
-                        this->mCs10HitCameraTimer = 0.0f;
-                        if (::sGame::getInstance()->mCharData.mCharData.mOption.mIsCamDrama != false) {
-                            this->::cpJobBase::mpHuman->mCameraExPos.x = this->mCs10HitPos.x;
-                            this->::cpJobBase::mpHuman->mCameraExPos.y = this->mCs10HitPos.y;
-                            this->::cpJobBase::mpHuman->mCameraExPos.z = this->mCs10HitPos.z;
-                            this->::cpJobBase::mpHuman->mCameraExPos.pad_ = 0.0f;
-                            static_cast<sCameraExt*>(::sCamera::getInstance())->::sCameraExt::requestExGameCameraJobResource(static_cast<u32>(103), static_cast<const uDDOModel*>(this->::cpJobBase::mpHuman), false);
-                        }
-                    }
-                }
-            }
-        }
-    } else {
-        if (t1->::uDDOModel::isMaster() != false) {
-            if ((t1->::uDDOModel::mUnitId & static_cast<u32>(8)) != static_cast<u32>(0)) {
-                if (this->mIsCs10HitCamera != false) {
-                    // inferred: a temporary for the value the load at 0x49b192 read, used twice; no DWARF local holds it
-                    f32 t3 = this->mCs10HitCameraTimer;
-                    // inferred: a temporary for the value the load at 0x49b19a read, used twice; no DWARF local holds it
-                    f32 t4 = this->::cpJobBase::mpHuman->::cUnit::mDeltaTime;
-                    this->mCs10HitCameraTimer = t3 - t4;
-                    if (0.0f >= this->mCs10HitCameraTimer) {
-                        this->mIsCs10HitCamera = false;
-                        this->mCs10HitCameraTimer = 0.0f;
-                        if (::sGame::getInstance()->mCharData.mCharData.mOption.mIsCamDrama != false) {
-                            this->::cpJobBase::mpHuman->mCameraExPos.x = this->mCs10HitPos.x;
-                            this->::cpJobBase::mpHuman->mCameraExPos.y = this->mCs10HitPos.y;
-                            this->::cpJobBase::mpHuman->mCameraExPos.z = this->mCs10HitPos.z;
-                            this->::cpJobBase::mpHuman->mCameraExPos.pad_ = 0.0f;
-                            static_cast<sCameraExt*>(::sCamera::getInstance())->::sCameraExt::requestExGameCameraJobResource(static_cast<u32>(103), static_cast<const uDDOModel*>(this->::cpJobBase::mpHuman), false);
-                        }
-                    }
-                }
-            }
+    }
+    if (t0->::uDDOModel::isMaster() == false) {
+        return;
+    }
+    if ((t0->::uDDOModel::mUnitId & static_cast<u32>(8)) == static_cast<u32>(0)) {
+        return;
+    }
+    if (this->mIsCs10HitCamera == false) {
+        return;
+    }
+    this->mCs10HitCameraTimer = this->mCs10HitCameraTimer - this->::cpJobBase::mpHuman->::cUnit::mDeltaTime;
+    if (0.0f >= this->mCs10HitCameraTimer) {
+        this->mIsCs10HitCamera = false;
+        this->mCs10HitCameraTimer = 0.0f;
+        if (::sGame::getInstance()->mCharData.mCharData.mOption.mIsCamDrama != false) {
+            this->::cpJobBase::mpHuman->mCameraExPos.x = this->mCs10HitPos.x;
+            this->::cpJobBase::mpHuman->mCameraExPos.y = this->mCs10HitPos.y;
+            this->::cpJobBase::mpHuman->mCameraExPos.z = this->mCs10HitPos.z;
+            this->::cpJobBase::mpHuman->mCameraExPos.pad_ = 0.0f;
+            static_cast<sCameraExt*>(::sCamera::getInstance())->::sCameraExt::requestExGameCameraJobResource(static_cast<u32>(103), static_cast<const uDDOModel*>(this->::cpJobBase::mpHuman), false);
         }
     }
 }
@@ -585,8 +557,8 @@ void cpJob02::setupKaenKoromo(f32 time, u32 skillLv) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mKaenkoromoInfo.::cpJob02::cKaenKoromoInfo::setup(*this->::cpJobBase::mpHuman, time, skillLv);
     // inferred: a temporary for the value the load at 0x49b000 read, used twice; no DWARF local holds it
-    uHuman* t1 = this->::cpJobBase::mpHuman;
-    ::nHumanActUtility::reqSetSynchronizeEffect(t1, t1->::uHuman::getCustomEffectEpvIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(11)), static_cast<u64>(562949953421312), static_cast<u32>(1), static_cast<s32>(0), static_cast<s32>(0), static_cast<s32>(-1), ::MtVector3::Zero);
+    uHuman* t0 = this->::cpJobBase::mpHuman;
+    ::nHumanActUtility::reqSetSynchronizeEffect(t0, t0->::uHuman::getCustomEffectEpvIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(11)), static_cast<u64>(562949953421312), static_cast<u32>(1), static_cast<s32>(0), static_cast<s32>(0), static_cast<s32>(-1), ::MtVector3::Zero);
 }
 
 // Address: 0x0049afd0 - 0x0049afe0 (16 bytes)

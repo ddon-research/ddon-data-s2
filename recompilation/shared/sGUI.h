@@ -35,6 +35,7 @@ class rGUI;
 class rGUIFont;
 class rGUIIconInfo;
 class uGUI;
+class uGUIMap;
 
 // Declarations
 class sGUI;
@@ -55,6 +56,8 @@ class sGUI : public cSystem
     friend class cGUIMessageAnalyzer;
     // inferred: cGUIObjMessage::clearDrawMTag names sGUI::mpInstance
     friend class cGUIObjMessage;
+    // inferred: uGUIMap::changeLandType names sGUI::mpInstance
+    friend class uGUIMap;
 public:
     class MyDTI;
     struct DESC;
@@ -257,4 +260,10 @@ private:
 // Inline, no code of its own: checked where it is inlined.
 inline sGUI* sGUI::getInstance() {
     return ::sGUI::mpInstance;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 sGUI::getBufferIndexBit() const {
+    return this->mBufferIndexBit;
 }

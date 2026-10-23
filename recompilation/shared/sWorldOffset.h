@@ -107,3 +107,15 @@ public:
 private:
     static sWorldOffset* mpInstance;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline s32 sWorldOffset::getX() {
+    return this->mIdX;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline s32 sWorldOffset::getZ() {
+    return this->mIdZ;
+}

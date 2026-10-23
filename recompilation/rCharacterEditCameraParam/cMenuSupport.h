@@ -325,6 +325,24 @@ inline cMenuSupport::cMenuSupport() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cMenuSupportList::getSortListCount() {
+    return this->mSortListCount;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cMenuSupportList::reqRemake() {
+    this->mReqRemake = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline s32 cMenuSupportMenu::getCursor() {
     return this->mListCursor;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cMenuSupportMenu::clearMenuList() {
+    this->mMenuNum = static_cast<u32>(0);
 }

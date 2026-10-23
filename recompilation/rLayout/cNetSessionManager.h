@@ -365,7 +365,18 @@ inline nSessionManager::cLobbyDataMessage::cLobbyDataMessage() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void nSessionManager::cNetSessionManager::setPartyInvitedTimer(f32 timer) {
+    this->mPartyInvitedTimer = timer;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool nSessionManager::cNetSessionManager::isNowQuickMatchReq() {
     return this->mIsNowQuickMatch;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s32 nSessionManager::cNetSessionManager::getQuickMatchJob() {
+    return this->mQuickMatchJob;
 }

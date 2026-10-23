@@ -224,11 +224,11 @@ __attribute__((weak)) rSoundRequest* rSoundAreaInfo::getAttributeResToScrAttr(u3
 //   and 3 more (every copy is in <bundle>.inlined.json)
 // rSoundStreamRequest* rSoundAreaInfo::getSndBgmRes();
 
-// No out-of-line body: 3 inlined copies in 3 functions (21 bytes)
-//   in cTalkStateInn::routineDisp at 0x001d3ce7-0x001d3cee (called at cTalkStateInn.cpp:238)
-//   in cTalkStateRecoverWeak::routineDisp at 0x001dacec-0x001dacf3 (called at cTalkStateRecoverWeak.cpp:215)
-//   in sSoundExt::getEventBgmResource at 0x0084de14-0x0084de1b (called at sSoundExt.cpp:2116)
-// rSoundStreamRequest* rSoundAreaInfo::getSndCycleBgmRes();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline rSoundStreamRequest* rSoundAreaInfo::getSndCycleBgmRes() {
+    return this->mpCycleBgmSTQRes.mpPtr;
+}
 
 // No out-of-line body: no code in the ELF
 // rSoundStreamRequest* rSoundAreaInfo::getSndBtlBgmRes();

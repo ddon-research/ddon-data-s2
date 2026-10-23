@@ -21,6 +21,10 @@
 //   and 5 more (every copy is in <bundle>.inlined.json)
 // void nGUIExt::OcdIconParam::init();
 
+// No out-of-line body: 1 inlined copy in 1 function (334 bytes)
+//   in cGUIUtility::convertNormalSkillList at 0x00206cae-0x00206dfc (called at cGUIUtility.cpp:4717)
+// void nGUIExt::stNormalSkill::clear();
+
 // No out-of-line body: 14 inlined copies in 7 functions (211 bytes)
 //   in sGUIExt::sGUIExt at 0x0078e483-0x0078e493 (called at sGUIExt.cpp:746)
 //   in sGUIExt::sGUIExt at 0x0078e493-0x0078e4a3 (called at sGUIExt.cpp:747)

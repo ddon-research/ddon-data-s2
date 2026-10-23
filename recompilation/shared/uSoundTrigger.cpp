@@ -402,13 +402,47 @@ void uSoundTrigger::setZoneListenerPos(const MtVector3& NewListenerPos) {
 }
 
 // Address: 0x00d4d5d0 - 0x00d4d64a (122 bytes)
-__attribute__((weak)) void uSoundTrigger::clearZoneHit() {
-    // local: const u32 GroupManagerNum;
-    // local: cZoneLayout* pZone;
-    // local: u32 i;
-    // local: cTriggerGroupManager* pManager;
-    DDON_STUB("uSoundTrigger::clearZoneHit")
-    /* stub */
+void uSoundTrigger::clearZoneHit() {
+    // DWARF local not rendered: cZoneLayout* pZone;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cTriggerGroupManager* pManager;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a uSoundTrigger::cTriggerGroupManager member read past the end of cZoneLayout::cInGameGroupManager, which DWARF gives no other deriving class a member at 0x38
+    this->::uSoundZoneBase::clearZoneHit();
+    // inferred: a temporary for the result of the call at 0xd4d5e5, used twice; no DWARF local holds it
+    cZoneLayout* t0 = this->::uSoundZoneBase::getZoneLayout();
+    if (t0 != static_cast<cZoneLayout*>(nullptr)) {
+        const u32 GroupManagerNum = t0->::cZoneLayout::getGroupManagerNum();
+        if (GroupManagerNum != static_cast<u32>(0)) {
+            if (this->::uSoundZoneBase::getZoneLayout() != static_cast<cZoneLayout*>(nullptr)) {
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                    // inferred: a temporary for the result of the call at 0xd4d613, used twice; no DWARF local holds it
+                    cZoneLayout* t1 = this->::uSoundZoneBase::getZoneLayout();
+                    if (t1 != static_cast<cZoneLayout*>(nullptr)) {
+                        // inferred: a temporary for the result of the call at 0xd4d622, used 3 times; no DWARF local holds it
+                        cZoneLayout::cInGameGroupManager* t2 = t1->::cZoneLayout::getGroupManagerFromIndex(static_cast<s32>(i0_3));
+                        if (t2 != static_cast<cZoneLayout::cInGameGroupManager*>(nullptr)) {
+                            if (t2->::cZoneLayout::cInGameGroupManager::isEnable() != false) {
+                                static_cast<uSoundTrigger::cTriggerGroupManager*>(t2)->mHitCount = static_cast<u16>(0);
+                            }
+                        }
+                        if (GroupManagerNum != (i0_3 + static_cast<unsigned int>(1))) {
+                            i0_3 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (GroupManagerNum != (i0_3 + static_cast<unsigned int>(1))) {
+                            i0_3 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00d4ca20 - 0x00d4cd70 (848 bytes)

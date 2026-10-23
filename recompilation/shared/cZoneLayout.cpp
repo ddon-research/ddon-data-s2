@@ -145,10 +145,18 @@ nZone::cLayoutElement* cZoneLayout::getLayoutElement(u32 index) {
 // bool cZoneLayout::getLayoutElementGroupID(u32 index, s32& output);
 
 // Address: 0x0106a4b0 - 0x0106a4e9 (57 bytes)
-__attribute__((weak)) nZone::cLayoutElement* cZoneLayout::getLayoutElementFromUniqueID(u32 UniqueID) {
-    // local: const u32 TargetIndex;
-    DDON_STUB("cZoneLayout::getLayoutElementFromUniqueID")
-    return nullptr;
+nZone::cLayoutElement* cZoneLayout::getLayoutElementFromUniqueID(u32 UniqueID) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpNativeResource != static_cast<rZone*>(nullptr)) {
+        const u32 TargetIndex = this->mpNativeResource->::rZone::getLayoutIndexFromUniqueID(UniqueID);
+        if (TargetIndex < this->mLayoutElementNum) {
+            return &this->mpLayoutElementArray[TargetIndex];
+        } else {
+            return static_cast<nZone::cLayoutElement*>(nullptr);
+        }
+    } else {
+        return static_cast<nZone::cLayoutElement*>(nullptr);
+    }
 }
 
 // Address: 0x01069860 - 0x01069867 (7 bytes)
@@ -158,11 +166,21 @@ u32 cZoneLayout::getLayoutElementNum() const {
 }
 
 // Address: 0x0106a4f0 - 0x0106a53a (74 bytes)
-__attribute__((weak)) nZone::cLayoutElement* cZoneLayout::getGlobalLayoutElement(u32 GlobalShapeIndex) {
-    // local: const u32 GlobalLayoutIndex;
-    // local: const u32 GlobalLayoutNum;
-    DDON_STUB("cZoneLayout::getGlobalLayoutElement")
-    return nullptr;
+nZone::cLayoutElement* cZoneLayout::getGlobalLayoutElement(u32 GlobalShapeIndex) {
+    // DWARF local not rendered: const u32 GlobalLayoutNum;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpNativeResource != static_cast<rZone*>(nullptr)) {
+        if (GlobalShapeIndex < this->mpNativeResource->mGlobalLayoutIndexArrayNum) {
+            const u32 GlobalLayoutIndex = this->mpNativeResource->::rZone::getGlobalLayoutIndex(GlobalShapeIndex);
+            if (GlobalLayoutIndex != static_cast<u32>(4294967295)) {
+                if (GlobalLayoutIndex < this->mLayoutElementNum) {
+                    return &this->mpLayoutElementArray[GlobalLayoutIndex];
+                }
+            }
+            return static_cast<nZone::cLayoutElement*>(nullptr);
+        }
+    }
+    return static_cast<nZone::cLayoutElement*>(nullptr);
 }
 
 // Address: 0x0106a540 - 0x0106a552 (18 bytes)
@@ -176,12 +194,21 @@ u32 cZoneLayout::getGlobalLayoutElementNum() {
 }
 
 // Address: 0x0106a560 - 0x0106a5bd (93 bytes)
-__attribute__((weak)) nZone::cLayoutElement* cZoneLayout::getGlobalLayoutElement(cZoneLayout::cInGameGroupManager& TargetGroupManager, u32 GlobalShapeIndex) {
-    // local: const u32 GlobalShapeNum;
-    // local: const u32 GlobalLayoutIndex;
-    // local: cLayoutElement* pNowLayoutElement;
-    DDON_STUB("cZoneLayout::getGlobalLayoutElement")
-    return nullptr;
+nZone::cLayoutElement* cZoneLayout::getGlobalLayoutElement(cZoneLayout::cInGameGroupManager& TargetGroupManager, u32 GlobalShapeIndex) {
+    // DWARF local not rendered: cLayoutElement* pNowLayoutElement;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    const u32 GlobalShapeNum = TargetGroupManager.mpResourceGroupManager->::rZone::cGroupManager::getGroupGlobalLayoutIndexNum();
+    if (GlobalShapeIndex < GlobalShapeNum) {
+        const u32 GlobalLayoutIndex = TargetGroupManager.mpResourceGroupManager->::rZone::cGroupManager::getGroupGlobalLayoutIndex(GlobalShapeIndex);
+        if (GlobalLayoutIndex != static_cast<u32>(4294967295)) {
+            if (GlobalLayoutIndex < this->mLayoutElementNum) {
+                return &this->mpLayoutElementArray[GlobalLayoutIndex];
+            }
+        }
+        return static_cast<nZone::cLayoutElement*>(nullptr);
+    } else {
+        return static_cast<nZone::cLayoutElement*>(nullptr);
+    }
 }
 
 // Address: 0x0106a5c0 - 0x0106a5c9 (9 bytes)
@@ -462,10 +489,18 @@ void cZoneLayout::cInGameGroupManager::move() {
 // cZoneLayout* cZoneLayout::cInGameGroupManager::getSystemOwner() const;
 
 // Address: 0x01068720 - 0x0106875f (63 bytes)
-__attribute__((weak)) nZone::cLayoutElement* cZoneLayout::cInGameGroupManager::getGroupLayoutElementFromIndex(u32 index) const {
-    // local: const u32 LayoutIndex;
-    DDON_STUB("cZoneLayout::cInGameGroupManager::getGroupLayoutElementFromIndex")
-    return nullptr;
+nZone::cLayoutElement* cZoneLayout::cInGameGroupManager::getGroupLayoutElementFromIndex(u32 index) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpSystemOwner != static_cast<cZoneLayout*>(nullptr)) {
+        const u32 LayoutIndex = this->mpResourceGroupManager->::rZone::cGroupManager::getGroupLayoutIndex(index);
+        if (LayoutIndex < this->mpSystemOwner->mLayoutElementNum) {
+            return &this->mpSystemOwner->mpLayoutElementArray[LayoutIndex];
+        } else {
+            return static_cast<nZone::cLayoutElement*>(nullptr);
+        }
+    } else {
+        return static_cast<nZone::cLayoutElement*>(nullptr);
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

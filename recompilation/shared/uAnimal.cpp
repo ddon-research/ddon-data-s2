@@ -10,6 +10,7 @@
 #include "cArcLoader.h"
 #include "cUnit.h"
 #include "sArchiveManager.h"
+#include "sMain.h"
 #include "uDDOModel.h"
 #include "uModel.h"
 #ifndef DDON_STUB
@@ -735,9 +736,18 @@ uAnimal::ActCollapse::~ActCollapse() {
 }
 
 // Address: 0x0087b390 - 0x0087b427 (151 bytes)
-__attribute__((weak)) void uAnimal::ActCollapse::init() {
-    DDON_STUB("uAnimal::ActCollapse::init")
-    /* stub */
+void uAnimal::ActCollapse::init() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cAction::init();
+    this->::uAnimal::ActBase::mpAnimal = static_cast<uAnimal*>(this->::cAction::mpModel);
+    if (this->::uAnimal::ActBase::mpAnimal != static_cast<uAnimal*>(nullptr)) {
+        if (this->::cAction::mpModel->::uDDOModel::isExistMotionNo(static_cast<u32>(569)) != false) {
+            this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(569), true, static_cast<u32>(0), 15.0f, 0.0f, 1.0f);
+        } else {
+            this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(0), true, static_cast<u32>(0), -1.0f, 0.0f, 1.0f);
+        }
+    }
+    this->mTimer = ::sMain::getInstance()->::sMain::getFps() * 3.0f;
 }
 
 // Address: 0x0087b430 - 0x0087b4cf (159 bytes)
@@ -1091,9 +1101,18 @@ uAnimal::ActSleep::~ActSleep() {
 }
 
 // Address: 0x0087c650 - 0x0087c6e7 (151 bytes)
-__attribute__((weak)) void uAnimal::ActSleep::init() {
-    DDON_STUB("uAnimal::ActSleep::init")
-    /* stub */
+void uAnimal::ActSleep::init() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cAction::init();
+    this->::uAnimal::ActBase::mpAnimal = static_cast<uAnimal*>(this->::cAction::mpModel);
+    if (this->::uAnimal::ActBase::mpAnimal != static_cast<uAnimal*>(nullptr)) {
+        if (this->::cAction::mpModel->::uDDOModel::isExistMotionNo(static_cast<u32>(610)) != false) {
+            this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(610), true, static_cast<u32>(0), 15.0f, 0.0f, 1.0f);
+        } else {
+            this->::uAnimal::ActBase::mpAnimal->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(0), true, static_cast<u32>(0), -1.0f, 0.0f, 1.0f);
+        }
+    }
+    this->mTimer = ::sMain::getInstance()->::sMain::getFps() * 5.0f;
 }
 
 // Address: 0x0087c6f0 - 0x0087c9e0 (752 bytes)

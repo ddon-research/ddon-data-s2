@@ -135,9 +135,11 @@ void cpReaction::updatePtr() {
 }
 
 // Address: 0x0019e190 - 0x0019e1b6 (38 bytes)
-__attribute__((weak)) bool cpReaction::isChoiceActNo() {
-    DDON_STUB("cpReaction::isChoiceActNo")
-    return {};
+bool cpReaction::isChoiceActNo() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x19e1a4, used once; no DWARF local holds it
+    u32 t0 = this->mpModel->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo();
+    return this->mChoiceActNo == t0;
 }
 
 // No out-of-line body: 11 inlined copies in 11 functions (77 bytes)

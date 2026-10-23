@@ -295,9 +295,12 @@ void nNetwork::SessionDriver::onAnsCreateSucceed(u32 req_seq, s32 index, MtNetSe
 }
 
 // Address: 0x00e43260 - 0x00e43278 (24 bytes)
-__attribute__((weak)) void nNetwork::SessionDriver::onAnsCreateFail(u32 req_seq, MtNetError* err) {
-    DDON_STUB("nNetwork::SessionDriver::onAnsCreateFail")
-    /* stub */
+void nNetwork::SessionDriver::onAnsCreateFail(u32 req_seq, MtNetError* err) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mState == static_cast<s32>(3)) {
+        this->mState = static_cast<s32>(1);
+    }
+    this->mpParent->::nNetwork::Session::onCreateComplete(false, err);
 }
 
 // Address: 0x00e432a0 - 0x00e432d6 (54 bytes)
@@ -329,9 +332,13 @@ void nNetwork::SessionDriver::onAnsJoinSucceed(u32 req_seq, s32 index, MtNetSess
 }
 
 // Address: 0x00e43450 - 0x00e43489 (57 bytes)
-__attribute__((weak)) void nNetwork::SessionDriver::onAnsJoinFail(u32 req_seq, MtNetError* err) {
-    DDON_STUB("nNetwork::SessionDriver::onAnsJoinFail")
-    /* stub */
+void nNetwork::SessionDriver::onAnsJoinFail(u32 req_seq, MtNetError* err) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mpParent->mpConnect->::nNetwork::Connect::removeRouteAll();
+    if (this->mState == static_cast<s32>(5)) {
+        this->mState = static_cast<s32>(1);
+    }
+    this->mpParent->::nNetwork::Session::onJoinComplete(false, err);
 }
 
 // Address: 0x00e434d0 - 0x00e434d5 (5 bytes)
@@ -357,9 +364,12 @@ __attribute__((weak)) void nNetwork::SessionDriver::onAnsLockFail(u32 req_seq, M
 }
 
 // Address: 0x00e43610 - 0x00e43626 (22 bytes)
-__attribute__((weak)) void nNetwork::SessionDriver::onAnsInvite(u32 req_seq) {
-    DDON_STUB("nNetwork::SessionDriver::onAnsInvite")
-    /* stub */
+void nNetwork::SessionDriver::onAnsInvite(u32 req_seq) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mState == static_cast<s32>(11)) {
+        this->mState = static_cast<s32>(2);
+    }
+    this->mpParent->::nNetwork::Session::onInviteComplete();
 }
 
 // Address: 0x00e43650 - 0x00e43674 (36 bytes)

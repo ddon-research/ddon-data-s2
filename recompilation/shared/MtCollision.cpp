@@ -225,9 +225,11 @@ bool MtCollision::intersect(const MtLineSegment& ls, const MtLine& line, f32 eps
 }
 
 // Address: 0x00da7cb0 - 0x00da7cdf (47 bytes)
-__attribute__((weak)) bool MtCollision::intersect(const MtLineSegment& ls, const MtRay& ray, f32 epsilon) {
-    DDON_STUB("MtCollision::intersect")
-    return {};
+bool MtCollision::intersect(const MtLineSegment& ls, const MtRay& ray, f32 epsilon) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0xda7cc9, used once; no DWARF local holds it
+    f32 t1 = ::MtCollision::sqrDistance(ray, ls, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
+    return 1.1920929e-7f > t1;
 }
 
 // Address: 0x00da7ce0 - 0x00da7d10 (48 bytes)
@@ -4951,111 +4953,9 @@ __attribute__((weak)) u32 MtCollision::getAABBEdgeList(MtLineSegment* edge, cons
 }
 
 // Address: 0x00de3570 - 0x00de36a8 (312 bytes)
-bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiID) {
-    // Approximate from the ELF: a cast to the other signedness; a temporary declared in several branches; the body oracle reports this body.
-    if (static_cast<int>(VoronoiID) <= static_cast<int>(36)) {
-        switch (VoronoiID - static_cast<u32>(21)) {
-            case static_cast<u32>(0):
-            {
-                pos.x = aabb.minpos.x;
-                pos.y = aabb.minpos.y;
-                pos.z = aabb.minpos.z;
-                pos.pad_ = 0.0f;
-                return true;
-            }
-            case static_cast<u32>(1):
-            {
-                // inferred: a temporary for the value the load at 0xde35db read, used once; no DWARF local holds it
-                const f32 t1 = aabb.minpos.y;
-                // inferred: a temporary for the value the load at 0xde35e0 read, used once; no DWARF local holds it
-                const f32 t2 = aabb.minpos.z;
-                pos.x = aabb.maxpos.x;
-                pos.y = t1;
-                pos.z = t2;
-                pos.pad_ = 0.0f;
-                return true;
-            }
-            case static_cast<u32>(4):
-            {
-                // inferred: a temporary for the value the load at 0xde35e7 read, used once; no DWARF local holds it
-                const f32 t3 = aabb.maxpos.y;
-                // inferred: a temporary for the value the load at 0xde35f0 read, used once; no DWARF local holds it
-                const f32 t4 = aabb.minpos.z;
-                pos.x = aabb.minpos.x;
-                pos.y = t3;
-                pos.z = t4;
-                pos.pad_ = 0.0f;
-                return true;
-            }
-            case static_cast<u32>(5):
-            {
-                // inferred: a temporary for the value the load at 0xde35f7 read, used once; no DWARF local holds it
-                const f32 t5 = aabb.minpos.z;
-                // inferred: a temporary for the value the load at 0xde3601 read, used once; no DWARF local holds it
-                const f32 t6 = aabb.maxpos.y;
-                pos.x = aabb.maxpos.x;
-                pos.y = t6;
-                pos.z = t5;
-                pos.pad_ = 0.0f;
-                return true;
-            }
-            default:
-            {
-                return false;
-            }
-        }
-    } else {
-        switch (VoronoiID - static_cast<u32>(37)) {
-            case static_cast<u32>(0):
-            {
-                // inferred: a temporary for the value the load at 0xde35cf read, used once; no DWARF local holds it
-                const f32 t0 = aabb.minpos.y;
-                // inferred: a temporary for the value the load at 0xde3639 read, used once; no DWARF local holds it
-                const f32 t10 = aabb.maxpos.z;
-                pos.x = aabb.minpos.x;
-                pos.y = t0;
-                pos.z = t10;
-                pos.pad_ = 0.0f;
-                return true;
-            }
-            case static_cast<u32>(1):
-            {
-                // inferred: a temporary for the value the load at 0xde3611 read, used once; no DWARF local holds it
-                const f32 t7 = aabb.minpos.y;
-                // inferred: a temporary for the value the load at 0xde361b read, used once; no DWARF local holds it
-                const f32 t8 = aabb.maxpos.z;
-                pos.x = aabb.maxpos.x;
-                pos.y = t7;
-                pos.z = t8;
-                pos.pad_ = 0.0f;
-                return true;
-            }
-            case static_cast<u32>(4):
-            {
-                // inferred: a temporary for the value the load at 0xde3634 read, used once; no DWARF local holds it
-                const f32 t9 = aabb.maxpos.y;
-                // inferred: a temporary for the value the load at 0xde3639 read, used once; no DWARF local holds it
-                const f32 t10 = aabb.maxpos.z;
-                pos.x = aabb.minpos.x;
-                pos.y = t9;
-                pos.z = t10;
-                pos.pad_ = 0.0f;
-                return true;
-            }
-            case static_cast<u32>(5):
-            {
-                pos.x = aabb.maxpos.x;
-                pos.y = aabb.maxpos.y;
-                pos.z = aabb.maxpos.z;
-                pos.pad_ = 0.0f;
-                return true;
-            }
-            default:
-            {
-                return false;
-            }
-        }
-    }
+__attribute__((weak)) bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiID) {
+    DDON_STUB("MtCollision::getAABBVertex")
+    return {};
 }
 
 // No out-of-line body: 16 inlined copies in 4 functions (676 bytes)

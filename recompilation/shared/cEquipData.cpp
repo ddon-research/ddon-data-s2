@@ -313,9 +313,13 @@ __attribute__((weak)) void cEquipData::init() {
 // u8 cEquipData::getPresetNum() const;
 
 // Address: 0x000c70d0 - 0x000c70ed (29 bytes)
-__attribute__((weak)) void cEquipData::setEquipVisual(bool flag) {
-    DDON_STUB("cEquipData::setEquipVisual")
-    /* stub */
+void cEquipData::setEquipVisual(bool flag) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (flag == false) {
+        this->mEquipOpt = this->mEquipOpt & static_cast<u8>(254);
+    } else {
+        this->mEquipOpt = this->mEquipOpt | static_cast<u8>(1);
+    }
 }
 
 // Address: 0x000c81e0 - 0x000c81e9 (9 bytes)
@@ -325,9 +329,13 @@ __attribute__((weak)) bool cEquipData::checkEquipVisual() const {
 }
 
 // Address: 0x000c70f0 - 0x000c710d (29 bytes)
-__attribute__((weak)) void cEquipData::setHelmVisualOff(bool flag) {
-    DDON_STUB("cEquipData::setHelmVisualOff")
-    /* stub */
+void cEquipData::setHelmVisualOff(bool flag) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (flag == false) {
+        this->mEquipOpt = this->mEquipOpt & static_cast<u8>(253);
+    } else {
+        this->mEquipOpt = this->mEquipOpt | static_cast<u8>(2);
+    }
 }
 
 // Address: 0x000c9480 - 0x000c948b (11 bytes)
@@ -343,9 +351,13 @@ __attribute__((weak)) bool cEquipData::checkHelmVisualChange() {
 }
 
 // Address: 0x000c7110 - 0x000c712d (29 bytes)
-__attribute__((weak)) void cEquipData::setLanternVisualOff(bool flag) {
-    DDON_STUB("cEquipData::setLanternVisualOff")
-    /* stub */
+void cEquipData::setLanternVisualOff(bool flag) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (flag == false) {
+        this->mEquipOpt = this->mEquipOpt & static_cast<u8>(251);
+    } else {
+        this->mEquipOpt = this->mEquipOpt | static_cast<u8>(4);
+    }
 }
 
 // Address: 0x000c94c0 - 0x000c94cc (12 bytes)
@@ -1466,27 +1478,27 @@ __attribute__((weak)) void cEquipData::calcColorElement(rItemList::rParam* pElem
 }
 
 // Address: 0x000c8ef0 - 0x000c8ef8 (8 bytes)
-__attribute__((weak)) void cEquipData::calcDashStUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcDashStUpElement")
-    /* stub */
+void cEquipData::calcDashStUpElement(rItemList::rParam* pElementParam) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mAwakeParam = this->mAwakeParam | static_cast<u8>(1);
 }
 
 // Address: 0x000c8f00 - 0x000c8f08 (8 bytes)
-__attribute__((weak)) void cEquipData::calcJumpUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcJumpUpElement")
-    /* stub */
+void cEquipData::calcJumpUpElement(rItemList::rParam* pElementParam) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mAwakeParam = this->mAwakeParam | static_cast<u8>(2);
 }
 
 // Address: 0x000c8f10 - 0x000c8f18 (8 bytes)
-__attribute__((weak)) void cEquipData::calcClimeSpdUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcClimeSpdUpElement")
-    /* stub */
+void cEquipData::calcClimeSpdUpElement(rItemList::rParam* pElementParam) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mAwakeParam = this->mAwakeParam | static_cast<u8>(4);
 }
 
 // Address: 0x000c8f20 - 0x000c8f28 (8 bytes)
-__attribute__((weak)) void cEquipData::calcAwakeningWeightLightryElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcAwakeningWeightLightryElement")
-    /* stub */
+void cEquipData::calcAwakeningWeightLightryElement(rItemList::rParam* pElementParam) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mAwakeParam = this->mAwakeParam | static_cast<u8>(8);
 }
 
 // Address: 0x000c8f30 - 0x000c8f31 (1 bytes)

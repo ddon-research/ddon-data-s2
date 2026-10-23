@@ -828,68 +828,68 @@ void sSoundExt::loadBattleCommon() {
     this->::sSoundExt::loadHitSeSrqResource();
     this->::sSoundExt::loadHitSeTableResource();
     // inferred: a temporary for the value the load at 0x84cb12 read, used once; no DWARF local holds it
-    sArchiveManager* t1 = ::sArchiveManager::getInstance();
+    sArchiveManager* t0 = ::sArchiveManager::getInstance();
     // inferred: a temporary for the result of the call at 0x84cb1d, used once; no DWARF local holds it
-    ARC_TAGID t2 = ::rArchiveListArray::convTagId("sound_battle_common");
+    ARC_TAGID t1 = ::rArchiveListArray::convTagId("sound_battle_common");
     // inferred: a temporary for the result of the call at 0x84cb3f, used twice; no DWARF local holds it
-    cResource* t3 = t1->::sArchiveManager::createRes(t2, ::rArchiveListArray::convSearchId("RES_ID_MAGIC_CAST_SRQR"), static_cast<u32>(1), false);
-    if (t3 != static_cast<cResource*>(nullptr)) {
-        this->mprMagicRequest = static_cast<rSoundRequest*>(t3);
+    cResource* t2 = t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_MAGIC_CAST_SRQR"), static_cast<u32>(1), false);
+    if (t2 != static_cast<cResource*>(nullptr)) {
+        this->mprMagicRequest = static_cast<rSoundRequest*>(t2);
         // inferred: a temporary for the value the load at 0x84cb50 read, used once; no DWARF local holds it
-        sArchiveManager* t4 = ::sArchiveManager::getInstance();
+        sArchiveManager* t3 = ::sArchiveManager::getInstance();
         // inferred: a temporary for the result of the call at 0x84cb5b, used once; no DWARF local holds it
-        ARC_TAGID t5 = ::rArchiveListArray::convTagId("sound_battle_common");
+        ARC_TAGID t4 = ::rArchiveListArray::convTagId("sound_battle_common");
         // inferred: a temporary for the result of the call at 0x84cb7d, used twice; no DWARF local holds it
-        cResource* t6 = t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_ENCHANT_SRQR"), static_cast<u32>(1), false);
-        if (t6 != static_cast<cResource*>(nullptr)) {
-            this->mprEnchantRequest = static_cast<rSoundRequest*>(t6);
+        cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_ENCHANT_SRQR"), static_cast<u32>(1), false);
+        if (t5 != static_cast<cResource*>(nullptr)) {
+            this->mprEnchantRequest = static_cast<rSoundRequest*>(t5);
             // inferred: a temporary for the value the load at 0x84cb8e read, used once; no DWARF local holds it
-            sArchiveManager* t7 = ::sArchiveManager::getInstance();
+            sArchiveManager* t6 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0x84cb99, used once; no DWARF local holds it
-            ARC_TAGID t8 = ::rArchiveListArray::convTagId("sound_battle_common");
+            ARC_TAGID t7 = ::rArchiveListArray::convTagId("sound_battle_common");
             // inferred: a temporary for the result of the call at 0x84cbbb, used twice; no DWARF local holds it
-            cResource* t9 = t7->::sArchiveManager::createRes(t8, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
-            if (t9 != static_cast<cResource*>(nullptr)) {
-                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t9);
+            cResource* t8 = t6->::sArchiveManager::createRes(t7, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
+            if (t8 != static_cast<cResource*>(nullptr)) {
+                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
             }
         } else {
             // inferred: a temporary for the value the load at 0x84cb8e read, used once; no DWARF local holds it
-            sArchiveManager* t7 = ::sArchiveManager::getInstance();
+            sArchiveManager* t6 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0x84cb99, used once; no DWARF local holds it
-            ARC_TAGID t8 = ::rArchiveListArray::convTagId("sound_battle_common");
+            ARC_TAGID t7 = ::rArchiveListArray::convTagId("sound_battle_common");
             // inferred: a temporary for the result of the call at 0x84cbbb, used twice; no DWARF local holds it
-            cResource* t9 = t7->::sArchiveManager::createRes(t8, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
-            if (t9 != static_cast<cResource*>(nullptr)) {
-                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t9);
+            cResource* t8 = t6->::sArchiveManager::createRes(t7, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
+            if (t8 != static_cast<cResource*>(nullptr)) {
+                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
             }
         }
     } else {
         // inferred: a temporary for the value the load at 0x84cb50 read, used once; no DWARF local holds it
-        sArchiveManager* t4 = ::sArchiveManager::getInstance();
+        sArchiveManager* t3 = ::sArchiveManager::getInstance();
         // inferred: a temporary for the result of the call at 0x84cb5b, used once; no DWARF local holds it
-        ARC_TAGID t5 = ::rArchiveListArray::convTagId("sound_battle_common");
+        ARC_TAGID t4 = ::rArchiveListArray::convTagId("sound_battle_common");
         // inferred: a temporary for the result of the call at 0x84cb7d, used twice; no DWARF local holds it
-        cResource* t6 = t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_ENCHANT_SRQR"), static_cast<u32>(1), false);
-        if (t6 != static_cast<cResource*>(nullptr)) {
-            this->mprEnchantRequest = static_cast<rSoundRequest*>(t6);
+        cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_ENCHANT_SRQR"), static_cast<u32>(1), false);
+        if (t5 != static_cast<cResource*>(nullptr)) {
+            this->mprEnchantRequest = static_cast<rSoundRequest*>(t5);
             // inferred: a temporary for the value the load at 0x84cb8e read, used once; no DWARF local holds it
-            sArchiveManager* t7 = ::sArchiveManager::getInstance();
+            sArchiveManager* t6 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0x84cb99, used once; no DWARF local holds it
-            ARC_TAGID t8 = ::rArchiveListArray::convTagId("sound_battle_common");
+            ARC_TAGID t7 = ::rArchiveListArray::convTagId("sound_battle_common");
             // inferred: a temporary for the result of the call at 0x84cbbb, used twice; no DWARF local holds it
-            cResource* t9 = t7->::sArchiveManager::createRes(t8, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
-            if (t9 != static_cast<cResource*>(nullptr)) {
-                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t9);
+            cResource* t8 = t6->::sArchiveManager::createRes(t7, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
+            if (t8 != static_cast<cResource*>(nullptr)) {
+                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
             }
         } else {
             // inferred: a temporary for the value the load at 0x84cb8e read, used once; no DWARF local holds it
-            sArchiveManager* t7 = ::sArchiveManager::getInstance();
+            sArchiveManager* t6 = ::sArchiveManager::getInstance();
             // inferred: a temporary for the result of the call at 0x84cb99, used once; no DWARF local holds it
-            ARC_TAGID t8 = ::rArchiveListArray::convTagId("sound_battle_common");
+            ARC_TAGID t7 = ::rArchiveListArray::convTagId("sound_battle_common");
             // inferred: a temporary for the result of the call at 0x84cbbb, used twice; no DWARF local holds it
-            cResource* t9 = t7->::sArchiveManager::createRes(t8, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
-            if (t9 != static_cast<cResource*>(nullptr)) {
-                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t9);
+            cResource* t8 = t6->::sArchiveManager::createRes(t7, ::rArchiveListArray::convSearchId("RES_ID_HIT_ENCHANT_SRQR"), static_cast<u32>(1), false);
+            if (t8 != static_cast<cResource*>(nullptr)) {
+                this->mprHitEnchantRequest = static_cast<rSoundRequest*>(t8);
             }
         }
     }
@@ -1115,10 +1115,10 @@ void sSoundExt::releaseCommonData() {
         this->mprSoundSubMixerSet = static_cast<rSoundSubMixerSet*>(nullptr);
         this->::sSoundExt::releaseNoStopStreamAll();
         // inferred: a temporary for the value the load at 0x84c51a read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t2 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mBgmSystemTicket != t2) {
+        cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+        if (this->mBgmSystemTicket != t1) {
             ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mBgmSystemTicket);
-            this->mBgmSystemTicket = static_cast<TICKET>(t2);
+            this->mBgmSystemTicket = static_cast<TICKET>(t1);
         }
         if (this->mprOptionData != static_cast<rSoundOptData*>(nullptr)) {
             this->mprOptionData->::cResource::release();
@@ -1127,10 +1127,10 @@ void sSoundExt::releaseCommonData() {
     } else {
         this->::sSoundExt::releaseNoStopStreamAll();
         // inferred: a temporary for the value the load at 0x84c51a read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t2 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mBgmSystemTicket != t2) {
+        cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+        if (this->mBgmSystemTicket != t1) {
             ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mBgmSystemTicket);
-            this->mBgmSystemTicket = static_cast<TICKET>(t2);
+            this->mBgmSystemTicket = static_cast<TICKET>(t1);
         }
         if (this->mprOptionData != static_cast<rSoundOptData*>(nullptr)) {
             this->mprOptionData->::cResource::release();

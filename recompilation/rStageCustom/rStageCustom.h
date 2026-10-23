@@ -130,6 +130,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline s32 rStageCustom::getPartsDataNo() const {
+    return this->mPartsDataNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rStageCustom::Area::Area() {
     this->mAreaNo = static_cast<s8>(-1);
     this->mFilterNo = static_cast<u8>(0);

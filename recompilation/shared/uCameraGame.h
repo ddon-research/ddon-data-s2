@@ -714,3 +714,35 @@ inline bool cCamImpBase::isAnmEnd() const {
 inline s32 cCamImpBase::getCut() const {
     return this->mCut;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uCameraGame::requestReset() {
+    this->mIsResetReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uCameraGame::setNoCtrl() {
+    this->mIsNoCtrlReq = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uCameraGame::resetPhotoParam() {
+    this->mPhotoAddHeight = 0.0f;
+    this->mPhotoAddOffsetX = 0.0f;
+    this->mPhotoAddFov = 0.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline f32 uCameraGame::getRotationSpeed() const {
+    return this->mRotSpeed;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline nCameraGame::CAMERA_TYPE uCameraGame::getOldCameraType() const {
+    return this->mOldCameraType;
+}

@@ -104,15 +104,15 @@ void uGUITutorialPop::kill() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     this->::uGUIBase::kill();
     // inferred: a temporary for the value the load at 0xc65c16 read, used 3 times; no DWARF local holds it
-    sTutorialGuide* t1 = ::sTutorialGuide::getInstance();
-    if (t1->mpTutorialDetail != static_cast<rGUIMessage*>(nullptr)) {
-        t1->mpTutorialDetail->::cResource::release();
-        t1->mpTutorialDetail = static_cast<rGUIMessage*>(nullptr);
+    sTutorialGuide* t0 = ::sTutorialGuide::getInstance();
+    if (t0->mpTutorialDetail != static_cast<rGUIMessage*>(nullptr)) {
+        t0->mpTutorialDetail->::cResource::release();
+        t0->mpTutorialDetail = static_cast<rGUIMessage*>(nullptr);
         // inferred: a temporary for the value the load at 0xc65c3d read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t2 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mImgArcTicket != t2) {
+        cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+        if (this->mImgArcTicket != t1) {
             ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mImgArcTicket);
-            this->mImgArcTicket = static_cast<TICKET>(t2);
+            this->mImgArcTicket = static_cast<TICKET>(t1);
         }
         if (this->mpTexImg != static_cast<rTexture*>(nullptr)) {
             this->mpTexImg->::cResource::release();
@@ -128,10 +128,10 @@ void uGUITutorialPop::kill() {
         }
     } else {
         // inferred: a temporary for the value the load at 0xc65c3d read, used twice; no DWARF local holds it
-        cArcLoaderBase* const t2 = ::sArchiveManager::INVALID_TICKET;
-        if (this->mImgArcTicket != t2) {
+        cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+        if (this->mImgArcTicket != t1) {
             ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mImgArcTicket);
-            this->mImgArcTicket = static_cast<TICKET>(t2);
+            this->mImgArcTicket = static_cast<TICKET>(t1);
         }
         if (this->mpTexImg != static_cast<rTexture*>(nullptr)) {
             this->mpTexImg->::cResource::release();

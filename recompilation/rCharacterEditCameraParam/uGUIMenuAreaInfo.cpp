@@ -241,13 +241,13 @@ void uGUIMenuAreaInfo::setupSectionMessage() {
     if (this->mListMode == static_cast<u32>(1)) {
         this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(8)), static_cast<u32>(0), false);
         // inferred: a temporary for the value the load at 0xb0c0c2 read, used once; no DWARF local holds it
-        cGUIObjMessage* t2 = this->mpObjMsgSection03;
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(9)), static_cast<u32>(0), false);
+        cGUIObjMessage* t1 = this->mpObjMsgSection03;
+        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t1), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(9)), static_cast<u32>(0), false);
     } else {
         this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(5)), static_cast<u32>(0), false);
         // inferred: a temporary for the value the load at 0xb0c0f7 read, used once; no DWARF local holds it
-        cGUIObjMessage* t4 = this->mpObjMsgSection03;
-        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t4), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(6)), static_cast<u32>(0), false);
+        cGUIObjMessage* t2 = this->mpObjMsgSection03;
+        this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t2), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(6)), static_cast<u32>(0), false);
     }
 }
 

@@ -22,14 +22,17 @@ class MtSemaphore;
 class MtStream;
 class MtUI;
 struct _SceKernelEventFlag;
+class cNetGameServer;
 class cSplitLot;
 class cpCatchCtrl;
+class cpChantCommand;
 class cpJob01;
-class cpSlave;
+class cpJob06;
 struct pthread;
 class sApp;
 class sContextManager;
 class sEffect;
+class sGUIExt;
 class sItemManager;
 class sNetwork;
 class sVibration;
@@ -69,20 +72,26 @@ using uintptr = __uintptr_t;
 
 class sMain : public cSystem
 {
+    // inferred: cNetGameServer::move names sMain::mDeltaTime
+    friend class cNetGameServer;
     // inferred: cSplitLot::eraseWait names sMain::mDeltaTime
     friend class cSplitLot;
     // inferred: cpCatchCtrl::updateBeardownEffectiveTimer names sMain::mDeltaTime
     friend class cpCatchCtrl;
+    // inferred: cpChantCommand::clearReqReset names sMain::mDeltaTime
+    friend class cpChantCommand;
     // inferred: cpJob01::update names sMain::mDeltaTime
     friend class cpJob01;
-    // inferred: cpSlave::interpolatePos names sMain::mDeltaTime
-    friend class cpSlave;
+    // inferred: cpJob06::checkCheatMgcBigDamage names sMain::mDeltaTime
+    friend class cpJob06;
     // inferred: sApp::execute names sMain::mExit
     friend class sApp;
     // inferred: sContextManager::move names sMain::mpInstance
     friend class sContextManager;
     // inferred: sEffect::getFps names sMain::mpInstance
     friend class sEffect;
+    // inferred: sGUIExt::movePointer names sMain::mSkip
+    friend class sGUIExt;
     // inferred: sItemManager::move names sMain::mDeltaTime
     friend class sItemManager;
     // inferred: sNetwork::reset names sMain::mpInstance

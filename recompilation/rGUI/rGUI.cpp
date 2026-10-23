@@ -69,7 +69,7 @@ rGUI::~rGUI() {
 bool rGUI::load(MtStream& in) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     u32 size = in.getLength();
-    // inferred: a temporary for the result of the call at 0x1211948, used 3 times; no DWARF local holds it
+    // inferred: a temporary for the result of the call at 0x1211948, used twice; no DWARF local holds it
     void* t0 = this->memAlloc(size);
     if ((this->mpHeader = static_cast<rGUI::HEADER*>(t0)) != static_cast<rGUI::HEADER*>(nullptr)) {
         in.read(t0, size);

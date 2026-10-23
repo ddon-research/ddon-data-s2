@@ -3,10 +3,10 @@
 #include "cEditParam.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
-#include "MtDataWriter.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cCharacterData.h"
+#include "../rCharacterEdit/rCharacterEdit.h"
 #include "sSavedataExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -77,291 +77,9 @@ __attribute__((weak)) bool cEditParam::load(MtDataReader& in) {
 }
 
 // Address: 0x00096220 - 0x00097503 (4835 bytes)
-bool cEditParam::save(MtDataWriter& out) {
-    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
-    out.writeU32(this->mVersion);
-    out.writeU32(this->mUnitType);
-    out.writeU32(this->mFlag);
-    // inferred: a temporary for the value the load at 0x96257 read, used once; no DWARF local holds it
-    u8 t1 = this->mBodyType;
-    if (out.mSeekPt >= out.mBufsiz) {
-        out.flush();
-    }
-    out.mBuffer[out.mSeekPt] = t1;
-    out.mSeekPt = out.mSeekPt + static_cast<u32>(1);
-    out.writeS32(this->mHair);
-    out.writeS32(this->mBeard);
-    out.writeS32(this->mMakeup);
-    out.writeS32(this->mScar);
-    out.writeS32(this->mVoice);
-    out.writeS32(this->mVoicePitch);
-    out.writeS32(this->mRace);
-    out.writeS32(this->mPersonality);
-    out.writeS32(this->mSpeechFreq);
-    out.writeS32(this->mEyePresetNo);
-    out.writeS32(this->mNosePresetNo);
-    out.writeS32(this->mMouthPresetNo);
-    out.writeS32(this->mEyebrowTexNo);
-    out.writeS32(this->mColorSkin);
-    out.writeS32(this->mColorHair);
-    out.writeS32(this->mColorBeard);
-    out.writeS32(this->mColorEyebrow);
-    out.writeS32(this->mColorREye);
-    out.writeS32(this->mColorLEye);
-    out.writeS32(this->mColorMakeup);
-    out.writeF32(this->mSokutoubu.mValue);
-    out.writeF32(this->mSokutoubu.mMin);
-    out.writeF32(this->mSokutoubu.mMax);
-    out.writeS16(this->mSokutoubu.mDiv);
-    out.writeF32(this->mHitai.mValue);
-    out.writeF32(this->mHitai.mMin);
-    out.writeF32(this->mHitai.mMax);
-    out.writeS16(this->mHitai.mDiv);
-    out.writeF32(this->mMimijyouge.mValue);
-    out.writeF32(this->mMimijyouge.mMin);
-    out.writeF32(this->mMimijyouge.mMax);
-    out.writeS16(this->mMimijyouge.mDiv);
-    out.writeF32(this->mKannkaku.mValue);
-    out.writeF32(this->mKannkaku.mMin);
-    out.writeF32(this->mKannkaku.mMax);
-    out.writeS16(this->mKannkaku.mDiv);
-    out.writeF32(this->mMabisasijyouge.mValue);
-    out.writeF32(this->mMabisasijyouge.mMin);
-    out.writeF32(this->mMabisasijyouge.mMax);
-    out.writeS16(this->mMabisasijyouge.mDiv);
-    out.writeF32(this->mHanakuchijyouge.mValue);
-    out.writeF32(this->mHanakuchijyouge.mMin);
-    out.writeF32(this->mHanakuchijyouge.mMax);
-    out.writeS16(this->mHanakuchijyouge.mDiv);
-    out.writeF32(this->mAgosakihaba.mValue);
-    out.writeF32(this->mAgosakihaba.mMin);
-    out.writeF32(this->mAgosakihaba.mMax);
-    out.writeS16(this->mAgosakihaba.mDiv);
-    out.writeF32(this->mAgozengo.mValue);
-    out.writeF32(this->mAgozengo.mMin);
-    out.writeF32(this->mAgozengo.mMax);
-    out.writeS16(this->mAgozengo.mDiv);
-    out.writeF32(this->mAgosakijyouge.mValue);
-    out.writeF32(this->mAgosakijyouge.mMin);
-    out.writeF32(this->mAgosakijyouge.mMax);
-    out.writeS16(this->mAgosakijyouge.mDiv);
-    out.writeF32(this->mHitomiookisa.mValue);
-    out.writeF32(this->mHitomiookisa.mMin);
-    out.writeF32(this->mHitomiookisa.mMax);
-    out.writeS16(this->mHitomiookisa.mDiv);
-    out.writeF32(this->mMeookisa.mValue);
-    out.writeF32(this->mMeookisa.mMin);
-    out.writeF32(this->mMeookisa.mMax);
-    out.writeS16(this->mMeookisa.mDiv);
-    out.writeF32(this->mMekaiten.mValue);
-    out.writeF32(this->mMekaiten.mMin);
-    out.writeF32(this->mMekaiten.mMax);
-    out.writeS16(this->mMekaiten.mDiv);
-    out.writeF32(this->mMayukaiten.mValue);
-    out.writeF32(this->mMayukaiten.mMin);
-    out.writeF32(this->mMayukaiten.mMax);
-    out.writeS16(this->mMayukaiten.mDiv);
-    out.writeF32(this->mMimiookisa.mValue);
-    out.writeF32(this->mMimiookisa.mMin);
-    out.writeF32(this->mMimiookisa.mMax);
-    out.writeS16(this->mMimiookisa.mDiv);
-    out.writeF32(this->mMimimuki.mValue);
-    out.writeF32(this->mMimimuki.mMin);
-    out.writeF32(this->mMimimuki.mMax);
-    out.writeS16(this->mMimimuki.mDiv);
-    out.writeF32(this->mElfmimi.mValue);
-    out.writeF32(this->mElfmimi.mMin);
-    out.writeF32(this->mElfmimi.mMax);
-    out.writeS16(this->mElfmimi.mDiv);
-    out.writeF32(this->mMikentakasa.mValue);
-    out.writeF32(this->mMikentakasa.mMin);
-    out.writeF32(this->mMikentakasa.mMax);
-    out.writeS16(this->mMikentakasa.mDiv);
-    out.writeF32(this->mMikenhaba.mValue);
-    out.writeF32(this->mMikenhaba.mMin);
-    out.writeF32(this->mMikenhaba.mMax);
-    out.writeS16(this->mMikenhaba.mDiv);
-    out.writeF32(this->mHohoboneryou.mValue);
-    out.writeF32(this->mHohoboneryou.mMin);
-    out.writeF32(this->mHohoboneryou.mMax);
-    out.writeS16(this->mHohoboneryou.mDiv);
-    out.writeF32(this->mHohobonejyouge.mValue);
-    out.writeF32(this->mHohobonejyouge.mMin);
-    out.writeF32(this->mHohobonejyouge.mMax);
-    out.writeS16(this->mHohobonejyouge.mDiv);
-    out.writeF32(this->mHohoniku.mValue);
-    out.writeF32(this->mHohoniku.mMin);
-    out.writeF32(this->mHohoniku.mMax);
-    out.writeS16(this->mHohoniku.mDiv);
-    out.writeF32(this->mErahonejyouge.mValue);
-    out.writeF32(this->mErahonejyouge.mMin);
-    out.writeF32(this->mErahonejyouge.mMax);
-    out.writeS16(this->mErahonejyouge.mDiv);
-    out.writeF32(this->mErahonehaba.mValue);
-    out.writeF32(this->mErahonehaba.mMin);
-    out.writeF32(this->mErahonehaba.mMax);
-    out.writeS16(this->mErahonehaba.mDiv);
-    out.writeF32(this->mHanajyouge.mValue);
-    out.writeF32(this->mHanajyouge.mMin);
-    out.writeF32(this->mHanajyouge.mMax);
-    out.writeS16(this->mHanajyouge.mDiv);
-    out.writeF32(this->mHanahaba.mValue);
-    out.writeF32(this->mHanahaba.mMin);
-    out.writeF32(this->mHanahaba.mMax);
-    out.writeS16(this->mHanahaba.mDiv);
-    out.writeF32(this->mHanatakasa.mValue);
-    out.writeF32(this->mHanatakasa.mMin);
-    out.writeF32(this->mHanatakasa.mMax);
-    out.writeS16(this->mHanatakasa.mDiv);
-    out.writeF32(this->mHanakakudo.mValue);
-    out.writeF32(this->mHanakakudo.mMin);
-    out.writeF32(this->mHanakakudo.mMax);
-    out.writeS16(this->mHanakakudo.mDiv);
-    out.writeF32(this->mKuchihaba.mValue);
-    out.writeF32(this->mKuchihaba.mMin);
-    out.writeF32(this->mKuchihaba.mMax);
-    out.writeS16(this->mKuchihaba.mDiv);
-    out.writeF32(this->mKuchiatsusa.mValue);
-    out.writeF32(this->mKuchiatsusa.mMin);
-    out.writeF32(this->mKuchiatsusa.mMax);
-    out.writeS16(this->mKuchiatsusa.mDiv);
-    out.writeF32(this->mEyebrowUVOffsetX.mValue);
-    out.writeF32(this->mEyebrowUVOffsetX.mMin);
-    out.writeF32(this->mEyebrowUVOffsetX.mMax);
-    out.writeS16(this->mEyebrowUVOffsetX.mDiv);
-    out.writeF32(this->mEyebrowUVOffsetY.mValue);
-    out.writeF32(this->mEyebrowUVOffsetY.mMin);
-    out.writeF32(this->mEyebrowUVOffsetY.mMax);
-    out.writeS16(this->mEyebrowUVOffsetY.mDiv);
-    out.writeF32(this->mWrinkle.mValue);
-    out.writeF32(this->mWrinkle.mMin);
-    out.writeF32(this->mWrinkle.mMax);
-    out.writeS16(this->mWrinkle.mDiv);
-    out.writeF32(this->mWrinkleAlbedoBlendRate.mValue);
-    out.writeF32(this->mWrinkleAlbedoBlendRate.mMin);
-    out.writeF32(this->mWrinkleAlbedoBlendRate.mMax);
-    out.writeS16(this->mWrinkleAlbedoBlendRate.mDiv);
-    out.writeF32(this->mWrinkleDetailNormalPower.mValue);
-    out.writeF32(this->mWrinkleDetailNormalPower.mMin);
-    out.writeF32(this->mWrinkleDetailNormalPower.mMax);
-    out.writeS16(this->mWrinkleDetailNormalPower.mDiv);
-    out.writeF32(this->mMuscleAlbedoBlendRate.mValue);
-    out.writeF32(this->mMuscleAlbedoBlendRate.mMin);
-    out.writeF32(this->mMuscleAlbedoBlendRate.mMax);
-    out.writeS16(this->mMuscleAlbedoBlendRate.mDiv);
-    out.writeF32(this->mMuscleDetailNormalPower.mValue);
-    out.writeF32(this->mMuscleDetailNormalPower.mMin);
-    out.writeF32(this->mMuscleDetailNormalPower.mMax);
-    out.writeS16(this->mMuscleDetailNormalPower.mDiv);
-    out.writeF32(this->mHeight.mValue);
-    out.writeF32(this->mHeight.mMin);
-    out.writeF32(this->mHeight.mMax);
-    out.writeS16(this->mHeight.mDiv);
-    out.writeF32(this->mHeightScaleArmRateP.mValue);
-    out.writeF32(this->mHeightScaleArmRateP.mMin);
-    out.writeF32(this->mHeightScaleArmRateP.mMax);
-    out.writeS16(this->mHeightScaleArmRateP.mDiv);
-    out.writeF32(this->mHeightScaleArmRateM.mValue);
-    out.writeF32(this->mHeightScaleArmRateM.mMin);
-    out.writeF32(this->mHeightScaleArmRateM.mMax);
-    out.writeS16(this->mHeightScaleArmRateM.mDiv);
-    out.writeF32(this->mHeightScaleLegRateP.mValue);
-    out.writeF32(this->mHeightScaleLegRateP.mMin);
-    out.writeF32(this->mHeightScaleLegRateP.mMax);
-    out.writeS16(this->mHeightScaleLegRateP.mDiv);
-    out.writeF32(this->mHeightScaleLegRateM.mValue);
-    out.writeF32(this->mHeightScaleLegRateM.mMin);
-    out.writeF32(this->mHeightScaleLegRateM.mMax);
-    out.writeS16(this->mHeightScaleLegRateM.mDiv);
-    out.writeF32(this->mHeightScaleBodyRateP.mValue);
-    out.writeF32(this->mHeightScaleBodyRateP.mMin);
-    out.writeF32(this->mHeightScaleBodyRateP.mMax);
-    out.writeS16(this->mHeightScaleBodyRateP.mDiv);
-    out.writeF32(this->mHeightScaleBodyRateM.mValue);
-    out.writeF32(this->mHeightScaleBodyRateM.mMin);
-    out.writeF32(this->mHeightScaleBodyRateM.mMax);
-    out.writeS16(this->mHeightScaleBodyRateM.mDiv);
-    out.writeF32(this->mHeadSize.mValue);
-    out.writeF32(this->mHeadSize.mMin);
-    out.writeF32(this->mHeadSize.mMax);
-    out.writeS16(this->mHeadSize.mDiv);
-    out.writeF32(this->mHeadRateP.mValue);
-    out.writeF32(this->mHeadRateP.mMin);
-    out.writeF32(this->mHeadRateP.mMax);
-    out.writeS16(this->mHeadRateP.mDiv);
-    out.writeF32(this->mHeadRateM.mValue);
-    out.writeF32(this->mHeadRateM.mMin);
-    out.writeF32(this->mHeadRateM.mMax);
-    out.writeS16(this->mHeadRateM.mDiv);
-    out.writeF32(this->mNeckOffset.mValue);
-    out.writeF32(this->mNeckOffset.mMin);
-    out.writeF32(this->mNeckOffset.mMax);
-    out.writeS16(this->mNeckOffset.mDiv);
-    out.writeF32(this->mNeckScale.mValue);
-    out.writeF32(this->mNeckScale.mMin);
-    out.writeF32(this->mNeckScale.mMax);
-    out.writeS16(this->mNeckScale.mDiv);
-    out.writeF32(this->mUpperBodyScaleX.mValue);
-    out.writeF32(this->mUpperBodyScaleX.mMin);
-    out.writeF32(this->mUpperBodyScaleX.mMax);
-    out.writeS16(this->mUpperBodyScaleX.mDiv);
-    out.writeF32(this->mUpperBodyScaleZ.mValue);
-    out.writeF32(this->mUpperBodyScaleZ.mMin);
-    out.writeF32(this->mUpperBodyScaleZ.mMax);
-    out.writeS16(this->mUpperBodyScaleZ.mDiv);
-    out.writeF32(this->mBellySize.mValue);
-    out.writeF32(this->mBellySize.mMin);
-    out.writeF32(this->mBellySize.mMax);
-    out.writeS16(this->mBellySize.mDiv);
-    out.writeF32(this->mTeatScale.mValue);
-    out.writeF32(this->mTeatScale.mMin);
-    out.writeF32(this->mTeatScale.mMax);
-    out.writeS16(this->mTeatScale.mDiv);
-    out.writeF32(this->mTekubiSize.mValue);
-    out.writeF32(this->mTekubiSize.mMin);
-    out.writeF32(this->mTekubiSize.mMax);
-    out.writeS16(this->mTekubiSize.mDiv);
-    out.writeF32(this->mTekubiOffset.mValue);
-    out.writeF32(this->mTekubiOffset.mMin);
-    out.writeF32(this->mTekubiOffset.mMax);
-    out.writeS16(this->mTekubiOffset.mDiv);
-    out.writeF32(this->mArmScaleYZ.mValue);
-    out.writeF32(this->mArmScaleYZ.mMin);
-    out.writeF32(this->mArmScaleYZ.mMax);
-    out.writeS16(this->mArmScaleYZ.mDiv);
-    out.writeF32(this->mKoshiOffset.mValue);
-    out.writeF32(this->mKoshiOffset.mMin);
-    out.writeF32(this->mKoshiOffset.mMax);
-    out.writeS16(this->mKoshiOffset.mDiv);
-    out.writeF32(this->mKoshiSize.mValue);
-    out.writeF32(this->mKoshiSize.mMin);
-    out.writeF32(this->mKoshiSize.mMax);
-    out.writeS16(this->mKoshiSize.mDiv);
-    out.writeF32(this->mKoshiScale.mValue);
-    out.writeF32(this->mKoshiScale.mMin);
-    out.writeF32(this->mKoshiScale.mMax);
-    out.writeS16(this->mKoshiScale.mDiv);
-    out.writeF32(this->mThighScale.mValue);
-    out.writeF32(this->mThighScale.mMin);
-    out.writeF32(this->mThighScale.mMax);
-    out.writeS16(this->mThighScale.mDiv);
-    out.writeF32(this->mAnkleOffset.mValue);
-    out.writeF32(this->mAnkleOffset.mMin);
-    out.writeF32(this->mAnkleOffset.mMax);
-    out.writeS16(this->mAnkleOffset.mDiv);
-    out.writeF32(this->mFat.mValue);
-    out.writeF32(this->mFat.mMin);
-    out.writeF32(this->mFat.mMax);
-    out.writeS16(this->mFat.mDiv);
-    out.writeF32(this->mMuscle.mValue);
-    out.writeF32(this->mMuscle.mMin);
-    out.writeF32(this->mMuscle.mMax);
-    out.writeS16(this->mMuscle.mDiv);
-    out.writeF32(this->mMotionFilter.mValue);
-    out.writeF32(this->mMotionFilter.mMin);
-    out.writeF32(this->mMotionFilter.mMax);
-    out.writeS16(this->mMotionFilter.mDiv);
-    return true;
+__attribute__((weak)) bool cEditParam::save(MtDataWriter& out) {
+    DDON_STUB("cEditParam::save")
+    return {};
 }
 
 // Address: 0x00097520 - 0x00097fd6 (2742 bytes)
@@ -837,11 +555,17 @@ __attribute__((weak)) void cEditValue::createProperty(MtPropertyList& s) {
 // void cEditValue::writeData(MtDataWriter& out, cEditValue& data);
 
 // Address: 0x0009ee40 - 0x0009eea6 (102 bytes)
-__attribute__((weak)) void cEditValue::mergeOnSlider() {
-    // local: s32 sliderPos;
-    // local: f32 val;
-    DDON_STUB("cEditValue::mergeOnSlider")
-    /* stub */
+void cEditValue::mergeOnSlider() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    s32 sliderPos = ::rCharacterEdit::toSlider(this->mValue, this->mMin, this->mMax, this->mDiv);
+    f32 val = ::rCharacterEdit::fromSliderEx(static_cast<u32>(sliderPos), this->mMin, this->mMax, this->mDiv);
+    this->mValue = val;
+    if (this->mMin > this->mValue) {
+        this->mValue = this->mMin;
+    }
+    if (this->mValue > this->mMax) {
+        this->mValue = this->mMax;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)

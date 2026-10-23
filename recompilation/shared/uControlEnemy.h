@@ -16,6 +16,7 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class MtString;
+class uCharacter;
 class uDDOModel;
 
 // Declarations
@@ -33,6 +34,8 @@ using u32 = unsigned int;
 
 class uControlEnemy : public uControl
 {
+    // inferred: uCharacter::getNamedParam names uControlEnemy::mRaidBossID
+    friend class uCharacter;
 public:
     class MyDTI;
 public:
@@ -124,6 +127,12 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 uControlEnemy::getRaidBossID() const {
+    return this->mRaidBossID;
+}
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body

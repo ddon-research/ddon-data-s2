@@ -12,6 +12,7 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtPropertyList;
+class uCharacter;
 class uDDOModel;
 
 // Declarations
@@ -27,6 +28,8 @@ using u32 = unsigned int;
 
 class cpWorkRate : public cpComponent
 {
+    // inferred: uCharacter::startStopSloTimer calls cpWorkRate::getSpeed
+    friend class uCharacter;
 public:
     enum RATE_INDEX
     {

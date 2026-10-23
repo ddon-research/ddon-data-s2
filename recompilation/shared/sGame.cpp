@@ -44,6 +44,7 @@
 #include "sContextManager.h"
 #include "sGUI.h"
 #include "sGUIExt.h"
+#include "sItemManager.h"
 #include "sNetwork.h"
 #include "sNetworkExt.h"
 #include "sQuestManagerExt.h"
@@ -355,9 +356,24 @@ __attribute__((weak)) void sGame::move() {
 // void sGame::updatePtr();
 
 // Address: 0x00782340 - 0x007823f6 (182 bytes)
-__attribute__((weak)) void sGame::initDecideCharacter() {
-    DDON_STUB("sGame::initDecideCharacter")
-    /* stub */
+void sGame::initDecideCharacter() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1684
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1688
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1838
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x9948
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::clearAllEntryBoardInfo();
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::clearMyClanInfo();
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::clearFriendInfo();
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mReserveJob = static_cast<s32>(-1);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mPartyMatchType = static_cast<sNetworkExt::MATCH_TYPE>(0);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mIsCycleContentsPlayStart = false;
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mDeathPenaltyWait = false;
+    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setServerOption();
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::updateClanSetting(::sGame::getInstance()->mCharData.mCharData.mOption.mIsClanNtc);
+    static_cast<sGUIExt*>(::sGUI::getInstance())->mDispGuideNo = static_cast<u32>(0);
+    ::sItemManager::getInstance()->::sItemManager::releseRequestCommand();
+    this->mIsGameOverLobby = false;
 }
 
 // Address: 0x00782400 - 0x00782401 (1 bytes)
@@ -1737,19 +1753,19 @@ __attribute__((weak)) void sGame::lostPawn(cContextInstance* pLostPawn) {
     // inferred: a temporary for the result of the call at 0x786491, used once; no DWARF local holds it
     u8 t0 = ::cContextInterface::getPawnType(pLostPawn);
     // inferred: a temporary for the value the load at 0x7864a4 read, used once; no DWARF local holds it
-    cNetGameServer* t2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+    cNetGameServer* t1 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
     // inferred: a temporary for the result of the call at 0x7864ae, used once; no DWARF local holds it
-    u32 t3 = ::cContextInterface::getPawnId(pLostPawn);
+    u32 t2 = ::cContextInterface::getPawnId(pLostPawn);
     if (t0 == static_cast<u8>(1)) {
-        t2->::cNetGameServer::pawnLost(t3);
+        t1->::cNetGameServer::pawnLost(t2);
         ::sQuestManagerExt::getInstance()->::sQuestManagerExt::notifyLostMainPawn();
         s32 memberIndex = ::cContextInterface::getMemberIndex(pLostPawn);
         if (::cContextInterface::isPawnOwner(pLostPawn) != false) {
             if (::cContextInterface::getPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12)) == false) {
                 ::cContextInterface::setPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12), true);
                 // inferred: a temporary for the result of the call at 0x786519, used once; no DWARF local holds it
-                s32 t4 = ::cContextInterface::getMemberIndex(pLostPawn);
-                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t4, static_cast<u32>(25));
+                s32 t3 = ::cContextInterface::getMemberIndex(pLostPawn);
+                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t3, static_cast<u32>(25));
                 if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
                     ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
                     ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
@@ -1770,14 +1786,14 @@ __attribute__((weak)) void sGame::lostPawn(cContextInstance* pLostPawn) {
             }
         }
     } else {
-        t2->::cNetGameServer::rentalPawnLost(t3);
+        t1->::cNetGameServer::rentalPawnLost(t2);
         s32 memberIndex = ::cContextInterface::getMemberIndex(pLostPawn);
         if (::cContextInterface::isPawnOwner(pLostPawn) != false) {
             if (::cContextInterface::getPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12)) == false) {
                 ::cContextInterface::setPawnTalkSituationFlag(pLostPawn, static_cast<u32>(12), true);
                 // inferred: a temporary for the result of the call at 0x786519, used once; no DWARF local holds it
-                s32 t4 = ::cContextInterface::getMemberIndex(pLostPawn);
-                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t4, static_cast<u32>(25));
+                s32 t3 = ::cContextInterface::getMemberIndex(pLostPawn);
+                ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::reqPawnTalk(t3, static_cast<u32>(25));
                 if (::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(memberIndex) != static_cast<cContextInstHm*>(nullptr)) {
                     ::sAIPawnTalkMgr::getInstance()->::sAIPawnTalkMgr::releasePawnTalkInfo(memberIndex);
                     ::sContextManager::getInstance()->::sContextManager::removeContextPartyPlayer(memberIndex, true);
@@ -2014,27 +2030,27 @@ void sGame::createWepArcParam() {
         this->::sGame::createWepResIndex();
         t2->::cResource::release();
         // inferred: a temporary for the value the load at 0x786bce read, used once; no DWARF local holds it
-        sArchiveManager* t4 = ::sArchiveManager::getInstance();
+        sArchiveManager* t3 = ::sArchiveManager::getInstance();
         // inferred: a temporary for the result of the call at 0x786bd9, used once; no DWARF local holds it
-        ARC_TAGID t5 = ::rArchiveListArray::convTagId("wep_res_table");
+        ARC_TAGID t4 = ::rArchiveListArray::convTagId("wep_res_table");
         // inferred: a temporary for the result of the call at 0x786bfb, used 4 times; no DWARF local holds it
-        cResource* t6 = t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_CATEGORY"), static_cast<u32>(1), false);
-        if (t6 != static_cast<cResource*>(nullptr)) {
-            this->mpWepCateResTbl = static_cast<rWepCateResTbl*>(t6);
-            t6->::cResource::addRef();
-            t6->::cResource::release();
+        cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_CATEGORY"), static_cast<u32>(1), false);
+        if (t5 != static_cast<cResource*>(nullptr)) {
+            this->mpWepCateResTbl = static_cast<rWepCateResTbl*>(t5);
+            t5->::cResource::addRef();
+            t5->::cResource::release();
         }
     } else {
         // inferred: a temporary for the value the load at 0x786bce read, used once; no DWARF local holds it
-        sArchiveManager* t4 = ::sArchiveManager::getInstance();
+        sArchiveManager* t3 = ::sArchiveManager::getInstance();
         // inferred: a temporary for the result of the call at 0x786bd9, used once; no DWARF local holds it
-        ARC_TAGID t5 = ::rArchiveListArray::convTagId("wep_res_table");
+        ARC_TAGID t4 = ::rArchiveListArray::convTagId("wep_res_table");
         // inferred: a temporary for the result of the call at 0x786bfb, used 4 times; no DWARF local holds it
-        cResource* t6 = t4->::sArchiveManager::createRes(t5, ::rArchiveListArray::convSearchId("RES_ID_CATEGORY"), static_cast<u32>(1), false);
-        if (t6 != static_cast<cResource*>(nullptr)) {
-            this->mpWepCateResTbl = static_cast<rWepCateResTbl*>(t6);
-            t6->::cResource::addRef();
-            t6->::cResource::release();
+        cResource* t5 = t3->::sArchiveManager::createRes(t4, ::rArchiveListArray::convSearchId("RES_ID_CATEGORY"), static_cast<u32>(1), false);
+        if (t5 != static_cast<cResource*>(nullptr)) {
+            this->mpWepCateResTbl = static_cast<rWepCateResTbl*>(t5);
+            t5->::cResource::addRef();
+            t5->::cResource::release();
         }
     }
 }

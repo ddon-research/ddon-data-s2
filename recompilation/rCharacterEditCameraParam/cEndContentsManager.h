@@ -4,10 +4,10 @@
 #include <cstddef>
 
 // Dependencies
-#include "MtCollection.h"
-#include "MtDTI.h"
-#include "cQuestManagerBase.h"
-#include "nQuest.h"
+#include "../shared/MtCollection.h"
+#include "../shared/MtDTI.h"
+#include "../shared/cQuestManagerBase.h"
+#include "../shared/nQuest.h"
 
 // Forward declarations
 class CDataQuestEnemyInfo;

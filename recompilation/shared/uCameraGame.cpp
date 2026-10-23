@@ -16,6 +16,7 @@
 #include "../rStageConnect/sArea.h"
 #include "../rStageConnect/sAreaExt.h"
 #include "sCamera.h"
+#include "sEventManager.h"
 #include "uCameraBase.h"
 #include "uFilter.h"
 #ifndef DDON_STUB
@@ -855,10 +856,10 @@ bool uCameraGame::isStageCamera(u32 no) const {
     // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     aStage* pStage = static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::getCurrentStage();
     if (pStage != static_cast<aStage*>(nullptr)) {
-        // inferred: a temporary for the result of the call at 0x88f23e, used twice; no DWARF local holds it
+        // inferred: a temporary for the result of the call at 0x88f23e, used once; no DWARF local holds it
         const cCamExParam* t0 = pStage->::aStage::getCameraParamFld(no);
         if (this->mpImple->mpParam != t0) {
-            // inferred: a temporary for the result of the call at 0x88f259, used twice; no DWARF local holds it
+            // inferred: a temporary for the result of the call at 0x88f259, used once; no DWARF local holds it
             const cCamExParam* t1 = pStage->::aStage::getCameraParamEvt(no);
             if (this->mpImple->mpParam != t1) {
                 return false;
@@ -877,9 +878,19 @@ bool uCameraGame::isStageCamera(u32 no) const {
 // bool uCameraGame::isCmnCamera(u32 no) const;
 
 // Address: 0x0088f290 - 0x0088f2c8 (56 bytes)
-__attribute__((weak)) bool uCameraGame::isEventCamera(u32 no) const {
-    DDON_STUB("uCameraGame::isEventCamera")
-    return {};
+bool uCameraGame::isEventCamera(u32 no) const {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
+    if (::sEventManager::getInstance() != static_cast<sEventManager*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x88f2a8, used once; no DWARF local holds it
+        const cCamExParam* t0 = ::sEventManager::getInstance()->::sEventManager::getEventCameraParam(no);
+        if (this->mpImple->mpParam != t0) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0088d8f0 - 0x0088dcca (986 bytes)

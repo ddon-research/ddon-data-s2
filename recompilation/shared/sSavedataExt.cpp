@@ -7,6 +7,8 @@
 #include "MtDataWriter.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "sNetwork.h"
+#include "sNetworkExt.h"
 #include "sSavedata.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -421,80 +423,9 @@ cStorageDataEdit::~cStorageDataEdit() {
 }
 
 // Address: 0x00836d50 - 0x008371ea (1178 bytes)
-void cStorageDataEdit::save(MtDataWriter& w, u32 SaveVersion) {
-    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
-    w.::MtDataWriter::writeString(&this->mPlayerName[0]);
-    w.::MtDataWriter::writeString(&this->mComment[0]);
-    // inferred: a temporary for the value the load at 0x836d82 read, used once; no DWARF local holds it
-    u8 t1 = this->mBodyType;
-    if (w.mSeekPt >= w.mBufsiz) {
-        w.flush();
-    }
-    w.mBuffer[w.mSeekPt] = t1;
-    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
-    w.writeS32(this->mHair);
-    w.writeS32(this->mBeard);
-    w.writeS32(this->mMakeup);
-    w.writeS32(this->mScar);
-    w.writeF32(this->mWrinkleValue);
-    w.writeS32(this->mEyePresetNo);
-    w.writeS32(this->mEyebrowTexNo);
-    w.writeS32(this->mNosePresetNo);
-    w.writeS32(this->mMouthPresetNo);
-    w.writeF32(this->mSokutoubuValue);
-    w.writeF32(this->mHitaiValue);
-    w.writeF32(this->mMimijyougeValue);
-    w.writeF32(this->mMabisasijyougeValue);
-    w.writeF32(this->mHitomiookisaValue);
-    w.writeF32(this->mMeookisaValue);
-    w.writeF32(this->mMekaitenValue);
-    w.writeF32(this->mKannkakuValue);
-    w.writeF32(this->mEyebrowUVOffsetYValue);
-    w.writeF32(this->mEyebrowUVOffsetXValue);
-    w.writeF32(this->mMayukaitenValue);
-    w.writeF32(this->mMikentakasaValue);
-    w.writeF32(this->mMikenhabaValue);
-    w.writeF32(this->mHanajyougeValue);
-    w.writeF32(this->mHanahabaValue);
-    w.writeF32(this->mHanatakasaValue);
-    w.writeF32(this->mHanakakudoValue);
-    w.writeF32(this->mHohobonejyougeValue);
-    w.writeF32(this->mHohoboneryouValue);
-    w.writeF32(this->mMimiookisaValue);
-    w.writeF32(this->mMimimukiValue);
-    if (SaveVersion > static_cast<u32>(16777237)) {
-        w.writeF32(this->mElfmimi);
-    }
-    w.writeF32(this->mHanakuchijyougeValue);
-    w.writeF32(this->mAgozengoValue);
-    w.writeF32(this->mKuchihabaValue);
-    w.writeF32(this->mKuchiatsusaValue);
-    w.writeF32(this->mHohonikuValue);
-    w.writeF32(this->mAgosakijyougeValue);
-    w.writeF32(this->mAgosakihabaValue);
-    w.writeF32(this->mErahonejyougeValue);
-    w.writeF32(this->mErahonehabaValue);
-    w.writeF32(this->mHeightValue);
-    w.writeF32(this->mHeadSizeValue);
-    w.writeF32(this->mNeckOffsetValue);
-    w.writeF32(this->mNeckScaleValue);
-    w.writeF32(this->mUpperBodyScaleXValue);
-    w.writeF32(this->mBellySizeValue);
-    w.writeF32(this->mTeatScaleValue);
-    w.writeF32(this->mTekubiSizeValue);
-    w.writeF32(this->mKoshiOffsetValue);
-    w.writeF32(this->mKoshiSizeValue);
-    w.writeF32(this->mAnkleOffsetValue);
-    w.writeF32(this->mFatValue);
-    w.writeF32(this->mMuscleValue);
-    w.writeF32(this->mMotionFilterValue);
-    w.writeS32(this->mColorSkin);
-    w.writeS32(this->mColorHair);
-    w.writeS32(this->mColorBeard);
-    w.writeS32(this->mColorEyebrow);
-    w.writeS32(this->mColorREye);
-    w.writeS32(this->mColorLEye);
-    w.writeS32(this->mColorMakeup);
+__attribute__((weak)) void cStorageDataEdit::save(MtDataWriter& w, u32 SaveVersion) {
+    DDON_STUB("cStorageDataEdit::save")
+    /* stub */
 }
 
 // Address: 0x008371f0 - 0x008376af (1215 bytes)
@@ -785,10 +716,26 @@ __attribute__((weak)) u32 sSavedataExt::getRequireSaveDataHDDSizeKB(MT_CTSTR Dir
 }
 
 // Address: 0x00836240 - 0x008362a7 (103 bytes)
-__attribute__((weak)) bool sSavedataExt::beginHddSpaceCheck(u32 SaveDataSize) {
-    // local: u32 requireHDDSizeKB;
-    DDON_STUB("sSavedataExt::beginHddSpaceCheck")
-    return {};
+bool sSavedataExt::beginHddSpaceCheck(u32 SaveDataSize) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0xe28
+    this->::sSavedata::mState = static_cast<sSavedata::STATE>(1);
+    this->::sSavedata::mResult = static_cast<sSavedata::RESULT>(0);
+    this->mNeedHddSizeKB = static_cast<u32>(0);
+    if (this->::sSavedataExt::isCheckTrophySize() != false) {
+        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->mAchievementBootup == false) {
+            this->::sSavedata::mResult = static_cast<sSavedata::RESULT>(8);
+        }
+    }
+    if (SaveDataSize == static_cast<u32>(0)) {
+        u32 requireHDDSizeKB = this->::sSavedataExt::getRequireSaveDataHDDSizeKB("SAVEDATA");
+        this->mNeedHddSizeKB = this->mNeedHddSizeKB + requireHDDSizeKB;
+        this->::sSavedata::mState = static_cast<sSavedata::STATE>(0);
+        return true;
+    } else {
+        this->::sSavedata::mState = static_cast<sSavedata::STATE>(0);
+        return true;
+    }
 }
 
 // Address: 0x00836480 - 0x00836488 (8 bytes)

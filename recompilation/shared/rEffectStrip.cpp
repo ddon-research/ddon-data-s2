@@ -92,17 +92,13 @@ bool rEffectStrip::load(MtStream& in) {
                         u32 t0 = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->ParamBuffSize;
                         if (t0 != static_cast<u32>(0)) {
                             if (this->mpParamBuff != static_cast<u8*>(nullptr)) {
-                                // inferred: a temporary for the result of the call at 0x11f4902, used once; no DWARF local holds it
-                                MtAllocator* t1 = ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI);
-                                t1->memFree(static_cast<void*>(this->mpParamBuff));
+                                ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memFree(static_cast<void*>(this->mpParamBuff));
                                 this->mpParamBuff = static_cast<u8*>(nullptr);
                                 this->mParamBuffSize = static_cast<u32>(0);
-                                // inferred: a temporary for the result of the call at 0x11f492b, used once; no DWARF local holds it
-                                MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI);
-                                // inferred: a temporary for the result of the call at 0x11f493e, used 3 times; no DWARF local holds it
-                                void* t3 = t2->memAlloc(t0, static_cast<u32>(16));
-                                if ((this->mpParamBuff = static_cast<u8*>(t3)) != static_cast<u8*>(nullptr)) {
-                                    ::memset(t3, static_cast<int>(0), t0);
+                                // inferred: a temporary for the result of the call at 0x11f493e, used twice; no DWARF local holds it
+                                void* t1 = ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memAlloc(t0, static_cast<u32>(16));
+                                if ((this->mpParamBuff = static_cast<u8*>(t1)) != static_cast<u8*>(nullptr)) {
+                                    ::memset(t1, static_cast<int>(0), t0);
                                     this->mParamBuffSize = t0;
                                     this->mPartsNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->PartsNum;
                                     this->mJointNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->JointNum;
@@ -117,12 +113,10 @@ bool rEffectStrip::load(MtStream& in) {
                                 }
                             } else {
                                 this->mParamBuffSize = static_cast<u32>(0);
-                                // inferred: a temporary for the result of the call at 0x11f492b, used once; no DWARF local holds it
-                                MtAllocator* t2 = ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI);
-                                // inferred: a temporary for the result of the call at 0x11f493e, used 3 times; no DWARF local holds it
-                                void* t3 = t2->memAlloc(t0, static_cast<u32>(16));
-                                if ((this->mpParamBuff = static_cast<u8*>(t3)) != static_cast<u8*>(nullptr)) {
-                                    ::memset(t3, static_cast<int>(0), t0);
+                                // inferred: a temporary for the result of the call at 0x11f493e, used twice; no DWARF local holds it
+                                void* t1 = ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memAlloc(t0, static_cast<u32>(16));
+                                if ((this->mpParamBuff = static_cast<u8*>(t1)) != static_cast<u8*>(nullptr)) {
+                                    ::memset(t1, static_cast<int>(0), t0);
                                     this->mParamBuffSize = t0;
                                     this->mPartsNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->PartsNum;
                                     this->mJointNum = reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff)->JointNum;
@@ -162,7 +156,7 @@ bool rEffectStrip::load(MtStream& in) {
 bool rEffectStrip::save(MtStream& out) {
     // DWARF local not rendered: u32 fileSize;
     // DWARF local not rendered: EFS_HEADER* pHeader;
-    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
     // inferred: a location-less local: pHeader stands for reinterpret_cast<rEffectStrip::EFS_HEADER*>(pTempBuff); declared on line 125 at function scope, its scope starts at the row 0x11f4a4e (line 126); pTempBuff's location [0x11f4a3f, 0x11f4aa5) covers it from there through its last access
     MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
     if (this->mpParamBuff != static_cast<u8*>(nullptr)) {

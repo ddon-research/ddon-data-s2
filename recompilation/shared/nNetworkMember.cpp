@@ -238,9 +238,15 @@ void nNetwork::Member::setMute(bool f) {
 }
 
 // Address: 0x01b86600 - 0x01b8662d (45 bytes)
-__attribute__((weak)) bool nNetwork::Member::isTalking() const {
-    DDON_STUB("nNetwork::Member::isTalking")
-    return {};
+bool nNetwork::Member::isTalking() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if ((this->mConfiguration & static_cast<u32>(32)) != static_cast<u32>(0)) {
+        // inferred: a temporary for the result of the call at 0x1b86616, used once; no DWARF local holds it
+        MtNetTime::Total t0 = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
+        return t0 < this->mTalkTime;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01b86630 - 0x01b8666c (60 bytes)
@@ -267,9 +273,15 @@ void nNetwork::Member::setRestrict(bool f) {
 }
 
 // Address: 0x01b866a0 - 0x01b866cd (45 bytes)
-__attribute__((weak)) bool nNetwork::Member::isNewbie() const {
-    DDON_STUB("nNetwork::Member::isNewbie")
-    return {};
+bool nNetwork::Member::isNewbie() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mInfo.mIsValid != false) {
+        // inferred: a temporary for the result of the call at 0x1b866b6, used once; no DWARF local holds it
+        MtNetTime::Total t0 = ::MtNetTime::mInstance.::MtNetTime::getTotalTime();
+        return this->mJoinTime == t0;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01b866d0 - 0x01b866fc (44 bytes)

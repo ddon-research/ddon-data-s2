@@ -182,10 +182,11 @@ __attribute__((weak)) void uStageCraftPawnCtrl::updateWaitPawnList() {
     /* stub */
 }
 
-// No out-of-line body: 2 inlined copies in 2 functions (32 bytes)
-//   in uStageCraftPawnCtrl::setup at 0x00d2b179-0x00d2b189 (called at uStageCraftPawnCtrl.cpp:69)
-//   in uStageCraftPawnCtrl::updatePawnList at 0x00d2b36d-0x00d2b37d (called at uStageCraftPawnCtrl.cpp:206)
-// void uStageCraftPawnCtrl::clearPawnList();
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uStageCraftPawnCtrl::clearPawnList() {
+    ::memset(static_cast<void*>(&this->mMainPawnList[0]), static_cast<int>(0), static_cast<size_t>(640));
+}
 
 // Address: 0x00d2b420 - 0x00d2b6a7 (647 bytes)
 __attribute__((weak)) void uStageCraftPawnCtrl::updatePawnDisp() {

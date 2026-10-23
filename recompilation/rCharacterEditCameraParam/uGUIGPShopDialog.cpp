@@ -173,10 +173,17 @@ void uGUIGPShopDialog::kill() {
 }
 
 // Address: 0x00abb250 - 0x00abb2b5 (101 bytes)
-__attribute__((weak)) void uGUIGPShopDialog::adjustScale() {
-    // local: f32 scale;
-    DDON_STUB("uGUIGPShopDialog::adjustScale")
-    /* stub */
+void uGUIGPShopDialog::adjustScale() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::adjustScale();
+    if (this->mpGPShop != static_cast<uGUIGPShop*>(nullptr)) {
+        return;
+    }
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isExecBrowser() == false) {
+        return;
+    }
+    f32 scale = this->getScaleForDefaultResolution(1.0f);
+    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setBrowserPos(580.0f * scale, 114.0f * scale);
 }
 
 // Address: 0x00abb2c0 - 0x00abb504 (580 bytes)

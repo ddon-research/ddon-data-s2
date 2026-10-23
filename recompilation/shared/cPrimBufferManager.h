@@ -4,22 +4,19 @@
 #include <cstddef>
 
 // Dependencies
-#include "../shared/MtCollection.h"
-#include "../shared/MtDTI.h"
-#include "../shared/cResource.h"
+#include "MtDTI.h"
+#include "cPrimObj.h"
 
 // Forward declarations
 class MtAllocator;
-class MtArray;
 class MtDTI;
 class MtObject;
 class MtProperty;
 class MtPropertyList;
-class MtStream;
 class MtUI;
 
 // Declarations
-class rScenario;
+class cPrimBufferManager;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -28,7 +25,7 @@ using _Sizet = long unsigned int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 
-class rScenario : public cResource
+class cPrimBufferManager : public cPrimObj
 {
 public:
     class MyDTI;
@@ -53,17 +50,22 @@ public:
     static void operator delete[](void* p_addr);
     static void operator delete(void* p_addr, u32 align);
     static void operator delete[](void* p_addr, u32 align);
-    rScenario();
-    virtual ~rScenario();
-    virtual MT_CTSTR getExt() const;  // vtable slot 7
-    virtual MT_CTSTR getName() const;  // vtable slot 16
-    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    cPrimBufferManager();
+    cPrimBufferManager(u32 size);
+    virtual ~cPrimBufferManager();
     virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
-    virtual bool load(MtStream& in);  // vtable slot 11
-    virtual bool save(MtStream& out);  // vtable slot 12
-    virtual void clear();  // vtable slot 15
+    virtual void createProperty(MtPropertyList& prop_list);  // vtable slot 4
+    u32 reserveBuffer(void* * ptr, u32 size);
+    void clear();
+    void* getBuffer() const;
+    void* getCurrentBuffer() const;
+    u32 getTotalSize() const;
+    u32 getCurrentSize() const;
+private:
+    void* mpBuffer;  // offset: 0x8
+    void* mpCurrentPtr;  // offset: 0x10
+    u32 mTotalSize;  // offset: 0x18
+    u32 mCurrentSize;  // offset: 0x1c
 public:
-    MtArray mArray;  // offset: 0x70
     static MyDTI DTI;
-    static MT_CTSTR mSubExt[4];
 };

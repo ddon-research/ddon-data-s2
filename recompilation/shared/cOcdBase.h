@@ -421,3 +421,15 @@ inline bool cOcdStatusParam::isMultiApply() const {
 inline f32 cOcdStatusParam::getActiveTimeMaxPrivate() const {
     return this->mActiveTimeMax;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParam::setActiveTimeMaxPrivate(f32 NewValue) {
+    this->mActiveTimeMax = NewValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cOcdStatusParam::setFreeParam0Private(f32 NewValue) {
+    this->mFreeParam0 = NewValue;
+}

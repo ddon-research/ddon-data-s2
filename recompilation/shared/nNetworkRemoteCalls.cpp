@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cRemoteCall.h"
 #include "nNetworkCoder.h"
 #ifndef DDON_STUB
@@ -93,5 +94,86 @@ __attribute__((weak)) void nNetwork::RpcNetSystem_Match::init(const nNetwork::Se
 __attribute__((weak)) MtObject* nNetwork::RpcNetSystem_Match::MyDTI::newInstance() const {
     DDON_STUB("nNetwork::RpcNetSystem_Match::MyDTI::newInstance")
     return nullptr;
+}
+
+// No out-of-line body: no code in the ELF
+// MtDTI* nNetwork::RpcNetSystem_RouteKey::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void nNetwork::RpcNetSystem_RouteKey::usage();
+
+// Address: 0x01b86ac0 - 0x01b86ac8 (8 bytes)
+const MtDTI& nNetwork::RpcNetSystem_RouteKey::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return nNetwork::RpcNetSystem_RouteKey::DTI;
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// MtAllocator* nNetwork::RpcNetSystem_RouteKey::getAllocator();
+
+// No out-of-line body: no code in the ELF
+// void nNetwork::RpcNetSystem_RouteKey::setAllocator(u32);
+
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: operator new from _ZNK8nNetwork21RpcNetSystem_RouteKey5MyDTI11newInstanceEv at 0x0119cb10-0x0119cb3d, code DWARF attributes to no inlined copy; sz is the class's size (80), align the allocation's other whole constant (16)
+inline void* nNetwork::RpcNetSystem_RouteKey::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::RpcNetSystem_RouteKey::DTI)->memAlloc(sz, align, ::nNetwork::RpcNetSystem_RouteKey::DTI.::MtDTI::mID);
+}
+
+// No out-of-line body: no code in the ELF
+// void* nNetwork::RpcNetSystem_RouteKey::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* nNetwork::RpcNetSystem_RouteKey::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* nNetwork::RpcNetSystem_RouteKey::operator new[](size_t sz, void* p_addr);
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: operator delete from _ZN8nNetwork21RpcNetSystem_RouteKeyD0Ev at 0x01b86a97-0x01b86ab8, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
+inline void nNetwork::RpcNetSystem_RouteKey::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::RpcNetSystem_RouteKey::DTI)->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void nNetwork::RpcNetSystem_RouteKey::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void nNetwork::RpcNetSystem_RouteKey::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void nNetwork::RpcNetSystem_RouteKey::operator delete[](void* p_addr, u32 align);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// nNetwork::RpcNetSystem_RouteKey::RpcNetSystem_RouteKey();
+
+// Address: 0x01b86a70 - 0x01b86a7f (15 bytes)
+// Also emitted as: _ZN8nNetwork21RpcNetSystem_RouteKeyD0Ev at 0x01b86a80
+nNetwork::RpcNetSystem_RouteKey::~RpcNetSystem_RouteKey() {
+    DDON_STUB("nNetwork::RpcNetSystem_RouteKey::~RpcNetSystem_RouteKey")
+    /* stub */
+}
+
+// Address: 0x0119cbe0 - 0x0119cc7f (159 bytes)
+__attribute__((weak)) void nNetwork::RpcNetSystem_RouteKey::serialize(MtStream& stream) {
+    // local: Coder cod;
+    DDON_STUB("nNetwork::RpcNetSystem_RouteKey::serialize")
+    /* stub */
+}
+
+// Address: 0x0119cc80 - 0x0119ccf4 (116 bytes)
+__attribute__((weak)) void nNetwork::RpcNetSystem_RouteKey::deserialize(MtStream& stream) {
+    // local: Decoder dec;
+    DDON_STUB("nNetwork::RpcNetSystem_RouteKey::deserialize")
+    /* stub */
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// nNetwork::RpcNetSystem_RouteKey::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x0119cb10 - 0x0119cb65 (85 bytes)
+MtObject* nNetwork::RpcNetSystem_RouteKey::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::nNetwork::RpcNetSystem_RouteKey;
 }
 

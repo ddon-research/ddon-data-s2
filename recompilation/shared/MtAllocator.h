@@ -16,6 +16,7 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 class cSystem;
+class sMain;
 
 // Declarations
 class MtAllocator;
@@ -36,6 +37,8 @@ class MtAllocator : public MtObject
 {
     // inferred: cSystem::setJobSafe names MtAllocator::mJobSafe
     friend class cSystem;
+    // inferred: sMain::initMemory names MtAllocator::mAttr
+    friend class sMain;
 public:
     enum TYPE
     {

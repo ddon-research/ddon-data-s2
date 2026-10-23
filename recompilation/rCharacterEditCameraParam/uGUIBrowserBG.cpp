@@ -197,10 +197,22 @@ void uGUIBrowserBG::setNoActive() {
 // void uGUIBrowserBG::resetPriority();
 
 // Address: 0x009ad660 - 0x009ad6eb (139 bytes)
-__attribute__((weak)) void uGUIBrowserBG::setBGDispOffMode(bool IsOn) {
-    // local: bool isdisp;
-    DDON_STUB("uGUIBrowserBG::setBGDispOffMode")
-    /* stub */
+void uGUIBrowserBG::setBGDispOffMode(bool IsOn) {
+    // DWARF local not rendered: bool isdisp;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpHeader != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpHeader->::cGUIInstance::setVisible(IsOn == false);
+    }
+    if (this->mClose.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mClose.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(IsOn == false);
+    }
+    this->mGuide.::uGUIBase::cReferenceUIBtnGuide::setVisible(IsOn == false);
+    this->::uGUIBase::mIsActiveBarForceDispOff = IsOn;
+    if (this->mpPanelBase != static_cast<cGUIObjNull*>(nullptr)) {
+        this->mpPanelBase->::cGUIObject::setVisible(IsOn == false);
+    }
+    this->mIsBGDispOff = true;
+    this->mCancelMode = static_cast<u32>(1);
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (38 bytes)

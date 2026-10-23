@@ -4,13 +4,13 @@
 #include <cstddef>
 
 // Dependencies
-#include "../shared/MtColor.h"
-#include "../shared/MtDTI.h"
-#include "../shared/MtMath.h"
-#include "../shared/MtString.h"
-#include "../shared/nDDOUtility.h"
-#include "../shared/nGUIExt.h"
-#include "../shared/uGUIBase.h"
+#include "MtColor.h"
+#include "MtDTI.h"
+#include "MtMath.h"
+#include "MtString.h"
+#include "nDDOUtility.h"
+#include "nGUIExt.h"
+#include "uGUIBase.h"
 
 // Forward declarations
 class MtAllocator;
@@ -38,6 +38,7 @@ class uHuman;
 // Declarations
 class uGUIGaugeNpc;
 class uGUIGaugeNpcBase;
+class uGUITouchTargetSelector;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -130,6 +131,48 @@ protected:
 public:
     static MyDTI DTI;
     static const u32 OCD_ICON_NUM = 2;
+};
+
+class uGUITouchTargetSelector : public uGUIGaugeNpcBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    uGUITouchTargetSelector();
+    virtual ~uGUITouchTargetSelector();
+    virtual void setup();  // vtable slot 6
+private:
+    void updateInit();
+    void updateWait();
+    void updateButtonGuideSize();
+private:
+    cGUIObjMessage* mpOBJ_target_m_key;  // offset: 0x980
+    cGUIObjTexture* mpOBJ_target_left;  // offset: 0x988
+    cGUIObjTexture* mpOBJ_target_right;  // offset: 0x990
+    cGUIObjTexture* mpOBJ_target_center;  // offset: 0x998
+    uGUIBase::cInputGuideMonitor mInputGuideMonitor;  // offset: 0x9a0
+public:
+    static MyDTI DTI;
 };
 
 class uGUIGaugeNpc : public uGUIGaugeNpcBase

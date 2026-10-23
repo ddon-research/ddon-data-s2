@@ -8,6 +8,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "MtString.h"
+#include "cEquipData.h"
 #include "cUIObject.h"
 #include "cUnit.h"
 #include "nCharacterData.h"
@@ -292,28 +293,80 @@ __attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItem::discard(u32 num) {
 }
 
 // Address: 0x005db550 - 0x005db5f9 (169 bytes)
-__attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItem::equip(u32 bagType, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
-    // local: EQUIP_CATEGORY cate;
-    DDON_STUB("nGUIItem::cItem::equip")
-    return {};
+nGUIItem::RET_TYPE nGUIItem::cItem::equip(u32 bagType, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
+    if (this->mpParam != static_cast<cItemParam*>(nullptr)) {
+        if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
+            if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == static_cast<sItemManager::cEquipList*>(nullptr)) {
+                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(10));
+                if (equipSlot == static_cast<u32>(4294967295)) {
+                    nCharacterData::EQUIP_CATEGORY cate = static_cast<nCharacterData::EQUIP_CATEGORY>(this->mprItemParam->::rItemList::rItemParam::getEquipCategory());
+                    // inferred: a temporary for the result of the call at 0x5db5b2, used once; no DWARF local holds it
+                    nCharacterData::EQUIP_SLOT_TYPE t0 = ::cEquipData::convEquipCateToSlotType(cate);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(static_cast<u32>(t0), this->mpParam);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, static_cast<u32>(0));
+                    return static_cast<nGUIItem::RET_TYPE>(0);
+                } else {
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(equipSlot, this->mpParam);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, static_cast<u32>(0));
+                    return static_cast<nGUIItem::RET_TYPE>(0);
+                }
+            } else {
+                return static_cast<nGUIItem::RET_TYPE>(1);
+            }
+        } else {
+            return static_cast<nGUIItem::RET_TYPE>(1);
+        }
+    } else {
+        return static_cast<nGUIItem::RET_TYPE>(1);
+    }
 }
 
 // Address: 0x005db600 - 0x005db654 (84 bytes)
-__attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItem::equipOff(u32 bagType, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
-    DDON_STUB("nGUIItem::cItem::equipOff")
-    return {};
+nGUIItem::RET_TYPE nGUIItem::cItem::equipOff(u32 bagType, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == static_cast<sItemManager::cEquipList*>(nullptr)) {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(equipSlot, static_cast<cItemParam*>(nullptr));
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, static_cast<u32>(0));
+        return static_cast<nGUIItem::RET_TYPE>(0);
+    } else {
+        return static_cast<nGUIItem::RET_TYPE>(1);
+    }
 }
 
 // Address: 0x005db660 - 0x005db6f7 (151 bytes)
-__attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItem::equipPawn(u32 bagType, u32 pawnId, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
-    DDON_STUB("nGUIItem::cItem::equipPawn")
-    return {};
+nGUIItem::RET_TYPE nGUIItem::cItem::equipPawn(u32 bagType, u32 pawnId, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
+    if (this->mpParam != static_cast<cItemParam*>(nullptr)) {
+        if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
+            if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == static_cast<sItemManager::cEquipList*>(nullptr)) {
+                if (pawnId != static_cast<u32>(0)) {
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(10));
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(equipSlot, this->mpParam);
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, pawnId);
+                    return static_cast<nGUIItem::RET_TYPE>(0);
+                }
+            }
+        }
+    }
+    return static_cast<nGUIItem::RET_TYPE>(1);
 }
 
 // Address: 0x005db700 - 0x005db764 (100 bytes)
-__attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItem::equipPawnOff(u32 bagType, u32 pawnId, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
-    DDON_STUB("nGUIItem::cItem::equipPawnOff")
-    return {};
+nGUIItem::RET_TYPE nGUIItem::cItem::equipPawnOff(u32 bagType, u32 pawnId, u32 equipSlot, nCharacterData::EQUIP_TYPE type) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList == static_cast<sItemManager::cEquipList*>(nullptr)) {
+        if (pawnId != static_cast<u32>(0)) {
+            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setChangeEquipParam(equipSlot, static_cast<cItemParam*>(nullptr));
+            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestChangeEquip(bagType, type, pawnId);
+            return static_cast<nGUIItem::RET_TYPE>(0);
+        }
+    }
+    return static_cast<nGUIItem::RET_TYPE>(1);
 }
 
 // No out-of-line body: no code in the ELF
@@ -721,10 +774,20 @@ __attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItemList::sell(nItem::E_STOR
 }
 
 // Address: 0x005dd580 - 0x005dd5fd (125 bytes)
-__attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItemList::exchange(nItem::E_STORAGE_TYPE from, MoveItemUIDFromToVec& itemArray) {
-    // local: cItemBag* pItemBag;
-    DDON_STUB("nGUIItem::cItemList::exchange")
-    return {};
+nGUIItem::RET_TYPE nGUIItem::cItemList::exchange(nItem::E_STORAGE_TYPE from, MoveItemUIDFromToVec& itemArray) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (itemArray.::MtArray::mLength != static_cast<u32>(0)) {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(10));
+        sItemManager::cItemBag* pItemBag = ::sItemManager::getInstance()->::sItemManager::setLinkItem(from);
+        if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqExchangeItemFromUI(pItemBag, itemArray) != static_cast<sItemManager::stRequest*>(nullptr)) {
+            this->mWaitFlag = this->mWaitFlag | static_cast<u32>(2048);
+            return static_cast<nGUIItem::RET_TYPE>(0);
+        } else {
+            return static_cast<nGUIItem::RET_TYPE>(1);
+        }
+    } else {
+        return static_cast<nGUIItem::RET_TYPE>(1);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -758,11 +821,19 @@ __attribute__((weak)) s32 nGUIItem::cItemList::getNum(rItemList::rItemParam* pPa
 // nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType();
 
 // Address: 0x005dc4b0 - 0x005dc524 (116 bytes)
-__attribute__((weak)) nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType(sItemManager::cItemBag::ITEM_CATEGORY cat) {
-    // local: ITEM_BAG_TYPE Type;
-    // local: E_STORAGE_TYPE eStorage;
-    DDON_STUB("nGUIItem::cItemList::getBagType")
-    return {};
+nItem::E_STORAGE_TYPE nGUIItem::cItemList::getBagType(sItemManager::cItemBag::ITEM_CATEGORY cat) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mTargetStorage != this->mChangeStorage) {
+        nCharacterData::ITEM_BAG_TYPE Type = ::sItemManager::getInstance()->::sItemManager::getItemBagType(this->mBagType);
+        nItem::E_STORAGE_TYPE eStorage = ::sItemManager::getInstance()->::sItemManager::getItemNetStorageType(Type, cat);
+        if (this->mTargetStorage == eStorage) {
+            return ::sItemManager::getInstance()->::sItemManager::getItemBagGroupeType(this->mChangeStorage);
+        } else {
+            return this->mBagType;
+        }
+    } else {
+        return this->mBagType;
+    }
 }
 
 // Address: 0x005dd750 - 0x005dd80f (191 bytes)

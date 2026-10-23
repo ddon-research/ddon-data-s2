@@ -15,6 +15,7 @@ class MtPropertyList;
 class MtStream;
 class MtUI;
 namespace nNetwork { class RpcNetSystem_Match; }
+namespace nNetwork { class RpcNetSystem_RouteKey; }
 
 // Declarations
 class RpcTypeSet;
@@ -32,6 +33,8 @@ class cRemoteCall : public MtObject
 {
     // inferred: nNetwork::RpcNetSystem_Match::RpcNetSystem_Match names cRemoteCall::mAttribute
     friend class nNetwork::RpcNetSystem_Match;
+    // inferred: nNetwork::RpcNetSystem_RouteKey::RpcNetSystem_RouteKey names cRemoteCall::mAttribute
+    friend class nNetwork::RpcNetSystem_RouteKey;
 public:
     enum
     {

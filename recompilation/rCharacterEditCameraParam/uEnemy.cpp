@@ -31,6 +31,7 @@
 #include "../shared/cpObjCollision.h"
 #include "../shared/cpOcdCtrl.h"
 #include "../rPawnAIAction/cpShakeCtrl.h"
+#include "../shared/cpSlave.h"
 #include "../shared/cpSoftBody.h"
 #include "cpStatusChange.h"
 #include "cpTinyChain.h"
@@ -182,9 +183,16 @@ void uEnemy::kill() {
 }
 
 // Address: 0x008f3a30 - 0x008f3aa7 (119 bytes)
-__attribute__((weak)) void uEnemy::setMaster(bool is_master) {
-    DDON_STUB("uEnemy::setMaster")
-    /* stub */
+void uEnemy::setMaster(bool is_master) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uDDOModel::setMaster(is_master);
+    if (this->mpEnemyThink != static_cast<cpEnemyThink*>(nullptr)) {
+        this->mpEnemyThink->setActive(this->::uDDOModel::isMaster());
+    }
+    if (this->::uDDOModel::getSlavePtr() == static_cast<cpSlave*>(nullptr)) {
+        return;
+    }
+    this->::uDDOModel::getSlavePtr()->setActive(this->::uDDOModel::isMaster() == false);
 }
 
 // Address: 0x008f3bb0 - 0x008f3bcb (27 bytes)
@@ -962,10 +970,10 @@ void uEnemy::callbackCheck(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uDDOModel::callbackCheck(pHitInfo);
     // inferred: a temporary for the value the load at 0x8fa185 read, used 3 times; no DWARF local holds it
-    uDDOModel* t1 = pHitInfo->mpDfdModel;
-    if (t1 != static_cast<uDDOModel*>(nullptr)) {
-        if (t1->::uDDOModel::isMaster() != false) {
-            if ((t1->mUnitId & static_cast<u32>(8)) != static_cast<u32>(0)) {
+    uDDOModel* t0 = pHitInfo->mpDfdModel;
+    if (t0 != static_cast<uDDOModel*>(nullptr)) {
+        if (t0->::uDDOModel::isMaster() != false) {
+            if ((t0->mUnitId & static_cast<u32>(8)) != static_cast<u32>(0)) {
                 const cCollNode* pNode = pHitInfo->mpAtkNode->::cHitNode::getCollNode();
                 if (pNode != static_cast<const cCollNode*>(nullptr)) {
                     if (pNode->mNodeID == static_cast<u16>(8)) {

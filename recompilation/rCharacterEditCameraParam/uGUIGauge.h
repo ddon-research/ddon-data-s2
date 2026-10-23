@@ -32,6 +32,7 @@ class cpJob04;
 namespace nCharacterData { struct stCharacterName; }
 namespace nGUIExt { struct OcdIconParam; }
 class rGUI;
+class sGUIExt;
 class uHuman;
 
 // Declarations
@@ -53,6 +54,8 @@ using u8 = unsigned char;
 
 class uGUIGauge : public uGUIBase
 {
+    // inferred: sGUIExt::setGaugeVisible names uGUIGauge::mVisibleState
+    friend class sGUIExt;
 public:
     enum AuraGroup
     {

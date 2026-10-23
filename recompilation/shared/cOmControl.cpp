@@ -17,6 +17,8 @@
 #include "res_ptr.h"
 #include "sCollision.h"
 #include "sOmManager.h"
+#include "uBaseModel.h"
+#include "uOmModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -414,19 +416,19 @@ void cOmControl::setActiveAllSbcParts(bool act) {
     // DWARF local not rendered: SBC_HANDLE handle;
     // DWARF local not rendered: u32 cnt;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
-    // inferred: a temporary for the value the load at 0x3abe88 read, used 4 times; no DWARF local holds it
-    unsigned int t0 = this->mhSbc[0][0];
-    if (t0 != static_cast<unsigned int>(4294967295)) {
+    // inferred: the value the loop at 0x3abee0 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int v0_10 = this->mhSbc[0][0];
+    if (v0_10 != static_cast<unsigned int>(4294967295)) {
         // inferred: a temporary for the value the load at 0x3abe9d read, used 3 times; no DWARF local holds it
-        sCollision* t1 = ::sCollision::getInstance();
-        if (t0 >= t1->::sCollision::getSbcSize()) {
+        sCollision* t0 = ::sCollision::getInstance();
+        if (v0_10 >= t0->::sCollision::getSbcSize()) {
         } else {
-            if (t1->mSbcArray.::MtArray::mpArray[t0] != static_cast<MtObject*>(nullptr)) {
-                u32 num = static_cast<sCollision::Sbc*>(t1->mSbcArray.::MtArray::mpArray[t0])->::sCollision::Sbc::getPartsNum();
+            if (t0->mSbcArray.::MtArray::mpArray[v0_10] != static_cast<MtObject*>(nullptr)) {
+                u32 num = static_cast<sCollision::Sbc*>(t0->mSbcArray.::MtArray::mpArray[v0_10])->::sCollision::Sbc::getPartsNum();
                 if (num != static_cast<u32>(0)) {
                     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
                     for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
-                        ::sCollision::getInstance()->::sCollision::setPartsActive(t0, i0_3, act);
+                        ::sCollision::getInstance()->::sCollision::setPartsActive(v0_10, i0_3, act);
                         if (num != (i0_3 + static_cast<unsigned int>(1))) {
                             i0_3 += static_cast<unsigned int>(1);
                         } else {
@@ -437,20 +439,20 @@ void cOmControl::setActiveAllSbcParts(bool act) {
             }
         }
     }
-    // inferred: a temporary for the value the load at 0x3abefb read, used 4 times; no DWARF local holds it
-    unsigned int t2 = this->mhSbc[0][1];
-    if (t2 != static_cast<unsigned int>(4294967295)) {
+    // inferred: the value the loop at 0x3abf50 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int v2_10 = this->mhSbc[0][1];
+    if (v2_10 != static_cast<unsigned int>(4294967295)) {
         // inferred: a temporary for the value the load at 0x3abf10 read, used 3 times; no DWARF local holds it
-        sCollision* t3 = ::sCollision::getInstance();
-        if (t2 >= t3->::sCollision::getSbcSize()) {
+        sCollision* t1 = ::sCollision::getInstance();
+        if (v2_10 >= t1->::sCollision::getSbcSize()) {
         } else {
-            if (t3->mSbcArray.::MtArray::mpArray[t2] != static_cast<MtObject*>(nullptr)) {
+            if (t1->mSbcArray.::MtArray::mpArray[v2_10] != static_cast<MtObject*>(nullptr)) {
                 // inferred: the value the loop at 0x3abf50 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                u32 v2_11 = static_cast<sCollision::Sbc*>(t3->mSbcArray.::MtArray::mpArray[t2])->::sCollision::Sbc::getPartsNum();
+                u32 v2_11 = static_cast<sCollision::Sbc*>(t1->mSbcArray.::MtArray::mpArray[v2_10])->::sCollision::Sbc::getPartsNum();
                 if (v2_11 != static_cast<u32>(0)) {
                     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
                     for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
-                        ::sCollision::getInstance()->::sCollision::setPartsActive(t2, i2_3, act);
+                        ::sCollision::getInstance()->::sCollision::setPartsActive(v2_10, i2_3, act);
                         if (v2_11 != (i2_3 + static_cast<unsigned int>(1))) {
                             i2_3 += static_cast<unsigned int>(1);
                         } else {
@@ -461,20 +463,20 @@ void cOmControl::setActiveAllSbcParts(bool act) {
             }
         }
     }
-    // inferred: a temporary for the value the load at 0x3abf6b read, used 4 times; no DWARF local holds it
-    unsigned int t4 = this->mhSbc[1][0];
-    if (t4 != static_cast<unsigned int>(4294967295)) {
+    // inferred: the value the loop at 0x3abfc0 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int v4_10 = this->mhSbc[1][0];
+    if (v4_10 != static_cast<unsigned int>(4294967295)) {
         // inferred: a temporary for the value the load at 0x3abf80 read, used 3 times; no DWARF local holds it
-        sCollision* t5 = ::sCollision::getInstance();
-        if (t4 >= t5->::sCollision::getSbcSize()) {
+        sCollision* t2 = ::sCollision::getInstance();
+        if (v4_10 >= t2->::sCollision::getSbcSize()) {
         } else {
-            if (t5->mSbcArray.::MtArray::mpArray[t4] != static_cast<MtObject*>(nullptr)) {
+            if (t2->mSbcArray.::MtArray::mpArray[v4_10] != static_cast<MtObject*>(nullptr)) {
                 // inferred: the value the loop at 0x3abfc0 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                u32 v4_11 = static_cast<sCollision::Sbc*>(t5->mSbcArray.::MtArray::mpArray[t4])->::sCollision::Sbc::getPartsNum();
+                u32 v4_11 = static_cast<sCollision::Sbc*>(t2->mSbcArray.::MtArray::mpArray[v4_10])->::sCollision::Sbc::getPartsNum();
                 if (v4_11 != static_cast<u32>(0)) {
                     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
                     for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
-                        ::sCollision::getInstance()->::sCollision::setPartsActive(t4, i4_3, act);
+                        ::sCollision::getInstance()->::sCollision::setPartsActive(v4_10, i4_3, act);
                         if (v4_11 != (i4_3 + static_cast<unsigned int>(1))) {
                             i4_3 += static_cast<unsigned int>(1);
                         } else {
@@ -485,20 +487,20 @@ void cOmControl::setActiveAllSbcParts(bool act) {
             }
         }
     }
-    // inferred: a temporary for the value the load at 0x3abfdb read, used 4 times; no DWARF local holds it
-    unsigned int t6 = this->mhSbc[1][1];
-    if (t6 != static_cast<unsigned int>(4294967295)) {
+    // inferred: the value the loop at 0x3ac030 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int v6_11 = this->mhSbc[1][1];
+    if (v6_11 != static_cast<unsigned int>(4294967295)) {
         // inferred: a temporary for the value the load at 0x3abff0 read, used 3 times; no DWARF local holds it
-        sCollision* t7 = ::sCollision::getInstance();
-        if (t6 >= t7->::sCollision::getSbcSize()) {
+        sCollision* t3 = ::sCollision::getInstance();
+        if (v6_11 >= t3->::sCollision::getSbcSize()) {
         } else {
-            if (t7->mSbcArray.::MtArray::mpArray[t6] != static_cast<MtObject*>(nullptr)) {
+            if (t3->mSbcArray.::MtArray::mpArray[v6_11] != static_cast<MtObject*>(nullptr)) {
                 // inferred: the value the loop at 0x3ac030 carries; the location-less local in scope that fits is declared on no line of the value's writes
-                u32 v6_10 = static_cast<sCollision::Sbc*>(t7->mSbcArray.::MtArray::mpArray[t6])->::sCollision::Sbc::getPartsNum();
+                u32 v6_10 = static_cast<sCollision::Sbc*>(t3->mSbcArray.::MtArray::mpArray[v6_11])->::sCollision::Sbc::getPartsNum();
                 if (v6_10 != static_cast<u32>(0)) {
                     // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
                     for (unsigned int i6_3 = static_cast<unsigned int>(0);;) {
-                        ::sCollision::getInstance()->::sCollision::setPartsActive(t6, i6_3, act);
+                        ::sCollision::getInstance()->::sCollision::setPartsActive(v6_11, i6_3, act);
                         if (v6_10 != (i6_3 + static_cast<unsigned int>(1))) {
                             i6_3 += static_cast<unsigned int>(1);
                         } else {
@@ -681,24 +683,78 @@ __attribute__((weak)) void cOmControl::exchangePacket(InsValue packet) {
 }
 
 // Address: 0x003b0670 - 0x003b06ba (74 bytes)
-__attribute__((weak)) cGatherItemList* cOmControl::getGatherItemList() {
-    // local: uOmModel* puom;
-    DDON_STUB("cOmControl::getGatherItemList")
-    return nullptr;
+cGatherItemList* cOmControl::getGatherItemList() {
+    // DWARF local not rendered: uOmModel* puom;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpuModel != static_cast<uBaseModel*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x3b0685, used once; no DWARF local holds it
+        const MtDTI& t0 = this->mpuModel->getDTI();
+        // inferred: the value the loop at 0x3b0693 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uOmModel::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x3b0693 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<uOmModel*>(this->mpuModel)->::uOmModel::getGatherItemList();
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<cGatherItemList*>(nullptr);
 }
 
 // Address: 0x003b06c0 - 0x003b070a (74 bytes)
-__attribute__((weak)) u32 cOmControl::getItemGetInfoNum() {
-    // local: uOmModel* puom;
-    DDON_STUB("cOmControl::getItemGetInfoNum")
-    return {};
+u32 cOmControl::getItemGetInfoNum() {
+    // DWARF local not rendered: uOmModel* puom;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpuModel != static_cast<uBaseModel*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x3b06d5, used once; no DWARF local holds it
+        const MtDTI& t0 = this->mpuModel->getDTI();
+        // inferred: the value the loop at 0x3b06e3 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uOmModel::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x3b06e3 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<uOmModel*>(this->mpuModel)->::uOmModel::getItemGetInfoNum();
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x003b0710 - 0x003b075d (77 bytes)
-__attribute__((weak)) ItemGetInfo* cOmControl::getItemGetInfo(u32 idx) {
-    // local: uOmModel* puom;
-    DDON_STUB("cOmControl::getItemGetInfo")
-    return nullptr;
+ItemGetInfo* cOmControl::getItemGetInfo(u32 idx) {
+    // DWARF local not rendered: uOmModel* puom;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpuModel != static_cast<uBaseModel*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x3b0729, used once; no DWARF local holds it
+        const MtDTI& t0 = this->mpuModel->getDTI();
+        // inferred: the value the loop at 0x3b0737 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uOmModel::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x3b0737 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                return static_cast<uOmModel*>(this->mpuModel)->::uOmModel::getItemGetInfo(idx);
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<ItemGetInfo*>(nullptr);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)

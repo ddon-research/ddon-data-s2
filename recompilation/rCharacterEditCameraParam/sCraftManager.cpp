@@ -1062,10 +1062,11 @@ __attribute__((weak)) void sCraftManager::createElementItemList(u32 type) {
 }
 
 // Address: 0x00763880 - 0x00763893 (19 bytes)
-__attribute__((weak)) void sCraftManager::createColorItemList() {
-    // local: MATERIAL_CATEGORY materialType;
-    DDON_STUB("sCraftManager::createColorItemList")
-    /* stub */
+void sCraftManager::createColorItemList() {
+    // DWARF local not rendered: MATERIAL_CATEGORY materialType;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mMaterialCache = this->mMaterialCache | static_cast<u8>(16);
+    this->::sCraftManager::createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(28), static_cast<u32>(255));
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)

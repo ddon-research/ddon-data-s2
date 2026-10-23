@@ -104,3 +104,13 @@ inline cNpcConstItem::cNpcConstItem() {
     this->mMTag = static_cast<u32>(0);
     this->mOffset = static_cast<u32>(0);
 }
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 cNpcConstItem::getMTag() {
+    return this->mMTag;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 cNpcConstItem::getOffset() {
+    return this->mOffset;
+}

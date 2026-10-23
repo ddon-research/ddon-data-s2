@@ -1415,6 +1415,12 @@ inline sItemManager* sItemManager::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 sItemManager::getShopBuyLimit() {
+    return this->mShopBuyLimit;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cItemBag::cGetItemListData::cGetItemListData() {
     this->mStorageType = static_cast<u8>(0);
     this->mCharType = static_cast<u8>(0);
@@ -1451,6 +1457,12 @@ inline sItemManager::cSortParam::cSortParam() {
 // Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cItemParamList::cItemParamList() {
     this->mpItemParam = static_cast<cItemParam*>(nullptr);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 sItemManager::cEquipList::getStorageType() {
+    return this->mStorageType;
 }
 
 // Inline, no code of its own: checked where it is inlined.

@@ -345,9 +345,9 @@ void uGUICaplinkProfile::setupGame() {
     this->::uGUI::play(0.0f);
     if (this->mpPageCtrl != static_cast<cControl*>(nullptr)) {
         // inferred: a temporary for the value the load at 0x9cee9a read, used once; no DWARF local holds it
-        s32 t1 = this->mpPageCtrl->::cControl::getCurrentPos();
+        s32 t0 = this->mpPageCtrl->::cControl::getCurrentPos();
         this->mGame.mListCtrl.::uGUIBase::cScrollList::clear();
-        this->mGame.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(t1 - static_cast<s32>(1)), true);
+        this->mGame.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(t0 - static_cast<s32>(1)), true);
         if (this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
             this->mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
         }

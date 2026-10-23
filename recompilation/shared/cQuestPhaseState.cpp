@@ -468,9 +468,7 @@ bool cQuestPhaseState::isDivideProcess(cQuestPhaseState* pState) {
         // inferred: a temporary for the result of the call at 0x15e874, used twice; no DWARF local holds it
         u32 t0 = pState->getType();
         if (t0 == static_cast<u32>(2)) {
-            // inferred: a temporary for the result of the call at 0x15e87f, used twice; no DWARF local holds it
-            bool t1 = static_cast<cQuestPhaseState002*>(pState)->::cQuestPhaseState002::isDividePlayer();
-            if (t1 == false) {
+            if (static_cast<cQuestPhaseState002*>(pState)->::cQuestPhaseState002::isDividePlayer() == false) {
                 return static_cast<cQuestPhaseState002*>(pState)->::cQuestPhaseState002::isDivideSetup();
             } else {
                 return true;

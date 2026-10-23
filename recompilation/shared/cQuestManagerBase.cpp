@@ -231,9 +231,7 @@ void cQuestManagerBase::move() {
                 if (static_cast<cQuestTask*>(t0)->::cQuestTask::isDelete() == false) {
                     break;
                 } else {
-                    // inferred: a temporary for the result of the call at 0x54258f, used once; no DWARF local holds it
-                    cQuestManagerBase* t1 = static_cast<cQuestTask*>(t0)->::cQuestTask::getQuestManager();
-                    t1->deleteQuestTask(static_cast<cQuestTask*>(t0));
+                    static_cast<cQuestTask*>(t0)->::cQuestTask::getQuestManager()->deleteQuestTask(static_cast<cQuestTask*>(t0));
                     if (i0_8 < (v1_8 - static_cast<u32>(1))) {
                         v1_8 += static_cast<u32>(4294967295);
                     } else {

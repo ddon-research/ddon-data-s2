@@ -1398,6 +1398,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline f32 cFSMUnit::getStopBorder() const {
+    return this->mStopBorder;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cFSMUnit::cParamSetAction::cParamSetAction() {
     this->mActionType = static_cast<u32>(0);
 }

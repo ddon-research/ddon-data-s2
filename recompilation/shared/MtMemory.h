@@ -26,6 +26,7 @@ class rEffect2D;
 class rEffectStrip;
 class rVibration;
 class sItemManager;
+class sMain;
 class sRender;
 class sScreenShot;
 
@@ -79,6 +80,8 @@ class MtMemory
     friend class rVibration;
     // inferred: sItemManager::releaseSortBinary names MtMemory::mpAllocatorType
     friend class sItemManager;
+    // inferred: sMain::initMemory names MtMemory::mpAllocatorType
+    friend class sMain;
     // inferred: sRender::endScreenShot names MtMemory::mpAllocatorType
     friend class sRender;
     // inferred: sScreenShot::reset names MtMemory::mpAllocatorType

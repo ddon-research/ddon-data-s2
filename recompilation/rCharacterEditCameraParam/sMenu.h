@@ -639,3 +639,219 @@ private:
 inline sMenu* sMenu::getInstance() {
     return ::sMenu::mpInstance;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuQuickMatchRetry* sMenu::getMenuQuickMatchRetry() {
+    return &this->mQuickMatchRetry;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuPawnReqMenu* sMenu::getMenuPawnReqMenu() {
+    return &this->mPawnReqMenu;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuPawnReqList* sMenu::getMenuPawnReqList() {
+    return &this->mPawnReqList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuPawnSearch* sMenu::getMenuPawnSearch() {
+    return &this->mPawnSearch;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuPawnManageMenu* sMenu::getMenuPawnManageMenu() {
+    return &this->mPawnManageMenu;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuPawnFeedback* sMenu::getMenuPawnFeedback() {
+    return &this->mPawnFeedback;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuCraftMenu* sMenu::getMenuCraftMenu() {
+    return &this->mMenuCraftMenu;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuCraftMyPawnList* sMenu::getMenuCraftMyPawnList() {
+    return &this->mMenuCraftMyPawnList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuCreateClan* sMenu::getMenuCreateClan() {
+    return &this->mMenuCreateClan;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuClanList* sMenu::getMenuClanList() {
+    return &this->mMenuClanList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuGetMyClan* sMenu::getMenuGetMyClan() {
+    return &this->mMenuGetMyClan;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuGetClanBaseInfo* sMenu::getMenuGetClanBaseInfo() {
+    return &this->mMenuGetClanBaseInfo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuQuitClan* sMenu::getMenuQuitClan() {
+    return &this->mMenuQuitClan;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuClanScoutEntry* sMenu::getMenuClanScoutEntry() {
+    return &this->mMenuClanScoutEntry;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuCancelClanScoutEntry* sMenu::getMenuCancelClanScoutEntry() {
+    return &this->mMenuCancelClanScoutEntry;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuClanScoutEntryList* sMenu::getMenuClanScoutEntryList() {
+    return &this->mMenuClanScoutEntryList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuGetMyScoutEntry* sMenu::getMenuGetMyScoutEntry() {
+    return &this->mMenuGetMyScoutEntry;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuJoinEntryBoardItem* sMenu::getMenuJoinEntryBoardItem() {
+    return &this->mMenuJoinEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuLeaveEntryBoardItem* sMenu::getMenuLeaveEntryBoardItem() {
+    return &this->mMenuLeaveEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuReadyEntryBoardItem* sMenu::getMenuReadyEntryBoardItem() {
+    return &this->mMenuReadyEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuStartEntryBoardItem* sMenu::getMenuStartEntryBoardItem() {
+    return &this->mMenuStartEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuExtendEntryBoardItem* sMenu::getMenuExtendEntryBoardItem() {
+    return &this->mMenuExtendEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuRecreateEntryBoardItem* sMenu::getMenuRecreateEntryBoardItem() {
+    return &this->mMenuRecreateEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuReleasePassEntryBoardItem* sMenu::getMenuReleasePassEntryBoardItem() {
+    return &this->mMenuReleasePassEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuEditCommentEntryBoardItem* sMenu::getMenuEditCommentEntryBoardItem() {
+    return &this->mMenuEditCommentEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuInviteEntryBoardItem* sMenu::getMenuInviteEntryBoardItem() {
+    return &this->mMenuInviteEntryBoardItem;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuAreaMaster* sMenu::getMenuAreaMaster() {
+    return &this->mMenuAreaMaster;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuMail* sMenu::getMenuMail() {
+    return &this->mMenuMail;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuMailDelete* sMenu::getMenuMailDelete() {
+    return &this->mMenuMailDelete;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuGetItemListToServer* sMenu::getMenuGetItemListToServer() {
+    return &this->mMenuGetItemListToServer;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuGetOrbGainExtendParam* sMenu::getMenuGetOrbGainExtendParam() {
+    return &this->mMenuGetOrbGainExtendParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuLeaveOnTheWay* sMenu::getMenuLeaveOnTheWay() {
+    return &this->mMenuLeaveOnTheWay;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuBazaarMenu* sMenu::getMenuBazaarMenu() {
+    return &this->mMenuBazaarMenu;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuFirstOption* sMenu::getMenuFirstOption() {
+    return &this->mMenuFirstOption;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuBaggageMenu* sMenu::getMenuBaggageMenu() {
+    return &this->mMenuBaggageMenu;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cMenuKeyConfig* sMenu::getMenuKeyConfig() {
+    return &this->mMenuKeyConfig;
+}

@@ -22,6 +22,8 @@
 #include "nObjCollision.h"
 #include "nOcdMsg.h"
 #include "nRegionStatus.h"
+#include "uControl.h"
+#include "uControlNpc.h"
 #include "uDDOModel.h"
 #include "../rCharacterEditCameraParam/uEnemy.h"
 #ifndef DDON_STUB
@@ -499,20 +501,18 @@ void cpHpDamageCtrl::regionErosionRegenerateCateAll() {
 // Address: 0x00488620 - 0x00488742 (290 bytes)
 __attribute__((weak)) void cpHpDamageCtrl::regionErosionRegenerateCateInit() {
     // DWARF local not rendered: uEnemy* pEnemy;
-    // DWARF local not rendered: cpErosionEnemy* pCpErosionEnemy;
     // DWARF local not rendered: u32 num;
     // DWARF local not rendered: P_REGION_TYPE regionNo;
     // DWARF local not rendered: cParentRegionStatus* pRegion;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     if ((this->mpModel->mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
-        // inferred: a temporary for the result of the call at 0x488645, used 3 times; no DWARF local holds it
-        cpErosionEnemy* t0 = static_cast<uEnemy*>(this->mpModel)->::uEnemy::getErosionEnemy();
-        if (t0 != static_cast<cpErosionEnemy*>(nullptr)) {
-            if (t0->mErosionProgression == static_cast<nErosionEnemy::EROSION_PROGRESSION>(0)) {
+        cpErosionEnemy* pCpErosionEnemy = static_cast<uEnemy*>(this->mpModel)->::uEnemy::getErosionEnemy();
+        if (pCpErosionEnemy != static_cast<cpErosionEnemy*>(nullptr)) {
+            if (pCpErosionEnemy->mErosionProgression == static_cast<nErosionEnemy::EROSION_PROGRESSION>(0)) {
                 // inferred: a temporary for the result of the call at 0x488711, used twice; no DWARF local holds it
-                nRegionStatus::P_REGION_TYPE t2 = t0->::cpErosionEnemy::getInactiveRegionNo_PriorityHigh();
-                if (t2 != static_cast<nRegionStatus::P_REGION_TYPE>(11)) {
-                    this->::cpHpDamageCtrl::regionRegenerate(t2);
+                nRegionStatus::P_REGION_TYPE t1 = pCpErosionEnemy->::cpErosionEnemy::getInactiveRegionNo_PriorityHigh();
+                if (t1 != static_cast<nRegionStatus::P_REGION_TYPE>(11)) {
+                    this->::cpHpDamageCtrl::regionRegenerate(t1);
                     return;
                 }
             } else {
@@ -522,18 +522,18 @@ __attribute__((weak)) void cpHpDamageCtrl::regionErosionRegenerateCateInit() {
                     // inferred: DWARF's location-less 'i' (lexical block [0x488673, 0x48870e)) is the counter this loop steps (DWARF's stale constant 0)
                     for (u32 i = static_cast<u32>(0);;) {
                         // inferred: a temporary for the value the load at 0x488684 read, used 7 times; no DWARF local holds it
-                        MtObject* t1 = this->mParentRegionStatusArray.::MtArray::mpArray[i];
-                        if (t1 != static_cast<MtObject*>(nullptr)) {
-                            if (::nErosionEnemy::isErosionRegion(static_cast<cParentRegionStatus*>(t1)->::cParentRegionStatus::getRegionCategory()) != false) {
-                                if (t0->::cpErosionEnemy::isErosionRegionActiveInit(static_cast<cParentRegionStatus*>(t1)->::cParentRegionStatus::getRegionCategory()) != false) {
+                        MtObject* t0 = this->mParentRegionStatusArray.::MtArray::mpArray[i];
+                        if (t0 != static_cast<MtObject*>(nullptr)) {
+                            if (::nErosionEnemy::isErosionRegion(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getRegionCategory()) != false) {
+                                if (pCpErosionEnemy->::cpErosionEnemy::isErosionRegionActiveInit(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getRegionCategory()) != false) {
                                     if (this->mpModel->::uDDOModel::isMaster() != false) {
-                                        if (static_cast<cParentRegionStatus*>(t1)->::cParentRegionStatus::isEnableRegenerate(true) != false) {
-                                            static_cast<cParentRegionStatus*>(t1)->::cParentRegionStatus::regenerateMaster(static_cast<cParentRegionStatus*>(t1)->::cParentRegionStatus::getHpMax());
-                                            static_cast<cParentRegionStatus*>(t1)->::cParentRegionStatus::regenerateMasterSlave();
+                                        if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(true) != false) {
+                                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMaster(static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::getHpMax());
+                                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
                                         }
                                     } else {
-                                        if (static_cast<cParentRegionStatus*>(t1)->::cParentRegionStatus::isEnableRegenerate(false) != false) {
-                                            static_cast<cParentRegionStatus*>(t1)->::cParentRegionStatus::regenerateMasterSlave();
+                                        if (static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::isEnableRegenerate(false) != false) {
+                                            static_cast<cParentRegionStatus*>(t0)->::cParentRegionStatus::regenerateMasterSlave();
                                         }
                                     }
                                 }
@@ -834,10 +834,33 @@ __attribute__((weak)) void cpHpDamageCtrl::callbackDamageAfter_make(cHitInfoAfte
 }
 
 // Address: 0x004854a0 - 0x0048552a (138 bytes)
-__attribute__((weak)) void cpHpDamageCtrl::callbackDamageAfter_calc(cHitInfoAfter* pHitInfo) {
-    // local: uControlNpc* pCtrlNpc;
-    DDON_STUB("cpHpDamageCtrl::callbackDamageAfter_calc")
-    /* stub */
+void cpHpDamageCtrl::callbackDamageAfter_calc(cHitInfoAfter* pHitInfo) {
+    // DWARF local not rendered: uControlNpc* pCtrlNpc;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a uControlNpc member read past the end of uControl, which DWARF gives no other deriving class a member at 0x2b0
+    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+        return;
+    }
+    if (pHitInfo->::cHitInfoAfter::isCalcHpDamage() != false) {
+        this->::cpHpDamageCtrl::calcDamage(pHitInfo);
+    }
+    if (pHitInfo->mCommonInfo.mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
+        if ((pHitInfo->mCommonInfo.mpAtkModel->mUnitId & static_cast<u32>(128)) != static_cast<u32>(0)) {
+            if (pHitInfo->mCommonInfo.mpAtkModel->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
+                if (static_cast<uControlNpc*>(pHitInfo->mCommonInfo.mpAtkModel->::uDDOModel::getCtrl())->mJobLv == static_cast<u16>(0)) {
+                    pHitInfo->mHpDamageInfo.mDamage = 0.0f;
+                    pHitInfo->mHpDamageInfo.mDamageGui = 0.0f;
+                }
+            }
+        }
+    }
+    if (pHitInfo->::cHitInfoAfter::isCalcShrinkBlow() != false) {
+        this->::cpHpDamageCtrl::calcBlowShrink(pHitInfo);
+    }
+    if (pHitInfo->::cHitInfoAfter::isCalcShake() == false) {
+        return;
+    }
+    this->::cpHpDamageCtrl::calcShakeDamage(pHitInfo);
 }
 
 // Address: 0x00487330 - 0x0048737a (74 bytes)

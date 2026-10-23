@@ -20,6 +20,7 @@ struct MtNetSessionInfo;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+class sNetwork;
 
 // Declarations
 namespace nNetwork { class Context; }
@@ -35,6 +36,8 @@ using u32 = unsigned int;
 namespace nNetwork {
     class Context : public ::MtObject, public MtNetContext::Listener
     {
+        // inferred: sNetwork::forceSingleService names sNetwork::mContext[0].mState
+        friend class ::sNetwork;
     public:
         enum
         {

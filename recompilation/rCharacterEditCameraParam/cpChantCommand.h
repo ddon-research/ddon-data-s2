@@ -4,8 +4,8 @@
 #include <cstddef>
 
 // Dependencies
-#include "MtDTI.h"
-#include "cpComponent.h"
+#include "../shared/MtDTI.h"
+#include "../shared/cpComponent.h"
 
 // Forward declarations
 class MtAllocator;
@@ -177,3 +177,21 @@ public:
     rMagicCommandList* mprMagicCommandList;  // offset: 0x1f0
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void cpChantCommand::cleanBounusAtkRate() {
+    this->mOldChantSuccessCnt_Gi = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s32 cpChantCommand::getNowPointNo() {
+    return this->mCommandNowPos;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s32 cpChantCommand::getNowWordNo() {
+    return this->mNowWord;
+}

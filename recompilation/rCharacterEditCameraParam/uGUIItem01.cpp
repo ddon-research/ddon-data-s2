@@ -915,9 +915,14 @@ void uGUIItemBase01::updateInit() {
 }
 
 // Address: 0x00ac8550 - 0x00ac859b (75 bytes)
-__attribute__((weak)) void uGUIItemBase01::updateWait() {
-    DDON_STUB("uGUIItemBase01::updateWait")
-    /* stub */
+void uGUIItemBase01::updateWait() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mIsDetailVisibleFirst == false) {
+        this->mIsDetailVisibleFirst = true;
+        this->::uGUIUseItemBase::mDetailVisible = true;
+    }
+    this->settingItem(true, true);
+    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::update();
 }
 
 // Address: 0x00ac85a0 - 0x00ac8695 (245 bytes)
@@ -935,9 +940,26 @@ void uGUIItemBase01::updateMoveItem() {
 }
 
 // Address: 0x00ac86a0 - 0x00ac8765 (197 bytes)
-__attribute__((weak)) void uGUIItemBase01::updateWaitSort() {
-    DDON_STUB("uGUIItemBase01::updateWaitSort")
-    /* stub */
+void uGUIItemBase01::updateWaitSort() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x6b58
+    this->settingItem(false, true);
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->mpEquipList != static_cast<sItemManager::cEquipList*>(nullptr)) {
+    } else {
+        this->::uGUIUseItemBase::mItemList.mWaitFlag = static_cast<u32>(0);
+        this->::uGUIUseItemBase::mIsForceUpdate = true;
+        if (this->::uGUIUseItemBase::mpDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
+            this->::uGUIUseItemBase::mpDetail->::uGUIPopDetail01::reqRefresh();
+        }
+        this->setFlowId(static_cast<u32>(2));
+        this->setExchangeCtrl(true);
+        if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
+            this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(true);
+            this->::uGUIUseItemBase::mpShareUnit->execOneFrameWait();
+        }
+        this->releaseGlobalItem(false);
+        this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::update();
+    }
 }
 
 // Address: 0x00ac87b0 - 0x00ac888d (221 bytes)
@@ -1454,9 +1476,28 @@ __attribute__((weak)) u32 uGUIItemBase01::evCheckModeAll(cControl::Message* msg)
 }
 
 // Address: 0x00ac71d0 - 0x00ac7230 (96 bytes)
-__attribute__((weak)) u32 uGUIItemBase01::evCtrlDrag(cControl::Message* msg) {
-    DDON_STUB("uGUIItemBase01::evCtrlDrag")
-    return {};
+u32 uGUIItemBase01::evCtrlDrag(cControl::Message* msg) {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a temporary for the result of the call at 0xac71dd, used once; no DWARF local holds it
+    bool t0 = this->::uGUIUseItemBase::isCatchMode();
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        if ((t0 == false) != false) {
+            // inferred: a temporary for the value the load at 0xac71eb read, used 3 times; no DWARF local holds it
+            s32 t1 = msg->mouse_hit_id;
+            if (t1 != static_cast<s32>(-1)) {
+                this->mMatrixSelPos = t1;
+                this->mpCtrlMatrix->setCurrentPos(t1, false);
+                this->mIsMouseOver = true;
+                return this->evCtrlCatch(msg);
+            } else {
+                return static_cast<u32>(0);
+            }
+        } else {
+            return static_cast<u32>(0);
+        }
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00ac7230 - 0x00ac7290 (96 bytes)

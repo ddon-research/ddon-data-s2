@@ -312,3 +312,15 @@ public:
     static const u32 PARTS_ID_WB_WITHOUT_HAND = 100;
     static const u32 PARTS_ID_WL_WITHOUT_FOOT = 110;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cpEquip::cEquipInfo* cpEquip::getBeardInfo() {
+    return &this->mBeard;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline cpEquip::cEquipInfo* cpEquip::getMakeupInfo() {
+    return &this->mMakeup;
+}

@@ -5,6 +5,7 @@
 
 // Forward declarations
 class MtAllocator;
+class sMain;
 
 // Declarations
 class MtString;
@@ -20,6 +21,8 @@ using u8 = unsigned char;
 
 class MtString
 {
+    // inferred: sMain::initMemory names MtString::mpAllocator
+    friend class sMain;
 public:
     struct STRING;
 public:

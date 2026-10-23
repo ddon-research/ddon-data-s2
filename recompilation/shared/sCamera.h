@@ -95,7 +95,7 @@ public:
 public:
     class Viewport : public MtObject
     {
-        // inferred: sCameraExt::getMainCamera names sCamera::mViewport[0].mpCamera
+        // inferred: sCameraExt::setMotionCamera names sCamera::mViewport[0].mpCamera
         friend class sCameraExt;
         // inferred: uDOFFilter::setNear names sCamera::mViewport[0].mpCamera
         friend class uDOFFilter;

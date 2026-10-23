@@ -414,14 +414,18 @@ __attribute__((weak)) void cpObjCollisionBase::setAttackParam(rAttackParam* pRes
 
 // Address: 0x004d59d0 - 0x004d5a0e (62 bytes)
 u32 cpObjCollisionBase::objAdjust(MtVector3& NewPos, MtVector3& OldPos) {
-    // Approximate from the ELF: a load named after a store only its type keeps apart; the body oracle reports this body.
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the value the load at 0x4d59d4 read, used once; no DWARF local holds it
+    f32 t0 = OldPos.y;
     // inferred: a temporary for the value the load at 0x4d59e1 read, used once; no DWARF local holds it
-    f32 t0 = this->mPush.y;
+    f32 t1 = this->mPush.y;
+    // inferred: a temporary for the value the load at 0x4d59e9 read, used once; no DWARF local holds it
+    f32 t2 = OldPos.z;
     // inferred: a temporary for the value the load at 0x4d59ee read, used once; no DWARF local holds it
-    f32 t1 = this->mPush.z;
+    f32 t3 = this->mPush.z;
     NewPos.x = OldPos.x + this->mPush.x;
-    NewPos.y = OldPos.y + t0;
-    NewPos.z = OldPos.z + t1;
+    NewPos.y = t0 + t1;
+    NewPos.z = t2 + t3;
     NewPos.pad_ = 0.0f;
     return static_cast<u32>(0);
 }

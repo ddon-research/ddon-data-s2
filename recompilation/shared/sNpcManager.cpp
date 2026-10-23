@@ -146,9 +146,9 @@ MT_CTSTR sNpcManager::getNpcClassName(u32 NpcId) {
                     // inferred: a temporary for the result of the call at 0x7f126c, used once; no DWARF local holds it
                     u32 t0 = pNpcInfo->::rNpcLedgerList::cItem::getClassNameId();
                     // inferred: a temporary for the value the load at 0x7f1271 read, used twice; no DWARF local holds it
-                    rGUIMessage* t2 = this->mpNpcClassNameMsg;
-                    if (t0 < t2->mMessageNum) {
-                        return t2->::rGUIMessage::getMessage(pNpcInfo->::rNpcLedgerList::cItem::getClassNameId());
+                    rGUIMessage* t1 = this->mpNpcClassNameMsg;
+                    if (t0 < t1->mMessageNum) {
+                        return t1->::rGUIMessage::getMessage(pNpcInfo->::rNpcLedgerList::cItem::getClassNameId());
                     } else {
                         return "";
                     }
@@ -395,7 +395,9 @@ bool sNpcManager::isMotionCancelMyRoom(u8 no, s32 index) {
     if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
         rNPCMotMyRoom::InfoBinary* pInfo = this->mpNPCMotMyRoom->getInfo(no);
         if (pInfo != static_cast<rNPCMotMyRoom::InfoBinary*>(nullptr)) {
-            return pInfo->::rNPCMotMyRoom::InfoBinary::getCancel(static_cast<u32>(index)) != static_cast<s8>(0);
+            // inferred: a temporary for the result of the call at 0x7f1e6b, used once; no DWARF local holds it
+            s8 t0 = pInfo->::rNPCMotMyRoom::InfoBinary::getCancel(static_cast<u32>(index));
+            return t0 != static_cast<s8>(0);
         } else {
             return false;
         }
@@ -410,7 +412,9 @@ bool sNpcManager::isMotionFinishMyRoom(u8 no, s32 index) {
     if (this->mpNPCMotMyRoom != static_cast<rNPCMotMyRoom*>(nullptr)) {
         rNPCMotMyRoom::InfoBinary* pInfo = this->mpNPCMotMyRoom->getInfo(no);
         if (pInfo != static_cast<rNPCMotMyRoom::InfoBinary*>(nullptr)) {
-            return static_cast<unsigned int>(index) >= pInfo->getMotListNum();
+            // inferred: a temporary for the result of the call at 0x7f1ebc, used once; no DWARF local holds it
+            u32 t1 = pInfo->getMotListNum();
+            return static_cast<unsigned int>(index) >= t1;
         } else {
             return false;
         }
@@ -483,7 +487,9 @@ bool sNpcManager::isMotionCancelEmoMyRoom(u8 no, s32 index) {
     if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
         rNPCEmoMyRoom::InfoBinary* pInfo = this->mpNPCEmoMyRoom->getInfo(no);
         if (pInfo != static_cast<rNPCEmoMyRoom::InfoBinary*>(nullptr)) {
-            return pInfo->::rNPCEmoMyRoom::InfoBinary::getLoop(static_cast<u32>(index)) != static_cast<s16>(0);
+            // inferred: a temporary for the result of the call at 0x7f22cb, used once; no DWARF local holds it
+            s16 t0 = pInfo->::rNPCEmoMyRoom::InfoBinary::getLoop(static_cast<u32>(index));
+            return t0 != static_cast<s16>(0);
         } else {
             return false;
         }
@@ -498,7 +504,9 @@ bool sNpcManager::isMotionFinishEmoMyRoom(u8 no, s32 index) {
     if (this->mpNPCEmoMyRoom != static_cast<rNPCEmoMyRoom*>(nullptr)) {
         rNPCEmoMyRoom::InfoBinary* pInfo = this->mpNPCEmoMyRoom->getInfo(no);
         if (pInfo != static_cast<rNPCEmoMyRoom::InfoBinary*>(nullptr)) {
-            return static_cast<unsigned int>(index) >= pInfo->getMotListNum();
+            // inferred: a temporary for the result of the call at 0x7f231c, used once; no DWARF local holds it
+            u32 t1 = pInfo->getMotListNum();
+            return static_cast<unsigned int>(index) >= t1;
         } else {
             return false;
         }
@@ -638,13 +646,15 @@ __attribute__((weak)) bool sNpcManager::isHaveFunction(u32 NpcId, u32 FunctionId
 
 // Address: 0x007f2f70 - 0x007f2fc6 (86 bytes)
 bool sNpcManager::isHaveFunction(u32 NpcId) {
-    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (this->mpLedgerList != static_cast<rNpcLedgerList*>(nullptr)) {
         const rNpcLedgerList::cItem* pNpcInfo = this->mpLedgerList->::rNpcLedgerList::searchNpcInfo(NpcId);
         if (pNpcInfo != static_cast<const rNpcLedgerList::cItem*>(nullptr)) {
             if (NpcId != static_cast<u32>(4702)) {
                 if ((NpcId - static_cast<u32>(9000)) > static_cast<u32>(9)) {
-                    return pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList().::MtArray::mLength != static_cast<u32>(0);
+                    // inferred: a temporary for the result of the call at 0x7f2fab, used once; no DWARF local holds it
+                    const MtTypedArray<rNpcLedgerList::cItem::cInstitution>& t0 = pNpcInfo->::rNpcLedgerList::cItem::getInstitutionList();
+                    return t0.::MtArray::mLength != static_cast<u32>(0);
                 }
             }
             return true;
@@ -923,7 +933,7 @@ void sNpcManager::loadFsmMotionArc() {
     // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x7f407e read, used 3 times; no DWARF local holds it
     TICKET t0 = this->mLiteTicket;
-    // inferred: a temporary for the value the load at 0x7f408c read, used 4 times; no DWARF local holds it
+    // inferred: a temporary for the value the load at 0x7f408c read, used 3 times; no DWARF local holds it
     cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
     if (t0 != t1) {
         ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(t0);
@@ -982,9 +992,9 @@ bool sNpcManager::isFinishLoadFsmMotionArc() {
 // Address: 0x007f1880 - 0x007f1904 (132 bytes)
 void sNpcManager::releaseCoMotionArc() {
     // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
-    // inferred: a temporary for the value the load at 0x7f188a read, used 5 times; no DWARF local holds it
+    // inferred: a temporary for the value the load at 0x7f188a read, used 4 times; no DWARF local holds it
     TICKET t0 = this->mLiteTicket;
-    // inferred: a temporary for the value the load at 0x7f1898 read, used 6 times; no DWARF local holds it
+    // inferred: a temporary for the value the load at 0x7f1898 read, used 4 times; no DWARF local holds it
     cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
     if (t0 != t1) {
         ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(t0);

@@ -5,6 +5,20 @@
 #define DDON_STUB(name)
 #endif
 
+// No out-of-line body: 84 inlined copies in 38 functions (1748 bytes)
+//   in cEvaluationName::cEvaluation::addEvaluation at 0x001df3e2-0x001df3e9, 0x001df423-0x001df434 (called at cEvaluation.cpp:568)
+//   in cEvaluationName::cEvaluation::addEvaluation at 0x001df3e2-0x001df3e9, 0x001df423-0x001df434 (called at MtSynchronize.h:236)
+//   in cEvaluationName::cEvaluation::addEvaluation at 0x001df7dd-0x001df7f2, 0x001df972-0x001df977 (called at cEvaluation.cpp:623)
+//   and 81 more (every copy is in <bundle>.inlined.json)
+// MtAutoCriticalSection::MtAutoCriticalSection(MtCriticalSection* pcs);
+
+// No out-of-line body: 84 inlined copies in 38 functions (1434 bytes)
+//   in cEvaluationName::cEvaluation::addEvaluation at 0x001df7a2-0x001df7b3 (called at cEvaluation.cpp:620)
+//   in cEvaluationName::cEvaluation::addEvaluation at 0x001df7a2-0x001df7b3 (called at MtSynchronize.h:241)
+//   in cEvaluationName::cEvaluation::addEvaluation at 0x001df934-0x001df941, 0x001df96d-0x001df972 (called at cEvaluation.cpp:646)
+//   and 81 more (every copy is in <bundle>.inlined.json)
+// MtAutoCriticalSection::~MtAutoCriticalSection();
+
 // Address: 0x0194f850 - 0x0194f8c7 (119 bytes)
 MtCriticalSection::MtCriticalSection() {
     // local: ScePthreadMutexattr attr;

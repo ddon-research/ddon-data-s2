@@ -35,6 +35,7 @@ class cMagicCommandList;
 class cMenuBase;
 class cMenuBlackList;
 class cMenuCharacterList;
+class cMenuEntryBoardItemList;
 class cMenuEntryBoardRecruit;
 class cMenuFriendList;
 class cMenuGroupChatMemberList;
@@ -98,6 +99,7 @@ namespace nCollision { class cCollisionNode; }
 namespace nCollision { class cCollisionNodeObject; }
 namespace nFurnitureMenuFlow { class cFurnitureGroupListItems; }
 namespace nFurnitureMenuFlow { class cFurnitureListItems; }
+namespace nGUIItem { class cItemList; }
 namespace nHumanBow { class cBowActParam; }
 namespace nMenuKeyConfig { class KeyListItems; }
 namespace nQuest { class cCycleContentsSituationInfo; }
@@ -137,7 +139,9 @@ class rTblMenuComm;
 class rTblMenuOption;
 class rTexDetailEdit;
 class rWeatherEffectParam;
+class sAreaHit;
 class sBrowser;
+class sCameraExt;
 class sCaplinkManager;
 class sCollision;
 class sCraftManager;
@@ -146,7 +150,9 @@ class sGUIExt;
 class sGame;
 class sNetworkExt;
 class sNpcManager;
+class sOmManager;
 class sQuestManagerExt;
+class sSetManager;
 class sShadow;
 class sSoundExt;
 class sSoundManager;
@@ -233,6 +239,8 @@ class MtArray : public MtObject
     friend class cMenuBlackList;
     // inferred: cMenuCharacterList::initCharacterList names nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::m_CharacterList.::MtArray::mLength
     friend class cMenuCharacterList;
+    // inferred: cMenuEntryBoardItemList::initEntryBoardItemList names nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::m_EntryItemList.::MtArray::mLength
+    friend class cMenuEntryBoardItemList;
     // inferred: cMenuEntryBoardRecruit::exitMenu names cMenuEntryBoardRecruit::mRecruitData.::MtArray::mLength
     friend class cMenuEntryBoardRecruit;
     // inferred: cMenuFriendList::getListType names cNetGameServer::mApplyingFriendList.::MtArray::mLength
@@ -299,7 +307,7 @@ class MtArray : public MtObject
     friend class cZoneContactInfoList;
     // inferred: cZoneLayout::getGroupManagerNum names cZoneLayout::mGroupManagerArray.::MtArray::mLength
     friend class cZoneLayout;
-    // inferred: cZoneMultiStack::getZoneNum names cZoneMultiStack::mNotifiedStack.::MtArray::mLength
+    // inferred: cZoneMultiStack::releaseZoneAll names cZoneMultiStack::mNotifiedStack.::MtArray::mAutoDelete
     friend class cZoneMultiStack;
     // inferred: cpCorePointCtrl::getActiveCorePointArrayNum names cpCorePointCtrl::mActiveCorePointArray.::MtArray::mLength
     friend class cpCorePointCtrl;
@@ -359,6 +367,8 @@ class MtArray : public MtObject
     friend class nFurnitureMenuFlow::cFurnitureGroupListItems;
     // inferred: nFurnitureMenuFlow::cFurnitureListItems::getItemNum names nFurnitureMenuFlow::cFurnitureListItems::mItems.::MtArray::mLength
     friend class nFurnitureMenuFlow::cFurnitureListItems;
+    // inferred: nGUIItem::cItemList::exchange names MtArray::mLength
+    friend class nGUIItem::cItemList;
     // inferred: nHumanBow::cBowActParam::cBowActParam names nHumanBow::cBowActParam::shootCtrlList.mAutoDelete
     friend class nHumanBow::cBowActParam;
     // inferred: nMenuKeyConfig::KeyListItems::getItemNum names rKeyConfigTextTable::mSortedArray.::MtArray::mLength
@@ -435,8 +445,12 @@ class MtArray : public MtObject
     friend class rTexDetailEdit;
     // inferred: rWeatherEffectParam::getCorrectParamNum names MtArray::mLength
     friend class rWeatherEffectParam;
+    // inferred: sAreaHit::applyWorldOffset names sAreaHit::mArray.mpArray
+    friend class sAreaHit;
     // inferred: sBrowser::isBusy names sBrowser::mRequest.::MtArray::mLength
     friend class sBrowser;
+    // inferred: sCameraExt::setQuake names rCameraQuakeList::mQuakeList.mpArray
+    friend class sCameraExt;
     // inferred: sCaplinkManager::isDispErrorDialog names sCaplinkManager::mListener.::MtArray::mLength
     friend class sCaplinkManager;
     // inferred: sCollision::getSbcSize names sCollision::mSbcArray.::MtArray::mLength
@@ -445,7 +459,7 @@ class MtArray : public MtObject
     friend class sCraftManager;
     // inferred: sEffectExt::releaseEfcZoneAll names sEffectExt::mZoneEffectUnitLayoutArray.::MtArray::mAutoDelete
     friend class sEffectExt;
-    // inferred: sGUIExt::isActiveServerUI names cServerUIClientControl::mServerUIList.::MtArray::mLength
+    // inferred: sGUIExt::requestGetJobChangeList names MtArray::mLength
     friend class sGUIExt;
     // inferred: sGame::clearChargeCourse names sGame::mPacketGPCourseInfo.m_CourseInfo.::MtArray::mLength
     friend class sGame;
@@ -453,8 +467,12 @@ class MtArray : public MtObject
     friend class sNetworkExt;
     // inferred: sNpcManager::isHaveFunction names MtArray::mLength
     friend class sNpcManager;
+    // inferred: sOmManager::releaseOmArcLoaderAll names sOmManager::mArcLoader.::MtArray::mAutoDelete
+    friend class sOmManager;
     // inferred: sQuestManagerExt::getHoldingCycleContentsNum names sQuestManagerExt::mCycleContentsInfoList.::MtArray::mLength
     friend class sQuestManagerExt;
+    // inferred: sSetManager::clearQuestList names sSetManager::mQuestUnitMgr.::MtArray::mLength
+    friend class sSetManager;
     // inferred: sShadow::getNodeNum names sShadow::mNodes.mLength
     friend class sShadow;
     // inferred: sSoundExt::reset names sSoundExt::mVoiceRequest.::MtArray::mLength

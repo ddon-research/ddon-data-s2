@@ -390,6 +390,116 @@ MtObject* uGUIBaseExt::MyDTI::newInstance() const {
 }
 
 // No out-of-line body: no code in the ELF
+// MtDTI* uGUIBaseExtHud::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void uGUIBaseExtHud::usage();
+
+// Address: 0x01adfa00 - 0x01adfa08 (8 bytes)
+const MtDTI& uGUIBaseExtHud::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return uGUIBaseExtHud::DTI;
+}
+
+// No out-of-line body: 1 inlined copy in 1 function (12 bytes)
+//   in uGUIBaseExtHud::~uGUIBaseExtHud at 0x00983d50-0x00983d5c (called at uGUIBaseExt.cpp:640)
+// MtAllocator* uGUIBaseExtHud::getAllocator();
+
+// No out-of-line body: no code in the ELF
+// void uGUIBaseExtHud::setAllocator(u32);
+
+// No out-of-line body: no code in the ELF
+// void* uGUIBaseExtHud::operator new(size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* uGUIBaseExtHud::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* uGUIBaseExtHud::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* uGUIBaseExtHud::operator new[](size_t sz, void* p_addr);
+
+// No out-of-line body: 1 inlined copy in 1 function (33 bytes)
+//   in uGUIBaseExtHud::~uGUIBaseExtHud at 0x00983d50-0x00983d71 (called at uGUIBaseExt.cpp:687)
+// void uGUIBaseExtHud::operator delete(void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void uGUIBaseExtHud::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void uGUIBaseExtHud::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void uGUIBaseExtHud::operator delete[](void* p_addr, u32 align);
+
+// Omitted: mem-initializer not recorded in DWARF (base uGUIBaseExt has no default constructor)
+// uGUIBaseExtHud::uGUIBaseExtHud();
+
+// Address: 0x00983d20 - 0x00983d71 (81 bytes)
+// Also emitted as: _ZN14uGUIBaseExtHudD1Ev at 0x00983250
+// Also emitted as: _ZN14uGUIBaseExtHudD2Ev at 0x00983250
+uGUIBaseExtHud::~uGUIBaseExtHud() {
+    DDON_STUB("uGUIBaseExtHud::~uGUIBaseExtHud")
+    /* stub */
+}
+
+// Address: 0x00983d80 - 0x00983d81 (1 bytes)
+__attribute__((weak)) void uGUIBaseExtHud::onSetupAfterLoad() {
+    // Empty in the binary (a single `ret`).
+}
+
+// Address: 0x00983d90 - 0x00983e18 (136 bytes)
+__attribute__((weak)) void uGUIBaseExtHud::onShow() {
+    // local: cGUIInstNull* const inst_null_design;
+    DDON_STUB("uGUIBaseExtHud::onShow")
+    /* stub */
+}
+
+// Address: 0x00983e30 - 0x00983e3b (11 bytes)
+void uGUIBaseExtHud::onHide() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mAlpha = 1.0f;
+}
+
+// Address: 0x00983e40 - 0x00983f12 (210 bytes)
+__attribute__((weak)) void uGUIBaseExtHud::onUpdateHide() {
+    // local: f32 alpha;
+    // local: cGUIInstNull* const inst_null_design;
+    DDON_STUB("uGUIBaseExtHud::onUpdateHide")
+    /* stub */
+}
+
+// Address: 0x00983f20 - 0x00983f41 (33 bytes)
+__attribute__((weak)) bool uGUIBaseExtHud::isDrawable() const {
+    DDON_STUB("uGUIBaseExtHud::isDrawable")
+    return {};
+}
+
+// No out-of-line body: 3 inlined copies in 3 functions (139 bytes)
+//   in uGUIBaseExtHud::onShow at 0x00983dd0-0x00983e07 (called at uGUIBaseExt.cpp:709)
+//   in uGUIBaseExtHud::onUpdateHide at 0x00983e8a-0x00983eb7 (called at uGUIBaseExt.cpp:736)
+//   in uGUIBaseExtHud::setupAfterLoad at 0x00983f9a-0x00983fc1 (called at uGUIBaseExt.cpp:787)
+// void uGUIBaseExtHud::setVisibleState(bool isVisible);
+
+// Address: 0x00983f50 - 0x00983fc6 (118 bytes)
+__attribute__((weak)) void uGUIBaseExtHud::setupAfterLoad() {
+    DDON_STUB("uGUIBaseExtHud::setupAfterLoad")
+    /* stub */
+}
+
+// No out-of-line body: 2 inlined copies in 1 function (120 bytes)
+//   in _GLOBAL__sub_I_uGUIBaseExt.cpp at 0x0098427e-0x009842ba (called at uGUIBaseExt.cpp:640)
+//   in _GLOBAL__sub_I_uGUIBaseExt.cpp at 0x0098427e-0x009842ba (called at uGUIBaseExt.h:210)
+// uGUIBaseExtHud::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x00983c00 - 0x00983c03 (3 bytes)
+MtObject* uGUIBaseExtHud::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return nullptr;
+}
+
+// No out-of-line body: no code in the ELF
 // MtDTI* uGUIBaseExtWindow::getMyDTIPtr();
 
 // No out-of-line body: no code in the ELF

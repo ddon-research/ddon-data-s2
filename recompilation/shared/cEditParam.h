@@ -33,7 +33,7 @@ using u8 = unsigned char;
 
 class cEditValue : public MtObject
 {
-    // inferred: cEditParam::save names cEditParam::mSokutoubu.mValue
+    // inferred: cEditParam::copyToCharacterData names cEditParam::mSokutoubu.mValue
     friend class cEditParam;
 public:
     enum

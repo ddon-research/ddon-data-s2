@@ -11,6 +11,7 @@
 class MtAllocator;
 class MtDTI;
 class MtPropertyList;
+class sGUI;
 
 // Declarations
 namespace nDraw { class Resource; }
@@ -26,6 +27,8 @@ using u32 = unsigned int;
 namespace nDraw {
     class Resource : public ::MtObject
     {
+        // inferred: sGUI::releaseAlphaMap names nDraw::Resource::mRefCount
+        friend class ::sGUI;
     public:
         class MyDTI;
     public:

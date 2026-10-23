@@ -710,6 +710,12 @@ inline sSetManager* sSetManager::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void sSetManager::requestSetWaitOff() {
+    this->mIsSetWaitOffRequest = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sSetManager::cOmGroupData::cOmGroupData() {
     this->mGroupData = static_cast<u32>(511);
 }

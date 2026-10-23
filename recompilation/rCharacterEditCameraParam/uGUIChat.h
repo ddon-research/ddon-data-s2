@@ -51,7 +51,7 @@ using u8 = unsigned char;
 
 class uGUIChat : public uGUIBase
 {
-    // inferred: sGUIExt::setChatForbid names uGUIChat::mIsForbid
+    // inferred: sGUIExt::updateChatForm names uGUIChat::mUpdF
     friend class sGUIExt;
 public:
     enum GMD_ID

@@ -82,6 +82,7 @@ class CDataClanShopInfo;
 class CDataClanShopLineupName;
 class CDataClanValueInfo;
 class CDataCommonU32;
+class CDataCommunityCharacterBaseInfo;
 class CDataContentsPlayEnd;
 class CDataContextAcquirementData;
 class CDataContextNormalSkillData;
@@ -137,6 +138,7 @@ class CDataLightQuestOrderList;
 class CDataLoadingInfoSchedules;
 class CDataLotQuestList;
 class CDataLotQuestOrderList;
+class CDataMailInfo;
 class CDataMailTextInfo;
 class CDataMainQuestList;
 class CDataMainQuestOrderList;
@@ -191,6 +193,7 @@ class CDataStageLayoutID;
 class CDataStampBonusDaily;
 class CDataStampBonusTotal;
 class CDataSupportRate;
+class CDataTimeGainQuestPlayStartData;
 class CDataTimeLimitedQuestList;
 class CDataTimeLimitedQuestOrderList;
 class CDataTraningRoomEnemyHeader;
@@ -310,6 +313,7 @@ namespace nUserSession { class CPacket_S2C_CYCLE_CONTENTS_END_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CYCLE_CONTENTS_PLAY_END_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES; }
 namespace nUserSession { class CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES; }
+namespace nUserSession { class CPacket_S2C_DEBUG_COMMAND_RES; }
 namespace nUserSession { class CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES; }
 namespace nUserSession { class CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES; }
 namespace nUserSession { class CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES; }
@@ -322,6 +326,7 @@ namespace nUserSession { class CPacket_S2C_DECIDE_DELIVERY_ITEM_RES; }
 namespace nUserSession { class CPacket_S2C_DELETE_FAVORITE_PAWN_RES; }
 namespace nUserSession { class CPacket_S2C_DELETE_MYPAWN_RES; }
 namespace nUserSession { class CPacket_S2C_DELIVER_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_EJECTION_NTC; }
 namespace nUserSession { class CPacket_S2C_ENCOUNTER_PAWN_NOTICE; }
 namespace nUserSession { class CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES; }
 namespace nUserSession { class CPacket_S2C_ENEMY_KILL_RES; }
@@ -355,6 +360,7 @@ namespace nUserSession { class CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTI
 namespace nUserSession { class CPacket_S2C_FURNITURE_LAYOUT_RES; }
 namespace nUserSession { class CPacket_S2C_GACHA_BUY_RES; }
 namespace nUserSession { class CPacket_S2C_GACHA_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GAIN_PAWN_PARAM_NTC; }
 namespace nUserSession { class CPacket_S2C_GAME_TIME_BASEINFO_NTC; }
 namespace nUserSession { class CPacket_S2C_GET_ABILITY_COST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES; }
@@ -404,6 +410,7 @@ namespace nUserSession { class CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LEARNED_SKILL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LIGHT_QUEST_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LOT_QUEST_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE; }
 namespace nUserSession { class CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE; }
@@ -476,6 +483,7 @@ namespace nUserSession { class CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES; }
+namespace nUserSession { class CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_NTC; }
 namespace nUserSession { class CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES; }
 namespace nUserSession { class CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES; }
 namespace nUserSession { class CPacket_S2C_INSTANCE_AREA_RESET_NTC; }
@@ -496,6 +504,7 @@ namespace nUserSession { class CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES; }
 namespace nUserSession { class CPacket_S2C_LOADING_GET_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_LOBBY_CHAT_MSG_RES; }
 namespace nUserSession { class CPacket_S2C_LOBBY_LEAVE_RES; }
+namespace nUserSession { class CPacket_S2C_LOGIN_RES; }
 namespace nUserSession { class CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES; }
 namespace nUserSession { class CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES; }
 namespace nUserSession { class CPacket_S2C_LOST_PAWN_REVIVE_RES; }
@@ -504,6 +513,7 @@ namespace nUserSession { class CPacket_S2C_MAIL_DELETE_RES; }
 namespace nUserSession { class CPacket_S2C_MAIL_GET_LIST_FOOT_RES; }
 namespace nUserSession { class CPacket_S2C_MAIL_GET_LIST_HEAD_RES; }
 namespace nUserSession { class CPacket_S2C_MAIL_GET_TEXT_RES; }
+namespace nUserSession { class CPacket_S2C_MAIL_SEND_NTC; }
 namespace nUserSession { class CPacket_S2C_MASTER_THROW_RES; }
 namespace nUserSession { class CPacket_S2C_MOVE_IN_SERVER_RES; }
 namespace nUserSession { class CPacket_S2C_MOVE_ITEM_RES; }
@@ -549,6 +559,7 @@ namespace nUserSession { class CPacket_S2C_PAWN_GOLDEN_REVIVE_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PAWN_LIKABILITY_UP_NTC; }
+namespace nUserSession { class CPacket_S2C_PAWN_LOST_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PAWN_LOST_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC; }
 namespace nUserSession { class CPacket_S2C_PAWN_POINT_REVIVE_RES; }
@@ -606,6 +617,8 @@ namespace nUserSession { class CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_RELEASE_ORB_ELEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE; }
+namespace nUserSession { class CPacket_S2C_RENTAL_PAWN_LOST_NOTICE; }
+namespace nUserSession { class CPacket_S2C_RENTAL_PAWN_LOST_RES; }
 namespace nUserSession { class CPacket_S2C_RENT_REGISTERED_PAWN_RES; }
 namespace nUserSession { class CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES; }
 namespace nUserSession { class CPacket_S2C_RESET_JOBPOINT_RES; }
@@ -616,6 +629,7 @@ namespace nUserSession { class CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INF
 namespace nUserSession { class CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE; }
 namespace nUserSession { class CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_SEND_TELL_MSG_RES; }
 namespace nUserSession { class CPacket_S2C_SERVER_UI_COMMAND_RES; }
 namespace nUserSession { class CPacket_S2C_SET_ABILITY_RES; }
 namespace nUserSession { class CPacket_S2C_SET_ARISEN_PROFILE_RES; }
@@ -658,6 +672,8 @@ namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_DELETE_RES; }
 namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES; }
 namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES; }
 namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES; }
+namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_SEND_NTC; }
+namespace nUserSession { class CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE; }
 namespace nUserSession { class CPacket_S2C_TIME_UPDATE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES; }
@@ -670,8 +686,10 @@ namespace nUserSession { class CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES; }
+namespace nUserSession { class CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_PLAY_POINT_NOTICE; }
+namespace nUserSession { class CPacket_S2C_UPDATE_RENTAL_PAWN_ADVENTURE_COUNT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_USER_LIST_MAX_NUM_RES; }
 namespace nUserSession { class CPacket_S2C_USE_BAG_ITEM_NOTICE; }
@@ -685,12 +703,14 @@ namespace nUserSession { class CPacket_S2C_WEATHER_UPDATE_NOTICE; }
 using CAreaSpotSet = CDataAreaSpotSet;
 using CBattleResultInfo = CDataBattleResultInfo;
 using CCharacterLevelParam = CDataCharacterLevelParam;
+using CCharacterListElement = CDataCharacterListElement;
 using CClanConciergeInfo = CDataClanConciergeInfo;
 using CClanDungeonInfo = CDataClanDungeonInfo;
 using CClanFunctionInfo = CDataClanFunctionInfo;
 using CClanParam = CDataClanParam;
 using CClanPartnerPawnInfo = CDataClanPartnerPawnInfo;
 using CClanShopInfo = CDataClanShopInfo;
+using CCommunityCharacterBaseInfo = CDataCommunityCharacterBaseInfo;
 using CContentsPlayEnd = CDataContentsPlayEnd;
 using CContextAcquirementData = CDataContextAcquirementData;
 using CContextNormalSkillData = CDataContextNormalSkillData;
@@ -705,6 +725,7 @@ using CGameSetting = CDataGameSetting;
 using CGameTime = CDataGameTime;
 using CGameTimeBaseInfo = CDataGameTimeBaseInfo;
 using CJobOrbTreeStatus = CDataJobOrbTreeStatus;
+using CMailInfo = CDataMailInfo;
 using CMailTextInfo = CDataMailTextInfo;
 using CMatchingProfile = CDataMatchingProfile;
 using COmData = CDataOmData;
@@ -717,6 +738,7 @@ using CPawnTotalScore = CDataPawnTotalScore;
 using CQuestDefine = CDataQuestDefine;
 using CQuestPointDetail = CDataQuestPointDetail;
 using CStageLayoutID = CDataStageLayoutID;
+using CTimeGainQuestPlayStartData = CDataTimeGainQuestPlayStartData;
 using CUpdateWalletPoint = CDataUpdateWalletPoint;
 using CWorldInfo = CDataWorldInfo;
 using MT_CHAR = char;
@@ -4768,6 +4790,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_DEBUG_COMMAND_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_DEBUG_COMMAND_RES();
+        s32 WritePacket(CPacket*, s32, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* Command() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrCommand;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES : public ::CPacketDataBase
     {
     public:
@@ -5270,6 +5335,47 @@ namespace nUserSession {
         u32 m_unQuestScheduleId;  // offset: 0x10
         u16 m_usProcessNo;  // offset: 0x14
         bool m_bIsReceived;  // offset: 0x16
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_EJECTION_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_EJECTION_NTC();
+        s32 WritePacket(CPacket*, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const char* Message() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtString m_wstrMessage;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
     public:
         static MyDTI DTI;
     };
@@ -6684,6 +6790,59 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataGachaInfo> m_GachaList;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GAIN_PAWN_PARAM_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GAIN_PAWN_PARAM_NTC();
+        s32 WritePacket(CPacket*, u32, u32, u32, u32, u32, u32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 PawnId() const;
+        u32 HpMaxGain() const;
+        u32 StaminaMaxGain() const;
+        u32 AttackGain() const;
+        u32 DefenseGain() const;
+        u32 MagicAttackGain() const;
+        u32 MagicDefenseGain() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unPawnId;  // offset: 0xc
+        u32 m_unHpMaxGain;  // offset: 0x10
+        u32 m_unStaminaMaxGain;  // offset: 0x14
+        u32 m_unAttackGain;  // offset: 0x18
+        u32 m_unDefenseGain;  // offset: 0x1c
+        u32 m_unMagicAttackGain;  // offset: 0x20
+        u32 m_unMagicDefenseGain;  // offset: 0x24
+        bool m_bIsReceived;  // offset: 0x28
     public:
         static MyDTI DTI;
     };
@@ -8904,8 +9063,53 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES();
+        s32 WritePacket(CPacket*, s32, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* Message() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrMessage;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_LOT_QUEST_LIST_RES : public ::CPacketDataBase
     {
+        // inferred: cNetGameServer::getLotQuestListRef names nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::m_LotQuestList
+        friend class ::cNetGameServer;
     public:
         class MyDTI;
     public:
@@ -9033,6 +9237,8 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_MAIN_QUEST_LIST_RES : public ::CPacketDataBase
     {
+        // inferred: cNetGameServer::getMainQuestListRef names nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::m_MainQuestList
+        friend class ::cNetGameServer;
     public:
         class MyDTI;
     public:
@@ -11184,6 +11390,8 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES : public ::CPacketDataBase
     {
+        // inferred: cNetGameServer::getTutorialQuestListRef names nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES::m_TutorialQuestList
+        friend class ::cNetGameServer;
     public:
         class MyDTI;
     public:
@@ -11362,6 +11570,8 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES : public ::CPacketDataBase
     {
+        // inferred: cNetGameServer::getWorldManageQuestListRef names nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES::m_WorldManageQuestList
+        friend class ::cNetGameServer;
     public:
         class MyDTI;
     public:
@@ -12109,6 +12319,53 @@ namespace nUserSession {
         u32 m_unResult;  // offset: 0xc
         MtTypedArray<CDataGPShopLineupElementCourse> m_Items;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_NTC();
+        s32 WritePacket(CPacket*, u64, const CCommunityCharacterBaseInfo&, const CCharacterListElement&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u64 GroupID() const;
+        const CCommunityCharacterBaseInfo& InviterInfo() const;
+        CCommunityCharacterBaseInfo& InviterInfo();
+        const CCharacterListElement& VisitorInfo() const;
+        CCharacterListElement& VisitorInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u64 m_ullGroupID;  // offset: 0x10
+        CCommunityCharacterBaseInfo m_InviterInfo;  // offset: 0x18
+        CCharacterListElement m_VisitorInfo;  // offset: 0x48
+        bool m_bIsReceived;  // offset: 0xb0
     public:
         static MyDTI DTI;
     };
@@ -13055,6 +13312,51 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_LOGIN_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_LOGIN_RES();
+        s32 WritePacket(CPacket*, s32, b8, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        b8 IsCogLogin() const;
+        const char* OnetimeToken() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        b8 m_bIsCogLogin;  // offset: 0x10
+        MtString m_wstrOnetimeToken;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x20
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES : public ::CPacketDataBase
     {
     public:
@@ -13401,6 +13703,48 @@ namespace nUserSession {
         u64 m_ullId;  // offset: 0x10
         MtString m_wstrMailText;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x20
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_MAIL_SEND_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_MAIL_SEND_NTC();
+        s32 WritePacket(CPacket*, const CMailInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CMailInfo& MailInfo() const;
+        CMailInfo& MailInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CMailInfo m_MailInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x70
     public:
         static MyDTI DTI;
     };
@@ -15368,6 +15712,51 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         u32 m_unPawnId;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_PAWN_LOST_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PAWN_LOST_NOTICE();
+        s32 WritePacket(CPacket*, u32, const char*, b8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 PawnID() const;
+        const char* PawnName() const;
+        b8 IsLost() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unPawnID;  // offset: 0xc
+        MtString m_wstrPawnName;  // offset: 0x10
+        b8 m_bIsLost;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x19
     public:
         static MyDTI DTI;
     };
@@ -17840,6 +18229,98 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_RENTAL_PAWN_LOST_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RENTAL_PAWN_LOST_NOTICE();
+        s32 WritePacket(CPacket*, u32, const char*, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 PawnID() const;
+        const char* PawnName() const;
+        u8 AdventureCount() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unPawnID;  // offset: 0xc
+        MtString m_wstrPawnName;  // offset: 0x10
+        u8 m_ucAdventureCount;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x19
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_RENTAL_PAWN_LOST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RENTAL_PAWN_LOST_RES();
+        s32 WritePacket(CPacket*, s32, u32, const char*, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 PawnID() const;
+        const char* PawnName() const;
+        u8 AdventureCount() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unPawnID;  // offset: 0x10
+        MtString m_wstrPawnName;  // offset: 0x18
+        u8 m_ucAdventureCount;  // offset: 0x20
+        bool m_bIsReceived;  // offset: 0x21
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_RENT_REGISTERED_PAWN_RES : public ::CPacketDataBase
     {
     public:
@@ -18260,6 +18741,50 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_SEND_TELL_MSG_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SEND_TELL_MSG_RES();
+        s32 WritePacket(CPacket*, s32, const CCommunityCharacterBaseInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CCommunityCharacterBaseInfo& CharacterBaseInfo() const;
+        CCommunityCharacterBaseInfo& CharacterBaseInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CCommunityCharacterBaseInfo m_CharacterBaseInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x40
     public:
         static MyDTI DTI;
     };
@@ -20081,6 +20606,92 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_SYSTEM_MAIL_SEND_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SYSTEM_MAIL_SEND_NTC();
+        s32 WritePacket(CPacket*, const CMailInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CMailInfo& MailInfo() const;
+        CMailInfo& MailInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CMailInfo m_MailInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x70
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE : public ::CPacketDataBase
+    {
+        // inferred: cNetGameServer::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE names nUserSession::CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE::m_TimeGainQuestPlayStartData.m_Common.m_unQuestId
+        friend class ::cNetGameServer;
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE();
+        s32 WritePacket(CPacket*, const CTimeGainQuestPlayStartData&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CTimeGainQuestPlayStartData& TimeGainQuestPlayStartData() const;
+        CTimeGainQuestPlayStartData& TimeGainQuestPlayStartData();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CTimeGainQuestPlayStartData m_TimeGainQuestPlayStartData;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0xb8
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_TIME_UPDATE_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -20615,6 +21226,48 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE();
+        s32 WritePacket(CPacket*, const CMatchingProfile&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CMatchingProfile& MatchingProfile() const;
+        CMatchingProfile& MatchingProfile();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CMatchingProfile m_MatchingProfile;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x48
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES : public ::CPacketDataBase
     {
     public:
@@ -20702,6 +21355,51 @@ namespace nUserSession {
         u32 m_unExtraBonusPoint;  // offset: 0x10
         u32 m_unTotalPoint;  // offset: 0x14
         u8 m_ucType;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x19
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_UPDATE_RENTAL_PAWN_ADVENTURE_COUNT_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_UPDATE_RENTAL_PAWN_ADVENTURE_COUNT_NOTICE();
+        s32 WritePacket(CPacket*, u32, const char*, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 PawnId() const;
+        const char* PawnName() const;
+        u8 AdventureCount() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unPawnId;  // offset: 0xc
+        MtString m_wstrPawnName;  // offset: 0x10
+        u8 m_ucAdventureCount;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x19
     public:
         static MyDTI DTI;
@@ -21951,6 +22649,15 @@ inline nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::CPacket_S2C_CYCL
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_DEBUG_COMMAND_RES::CPacket_S2C_DEBUG_COMMAND_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_usError = static_cast<u16>(0);
@@ -22060,6 +22767,14 @@ inline nUserSession::CPacket_S2C_DELIVER_ITEM_RES::CPacket_S2C_DELIVER_ITEM_RES(
     this->m_usProcessNo = static_cast<u16>(0);
     this->m_nResult = static_cast<s32>(0);
     this->m_unQuestScheduleId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_EJECTION_NTC::CPacket_S2C_EJECTION_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -22228,6 +22943,15 @@ inline nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::CPacket_S2C_EXCHANGE_
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unStageId = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_ucTotalNum = static_cast<u8>(0);
@@ -22346,6 +23070,21 @@ inline nUserSession::CPacket_S2C_GACHA_LIST_RES::CPacket_S2C_GACHA_LIST_RES() {
     this->m_usError = static_cast<u16>(0);
     this->m_nResult = static_cast<s32>(0);
     this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GAIN_PAWN_PARAM_NTC::CPacket_S2C_GAIN_PAWN_PARAM_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+    this->m_unMagicDefenseGain = static_cast<u32>(0);
+    this->m_unDefenseGain = static_cast<u32>(0);
+    this->m_unMagicAttackGain = static_cast<u32>(0);
+    this->m_unStaminaMaxGain = static_cast<u32>(0);
+    this->m_unAttackGain = static_cast<u32>(0);
+    this->m_unPawnId = static_cast<u32>(0);
+    this->m_unHpMaxGain = static_cast<u32>(0);
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -22806,6 +23545,15 @@ inline nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::CPacket_S2C_GET_LIGHT
     this->m_ucNotCompleteQuestNum = static_cast<u8>(0);
     this->m_ucGpCompletePriceGp = static_cast<u8>(0);
     this->m_bGpCompleteEnable = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES::CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
     this->m_bIsReceived = false;
 }
 
@@ -23684,6 +24432,16 @@ inline nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::CPacket_S2C_LOBBY_LEAVE_RES() 
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_LOGIN_RES::CPacket_S2C_LOGIN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_bIsCogLogin = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_usError = static_cast<u16>(0);
@@ -24093,6 +24851,14 @@ inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::CPacket
     this->m_usError = static_cast<u16>(0);
     this->m_nResult = static_cast<s32>(0);
     this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -24685,6 +25451,17 @@ inline nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::CPacket_S2C_RELEA
 inline nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_RENTAL_PAWN_LOST_RES::CPacket_S2C_RENTAL_PAWN_LOST_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
+    this->m_unPawnID = static_cast<u32>(0);
+    this->m_ucAdventureCount = static_cast<u8>(0);
     this->m_bIsReceived = false;
 }
 
@@ -25314,6 +26091,14 @@ inline nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::CPacket_S2C_UPDAT
     this->m_usError = static_cast<u16>(0);
     this->m_unResult = static_cast<u32>(0);
     this->m_bHide = false;
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nUserSession::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
     this->m_bIsReceived = false;
 }
 

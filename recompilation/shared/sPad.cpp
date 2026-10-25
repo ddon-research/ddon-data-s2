@@ -94,10 +94,35 @@ __attribute__((weak)) void sPad::move() {
 // void sPad::setRepeat(u32 no);
 
 // Address: 0x01254060 - 0x012540b1 (81 bytes)
-__attribute__((weak)) void sPad::setRepeat(u32 no, u32 start_time, u32 next_time) {
-    // local: PAD_REPEAT* pRep;
-    DDON_STUB("sPad::setRepeat")
-    /* stub */
+void sPad::setRepeat(u32 no, u32 start_time, u32 next_time) {
+    // DWARF local not rendered: PAD_REPEAT* pRep;
+    // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
+    this->mPad[no].Repeat.Start = static_cast<unsigned short>(start_time);
+    this->mPad[no].Repeat.Next2 = static_cast<unsigned short>(start_time + (((start_time < next_time) ? start_time : next_time) * static_cast<u32>(65535)));
+    this->mPad[no].Repeat.Timer[20] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[21] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[22] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[23] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[16] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[17] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[18] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[19] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[12] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[13] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[14] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[15] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[8] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[9] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[10] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[11] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[4] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[5] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[6] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[7] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[0] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[1] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[2] = static_cast<unsigned short>(0);
+    this->mPad[no].Repeat.Timer[3] = static_cast<unsigned short>(0);
 }
 
 // No out-of-line body: 118 inlined copies in 65 functions (1121 bytes)
@@ -712,9 +737,9 @@ __attribute__((weak)) void sPad::Pad::setRepeatStart(u16 n) {
 }
 
 // Address: 0x01ba0110 - 0x01ba011c (12 bytes)
-__attribute__((weak)) u16 sPad::Pad::getRepeatTime() const {
-    DDON_STUB("sPad::Pad::getRepeatTime")
-    return {};
+u16 sPad::Pad::getRepeatTime() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned short>(this->Repeat.Start + (this->Repeat.Next2 * static_cast<int>(65535)));
 }
 
 // Address: 0x01ba0120 - 0x01ba0133 (19 bytes)

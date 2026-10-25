@@ -13,11 +13,13 @@
 #include "../shared/cNetGameServer.h"
 #include "../rLayout/cNetSessionManager.h"
 #include "../shared/cUIObject.h"
+#include "../shared/cUnit.h"
 #include "../shared/nQuest.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/sNetwork.h"
 #include "../shared/sNetworkExt.h"
+#include "../shared/sQuestManagerExt.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #include "uGUIGiveAndTake.h"
@@ -191,9 +193,45 @@ void uGUIAreaMaster::move() {
 }
 
 // Address: 0x00926c50 - 0x00926d29 (217 bytes)
-__attribute__((weak)) void uGUIAreaMaster::updatePtr() {
-    DDON_STUB("uGUIAreaMaster::updatePtr")
-    /* stub */
+void uGUIAreaMaster::updatePtr() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpGUIPopTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
+        if (this->mpGUIPopTopSel->::cUnit::isEnable()) {
+        } else {
+            this->mpGUIPopTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+        }
+    }
+    if (this->mpGUIGiveAndTake != static_cast<uGUIGiveAndTake*>(nullptr)) {
+        if (this->mpGUIGiveAndTake->::cUnit::isEnable()) {
+        } else {
+            this->mpGUIGiveAndTake = static_cast<uGUIGiveAndTake*>(nullptr);
+        }
+    }
+    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+        if (this->mpGUISystemMsg->::cUnit::isEnable()) {
+        } else {
+            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+        }
+    }
+    if (this->mpGUIMap != static_cast<uGUIMapMini*>(nullptr)) {
+        if (this->mpGUIMap->::cUnit::isEnable()) {
+        } else {
+            this->mpGUIMap = static_cast<uGUIMapMini*>(nullptr);
+        }
+    }
+    if (this->mpGUILargeMap != static_cast<uGUIMap*>(nullptr)) {
+        if (this->mpGUILargeMap->::cUnit::isEnable()) {
+        } else {
+            this->mpGUILargeMap = static_cast<uGUIMap*>(nullptr);
+        }
+    }
+    if (this->mpGUIPopDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
+        if (this->mpGUIPopDetail->::cUnit::isEnable()) {
+        } else {
+            this->mpGUIPopDetail = static_cast<uGUIPopDetail01*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x009326c0 - 0x009326cd (13 bytes)
@@ -375,9 +413,26 @@ __attribute__((weak)) void uGUIAreaMaster::moveEvent() {
 }
 
 // Address: 0x0092b760 - 0x0092b7d5 (117 bytes)
-__attribute__((weak)) void uGUIAreaMaster::updateSetFlow() {
-    DDON_STUB("uGUIAreaMaster::updateSetFlow")
-    /* stub */
+void uGUIAreaMaster::updateSetFlow() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::uGUIBase::mIsAttachedResource == false) {
+        return;
+    }
+    if (this->mpGUIGiveAndTake != static_cast<uGUIGiveAndTake*>(nullptr)) {
+        if (this->mpGUIGiveAndTake->::uGUIBase::isAttachedResource() != false) {
+            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isUpdateIndexListForSetQuest(this->mAreaId) == false) {
+                this->mIsCreateList = true;
+                this->::uGUIAreaMaster::setFlowId(this->mFlowIdNext);
+                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAreaMaster::updateMove);
+            }
+        }
+    } else {
+        if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isUpdateIndexListForSetQuest(this->mAreaId) == false) {
+            this->mIsCreateList = true;
+            this->::uGUIAreaMaster::setFlowId(this->mFlowIdNext);
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAreaMaster::updateMove);
+        }
+    }
 }
 
 // Address: 0x0092c050 - 0x0092c780 (1840 bytes)
@@ -1414,7 +1469,7 @@ void uGUIAreaMaster::eventDecide() {
             if (this->mMode == static_cast<u32>(4)) {
                 this->::uGUIAreaMaster::setFlowId(static_cast<u32>(14));
             } else {
-                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
                     this->::uGUIAreaMaster::setFlowId(static_cast<u32>(13));
                 } else {
                     this->::uGUIAreaMaster::setFlowId(static_cast<u32>(12));

@@ -164,10 +164,25 @@ void cQuestPhaseCpDivide::setDivideSetup(bool isSetup) {
 // u32 cQuestPhaseCpDivide::getDivideCharacterId(u32 index) const;
 
 // Address: 0x0015c590 - 0x0015c5c0 (48 bytes)
-__attribute__((weak)) bool cQuestPhaseCpDivide::isDividePlayer(u32 characterId) const {
-    // local: u32 i;
-    DDON_STUB("cQuestPhaseCpDivide::isDividePlayer")
-    return {};
+bool cQuestPhaseCpDivide::isDividePlayer(u32 characterId) const {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_0 = static_cast<unsigned int>(0);
+    // inferred: the value the loop at 0x15c5a0 carries; no location-less local in scope fits
+    for (const u32* v0_1 = &this->mDividePlayer[0].mCharacterId;;) {
+        if ((*v0_1) == characterId) {
+            return this->mDividePlayer[i0_0].mHasChanged == false;
+        } else {
+            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                i0_0 = i0_0 + static_cast<unsigned int>(1);
+                v0_1 += static_cast<int>(4);
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x0015c5c0 - 0x0015c5dc (28 bytes)
@@ -188,10 +203,25 @@ __attribute__((weak)) bool cQuestPhaseCpDivide::isReturnPlayer() const {
 }
 
 // Address: 0x0015c610 - 0x0015c643 (51 bytes)
-__attribute__((weak)) bool cQuestPhaseCpDivide::isReturnPlayer(u32 characterId) const {
-    // local: u32 i;
-    DDON_STUB("cQuestPhaseCpDivide::isReturnPlayer")
-    return {};
+bool cQuestPhaseCpDivide::isReturnPlayer(u32 characterId) const {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_0 = static_cast<unsigned int>(0);
+    // inferred: the value the loop at 0x15c620 carries; no location-less local in scope fits
+    for (const u32* v0_1 = &this->mReturnPlayer[0].mCharacterId;;) {
+        if ((*v0_1) == characterId) {
+            return this->mReturnPlayer[i0_0].mHasChanged == false;
+        } else {
+            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                i0_0 = i0_0 + static_cast<unsigned int>(1);
+                v0_1 += static_cast<int>(4);
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -214,10 +244,25 @@ __attribute__((weak)) bool cQuestPhaseCpDivide::isNoReturnPlayer() const {
 }
 
 // Address: 0x0015c6b0 - 0x0015c6df (47 bytes)
-__attribute__((weak)) void cQuestPhaseCpDivide::returnPlayer(u32 characterId) {
-    // local: u32 i;
-    DDON_STUB("cQuestPhaseCpDivide::returnPlayer")
-    /* stub */
+void cQuestPhaseCpDivide::returnPlayer(u32 characterId) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_0 = static_cast<unsigned int>(0);
+    // inferred: the value the loop at 0x15c6c0 carries; no location-less local in scope fits
+    for (u32* v0_1 = &this->mReturnPlayer[0].mCharacterId;;) {
+        if ((*v0_1) == characterId) {
+            this->mReturnPlayer[i0_0].mHasChanged = true;
+            return;
+        } else {
+            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                i0_0 = i0_0 + static_cast<unsigned int>(1);
+                v0_1 += static_cast<int>(4);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x0015c6e0 - 0x0015c70b (43 bytes)
@@ -359,11 +404,75 @@ void cQuestPhaseCpDivide::finishEnemyAction() {
 }
 
 // Address: 0x0015c860 - 0x0015c9b2 (338 bytes)
-__attribute__((weak)) void cQuestPhaseCpDivide::callbackLeaveParty(u32 characterId) {
-    // local: u32 i;
-    // local: u32 i;
-    DDON_STUB("cQuestPhaseCpDivide::callbackLeaveParty")
-    /* stub */
+void cQuestPhaseCpDivide::callbackLeaveParty(u32 characterId) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mDividePlayer[0].mCharacterId == characterId) {
+        this->mDividePlayer[0].mCharacterId = static_cast<u32>(0);
+        this->mDividePlayer[0].mHasChanged = false;
+    }
+    if (this->mDividePlayer[1].mCharacterId == characterId) {
+        this->mDividePlayer[1].mCharacterId = static_cast<u32>(0);
+        this->mDividePlayer[1].mHasChanged = false;
+    }
+    if (this->mDividePlayer[2].mCharacterId == characterId) {
+        this->mDividePlayer[2].mCharacterId = static_cast<u32>(0);
+        this->mDividePlayer[2].mHasChanged = false;
+    }
+    if (this->mDividePlayer[3].mCharacterId == characterId) {
+        this->mDividePlayer[3].mCharacterId = static_cast<u32>(0);
+        this->mDividePlayer[3].mHasChanged = false;
+    }
+    if (this->mDividePlayer[4].mCharacterId == characterId) {
+        this->mDividePlayer[4].mCharacterId = static_cast<u32>(0);
+        this->mDividePlayer[4].mHasChanged = false;
+    }
+    if (this->mDividePlayer[5].mCharacterId == characterId) {
+        this->mDividePlayer[5].mCharacterId = static_cast<u32>(0);
+        this->mDividePlayer[5].mHasChanged = false;
+    }
+    if (this->mDividePlayer[6].mCharacterId == characterId) {
+        this->mDividePlayer[6].mCharacterId = static_cast<u32>(0);
+        this->mDividePlayer[6].mHasChanged = false;
+    }
+    if (this->mDividePlayer[7].mCharacterId == characterId) {
+        this->mDividePlayer[7].mCharacterId = static_cast<u32>(0);
+        this->mDividePlayer[7].mHasChanged = false;
+    }
+    if (this->mReturnPlayer[0].mCharacterId == characterId) {
+        this->mReturnPlayer[0].mCharacterId = static_cast<u32>(0);
+        this->mReturnPlayer[0].mHasChanged = false;
+    }
+    if (this->mReturnPlayer[1].mCharacterId == characterId) {
+        this->mReturnPlayer[1].mCharacterId = static_cast<u32>(0);
+        this->mReturnPlayer[1].mHasChanged = false;
+    }
+    if (this->mReturnPlayer[2].mCharacterId == characterId) {
+        this->mReturnPlayer[2].mCharacterId = static_cast<u32>(0);
+        this->mReturnPlayer[2].mHasChanged = false;
+    }
+    if (this->mReturnPlayer[3].mCharacterId == characterId) {
+        this->mReturnPlayer[3].mCharacterId = static_cast<u32>(0);
+        this->mReturnPlayer[3].mHasChanged = false;
+    }
+    if (this->mReturnPlayer[4].mCharacterId == characterId) {
+        this->mReturnPlayer[4].mCharacterId = static_cast<u32>(0);
+        this->mReturnPlayer[4].mHasChanged = false;
+    }
+    if (this->mReturnPlayer[5].mCharacterId == characterId) {
+        this->mReturnPlayer[5].mCharacterId = static_cast<u32>(0);
+        this->mReturnPlayer[5].mHasChanged = false;
+    }
+    if (this->mReturnPlayer[6].mCharacterId == characterId) {
+        this->mReturnPlayer[6].mCharacterId = static_cast<u32>(0);
+        this->mReturnPlayer[6].mHasChanged = false;
+    }
+    if (this->mReturnPlayer[7].mCharacterId == characterId) {
+        this->mReturnPlayer[7].mCharacterId = static_cast<u32>(0);
+        this->mReturnPlayer[7].mHasChanged = false;
+    }
 }
 
 // Address: 0x0015c9c0 - 0x0015cb5f (415 bytes)

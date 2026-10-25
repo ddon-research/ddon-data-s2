@@ -9,6 +9,7 @@
 #include "MtSerializer.h"
 #include "MtStream.h"
 #include "cResource.h"
+#include "nCollisionNode.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -139,15 +140,24 @@ MT_CTSTR rGeometry3::getExt() const {
 }
 
 // Address: 0x0121dfd0 - 0x0121dfe5 (21 bytes)
-__attribute__((weak)) nCollision::cGeometryJointGroup* rGeometry3::getGeometryGroupFromIndex(u32 TargetIndex) {
-    DDON_STUB("rGeometry3::getGeometryGroupFromIndex")
-    return nullptr;
+nCollision::cGeometryJointGroup* rGeometry3::getGeometryGroupFromIndex(u32 TargetIndex) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (TargetIndex < this->mGroupArray.mLength) {
+        return static_cast<nCollision::cGeometryJointGroup*>(this->mGroupArray.mpArray[TargetIndex]);
+    } else {
+        return static_cast<nCollision::cGeometryJointGroup*>(nullptr);
+    }
 }
 
 // Address: 0x0121e000 - 0x0121e029 (41 bytes)
-__attribute__((weak)) nCollision::cGeometryJointGroup* rGeometry3::getGeometryGroupFromID(u32 TargetID) {
-    DDON_STUB("rGeometry3::getGeometryGroupFromID")
-    return nullptr;
+nCollision::cGeometryJointGroup* rGeometry3::getGeometryGroupFromID(u32 TargetID) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (TargetID < this->mUniqueIDNum) {
+        if (this->mpUniqueIDTable[TargetID] < this->mGroupArray.mLength) {
+            return static_cast<nCollision::cGeometryJointGroup*>(this->mGroupArray.mpArray[this->mpUniqueIDTable[TargetID]]);
+        }
+    }
+    return static_cast<nCollision::cGeometryJointGroup*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF

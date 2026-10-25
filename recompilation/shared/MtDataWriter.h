@@ -10,6 +10,20 @@
 struct MtFloat3;
 struct MtFloat4;
 class MtStream;
+class cEditParam;
+class cSetInfoEnemy;
+class cSetInfoOmBowlOfLife;
+class cSetInfoOmGather;
+class cSetInfoOmLever;
+class cSetInfoOmRange;
+class cSetInfoOmTreasureBox;
+class cStorageDataEdit;
+namespace nCollision { class cObjectBase; }
+namespace nZone { class ShapeInfoBase; }
+namespace nZone { class ShapeInfoOBB; }
+namespace nZone { class ShapeInfoPanel; }
+namespace nZone { class cLayoutElement; }
+class sInputManager;
 
 // Declarations
 class MtDataWriter;
@@ -36,6 +50,34 @@ using uintptr = __uintptr_t;
 
 class MtDataWriter
 {
+    // inferred: cEditParam::save names MtDataWriter::mSeekPt
+    friend class cEditParam;
+    // inferred: cSetInfoEnemy::save names MtDataWriter::mSeekPt
+    friend class cSetInfoEnemy;
+    // inferred: cSetInfoOmBowlOfLife::save names MtDataWriter::mSeekPt
+    friend class cSetInfoOmBowlOfLife;
+    // inferred: cSetInfoOmGather::save names MtDataWriter::mSeekPt
+    friend class cSetInfoOmGather;
+    // inferred: cSetInfoOmLever::save names MtDataWriter::mSeekPt
+    friend class cSetInfoOmLever;
+    // inferred: cSetInfoOmRange::save names MtDataWriter::mSeekPt
+    friend class cSetInfoOmRange;
+    // inferred: cSetInfoOmTreasureBox::save names MtDataWriter::mSeekPt
+    friend class cSetInfoOmTreasureBox;
+    // inferred: cStorageDataEdit::save names MtDataWriter::mSeekPt
+    friend class cStorageDataEdit;
+    // inferred: nCollision::cObjectBase::save names MtDataWriter::mSeekPt
+    friend class nCollision::cObjectBase;
+    // inferred: nZone::ShapeInfoBase::saveBinary names MtDataWriter::mSeekPt
+    friend class nZone::ShapeInfoBase;
+    // inferred: nZone::ShapeInfoOBB::saveBinary names MtDataWriter::mSeekPt
+    friend class nZone::ShapeInfoOBB;
+    // inferred: nZone::ShapeInfoPanel::saveBinary names MtDataWriter::mSeekPt
+    friend class nZone::ShapeInfoPanel;
+    // inferred: nZone::cLayoutElement::saveBinary names MtDataWriter::mSeekPt
+    friend class nZone::cLayoutElement;
+    // inferred: sInputManager::writeData names MtDataWriter::mSeekPt
+    friend class sInputManager;
 public:
     struct Frame;
     struct Label;

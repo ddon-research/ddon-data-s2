@@ -13,6 +13,7 @@
 #include "../rStageConnect/sArea.h"
 #include "sCamera.h"
 #include "sCameraExt.h"
+#include "../rCharacterEditCameraParam/sFlag.h"
 #include "sGUI.h"
 #include "sGUIExt.h"
 #include "sTalkManager.h"
@@ -164,17 +165,25 @@ __attribute__((weak)) u32 cFSMBase::stateUpdateCallMessageFortDef_BattleStart(Mt
 // u32 cFSMBase::stateUpdateFreeFlagOff(MtObject* pParam, MtObject* pCaller);
 
 // Address: 0x001e09d0 - 0x001e0a02 (50 bytes)
-__attribute__((weak)) u32 cFSMBase::stateUpdateGameGlobalFlagOn(MtObject* pParam, MtObject* pCaller) {
-    // local: cFSMOrderParamFlagCommon* pParamFlag;
-    DDON_STUB("cFSMBase::stateUpdateGameGlobalFlagOn")
-    return {};
+u32 cFSMBase::stateUpdateGameGlobalFlagOn(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(3), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), true, true, false);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e0a10 - 0x001e0a3f (47 bytes)
-__attribute__((weak)) u32 cFSMBase::stateUpdateGameGlobalFlagOff(MtObject* pParam, MtObject* pCaller) {
-    // local: cFSMOrderParamFlagCommon* pParamFlag;
-    DDON_STUB("cFSMBase::stateUpdateGameGlobalFlagOff")
-    return {};
+u32 cFSMBase::stateUpdateGameGlobalFlagOff(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(3), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), false, true, false);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e0a40 - 0x001e0b06 (198 bytes)
@@ -189,31 +198,47 @@ __attribute__((weak)) u32 cFSMBase::stateUpdateMainQuestFlagOn(MtObject* pParam,
 // u32 cFSMBase::stateUpdateMainQuestFlagOff(MtObject* pParam, MtObject* pCaller);
 
 // Address: 0x001e0b20 - 0x001e0b52 (50 bytes)
-__attribute__((weak)) u32 cFSMBase::stateUpdateSceFlagOn(MtObject* pParam, MtObject* pCaller) {
-    // local: cFSMOrderParamFlagCommon* pParamFlag;
-    DDON_STUB("cFSMBase::stateUpdateSceFlagOn")
-    return {};
+u32 cFSMBase::stateUpdateSceFlagOn(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(8), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), true, true, false);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e0b60 - 0x001e0b8f (47 bytes)
-__attribute__((weak)) u32 cFSMBase::stateUpdateSceFlagOff(MtObject* pParam, MtObject* pCaller) {
-    // local: cFSMOrderParamFlagCommon* pParamFlag;
-    DDON_STUB("cFSMBase::stateUpdateSceFlagOff")
-    return {};
+u32 cFSMBase::stateUpdateSceFlagOff(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(8), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), false, true, false);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e0b90 - 0x001e0bc2 (50 bytes)
-__attribute__((weak)) u32 cFSMBase::stateUpdateEvtFlagOn(MtObject* pParam, MtObject* pCaller) {
-    // local: cFSMOrderParamFlagCommon* pParamFlag;
-    DDON_STUB("cFSMBase::stateUpdateEvtFlagOn")
-    return {};
+u32 cFSMBase::stateUpdateEvtFlagOn(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(9), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), true, true, false);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e0bd0 - 0x001e0bff (47 bytes)
-__attribute__((weak)) u32 cFSMBase::stateUpdateEvtFlagOff(MtObject* pParam, MtObject* pCaller) {
-    // local: cFSMOrderParamFlagCommon* pParamFlag;
-    DDON_STUB("cFSMBase::stateUpdateEvtFlagOff")
-    return {};
+u32 cFSMBase::stateUpdateEvtFlagOff(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cFSMOrderParamFlagCommon* pParamFlag;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(9), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), false, true, false);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001e0c00 - 0x001e0c5f (95 bytes)

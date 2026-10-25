@@ -675,6 +675,12 @@ inline bool cThinkMgrName::cThinkMgr::isActTrue() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a bit-test accessor's polarity, true when its bits are set: none of its 1 DWARF copies materializes its result
+inline bool cThinkMgrName::cThinkMgr::isStartTbl() {
+    return this->mbStartTableMode != static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cThinkMgrName::cThinkMgr::clrNextFlg() {
     this->mbNextFlg = false;

@@ -4,6 +4,8 @@
 #include <cstddef>
 
 // Forward declarations
+class MtNetContext;
+class MtNetCore;
 class MtNetMediator;
 class MtNetObject;
 class MtThread;
@@ -12,6 +14,7 @@ struct _SceKernelSema;
 class aStage;
 namespace cAcquirement { class cSkillDataBase; }
 class cNetGameServer;
+class cSoundLimitter;
 class cZoneMultiStack;
 namespace nNetwork { class VoiceChat; }
 struct pthread_mutex;
@@ -19,7 +22,9 @@ class rSoundSourceStreamAT9;
 class sAIPawnSys;
 class sArchiveManager;
 class sBakingJointOrder;
+class sBrowser;
 class sCameraExt;
+class sCaplinkManager;
 class sChat;
 class sCollision;
 class sContextManager;
@@ -39,15 +44,17 @@ class sRender;
 class sResource;
 class sScene;
 class sSetManager;
+class sShadow;
+class sShlManager;
 class sSound;
 class sSoundManager;
 class sUnit;
 class sZone;
+class uGUIMenuComm;
 class uOmSwingInstancing;
 class uSoundSubMixer;
 
 // Declarations
-class MtAutoCriticalSection;
 class MtCriticalSection;
 class MtSemaphore;
 namespace nWin32Detour { class eventFlag; }
@@ -61,17 +68,12 @@ using pthread_mutex_t = pthread_mutex*;
 using ScePthreadMutex = pthread_mutex_t;
 using u32 = unsigned int;
 
-class MtAutoCriticalSection
-{
-public:
-    MtAutoCriticalSection(MtCriticalSection* pcs);
-    ~MtAutoCriticalSection();
-private:
-    MtCriticalSection* mpCSection;  // offset: 0x0
-};
-
 class MtCriticalSection
 {
+    // inferred: MtNetContext::addDependency names MtCriticalSection::mCSection
+    friend class MtNetContext;
+    // inferred: MtNetCore::addDependency names MtCriticalSection::mCSection
+    friend class MtNetCore;
     // inferred: MtNetMediator::setLibsslContextId names MtCriticalSection::mCSection
     friend class MtNetMediator;
     // inferred: MtNetObject::setFatal names MtCriticalSection::mCSection
@@ -84,6 +86,8 @@ class MtCriticalSection
     friend class cAcquirement::cSkillDataBase;
     // inferred: cNetGameServer::getReportCheatQueue names MtCriticalSection::mCSection
     friend class cNetGameServer;
+    // inferred: cSoundLimitter::setEnable names MtCriticalSection::mCSection
+    friend class cSoundLimitter;
     // inferred: cZoneMultiStack::releaseZoneAll names MtCriticalSection::mCSection
     friend class cZoneMultiStack;
     // inferred: nNetwork::VoiceChat::init names MtCriticalSection::mCSection
@@ -96,8 +100,12 @@ class MtCriticalSection
     friend class sArchiveManager;
     // inferred: sBakingJointOrder::removeProtectUnits names MtCriticalSection::mCSection
     friend class sBakingJointOrder;
+    // inferred: sBrowser::resetJSCallback_jumpSetPosSize names MtCriticalSection::mCSection
+    friend class sBrowser;
     // inferred: sCameraExt::setMotionCamera names MtCriticalSection::mCSection
     friend class sCameraExt;
+    // inferred: sCaplinkManager::getIconUrlFromIndex names MtCriticalSection::mCSection
+    friend class sCaplinkManager;
     // inferred: sChat::setTellChat names MtCriticalSection::mCSection
     friend class sChat;
     // inferred: sCollision::lockSystem names MtCriticalSection::mCSection
@@ -106,19 +114,19 @@ class MtCriticalSection
     friend class sContextManager;
     // inferred: sEffect::getAdhesionLimitMax names MtCriticalSection::mCSection
     friend class sEffect;
-    // inferred: sEffectExt::updateColorUpdateCount names MtCriticalSection::mCSection
+    // inferred: sEffectExt::addInvalidHandle names MtCriticalSection::mCSection
     friend class sEffectExt;
     // inferred: sGUI::releaseAlphaMap names MtCriticalSection::mCSection
     friend class sGUI;
     // inferred: sGUIExt::movePointer names MtCriticalSection::mCSection
     friend class sGUIExt;
-    // inferred: sInputManager::editCompare names MtCriticalSection::mCSection
+    // inferred: sInputManager::writeData names MtCriticalSection::mCSection
     friend class sInputManager;
-    // inferred: sItemManager::reqGetGP names MtCriticalSection::mCSection
+    // inferred: sItemManager::getGp names MtCriticalSection::mCSection
     friend class sItemManager;
     // inferred: sNetwork::forceSingleService names MtCriticalSection::mCSection
     friend class sNetwork;
-    // inferred: sObjCollision::addModelList names MtCriticalSection::mCSection
+    // inferred: sObjCollision::createUID names MtCriticalSection::mCSection
     friend class sObjCollision;
     // inferred: sOccluder::add names MtCriticalSection::mCSection
     friend class sOccluder;
@@ -126,7 +134,7 @@ class MtCriticalSection
     friend class sOmManager;
     // inferred: sPrimitive::reserveTex names MtCriticalSection::mCSection
     friend class sPrimitive;
-    // inferred: sQuestManagerExt::csLock names MtCriticalSection::mCSection
+    // inferred: sQuestManagerExt::notifyReloadMasterData names MtCriticalSection::mCSection
     friend class sQuestManagerExt;
     // inferred: sRender::addProtectResource names MtCriticalSection::mCSection
     friend class sRender;
@@ -136,14 +144,20 @@ class MtCriticalSection
     friend class sScene;
     // inferred: sSetManager::clearQuestList names MtCriticalSection::mCSection
     friend class sSetManager;
+    // inferred: sShadow::reset names MtCriticalSection::mCSection
+    friend class sShadow;
+    // inferred: sShlManager::getShlUniqueId names MtCriticalSection::mCSection
+    friend class sShlManager;
     // inferred: sSound::reset names MtCriticalSection::mCSection
     friend class sSound;
     // inferred: sSoundManager::setCycleZone names MtCriticalSection::mCSection
     friend class sSoundManager;
-    // inferred: sUnit::remove names MtCriticalSection::mCSection
+    // inferred: sUnit::addBottom names MtCriticalSection::mCSection
     friend class sUnit;
     // inferred: sZone::addZoneLayout names MtCriticalSection::mCSection
     friend class sZone;
+    // inferred: uGUIMenuComm::updateWaitTmpPhrase names MtCriticalSection::mCSection
+    friend class uGUIMenuComm;
     // inferred: uOmSwingInstancing::delInstance names MtCriticalSection::mCSection
     friend class uOmSwingInstancing;
     // inferred: uSoundSubMixer::setResourceSubMixer names MtCriticalSection::mCSection

@@ -292,10 +292,15 @@ MT_CTSTR rWeatherEffectParam::getExt() const {
 }
 
 // Address: 0x01ab9a40 - 0x01ab9a64 (36 bytes)
-__attribute__((weak)) const cEffectCorrectParam* rWeatherEffectParam::getCorrectParam(u32 type, u32 index) const {
-    // local: const MtTypedArray<cEffectCorrectParam>& list;
-    DDON_STUB("rWeatherEffectParam::getCorrectParam")
-    return nullptr;
+const cEffectCorrectParam* rWeatherEffectParam::getCorrectParam(u32 type, u32 index) const {
+    // DWARF local not rendered: const MtTypedArray<cEffectCorrectParam>& list;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (type <= static_cast<u32>(6)) {
+        if (index < this->mpParamList[type].::MtArray::mLength) {
+            return static_cast<const cEffectCorrectParam*>(this->mpParamList[type].::MtArray::mpArray[index]);
+        }
+    }
+    return static_cast<const cEffectCorrectParam*>(nullptr);
 }
 
 // Address: 0x01ab9a70 - 0x01ab9a82 (18 bytes)

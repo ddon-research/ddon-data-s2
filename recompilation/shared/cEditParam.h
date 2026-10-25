@@ -15,6 +15,8 @@ class MtDataReader;
 class MtDataWriter;
 class MtPropertyList;
 class cStorageDataEdit;
+class cpCharacterEdit;
+class uMockUpModel;
 
 // Declarations
 class cEditParam;
@@ -33,8 +35,12 @@ using u8 = unsigned char;
 
 class cEditValue : public MtObject
 {
-    // inferred: cEditParam::copyToCharacterData names cEditParam::mSokutoubu.mValue
+    // inferred: cEditParam::cEditParam names cEditParam::mSokutoubu.mValue
     friend class cEditParam;
+    // inferred: cpCharacterEdit::calcHoho names cEditParam::mHanakuchijyouge.mValue
+    friend class cpCharacterEdit;
+    // inferred: uMockUpModel::move names cEditParam::mMotionFilter.mValue
+    friend class uMockUpModel;
 public:
     enum
     {
@@ -257,4 +263,10 @@ inline cEditValue::cEditValue() {
     this->mMax = 3.4028235e38f;
     this->mFlag = static_cast<u32>(0);
     this->mDiv = static_cast<s16>(200);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline f32 cEditValue::getValue() const {
+    return this->mValue;
 }

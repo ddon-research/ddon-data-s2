@@ -11,6 +11,7 @@
 #include "cUnit.h"
 #include "nDrawRasterizerState.h"
 #include "nDrawTexture.h"
+#include "sShadow.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -98,9 +99,19 @@ __attribute__((weak)) void uShadow::draw(cDraw* pdraw) {
 }
 
 // Address: 0x00f68f30 - 0x00f68f83 (83 bytes)
-__attribute__((weak)) void uShadow::kill() {
-    DDON_STUB("uShadow::kill")
-    /* stub */
+void uShadow::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uShadow*
+    if (this->mCacheID != static_cast<uintptr>(0)) {
+        (::sShadow::mpInstance)->::sShadow::freeShadowCacheID(this->mCacheID);
+        this->mCacheID = static_cast<uintptr>(0);
+    }
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+        return;
+    }
+    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    }
 }
 
 // Address: 0x00f6b0a0 - 0x00f6b103 (99 bytes)
@@ -962,9 +973,10 @@ const MtDTI& uShadow::cHardwareDispCtrlShadow::getDTI() const {
 // void uShadow::cHardwareDispCtrlShadow::setAllocator(u32);
 
 // Address: 0x00f6fe40 - 0x00f6fe80 (64 bytes)
-__attribute__((weak)) void* uShadow::cHardwareDispCtrlShadow::operator new(size_t sz, u32 align) {
-    DDON_STUB("uShadow::cHardwareDispCtrlShadow::operator new")
-    return nullptr;
+void* uShadow::cHardwareDispCtrlShadow::operator new(size_t sz, u32 align) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from uShadow::cHardwareDispCtrlShadow::MyDTI*
+    return ::MtMemoryAllocator::getAllocator(::uShadow::cHardwareDispCtrlShadow::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::uShadow::cHardwareDispCtrlShadow::DTI) + static_cast<long>(52)));
 }
 
 // No out-of-line body: no code in the ELF

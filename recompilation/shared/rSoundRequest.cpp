@@ -109,11 +109,31 @@ MT_CTSTR rSoundRequest::getExt() const {
 // rSoundRequest::Element* rSoundRequest::getElementByIndex(u32 index) const;
 
 // Address: 0x01201420 - 0x0120148f (111 bytes)
-__attribute__((weak)) rSoundRequest::Element* rSoundRequest::getElement(u32 reqNo) const {
-    // local: u16 index;
-    // local: u32 i;
-    DDON_STUB("rSoundRequest::getElement")
-    return nullptr;
+rSoundRequest::Element* rSoundRequest::getElement(u32 reqNo) const {
+    // DWARF local not rendered: u16 index;
+    // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
+    if (this->mpReqNoToIndexTbl != static_cast<u16*>(nullptr)) {
+        if (reqNo < this->mReqNoToIndexTblNum) {
+            if (this->mpReqNoToIndexTbl[reqNo] != static_cast<unsigned short>(65535)) {
+                return &this->mpElement[this->mpReqNoToIndexTbl[reqNo]];
+            }
+        }
+        return static_cast<rSoundRequest::Element*>(nullptr);
+    }
+    if (this->mElementNum == static_cast<u32>(0)) {
+        return static_cast<rSoundRequest::Element*>(nullptr);
+    }
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    rSoundRequest::Element* p2 = this->mpElement;
+    do {
+        if (p2->mReqNo == reqNo) {
+            return p2;
+        }
+        i += static_cast<u32>(1);
+        p2 += static_cast<int>(1);
+    } while (i < this->mElementNum);
+    return static_cast<rSoundRequest::Element*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF

@@ -6,17 +6,20 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "../rCharParamEnemy/cCharParamEnemy.h"
 #include "cContextInterface.h"
 #include "cDelegate.h"
 #include "cUnit.h"
 #include "cpComponent.h"
 #include "cpStateManager.h"
 #include "nCatch.h"
+#include "../rCharParamEnemy/rCharParamEnemy.h"
 #include "sContextManager.h"
 #include "sMain.h"
 #include "sSetManager.h"
 #include "uBaseModel.h"
 #include "uDDOModel.h"
+#include "../rCharacterEditCameraParam/uEnemy.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -68,11 +71,16 @@ inline void cCatchInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cCatchInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 3 inlined copies in 3 functions (284 bytes)
-//   in cCatchInfo::MyDTI::newInstance at 0x0045350d-0x00453559 (called at cpCatchCtrl.cpp:132)
-//   in cpCatchCtrl::MyDTI::newInstance at 0x00453822-0x0045388a (called at cpCatchCtrl.cpp:360)
-//   in cpCatchCtrl::cpCatchCtrl at 0x00453a48-0x00453ab0 (called at cpCatchCtrl.cpp:360)
-// cCatchInfo::cCatchInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline cCatchInfo::cCatchInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mCatchType = static_cast<u8>(0);
+    this->mReleaseType = static_cast<u8>(0);
+    this->mCatchUid = static_cast<u32>(0);
+    this->mJointNo = static_cast<u8>(255);
+    this->mHitPos = ::MtVector3::Zero;
+}
 
 // No out-of-line body: no code in the ELF
 // cCatchInfo::cCatchInfo(u8 type, u32 uid);
@@ -400,12 +408,24 @@ __attribute__((weak)) f32 cpCatchCtrl::getCatchLoopTimer() {
 }
 
 // Address: 0x00454cf0 - 0x00454d34 (68 bytes)
-__attribute__((weak)) nCatch::BEARDOWN_EFFECTIVE cpCatchCtrl::getBeardownEffective() {
-    // local: BEARDOWN_EFFECTIVE result;
-    // local: uEnemy* pEm;
-    // local: cCharParamEnemy* pEnemyParam;
-    DDON_STUB("cpCatchCtrl::getBeardownEffective")
-    return {};
+nCatch::BEARDOWN_EFFECTIVE cpCatchCtrl::getBeardownEffective() {
+    // DWARF local not rendered: BEARDOWN_EFFECTIVE result;
+    // DWARF local not rendered: uEnemy* pEm;
+    // DWARF local not rendered: cCharParamEnemy* pEnemyParam;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as nCatch::BEARDOWN_EFFECTIVE
+    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
+        if (this->mpModel->::cUnit::isEnable()) {
+            if ((this->mpModel->mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
+                if (static_cast<uEnemy*>(this->mpModel)->::uEnemy::getCharaParamEnemy() != static_cast<rCharParamEnemy*>(nullptr)) {
+                    if (static_cast<uEnemy*>(this->mpModel)->::uEnemy::getCharaParamEnemy()->::rCharParamEnemy::getCharParamEnemy() != static_cast<cCharParamEnemy*>(nullptr)) {
+                        return static_cast<nCatch::BEARDOWN_EFFECTIVE>(static_cast<uEnemy*>(this->mpModel)->::uEnemy::getCharaParamEnemy()->::rCharParamEnemy::getCharParamEnemy()->mBeardownEffective);
+                    }
+                }
+            }
+        }
+    }
+    return static_cast<nCatch::BEARDOWN_EFFECTIVE>(3);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (123 bytes)

@@ -9,6 +9,7 @@
 #include "../shared/MtObject.h"
 #include "../shared/MtString.h"
 #include "../shared/cUIObject.h"
+#include "../shared/cUnit.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/uGUIBase.h"
@@ -118,9 +119,45 @@ void uGUICaplinkMenuBase::kill() {
 }
 
 // Address: 0x009c3d70 - 0x009c3e49 (217 bytes)
-__attribute__((weak)) void uGUICaplinkMenuBase::updatePtr() {
-    DDON_STUB("uGUICaplinkMenuBase::updatePtr")
-    /* stub */
+void uGUICaplinkMenuBase::updatePtr() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpGUITextBox != static_cast<uGUIDialogTextBox*>(nullptr)) {
+        if (this->mpGUITextBox->::cUnit::isEnable()) {
+        } else {
+            this->mpGUITextBox = static_cast<uGUIDialogTextBox*>(nullptr);
+        }
+    }
+    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+        if (this->mpGUISystemMsg->::cUnit::isEnable()) {
+        } else {
+            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+        }
+    }
+    if (this->mpGUIPopCmd != static_cast<uGUIPopCmd01*>(nullptr)) {
+        if (this->mpGUIPopCmd->::cUnit::isEnable()) {
+        } else {
+            this->mpGUIPopCmd = static_cast<uGUIPopCmd01*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkProfile != static_cast<uGUICaplinkProfile*>(nullptr)) {
+        if (this->mpGUICaplinkProfile->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkProfile = static_cast<uGUICaplinkProfile*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkMessage != static_cast<uGUICaplinkMessage*>(nullptr)) {
+        if (this->mpGUICaplinkMessage->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkMessage = static_cast<uGUICaplinkMessage*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkFilter != static_cast<uGUICaplinkFilter*>(nullptr)) {
+        if (this->mpGUICaplinkFilter->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkFilter = static_cast<uGUICaplinkFilter*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x009c3e50 - 0x009c3e55 (5 bytes)
@@ -415,9 +452,30 @@ __attribute__((weak)) bool uGUICaplinkMenuBase::isEndSubMenu() {
 }
 
 // Address: 0x009ca480 - 0x009ca4c8 (72 bytes)
-__attribute__((weak)) u32 uGUICaplinkMenuBase::callbackCmd(MtObject* pCaller, MtObject* pVal) {
-    DDON_STUB("uGUICaplinkMenuBase::callbackCmd")
-    return {};
+u32 uGUICaplinkMenuBase::callbackCmd(MtObject* pCaller, MtObject* pVal) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uGUICaplinkMenuBase::cCmdVal::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pVal != static_cast<MtObject*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x9ca498, used once; no DWARF local holds it
+        const MtDTI& t0 = pVal->getDTI();
+        // inferred: the value the loop at 0x9ca4a6 carries; no location-less local in scope fits
+        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uGUICaplinkMenuBase::cCmdVal::DTI) + static_cast<long>(8));
+        // inferred: the value the loop at 0x9ca4a6 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                } else {
+                    break;
+                }
+            } else {
+                this->mCmdSelect = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVal) + static_cast<long>(8));
+                return static_cast<u32>(0);
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 9 inlined copies in 3 functions (66 bytes)

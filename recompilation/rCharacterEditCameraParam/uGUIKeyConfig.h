@@ -7,11 +7,11 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
-#include "../shared/cGUIControlMgr.h"
+#include "cGUIControlMgr.h"
 #include "../shared/nDDOUtility.h"
 #include "nGUIKeyConfig.h"
 #include "../shared/uGUIBase.h"
-#include "../shared/uGUIBaseExt.h"
+#include "uGUIBaseExt.h"
 
 // Forward declarations
 class MtAllocator;

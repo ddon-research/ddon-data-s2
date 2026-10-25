@@ -10,11 +10,14 @@
 #include "MtString.h"
 #include "cEfcHandle.h"
 #include "cGeneralPointPtr.h"
+#include "cHitNode.h"
+#include "cResource.h"
 #include "cpLockOn.h"
 #include "cpObjCollision.h"
 #include "cpShlShotCtrl.h"
 #include "nShlBase.h"
 #include "nShlStick.h"
+#include "rObjCollision.h"
 #include "sCollision.h"
 #include "sEffectExt.h"
 #include "uDDOModel.h"
@@ -459,10 +462,7 @@ void uShlBase::callbackGuarded(cHitInfo* pHitInfo) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uDDOModel::callbackGuarded(pHitInfo);
     this->mHitResultFlag = this->mHitResultFlag | static_cast<u32>(8);
-    this->mHitPos.x = pHitInfo->mHitPos.x;
-    this->mHitPos.y = pHitInfo->mHitPos.y;
-    this->mHitPos.z = pHitInfo->mHitPos.z;
-    this->mHitPos.pad_ = 0.0f;
+    this->mHitPos = pHitInfo->mHitPos;
     this->mHitEfctFlag = static_cast<u32>(1);
 }
 
@@ -763,18 +763,93 @@ __attribute__((weak)) bool uShlBase::isCollisionWall(sCollision::TriangleInfo& i
 
 // Address: 0x00cc43c0 - 0x00cc44ef (303 bytes)
 __attribute__((weak)) void uShlBase::setCollision() {
-    // local: s32 seqNo;
-    // local: s32 atNo;
-    // local: s32 shared_uid;
-    DDON_STUB("uShlBase::setCollision")
-    /* stub */
+    // DWARF local not rendered: s32 seqNo;
+    // DWARF local not rendered: s32 atNo;
+    // DWARF local not rendered: s32 shared_uid;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 1 goto statements as its last resort
+    if (this->mpParent != static_cast<uDDOModel*>(nullptr)) {
+        if (this->mpOwner != static_cast<uDDOModel*>(nullptr)) {
+            goto region_cc43fe;
+        }
+    }
+    if (this->mIsCreateColOnce != false) {
+        this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(0), static_cast<u32>(this->mCreateSeqNo));
+    }
+    region_cc43fe:;
+    if (this->mpOwner == static_cast<uDDOModel*>(nullptr)) {
+        return;
+    } else {
+        if (this->::uDDOModel::getObjCollisionPtr()->mpResource[0] == static_cast<rObjCollision*>(nullptr)) {
+            return;
+        } else {
+            if (this->::uDDOModel::getObjCollisionPtr()->mpResource[0]->::cResource::isUsage() == false) {
+                return;
+            } else {
+                // inferred: a temporary for the result of the call at 0xcc4433, used twice; no DWARF local holds it
+                u32 t0 = this->getCollisionIndex();
+                // inferred: the value carried to 0xcc449d; no location-less local in scope fits
+                const s32* v2_0;
+                // inferred: the value carried to 0xcc449d; no location-less local in scope fits
+                const s32* v2_1;
+                // inferred: the value carried to 0xcc449d; no location-less local in scope fits
+                const s32* v2_2;
+                if (t0 != static_cast<u32>(2)) {
+                    if (t0 == static_cast<u32>(1)) {
+                        v2_0 = &this->::uShlBase::getShlParamBase()->at_1;
+                        v2_1 = &this->::uShlBase::getShlParamBase()->seq_1;
+                        v2_2 = &this->::uShlBase::getShlParamBase()->shared_uid_1;
+                    } else {
+                        v2_0 = &this->::uShlBase::getShlParamBase()->at_0;
+                        v2_1 = &this->::uShlBase::getShlParamBase()->seq_0;
+                        v2_2 = &this->::uShlBase::getShlParamBase()->shared_uid_0;
+                    }
+                } else {
+                    v2_0 = &this->::uShlBase::getShlParamBase()->at_2;
+                    v2_1 = &this->::uShlBase::getShlParamBase()->seq_2;
+                    v2_2 = &this->::uShlBase::getShlParamBase()->shared_uid_2;
+                }
+                // inferred: the value carried to 0xcc44c1; no location-less local in scope fits
+                int v3_9 = *v2_1;
+                if (v3_9 == static_cast<int>(-1)) {
+                    return;
+                } else {
+                    // inferred: the value carried to 0xcc44c1; no location-less local in scope fits
+                    int v3_10 = *v2_2;
+                    if ((*v2_0) != static_cast<int>(-1)) {
+                        if (this->mpAtkNode != static_cast<cHitNode*>(nullptr)) {
+                            this->mpAtkNode->::cHitNode::setAttackParamFromAttackNo(static_cast<u32>(*v2_0));
+                        }
+                    }
+                    this->setCollisionSub(v3_9, static_cast<s32>(0), static_cast<s32>(0), v3_10);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00cc7dc0 - 0x00cc7e82 (194 bytes)
-__attribute__((weak)) void uShlBase::setCollisionSub(s32 seqNo, s32 groupNo, s32 attackNo, s32 shared_uid) {
-    // local: u32 uid;
-    DDON_STUB("uShlBase::setCollisionSub")
-    /* stub */
+void uShlBase::setCollisionSub(s32 seqNo, s32 groupNo, s32 attackNo, s32 shared_uid) {
+    // DWARF local not rendered: u32 uid;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (this->mCreateSeqNo == seqNo) {
+        return;
+    }
+    if (this->mIsCreateColOnce != false) {
+        this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(static_cast<u32>(0), static_cast<u32>(this->mCreateSeqNo));
+    }
+    this->mIsCreateColOnce = true;
+    this->mCreateSeqNo = seqNo;
+    this->mInterPos.x = this->::uDDOModel::mOldPos.x;
+    this->mInterPos.y = this->::uDDOModel::mOldPos.y;
+    this->mInterPos.z = this->::uDDOModel::mOldPos.z;
+    this->mInterPos.pad_ = 0.0f;
+    if (shared_uid > static_cast<s32>(-1)) {
+        this->mpAtkNode = this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::createNodeFromIndex(static_cast<u32>(0), seqNo, false, this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::getSharedUID(static_cast<unsigned int>(shared_uid)));
+    } else {
+        this->mpAtkNode = this->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::createNodeFromIndex(static_cast<u32>(0), seqNo, false, static_cast<u32>(4294967295));
+    }
 }
 
 // Address: 0x00cc6d50 - 0x00cc7024 (724 bytes)
@@ -1015,12 +1090,55 @@ __attribute__((weak)) uShlBase* uShlBase::createNextShl(u32 index, u32 shotSts, 
 }
 
 // Address: 0x00cc8900 - 0x00cc8994 (148 bytes)
-__attribute__((weak)) void uShlBase::addShlDamage(cHitInfo* pHitInfo) {
-    // local: uShlBase* pShl;
-    // local: uDDOModel* pOwner;
-    // local: uShlBase* pshl;
-    DDON_STUB("uShlBase::addShlDamage")
-    /* stub */
+void uShlBase::addShlDamage(cHitInfo* pHitInfo) {
+    // DWARF local not rendered: uShlBase* pShl;
+    // DWARF local not rendered: uDDOModel* pOwner;
+    // DWARF local not rendered: uShlBase* pshl;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2488 from uDDOModel*
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    // inferred: the value carried to 0xcc8935; no location-less local in scope fits
+    const cShlParamBase* v0_1 = this->::uShlBase::getShlParamBase();
+    // inferred: the value carried to 0xcc8935; no location-less local in scope fits
+    u32 v0_0 = v0_1->shlOption;
+    if (((v0_0 >> static_cast<u32>(8)) & static_cast<u32>(4)) != static_cast<u32>(0)) {
+        if (pHitInfo->mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
+            if ((pHitInfo->mpAtkModel->mUnitId & static_cast<u32>(32)) != static_cast<u32>(0)) {
+                if (static_cast<unsigned int>(v0_1->noDamageShlID) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel) + static_cast<long>(9352)))) {
+                    return;
+                }
+            }
+        }
+    }
+    if (v0_1->dmgShlNo <= static_cast<s32>(0)) {
+    } else {
+        if (0.0f >= this->mDamageShlIntervalTime) {
+            this->mIsCreateDamageShl = true;
+        }
+    }
+    if ((v0_0 & static_cast<u32>(16)) == static_cast<u32>(0)) {
+        this->executeAddDamage();
+        return;
+    }
+    // inferred: the value carried to 0xcc8972; no location-less local in scope fits
+    uDDOModel* v3_3;
+    if (pHitInfo->mpAtkModel != static_cast<uDDOModel*>(nullptr)) {
+        if ((pHitInfo->mpAtkModel->mUnitId & static_cast<u32>(32)) == static_cast<u32>(0)) {
+            v3_3 = pHitInfo->mpAtkModel;
+        } else {
+            if (static_cast<uShlBase*>(pHitInfo->mpAtkModel)->::uShlBase::getOwner() != static_cast<uDDOModel*>(nullptr)) {
+                v3_3 = static_cast<uShlBase*>(pHitInfo->mpAtkModel)->::uShlBase::getOwner();
+            } else {
+                return;
+            }
+        }
+    } else {
+        return;
+    }
+    if (v3_3->::uDDOModel::isMaster() != false) {
+        this->executeAddDamage();
+        return;
+    }
 }
 
 // Address: 0x00cc89a0 - 0x00cc89b9 (25 bytes)

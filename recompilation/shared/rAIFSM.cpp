@@ -65,8 +65,41 @@ inline void* cAIFSMCluster::operator new(size_t sz, u32 align) {
 // Address: 0x011e5e60 - 0x011e5f0f (175 bytes)
 // Also emitted as: _ZN13cAIFSMClusterD0Ev at 0x011e5f20
 cAIFSMCluster::~cAIFSMCluster() {
-    DDON_STUB("cAIFSMCluster::~cAIFSMCluster")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpNodeList != static_cast<cAIFSMNode* *>(nullptr)) {
+        if (this->mNodeNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x11e5ea6 carries; no location-less local in scope fits
+            u32 v0_0 = this->mNodeNum;
+            // inferred: the value the loop at 0x11e5ea6 carries; no location-less local in scope fits
+            cAIFSMNode* * v0_1 = this->mpNodeList;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(1);;) {
+                if (v0_1 != static_cast<cAIFSMNode* *>(nullptr)) {
+                    if (v0_1[i0_3 - static_cast<unsigned int>(1)] != static_cast<cAIFSMNode*>(nullptr)) {
+                        delete v0_1[i0_3 - static_cast<unsigned int>(1)];
+                        this->mpNodeList[i0_3 - static_cast<unsigned int>(1)] = static_cast<cAIFSMNode*>(nullptr);
+                        if (i0_3 >= this->mNodeNum) {
+                            break;
+                        }
+                        v0_0 = this->mNodeNum;
+                    } else {
+                        if (i0_3 >= v0_0) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (i0_3 >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = this->mpNodeList;
+                i0_3 += static_cast<unsigned int>(1);
+            }
+        }
+        ::MtMemoryAllocator::getAllocator(::cAIFSMCluster::DTI)->memFree(static_cast<void*>(this->mpNodeList));
+    }
+    this->mpNodeList = static_cast<cAIFSMNode* *>(nullptr);
+    this->mNodeNum = static_cast<u32>(0);
 }
 
 // Address: 0x011e5ff0 - 0x011e62e6 (758 bytes)

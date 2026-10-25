@@ -62,7 +62,8 @@ inline void nLayout::cGameDataCache::operator delete(void* p_addr) {
 // void nLayout::cGameDataCache::operator delete[](void* p_addr, u32 align);
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline nLayout::cGameDataCache::cGameDataCache() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+nLayout::cGameDataCache::cGameDataCache() {
     ::memset(static_cast<void*>(&this->mBuff), static_cast<int>(0), static_cast<size_t>(260));
 }
 

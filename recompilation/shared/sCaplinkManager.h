@@ -160,6 +160,7 @@ namespace nCaplink { class WebsocketServerListGetAns; }
 namespace nCaplink { class cChatUserInfo; }
 namespace nCaplink { class cUserBaseInfo; }
 namespace nCaplink { class cWebsocketServerInfo; }
+class sGUIExt;
 
 // Declarations
 class sCaplinkManager;
@@ -184,6 +185,8 @@ using u8 = unsigned char;
 
 class sCaplinkManager : public cSystem
 {
+    // inferred: sGUIExt::loadCaplinkProfileIcon names sCaplinkManager::mIconUrl.::MtArray::mLength
+    friend class sGUIExt;
 public:
     enum
     {
@@ -628,6 +631,8 @@ public:
 public:
     class cCaplinkWebsocketListener : public nCaplink::WebsocketListener
     {
+        // inferred: sCaplinkManager::end names sCaplinkManager::mWebsocketListener.mIsRegistDevice
+        friend class sCaplinkManager;
     public:
         cCaplinkWebsocketListener();
         // Address: 0x01abda00 - 0x01abda01 (1 bytes)

@@ -10,6 +10,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "MtPrimitive3D.h"
+#include "cDraw.h"
 #include "nMotion.h"
 #include "rModel.h"
 #include "uBaseModel.h"
@@ -104,9 +105,23 @@ void uModel::move() {
 // void uModel::sync();
 
 // Address: 0x00f2ad30 - 0x00f2adbf (143 bytes)
-__attribute__((weak)) void uModel::draw(cDraw* pdraw) {
-    DDON_STUB("uModel::draw")
-    /* stub */
+void uModel::draw(cDraw* pdraw) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x230 from cDraw*
+    if ((((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pdraw) + static_cast<long>(560))) & static_cast<unsigned long>(1095216660480)) ^ static_cast<unsigned long>(38654705664)) == static_cast<unsigned long>(0)) {
+        if (this->::uBaseModel::mpModel != static_cast<rModel*>(nullptr)) {
+            if (this->::uBaseModel::mpModel->mRCNInfo.map_vertex_base != static_cast<u32*>(nullptr)) {
+                if (this->::uBaseModel::mIsRCNEnable != false) {
+                    this->::uModel::updatePosition(pdraw);
+                    this->::uModel::updateNormal(pdraw);
+                }
+            }
+        }
+    } else {
+        pdraw->::cDraw::pushContext(false);
+        this->::uBaseModel::draw(pdraw);
+        pdraw->::cDraw::popContext(false);
+    }
 }
 
 // Address: 0x00f299f0 - 0x00f29a47 (87 bytes)
@@ -151,10 +166,15 @@ __attribute__((weak)) void uModel::updateJointWorldMatrix(const u8* jointTable, 
 }
 
 // Address: 0x00f2c6b0 - 0x00f2c6f9 (73 bytes)
-__attribute__((weak)) const MtMatrix& uModel::getWorldMatrix(s32 parent_no) const {
-    // local: u32 index;
-    DDON_STUB("uModel::getWorldMatrix")
-    __builtin_unreachable();
+const MtMatrix& uModel::getWorldMatrix(s32 parent_no) const {
+    // DWARF local not rendered: u32 index;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (parent_no > static_cast<s32>(-1)) {
+        if (this->mJointTable[static_cast<unsigned char>(parent_no)] != static_cast<unsigned char>(255)) {
+            return this->mJoint[this->mJointTable[static_cast<unsigned char>(parent_no)]].mWmat;
+        }
+    }
+    return this->::uCoord::mWmat;
 }
 
 // Address: 0x00f2ade0 - 0x00f2c6a2 (6338 bytes)
@@ -531,9 +551,12 @@ u32 uModel::getKeyFrameNum() const {
 // void uModel::setJointInitIdentity(bool enable);
 
 // Address: 0x00f47840 - 0x00f4784c (12 bytes)
-__attribute__((weak)) bool uModel::isJointInitIdentity() const {
-    DDON_STUB("uModel::isJointInitIdentity")
-    return {};
+bool uModel::isJointInitIdentity() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x11fb from const uModel*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(4603))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1534,9 +1557,10 @@ const MtDTI& uModel::Joint::getDTI() const {
 // void* uModel::Joint::operator new(size_t sz, u32 align);
 
 // Address: 0x00f461b0 - 0x00f461f0 (64 bytes)
-__attribute__((weak)) void* uModel::Joint::operator new[](size_t sz, u32 align) {
-    DDON_STUB("uModel::Joint::operator new[]")
-    return nullptr;
+void* uModel::Joint::operator new[](size_t sz, u32 align) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from uModel::Joint::MyDTI*
+    return ::MtMemoryAllocator::getAllocator(::uModel::Joint::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::uModel::Joint::DTI) + static_cast<long>(52)));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1734,9 +1758,40 @@ void uModel::Joint::setType(u32 type) {
 // void uModel::Joint::setLength(f32);
 
 // Address: 0x00f46d90 - 0x00f46e15 (133 bytes)
-__attribute__((weak)) void uModel::Joint::setConstraint(uModel::Constraint* pc) {
-    DDON_STUB("uModel::Joint::setConstraint")
-    /* stub */
+void uModel::Joint::setConstraint(uModel::Constraint* pc) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uModel*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x11fb from uModel*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xa0 from uModel::Joint*
+    this->mpConstraint = pc;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xf46d94, held ahead of the effects the ELF orders after it
+    uModel* t0 = this->mpModel;
+    if (t0 != static_cast<uModel*>(nullptr)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xf46da0, held ahead of the effects the ELF orders after it
+        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(16));
+        if (((t1 & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) > static_cast<unsigned int>(1)) {
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xf46db7, held ahead of the effects the ELF orders after it
+            unsigned char t2 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(4603));
+            t0->mMotionCalcFlag = t0->mMotionCalcFlag | static_cast<u32>(16777216);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xf46dbe, held ahead of the effects the ELF orders after it
+            unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(160));
+            this->mPreUpdate = static_cast<u32>(1);
+            // inferred: the value the loop at 0xf46e0c carries; no location-less local in scope fits
+            for (unsigned int v0_3 = (static_cast<unsigned int>(t3) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);;) {
+                if (v0_3 == static_cast<unsigned int>(255)) {
+                    break;
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xf46de2, held ahead of the effects the ELF orders after it
+                    uModel::Joint* t4 = t0->mJoint;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xf46df1, held ahead of the effects the ELF orders after it
+                    unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t4[v0_3]) + static_cast<long>(160));
+                    t4[v0_3].mPreUpdate = static_cast<u32>(1);
+                    v0_3 = (static_cast<unsigned int>(t5) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1752,9 +1807,10 @@ __attribute__((weak)) void uModel::Joint::setConstraint(uModel::Constraint* pc) 
 // void uModel::Joint::setOffset(const MtVector3&);
 
 // Address: 0x01b63630 - 0x01b6363f (15 bytes)
-__attribute__((weak)) u32 uModel::Joint::getChildNum() const {
-    DDON_STUB("uModel::Joint::getChildNum")
-    return {};
+u32 uModel::Joint::getChildNum() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xa0 from const uModel::Joint*
+    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(160))) >> static_cast<unsigned long>(40));
 }
 
 // No out-of-line body: no code in the ELF
@@ -2028,9 +2084,12 @@ f32 uModel::Motion::getPrevFrame() const {
 // u32 uModel::Motion::isState(u32 state) const;
 
 // Address: 0x00f4a870 - 0x00f4a879 (9 bytes)
-__attribute__((weak)) bool uModel::Motion::isMotionEnd() const {
-    DDON_STUB("uModel::Motion::isMotionEnd")
-    return {};
+bool uModel::Motion::isMotionEnd() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0xa from const uModel::Motion*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(10))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x00f4a880 - 0x00f4a888 (8 bytes)
@@ -2207,18 +2266,24 @@ __attribute__((weak)) u16 uModel::Motion::getKeyFrameWork(u32 idx) const {
 // void uModel::Motion::setKeyFrameWork(u16 i, u32 idx);
 
 // Address: 0x00f4a7a0 - 0x00f4a7bc (28 bytes)
-__attribute__((weak)) u32 uModel::Motion::getKeyFrame(u32 idx) const {
-    DDON_STUB("uModel::Motion::getKeyFrame")
-    return {};
+u32 uModel::Motion::getKeyFrame(u32 idx) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x4 from uModel::Motion::KeyFrameData*
+    if (idx < this->mKeyFrameNum) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&this->mpKeyFrameData[idx]) + static_cast<long>(4));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // No out-of-line body: no code in the ELF
 // void uModel::Motion::setKeyFrame(u32 v, u32 idx);
 
 // Address: 0x00f4a7c0 - 0x00f4a7d2 (18 bytes)
-__attribute__((weak)) u32 uModel::Motion::getPrevKeyFrame(u32 idx) const {
-    DDON_STUB("uModel::Motion::getPrevKeyFrame")
-    return {};
+u32 uModel::Motion::getPrevKeyFrame(u32 idx) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from uModel::Motion::KeyFrameData*
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&this->mpKeyFrameData[idx]) + static_cast<long>(8));
 }
 
 // No out-of-line body: no code in the ELF

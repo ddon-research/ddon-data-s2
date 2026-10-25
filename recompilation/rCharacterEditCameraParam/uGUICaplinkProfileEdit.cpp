@@ -6,12 +6,17 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/cControl.h"
 #include "../shared/cResource.h"
+#include "../shared/cUnit.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
 #include "../shared/sCaplinkManager.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
+#include "uGUICaplinkImageSelect.h"
+#include "uGUICaplinkMailNotice.h"
 #include "uGUICaplinkProfile.h"
+#include "uGUICaplinkTag.h"
+#include "uGUISystemMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -119,9 +124,36 @@ void uGUICaplinkProfileEdit::move() {
 }
 
 // Address: 0x009d01e0 - 0x009d0271 (145 bytes)
-__attribute__((weak)) void uGUICaplinkProfileEdit::updatePtr() {
-    DDON_STUB("uGUICaplinkProfileEdit::updatePtr")
-    /* stub */
+void uGUICaplinkProfileEdit::updatePtr() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpSysMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+    } else {
+        if (this->mpSysMsg->::cUnit::isEnable()) {
+        } else {
+            this->mpSysMsg = static_cast<uGUISystemMsg*>(nullptr);
+        }
+    }
+    if (this->mpImgSlct == static_cast<uGUICaplinkImageSelect*>(nullptr)) {
+    } else {
+        if (this->mpImgSlct->::cUnit::isEnable()) {
+        } else {
+            this->mpImgSlct = static_cast<uGUICaplinkImageSelect*>(nullptr);
+        }
+    }
+    if (this->mpTagEdit == static_cast<uGUICaplinkTag*>(nullptr)) {
+    } else {
+        if (this->mpTagEdit->::cUnit::isEnable()) {
+        } else {
+            this->mpTagEdit = static_cast<uGUICaplinkTag*>(nullptr);
+        }
+    }
+    if (this->mpMailNotice == static_cast<uGUICaplinkMailNotice*>(nullptr)) {
+    } else {
+        if (this->mpMailNotice->::cUnit::isEnable()) {
+        } else {
+            this->mpMailNotice = static_cast<uGUICaplinkMailNotice*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x009d0280 - 0x009d0285 (5 bytes)

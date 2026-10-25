@@ -4,6 +4,7 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cGUIInstance.h"
 #include "../shared/cResource.h"
 #include "../shared/nKeyCustom.h"
 #include "../shared/rArchiveListArray.h"
@@ -148,9 +149,15 @@ void uGUIGaugeSkill::rendaUpdate(u32 count, u32 countMax, u32 level, u32 levelMa
 }
 
 // Address: 0x00a99350 - 0x00a9939f (79 bytes)
-__attribute__((weak)) void uGUIGaugeSkill::updateInit() {
-    DDON_STUB("uGUIGaugeSkill::updateInit")
-    /* stub */
+void uGUIGaugeSkill::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpINST_fix_charge != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpINST_fix_charge->::cGUIInstance::setVisible(false);
+        if (this->mpINST_fix_charge != static_cast<cGUIInstAnimation*>(nullptr)) {
+            this->mpINST_fix_charge->::cGUIInstance::setExecute(false);
+        }
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeSkill::updateWait);
 }
 
 // Address: 0x00a99480 - 0x00a99485 (5 bytes)

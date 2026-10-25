@@ -84,9 +84,14 @@ sLockOnManager::~sLockOnManager() {
 // sLockOnManager* sLockOnManager::getInstance();
 
 // Address: 0x007e07b0 - 0x007e07f0 (64 bytes)
-__attribute__((weak)) void sLockOnManager::reset() {
-    DDON_STUB("sLockOnManager::reset")
-    /* stub */
+void sLockOnManager::reset() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from sLockOnManager*
+    if (this->mTargetArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mTargetArray.::MtArray::mpArray));
+    }
+    this->mTargetArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(32)) = static_cast<unsigned long>(0);
 }
 
 // Address: 0x007e07f0 - 0x007e088a (154 bytes)

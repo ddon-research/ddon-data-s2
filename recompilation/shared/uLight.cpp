@@ -283,15 +283,17 @@ bool uLight::getBoundary(MtSphere* pdst) {
 }
 
 // Address: 0x01b62be0 - 0x01b62be7 (7 bytes)
-__attribute__((weak)) bool uLight::isLimitRangeEnable() const {
-    DDON_STUB("uLight::isLimitRangeEnable")
-    return {};
+bool uLight::isLimitRangeEnable() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as bool
+    return static_cast<bool>(this->mAttr >> static_cast<u32>(7));
 }
 
 // Address: 0x01b62c30 - 0x01b62c46 (22 bytes)
-__attribute__((weak)) void uLight::setLimitRangeEnable(bool enable) {
-    DDON_STUB("uLight::setLimitRangeEnable")
-    /* stub */
+void uLight::setLimitRangeEnable(bool enable) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a wider integer stored into a bitfield; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x48 from uLight*
+    this->mAttr = (enable == false) ? ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(72))) & static_cast<unsigned int>(127)) : (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(72))) & static_cast<unsigned int>(127)) + static_cast<unsigned int>(128));
 }
 
 // Address: 0x01b08fa0 - 0x01b08fa3 (3 bytes)
@@ -429,9 +431,10 @@ const MtDTI& uLight::cHardwareDispCtrlLight::getDTI() const {
 // void uLight::cHardwareDispCtrlLight::setAllocator(u32);
 
 // Address: 0x00f0e230 - 0x00f0e270 (64 bytes)
-__attribute__((weak)) void* uLight::cHardwareDispCtrlLight::operator new(size_t sz, u32 align) {
-    DDON_STUB("uLight::cHardwareDispCtrlLight::operator new")
-    return nullptr;
+void* uLight::cHardwareDispCtrlLight::operator new(size_t sz, u32 align) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from uLight::cHardwareDispCtrlLight::MyDTI*
+    return ::MtMemoryAllocator::getAllocator(::uLight::cHardwareDispCtrlLight::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::uLight::cHardwareDispCtrlLight::DTI) + static_cast<long>(52)));
 }
 
 // No out-of-line body: no code in the ELF

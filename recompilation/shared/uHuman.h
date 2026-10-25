@@ -55,6 +55,7 @@ class cDamageSeInfo;
 class cDraw;
 class cEfcHandle;
 class cEquipData;
+class cFSMUnit;
 class cGeneralPointPtr;
 class cHitGeom;
 class cHitInfo;
@@ -134,6 +135,8 @@ using u8 = unsigned char;
 
 class uHuman : public uCharacter
 {
+    // inferred: cFSMUnit::isTouchActionFromPlayer names uHuman::mpTouchSelectTarget
+    friend class cFSMUnit;
     // inferred: cHumanActBase::move names uHuman::mIsOmTiming
     friend class cHumanActBase;
     // inferred: cHumanActSetNpcMotMyRoom::final names uHuman::mIsBeforeAttackHit
@@ -150,6 +153,8 @@ class uHuman : public uCharacter
     friend class cpJob02;
     // inferred: cpJob05::callbackCatch_Shl names uHuman::mpClimbEnemy
     friend class cpJob05;
+    // inferred: cpJob09::checkCndEnableAirCS06 names uHuman::mJob09AirFrightBoardCount
+    friend class cpJob09;
     // inferred: sGame::initPlayerUnit names uHuman::mSex
     friend class sGame;
 public:
@@ -1534,8 +1539,20 @@ inline void uHuman::onCanShlConst() {
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline bool uHuman::isCancellableAction() {
+    return this->mIsCancellableAction;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline bool uHuman::isCanSetEmotion() {
     return this->mIsCanSetEmotion;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 uHuman::getSex() const {
+    return this->mSex;
 }
 
 // Inline, no code of its own: checked where it is inlined.

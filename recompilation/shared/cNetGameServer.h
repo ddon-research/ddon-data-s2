@@ -182,6 +182,7 @@ class cContextInstance;
 class cContextInterface;
 class cEditParam;
 class cGameTimeWeatherMoonInfo;
+class cItemParam;
 class cMenuBlackList;
 class cMenuCancelClanScoutEntry;
 class cMenuExtendEntryBoardItem;
@@ -483,6 +484,8 @@ class sContextManager;
 class sCraftManager;
 class sGame;
 class sNetworkExt;
+class sNpcManager;
+class uGUIEntryBoardInfo;
 class uGUILoginBonus;
 class uGUIRimWarp;
 
@@ -2455,6 +2458,8 @@ protected:
 
 class cNetGameServer : public MtObject
 {
+    // inferred: cItemParam::isPlayerEquip names cNetGameServer::mLobbyCharacterId
+    friend class cItemParam;
     // inferred: cMenuBlackList::initBlackList names cNetGameServer::mBlackList.::MtArray::mLength
     friend class cMenuBlackList;
     // inferred: cMenuCancelClanScoutEntry::moveCancelClanScoutEntry names cNetGameServer::mStatus[297]
@@ -2499,6 +2504,10 @@ class cNetGameServer : public MtObject
     friend class sGame;
     // inferred: sNetworkExt::clearFriendInfo names cNetGameServer::mFriendList.::MtArray::mLength
     friend class sNetworkExt;
+    // inferred: sNpcManager::initStage names cNetGameServer::mRegisterdPawnList.::MtArray::mLength
+    friend class sNpcManager;
+    // inferred: uGUIEntryBoardInfo::evCtrlDecide names cNetGameServer::mLobbyCharacterId
+    friend class uGUIEntryBoardInfo;
     // inferred: uGUILoginBonus::updateExit names cNetGameServer::mStatus[481]
     friend class uGUILoginBonus;
     // inferred: uGUIRimWarp::updateFavoriteList names cNetGameServer::mLeaderCharacterId
@@ -5152,6 +5161,38 @@ inline nNet::QUICK_MATCH_TYPE cNetGameServer::getLastQuickType() {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline EquipJobItemVec& cNetGameServer::getEquipJobItemListRef() {
     return this->mRecvEquipJobItemList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline EquipJobItemVec& cNetGameServer::getChangeEquipJobItemListRef() {
+    return this->mRecvChangeEquipJobItemList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline EquipJobItemVec& cNetGameServer::getChangePawnEquipJobItemListRef() {
+    return this->mRecvChangePawnEquipJobItemList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES* cNetGameServer::getMainQuestListPacket() {
+    return this->mpConnection->mpGetMainQuestListPacket;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES* cNetGameServer::getTutorialQuestListPacket() {
+    return this->mpConnection->mpGetTutorialQuestListPacket;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES* cNetGameServer::getWorldManageQuestListPacket() {
+    return this->mpConnection->mpGetWorldManageQuestListPacket;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES* cNetGameServer::getLotQuestListPacket() {
+    return this->mpConnection->mpGetLotQuestListPacket;
 }
 
 // Inline, no code of its own: checked where it is inlined.

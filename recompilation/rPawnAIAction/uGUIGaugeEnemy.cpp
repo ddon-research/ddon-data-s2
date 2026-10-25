@@ -214,10 +214,7 @@ void uGUIGaugeEnemy::kill() {
 void uGUIGaugeEnemy::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uGUIBase::move();
-    this->mWorldOffset.x = ::MtVector3::Zero.x;
-    this->mWorldOffset.y = ::MtVector3::Zero.y;
-    this->mWorldOffset.z = ::MtVector3::Zero.z;
-    this->mWorldOffset.pad_ = 0.0f;
+    this->mWorldOffset = ::MtVector3::Zero;
 }
 
 // Address: 0x00b5dbd0 - 0x00b5dc0d (61 bytes)
@@ -255,10 +252,7 @@ void uGUIGaugeEnemy::updatePtr() {
 // Address: 0x00b5dc70 - 0x00b5dca1 (49 bytes)
 void uGUIGaugeEnemy::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWorldOffset.x = offset.x;
-    this->mWorldOffset.y = offset.y;
-    this->mWorldOffset.z = offset.z;
-    this->mWorldOffset.pad_ = 0.0f;
+    this->mWorldOffset = offset;
 }
 
 // No out-of-line body: no code in the ELF
@@ -330,9 +324,10 @@ void uGUIGaugeEnemy::updateExit() {
 }
 
 // Address: 0x00b5dac0 - 0x00b5daee (46 bytes)
-__attribute__((weak)) void uGUIGaugeEnemy::updateInit() {
-    DDON_STUB("uGUIGaugeEnemy::updateInit")
-    /* stub */
+void uGUIGaugeEnemy::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIGaugeEnemy::updateDisp();
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeEnemy::updateWait);
 }
 
 // Address: 0x00b5e2b0 - 0x00b5e7dc (1324 bytes)
@@ -504,11 +499,29 @@ __attribute__((weak)) bool uGUIGaugeEnemy::RageShrinkIcon::update(const uCharact
 // uGUIGaugeEnemy::RageShrinkIcon::STATE uGUIGaugeEnemy::RageShrinkIcon::getState() const;
 
 // Address: 0x00b5f220 - 0x00b5f27a (90 bytes)
-__attribute__((weak)) uGUIGaugeEnemy::RageShrinkIcon::STATE uGUIGaugeEnemy::RageShrinkIcon::checkState(const uCharacter* character, bool isAngerDamage) const {
-    // local: STATE state;
-    // local: const uEnemy* const enemy;
-    DDON_STUB("uGUIGaugeEnemy::RageShrinkIcon::checkState")
-    return {};
+uGUIGaugeEnemy::RageShrinkIcon::STATE uGUIGaugeEnemy::RageShrinkIcon::checkState(const uCharacter* character, bool isAngerDamage) const {
+    // DWARF local not rendered: STATE state;
+    // DWARF local not rendered: const uEnemy* const enemy;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as uGUIGaugeEnemy::RageShrinkIcon::STATE
+    if (character != static_cast<const uCharacter*>(nullptr)) {
+        if ((character->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
+            if (static_cast<const uEnemy*>(character)->::uEnemy::isActiveRageShrink() != false) {
+                if (static_cast<const uEnemy*>(character)->::uEnemy::isActiveShakeChanceTime(static_cast<nObjCollision::SHAKE_CHANCE_TYPE>(1)) != false) {
+                    return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(static_cast<unsigned long>(isAngerDamage) | static_cast<unsigned long>(2));
+                } else {
+                    return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(1);
+                }
+            } else {
+                return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(0);
+            }
+        } else {
+            return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(0);
+        }
+    } else {
+        return static_cast<uGUIGaugeEnemy::RageShrinkIcon::STATE>(0);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (46 bytes)

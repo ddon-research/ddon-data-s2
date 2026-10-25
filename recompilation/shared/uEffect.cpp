@@ -225,9 +225,12 @@ void uEffect::doKeepHoldOff() {
 // void uEffect::addStatus(u32 Status);
 
 // Address: 0x01b65a60 - 0x01b65a6b (11 bytes)
-__attribute__((weak)) bool uEffect::getUGInvalidMode() const {
-    DDON_STUB("uEffect::getUGInvalidMode")
-    return {};
+bool uEffect::getUGInvalidMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x112 from const uEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(274))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01b65a70 - 0x01b65a90 (32 bytes)
@@ -237,9 +240,12 @@ void uEffect::setUGInvalidMode(bool Mode) {
 }
 
 // Address: 0x01b65a90 - 0x01b65a9c (12 bytes)
-__attribute__((weak)) bool uEffect::getConstUpdateMode() const {
-    DDON_STUB("uEffect::getConstUpdateMode")
-    return {};
+bool uEffect::getConstUpdateMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x112 from const uEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(274))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x00fc9080 - 0x00fc9185 (261 bytes)
@@ -249,9 +255,12 @@ __attribute__((weak)) void uEffect::setConstUpdateMode(bool Mode) {
 }
 
 // Address: 0x01b65aa0 - 0x01b65aac (12 bytes)
-__attribute__((weak)) bool uEffect::getSeStopMode() const {
-    DDON_STUB("uEffect::getSeStopMode")
-    return {};
+bool uEffect::getSeStopMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x112 from const uEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(274))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x01b65ab0 - 0x01b65ad0 (32 bytes)
@@ -261,9 +270,12 @@ void uEffect::setSeStopMode(bool Mode) {
 }
 
 // Address: 0x01b65b60 - 0x01b65b6a (10 bytes)
-__attribute__((weak)) bool uEffect::getParentSymmetryMode() const {
-    DDON_STUB("uEffect::getParentSymmetryMode")
-    return {};
+bool uEffect::getParentSymmetryMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x112 from const uEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(274))) >> static_cast<unsigned long>(7));
 }
 
 // Address: 0x01b65b70 - 0x01b65b90 (32 bytes)
@@ -273,9 +285,12 @@ void uEffect::setParentSymmetryMode(bool Mode) {
 }
 
 // Address: 0x01b65b90 - 0x01b65b9c (12 bytes)
-__attribute__((weak)) bool uEffect::getJointFixMode() const {
-    DDON_STUB("uEffect::getJointFixMode")
-    return {};
+bool uEffect::getJointFixMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x01b65ba0 - 0x01b65bc0 (32 bytes)
@@ -285,9 +300,11 @@ void uEffect::setJointFixMode(bool Mode) {
 }
 
 // Address: 0x01b65bc0 - 0x01b65bc9 (9 bytes)
-__attribute__((weak)) bool uEffect::getChainResetFlag() const {
-    DDON_STUB("uEffect::getChainResetFlag")
-    return {};
+bool uEffect::getChainResetFlag() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x112 from const uEffect*
+    // inferred: a value cast to the type its use takes: const unsigned char used as bool
+    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(274))) & static_cast<unsigned char>(1));
 }
 
 // Address: 0x01b65bd0 - 0x01b65bf0 (32 bytes)
@@ -297,9 +314,12 @@ void uEffect::setChainResetFlag(bool Flag) {
 }
 
 // Address: 0x01b65bf0 - 0x01b65bfa (10 bytes)
-__attribute__((weak)) bool uEffect::getJointUpdateFlag() const {
-    DDON_STUB("uEffect::getJointUpdateFlag")
-    return {};
+bool uEffect::getJointUpdateFlag() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) >> static_cast<unsigned long>(7));
 }
 
 // Address: 0x01b65c00 - 0x01b65c20 (32 bytes)
@@ -432,9 +452,10 @@ u32 uEffect::getFlagBitNum() const {
 }
 
 // Address: 0x01b660f0 - 0x01b66106 (22 bytes)
-__attribute__((weak)) bool uEffect::getGroupFlagBit(u32 No) const {
-    DDON_STUB("uEffect::getGroupFlagBit")
-    return {};
+bool uEffect::getGroupFlagBit(u32 No) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mGroupFlag) >> static_cast<unsigned long>(No & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x01b66110 - 0x01b66132 (34 bytes)
@@ -447,9 +468,10 @@ __attribute__((weak)) void uEffect::setGroupFlagBit(bool Flag, u32 No) {
 // u32 uEffect::getGroupFlag() const;
 
 // Address: 0x01b66160 - 0x01b66176 (22 bytes)
-__attribute__((weak)) bool uEffect::getMaterialFlagBit(u32 No) const {
-    DDON_STUB("uEffect::getMaterialFlagBit")
-    return {};
+bool uEffect::getMaterialFlagBit(u32 No) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mMaterialFlag) >> static_cast<unsigned long>(No & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x01b66180 - 0x01b661a2 (34 bytes)
@@ -503,9 +525,15 @@ void uEffect::setResourceParam(rEffectList* pEffectList, u32 GroupFlag, u32 Mate
 }
 
 // Address: 0x00fc9990 - 0x00fc99e2 (82 bytes)
-__attribute__((weak)) void uEffect::setResourceParam(rEffectList* pEffectList, u32 GroupFlag, u32 MaterialFlag, uEffect* pParentGenerator, s32 SetNo, f32 SetRate) {
-    DDON_STUB("uEffect::setResourceParam")
-    /* stub */
+void uEffect::setResourceParam(rEffectList* pEffectList, u32 GroupFlag, u32 MaterialFlag, uEffect* pParentGenerator, s32 SetNo, f32 SetRate) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mGroupFlag = GroupFlag;
+    this->mMaterialFlag = MaterialFlag;
+    this->mpParentGenerator = pParentGenerator;
+    this->mSetNo = SetNo;
+    this->mChildSetRate = static_cast<long>(256.0f * SetRate);
+    this->mChildUnitLevel = static_cast<u32>(0);
+    this->setEffectList(pEffectList);
 }
 
 // Address: 0x00fc99f0 - 0x00fc9a98 (168 bytes)
@@ -557,9 +585,10 @@ __attribute__((weak)) void uEffect::setParam(rEffectList* pEffectList, u32 Group
 // u32 uEffect::getChildUnitLevel() const;
 
 // Address: 0x00fc9ce0 - 0x00fc9d01 (33 bytes)
-__attribute__((weak)) void uEffect::setChildUnitLevel(uEffect* pEffect) {
-    DDON_STUB("uEffect::setChildUnitLevel")
-    /* stub */
+void uEffect::setChildUnitLevel(uEffect* pEffect) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1e4 from uEffect*
+    this->mChildUnitLevel = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffect) + static_cast<long>(484))) + static_cast<unsigned long>(72057594037927936)) >> static_cast<unsigned long>(56);
 }
 
 // No out-of-line body: no code in the ELF
@@ -767,9 +796,12 @@ __attribute__((weak)) uEffect* uEffect::openEffect() {
 }
 
 // Address: 0x00fca1d0 - 0x00fca1fe (46 bytes)
-__attribute__((weak)) void uEffect::restart() {
-    DDON_STUB("uEffect::restart")
-    /* stub */
+void uEffect::restart() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a wider integer stored into a bitfield; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1e4 from uEffect*
+    this->::uBaseEffect::restart();
+    this->::uBaseEffect::mStatus = this->::uBaseEffect::mStatus | static_cast<u32>(1048576);
+    this->mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(484))) >> static_cast<unsigned long>(16);
 }
 
 // Address: 0x00fca200 - 0x00fca3c3 (451 bytes)

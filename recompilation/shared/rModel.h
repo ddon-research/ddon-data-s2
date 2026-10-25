@@ -28,6 +28,8 @@ namespace nDraw { class Material; }
 namespace nDraw { class VertexBuffer; }
 class rMaterial;
 class rTexture;
+class uModel;
+class uOmSwingModel;
 class uSimSoftBody;
 
 // Declarations
@@ -47,6 +49,10 @@ using u8 = unsigned char;
 
 class rModel : public cResource
 {
+    // inferred: uModel::draw names rModel::mRCNInfo.map_vertex_base
+    friend class uModel;
+    // inferred: uOmSwingModel::updateLodDistance names rModel::mModelInfo.middist
+    friend class uOmSwingModel;
     // inferred: uSimSoftBody::getTargetVertexBuffer names rModel::mpVertexBuffer
     friend class uSimSoftBody;
 public:

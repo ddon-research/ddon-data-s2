@@ -9,7 +9,7 @@
 #include "../shared/MtObject.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
-#include "../shared/cGUIControlMgr.h"
+#include "cGUIControlMgr.h"
 #include "../shared/nQuest.h"
 #include "../shared/uGUIBase.h"
 

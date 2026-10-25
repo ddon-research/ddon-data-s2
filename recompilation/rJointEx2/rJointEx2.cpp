@@ -65,12 +65,21 @@ inline void cJointEx2::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cJointEx2::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (372 bytes)
-//   in cJointEx2::MyDTI::newInstance at 0x0068f07d-0x0068f0d6 (called at rJointEx2.cpp:39)
-//   in cJointEx2::MyDTI::newInstance at 0x0068f07d-0x0068f0d6 (called at rJointEx2.h:125)
-//   in rTbl2<cJointEx2>::allocData at 0x01a96967-0x01a96979, 0x01a9697c-0x01a969cb (called at rTbl2.h:215)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// cJointEx2::cJointEx2();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cJointEx2::cJointEx2() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mJntNo = static_cast<u8>(0);
+    this->mRefJntNo = static_cast<u8>(0);
+    this->mAxis = static_cast<u8>(7);
+    this->mRate = 0.5f;
+    this->mTwistRate = 0.0f;
+    this->mRotAdd = ::MtVector3::Zero;
+    this->mLimitAxis = static_cast<u8>(0);
+    this->mLimitMin = 0.0f;
+    this->mLimitMax = 0.0f;
+}
 
 // Defined in the class (its body was written in a header).
 // cJointEx2::~cJointEx2();

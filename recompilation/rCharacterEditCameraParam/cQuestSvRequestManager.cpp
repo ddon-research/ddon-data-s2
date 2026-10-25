@@ -208,8 +208,36 @@ cQuestSvRequestManager::cQuestSvRequestManager() {
 // Address: 0x001c3ea0 - 0x001c3f45 (165 bytes)
 // Also emitted as: _ZN22cQuestSvRequestManagerD0Ev at 0x001c3f50
 cQuestSvRequestManager::~cQuestSvRequestManager() {
-    DDON_STUB("cQuestSvRequestManager::~cQuestSvRequestManager")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->mpQuestProgressReq = static_cast<cQuestSvReqQuestProgress*>(nullptr);
+    if (this->mQuestSvRequestQueue.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x1c3ed0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mQuestSvRequestQueue.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mQuestSvRequestQueue.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mQuestSvRequestQueue.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mQuestSvRequestQueue.::MtArray::mLength) {
+                    v0_0 = this->mQuestSvRequestQueue.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mQuestSvRequestQueue.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mQuestSvRequestQueue.::MtArray::mpArray));
+    }
+    this->mQuestSvRequestQueue.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mQuestSvRequestQueue.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mQuestSvRequestQueue.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x001c4010 - 0x001c4011 (1 bytes)

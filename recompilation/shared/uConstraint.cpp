@@ -5,7 +5,9 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "cResource.h"
 #include "cUnit.h"
+#include "rConstraint.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -197,11 +199,41 @@ __attribute__((weak)) bool uConstraint::setConstraint(uModel::Joint* pJnt) {
 }
 
 // Address: 0x01018790 - 0x01018871 (225 bytes)
-__attribute__((weak)) bool uConstraint::setConstraint(uModel* pModel, s32 JntNo) {
-    // local: u32 Idx;
-    // local: Joint* pJnt;
-    DDON_STUB("uConstraint::setConstraint")
-    return {};
+bool uConstraint::setConstraint(uModel* pModel, s32 JntNo) {
+    // DWARF local not rendered: u32 Idx;
+    // DWARF local not rendered: Joint* pJnt;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpParentJnt != static_cast<uModel::Joint*>(nullptr)) {
+        if (this->mpPrevCns != static_cast<uConstraint*>(nullptr)) {
+            this->mpPrevCns->mpNextCns = static_cast<uConstraint*>(nullptr);
+            if (this->mpNextCns != static_cast<uConstraint*>(nullptr)) {
+                this->mpPrevCns->mpNextCns = this->mpNextCns;
+                this->mpNextCns->mpPrevCns = this->mpPrevCns;
+            }
+        } else {
+            if (this->mpNextCns != static_cast<uConstraint*>(nullptr)) {
+                this->mpNextCns->mpPrevCns = static_cast<uConstraint*>(nullptr);
+                this->mpParentJnt->::uModel::Joint::setConstraint(static_cast<uModel::Constraint*>(&this->mpNextCns->mConstraint));
+            } else {
+                this->mpParentJnt->::uModel::Joint::setConstraint(static_cast<uModel::Constraint*>(nullptr));
+            }
+        }
+        this->mpParentJnt = static_cast<uModel::Joint*>(nullptr);
+        this->mpNextCns = static_cast<uConstraint*>(nullptr);
+        this->mpPrevCns = static_cast<uConstraint*>(nullptr);
+        this->mOrder = static_cast<s32>(-1);
+    }
+    if (pModel != static_cast<uModel*>(nullptr)) {
+        if (static_cast<unsigned int>(JntNo) <= static_cast<unsigned int>(255)) {
+            if (pModel->mJointTable[static_cast<unsigned char>(JntNo)] < pModel->mJointNum) {
+                if ((&pModel->mJoint[pModel->mJointTable[static_cast<unsigned char>(JntNo)]]) != static_cast<uModel::Joint*>(nullptr)) {
+                    this->::uConstraint::setConstraint(&pModel->mJoint[pModel->mJointTable[static_cast<unsigned char>(JntNo)]]);
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x01018700 - 0x0101878b (139 bytes)
@@ -291,10 +323,18 @@ u32 uConstraint::getPri() const {
 }
 
 // Address: 0x01018880 - 0x010188ab (43 bytes)
-__attribute__((weak)) bool uConstraint::checkJointNo(uModel* pModel, s32 JntNo) {
-    // local: u32 Idx;
-    DDON_STUB("uConstraint::checkJointNo")
-    return {};
+bool uConstraint::checkJointNo(uModel* pModel, s32 JntNo) {
+    // DWARF local not rendered: u32 Idx;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<unsigned int>(JntNo) > static_cast<unsigned int>(255)) {
+        return false;
+    } else {
+        if (pModel != static_cast<uModel*>(nullptr)) {
+            return pModel->mJointTable[static_cast<unsigned char>(JntNo)] < pModel->mJointNum;
+        } else {
+            return true;
+        }
+    }
 }
 
 // Address: 0x01018b60 - 0x01018b68 (8 bytes)
@@ -311,9 +351,16 @@ __attribute__((weak)) void uConstraint::move() {
 }
 
 // Address: 0x01018c40 - 0x01018c67 (39 bytes)
-__attribute__((weak)) void uConstraint::kill() {
-    DDON_STUB("uConstraint::kill")
-    /* stub */
+void uConstraint::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uConstraint*
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+    } else {
+        if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+        }
+        this->remove();
+    }
 }
 
 // Defined in the class (its body was written in a header).
@@ -323,10 +370,31 @@ __attribute__((weak)) void uConstraint::kill() {
 // void uConstraint::remove();
 
 // Address: 0x01018950 - 0x0101899a (74 bytes)
-__attribute__((weak)) void uConstraint::setResource(cResource* pRes) {
-    // local: rConstraint* pCnsRes;
-    DDON_STUB("uConstraint::setResource")
-    /* stub */
+void uConstraint::setResource(cResource* pRes) {
+    // DWARF local not rendered: rConstraint* pCnsRes;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from cResource*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cResource*
+    if (pRes != static_cast<cResource*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0x1018968, used once; no DWARF local holds it
+        const MtDTI& t0 = pRes->getDTI();
+        // inferred: the value the loop at 0x1018976 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::rConstraint::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x1018976 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                this->mPri = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pRes) + static_cast<long>(116));
+                this->mID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pRes) + static_cast<long>(112));
+                return;
+            }
+        }
+    }
 }
 
 // Address: 0x01ad3490 - 0x01ad3498 (8 bytes)

@@ -8,6 +8,7 @@
 
 // Forward declarations
 class cContextCharacter;
+class cpShlShotCtrl;
 
 // Declarations
 namespace nHuman { struct stShellRequestInfo; }
@@ -198,8 +199,10 @@ namespace nHuman {
 
     struct stShellRequestInfo
     {
-        // inferred: cContextCharacter::getShellRequestInfoNum names cContextCharacter::mSheRequestArray[0].mIsSeted
+        // inferred: cContextCharacter::clearShellRequestInfoTop names cContextCharacter::mSheRequestArray[7].mReqMsg.mLockOnIndex
         friend class ::cContextCharacter;
+        // inferred: cpShlShotCtrl::registShellRequestMsg names cpShlShotCtrl::mShlReqArray.elems[0].mIsSeted
+        friend class ::cpShlShotCtrl;
     public:
         stShellRequestInfo();
         void clear();
@@ -221,3 +224,9 @@ namespace nHuman {
     bool isEnableNormalSkillId(GROW_NORMAL_SKILL_ENUM id);  // Capcom: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nHuman.cpp:1065
 
 }  // namespace nHuman
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool nHuman::stShellRequestInfo::isSeted() const {
+    return this->mIsSeted;
+}

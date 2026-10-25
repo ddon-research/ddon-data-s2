@@ -8,7 +8,7 @@
 #include "../shared/MtString.h"
 #include "../shared/MtTime.h"
 #include "../shared/cControl.h"
-#include "../shared/cGUIControlMgr.h"
+#include "cGUIControlMgr.h"
 #include "../shared/uGUIBase.h"
 
 // Forward declarations

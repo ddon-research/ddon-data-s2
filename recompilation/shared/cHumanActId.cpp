@@ -44,9 +44,8 @@ __attribute__((weak)) nHuman::GROW_NORMAL_SKILL_ENUM cHumanActId::getNormalSkill
     return {};
 }
 
-// No out-of-line body: 3 inlined copies in 3 functions (65 bytes)
+// No out-of-line body: 2 inlined copies in 2 functions (44 bytes)
 //   in cHumanActId::getCustomSkillActNo at 0x0022c81f-0x0022c834 (called at cHumanActId.cpp:452)
-//   in cHumanActId::getCustomSkillLvMax at 0x0022c86c-0x0022c881 (called at cHumanActId.cpp:483)
 //   in cHumanActId::getCustomSkillId at 0x0022c8aa-0x0022c8c1 (called at cHumanActId.cpp:505)
 // const cHumanActId::ACT_ID_TBL* cHumanActId::getActIdJobTbl(nHuman::JOB_ENUM job);
 

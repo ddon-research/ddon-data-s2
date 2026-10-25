@@ -125,7 +125,7 @@ void cOmControl::reqKillCtrl() {
 
 // Address: 0x003ae120 - 0x003ae1d7 (183 bytes)
 void cOmControl::initLot() {
-    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    // Approximate from the ELF: a cast to the other signedness; a range test the recompile folds to a mask test; the body oracle reports this body.
     this->mOmID = this->mLot.mOmID;
     if (static_cast<unsigned int>(this->mLot.mOmID - static_cast<s32>(603000)) > static_cast<unsigned int>(1)) {
         if (this->mLot.mOmID == static_cast<s32>(522350)) {

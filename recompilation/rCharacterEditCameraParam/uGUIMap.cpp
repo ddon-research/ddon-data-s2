@@ -15,6 +15,7 @@
 #include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/cUIObject.h"
+#include "../shared/cUnit.h"
 #include "../shared/nQuest.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
@@ -23,7 +24,9 @@
 #include "../shared/sGUIExt.h"
 #include "../shared/sGame.h"
 #include "sMarker.h"
+#include "../shared/uDDOModel.h"
 #include "../shared/uGUIBase.h"
+#include "uGUIPopCmd01.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -159,10 +162,56 @@ __attribute__((weak)) void uGUIMap::draw(cDraw* pDraw) {
 }
 
 // Address: 0x00b6a920 - 0x00b6a987 (103 bytes)
-__attribute__((weak)) void uGUIMap::updatePtr() {
-    // local: u32 i;
-    DDON_STUB("uGUIMap::updatePtr")
-    /* stub */
+void uGUIMap::updatePtr() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0xb6a960 carries; no location-less local in scope fits
+    u32 v0_0;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_1;
+    // inferred: the value the loop at 0xb6a960 carries; no location-less local in scope fits
+    uDDOModel* * v0_3;
+    if (this->mpSubMenu != static_cast<uGUIPopCmd01*>(nullptr)) {
+        if (this->mpSubMenu->::cUnit::isEnable() == false) {
+            this->mpSubMenu = static_cast<uGUIPopCmd01*>(nullptr);
+            v0_0 = this->mUpdCntEMInfo;
+            if (v0_0 != static_cast<u32>(0)) {
+                i0_1 = static_cast<unsigned int>(0);
+                v0_3 = &this->mTblEMInfo[0].mpUnit;
+            } else {
+                return;
+            }
+        } else {
+            v0_0 = this->mUpdCntEMInfo;
+            if (v0_0 != static_cast<u32>(0)) {
+                i0_1 = static_cast<unsigned int>(0);
+                v0_3 = &this->mTblEMInfo[0].mpUnit;
+            } else {
+                return;
+            }
+        }
+    } else {
+        v0_0 = this->mUpdCntEMInfo;
+        if (v0_0 != static_cast<u32>(0)) {
+            i0_1 = static_cast<unsigned int>(0);
+            v0_3 = &this->mTblEMInfo[0].mpUnit;
+        } else {
+            return;
+        }
+    }
+    for (;;) {
+        if ((*v0_3) != static_cast<uDDOModel*>(nullptr)) {
+            if ((*v0_3)->::cUnit::isEnable() == false) {
+                *v0_3 = static_cast<uDDOModel*>(nullptr);
+            }
+        }
+        if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
+            i0_1 += static_cast<unsigned int>(1);
+            v0_3 += static_cast<int>(8);
+        } else {
+            break;
+        }
+    }
 }
 
 // Address: 0x00b6a990 - 0x00b6a9a1 (17 bytes)
@@ -320,9 +369,27 @@ __attribute__((weak)) void uGUIMap::getPointerRealPos(MtVector3& pos) {
 }
 
 // Address: 0x00b6a7a0 - 0x00b6a853 (179 bytes)
-__attribute__((weak)) void uGUIMap::updateInit() {
-    DDON_STUB("uGUIMap::updateInit")
-    /* stub */
+void uGUIMap::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpCtrl != static_cast<cControl*>(nullptr)) {
+        this->mpCtrl->setFocus(true);
+    }
+    if (this->mpCtrlMapType != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        this->mpCtrlMapType->setFocus(true);
+    }
+    if (this->mpCtrlZoom != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+        this->mpCtrlZoom->setFocus(true);
+    }
+    if (this->mpCtrlMarkerIdx != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        this->mpCtrlMarkerIdx->setFocus(true);
+    }
+    if (this->mpCtrlMarker != static_cast<cControl*>(nullptr)) {
+        this->mpCtrlMarker->setFocus(true);
+    }
+    if (this->mpCtrlSubMenu != static_cast<cControl*>(nullptr)) {
+        this->mpCtrlSubMenu->setFocus(true);
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMap::updateWait);
 }
 
 // Address: 0x00b70450 - 0x00b70478 (40 bytes)
@@ -423,9 +490,9 @@ u32 uGUIMap::evCtrlSubmenu(cControl::Message* msg) {
 }
 
 // Address: 0x00b713d0 - 0x00b713ea (26 bytes)
-__attribute__((weak)) void uGUIMap::evEnd() {
-    DDON_STUB("uGUIMap::evEnd")
-    /* stub */
+void uGUIMap::evEnd() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMap::updateExit);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (157 bytes)
@@ -1223,10 +1290,35 @@ __attribute__((weak)) MtVector3 uGUIMap::getNearPlayerPosCalc(const nMarker::cMa
 // void uGUIMap::changeFieldBackSequence(s32 worldType);
 
 // Address: 0x00b71750 - 0x00b717e3 (147 bytes)
-__attribute__((weak)) u32 uGUIMap::submenuCallBack(MtObject* pDummy, MtObject* pUnit) {
-    // local: cLandId* pId;
-    DDON_STUB("uGUIMap::submenuCallBack")
-    return {};
+u32 uGUIMap::submenuCallBack(MtObject* pDummy, MtObject* pUnit) {
+    // DWARF local not rendered: cLandId* pId;
+    // Approximate from the ELF: a load named after a store only its type keeps apart; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ab0
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x5ab4
+    if (pUnit != static_cast<MtObject*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0xb7175f read, used twice; no DWARF local holds it
+        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pUnit) + static_cast<long>(8));
+        this->mLandType = static_cast<s32>(t0);
+        // inferred: a temporary for the result of the call at 0xb71772, used once; no DWARF local holds it
+        u32 t1 = ::sMarker::getInstance()->::sMarker::getDispFieldAreaIdFromLandId(t0);
+        // inferred: a temporary for the result of the call at 0xb7177c, used once; no DWARF local holds it
+        MT_CTSTR t2 = ::sMarker::getInstance()->::sMarker::getFieldAreaName(t1);
+        if (this->mpObjMsgLand != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mpObjMsgLand), t2, static_cast<u32>(0), false);
+        }
+        static_cast<sGUIExt*>(::sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.x = 0.0f;
+        static_cast<sGUIExt*>(::sGUI::getInstance())->mMap.mPos2CenterMenuOfsReq.y = 0.0f;
+        this->mUpdFrmQstInfo = 0.0f;
+        this->mUpdFrmLMInfo = 0.0f;
+        this->mUpdFrmPatchInfo = 0.0f;
+        this->mUpdFrmNpcClsInfo = 0.0f;
+        this->mUpdFrmEMInfo = 0.0f;
+        this->mUpdFrmOMInfo = 0.0f;
+        return static_cast<u32>(0);
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00b6a6a0 - 0x00b6a791 (241 bytes)
@@ -1523,12 +1615,20 @@ inline void uGUIMap::cMarkerUpdInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void uGUIMap::cMarkerUpdInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 7 inlined copies in 4 functions (464 bytes)
-//   in uGUIMap::cMarkerUpdInfo::MyDTI::newInstance at 0x00b66dbd-0x00b66e19 (called at uGUIMap.cpp:150)
-//   in uGUIMap::uGUIMap at 0x00b6758e-0x00b675ee (called at uGUIMap.cpp:170)
-//   in uGUIMap::uGUIMap at 0x00b675fa-0x00b6764e (called at uGUIMap.cpp:170)
-//   and 4 more (every copy is in <bundle>.inlined.json)
-// uGUIMap::cMarkerUpdInfo::cMarkerUpdInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline uGUIMap::cMarkerUpdInfo::cMarkerUpdInfo() {
+    this->mEnable = false;
+    this->mIsDefFloor = false;
+    this->mQuestId = static_cast<u32>(0);
+    this->mIdx = static_cast<u32>(0);
+    this->mGroupNo = static_cast<u32>(0);
+    this->mDist = ::MtVector2::Zero;
+    this->mEffectiveRange = 0.0f;
+    this->mPosIdx = static_cast<u32>(0);
+    this->mSaveId = static_cast<s32>(-1);
+    this->mpUnit = static_cast<uDDOModel*>(nullptr);
+}
 
 // Address: 0x00b77250 - 0x00b77251 (1 bytes)
 // Also emitted as: _ZN7uGUIMap14cMarkerUpdInfoD0Ev at 0x00b77260
@@ -1594,11 +1694,16 @@ inline void uGUIMap::cMarkerLandInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void uGUIMap::cMarkerLandInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 3 inlined copies in 3 functions (241 bytes)
-//   in uGUIMap::cMarkerLandInfo::MyDTI::newInstance at 0x00b66ebd-0x00b66f1f (called at uGUIMap.cpp:151)
-//   in uGUIMap::uGUIMap at 0x00b67721-0x00b67793 (called at uGUIMap.cpp:170)
-//   in uGUIMap::updateLandMarkerInfo at 0x00b740be-0x00b740d0, 0x00b741ea-0x00b741f5 (called at uGUIMap.cpp:4200)
-// uGUIMap::cMarkerLandInfo::cMarkerLandInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline uGUIMap::cMarkerLandInfo::cMarkerLandInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mWorldPos = ::MtVector3::Zero;
+    this->mDist = ::MtVector2::Zero;
+    this->mType = static_cast<u32>(0);
+    this->mSpotMessId = static_cast<u32>(0);
+    this->mMessId = static_cast<s32>(-1);
+}
 
 // Address: 0x00b772a0 - 0x00b772a1 (1 bytes)
 // Also emitted as: _ZN7uGUIMap15cMarkerLandInfoD0Ev at 0x00b772b0

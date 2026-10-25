@@ -21,6 +21,7 @@
 #include "cSoundLimitter.h"
 #include "cSoundMultiBandEQ.h"
 #include "cSoundPanner.h"
+#include "cSoundPicolaPitchShift.h"
 #include "cSoundSilentDetectFilter.h"
 #include "cSystem.h"
 #include "ngs2_sce_reverb.h"
@@ -2546,9 +2547,30 @@ __attribute__((weak)) MtMatrix sSound::getListeningMatrix3() {
 }
 
 // Address: 0x01ba7e80 - 0x01ba7ef1 (113 bytes)
-__attribute__((weak)) void sSound::setTotalMasterVolumeDecibel(f32 vol_dB) {
-    DDON_STUB("sSound::setTotalMasterVolumeDecibel")
-    /* stub */
+void sSound::setTotalMasterVolumeDecibel(f32 vol_dB) {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7e89, held ahead of the effects the ELF orders after it
+    float t0 = -96.0f;
+    if (t0 >= vol_dB) {
+        this->mTotalMasterVolume = 0.0f;
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7e97, held ahead of the effects the ELF orders after it
+        float t1 = 20.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7e9f, held ahead of the effects the ELF orders after it
+        float t2 = 10.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7ea7, held ahead of the effects the ELF orders after it
+        float t4 = ::powf(t2, vol_dB / t1);
+        this->mTotalMasterVolume = t4;
+        if (0.0f > this->mTotalMasterVolume) {
+            this->mTotalMasterVolume = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7ed6, held ahead of the effects the ELF orders after it
+            float t5 = 1.9953f;
+            if (this->mTotalMasterVolume > t5) {
+                this->mTotalMasterVolume = 1.9953f;
+            }
+        }
+    }
 }
 
 // Address: 0x01ba7e40 - 0x01ba7e76 (54 bytes)
@@ -2562,9 +2584,30 @@ f32 sSound::getTotalMasterVolumeDecibel() {
 }
 
 // Address: 0x01ba7f40 - 0x01ba7fb1 (113 bytes)
-__attribute__((weak)) void sSound::setSeMasterVolumeDecibel(f32 vol_dB) {
-    DDON_STUB("sSound::setSeMasterVolumeDecibel")
-    /* stub */
+void sSound::setSeMasterVolumeDecibel(f32 vol_dB) {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7f49, held ahead of the effects the ELF orders after it
+    float t0 = -96.0f;
+    if (t0 >= vol_dB) {
+        this->mSeMasterVolume = 0.0f;
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7f57, held ahead of the effects the ELF orders after it
+        float t1 = 20.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7f5f, held ahead of the effects the ELF orders after it
+        float t2 = 10.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7f67, held ahead of the effects the ELF orders after it
+        float t4 = ::powf(t2, vol_dB / t1);
+        this->mSeMasterVolume = t4;
+        if (0.0f > this->mSeMasterVolume) {
+            this->mSeMasterVolume = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba7f96, held ahead of the effects the ELF orders after it
+            float t5 = 1.9953f;
+            if (this->mSeMasterVolume > t5) {
+                this->mSeMasterVolume = 1.9953f;
+            }
+        }
+    }
 }
 
 // Address: 0x01ba7f00 - 0x01ba7f36 (54 bytes)
@@ -2578,9 +2621,30 @@ f32 sSound::getSeMasterVolumeDecibel() {
 }
 
 // Address: 0x01ba8000 - 0x01ba8071 (113 bytes)
-__attribute__((weak)) void sSound::setBgmMasterVolumeDecibel(f32 vol_dB) {
-    DDON_STUB("sSound::setBgmMasterVolumeDecibel")
-    /* stub */
+void sSound::setBgmMasterVolumeDecibel(f32 vol_dB) {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8009, held ahead of the effects the ELF orders after it
+    float t0 = -96.0f;
+    if (t0 >= vol_dB) {
+        this->mBgmMasterVolume = 0.0f;
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8017, held ahead of the effects the ELF orders after it
+        float t1 = 20.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba801f, held ahead of the effects the ELF orders after it
+        float t2 = 10.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8027, held ahead of the effects the ELF orders after it
+        float t4 = ::powf(t2, vol_dB / t1);
+        this->mBgmMasterVolume = t4;
+        if (0.0f > this->mBgmMasterVolume) {
+            this->mBgmMasterVolume = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8056, held ahead of the effects the ELF orders after it
+            float t5 = 1.9953f;
+            if (this->mBgmMasterVolume > t5) {
+                this->mBgmMasterVolume = 1.9953f;
+            }
+        }
+    }
 }
 
 // Address: 0x01ba7fc0 - 0x01ba7ff6 (54 bytes)
@@ -2594,9 +2658,30 @@ f32 sSound::getBgmMasterVolumeDecibel() {
 }
 
 // Address: 0x01ba80c0 - 0x01ba8131 (113 bytes)
-__attribute__((weak)) void sSound::setEnvMasterVolumeDecibel(f32 vol_dB) {
-    DDON_STUB("sSound::setEnvMasterVolumeDecibel")
-    /* stub */
+void sSound::setEnvMasterVolumeDecibel(f32 vol_dB) {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba80c9, held ahead of the effects the ELF orders after it
+    float t0 = -96.0f;
+    if (t0 >= vol_dB) {
+        this->mEnvMasterVolume = 0.0f;
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba80d7, held ahead of the effects the ELF orders after it
+        float t1 = 20.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba80df, held ahead of the effects the ELF orders after it
+        float t2 = 10.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba80e7, held ahead of the effects the ELF orders after it
+        float t4 = ::powf(t2, vol_dB / t1);
+        this->mEnvMasterVolume = t4;
+        if (0.0f > this->mEnvMasterVolume) {
+            this->mEnvMasterVolume = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8116, held ahead of the effects the ELF orders after it
+            float t5 = 1.9953f;
+            if (this->mEnvMasterVolume > t5) {
+                this->mEnvMasterVolume = 1.9953f;
+            }
+        }
+    }
 }
 
 // Address: 0x01ba8080 - 0x01ba80b6 (54 bytes)
@@ -2610,9 +2695,30 @@ f32 sSound::getEnvMasterVolumeDecibel() {
 }
 
 // Address: 0x01ba8180 - 0x01ba81f1 (113 bytes)
-__attribute__((weak)) void sSound::setVoiceMasterVolumeDecibel(f32 vol_dB) {
-    DDON_STUB("sSound::setVoiceMasterVolumeDecibel")
-    /* stub */
+void sSound::setVoiceMasterVolumeDecibel(f32 vol_dB) {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8189, held ahead of the effects the ELF orders after it
+    float t0 = -96.0f;
+    if (t0 >= vol_dB) {
+        this->mVoiceMasterVolume = 0.0f;
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8197, held ahead of the effects the ELF orders after it
+        float t1 = 20.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba819f, held ahead of the effects the ELF orders after it
+        float t2 = 10.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba81a7, held ahead of the effects the ELF orders after it
+        float t4 = ::powf(t2, vol_dB / t1);
+        this->mVoiceMasterVolume = t4;
+        if (0.0f > this->mVoiceMasterVolume) {
+            this->mVoiceMasterVolume = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba81d6, held ahead of the effects the ELF orders after it
+            float t5 = 1.9953f;
+            if (this->mVoiceMasterVolume > t5) {
+                this->mVoiceMasterVolume = 1.9953f;
+            }
+        }
+    }
 }
 
 // Address: 0x01ba8140 - 0x01ba8176 (54 bytes)
@@ -2626,9 +2732,30 @@ f32 sSound::getVoiceMasterVolumeDecibel() {
 }
 
 // Address: 0x01ba8240 - 0x01ba82b1 (113 bytes)
-__attribute__((weak)) void sSound::setSystemMasterVolumeDecibel(f32 vol_dB) {
-    DDON_STUB("sSound::setSystemMasterVolumeDecibel")
-    /* stub */
+void sSound::setSystemMasterVolumeDecibel(f32 vol_dB) {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8249, held ahead of the effects the ELF orders after it
+    float t0 = -96.0f;
+    if (t0 >= vol_dB) {
+        this->mSystemMasterVolume = 0.0f;
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8257, held ahead of the effects the ELF orders after it
+        float t1 = 20.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba825f, held ahead of the effects the ELF orders after it
+        float t2 = 10.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8267, held ahead of the effects the ELF orders after it
+        float t4 = ::powf(t2, vol_dB / t1);
+        this->mSystemMasterVolume = t4;
+        if (0.0f > this->mSystemMasterVolume) {
+            this->mSystemMasterVolume = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8296, held ahead of the effects the ELF orders after it
+            float t5 = 1.9953f;
+            if (this->mSystemMasterVolume > t5) {
+                this->mSystemMasterVolume = 1.9953f;
+            }
+        }
+    }
 }
 
 // Address: 0x01ba8200 - 0x01ba8236 (54 bytes)
@@ -2642,9 +2769,30 @@ f32 sSound::getSystemMasterVolumeDecibel() {
 }
 
 // Address: 0x01ba8300 - 0x01ba8371 (113 bytes)
-__attribute__((weak)) void sSound::setEventMasterVolumeDecibel(f32 vol_dB) {
-    DDON_STUB("sSound::setEventMasterVolumeDecibel")
-    /* stub */
+void sSound::setEventMasterVolumeDecibel(f32 vol_dB) {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8309, held ahead of the effects the ELF orders after it
+    float t0 = -96.0f;
+    if (t0 >= vol_dB) {
+        this->mEventMasterVolume = 0.0f;
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8317, held ahead of the effects the ELF orders after it
+        float t1 = 20.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba831f, held ahead of the effects the ELF orders after it
+        float t2 = 10.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8327, held ahead of the effects the ELF orders after it
+        float t4 = ::powf(t2, vol_dB / t1);
+        this->mEventMasterVolume = t4;
+        if (0.0f > this->mEventMasterVolume) {
+            this->mEventMasterVolume = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8356, held ahead of the effects the ELF orders after it
+            float t5 = 1.9953f;
+            if (this->mEventMasterVolume > t5) {
+                this->mEventMasterVolume = 1.9953f;
+            }
+        }
+    }
 }
 
 // Address: 0x01ba82c0 - 0x01ba82f6 (54 bytes)
@@ -2658,9 +2806,30 @@ f32 sSound::getEventMasterVolumeDecibel() {
 }
 
 // Address: 0x01ba83c0 - 0x01ba8431 (113 bytes)
-__attribute__((weak)) void sSound::setLFEMasterVolumeDecibel(f32 vol_dB) {
-    DDON_STUB("sSound::setLFEMasterVolumeDecibel")
-    /* stub */
+void sSound::setLFEMasterVolumeDecibel(f32 vol_dB) {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba83c9, held ahead of the effects the ELF orders after it
+    float t0 = -96.0f;
+    if (t0 >= vol_dB) {
+        this->mLFEMasterVolume = 0.0f;
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba83d7, held ahead of the effects the ELF orders after it
+        float t1 = 20.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba83df, held ahead of the effects the ELF orders after it
+        float t2 = 10.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba83e7, held ahead of the effects the ELF orders after it
+        float t4 = ::powf(t2, vol_dB / t1);
+        this->mLFEMasterVolume = t4;
+        if (0.0f > this->mLFEMasterVolume) {
+            this->mLFEMasterVolume = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x1ba8416, held ahead of the effects the ELF orders after it
+            float t5 = 1.9953f;
+            if (this->mLFEMasterVolume > t5) {
+                this->mLFEMasterVolume = 1.9953f;
+            }
+        }
+    }
 }
 
 // Address: 0x01ba8380 - 0x01ba83b6 (54 bytes)
@@ -2698,27 +2867,38 @@ __attribute__((weak)) void sSound::setActiveListening3(bool b) {
 }
 
 // Address: 0x01ba7990 - 0x01ba799a (10 bytes)
-__attribute__((weak)) bool sSound::getActiveListening0() {
-    DDON_STUB("sSound::getActiveListening0")
-    return {};
+bool sSound::getActiveListening0() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x47370 from sSound*
+    // inferred: a value cast to the type its use takes: unsigned int used as bool
+    return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(291696))) & static_cast<unsigned int>(1));
 }
 
 // Address: 0x01ba7b00 - 0x01ba7b0b (11 bytes)
-__attribute__((weak)) bool sSound::getActiveListening1() {
-    DDON_STUB("sSound::getActiveListening1")
-    return {};
+bool sSound::getActiveListening1() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x47370 from sSound*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(291696))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01ba7c70 - 0x01ba7c7c (12 bytes)
-__attribute__((weak)) bool sSound::getActiveListening2() {
-    DDON_STUB("sSound::getActiveListening2")
-    return {};
+bool sSound::getActiveListening2() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x47370 from sSound*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(291696))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x01ba7de0 - 0x01ba7dec (12 bytes)
-__attribute__((weak)) bool sSound::getActiveListening3() {
-    DDON_STUB("sSound::getActiveListening3")
-    return {};
+bool sSound::getActiveListening3() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x47370 from sSound*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(291696))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x01ba79e0 - 0x01ba79e1 (1 bytes)
@@ -3719,9 +3899,12 @@ bool sSound::VoiceAccessor::isStreamVoice() const {
 // s32 sSound::VoiceAccessor::getEffectIndex() const;
 
 // Address: 0x0129f1a0 - 0x0129f1c0 (32 bytes)
-__attribute__((weak)) void sSound::VoiceAccessor::setEffectIndex(s32 index) {
-    DDON_STUB("sSound::VoiceAccessor::setEffectIndex")
-    /* stub */
+void sSound::VoiceAccessor::setEffectIndex(s32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpVoice->mStatus != static_cast<sSound::VOICE_STATUS>(0)) {
+        return;
+    }
+    this->mpVoice->mEffectNo = index;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4037,9 +4220,115 @@ __attribute__((weak)) void sSound::NativeSystem::setupPICOLAPitchShift(sSound::S
 }
 
 // Address: 0x01290200 - 0x012902af (175 bytes)
-__attribute__((weak)) bool sSound::NativeSystem::preparePICOLAPitchShift(s32 picolaPitchShiftNo, rSoundSource* pSource, u32 startPosition) {
-    DDON_STUB("sSound::NativeSystem::preparePICOLAPitchShift")
-    return {};
+bool sSound::NativeSystem::preparePICOLAPitchShift(s32 picolaPitchShiftNo, rSoundSource* pSource, u32 startPosition) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xa8 from rSoundSource*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xa0 from rSoundSource*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x6078 from cSoundPicolaPitchShift*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6080 from cSoundPicolaPitchShift*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from rSoundSource*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x94 from rSoundSource*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x6088 from cSoundPicolaPitchShift*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x608c from cSoundPicolaPitchShift*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x6090 from cSoundPicolaPitchShift*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x6074 from cSoundPicolaPitchShift*
+    if (pSource != static_cast<rSoundSource*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pSource) + static_cast<long>(168))) != static_cast<unsigned long>(0)) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSource) + static_cast<long>(160))) != static_cast<unsigned int>(0)) {
+                if (this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)] != static_cast<cSoundPicolaPitchShift*>(nullptr)) {
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)]) + static_cast<long>(24696)) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSource) + static_cast<long>(160));
+                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)]) + static_cast<long>(24704)) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pSource) + static_cast<long>(168));
+                    // inferred: a temporary for the value the load at 0x129023c read, used twice; no DWARF local holds it
+                    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSource) + static_cast<long>(144));
+                    if (t0 != static_cast<unsigned int>(4294967295)) {
+                        // inferred: a temporary for the value the load at 0x1290249 read, used twice; no DWARF local holds it
+                        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSource) + static_cast<long>(148));
+                        if (t1 != static_cast<unsigned int>(4294967295)) {
+                            // inferred: a temporary for the value the load at 0x1290254 read, used 6 times; no DWARF local holds it
+                            cSoundPicolaPitchShift* t2 = this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)];
+                            if (t2 != static_cast<cSoundPicolaPitchShift*>(nullptr)) {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + static_cast<long>(24712)) = static_cast<unsigned char>(1);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t2) + static_cast<long>(24716)) = t0;
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t2) + static_cast<long>(24720)) = t1;
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t2) + static_cast<long>(24692)) = startPosition;
+                                t2->::cSoundPicolaPitchShift::initBuffer();
+                            }
+                            return true;
+                        } else {
+                            // inferred: a temporary for the value the load at 0x1290282 read, used 5 times; no DWARF local holds it
+                            cSoundPicolaPitchShift* t3 = this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)];
+                            if (t3 != static_cast<cSoundPicolaPitchShift*>(nullptr)) {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t3) + static_cast<long>(24712)) = static_cast<unsigned char>(0);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24716)) = static_cast<unsigned int>(0);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24720)) = static_cast<unsigned int>(0);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24692)) = startPosition;
+                                t3->::cSoundPicolaPitchShift::initBuffer();
+                            }
+                            return true;
+                        }
+                    } else {
+                        // inferred: a temporary for the value the load at 0x1290282 read, used 5 times; no DWARF local holds it
+                        cSoundPicolaPitchShift* t3 = this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)];
+                        if (t3 != static_cast<cSoundPicolaPitchShift*>(nullptr)) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t3) + static_cast<long>(24712)) = static_cast<unsigned char>(0);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24716)) = static_cast<unsigned int>(0);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24720)) = static_cast<unsigned int>(0);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24692)) = startPosition;
+                            t3->::cSoundPicolaPitchShift::initBuffer();
+                        }
+                        return true;
+                    }
+                } else {
+                    // inferred: a temporary for the value the load at 0x129023c read, used twice; no DWARF local holds it
+                    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSource) + static_cast<long>(144));
+                    if (t0 != static_cast<unsigned int>(4294967295)) {
+                        // inferred: a temporary for the value the load at 0x1290249 read, used twice; no DWARF local holds it
+                        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSource) + static_cast<long>(148));
+                        if (t1 != static_cast<unsigned int>(4294967295)) {
+                            // inferred: a temporary for the value the load at 0x1290254 read, used 6 times; no DWARF local holds it
+                            cSoundPicolaPitchShift* t2 = this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)];
+                            if (t2 != static_cast<cSoundPicolaPitchShift*>(nullptr)) {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + static_cast<long>(24712)) = static_cast<unsigned char>(1);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t2) + static_cast<long>(24716)) = t0;
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t2) + static_cast<long>(24720)) = t1;
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t2) + static_cast<long>(24692)) = startPosition;
+                                t2->::cSoundPicolaPitchShift::initBuffer();
+                            }
+                            return true;
+                        } else {
+                            // inferred: a temporary for the value the load at 0x1290282 read, used 5 times; no DWARF local holds it
+                            cSoundPicolaPitchShift* t3 = this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)];
+                            if (t3 != static_cast<cSoundPicolaPitchShift*>(nullptr)) {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t3) + static_cast<long>(24712)) = static_cast<unsigned char>(0);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24716)) = static_cast<unsigned int>(0);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24720)) = static_cast<unsigned int>(0);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24692)) = startPosition;
+                                t3->::cSoundPicolaPitchShift::initBuffer();
+                            }
+                            return true;
+                        }
+                    } else {
+                        // inferred: a temporary for the value the load at 0x1290282 read, used 5 times; no DWARF local holds it
+                        cSoundPicolaPitchShift* t3 = this->mpPICOLAPitchShift[static_cast<unsigned int>(picolaPitchShiftNo)];
+                        if (t3 != static_cast<cSoundPicolaPitchShift*>(nullptr)) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t3) + static_cast<long>(24712)) = static_cast<unsigned char>(0);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24716)) = static_cast<unsigned int>(0);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24720)) = static_cast<unsigned int>(0);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24692)) = startPosition;
+                            t3->::cSoundPicolaPitchShift::initBuffer();
+                        }
+                        return true;
+                    }
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01ba8dd0 - 0x01ba8df7 (39 bytes)
@@ -4182,9 +4471,114 @@ __attribute__((weak)) void sSound::StreamVoice::executeCommand() {
 }
 
 // Address: 0x0128dfe0 - 0x0128e0d2 (242 bytes)
-__attribute__((weak)) void sSound::StreamVoice::setup() {
-    DDON_STUB("sSound::StreamVoice::setup")
-    /* stub */
+void sSound::StreamVoice::setup() {
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    if (this->mMarkerValue != static_cast<u32>(4294967295)) {
+        if (this->mMarkerType != static_cast<u16>(0)) {
+            if (this->mMarkerType == static_cast<u16>(1)) {
+                // inferred: a temporary for the result of the call at 0x128e00d, used twice; no DWARF local holds it
+                u16 t0 = this->::sSound::Voice::mpSource->::rSoundSource::getMarkerIndexFromSamplePos(this->mMarkerValue);
+                this->mMarkerIndex = t0;
+                // inferred: a temporary for the result of the call at 0x128e04c, used twice; no DWARF local holds it
+                u32 t2 = this->::sSound::Voice::mpSource->::rSoundSource::getSamplePosFromMarkerIndex(t0);
+                this->mStartPosition = t2;
+                this->mCurrentPlayPosition = this->mStartPosition;
+                if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                    this->::sSound::Voice::mpNativeVoice->setupVoice(static_cast<sSound::Voice*>(this));
+                    this->::sSound::Voice::mpNativeVoice->updateVoiceParams(static_cast<sSound::Voice*>(this));
+                    if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                        this->::sSound::Voice::mpNativeVoice->applyVolume();
+                        if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                            this->::sSound::Voice::mpNativeVoice->applyPitch();
+                            if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                                this->::sSound::Voice::mpNativeVoice->applyFilter();
+                            }
+                        }
+                    }
+                }
+                this->mIsStopped = false;
+            } else {
+                if (this->mMarkerType == static_cast<u16>(2)) {
+                    this->mMarkerIndex = static_cast<unsigned short>(this->mMarkerValue);
+                    // inferred: a temporary for the result of the call at 0x128e04c, used twice; no DWARF local holds it
+                    u32 t2 = this->::sSound::Voice::mpSource->::rSoundSource::getSamplePosFromMarkerIndex(static_cast<unsigned short>(this->mMarkerValue));
+                    this->mStartPosition = t2;
+                    this->mCurrentPlayPosition = this->mStartPosition;
+                    if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                        this->::sSound::Voice::mpNativeVoice->setupVoice(static_cast<sSound::Voice*>(this));
+                        this->::sSound::Voice::mpNativeVoice->updateVoiceParams(static_cast<sSound::Voice*>(this));
+                        if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                            this->::sSound::Voice::mpNativeVoice->applyVolume();
+                            if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                                this->::sSound::Voice::mpNativeVoice->applyPitch();
+                                if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                                    this->::sSound::Voice::mpNativeVoice->applyFilter();
+                                }
+                            }
+                        }
+                    }
+                    this->mIsStopped = false;
+                } else {
+                    // inferred: a temporary for the result of the call at 0x128e04c, used twice; no DWARF local holds it
+                    u32 t2 = this->::sSound::Voice::mpSource->::rSoundSource::getSamplePosFromMarkerIndex(this->mMarkerIndex);
+                    this->mStartPosition = t2;
+                    this->mCurrentPlayPosition = this->mStartPosition;
+                    if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                        this->::sSound::Voice::mpNativeVoice->setupVoice(static_cast<sSound::Voice*>(this));
+                        this->::sSound::Voice::mpNativeVoice->updateVoiceParams(static_cast<sSound::Voice*>(this));
+                        if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                            this->::sSound::Voice::mpNativeVoice->applyVolume();
+                            if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                                this->::sSound::Voice::mpNativeVoice->applyPitch();
+                                if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                                    this->::sSound::Voice::mpNativeVoice->applyFilter();
+                                }
+                            }
+                        }
+                    }
+                    this->mIsStopped = false;
+                }
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0x128e026, used twice; no DWARF local holds it
+            u16 t1 = this->::sSound::Voice::mpSource->::rSoundSource::getMarkerIndexFromID(static_cast<unsigned short>(this->mMarkerValue));
+            this->mMarkerIndex = t1;
+            // inferred: a temporary for the result of the call at 0x128e04c, used twice; no DWARF local holds it
+            u32 t2 = this->::sSound::Voice::mpSource->::rSoundSource::getSamplePosFromMarkerIndex(t1);
+            this->mStartPosition = t2;
+            this->mCurrentPlayPosition = this->mStartPosition;
+            if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                this->::sSound::Voice::mpNativeVoice->setupVoice(static_cast<sSound::Voice*>(this));
+                this->::sSound::Voice::mpNativeVoice->updateVoiceParams(static_cast<sSound::Voice*>(this));
+                if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                    this->::sSound::Voice::mpNativeVoice->applyVolume();
+                    if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                        this->::sSound::Voice::mpNativeVoice->applyPitch();
+                        if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                            this->::sSound::Voice::mpNativeVoice->applyFilter();
+                        }
+                    }
+                }
+            }
+            this->mIsStopped = false;
+        }
+    } else {
+        this->mCurrentPlayPosition = this->mStartPosition;
+        if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+            this->::sSound::Voice::mpNativeVoice->setupVoice(static_cast<sSound::Voice*>(this));
+            this->::sSound::Voice::mpNativeVoice->updateVoiceParams(static_cast<sSound::Voice*>(this));
+            if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                this->::sSound::Voice::mpNativeVoice->applyVolume();
+                if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                    this->::sSound::Voice::mpNativeVoice->applyPitch();
+                    if (this->::sSound::Voice::mpNativeVoice != static_cast<sSound::NativeVoice*>(nullptr)) {
+                        this->::sSound::Voice::mpNativeVoice->applyFilter();
+                    }
+                }
+            }
+        }
+        this->mIsStopped = false;
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -4593,9 +4987,16 @@ sSound::UpdateThread::~UpdateThread() {
 }
 
 // Address: 0x0128f0f0 - 0x0128f12e (62 bytes)
-__attribute__((weak)) void sSound::UpdateThread::execute(void*) {
-    DDON_STUB("sSound::UpdateThread::execute")
-    /* stub */
+void sSound::UpdateThread::execute(void*) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->::MtThread::isRequestedTermination() == false) {
+        for (;;) {
+            (::sSound::mpInstance)->mpNativeSystem->updateExecute();
+            if (this->::MtThread::isRequestedTermination() != false) {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -4608,9 +5009,16 @@ sSound::LoadThread::~LoadThread() {
 }
 
 // Address: 0x0128f170 - 0x0128f1ae (62 bytes)
-__attribute__((weak)) void sSound::LoadThread::execute(void*) {
-    DDON_STUB("sSound::LoadThread::execute")
-    /* stub */
+void sSound::LoadThread::execute(void*) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->::MtThread::isRequestedTermination() == false) {
+        for (;;) {
+            (::sSound::mpInstance)->mpNativeSystem->loadExecute();
+            if (this->::MtThread::isRequestedTermination() != false) {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x0128f2d0 - 0x0128f58e (702 bytes)
@@ -4817,9 +5225,10 @@ __attribute__((weak)) void sSound::NativeSystemPS4::setRouting(const u32 routing
 }
 
 // Address: 0x012a5710 - 0x012a5717 (7 bytes)
-__attribute__((weak)) u32 sSound::NativeSystemPS4::getRouting() const {
-    DDON_STUB("sSound::NativeSystemPS4::getRouting")
-    return {};
+u32 sSound::NativeSystemPS4::getRouting() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x238 from const sSound::NativeSystemPS4*
+    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(568));
 }
 
 // Address: 0x01ba8ed0 - 0x01ba8ed3 (3 bytes)
@@ -5431,9 +5840,10 @@ bool sSound::NGS2Routing::getReverbOutputChannel(const u32 reverbIndex, const u3
 // SceNgs2Handle sSound::NGS2Routing::getVoiceHandleMastering();
 
 // Address: 0x012a1540 - 0x012a1545 (5 bytes)
-__attribute__((weak)) SceNgs2Handle sSound::NGS2Routing::getDstVoiceHandleDry(void* pParam) {
-    DDON_STUB("sSound::NGS2Routing::getDstVoiceHandleDry")
-    return {};
+SceNgs2Handle sSound::NGS2Routing::getDstVoiceHandleDry(void* pParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from sSound::NGS2Routing*
+    return static_cast<SceNgs2Handle>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(16)));
 }
 
 // Address: 0x012a1550 - 0x012a1553 (3 bytes)
@@ -5811,9 +6221,19 @@ sSound::NGS2VoiceSubmixerEQ::~NGS2VoiceSubmixerEQ() {
 // void sSound::NGS2VoiceSubmixerEQ::setChannels(const u32 channels);
 
 // Address: 0x012a0de0 - 0x012a0e3e (94 bytes)
-__attribute__((weak)) s32 sSound::NGS2VoiceSubmixerEQ::process(f32* * pData, const u32 samples, const u32 channels, void* pArg) {
-    DDON_STUB("sSound::NGS2VoiceSubmixerEQ::process")
-    return {};
+s32 sSound::NGS2VoiceSubmixerEQ::process(f32* * pData, const u32 samples, const u32 channels, void* pArg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from sSound::NGS2VoiceSubmixerEQ*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24))) != static_cast<unsigned int>(0)) {
+        if (this->mMultiBandEQ.::cSoundMultiBandEQ::isAnyEnable() != false) {
+            if (::cSoundMultiBandEQ::mEnableUnitTable[this->mMultiBandEQ.mUnitEnable] > static_cast<int>(-1)) {
+                this->mMultiBandEQ.::cSoundMultiBandEQ::computeSingleUnit(pData, samples, static_cast<u32>(::cSoundMultiBandEQ::mEnableUnitTable[this->mMultiBandEQ.mUnitEnable]));
+            } else {
+                this->mMultiBandEQ.::cSoundMultiBandEQ::computeAllUnit(pData, samples);
+            }
+        }
+    }
+    return static_cast<s32>(0);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -6192,10 +6612,138 @@ __attribute__((weak)) void sSound::NativeVoiceStreamPS4::init() {
 }
 
 // Address: 0x012a7200 - 0x012a733e (318 bytes)
-__attribute__((weak)) void sSound::NativeVoiceStreamPS4::setupVoice(sSound::Voice* pVoice) {
-    // local: NativeSystemPS4* pSystem;
-    DDON_STUB("sSound::NativeVoiceStreamPS4::setupVoice")
-    /* stub */
+void sSound::NativeVoiceStreamPS4::setupVoice(sSound::Voice* pVoice) {
+    // DWARF local not rendered: NativeSystemPS4* pSystem;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xc4 from sSound::NativeSystem*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xaac from sSound::Voice*
+    // inferred: a value cast to the type its use takes: unsigned char used as const bool
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc0 from sSound::NativeSystem*
+    if (pVoice == static_cast<sSound::Voice*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x12a720f read, used 3 times; no DWARF local holds it
+    rSoundSource* t0 = pVoice->mpSource;
+    if (t0 == static_cast<rSoundSource*>(nullptr)) {
+        return;
+    }
+    if (pVoice->mpNativeParam != static_cast<void*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVoice->mpNativeParam) + static_cast<long>(0))) == (::sSound::AudioOut::REQUEST_RESTRICTED)) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((::sSound::mpInstance)->mpNativeSystem) + static_cast<long>(196))) != static_cast<unsigned char>(0)) {
+                this->::sSound::NativeVoicePS4::mAudioOutPort = static_cast<sSound::AudioOut::AUDIO_OUT_PORT>(6);
+                this->::sSound::NativeVoicePS4::mpVoice = pVoice;
+                this->mpSource = static_cast<rSoundSourceStreamAT9*>(t0);
+                t0->initIdentifier(&this->mSourceID);
+                // inferred: a temporary for the result of the call at 0x12a72bc, used twice; no DWARF local holds it
+                u32 t1 = this->mpSource->getChannelNum();
+                this->::sSound::NativeVoicePS4::mChannelNum = t1;
+                // inferred: a temporary for the value the load at 0x12a72d2 read, used 3 times; no DWARF local holds it
+                sSound::NativeSystem* t2 = (::sSound::mpInstance)->mpNativeSystem;
+                if (t2 != static_cast<sSound::NativeSystem*>(nullptr)) {
+                    t2->setupPICOLAPitchShift(static_cast<sSound::StreamVoice*>(this->::sSound::NativeVoicePS4::mpVoice));
+                    if (this->mPicolaPitchShiftNo != static_cast<s32>(-1)) {
+                        if (t2->checkPICOLAPitchShift(this->mPicolaPitchShiftNo, static_cast<rSoundSource*>(this->mpSource)) == false) {
+                            this->mPicolaPitchShiftNo = static_cast<s32>(-1);
+                        }
+                    }
+                    this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), this->::sSound::NativeVoicePS4::mChannelNum);
+                } else {
+                    this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), t1);
+                }
+            }
+        } else {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVoice->mpNativeParam) + static_cast<long>(0))) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((::sSound::mpInstance)->mpNativeSystem) + static_cast<long>(192)))) {
+                this->::sSound::NativeVoicePS4::mAudioOutPort = static_cast<sSound::AudioOut::AUDIO_OUT_PORT>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVoice->mpNativeParam) + static_cast<long>(0))) + static_cast<unsigned int>(2));
+                this->::sSound::NativeVoicePS4::mpVoice = pVoice;
+                this->mpSource = static_cast<rSoundSourceStreamAT9*>(t0);
+                t0->initIdentifier(&this->mSourceID);
+                // inferred: a temporary for the result of the call at 0x12a72bc, used twice; no DWARF local holds it
+                u32 t1 = this->mpSource->getChannelNum();
+                this->::sSound::NativeVoicePS4::mChannelNum = t1;
+                // inferred: a temporary for the value the load at 0x12a72d2 read, used 3 times; no DWARF local holds it
+                sSound::NativeSystem* t2 = (::sSound::mpInstance)->mpNativeSystem;
+                if (t2 != static_cast<sSound::NativeSystem*>(nullptr)) {
+                    t2->setupPICOLAPitchShift(static_cast<sSound::StreamVoice*>(this->::sSound::NativeVoicePS4::mpVoice));
+                    if (this->mPicolaPitchShiftNo != static_cast<s32>(-1)) {
+                        if (t2->checkPICOLAPitchShift(this->mPicolaPitchShiftNo, static_cast<rSoundSource*>(this->mpSource)) == false) {
+                            this->mPicolaPitchShiftNo = static_cast<s32>(-1);
+                        }
+                    }
+                    this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), this->::sSound::NativeVoicePS4::mChannelNum);
+                } else {
+                    this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), t1);
+                }
+            }
+        }
+    } else {
+        if (pVoice->mVoiceType == static_cast<sSound::Voice::VOICE_TYPE>(1)) {
+            if (pVoice->mCategory == static_cast<u32>(1)) {
+                this->::sSound::NativeVoicePS4::mAudioOutPort = static_cast<sSound::AudioOut::AUDIO_OUT_PORT>(1);
+                this->::sSound::NativeVoicePS4::mpVoice = pVoice;
+                this->mpSource = static_cast<rSoundSourceStreamAT9*>(t0);
+                t0->initIdentifier(&this->mSourceID);
+                // inferred: a temporary for the result of the call at 0x12a72bc, used twice; no DWARF local holds it
+                u32 t1 = this->mpSource->getChannelNum();
+                this->::sSound::NativeVoicePS4::mChannelNum = t1;
+                // inferred: a temporary for the value the load at 0x12a72d2 read, used 3 times; no DWARF local holds it
+                sSound::NativeSystem* t2 = (::sSound::mpInstance)->mpNativeSystem;
+                if (t2 != static_cast<sSound::NativeSystem*>(nullptr)) {
+                    t2->setupPICOLAPitchShift(static_cast<sSound::StreamVoice*>(this->::sSound::NativeVoicePS4::mpVoice));
+                    if (this->mPicolaPitchShiftNo != static_cast<s32>(-1)) {
+                        if (t2->checkPICOLAPitchShift(this->mPicolaPitchShiftNo, static_cast<rSoundSource*>(this->mpSource)) == false) {
+                            this->mPicolaPitchShiftNo = static_cast<s32>(-1);
+                        }
+                    }
+                    this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), this->::sSound::NativeVoicePS4::mChannelNum);
+                } else {
+                    this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), t1);
+                }
+            } else {
+                this->::sSound::NativeVoicePS4::mAudioOutPort = static_cast<sSound::AudioOut::AUDIO_OUT_PORT>(0);
+                this->::sSound::NativeVoicePS4::mpVoice = pVoice;
+                this->mpSource = static_cast<rSoundSourceStreamAT9*>(t0);
+                t0->initIdentifier(&this->mSourceID);
+                // inferred: a temporary for the result of the call at 0x12a72bc, used twice; no DWARF local holds it
+                u32 t1 = this->mpSource->getChannelNum();
+                this->::sSound::NativeVoicePS4::mChannelNum = t1;
+                // inferred: a temporary for the value the load at 0x12a72d2 read, used 3 times; no DWARF local holds it
+                sSound::NativeSystem* t2 = (::sSound::mpInstance)->mpNativeSystem;
+                if (t2 != static_cast<sSound::NativeSystem*>(nullptr)) {
+                    t2->setupPICOLAPitchShift(static_cast<sSound::StreamVoice*>(this->::sSound::NativeVoicePS4::mpVoice));
+                    if (this->mPicolaPitchShiftNo != static_cast<s32>(-1)) {
+                        if (t2->checkPICOLAPitchShift(this->mPicolaPitchShiftNo, static_cast<rSoundSource*>(this->mpSource)) == false) {
+                            this->mPicolaPitchShiftNo = static_cast<s32>(-1);
+                        }
+                    }
+                    this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), this->::sSound::NativeVoicePS4::mChannelNum);
+                } else {
+                    this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), t1);
+                }
+            }
+        } else {
+            this->::sSound::NativeVoicePS4::mAudioOutPort = static_cast<sSound::AudioOut::AUDIO_OUT_PORT>(0);
+            this->::sSound::NativeVoicePS4::mpVoice = pVoice;
+            this->mpSource = static_cast<rSoundSourceStreamAT9*>(t0);
+            t0->initIdentifier(&this->mSourceID);
+            // inferred: a temporary for the result of the call at 0x12a72bc, used twice; no DWARF local holds it
+            u32 t1 = this->mpSource->getChannelNum();
+            this->::sSound::NativeVoicePS4::mChannelNum = t1;
+            // inferred: a temporary for the value the load at 0x12a72d2 read, used 3 times; no DWARF local holds it
+            sSound::NativeSystem* t2 = (::sSound::mpInstance)->mpNativeSystem;
+            if (t2 != static_cast<sSound::NativeSystem*>(nullptr)) {
+                t2->setupPICOLAPitchShift(static_cast<sSound::StreamVoice*>(this->::sSound::NativeVoicePS4::mpVoice));
+                if (this->mPicolaPitchShiftNo != static_cast<s32>(-1)) {
+                    if (t2->checkPICOLAPitchShift(this->mPicolaPitchShiftNo, static_cast<rSoundSource*>(this->mpSource)) == false) {
+                        this->mPicolaPitchShiftNo = static_cast<s32>(-1);
+                    }
+                }
+                this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), this->::sSound::NativeVoicePS4::mChannelNum);
+            } else {
+                this->mSilentDetectFilter.::cSoundSilentDetectFilter::init(static_cast<const bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2732))), t1);
+            }
+        }
+    }
 }
 
 // Address: 0x012a7340 - 0x012a734f (15 bytes)
@@ -6321,12 +6869,31 @@ void sSound::NativeVoiceStreamPS4::setPicolaPitchShiftNo(s32 no) {
 }
 
 // Address: 0x012a8010 - 0x012a809a (138 bytes)
-__attribute__((weak)) s32 sSound::NativeVoiceStreamPS4::getSilentDetect(rSoundStreamRequest* pRequest, u32 reqNo, uintptr thisId) {
-    // local: StreamVoice* pStreamVoice;
-    // local: f32 silentDetectThreshold;
-    // local: const bool isSilent;
-    DDON_STUB("sSound::NativeVoiceStreamPS4::getSilentDetect")
-    return {};
+s32 sSound::NativeVoiceStreamPS4::getSilentDetect(rSoundStreamRequest* pRequest, u32 reqNo, uintptr thisId) {
+    // DWARF local not rendered: StreamVoice* pStreamVoice;
+    // DWARF local not rendered: f32 silentDetectThreshold;
+    // DWARF local not rendered: const bool isSilent;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xaa8 from sSound::Voice*
+    if (this->::sSound::NativeVoicePS4::mpVoice != static_cast<sSound::Voice*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x12a802f read, used once; no DWARF local holds it
+        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::sSound::NativeVoicePS4::mpVoice) + static_cast<long>(2728));
+        if (t0 >= this->mSilentDetectFilter.::cSoundSilentDetectFilter::getAudioGranularitySamples()) {
+            if (this->mSilentDetectFilter.::cSoundSilentDetectFilter::isEnable() != false) {
+                if ((::sSound::mpInstance)->mpNativeSystem != static_cast<sSound::NativeSystem*>(nullptr)) {
+                    return this->mSilentDetectFilter.::cSoundSilentDetectFilter::isSilent((::sSound::mpInstance)->mpNativeSystem->getStreamSilentDecectionThreshold()) == false;
+                } else {
+                    return this->mSilentDetectFilter.::cSoundSilentDetectFilter::isSilent(-96.0f) == false;
+                }
+            } else {
+                return static_cast<s32>(-1);
+            }
+        } else {
+            return static_cast<s32>(-1);
+        }
+    } else {
+        return static_cast<s32>(-1);
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

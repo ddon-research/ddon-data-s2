@@ -421,9 +421,36 @@ MtUI* cAreaHit::createUI(MtProperty& prop) {
 }
 
 // Address: 0x00025160 - 0x0002523f (223 bytes)
-__attribute__((weak)) void cAreaHit::setup(AREAHIT_SHAPE_TYPE_ENUM type, MtObject* pOwner) {
-    DDON_STUB("cAreaHit::setup")
-    /* stub */
+void cAreaHit::setup(AREAHIT_SHAPE_TYPE_ENUM type, MtObject* pOwner) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x5c from cAreaHit*
+    this->mpOwner = pOwner;
+    if (pOwner != static_cast<MtObject*>(nullptr)) {
+        this->mOwnerId = pOwner->getDTI().::MtDTI::getID();
+    }
+    this->mbEnable = true;
+    this->mbFix = false;
+    this->mAttr = static_cast<u32>(0);
+    this->mDetect = static_cast<u32>(0);
+    this->mWorld.x = ::MtVector3::Zero.x;
+    this->mWorld.y = ::MtVector3::Zero.y;
+    this->mWorld.z = ::MtVector3::Zero.z;
+    this->mWorld.pad_ = 0.0f;
+    this->mLocal.x = ::MtVector3::Zero.x;
+    this->mLocal.y = ::MtVector3::Zero.y;
+    this->mLocal.z = ::MtVector3::Zero.z;
+    this->mLocal.pad_ = 0.0f;
+    this->mRotate.x = ::MtVector3::Zero.x;
+    this->mRotate.y = ::MtVector3::Zero.y;
+    this->mRotate.z = ::MtVector3::Zero.z;
+    this->mCkRange = 0.0f;
+    this->mCkToward = 0.0f;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(92)) = static_cast<unsigned long>(0);
+    if (this->mpShape != static_cast<AreaHitShape*>(nullptr)) {
+        delete this->mpShape;
+        this->mpShape = static_cast<AreaHitShape*>(nullptr);
+    }
+    this->mpShape = ::AreaHitShape::createShape(type);
 }
 
 // Address: 0x000254c0 - 0x000254eb (43 bytes)

@@ -69,8 +69,53 @@ inline void rSoundSimpleCurve::operator delete(void* p_addr) {
 // Address: 0x006fd100 - 0x006fd1f2 (242 bytes)
 // Also emitted as: _ZN17rSoundSimpleCurveD0Ev at 0x006fd200
 rSoundSimpleCurve::~rSoundSimpleCurve() {
-    DDON_STUB("rSoundSimpleCurve::~rSoundSimpleCurve")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mElementArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x6fd130 carries; no location-less local in scope fits
+        u32 v0_0 = this->mElementArray.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mElementArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mElementArray.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mElementArray.::MtArray::mLength) {
+                    v0_0 = this->mElementArray.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mElementArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mElementArray.::MtArray::mpArray));
+        this->mElementArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+        this->mElementArray.::MtArray::mBufsiz = static_cast<u32>(0);
+        this->mElementArray.::MtArray::mLength = static_cast<u32>(0);
+        // inferred: a temporary for the value the load at 0x6fd197 read, used once; no DWARF local holds it
+        f32* t0 = this->mpX;
+        ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t0));
+        // inferred: a temporary for the value the load at 0x6fd1b9 read, used once; no DWARF local holds it
+        f32* t1 = this->mpY;
+        ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t1));
+        return;
+    } else {
+        this->mElementArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+        this->mElementArray.::MtArray::mBufsiz = static_cast<u32>(0);
+        this->mElementArray.::MtArray::mLength = static_cast<u32>(0);
+        // inferred: a temporary for the value the load at 0x6fd197 read, used once; no DWARF local holds it
+        f32* t0 = this->mpX;
+        ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t0));
+        // inferred: a temporary for the value the load at 0x6fd1b9 read, used once; no DWARF local holds it
+        f32* t1 = this->mpY;
+        ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(static_cast<void*>(t1));
+        return;
+    }
 }
 
 // Address: 0x01ab37c0 - 0x01ab37c8 (8 bytes)

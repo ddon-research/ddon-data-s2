@@ -182,6 +182,8 @@ class uDDOModel : public uModel
     friend class cpJob09;
     // inferred: cpJob10::callbackAttack names uDDOModel::mGuardComponent.mpActMgr
     friend class cpJob10;
+    // inferred: cpObjCollisionBase::getHitGroupAtk names uDDOModel::mGuardComponent.mpObjCollision
+    friend class cpObjCollisionBase;
     // inferred: cpPawnThink::sortFuncCharacterHp names uDDOModel::mContextInterface.mpContextInstance
     friend class cpPawnThink;
     // inferred: cpSlave::getTargetUID names uDDOModel::mContextInterface.mpContextInstance
@@ -194,7 +196,7 @@ class uDDOModel : public uModel
     friend class uControl;
     // inferred: uEnemy::setupContextEnemyStatusChange names uDDOModel::mContextInterface.mpContextInstance
     friend class uEnemy;
-    // inferred: uHuman::setupBeforeContext names uDDOModel::mGuardComponent.mpHpDamageCtrl
+    // inferred: uHuman::isBattleModel names uDDOModel::mContextInterface.mpContextInstance
     friend class uHuman;
     // inferred: uNpc::controlLantern names uDDOModel::mContextInterface.mpContextInstance
     friend class uNpc;
@@ -947,6 +949,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a bit-test accessor's polarity, true when its bits are set: none of its 285 DWARF copies materializes its result; approximate: only approximate callers check this inline body
+inline bool uDDOModel::isEnemy() const {
+    return (this->mUnitId & static_cast<u32>(2)) != static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline bool uDDOModel::isHuman() const {
     return (this->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0);
@@ -1071,4 +1079,10 @@ inline cpOcdCtrl* uDDOModel::getOcdCtrlPtr() const {
 // approximate: only approximate callers check this inline body
 inline u64 uDDOModel::getObjStatus() {
     return this->mObjStatus;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nDDOModel::TOUCH_TYPE uDDOModel::getTouchType() const {
+    return this->mTouchType;
 }

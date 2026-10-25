@@ -6,6 +6,7 @@
 #include "MtColor.h"
 #include "MtEaseCurve.h"
 #include "MtMath.h"
+#include "MtObject.h"
 #include "MtOscillator.h"
 #include "MtPrimitive2D.h"
 #include "MtPrimitive3D.h"
@@ -369,10 +370,22 @@ MtProperty::MtProperty(MtObject* pthis, MT_CTSTR name, MT_CTSTR custom, MT_MFUNC
 // MtProperty::~MtProperty();
 
 // Address: 0x00d626a0 - 0x00d626ff (95 bytes)
-__attribute__((weak)) MtProperty::TYPE MtProperty::getType(MT_CTSTR name) {
-    // local: u32 i;
-    DDON_STUB("MtProperty::getType")
-    return {};
+MtProperty::TYPE MtProperty::getType(MT_CTSTR name) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: DWARF's location-less 'i' (lexical block [0xd626b6, 0xd626d8)) is the counter this loop steps (DWARF's stale constant 0)
+    for (u32 i = static_cast<u32>(0);;) {
+        if (::strcmp(::MtProperty::mTypeName[i], name) == static_cast<int>(0)) {
+            return static_cast<MtProperty::TYPE>(i);
+        } else {
+            if ((i + static_cast<u32>(1)) <= static_cast<u32>(74)) {
+                i = i + static_cast<u32>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return static_cast<MtProperty::TYPE>(static_cast<unsigned int>(static_cast<unsigned long>(::strcmp(name, "custom") == static_cast<int>(0)) * static_cast<unsigned long>(128)));
 }
 
 // No out-of-line body: 17 inlined copies in 7 functions (171 bytes)
@@ -427,11 +440,29 @@ __attribute__((weak)) u32 MtProperty::getCount() const {
 }
 
 // Address: 0x00d6b500 - 0x00d6b54c (76 bytes)
-__attribute__((weak)) void MtProperty::setCount(u32 count) {
-    // local: MT_SETTER pfunc;
-    // local: bool isProhibitSetCount;
-    DDON_STUB("MtProperty::setCount")
-    /* stub */
+void MtProperty::setCount(u32 count) {
+    // DWARF local not rendered: MT_SETTER pfunc;
+    // DWARF local not rendered: bool isProhibitSetCount;
+    // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtProperty*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if ((this->mAttr & static_cast<u32>(128)) != static_cast<u32>(0)) {
+        (this->mpOwner->*this->mpSetCount)();
+    } else {
+        if (static_cast<unsigned int>(static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) - static_cast<int>(24)) <= static_cast<unsigned int>(50)) {
+            if (((static_cast<unsigned long>(1125899906842641) >> static_cast<unsigned long>(static_cast<unsigned int>(static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) - static_cast<int>(24)) & static_cast<unsigned int>(63))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                if (this->mCount >= count) {
+                    this->mCount = count;
+                }
+            } else {
+                this->mCount = count;
+            }
+        } else {
+            if (this->mCount >= count) {
+                this->mCount = count;
+            }
+        }
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

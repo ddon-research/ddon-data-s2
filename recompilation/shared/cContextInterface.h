@@ -36,8 +36,10 @@ class cpErosionEnemySmall;
 class cpHpDamageCtrl;
 class cpItemThrow;
 class cpJob03;
+class cpJob04;
 class cpJob05;
 class cpJob09;
+class cpJob10;
 class cpPawnThink;
 class cpSlave;
 namespace nActionManager { struct stActExParam; }
@@ -54,6 +56,7 @@ namespace nObjCondition { struct stOcdActiveMsg; }
 namespace nRegionStatus { struct stCorePointSlaveMsg; }
 namespace nShlBase { class cShlStickContextInfo; }
 class rCharacterEdit;
+class sControlManager;
 class sSetManager;
 class uCharacter;
 class uControl;
@@ -103,14 +106,20 @@ class cContextInterface : public MtObject
     friend class cpItemThrow;
     // inferred: cpJob03::setIsJustShot names uDDOModel::mContextInterface.mpContextInstance
     friend class cpJob03;
+    // inferred: cpJob04::isActiveShiftCustomCircle names uDDOModel::mContextInterface.mpContextInstance
+    friend class cpJob04;
     // inferred: cpJob05::callbackCatch_Shl names uDDOModel::mContextInterface.mpContextInstance
     friend class cpJob05;
     // inferred: cpJob09::setContextCS03ValueMax names uDDOModel::mContextInterface.mpContextInstance
     friend class cpJob09;
+    // inferred: cpJob10::getActFreeWork names uDDOModel::mContextInterface.mpContextInstance
+    friend class cpJob10;
     // inferred: cpPawnThink::sortFuncCharacterHp names uDDOModel::mContextInterface.mpContextInstance
     friend class cpPawnThink;
     // inferred: cpSlave::getTargetUID names uDDOModel::mContextInterface.mpContextInstance
     friend class cpSlave;
+    // inferred: sControlManager::dispPlayerModel names uControl::mContextInterface.mpContextInstance
+    friend class sControlManager;
     // inferred: sSetManager::createCharacterInstance names uControl::mContextInterface.mpContextInstance
     friend class sSetManager;
     // inferred: uCharacter::setupActPreInit names uDDOModel::mContextInterface.mpContextInstance
@@ -123,7 +132,7 @@ class cContextInterface : public MtObject
     friend class uDDOModel;
     // inferred: uEnemy::setupContextEnemyStatusChange names uDDOModel::mContextInterface.mpContextInstance
     friend class uEnemy;
-    // inferred: uHuman::setupContextEnemyClimb names uDDOModel::mContextInterface.mpContextInstance
+    // inferred: uHuman::isBattleModel names uDDOModel::mContextInterface.mpContextInstance
     friend class uHuman;
     // inferred: uNpc::controlLantern names uDDOModel::mContextInterface.mpContextInstance
     friend class uNpc;

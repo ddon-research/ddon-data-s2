@@ -26,6 +26,7 @@ namespace nPrim { struct DepthOrder; }
 namespace nPrim { struct Material; }
 namespace nPrim { struct MetaDataHeader; }
 namespace nPrim { class PrimVertex; }
+namespace nPrim { struct Rect; }
 namespace nPrim { struct TexCoord; }
 namespace nPrim { struct Texture; }
 namespace nPrim { struct Vertex; }
@@ -250,6 +251,32 @@ namespace nPrim {
         MtVector3 tangent;  // offset: 0x40
         u32 attr;  // offset: 0x50
         static MyDTI DTI;
+    };
+}  // namespace nPrim
+
+namespace nPrim {
+    struct Rect
+    {
+    public:
+        Rect();
+        Rect(u32, u32, u32, u32);
+        Rect(u64 idata);
+        operator unsigned long() const;
+        nPrim::Rect& operator=(u64);
+    public:
+        union
+        {
+        public:
+            struct
+            {
+            public:
+                u32 x : 16;  // offset: 0x0
+                u32 y : 16;  // offset: 0x0
+                u32 w : 16;  // offset: 0x4
+                u32 h : 16;  // offset: 0x4
+            };  // offset: 0x0
+            u64 data;  // offset: 0x0
+        };  // offset: 0x0
     };
 }  // namespace nPrim
 

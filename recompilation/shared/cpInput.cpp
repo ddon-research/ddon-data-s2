@@ -259,9 +259,10 @@ __attribute__((weak)) void cpInput::updateBtnInfoToggle(nKeyCustom::KB_CUSTOM kb
 }
 
 // Address: 0x00492230 - 0x0049223b (11 bytes)
-__attribute__((weak)) void cpInput::clearBowTggle() {
-    DDON_STUB("cpInput::clearBowTggle")
-    /* stub */
+void cpInput::clearBowTggle() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from cpInput*
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(144))) & static_cast<unsigned int>(3221225459);
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (37 bytes)

@@ -6,7 +6,17 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "cHitGeom.h"
 #include "cHitInfoAfterLocal.h"
+#include "cHitNode.h"
+#include "cUnit.h"
+#include "cpObjCollision.h"
+#include "rAttackParam.h"
+#include "rCollGeom.h"
+#include "rCollNode.h"
+#include "../rPawnAIAction/sObjCollision.h"
+#include "uDDOModel.h"
+#include "uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -75,20 +85,86 @@ __attribute__((weak)) void cDamageMsg::operator delete(void* p_addr) {
 // void cDamageMsg::copy(const cDamageMsg& msg);
 
 // Address: 0x0007a9c0 - 0x0007ab7c (444 bytes)
-__attribute__((weak)) void cDamageMsg::makeInfoFromHitNode(const cHitInfo* pHitInfo) {
-    // local: const uDDOModel* pAttcker;
-    // local: u32 attackTableUID;
-    // local: s32 attackIndex;
-    // local: u32 collNodeTableUID;
-    // local: s32 collNodeIndex;
-    // local: const cAttackParam* pParam;
-    // local: const rAttackParam* pParamTable;
-    // local: const cCollNode* pCollNode;
-    // local: const rCollNode* pCollNodeTable;
-    // local: uDDOModel* pOwner;
-    // local: uShlBase* pShlBase;
-    DDON_STUB("cDamageMsg::makeInfoFromHitNode")
-    /* stub */
+void cDamageMsg::makeInfoFromHitNode(const cHitInfo* pHitInfo) {
+    // DWARF local not rendered: const uDDOModel* pAttcker;
+    // DWARF local not rendered: u32 attackTableUID;
+    // DWARF local not rendered: s32 attackIndex;
+    // DWARF local not rendered: u32 collNodeTableUID;
+    // DWARF local not rendered: s32 collNodeIndex;
+    // DWARF local not rendered: const cAttackParam* pParam;
+    // DWARF local not rendered: const rAttackParam* pParamTable;
+    // DWARF local not rendered: const cCollNode* pCollNode;
+    // DWARF local not rendered: const rCollNode* pCollNodeTable;
+    // DWARF local not rendered: uDDOModel* pOwner;
+    // DWARF local not rendered: uShlBase* pShlBase;
+    // Approximate from the ELF: a load named after a store only its type keeps apart; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from uDDOModel*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from rCollNode*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x90 from rAttackParam*
+    if (pHitInfo == static_cast<const cHitInfo*>(nullptr)) {
+    } else {
+        if (pHitInfo->mpAtkModel == static_cast<uDDOModel*>(nullptr)) {
+        } else {
+            if (pHitInfo->mpAtkModel->::cUnit::isEnable() == false) {
+            } else {
+                this->mData.mAttackerUID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkModel) + static_cast<long>(12));
+                if (pHitInfo->mpAtkNode == static_cast<cHitNode*>(nullptr)) {
+                    this->mData.mAttackParamUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                } else {
+                    if (pHitInfo->mpAtkNode->::cHitNode::getAttackParam() == static_cast<const cAttackParam*>(nullptr)) {
+                        this->mData.mAttackParamUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                    } else {
+                        if (pHitInfo->mpAtkNode->::cHitNode::getAttackParamRes() == static_cast<rAttackParam*>(nullptr)) {
+                            this->mData.mAttackParamUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                        } else {
+                            this->mData.mAttackParamUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpAtkNode->::cHitNode::getAttackParamRes()) + static_cast<long>(144)), pHitInfo->mpAtkNode->::cHitNode::getAttackParam()->mIndex);
+                        }
+                    }
+                }
+                if (pHitInfo->mpDfdNode != static_cast<cHitNode*>(nullptr)) {
+                    if (pHitInfo->mpDfdNode->::cHitNode::getCollNode() != static_cast<const cCollNode*>(nullptr)) {
+                        if (pHitInfo->mpDfdNode->::cHitNode::getCollNodeRes() == static_cast<rCollNode*>(nullptr)) {
+                            this->mData.mDfdNodeUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                        } else {
+                            this->mData.mDfdNodeUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpDfdNode->::cHitNode::getCollNodeRes()) + static_cast<long>(144)), static_cast<unsigned int>(static_cast<unsigned long>(pHitInfo->mpDfdGeom->mpSrcGeom->mIndex) | static_cast<unsigned long>(pHitInfo->mpDfdNode->::cHitNode::getCollNode()->mIndex * static_cast<int>(65536))));
+                        }
+                    } else {
+                        this->mData.mDfdNodeUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                    }
+                } else {
+                    this->mData.mDfdNodeUID = ::sObjCollision::getInstance()->::sObjCollision::makeParamUID(static_cast<u32>(0), static_cast<u32>(0));
+                }
+                this->mData.mDamageDir.x = pHitInfo->mHitNormal.x;
+                this->mData.mDamageDir.y = pHitInfo->mHitNormal.y;
+                this->mData.mDamageDir.z = pHitInfo->mHitNormal.z;
+                this->mData.mDamageDir.pad_ = 0.0f;
+                if (pHitInfo->mpAtkNode != static_cast<cHitNode*>(nullptr)) {
+                    if (pHitInfo->mpAtkNode->::cHitNode::getCollNode() != static_cast<const cCollNode*>(nullptr)) {
+                        this->mData.mAttackAttr = pHitInfo->mpAtkModel->replaceCollisionAttr(pHitInfo->mpAtkNode->::cHitNode::getCollNode()->::cCollNode::getAttr(), pHitInfo->mpAtkNode->::cHitNode::getCollNode());
+                    } else {
+                        this->mData.mAttackAttr = static_cast<u32>(0);
+                    }
+                } else {
+                    this->mData.mAttackAttr = static_cast<u32>(0);
+                }
+                if ((pHitInfo->mpAtkModel->mUnitId & static_cast<u32>(32)) == static_cast<u32>(0)) {
+                } else {
+                    this->mData.mIsAttackerShl = true;
+                    if (static_cast<uShlBase*>(pHitInfo->mpAtkModel)->::uShlBase::getOwner() == static_cast<uDDOModel*>(nullptr)) {
+                    } else {
+                        this->mData.mShlOwnerID = static_cast<uShlBase*>(pHitInfo->mpAtkModel)->::uShlBase::getOwner()->::cUnit::getUnitParam();
+                    }
+                    this->mLocalInfo.mpShlAtkPtr = static_cast<uShlBase*>(pHitInfo->mpAtkModel);
+                }
+                this->mData.mAtkAdjustUniqueId = pHitInfo->mAtkAdjustUniqueId;
+                this->mLocalInfo.mHitPos.x = pHitInfo->mHitPos.x;
+                this->mLocalInfo.mHitPos.y = pHitInfo->mHitPos.y;
+                this->mLocalInfo.mHitPos.z = pHitInfo->mHitPos.z;
+                this->mLocalInfo.mHitPos.pad_ = 0.0f;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (16 bytes)

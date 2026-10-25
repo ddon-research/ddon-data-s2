@@ -10,6 +10,7 @@
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
 #include "cGUIClanExecutor.h"
+#include "../shared/cGUIInstance.h"
 #include "../shared/cNetGameServer.h"
 #include "../shared/cResource.h"
 #include "../shared/cUnit.h"
@@ -653,9 +654,18 @@ __attribute__((weak)) void uGUIGameMenu::updateEntryBoard() {
 }
 
 // Address: 0x00b548d0 - 0x00b5494a (122 bytes)
-__attribute__((weak)) void uGUIGameMenu::updateWakeup() {
-    DDON_STUB("uGUIGameMenu::updateWakeup")
-    /* stub */
+void uGUIGameMenu::updateWakeup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo() != static_cast<uGUIInfo*>(nullptr)) {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getGUIInfo()->::uGUIInfo::setFlowId(static_cast<u32>(2));
+    }
+    this->::uGUIGameMenu::wakeupBanner();
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGameMenu::updateWait);
+    this->::uGUIBase::setWindowActive(true);
+    if (this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance == static_cast<cGUIInstAnimation*>(nullptr)) {
+        return;
+    }
+    this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(true);
 }
 
 // Address: 0x00b4eed0 - 0x00b4ef1a (74 bytes)
@@ -987,9 +997,17 @@ bool uGUIGameMenu::reportUrlRequestServer() {
 }
 
 // Address: 0x00b55d00 - 0x00b55d42 (66 bytes)
-__attribute__((weak)) void uGUIGameMenu::reportUrlCallBack() {
-    DDON_STUB("uGUIGameMenu::reportUrlCallBack")
-    /* stub */
+void uGUIGameMenu::reportUrlCallBack() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x284c from uGUIGameMenu*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2848 from uGUIGameMenu*
+    this->mIsBrowser = true;
+    this->mIsInitBrowser = false;
+    this->mBrowserSize.w = static_cast<s32>(480);
+    this->mBrowserSize.h = static_cast<s32>(500);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(10316)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(10312)) = static_cast<unsigned int>(0);
+    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::endBrowser();
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (36 bytes)

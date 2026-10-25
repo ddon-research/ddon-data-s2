@@ -155,9 +155,13 @@ MT_CTSTR rTexDetailEdit::getExt() const {
 // MtArray* rTexDetailEdit::getEditList();
 
 // Address: 0x0070d7f0 - 0x0070d805 (21 bytes)
-__attribute__((weak)) rTexDetailEdit::DetailParam* rTexDetailEdit::getEditWork(u32 idx) {
-    DDON_STUB("rTexDetailEdit::getEditWork")
-    return nullptr;
+rTexDetailEdit::DetailParam* rTexDetailEdit::getEditWork(u32 idx) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (idx < this->mEditList.mLength) {
+        return static_cast<rTexDetailEdit::DetailParam*>(this->mEditList.mpArray[idx]);
+    } else {
+        return static_cast<rTexDetailEdit::DetailParam*>(nullptr);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

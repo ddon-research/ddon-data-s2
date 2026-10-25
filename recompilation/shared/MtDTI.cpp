@@ -29,10 +29,30 @@ __attribute__((weak)) const MtDTI* MtDTI::from(MT_CTSTR name, const MtDTI& root)
 }
 
 // Address: 0x00d61830 - 0x00d61864 (52 bytes)
-__attribute__((weak)) const MtDTI* MtDTI::from(u32 id) {
-    // local: const MtDTI* pdti;
-    DDON_STUB("MtDTI::from")
-    return nullptr;
+const MtDTI* MtDTI::from(u32 id) {
+    // DWARF local not rendered: const MtDTI* pdti;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0xd61863; no location-less local in scope fits
+    MtDTI* v2_0;
+    if (::MtDTI::mpHashTable[static_cast<unsigned char>(id)] == static_cast<MtDTI*>(nullptr)) {
+        v2_0 = static_cast<MtDTI*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0xd61850 carries; no location-less local in scope fits
+        for (MtDTI* v0_0 = ::MtDTI::mpHashTable[static_cast<unsigned char>(id)];;) {
+            if (v0_0->mID != id) {
+                if (v0_0->mpLink != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpLink;
+                } else {
+                    break;
+                }
+            } else {
+                v2_0 = v0_0;
+                return v2_0;
+            }
+        }
+        v2_0 = static_cast<MtDTI*>(nullptr);
+    }
+    return v2_0;
 }
 
 // Address: 0x00d61890 - 0x00d618c8 (56 bytes)
@@ -187,9 +207,20 @@ MtDTI* MtDTI::getType(MT_CTSTR name) const {
 // bool MtDTI::compare(const MtDTI& s, const MtDTI& d) const;
 
 // Address: 0x00d61a20 - 0x00d61a7c (92 bytes)
-__attribute__((weak)) void MtDTI::updateChildAlloc() {
-    // local: MtDTI* p_child;
-    DDON_STUB("MtDTI::updateChildAlloc")
-    /* stub */
+void MtDTI::updateChildAlloc() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from MtDTI*
+    if (this->mpChild != static_cast<MtDTI*>(nullptr)) {
+        // inferred: DWARF's location-less 'p_child' (function scope) is the value the loop at 0xd61a50 carries
+        for (MtDTI* p_child = this->mpChild;;) {
+            p_child->mAllocatorIndex = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48));
+            p_child->::MtDTI::updateChildAlloc();
+            if (p_child->mpNext != static_cast<MtDTI*>(nullptr)) {
+                p_child = p_child->mpNext;
+            } else {
+                break;
+            }
+        }
+    }
 }
 

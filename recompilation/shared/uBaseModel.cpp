@@ -6,6 +6,7 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtPrimitive3D.h"
+#include "nDrawMaterial.h"
 #include "rModel.h"
 #include "uCoord.h"
 #ifndef DDON_STUB
@@ -111,10 +112,38 @@ __attribute__((weak)) void uBaseModel::setup() {
 // void uBaseModel::sync();
 
 // Address: 0x00e67280 - 0x00e672fa (122 bytes)
-__attribute__((weak)) void uBaseModel::moveAfter() {
-    // local: Profile __profile;
-    DDON_STUB("uBaseModel::moveAfter")
-    /* stub */
+void uBaseModel::moveAfter() {
+    // DWARF local not rendered: Profile __profile;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    if (this->mpModel != static_cast<rModel*>(nullptr)) {
+        if (this->mMaterialNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0xe672b0 carries; no location-less local in scope fits
+            u32 v0_0 = this->mMaterialNum;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                if (this->mpMaterials[i0_3] != static_cast<nDraw::Material*>(nullptr)) {
+                    this->mpMaterials[i0_3]->update(this->::cUnit::mDeltaTime);
+                    // inferred: a temporary for the result of the call at 0xe672d9, used once; no DWARF local holds it
+                    bool t0 = this->mpMaterials[i0_3]->::nDraw::Material::isCBuffer();
+                    this->mMaterialCBuffer = static_cast<u32>(static_cast<unsigned long>(this->mMaterialCBuffer) | static_cast<unsigned long>(t0));
+                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mMaterialNum) {
+                        v0_0 = this->mMaterialNum;
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00e6c190 - 0x00e6c6a7 (1303 bytes)
@@ -206,9 +235,10 @@ bool uBaseModel::getBoundary(MtSphere* pdst) {
 }
 
 // Address: 0x01b5d350 - 0x01b5d363 (19 bytes)
-__attribute__((weak)) bool uBaseModel::isPartsDisp(u32 no) const {
-    DDON_STUB("uBaseModel::isPartsDisp")
-    return {};
+bool uBaseModel::isPartsDisp(u32 no) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mPartsDisp[no >> static_cast<u32>(5)]) >> static_cast<unsigned long>(no & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x01b5d370 - 0x01b5d39b (43 bytes)
@@ -336,9 +366,9 @@ void uBaseModel::setPriorityBias(s32 b) {
 }
 
 // Address: 0x01b5d510 - 0x01b5d520 (16 bytes)
-__attribute__((weak)) uBaseModel::LOD_TYPE uBaseModel::getLODType() const {
-    DDON_STUB("uBaseModel::getLODType")
-    return {};
+uBaseModel::LOD_TYPE uBaseModel::getLODType() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<uBaseModel::LOD_TYPE>(this->mLODType);
 }
 
 // Address: 0x01b5d520 - 0x01b5d544 (36 bytes)
@@ -348,9 +378,9 @@ void uBaseModel::setLODType(uBaseModel::LOD_TYPE lod) {
 }
 
 // Address: 0x01b5d5d0 - 0x01b5d5e0 (16 bytes)
-__attribute__((weak)) uBaseModel::SHADER_QUALITY uBaseModel::getShaderQuality() const {
-    DDON_STUB("uBaseModel::getShaderQuality")
-    return {};
+uBaseModel::SHADER_QUALITY uBaseModel::getShaderQuality() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<uBaseModel::SHADER_QUALITY>(this->mShaderQuality);
 }
 
 // Address: 0x01b5d5e0 - 0x01b5d604 (36 bytes)
@@ -428,9 +458,9 @@ bool uBaseModel::getDissolveEnable() {
 }
 
 // Address: 0x01b5d670 - 0x01b5d694 (36 bytes)
-__attribute__((weak)) void uBaseModel::setFixPosition(bool v) {
-    DDON_STUB("uBaseModel::setFixPosition")
-    /* stub */
+void uBaseModel::setFixPosition(bool v) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mFixPosition = v;
 }
 
 // Address: 0x01b5d660 - 0x01b5d66c (12 bytes)
@@ -589,9 +619,10 @@ u32 uBaseModel::getMaxNumGroup1MultiShadowReceive() const {
 // f32 uBaseModel::getLODDist(uBaseModel::LOD_TYPE);
 
 // Address: 0x01b5d6f0 - 0x01b5d6ff (15 bytes)
-__attribute__((weak)) u32 uBaseModel::getDebugFlags() const {
-    DDON_STUB("uBaseModel::getDebugFlags")
-    return {};
+u32 uBaseModel::getDebugFlags() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a wider integer converted to a narrower signed type, whose value clang wraps; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x138 from const uBaseModel*
+    return static_cast<signed char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(312))) >> static_cast<unsigned long>(45));
 }
 
 // Address: 0x01b5d700 - 0x01b5d727 (39 bytes)
@@ -742,10 +773,22 @@ __attribute__((weak)) s32 uBaseModel::cullingNonSkin(cDraw* pdraw, const rModel:
 }
 
 // Address: 0x01a5ad40 - 0x01a5ad7b (59 bytes)
-__attribute__((weak)) u32 uBaseModel::getLODLevel(s32 dist) {
-    // local: MODEL_INFO* pmi;
-    DDON_STUB("uBaseModel::getLODLevel")
-    return {};
+u32 uBaseModel::getLODLevel(s32 dist) {
+    // DWARF local not rendered: MODEL_INFO* pmi;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mLODType <= static_cast<s32>(-1)) {
+        if (static_cast<float>(dist) > this->mLODLowDist) {
+            return static_cast<u32>(4);
+        } else {
+            if (static_cast<float>(dist) > this->mLODMidDist) {
+                return static_cast<u32>(2);
+            } else {
+                return static_cast<u32>(1);
+            }
+        }
+    } else {
+        return static_cast<u32>(this->mLODType);
+    }
 }
 
 // No out-of-line body: no code in the ELF

@@ -105,11 +105,25 @@ void cpActionManager::setID(s32 id) {
 // void cpActionManager::addActionManager(cpActionManager* pActMgr);
 
 // Address: 0x003b3620 - 0x003b3649 (41 bytes)
-__attribute__((weak)) cpActionManager* cpActionManager::getActionManager(u32 id) {
-    // local: cpActionManager* pFound;
-    // local: cpActionManager* pActMgr;
-    DDON_STUB("cpActionManager::getActionManager")
-    return nullptr;
+cpActionManager* cpActionManager::getActionManager(u32 id) {
+    // DWARF local not rendered: cpActionManager* pFound;
+    // DWARF local not rendered: cpActionManager* pActMgr;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpTop != static_cast<cpActionManager*>(nullptr)) {
+        // inferred: the value the loop at 0x3b3630 carries; no location-less local in scope fits
+        for (cpActionManager* v0_0 = this->mpTop;;) {
+            if (v0_0->mID == id) {
+                return v0_0;
+            } else {
+                if (v0_0->mpNext != static_cast<cpActionManager*>(nullptr)) {
+                    v0_0 = v0_0->mpNext;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<cpActionManager*>(nullptr);
 }
 
 // Address: 0x003b3650 - 0x003b37f5 (421 bytes)

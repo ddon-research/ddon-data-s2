@@ -5,6 +5,7 @@
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtDataReader.h"
+#include "../shared/MtDataWriter.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
@@ -86,8 +87,35 @@ inline rTutorialDialogMessage::rTutorialDialogMessage() {
 // Address: 0x0070d9c0 - 0x0070da7a (186 bytes)
 // Also emitted as: _ZN22rTutorialDialogMessageD0Ev at 0x0070da80
 rTutorialDialogMessage::~rTutorialDialogMessage() {
-    DDON_STUB("rTutorialDialogMessage::~rTutorialDialogMessage")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mPageInfo.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x70d9f0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mPageInfo.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mPageInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mPageInfo.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPageInfo.::MtArray::mLength) {
+                    v0_0 = this->mPageInfo.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mPageInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPageInfo.::MtArray::mpArray));
+    }
+    this->mPageInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mPageInfo.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mPageInfo.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0070db60 - 0x0070ddc1 (609 bytes)
@@ -97,10 +125,32 @@ __attribute__((weak)) void rTutorialDialogMessage::createProperty(MtPropertyList
 }
 
 // Address: 0x0070ddd0 - 0x0070deec (284 bytes)
-__attribute__((weak)) bool rTutorialDialogMessage::save(MtStream& out) {
-    // local: MtDataWriter w;
-    DDON_STUB("rTutorialDialogMessage::save")
-    return {};
+bool rTutorialDialogMessage::save(MtStream& out) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x80 from rTutorialDialogMessage*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
+    (&w)->writeU32(static_cast<u32>(5063764));
+    (&w)->writeU32(static_cast<u32>(2));
+    (&w)->writeU32(this->mTitleGmdIdx);
+    (&w)->writeU32(this->mCategoryGmdIdx);
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(128)));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(128))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            // inferred: a temporary for the value the load at 0x70de8b read, used twice; no DWARF local holds it
+            MtObject* t5 = this->mPageInfo.::MtArray::getBuffer()[static_cast<int>(i0_3)];
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t5) + static_cast<long>(8)));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t5) + static_cast<long>(12)));
+            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(128)))) {
+                i0_3 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return true;
 }
 
 // Address: 0x0070def0 - 0x0070dfbc (204 bytes)
@@ -154,7 +204,8 @@ const MtDTI& rTutorialDialogMessage::cDialogPage::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
-inline void* rTutorialDialogMessage::cDialogPage::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rTutorialDialogMessage::cDialogPage::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::cDialogPage::DTI)->memAlloc(sz, align, ::rTutorialDialogMessage::cDialogPage::DTI.::MtDTI::getID());
 }
 

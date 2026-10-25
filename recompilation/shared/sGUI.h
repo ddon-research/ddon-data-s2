@@ -19,9 +19,12 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 class cDraw;
+class cGUIClanExecutor;
+class cGUIContentsExecutor;
 class cGUIFontFilter;
 class cGUIMessageAnalyzer;
 class cGUIObjMessage;
+class cGUIObjPolygon;
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
@@ -35,6 +38,7 @@ class rGUI;
 class rGUIFont;
 class rGUIIconInfo;
 class uGUI;
+class uGUIGameMenu;
 class uGUIMap;
 
 // Declarations
@@ -52,10 +56,18 @@ using u32 = unsigned int;
 
 class sGUI : public cSystem
 {
+    // inferred: cGUIClanExecutor::~cGUIClanExecutor names sGUI::mpInstance
+    friend class cGUIClanExecutor;
+    // inferred: cGUIContentsExecutor::release names sGUI::mpInstance
+    friend class cGUIContentsExecutor;
     // inferred: cGUIMessageAnalyzer::~cGUIMessageAnalyzer names sGUI::mpInstance
     friend class cGUIMessageAnalyzer;
     // inferred: cGUIObjMessage::clearDrawMTag names sGUI::mpInstance
     friend class cGUIObjMessage;
+    // inferred: cGUIObjPolygon::setUpdateDraw names sGUI::mpInstance
+    friend class cGUIObjPolygon;
+    // inferred: uGUIGameMenu::kill names sGUI::mpInstance
+    friend class uGUIGameMenu;
     // inferred: uGUIMap::changeLandType names sGUI::mpInstance
     friend class uGUIMap;
 public:

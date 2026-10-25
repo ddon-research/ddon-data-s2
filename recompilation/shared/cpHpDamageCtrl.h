@@ -28,7 +28,6 @@ class cBlowShrinkDmInfo;
 class cBlowShrinkInfo;
 class cChildRegionStatus;
 class cChildRegionStatusParam;
-class cDamageEffInfo;
 class cDamageMsg;
 class cHitInfo;
 class cHitInfoAfter;
@@ -43,6 +42,7 @@ class uDDOModel;
 class uEnemy;
 
 // Declarations
+class cDamageEffInfo;
 class cDamageSeInfo;
 class cpHpDamageCtrl;
 
@@ -58,6 +58,52 @@ using f32 = float;
 using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
+
+class cDamageEffInfo : public MtObject
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cDamageEffInfo();
+public:
+    uDDOModel* mpAttacker;  // offset: 0x8
+    uDDOModel* mpReceiver;  // offset: 0x10
+    u32 mPhysTypeEff;  // offset: 0x18
+    s32 mJointNo;  // offset: 0x1c
+    MtVector3 mHitPos;  // offset: 0x20
+    MtVector3 mHitNormal;  // offset: 0x30
+    MtVector3 mOffsetFromJoint;  // offset: 0x40
+    u32 mSurfaceType;  // offset: 0x50
+    u32 mEffectAngle;  // offset: 0x54
+    u32 mEffectFlag;  // offset: 0x58
+    nDDOGame::ELEMENT_TYPE mElemntType;  // offset: 0x5c
+    u32 mEpvType;  // offset: 0x60
+    bool mIsDownWeakRegion;  // offset: 0x64
+    bool mIsArrow;  // offset: 0x65
+    f32 mDamageRatePhys;  // offset: 0x68
+    f32 mDamageRatemagic;  // offset: 0x6c
+    static MyDTI DTI;
+};
 
 class cDamageSeInfo : public MtObject
 {

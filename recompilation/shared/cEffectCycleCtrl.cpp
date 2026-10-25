@@ -6,8 +6,10 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "cUnit.h"
 #include "sEffect.h"
 #include "sEffectExt.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -291,8 +293,7 @@ cEffectCycleCtrl::cEffectCycleCtrl() {
 // Address: 0x000a0650 - 0x000a0667 (23 bytes)
 // Also emitted as: _ZN16cEffectCycleCtrlD0Ev at 0x000a0670
 cEffectCycleCtrl::~cEffectCycleCtrl() {
-    DDON_STUB("cEffectCycleCtrl::~cEffectCycleCtrl")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x000a06c0 - 0x000a06c1 (1 bytes)
@@ -301,10 +302,52 @@ __attribute__((weak)) void cEffectCycleCtrl::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x000a06d0 - 0x000a0737 (103 bytes)
-__attribute__((weak)) void cEffectCycleCtrl::updatePtr() {
-    // local: u32 i;
-    DDON_STUB("cEffectCycleCtrl::updatePtr")
-    /* stub */
+void cEffectCycleCtrl::updatePtr() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0xa0700 carries; no location-less local in scope fits
+    u32 v0_0;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_1;
+    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
+        if (this->mpModel->::cUnit::isEnable() == false) {
+            this->mpModel = static_cast<uDDOModel*>(nullptr);
+            v0_0 = this->mEffectPartArray.::MtArray::size();
+            if (v0_0 != static_cast<u32>(0)) {
+                i0_1 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        } else {
+            v0_0 = this->mEffectPartArray.::MtArray::size();
+            if (v0_0 != static_cast<u32>(0)) {
+                i0_1 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        }
+    } else {
+        v0_0 = this->mEffectPartArray.::MtArray::size();
+        if (v0_0 != static_cast<u32>(0)) {
+            i0_1 = static_cast<unsigned int>(0);
+        } else {
+            return;
+        }
+    }
+    for (;;) {
+        if (this->mEffectPartArray.::MtArray::getBuffer()[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mEffectPartArray.::MtArray::getBuffer()[static_cast<int>(i0_1)]) + static_cast<long>(64))) != static_cast<unsigned long>(0)) {
+                if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mEffectPartArray.::MtArray::getBuffer()[static_cast<int>(i0_1)]) + static_cast<long>(64))) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) > static_cast<unsigned int>(1)) {
+                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mEffectPartArray.::MtArray::getBuffer()[static_cast<int>(i0_1)]) + static_cast<long>(64)) = static_cast<unsigned long>(0);
+                }
+            }
+        }
+        if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
+            i0_1 += static_cast<unsigned int>(1);
+        } else {
+            break;
+        }
+    }
 }
 
 // Address: 0x000a0740 - 0x000a07b1 (113 bytes)
@@ -359,31 +402,104 @@ __attribute__((weak)) void cEffectCycleCtrl::reqestForceKillCyclePart(s32 Order)
 }
 
 // Address: 0x000a0dd0 - 0x000a0dfa (42 bytes)
-__attribute__((weak)) bool cEffectCycleCtrl::isOrderExist(s32 Order) const {
-    // local: u32 i;
-    DDON_STUB("cEffectCycleCtrl::isOrderExist")
-    return {};
+bool cEffectCycleCtrl::isOrderExist(s32 Order) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: the value the loop at 0xa0de0 carries; no location-less local in scope fits
+    u32 v0_1 = this->mEffectPartArray.::MtArray::mLength;
+    if (v0_1 != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0xa0de0 carries; no location-less local in scope fits
+        MtObject* * v0_4 = this->mEffectPartArray.::MtArray::mpArray;
+        // inferred: DWARF's location-less 'i' (lexical block [0xa0dd0, 0xa0df7)) is the counter this loop steps (DWARF's stale constant 0)
+        for (u32 i = static_cast<u32>(0);;) {
+            if (v0_4[i] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + static_cast<long>(84))) == static_cast<unsigned int>(Order)) {
+                    return true;
+                }
+            }
+            if ((i + static_cast<u32>(1)) < v0_1) {
+                i = i + static_cast<u32>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x000a0ef0 - 0x000a0f17 (39 bytes)
-__attribute__((weak)) void cEffectCycleCtrl::setEffectFlag(bool flag) {
-    // local: u32 i;
-    DDON_STUB("cEffectCycleCtrl::setEffectFlag")
-    /* stub */
+void cEffectCycleCtrl::setEffectFlag(bool flag) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cEffectCycleCtrl*
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    // inferred: the value the loop at 0xa0f00 carries; no location-less local in scope fits
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24));
+    if (v0_0 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0xa0f00 carries; no location-less local in scope fits
+        MtObject* * v0_1 = this->mEffectPartArray.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(24)) = static_cast<unsigned char>(flag);
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x000a0f20 - 0x000a0f47 (39 bytes)
-__attribute__((weak)) void cEffectCycleCtrl::setEndEffectFlag(bool flag) {
-    // local: u32 i;
-    DDON_STUB("cEffectCycleCtrl::setEndEffectFlag")
-    /* stub */
+void cEffectCycleCtrl::setEndEffectFlag(bool flag) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cEffectCycleCtrl*
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    // inferred: the value the loop at 0xa0f30 carries; no location-less local in scope fits
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24));
+    if (v0_0 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0xa0f30 carries; no location-less local in scope fits
+        MtObject* * v0_1 = this->mEffectPartArray.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(36)) = static_cast<unsigned char>(flag);
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x000a0f50 - 0x000a0f77 (39 bytes)
-__attribute__((weak)) void cEffectCycleCtrl::setOutLineFlag(bool flag) {
-    // local: u32 i;
-    DDON_STUB("cEffectCycleCtrl::setOutLineFlag")
-    /* stub */
+void cEffectCycleCtrl::setOutLineFlag(bool flag) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cEffectCycleCtrl*
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    // inferred: the value the loop at 0xa0f60 carries; no location-less local in scope fits
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24));
+    if (v0_0 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0xa0f60 carries; no location-less local in scope fits
+        MtObject* * v0_1 = this->mEffectPartArray.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(44)) = static_cast<unsigned char>(flag);
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (69 bytes)

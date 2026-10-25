@@ -27,6 +27,7 @@ class cDmJobAdjParam;
 class cHitInfoAfterLocal;
 class cOcdDamageInfo;
 class cParentRegionStatus;
+class cpHpDamageCtrl;
 class cpJob08;
 class rAttackParam;
 class uDDOModel;
@@ -226,6 +227,8 @@ public:
 
 class cHitInfoAfter : public MtObject
 {
+    // inferred: cpHpDamageCtrl::applyShrinkBlowDamage_Down names cHitInfoAfter::mHitInfoType
+    friend class cpHpDamageCtrl;
 public:
     class MyDTI;
 public:

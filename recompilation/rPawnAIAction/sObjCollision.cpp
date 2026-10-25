@@ -9,7 +9,9 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/MtSynchronize.h"
+#include "../shared/cNetGameServer.h"
 #include "../shared/cObjHitCache.h"
+#include "../shared/cResource.h"
 #include "../shared/cSystem.h"
 #include "../shared/cpObjCollision.h"
 #include "../shared/nCatch.h"
@@ -20,8 +22,15 @@
 #include "../rAdjustParam/rAdjustParam.h"
 #include "../shared/rAttackParam.h"
 #include "../shared/rCalcDamage.h"
+#include "../rCaughtDamageRateRefTbl/rCaughtDamageRateRefTbl.h"
+#include "../rCaughtDamageRateTbl/rCaughtDamageRateTbl.h"
 #include "../shared/rCollNode.h"
 #include "../rDmVecWeightParam/rDmVecWeightParam.h"
+#include "../rEmDamageDirInfo/rEmDamageDirInfo.h"
+#include "../rPushRate/rPushRate.h"
+#include "../shared/sMain.h"
+#include "../shared/sNetwork.h"
+#include "../shared/sNetworkExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -130,14 +139,72 @@ __attribute__((weak)) void sObjCollision::reset() {
 
 // Address: 0x007f6110 - 0x007f6327 (535 bytes)
 __attribute__((weak)) void sObjCollision::cheatCheck() {
-    DDON_STUB("sObjCollision::cheatCheck")
-    /* stub */
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->mSendInterval = ::sMain::getInstance()->mDeltaTime + this->mSendInterval;
+    if (450.0f > this->mSendInterval) {
+    } else {
+        if (this->mCntCheatHpAlter_PL != static_cast<u32>(0)) {
+            this->mCntCheatHpAlter_PL = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(3));
+        }
+        if (this->mCntCheatHpAlter_EM != static_cast<u32>(0)) {
+            this->mCntCheatHpAlter_EM = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(4));
+        }
+        if (this->mCntCheatHpZero_EM != static_cast<u32>(0)) {
+            this->mCntCheatHpZero_EM = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(1));
+        }
+        if (this->mCntCheatDead_EM != static_cast<u32>(0)) {
+            this->mCntCheatDead_EM = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(1));
+        }
+        if (this->mCntCheatHpAlter_Other != static_cast<u32>(0)) {
+            this->mCntCheatHpAlter_Other = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(4));
+        }
+        if (this->mCntCheatInvFlag_PL != static_cast<u32>(0)) {
+            this->mCntCheatInvFlag_PL = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(11));
+        }
+        if (this->mCntCheatInvFlag_EM != static_cast<u32>(0)) {
+            this->mCntCheatInvFlag_EM = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(12));
+        }
+        if (this->mCntCheatInvFlagGold_PL != static_cast<u32>(0)) {
+            this->mCntCheatInvFlagGold_PL = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(13));
+        }
+        if (this->mCntCheatInvFlag_Other != static_cast<u32>(0)) {
+            this->mCntCheatInvFlag_Other = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(14));
+        }
+        if (this->mCntCheatDamageBig != static_cast<u32>(0)) {
+            this->mCntCheatDamageBig = static_cast<u32>(0);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reportCheat(static_cast<u8>(2));
+        }
+        this->mSendInterval = 0.0f;
+    }
 }
 
 // Address: 0x007f56c0 - 0x007f5718 (88 bytes)
-__attribute__((weak)) u16 sObjCollision::createUID() {
-    DDON_STUB("sObjCollision::createUID")
-    return {};
+u16 sObjCollision::createUID() {
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
+    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+        } else {
+            ::abort();
+        }
+    }
+    this->mUID = static_cast<unsigned short>(this->mUID + static_cast<int>(1));
+    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+        } else {
+            ::abort();
+        }
+    }
+    return this->mUID;
 }
 
 // Address: 0x007f6340 - 0x007f63ac (108 bytes)
@@ -233,24 +300,26 @@ __attribute__((weak)) const cCollNode* sObjCollision::findCollNode(u64 uID, s32 
 // void sObjCollision::releaseCollNodeTable(rCollNode* pTable);
 
 // Address: 0x007f6410 - 0x007f641a (10 bytes)
-__attribute__((weak)) u64 sObjCollision::makeParamUID(u32 tableUID, u32 index) const {
-    // local: u64 uID;
-    DDON_STUB("sObjCollision::makeParamUID")
-    return {};
+u64 sObjCollision::makeParamUID(u32 tableUID, u32 index) const {
+    // DWARF local not rendered: u64 uID;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as u64
+    return static_cast<u64>((tableUID * static_cast<u32>(0)) | index);
 }
 
 // Address: 0x007f6420 - 0x007f6427 (7 bytes)
-__attribute__((weak)) u32 sObjCollision::extractTableUID(u64 paramUID) const {
-    // local: u32 uID;
-    DDON_STUB("sObjCollision::extractTableUID")
-    return {};
+u32 sObjCollision::extractTableUID(u64 paramUID) const {
+    // DWARF local not rendered: u32 uID;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u64 used as u32
+    return static_cast<u32>(paramUID >> static_cast<u64>(32));
 }
 
 // Address: 0x007f6430 - 0x007f6433 (3 bytes)
-__attribute__((weak)) u32 sObjCollision::extractParamIndex(u64 paramUID) const {
-    // local: u32 uID;
-    DDON_STUB("sObjCollision::extractParamIndex")
-    return {};
+u32 sObjCollision::extractParamIndex(u64 paramUID) const {
+    // DWARF local not rendered: u32 uID;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned int>(paramUID);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (8 bytes)
@@ -326,66 +395,259 @@ __attribute__((weak)) const cCalcDamageLvAdj* sObjCollision::getLvAdjData(uDDOMo
 }
 
 // Address: 0x007f7370 - 0x007f73e2 (114 bytes)
-__attribute__((weak)) const cDmJobAdjParam* sObjCollision::getDmJobAdjParam(nHuman::JOB_ENUM jobID) {
-    // local: u32 dataNum;
-    // local: u32 i;
-    // local: const cDmJobAdjParam* pData;
-    DDON_STUB("sObjCollision::getDmJobAdjParam")
-    return nullptr;
+const cDmJobAdjParam* sObjCollision::getDmJobAdjParam(nHuman::JOB_ENUM jobID) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cDmJobAdjParam* pData;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: nHuman::JOB_ENUM used as unsigned int
+    // inferred: the value carried to 0x7f73d9; no location-less local in scope fits
+    cDmJobAdjParam* v1_0;
+    if (this->mpJobAdjRes == static_cast<rDmJobAdjParam*>(nullptr)) {
+        v1_0 = static_cast<cDmJobAdjParam*>(nullptr);
+    } else {
+        u32 dataNum = this->mpJobAdjRes->getDataNum();
+        if (dataNum == static_cast<u32>(0)) {
+            v1_0 = static_cast<cDmJobAdjParam*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x7f73bc, used 3 times; no DWARF local holds it
+                cDmJobAdjParam* t0 = this->mpJobAdjRes->getData(i0_2);
+                if (t0 != static_cast<cDmJobAdjParam*>(nullptr)) {
+                    if (t0->mJobType == static_cast<unsigned int>(jobID)) {
+                        v1_0 = t0;
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cDmJobAdjParam*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x007f73f0 - 0x007f7462 (114 bytes)
-__attribute__((weak)) const cDmJobPawnAdjParam* sObjCollision::getDmJobPawnAdjParam(nHuman::JOB_ENUM jobID) {
-    // local: u32 dataNum;
-    // local: u32 i;
-    // local: const cDmJobPawnAdjParam* pData;
-    DDON_STUB("sObjCollision::getDmJobPawnAdjParam")
-    return nullptr;
+const cDmJobPawnAdjParam* sObjCollision::getDmJobPawnAdjParam(nHuman::JOB_ENUM jobID) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cDmJobPawnAdjParam* pData;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: nHuman::JOB_ENUM used as unsigned int
+    // inferred: the value carried to 0x7f7459; no location-less local in scope fits
+    cDmJobPawnAdjParam* v1_0;
+    if (this->mpJobPawnAdjParamRes == static_cast<rDmJobPawnAdjParam*>(nullptr)) {
+        v1_0 = static_cast<cDmJobPawnAdjParam*>(nullptr);
+    } else {
+        u32 dataNum = this->mpJobPawnAdjParamRes->getDataNum();
+        if (dataNum == static_cast<u32>(0)) {
+            v1_0 = static_cast<cDmJobPawnAdjParam*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x7f743c, used 3 times; no DWARF local holds it
+                cDmJobPawnAdjParam* t0 = this->mpJobPawnAdjParamRes->getData(i0_2);
+                if (t0 != static_cast<cDmJobPawnAdjParam*>(nullptr)) {
+                    if (t0->mJobType == static_cast<unsigned int>(jobID)) {
+                        v1_0 = t0;
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cDmJobPawnAdjParam*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x007f7470 - 0x007f74e2 (114 bytes)
-__attribute__((weak)) const cDmLvPawnAdjParam* sObjCollision::getDmLvPawnAdjParam(u32 keyLv) {
-    // local: u32 dataNum;
-    // local: u32 i;
-    // local: const cDmLvPawnAdjParam* pData;
-    DDON_STUB("sObjCollision::getDmLvPawnAdjParam")
-    return nullptr;
+const cDmLvPawnAdjParam* sObjCollision::getDmLvPawnAdjParam(u32 keyLv) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cDmLvPawnAdjParam* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x7f74d9; no location-less local in scope fits
+    cDmLvPawnAdjParam* v1_0;
+    if (this->mpLvPawnAdjParamRes == static_cast<rDmLvPawnAdjParam*>(nullptr)) {
+        v1_0 = static_cast<cDmLvPawnAdjParam*>(nullptr);
+    } else {
+        u32 dataNum = this->mpLvPawnAdjParamRes->getDataNum();
+        if (dataNum == static_cast<u32>(0)) {
+            v1_0 = static_cast<cDmLvPawnAdjParam*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x7f74bc, used 3 times; no DWARF local holds it
+                cDmLvPawnAdjParam* t0 = this->mpLvPawnAdjParamRes->getData(i0_2);
+                if (t0 != static_cast<cDmLvPawnAdjParam*>(nullptr)) {
+                    if (t0->mKeyLv == keyLv) {
+                        v1_0 = t0;
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cDmLvPawnAdjParam*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x007f74f0 - 0x007f7583 (147 bytes)
-__attribute__((weak)) const cDamageSaveEmLvParam* sObjCollision::getDamageSaveEmLvParam(u32 keyLv) {
-    // local: u32 dataNum;
-    // local: const cDamageSaveEmLvParam* pDataInit;
-    // local: u32 i;
-    // local: const cDamageSaveEmLvParam* pData;
-    DDON_STUB("sObjCollision::getDamageSaveEmLvParam")
-    return nullptr;
+const cDamageSaveEmLvParam* sObjCollision::getDamageSaveEmLvParam(u32 keyLv) {
+    // DWARF local not rendered: const cDamageSaveEmLvParam* pDataInit;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cDamageSaveEmLvParam* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x7f757a; no location-less local in scope fits
+    cDamageSaveEmLvParam* v1_0;
+    if (this->mpDamageSaveEmLvParam == static_cast<rDamageSaveEmLvParam*>(nullptr)) {
+        v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+    } else {
+        u32 dataNum = this->mpDamageSaveEmLvParam->getDataNum();
+        if (dataNum == static_cast<u32>(0)) {
+            v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+        } else {
+            // inferred: a temporary for the result of the call at 0x7f7532, used twice; no DWARF local holds it
+            cDamageSaveEmLvParam* t0 = this->mpDamageSaveEmLvParam->getData(static_cast<u32>(0));
+            if (t0 == static_cast<cDamageSaveEmLvParam*>(nullptr)) {
+                v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+            } else {
+                if (keyLv < t0->mKeyLv) {
+                    v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+                } else {
+                    // inferred: the counter this loop steps; no location-less local in scope fits
+                    for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                        // inferred: a temporary for the result of the call at 0x7f755d, used 3 times; no DWARF local holds it
+                        cDamageSaveEmLvParam* t1 = this->mpDamageSaveEmLvParam->getData(i0_2);
+                        if (t1 != static_cast<cDamageSaveEmLvParam*>(nullptr)) {
+                            if (keyLv >= t1->mKeyLv) {
+                                v1_0 = t1;
+                                break;
+                            }
+                        }
+                        if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
+                            i0_2 += static_cast<unsigned int>(1);
+                        } else {
+                            v1_0 = static_cast<cDamageSaveEmLvParam*>(nullptr);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x007f7590 - 0x007f7623 (147 bytes)
-__attribute__((weak)) const cBlowSaveEmLvParam* sObjCollision::getBlowSaveEmLvParam(u32 keyLv) {
-    // local: u32 dataNum;
-    // local: const cBlowSaveEmLvParam* pDataInit;
-    // local: u32 i;
-    // local: const cBlowSaveEmLvParam* pData;
-    DDON_STUB("sObjCollision::getBlowSaveEmLvParam")
-    return nullptr;
+const cBlowSaveEmLvParam* sObjCollision::getBlowSaveEmLvParam(u32 keyLv) {
+    // DWARF local not rendered: const cBlowSaveEmLvParam* pDataInit;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cBlowSaveEmLvParam* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x7f761a; no location-less local in scope fits
+    cBlowSaveEmLvParam* v1_0;
+    if (this->mpBlowSaveEmLvParam == static_cast<rBlowSaveEmLvParam*>(nullptr)) {
+        v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+    } else {
+        u32 dataNum = this->mpBlowSaveEmLvParam->getDataNum();
+        if (dataNum == static_cast<u32>(0)) {
+            v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+        } else {
+            // inferred: a temporary for the result of the call at 0x7f75d2, used twice; no DWARF local holds it
+            cBlowSaveEmLvParam* t0 = this->mpBlowSaveEmLvParam->getData(static_cast<u32>(0));
+            if (t0 == static_cast<cBlowSaveEmLvParam*>(nullptr)) {
+                v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+            } else {
+                if (keyLv < t0->mKeyLv) {
+                    v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+                } else {
+                    // inferred: the counter this loop steps; no location-less local in scope fits
+                    for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                        // inferred: a temporary for the result of the call at 0x7f75fd, used 3 times; no DWARF local holds it
+                        cBlowSaveEmLvParam* t1 = this->mpBlowSaveEmLvParam->getData(i0_2);
+                        if (t1 != static_cast<cBlowSaveEmLvParam*>(nullptr)) {
+                            if (keyLv >= t1->mKeyLv) {
+                                v1_0 = t1;
+                                break;
+                            }
+                        }
+                        if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
+                            i0_2 += static_cast<unsigned int>(1);
+                        } else {
+                            v1_0 = static_cast<cBlowSaveEmLvParam*>(nullptr);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x007f7630 - 0x007f7678 (72 bytes)
-__attribute__((weak)) const cDamageSpecialAdj* sObjCollision::getDamageSpecialAdj(nObjCollision::DAMAGE_SPECIAL_ADJ adjType) {
-    // local: u32 dataNum;
-    DDON_STUB("sObjCollision::getDamageSpecialAdj")
-    return nullptr;
+const cDamageSpecialAdj* sObjCollision::getDamageSpecialAdj(nObjCollision::DAMAGE_SPECIAL_ADJ adjType) {
+    // DWARF local not rendered: u32 dataNum;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: nObjCollision::DAMAGE_SPECIAL_ADJ used as unsigned int
+    if (this->mpDamageSpecialAdj != static_cast<rDamageSpecialAdj*>(nullptr)) {
+        if (static_cast<unsigned int>(adjType) < this->mpDamageSpecialAdj->getDataNum()) {
+            return this->mpDamageSpecialAdj->getData(static_cast<u32>(adjType));
+        }
+    }
+    return static_cast<const cDamageSpecialAdj*>(nullptr);
 }
 
 // Address: 0x007f6940 - 0x007f69cf (143 bytes)
-__attribute__((weak)) const cShrinkBlowValue* sObjCollision::getShBlValue(nObjCollision::SHRINK_BLOW_TYPE type, u32 Lv) {
-    // local: u32 dataNum;
-    // local: u32 i;
-    // local: const cShrinkBlowValue* pData;
-    DDON_STUB("sObjCollision::getShBlValue")
-    return nullptr;
+const cShrinkBlowValue* sObjCollision::getShBlValue(nObjCollision::SHRINK_BLOW_TYPE type, u32 Lv) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cShrinkBlowValue* pData;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: nObjCollision::SHRINK_BLOW_TYPE used as unsigned int
+    // inferred: the value carried to 0x7f69c0; no location-less local in scope fits
+    cShrinkBlowValue* v1_0;
+    if (this->mpShBlValue == static_cast<rShrinkBlowValue*>(nullptr)) {
+        v1_0 = static_cast<cShrinkBlowValue*>(nullptr);
+    } else {
+        u32 dataNum = this->mpShBlValue->getDataNum();
+        if (dataNum == static_cast<u32>(0)) {
+            v1_0 = static_cast<cShrinkBlowValue*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x7f699d, used 4 times; no DWARF local holds it
+                cShrinkBlowValue* t0 = this->mpShBlValue->getData(i0_2);
+                if (t0 != static_cast<cShrinkBlowValue*>(nullptr)) {
+                    if (t0->mDamageType == static_cast<unsigned int>(type)) {
+                        if (t0->mLv == Lv) {
+                            v1_0 = t0;
+                            break;
+                        }
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < dataNum) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cShrinkBlowValue*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x007f69d0 - 0x007f6a7e (174 bytes)
@@ -558,8 +820,96 @@ __attribute__((weak)) void sObjCollision::createResource() {
 
 // Address: 0x007f53a0 - 0x007f5618 (632 bytes)
 __attribute__((weak)) void sObjCollision::releaseResource() {
-    DDON_STUB("sObjCollision::releaseResource")
-    /* stub */
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpDmLvAdjRes != static_cast<rCalcDamageLvAdj*>(nullptr)) {
+        this->mpDmLvAdjRes->::cResource::release();
+        this->mpDmLvAdjRes = static_cast<rCalcDamageLvAdj*>(nullptr);
+    }
+    if (this->mpDmAtdmAdjResHM != static_cast<rCalcDamageAtdmAdj*>(nullptr)) {
+        this->mpDmAtdmAdjResHM->::cResource::release();
+        this->mpDmAtdmAdjResHM = static_cast<rCalcDamageAtdmAdj*>(nullptr);
+    }
+    if (this->mpDmAtdmAdjResEM != static_cast<rCalcDamageAtdmAdj*>(nullptr)) {
+        this->mpDmAtdmAdjResEM->::cResource::release();
+        this->mpDmAtdmAdjResEM = static_cast<rCalcDamageAtdmAdj*>(nullptr);
+    }
+    if (this->mpDmAtdmAdjRateRes != static_cast<rCalcDamageAtdmAdjRate*>(nullptr)) {
+        this->mpDmAtdmAdjRateRes->::cResource::release();
+        this->mpDmAtdmAdjRateRes = static_cast<rCalcDamageAtdmAdjRate*>(nullptr);
+    }
+    if (this->mpShBlValue != static_cast<rShrinkBlowValue*>(nullptr)) {
+        this->mpShBlValue->::cResource::release();
+        this->mpShBlValue = static_cast<rShrinkBlowValue*>(nullptr);
+    }
+    if (this->mpJobAdjRes != static_cast<rDmJobAdjParam*>(nullptr)) {
+        this->mpJobAdjRes->::cResource::release();
+        this->mpJobAdjRes = static_cast<rDmJobAdjParam*>(nullptr);
+    }
+    if (this->mpEmDamageDirInfo != static_cast<rEmDamageDirInfo*>(nullptr)) {
+        this->mpEmDamageDirInfo->::cResource::release();
+        this->mpEmDamageDirInfo = static_cast<rEmDamageDirInfo*>(nullptr);
+    }
+    if (this->mpDmVecWeightParam != static_cast<rDmVecWeightParam*>(nullptr)) {
+        this->mpDmVecWeightParam->::cResource::release();
+        this->mpDmVecWeightParam = static_cast<rDmVecWeightParam*>(nullptr);
+    }
+    if (this->mpAdjLimitParamRes != static_cast<rAdjLimitParam*>(nullptr)) {
+        this->mpAdjLimitParamRes->::cResource::release();
+        this->mpAdjLimitParamRes = static_cast<rAdjLimitParam*>(nullptr);
+    }
+    if (this->mpJobPawnAdjParamRes != static_cast<rDmJobPawnAdjParam*>(nullptr)) {
+        this->mpJobPawnAdjParamRes->::cResource::release();
+        this->mpJobPawnAdjParamRes = static_cast<rDmJobPawnAdjParam*>(nullptr);
+    }
+    if (this->mpLvPawnAdjParamRes != static_cast<rDmLvPawnAdjParam*>(nullptr)) {
+        this->mpLvPawnAdjParamRes->::cResource::release();
+        this->mpLvPawnAdjParamRes = static_cast<rDmLvPawnAdjParam*>(nullptr);
+    }
+    if (this->mpDamageSaveEmLvParam != static_cast<rDamageSaveEmLvParam*>(nullptr)) {
+        this->mpDamageSaveEmLvParam->::cResource::release();
+        this->mpDamageSaveEmLvParam = static_cast<rDamageSaveEmLvParam*>(nullptr);
+    }
+    if (this->mpBlowSaveEmLvParam != static_cast<rBlowSaveEmLvParam*>(nullptr)) {
+        this->mpBlowSaveEmLvParam->::cResource::release();
+        this->mpBlowSaveEmLvParam = static_cast<rBlowSaveEmLvParam*>(nullptr);
+    }
+    if (this->mpDamageSpecialAdj != static_cast<rDamageSpecialAdj*>(nullptr)) {
+        this->mpDamageSpecialAdj->::cResource::release();
+        this->mpDamageSpecialAdj = static_cast<rDamageSpecialAdj*>(nullptr);
+    }
+    if (this->mpSystemParamRes != static_cast<rAdjustParam*>(nullptr)) {
+        this->mpSystemParamRes->::cResource::release();
+        this->mpSystemParamRes = static_cast<rAdjustParam*>(nullptr);
+    }
+    if (this->mpPawnConstantParamRes != static_cast<rAdjustParam*>(nullptr)) {
+        this->mpPawnConstantParamRes->::cResource::release();
+        this->mpPawnConstantParamRes = static_cast<rAdjustParam*>(nullptr);
+    }
+    if (this->mpPushRateMoveMove != static_cast<rPushRate*>(nullptr)) {
+        this->mpPushRateMoveMove->::cResource::release();
+        this->mpPushRateMoveMove = static_cast<rPushRate*>(nullptr);
+    }
+    if (this->mpPushRateStopMove != static_cast<rPushRate*>(nullptr)) {
+        this->mpPushRateStopMove->::cResource::release();
+        this->mpPushRateStopMove = static_cast<rPushRate*>(nullptr);
+    }
+    if (this->mpPushRateFix != static_cast<rPushRate*>(nullptr)) {
+        this->mpPushRateFix->::cResource::release();
+        this->mpPushRateFix = static_cast<rPushRate*>(nullptr);
+    }
+    if (this->mpCaughtDamageRateRefTbl != static_cast<rCaughtDamageRateRefTbl*>(nullptr)) {
+        this->mpCaughtDamageRateRefTbl->::cResource::release();
+        this->mpCaughtDamageRateRefTbl = static_cast<rCaughtDamageRateRefTbl*>(nullptr);
+    }
+    if (this->mpCaughtDamageRateTbl != static_cast<rCaughtDamageRateTbl*>(nullptr)) {
+        this->mpCaughtDamageRateTbl->::cResource::release();
+        this->mpCaughtDamageRateTbl = static_cast<rCaughtDamageRateTbl*>(nullptr);
+    }
+    if (this->mpErosionShakeConvert != static_cast<rErosionShakeConvert*>(nullptr)) {
+        this->mpErosionShakeConvert->::cResource::release();
+        this->mpErosionShakeConvert = static_cast<rErosionShakeConvert*>(nullptr);
+    }
 }
 
 // Address: 0x007f6db0 - 0x007f6dc9 (25 bytes)

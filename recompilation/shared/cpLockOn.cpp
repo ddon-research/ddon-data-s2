@@ -79,8 +79,16 @@ cpLockOn::cpLockOn() {
 // Address: 0x004cd3e0 - 0x004cd440 (96 bytes)
 // Also emitted as: _ZN8cpLockOnD0Ev at 0x004cd480
 cpLockOn::~cpLockOn() {
-    DDON_STUB("cpLockOn::~cpLockOn")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cpLockOn::releaseLockOnTarget();
+    if (::sLockOnManager::getInstance() != static_cast<sLockOnManager*>(nullptr)) {
+        ::sLockOnManager::getInstance()->::sLockOnManager::unregisterLockOn(this);
+    }
+    if (this->mpResource == static_cast<rJointInfo*>(nullptr)) {
+        return;
+    }
+    this->mpResource->::cResource::release();
+    this->mpResource = static_cast<rJointInfo*>(nullptr);
 }
 
 // Address: 0x01a5c140 - 0x01a5c149 (9 bytes)
@@ -243,17 +251,38 @@ __attribute__((weak)) void cpLockOn::releaseLockOnTarget() {
 }
 
 // Address: 0x004cdba0 - 0x004cdbb2 (18 bytes)
-__attribute__((weak)) cpLockOn::cLockOnTarget* cpLockOn::getLockOnTarget(u32 index) {
-    DDON_STUB("cpLockOn::getLockOnTarget")
-    return nullptr;
+cpLockOn::cLockOnTarget* cpLockOn::getLockOnTarget(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mArray.::MtArray::mLength) {
+        return static_cast<cpLockOn::cLockOnTarget*>(this->mArray.::MtArray::mpArray[index]);
+    } else {
+        return static_cast<cpLockOn::cLockOnTarget*>(nullptr);
+    }
 }
 
 // Address: 0x004cdbc0 - 0x004cdbe6 (38 bytes)
-__attribute__((weak)) void cpLockOn::setGpCategory(s32 category) {
-    // local: u32 i;
-    // local: cLockOnTarget* p_lockon;
-    DDON_STUB("cpLockOn::setGpCategory")
-    /* stub */
+void cpLockOn::setGpCategory(s32 category) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cLockOnTarget* p_lockon;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from cpLockOn*
+    // inferred: the value the loop at 0x4cdbd0 carries; no location-less local in scope fits
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(88));
+    if (v0_0 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0x4cdbd0 carries; no location-less local in scope fits
+        MtObject* * v0_1 = this->mArray.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(72)) = static_cast<unsigned int>(category);
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x004cd440 - 0x004cd472 (50 bytes)
@@ -312,18 +341,38 @@ void cpLockOn::requestLockOnTargetAllOff() {
 }
 
 // Address: 0x004ce070 - 0x004ce083 (19 bytes)
-__attribute__((weak)) void cpLockOn::requestLockOnTargetRefAll(bool flag) {
-    DDON_STUB("cpLockOn::requestLockOnTargetRefAll")
-    /* stub */
+void cpLockOn::requestLockOnTargetRefAll(bool flag) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as nLockOnTarget::LOCKON_ALL_CTRL
+    this->mRequestLockOffAll = static_cast<nLockOnTarget::LOCKON_ALL_CTRL>(static_cast<unsigned long>(flag == false) | static_cast<unsigned long>(2));
 }
 
 // Address: 0x004ce0a0 - 0x004ce0d6 (54 bytes)
-__attribute__((weak)) void cpLockOn::setLockOnTargetState(u32 jointInfoID, nLockOnTarget::LOCKON_TARGET_STATE state) {
-    // local: u32 length;
-    // local: u32 i;
-    // local: cLockOnTarget* pLockOn;
-    DDON_STUB("cpLockOn::setLockOnTargetState")
-    /* stub */
+void cpLockOn::setLockOnTargetState(u32 jointInfoID, nLockOnTarget::LOCKON_TARGET_STATE state) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cLockOnTarget* pLockOn;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from cpLockOn*
+    u32 length = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(88));
+    if (length != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x4ce0b0 carries; no location-less local in scope fits
+        MtObject* * v0_4 = this->mArray.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            if (v0_4[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + static_cast<long>(140))) == jointInfoID) {
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[static_cast<int>(i0_2)]) + static_cast<long>(144)) = static_cast<unsigned int>(state);
+                    return;
+                }
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < length) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

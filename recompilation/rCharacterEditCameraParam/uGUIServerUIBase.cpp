@@ -5,6 +5,7 @@
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/MtObject.h"
 #include "../shared/MtString.h"
 #include "../shared/ServerUI.h"
 #include "../shared/cNetGameServer.h"
@@ -131,10 +132,20 @@ __attribute__((weak)) void uGUIServerUIBase::initServerUI(cServerUIClientControl
 }
 
 // Address: 0x00c35010 - 0x00c35048 (56 bytes)
-__attribute__((weak)) CDataUIListCommand* uGUIServerUIBase::getCommnadInfo(u32 commnadId) {
-    // local: u32 i;
-    DDON_STUB("uGUIServerUIBase::getCommnadInfo")
-    return nullptr;
+CDataUIListCommand* uGUIServerUIBase::getCommnadInfo(u32 commnadId) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8f0 from uGUIServerUIBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(2288))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCommandList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) == commnadId) {
+                return static_cast<CDataUIListCommand*>(this->mCommandList.::MtArray::getBuffer()[static_cast<int>(i)]);
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(2288))));
+    }
+    return static_cast<CDataUIListCommand*>(nullptr);
 }
 
 // Address: 0x00c35050 - 0x00c35136 (230 bytes)

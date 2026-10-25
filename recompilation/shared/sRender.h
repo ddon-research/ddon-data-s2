@@ -50,8 +50,10 @@ namespace nPS4 { class PixelShaderObject; }
 namespace nPS4 { class VertexShaderObject; }
 struct pthread;
 class sApp;
+class sGUIExt;
 namespace sce { namespace Gnm { class ClipControl; } }
 namespace sce { namespace Gnmx { class LightweightGfxContext; } }
+class uGUIOption;
 class uGUIPhoto;
 class uMotionBlurFilter;
 
@@ -97,6 +99,10 @@ class sRender : public cSystem
     friend class cUnit;
     // inferred: sApp::execute names sRender::mpInstance
     friend class sApp;
+    // inferred: sGUIExt::isHighResolution names sRender::mpInstance
+    friend class sGUIExt;
+    // inferred: uGUIOption::updateReflectionData names sRender::mpInstance
+    friend class uGUIOption;
     // inferred: uGUIPhoto::setup names sRender::mpInstance
     friend class uGUIPhoto;
     // inferred: uMotionBlurFilter::draw names sRender::mpInstance

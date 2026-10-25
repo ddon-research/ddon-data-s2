@@ -314,8 +314,21 @@ inline void* cAITaskJobPrimList::operator new(size_t sz, u32 align) {
 // Address: 0x01b6c190 - 0x01b6c1e6 (86 bytes)
 // Also emitted as: _ZN18cAITaskJobPrimListD0Ev at 0x01b6c250
 cAITaskJobPrimList::~cAITaskJobPrimList() {
-    DDON_STUB("cAITaskJobPrimList::~cAITaskJobPrimList")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpList != static_cast<cAITaskJobPrim*>(nullptr)) {
+        // inferred: the value the loop at 0x1b6c1c0 carries; no location-less local in scope fits
+        for (cAITaskJobPrim* v0_5 = this->mpList;;) {
+            // inferred: a temporary for the value the load at 0x1b6c1c3 read, used once; no DWARF local holds it
+            cAITaskJobPrim* t0 = v0_5->mpNext;
+            delete v0_5;
+            if (t0 != static_cast<cAITaskJobPrim*>(nullptr)) {
+                v0_5 = t0;
+            } else {
+                break;
+            }
+        }
+    }
+    this->mpList = static_cast<cAITaskJobPrim*>(nullptr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

@@ -2,6 +2,7 @@
 #include <new>
 #include "nDrawMaterial.h"
 #include "MtAllocator.h"
+#include "MtCRC.h"
 #include "MtColor.h"
 #include "MtDTI.h"
 #include "MtEaseCurve.h"
@@ -83,11 +84,34 @@ nDraw::Animation::~Animation() {
 }
 
 // Address: 0x01164570 - 0x011645be (78 bytes)
-__attribute__((weak)) s32 nDraw::Animation::getNo(MT_CTSTR name) const {
-    // local: u32 crc;
-    // local: u32 i;
-    DDON_STUB("nDraw::Animation::getNo")
-    return {};
+s32 nDraw::Animation::getNo(MT_CTSTR name) const {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    u32 crc = ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
+    // inferred: the value the loop at 0x11645a0 carries; no location-less local in scope fits
+    nDraw::Animation::ANIMATION_LIST* v0_1 = this->mpList;
+    // inferred: the value the loop at 0x11645a0 carries; no location-less local in scope fits
+    u32 v0_2 = v0_1->animation_num;
+    // inferred: the value carried to 0x11645b6; no location-less local in scope fits
+    u32 v2_9;
+    if (v0_2 == static_cast<u32>(0)) {
+        v2_9 = static_cast<u32>(4294967295);
+    } else {
+        // inferred: DWARF's location-less 'i' (lexical block [0x1164590, 0x11645b3)) is the counter this loop steps (DWARF's stale constant 0)
+        for (u32 i = static_cast<u32>(0);;) {
+            if (v0_1->animations[i]->crc != crc) {
+                if ((i + static_cast<u32>(1)) < v0_2) {
+                    i = i + static_cast<u32>(1);
+                } else {
+                    break;
+                }
+            } else {
+                v2_9 = i;
+                return static_cast<s32>(v2_9);
+            }
+        }
+        v2_9 = static_cast<u32>(4294967295);
+    }
+    return static_cast<s32>(v2_9);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -125,13 +149,156 @@ __attribute__((weak)) nDraw::Animation::ANIMATION_LIST* nDraw::Animation::copyAn
 }
 
 // Address: 0x01164050 - 0x01164158 (264 bytes)
-__attribute__((weak)) u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) {
-    // local: u32 bufsize;
-    // local: u32 i;
-    // local: u32 j;
-    // local: const PARAM* pparam;
-    DDON_STUB("nDraw::Animation::calcBufSize")
-    return {};
+u32 nDraw::Animation::calcBufSize(const nDraw::Animation::ANIMATION_LIST* list) {
+    // DWARF local not rendered: u32 bufsize;
+    // DWARF local not rendered: const PARAM* pparam;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x1164133; no location-less local in scope fits
+    u32 v3_0;
+    if (list == static_cast<const nDraw::Animation::ANIMATION_LIST*>(nullptr)) {
+        v3_0 = static_cast<u32>(0);
+    } else {
+        // inferred: the value the loop at 0x1164090 carries; no location-less local in scope fits
+        u32 v0_5 = list->animation_num;
+        if (v0_5 == static_cast<u32>(0)) {
+            v3_0 = (v0_5 * static_cast<u32>(8)) + static_cast<u32>(8);
+        } else {
+            // inferred: the value the loop at 0x1164090 carries; no location-less local in scope fits
+            u32 v0_0 = (v0_5 * static_cast<u32>(8)) + static_cast<u32>(8);
+            // inferred: DWARF's location-less 'i' (lexical block [0x116406c, 0x1164133)) is the counter this loop steps (DWARF's stale constant 0)
+            u32 i = static_cast<u32>(0);
+            // inferred: the value the loop at 0x11640c0 carries; no location-less local in scope fits
+            unsigned int v1_0;
+            // inferred: the value the loop at 0x11640c0 carries; no location-less local in scope fits
+            u32 v1_2;
+            // inferred: DWARF's location-less 'j' (lexical block [0x116409e, 0x11640a6), [0x11640af, 0x1164127)) is the counter this loop steps (DWARF's stale constant 0)
+            u32 j;
+            // inferred: the value carried to 0x1164127; no location-less local in scope fits
+            unsigned int v2_0;
+            for (;;) {
+                // inferred: the value the loop at 0x11640c0 carries; no location-less local in scope fits
+                nDraw::Animation::ANIMATION* v1_5 = list->animations[i];
+                if ((v1_5->param_num & static_cast<u32>(65535)) == static_cast<u32>(0)) {
+                    v2_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + static_cast<long>(4))) & static_cast<unsigned int>(262140)) * static_cast<unsigned int>(2))) + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + static_cast<long>(4))) >> static_cast<unsigned int>(18)) * static_cast<unsigned int>(4))) + static_cast<unsigned int>(24);
+                } else {
+                    v1_0 = ((v0_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + static_cast<long>(4))) & static_cast<unsigned int>(262140)) * static_cast<unsigned int>(2))) + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5) + static_cast<long>(4))) >> static_cast<unsigned int>(18)) * static_cast<unsigned int>(4))) + static_cast<unsigned int>(24);
+                    v1_2 = v1_5->param_num;
+                    j = static_cast<u32>(0);
+                    for (;;) {
+                        switch (v1_5->params[j]->type) {
+                            case static_cast<u32>(0):
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(12);
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(12);
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                            case static_cast<u32>(1):
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(20))) + static_cast<unsigned int>(12);
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(20))) + static_cast<unsigned int>(12);
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                            case static_cast<u32>(2):
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(12);
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(12);
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                            case static_cast<u32>(3):
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(4)) & static_cast<unsigned int>(268435440))) + static_cast<unsigned int>(8);
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(4)) & static_cast<unsigned int>(268435440))) + static_cast<unsigned int>(8);
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                            case static_cast<u32>(4):
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(80))) + static_cast<unsigned int>(12);
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(80))) + static_cast<unsigned int>(12);
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                            case static_cast<u32>(5):
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(8);
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(8))) + static_cast<unsigned int>(8);
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                            case static_cast<u32>(6):
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(24))) + static_cast<unsigned int>(12);
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(24))) + static_cast<unsigned int>(12);
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                            case static_cast<u32>(7):
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    v1_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(24))) + static_cast<unsigned int>(12);
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = (v1_0 + (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_5->params[j]) + static_cast<long>(4))) >> static_cast<unsigned int>(8)) * static_cast<unsigned int>(24))) + static_cast<unsigned int>(12);
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                            default:
+                            {
+                                if ((j + static_cast<u32>(1)) < v1_2) {
+                                    j = j + static_cast<u32>(1);
+                                } else {
+                                    v2_0 = v1_0;
+                                    goto loop_11640c0_end;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    loop_11640c0_end:;
+                }
+                if ((i + static_cast<u32>(1)) < v0_5) {
+                    v0_0 = v2_0;
+                    i = i + static_cast<u32>(1);
+                } else {
+                    v3_0 = v2_0;
+                    break;
+                }
+            }
+        }
+    }
+    return v3_0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -446,9 +613,9 @@ u32 nDraw::Material::getID() {
 }
 
 // Address: 0x01b830a0 - 0x01b830a5 (5 bytes)
-__attribute__((weak)) void nDraw::Material::setID(u32 id) {
-    DDON_STUB("nDraw::Material::setID")
-    /* stub */
+void nDraw::Material::setID(u32 id) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mID = static_cast<unsigned short>(id);
 }
 
 // No out-of-line body: no code in the ELF
@@ -483,9 +650,10 @@ void nDraw::Material::setStencilRef(u8 ref) {
 }
 
 // Address: 0x01b83070 - 0x01b83075 (5 bytes)
-__attribute__((weak)) u8 nDraw::Material::getStencilRef() const {
-    DDON_STUB("nDraw::Material::getStencilRef")
-    return {};
+u8 nDraw::Material::getStencilRef() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as u8
+    return static_cast<u8>(this->mStencilRef);
 }
 
 // No out-of-line body: no code in the ELF

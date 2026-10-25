@@ -358,9 +358,13 @@ void nNetwork::SessionDriver::onAnsLockSucceed(u32 req_seq, bool is_lock) {
 }
 
 // Address: 0x00e43590 - 0x00e435c2 (50 bytes)
-__attribute__((weak)) void nNetwork::SessionDriver::onAnsLockFail(u32 req_seq, MtNetError* err) {
-    DDON_STUB("nNetwork::SessionDriver::onAnsLockFail")
-    /* stub */
+void nNetwork::SessionDriver::onAnsLockFail(u32 req_seq, MtNetError* err) {
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as bool
+    if (static_cast<unsigned int>(this->mState - static_cast<s32>(9)) <= static_cast<unsigned int>(1)) {
+        this->mState = static_cast<s32>(2);
+    }
+    this->mpParent->::nNetwork::Session::onLockComplete(false, static_cast<bool>((this->mpParent->mpDatabase->mAttribute & static_cast<u32>(2)) >> static_cast<u32>(1)), err);
 }
 
 // Address: 0x00e43610 - 0x00e43626 (22 bytes)

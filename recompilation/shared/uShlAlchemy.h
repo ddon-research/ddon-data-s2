@@ -15,6 +15,7 @@ class cEfcHandle;
 class cHitInfo;
 class cShlParamAlchemy;
 class cShlParamAlchemyCS03;
+class cpJob09;
 
 // Declarations
 class uShlAlchemy;
@@ -31,6 +32,8 @@ using u32 = unsigned int;
 
 class uShlAlchemy : public uShlStick
 {
+    // inferred: cpJob09::requestStateBurst names uShlAlchemy::mStateBurst
+    friend class cpJob09;
 public:
     enum ALCHEMY_COLOR_LV
     {

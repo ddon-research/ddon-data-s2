@@ -5,7 +5,7 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/cControl.h"
-#include "../shared/cGUIControlMgr.h"
+#include "cGUIControlMgr.h"
 #include "../shared/cGUIInstance.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
@@ -300,8 +300,21 @@ __attribute__((weak)) void uGUIPhoto::initCommon() {
 
 // Address: 0x00b3e480 - 0x00b3e549 (201 bytes)
 __attribute__((weak)) void uGUIPhoto::initPhoto() {
-    DDON_STUB("uGUIPhoto::initPhoto")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mMode = static_cast<u32>(0);
+    this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(7)), true);
+    this->::uGUI::play(0.0f);
+    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(0), true);
+    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(1), false);
+    if (this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    }
+    this->mClose.mEnable = false;
+    this->mCounter = 0.0f;
+    this->mControls.::cGUIControlMgr::setCategoryFocus(static_cast<u32>(0), true);
+    this->mIsStopCameraOperation = false;
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhoto::updateWait);
+    this->::uGUIBase::mRoutine = static_cast<u32>(0);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (166 bytes)
@@ -413,9 +426,19 @@ __attribute__((weak)) void uGUIPhoto::adjustScale() {
 }
 
 // Address: 0x00b3f540 - 0x00b3f57d (61 bytes)
-__attribute__((weak)) bool uGUIPhoto::isForceSamplerLinear(cGUIObject* pObj) const {
-    DDON_STUB("uGUIPhoto::isForceSamplerLinear")
-    return {};
+bool uGUIPhoto::isForceSamplerLinear(cGUIObject* pObj) const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
+        if (this->mpFinder != static_cast<cGUIInstAnimation*>(nullptr)) {
+            if (this->mpFinder->::cGUIInstNull::mScale.x > 1.0f) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        return true;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

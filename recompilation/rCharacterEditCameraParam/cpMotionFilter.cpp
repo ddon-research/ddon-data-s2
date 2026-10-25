@@ -10,6 +10,7 @@
 #include "../shared/cUnit.h"
 #include "../shared/cpComponent.h"
 #include "../rMotionFilter/rMotionFilter.h"
+#include "uCnsMotFilter.h"
 #include "../shared/uDDOModel.h"
 #include "../shared/uModel.h"
 #ifndef DDON_STUB
@@ -104,10 +105,47 @@ void cpMotionFilter::setup() {
 }
 
 // Address: 0x004cff30 - 0x004d0013 (227 bytes)
-__attribute__((weak)) void cpMotionFilter::move() {
-    // local: u32 i;
-    DDON_STUB("cpMotionFilter::move")
-    /* stub */
+void cpMotionFilter::move() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::cpComponent::mActive != false) {
+        if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
+            if (this->mSleep == false) {
+                if (this->mpMotFilter[0] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[0]->move();
+                }
+                if (this->mpMotFilter[1] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[1]->move();
+                }
+                if (this->mpMotFilter[2] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[2]->move();
+                }
+                if (this->mpMotFilter[3] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[3]->move();
+                }
+                if (this->mpMotFilter[4] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[4]->move();
+                }
+                if (this->mpMotFilter[5] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[5]->move();
+                }
+                if (this->mpMotFilter[6] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[6]->move();
+                }
+                if (this->mpMotFilter[7] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[7]->move();
+                }
+                if (this->mpMotFilter[8] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[8]->move();
+                }
+                if (this->mpMotFilter[9] != static_cast<uCnsMotFilter*>(nullptr)) {
+                    this->mpMotFilter[9]->move();
+                    return;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x004d0320 - 0x004d0321 (1 bytes)

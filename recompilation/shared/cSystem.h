@@ -19,7 +19,9 @@ class MtVector3;
 class sAIPawnSys;
 class sArchiveManager;
 class sBakingJointOrder;
+class sBrowser;
 class sCameraExt;
+class sCaplinkManager;
 class sChat;
 class sCollision;
 class sContextManager;
@@ -38,10 +40,13 @@ class sRender;
 class sResource;
 class sScene;
 class sSetManager;
+class sShadow;
+class sShlManager;
 class sSound;
 class sSoundManager;
 class sUnit;
 class sZone;
+class uGUIMenuComm;
 
 // Declarations
 class cSystem;
@@ -61,8 +66,12 @@ class cSystem : public MtObject
     friend class sArchiveManager;
     // inferred: sBakingJointOrder::removeProtectUnits names cSystem::mThreadSafe
     friend class sBakingJointOrder;
+    // inferred: sBrowser::resetJSCallback_jumpSetPosSize names cSystem::mThreadSafe
+    friend class sBrowser;
     // inferred: sCameraExt::setMotionCamera names cSystem::mThreadSafe
     friend class sCameraExt;
+    // inferred: sCaplinkManager::getIconUrlFromIndex names cSystem::mThreadSafe
+    friend class sCaplinkManager;
     // inferred: sChat::setTellChat names cSystem::mJobSafe
     friend class sChat;
     // inferred: sCollision::lockSystem names cSystem::mJobSafe
@@ -71,17 +80,17 @@ class cSystem : public MtObject
     friend class sContextManager;
     // inferred: sEffect::getAdhesionLimitMax names cSystem::mThreadSafe
     friend class sEffect;
-    // inferred: sEffectExt::updateColorUpdateCount names cSystem::mJobSafe
+    // inferred: sEffectExt::addInvalidHandle names cSystem::mJobSafe
     friend class sEffectExt;
     // inferred: sGUI::releaseAlphaMap names cSystem::mJobSafe
     friend class sGUI;
     // inferred: sGUIExt::movePointer names cSystem::mJobSafe
     friend class sGUIExt;
-    // inferred: sInputManager::editCompare names cSystem::mJobSafe
+    // inferred: sInputManager::writeData names cSystem::mJobSafe
     friend class sInputManager;
     // inferred: sNetwork::forceSingleService names cSystem::mJobSafe
     friend class sNetwork;
-    // inferred: sObjCollision::addModelList names cSystem::mJobSafe
+    // inferred: sObjCollision::createUID names cSystem::mThreadSafe
     friend class sObjCollision;
     // inferred: sOccluder::add names cSystem::mJobSafe
     friend class sOccluder;
@@ -89,7 +98,7 @@ class cSystem : public MtObject
     friend class sOmManager;
     // inferred: sPrimitive::reserveTex names cSystem::mJobSafe
     friend class sPrimitive;
-    // inferred: sQuestManagerExt::csLock names cSystem::mJobSafe
+    // inferred: sQuestManagerExt::notifyReloadMasterData names cSystem::mThreadSafe
     friend class sQuestManagerExt;
     // inferred: sRender::addProtectResource names cSystem::mJobSafe
     friend class sRender;
@@ -99,14 +108,20 @@ class cSystem : public MtObject
     friend class sScene;
     // inferred: sSetManager::clearQuestList names cSystem::mJobSafe
     friend class sSetManager;
+    // inferred: sShadow::reset names cSystem::mJobSafe
+    friend class sShadow;
+    // inferred: sShlManager::getShlUniqueId names cSystem::mJobSafe
+    friend class sShlManager;
     // inferred: sSound::reset names cSystem::mJobSafe
     friend class sSound;
     // inferred: sSoundManager::setCycleZone names cSystem::mThreadSafe
     friend class sSoundManager;
-    // inferred: sUnit::remove names cSystem::mJobSafe
+    // inferred: sUnit::addBottom names cSystem::mJobSafe
     friend class sUnit;
     // inferred: sZone::addZoneLayout names cSystem::mJobSafe
     friend class sZone;
+    // inferred: uGUIMenuComm::updateWaitTmpPhrase names cSystem::mThreadSafe
+    friend class uGUIMenuComm;
 public:
     class MyDTI;
     class cAutoCriticalSection;

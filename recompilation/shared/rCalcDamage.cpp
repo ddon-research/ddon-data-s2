@@ -69,7 +69,8 @@ inline void cAdjLimitParam::operator delete(void* p_addr) {
 // void cAdjLimitParam::operator delete[](void* p_addr, u32 align);
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline cAdjLimitParam::cAdjLimitParam() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cAdjLimitParam::cAdjLimitParam() {
     ::memset(static_cast<void*>(&this->mGuardAtkAdjMax[0]), static_cast<int>(0), static_cast<size_t>(792));
     this->mHolyAbsorpMax = static_cast<u16>(3000);
     this->mHolyAbsorpMin = static_cast<u16>(0);

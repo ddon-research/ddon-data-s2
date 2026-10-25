@@ -67,8 +67,18 @@ inline void cMenuDialogFlow::operator delete(void* p_addr) {
 
 // Address: 0x0014eb20 - 0x0014eb79 (89 bytes)
 cMenuDialogFlow::cMenuDialogFlow() {
-    DDON_STUB("cMenuDialogFlow::cMenuDialogFlow")
-    /* stub */
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from cMenuDialogFlow*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from cMenuDialogFlow*
+    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    this->mDialogId = static_cast<s32>(0);
+    this->mRno = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(24)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = static_cast<unsigned long>(0);
+    this->mChoice = static_cast<s32>(-1);
+    this->mComId = static_cast<s32>(-1);
+    this->mAttr = static_cast<u32>(0);
+    this->mNextPointerPriority = static_cast<u32>(10);
 }
 
 // Address: 0x0014ebd0 - 0x0014ec08 (56 bytes)
@@ -252,9 +262,9 @@ void cMenuDialogFlow::setDialogSE(u32 reason, u32 seId, rSoundRequest* pRes) {
 // cMenuDialogFlow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0014e9e0 - 0x0014ea6a (138 bytes)
-__attribute__((weak)) MtObject* cMenuDialogFlow::MyDTI::newInstance() const {
-    DDON_STUB("cMenuDialogFlow::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuDialogFlow::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::cMenuDialogFlow;
 }
 
 // No out-of-line body: no code in the ELF
@@ -477,10 +487,160 @@ void cMenuSupportList::createList(u32 listNum) {
 
 // Address: 0x00150020 - 0x001500fb (219 bytes)
 __attribute__((weak)) void cMenuSupportList::createMenuList() {
-    // local: u32 i;
-    // local: u32 sortListIndex;
-    DDON_STUB("cMenuSupportList::createMenuList")
-    /* stub */
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 sortListIndex;
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->::cMenuSupportMenu::mMenuNum = static_cast<u32>(0);
+    // inferred: the value the loop at 0x150050 carries; no location-less local in scope fits
+    s32* v0_3 = this->::cMenuSupportMenu::mpMenuList;
+    if (v0_3 != static_cast<s32*>(nullptr)) {
+        // inferred: the value the loop at 0x150050 carries; no location-less local in scope fits
+        cMenuSupportList::stAddMenu* v0_4 = this->mpAddMenu;
+        // inferred: the value carried to 0x15007a; no location-less local in scope fits
+        u32 v1_1;
+        if (v0_4 == static_cast<cMenuSupportList::stAddMenu*>(nullptr)) {
+            v1_1 = static_cast<u32>(0);
+        } else {
+            if (this->mAddMenuNum == static_cast<u32>(0)) {
+                v1_1 = static_cast<u32>(0);
+            } else {
+                // inferred: the value the loop at 0x150050 carries; no location-less local in scope fits
+                u32 v0_0 = this->mAddMenuNum;
+                // inferred: the value the loop at 0x150050 carries; no location-less local in scope fits
+                u32 v0_1 = static_cast<u32>(0);
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x150052, held ahead of the effects the ELF orders after it
+                    cMenuSupportList::ADD_TYPE t0 = v0_4[i0_2].mAddType;
+                    if (t0 == static_cast<cMenuSupportList::ADD_TYPE>(1)) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x15005a, held ahead of the effects the ELF orders after it
+                        u32 t1 = this->::cMenuSupportMenu::mMenuMax;
+                        if (v0_1 < t1) {
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0x15005f, held ahead of the effects the ELF orders after it
+                            s32 t2 = v0_4[i0_2].mMenuId;
+                            v0_3[v0_1] = t2;
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0x150069, held ahead of the effects the ELF orders after it
+                            u32 t3 = this->::cMenuSupportMenu::mMenuNum;
+                            this->::cMenuSupportMenu::mMenuNum = t3 + static_cast<u32>(1);
+                            if ((i0_2 + static_cast<unsigned int>(1)) < this->mAddMenuNum) {
+                                v0_0 = this->mAddMenuNum;
+                                v0_1 = t3 + static_cast<u32>(1);
+                                i0_2 += static_cast<unsigned int>(1);
+                            } else {
+                                v1_1 = t3 + static_cast<u32>(1);
+                                break;
+                            }
+                        } else {
+                            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                                i0_2 += static_cast<unsigned int>(1);
+                            } else {
+                                v1_1 = v0_1;
+                                break;
+                            }
+                        }
+                    } else {
+                        if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                            i0_2 += static_cast<unsigned int>(1);
+                        } else {
+                            v1_1 = v0_1;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        // inferred: the value carried to 0x1500be; no location-less local in scope fits
+        u32 v3_2;
+        if (this->mPageElemMax == static_cast<u32>(0)) {
+            v3_2 = v1_1;
+        } else {
+            // inferred: the value the loop at 0x150090 carries; no location-less local in scope fits
+            u32 v2_0 = this->mPageElemMax;
+            // inferred: the value the loop at 0x150090 carries; no location-less local in scope fits
+            u32 v2_2 = v1_1;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x150090, held ahead of the effects the ELF orders after it
+                s32 t4 = this->mPageNo;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x150098, held ahead of the effects the ELF orders after it
+                u32 t5 = this->mSortListCount;
+                if ((i2_3 + (v2_0 * t4)) >= t5) {
+                    v3_2 = v2_2;
+                    break;
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x15009d, held ahead of the effects the ELF orders after it
+                    u32 t6 = this->::cMenuSupportMenu::mMenuMax;
+                    if (v2_2 < t6) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x1500a4, held ahead of the effects the ELF orders after it
+                        s32 t7 = this->mMenuTopId;
+                        v0_3[v2_2] = static_cast<int>(i2_3 + t7);
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x1500ad, held ahead of the effects the ELF orders after it
+                        u32 t8 = this->::cMenuSupportMenu::mMenuNum;
+                        this->::cMenuSupportMenu::mMenuNum = t8 + static_cast<u32>(1);
+                        if ((i2_3 + static_cast<unsigned int>(1)) < this->mPageElemMax) {
+                            v2_0 = this->mPageElemMax;
+                            v2_2 = t8 + static_cast<u32>(1);
+                            i2_3 += static_cast<unsigned int>(1);
+                        } else {
+                            v3_2 = t8 + static_cast<u32>(1);
+                            break;
+                        }
+                    } else {
+                        if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                            i2_3 += static_cast<unsigned int>(1);
+                        } else {
+                            v3_2 = v2_2;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (v0_4 != static_cast<cMenuSupportList::stAddMenu*>(nullptr)) {
+            if (this->mAddMenuNum != static_cast<u32>(0)) {
+                // inferred: the value the loop at 0x1500d0 carries; no location-less local in scope fits
+                u32 v4_0 = this->mAddMenuNum;
+                // inferred: the value the loop at 0x1500d0 carries; no location-less local in scope fits
+                u32 v4_2 = v3_2;
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                for (unsigned int i4_3 = static_cast<unsigned int>(0);;) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x1500d2, held ahead of the effects the ELF orders after it
+                    cMenuSupportList::ADD_TYPE t9 = v0_4[i4_3].mAddType;
+                    if (t9 == static_cast<cMenuSupportList::ADD_TYPE>(2)) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0x1500da, held ahead of the effects the ELF orders after it
+                        u32 t10 = this->::cMenuSupportMenu::mMenuMax;
+                        if (v4_2 < t10) {
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0x1500df, held ahead of the effects the ELF orders after it
+                            s32 t11 = v0_4[i4_3].mMenuId;
+                            v0_3[v4_2] = t11;
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0x1500e9, held ahead of the effects the ELF orders after it
+                            u32 t12 = this->::cMenuSupportMenu::mMenuNum;
+                            this->::cMenuSupportMenu::mMenuNum = t12 + static_cast<u32>(1);
+                            if ((i4_3 + static_cast<unsigned int>(1)) < this->mAddMenuNum) {
+                                v4_0 = this->mAddMenuNum;
+                                v4_2 = t12 + static_cast<u32>(1);
+                                i4_3 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        } else {
+                            if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
+                                i4_3 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        }
+                    } else {
+                        if ((i4_3 + static_cast<unsigned int>(1)) < v4_0) {
+                            i4_3 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (81 bytes)
@@ -593,9 +753,35 @@ __attribute__((weak)) u32 cMenuSupportList::getPageNum() {
 // void cMenuSupportList::addAboveMenu(s32 menuId);
 
 // Address: 0x00150150 - 0x00150194 (68 bytes)
-__attribute__((weak)) void cMenuSupportList::addBelowMenu(s32 menuId) {
-    DDON_STUB("cMenuSupportList::addBelowMenu")
-    /* stub */
+void cMenuSupportList::addBelowMenu(s32 menuId) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x150170 carries; no location-less local in scope fits
+    cMenuSupportList::stAddMenu* v0_0 = this->::cMenuSupportList::getEmptyAddMenu();
+    if (v0_0 != static_cast<cMenuSupportList::stAddMenu*>(nullptr)) {
+        // inferred: the value the loop at 0x150170 carries; no location-less local in scope fits
+        u32 v0_2 = this->mAddMenuNum;
+        if (v0_2 != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x150170 carries; no location-less local in scope fits
+            cMenuSupportList::ADD_TYPE* v0_1 = &v0_0->mAddType;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                if ((*v0_1) != static_cast<cMenuSupportList::ADD_TYPE>(0)) {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < v0_2) {
+                        v0_1 += static_cast<int>(2);
+                        i0_3 = i0_3 + static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((&v0_0[i0_3]) != static_cast<cMenuSupportList::stAddMenu*>(nullptr)) {
+                        v0_0[i0_3].mMenuId = menuId;
+                        *v0_1 = static_cast<cMenuSupportList::ADD_TYPE>(2);
+                    }
+                    return;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
@@ -775,10 +961,23 @@ void cMenuSupportMenu::moveMenu(s32 cursorOrderId) {
 // void cMenuSupportMenu::createMenuList();
 
 // Address: 0x0014f640 - 0x0014f65d (29 bytes)
-__attribute__((weak)) void cMenuSupportMenu::createMenuListSimple() {
-    // local: u32 i;
-    DDON_STUB("cMenuSupportMenu::createMenuListSimple")
-    /* stub */
+void cMenuSupportMenu::createMenuListSimple() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->mMenuNum = this->mMenuMax;
+    if (this->mMenuMax != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x14f650 carries; no location-less local in scope fits
+        s32* v0_0 = this->mpMenuList;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+            v0_0[i0_1] = static_cast<int>(i0_1);
+            if ((i0_1 + static_cast<unsigned int>(1)) < this->mMenuNum) {
+                i0_1 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x0014f660 - 0x0014f691 (49 bytes)

@@ -180,9 +180,39 @@ __attribute__((weak)) void uGUIPopNumber01::reboot() {
 // void uGUIPopNumber01::setUnit(uGUIBase* pUnit);
 
 // Address: 0x00bb84d0 - 0x00bb8548 (120 bytes)
-__attribute__((weak)) void uGUIPopNumber01::setFlowId(uGUIPopNumber01::FLOW_ID flowId) {
-    DDON_STUB("uGUIPopNumber01::setFlowId")
-    /* stub */
+void uGUIPopNumber01::setFlowId(uGUIPopNumber01::FLOW_ID flowId) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    switch (flowId) {
+        case static_cast<uGUIPopNumber01::FLOW_ID>(0):
+        {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateInit);
+            break;
+        }
+        case static_cast<uGUIPopNumber01::FLOW_ID>(1):
+        {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateWait);
+            break;
+        }
+        case static_cast<uGUIPopNumber01::FLOW_ID>(2):
+        {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateNumEdit);
+            break;
+        }
+        case static_cast<uGUIPopNumber01::FLOW_ID>(3):
+        {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updatePopListDialog);
+            break;
+        }
+        case static_cast<uGUIPopNumber01::FLOW_ID>(4):
+        {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateExit);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // Address: 0x00bb8a90 - 0x00bb8aed (93 bytes)

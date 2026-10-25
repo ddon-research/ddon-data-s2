@@ -21,6 +21,7 @@ class MtPropertyList;
 class MtVector3;
 class cWallHitInfo;
 class uDDOModel;
+class uEnemy;
 
 // Declarations
 class cGroundAttrInfo;
@@ -83,6 +84,8 @@ public:
 
 class cpScrCollision : public cpComponent
 {
+    // inferred: uEnemy::moveInsuranceWarp names cpScrCollision::mIsHitLand
+    friend class uEnemy;
 public:
     enum
     {

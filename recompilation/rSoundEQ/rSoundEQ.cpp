@@ -103,13 +103,40 @@ __attribute__((weak)) bool rSoundEQ::load(MtStream& in) {
 // rSoundEQ::cEQData* rSoundEQ::getEQData(u32 index);
 
 // Address: 0x01371880 - 0x0137190a (138 bytes)
-__attribute__((weak)) rSoundEQ::cEQData* rSoundEQ::getEQDataFromId(s32 id) {
-    // local: u16 index;
-    // local: u32 dataNum;
-    // local: u32 i;
-    // local: cEQData* pEQData;
-    DDON_STUB("rSoundEQ::getEQDataFromId")
-    return nullptr;
+rSoundEQ::cEQData* rSoundEQ::getEQDataFromId(s32 id) {
+    // DWARF local not rendered: u16 index;
+    // DWARF local not rendered: u32 dataNum;
+    // DWARF local not rendered: cEQData* pEQData;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u16 used as int
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if (this->mpIdToIndexTbl != static_cast<u16*>(nullptr)) {
+        if (id < static_cast<int>(this->mIdToIndexTblNum)) {
+            if (this->mpIdToIndexTbl[id] != static_cast<unsigned short>(65535)) {
+                if (this->mpIdToIndexTbl[id] < this->mSoundEQ.::MtArray::mLength) {
+                    return static_cast<rSoundEQ::cEQData*>(this->mSoundEQ.::MtArray::mpArray[this->mpIdToIndexTbl[id]]);
+                }
+            }
+        }
+        return static_cast<rSoundEQ::cEQData*>(nullptr);
+    }
+    if (this->mSoundEQ.::MtArray::mLength == static_cast<u32>(0)) {
+        return static_cast<rSoundEQ::cEQData*>(nullptr);
+    }
+    u32 i = static_cast<u32>(0);
+    do {
+        if (i < this->mSoundEQ.::MtArray::mLength) {
+            if (this->mSoundEQ.::MtArray::mpArray[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSoundEQ.::MtArray::mpArray[static_cast<int>(i)]) + static_cast<long>(8))) != static_cast<unsigned int>(id)) {
+                } else {
+                    return static_cast<rSoundEQ::cEQData*>(this->mSoundEQ.::MtArray::mpArray[static_cast<int>(i)]);
+                }
+            }
+        }
+        i += static_cast<u32>(1);
+    } while (i < this->mSoundEQ.::MtArray::mLength);
+    return static_cast<rSoundEQ::cEQData*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF

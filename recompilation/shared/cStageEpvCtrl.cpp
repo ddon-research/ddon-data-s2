@@ -121,10 +121,7 @@ void cStageEpvCtrl::setEffectProviderIndex(s32 always, s32 day, s32 night) {
 // Address: 0x0056f660 - 0x0056f691 (49 bytes)
 void cStageEpvCtrl::setOfsPos(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOfsPos.x = pos.x;
-    this->mOfsPos.y = pos.y;
-    this->mOfsPos.z = pos.z;
-    this->mOfsPos.pad_ = 0.0f;
+    this->mOfsPos = pos;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (14 bytes)

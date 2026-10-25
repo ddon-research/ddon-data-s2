@@ -16,6 +16,7 @@ class MtVector3;
 class cCharParamEnemy;
 class cpJob01;
 class uDDOModel;
+class uHuman;
 
 // Declarations
 class cpAltitudeFallCtrl;
@@ -33,6 +34,8 @@ class cpAltitudeFallCtrl : public cpComponent
 {
     // inferred: cpJob01::callbackReplaceHitInfo_Atk names cpAltitudeFallCtrl::mLastFallDistance
     friend class cpJob01;
+    // inferred: uHuman::isCanCustomCancelAction names cpAltitudeFallCtrl::mIsAltitudeFall
+    friend class uHuman;
 public:
     enum
     {

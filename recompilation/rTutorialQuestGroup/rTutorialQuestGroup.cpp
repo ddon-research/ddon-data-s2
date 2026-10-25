@@ -64,12 +64,25 @@ inline void rTutorialQuestGroup::operator delete(void* p_addr) {
 // void rTutorialQuestGroup::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x0070ef60 - 0x0070ef9c (60 bytes)
-__attribute__((weak)) const rTutorialQuestGroup::cGroup* rTutorialQuestGroup::getGroup(u32 groupId) const {
-    // local: const u32 groupNum;
-    // local: u32 i;
-    // local: cGroup* pGroup;
-    DDON_STUB("rTutorialQuestGroup::getGroup")
-    return nullptr;
+const rTutorialQuestGroup::cGroup* rTutorialQuestGroup::getGroup(u32 groupId) const {
+    // DWARF local not rendered: const u32 groupNum;
+    // DWARF local not rendered: cGroup* pGroup;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from MtObject*
+    if (this->mGroups.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x70ef66, 0x70ef98)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mGroups.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mGroups.::MtArray::mpArray[i]) + static_cast<long>(40))) != groupId) {
+                } else {
+                    return static_cast<const rTutorialQuestGroup::cGroup*>(this->mGroups.::MtArray::mpArray[i]);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mGroups.::MtArray::mLength);
+    }
+    return static_cast<const rTutorialQuestGroup::cGroup*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -92,8 +105,35 @@ inline rTutorialQuestGroup::rTutorialQuestGroup() {
 // Address: 0x0070eff0 - 0x0070f0a1 (177 bytes)
 // Also emitted as: _ZN19rTutorialQuestGroupD0Ev at 0x0070f0b0
 rTutorialQuestGroup::~rTutorialQuestGroup() {
-    DDON_STUB("rTutorialQuestGroup::~rTutorialQuestGroup")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mGroups.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x70f020 carries; no location-less local in scope fits
+        u32 v0_0 = this->mGroups.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mGroups.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mGroups.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGroups.::MtArray::mLength) {
+                    v0_0 = this->mGroups.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mGroups.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGroups.::MtArray::mpArray));
+    }
+    this->mGroups.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mGroups.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mGroups.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0070f180 - 0x0070f263 (227 bytes)
@@ -158,7 +198,8 @@ const MtDTI& rTutorialQuestGroup::cGroup::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rTutorialQuestGroup::cGroup::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rTutorialQuestGroup::cGroup::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::cGroup::DTI)->memAlloc(sz, align, ::rTutorialQuestGroup::cGroup::DTI.::MtDTI::getID());
 }
 
@@ -190,9 +231,10 @@ inline void rTutorialQuestGroup::cGroup::operator delete(void* p_addr) {
 // u32 rTutorialQuestGroup::cGroup::getGroupId() const;
 
 // Address: 0x0070f4e0 - 0x0070f4e4 (4 bytes)
-__attribute__((weak)) u32 rTutorialQuestGroup::cGroup::getQuestIdNum() const {
-    DDON_STUB("rTutorialQuestGroup::cGroup::getQuestIdNum")
-    return {};
+u32 rTutorialQuestGroup::cGroup::getQuestIdNum() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x10 from const rTutorialQuestGroup::cGroup*
+    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(16));
 }
 
 // Address: 0x0070f4f0 - 0x0070f50f (31 bytes)

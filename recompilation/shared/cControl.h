@@ -15,6 +15,7 @@
 class MtAllocator;
 class MtDTI;
 class MtString;
+class cGUIControlMgr;
 class cGUIInstance;
 class cGUIObject;
 namespace nInputTextKeyboardHook { struct Keycode; }
@@ -22,15 +23,22 @@ class uGUIAreaMaster;
 class uGUIBase;
 class uGUICaplinkChat;
 class uGUICaplinkFriendList;
+class uGUICaplinkMessage;
 class uGUICaplinkTalk;
 class uGUICaplinkTopMenu;
 class uGUIChat;
+class uGUIContentsBoard;
 class uGUIDialogTextBox;
+class uGUIGPConfirm;
 class uGUIGiveAndTake;
 class uGUILoginBonus;
+class uGUIMissionInfo;
 class uGUINewspaper;
 class uGUIOption;
+class uGUIPSStore;
 class uGUIPhotoAlbum;
+class uGUIRimWarp;
+class uGUIShopBuy;
 
 // Declarations
 class cControl;
@@ -47,30 +55,46 @@ using u8 = unsigned char;
 
 class cControl : public MtObject
 {
+    // inferred: cGUIControlMgr::addChildControl names cControl::mIsSetNoMoveEvent
+    friend class cGUIControlMgr;
     // inferred: uGUIAreaMaster::eventAdjustTab names cControl::mCurrentPos
     friend class uGUIAreaMaster;
     // inferred: uGUICaplinkChat::evCtrlDecide names cControl::mCurrentPos
     friend class uGUICaplinkChat;
     // inferred: uGUICaplinkFriendList::eventAdjustTab names cControl::mCurrentPos
     friend class uGUICaplinkFriendList;
+    // inferred: uGUICaplinkMessage::eventDecide names cControl::mCurrentPos
+    friend class uGUICaplinkMessage;
     // inferred: uGUICaplinkTalk::eventDecide names cControl::mCurrentPos
     friend class uGUICaplinkTalk;
     // inferred: uGUICaplinkTopMenu::eventDecide names cControl::mCurrentPos
     friend class uGUICaplinkTopMenu;
     // inferred: uGUIChat::evCtrlMenuMoveV names cControl::mCurrentPos
     friend class uGUIChat;
+    // inferred: uGUIContentsBoard::moveInput names cControl::mCtrlF
+    friend class uGUIContentsBoard;
     // inferred: uGUIDialogTextBox::moveInput names cControl::mCurrentPos
     friend class uGUIDialogTextBox;
+    // inferred: uGUIGPConfirm::evCtrlCursorLR names cControl::mCurrentPos
+    friend class uGUIGPConfirm;
     // inferred: uGUIGiveAndTake::setupCtrl names cControl::mCtrlF
     friend class uGUIGiveAndTake;
     // inferred: uGUILoginBonus::updateWait names cControl::mCurrentPos
     friend class uGUILoginBonus;
+    // inferred: uGUIMissionInfo::initSystem names cControl::mCtrlF
+    friend class uGUIMissionInfo;
     // inferred: uGUINewspaper::evCtrlEventCursorDecide names cControl::mCurrentPos
     friend class uGUINewspaper;
     // inferred: uGUIOption::evCtrlTabMove names cControl::mItemNum
     friend class uGUIOption;
+    // inferred: uGUIPSStore::evCtrlCateLClick names cControl::mOldPos
+    friend class uGUIPSStore;
     // inferred: uGUIPhotoAlbum::evCtrlMouse names cControl::mCurrentPos
     friend class uGUIPhotoAlbum;
+    // inferred: uGUIRimWarp::evCtrlMouseClick names cControl::mOldPos
+    friend class uGUIRimWarp;
+    // inferred: uGUIShopBuy::evCtrlDecide names cControl::mCurrentPos
+    friend class uGUIShopBuy;
 public:
     enum
     {

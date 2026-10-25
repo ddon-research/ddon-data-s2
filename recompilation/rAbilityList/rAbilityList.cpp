@@ -4,6 +4,7 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataWriter.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
@@ -83,10 +84,47 @@ __attribute__((weak)) void cAbilityData::createProperty(MtPropertyList& s) {
 // void cAbilityData::createPropertyCommon(MtPropertyList& s);
 
 // Address: 0x0063c220 - 0x0063c302 (226 bytes)
-__attribute__((weak)) bool cAbilityData::save(MtDataWriter& w) {
-    // local: u32 i;
-    DDON_STUB("cAbilityData::save")
-    return {};
+bool cAbilityData::save(MtDataWriter& w) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from cAbilityData*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from cAbilityData*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from unsigned long
+    w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)));
+    if (this->mParamArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_11 = static_cast<unsigned int>(0);
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1_3;
+        for (;;) {
+            // inferred: the value the loop at 0x63c2b0 carries; no location-less local in scope fits
+            unsigned long v1_10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(32))) + static_cast<unsigned long>(i0_11 * static_cast<unsigned int>(8))) + static_cast<long>(0));
+            w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(8))));
+            w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(12))));
+            w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(24)));
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(24))) != static_cast<unsigned int>(0)) {
+                i1_3 = static_cast<unsigned int>(0);
+                for (;;) {
+                    // inferred: a temporary for the value the load at 0x63c2b7 read, used twice; no DWARF local holds it
+                    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(40))) + static_cast<unsigned long>(i1_3 * static_cast<unsigned int>(8))) + static_cast<long>(0));
+                    w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(8))));
+                    w.writeS32(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(12))));
+                    if ((i1_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_10) + static_cast<long>(24)))) {
+                        i1_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if ((i0_11 + static_cast<unsigned int>(1)) < this->mParamArray.::MtArray::mLength) {
+                i0_11 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return true;
 }
 
 // Address: 0x0063c310 - 0x0063c5fc (748 bytes)
@@ -103,9 +141,13 @@ __attribute__((weak)) bool cAbilityData::load(MtDataReader& r, nCollisionUtil::L
 // u32 cAbilityData::getAllocateSize() const;
 
 // Address: 0x0063c200 - 0x0063c212 (18 bytes)
-__attribute__((weak)) const cAbilityParam* cAbilityData::getAbilityParam(s32 index) const {
-    DDON_STUB("cAbilityData::getAbilityParam")
-    return nullptr;
+const cAbilityParam* cAbilityData::getAbilityParam(s32 index) const {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (static_cast<unsigned int>(index) < this->mParamArray.::MtArray::mLength) {
+        return static_cast<const cAbilityParam*>(this->mParamArray.::MtArray::mpArray[static_cast<unsigned int>(index)]);
+    } else {
+        return static_cast<const cAbilityParam*>(nullptr);
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (11 bytes)
@@ -223,11 +265,35 @@ __attribute__((weak)) bool cAbilityParam::load(MtDataReader& r, nCollisionUtil::
 // s32 cAbilityParam::getCorrectType() const;
 
 // Address: 0x0063bc30 - 0x0063bc5e (46 bytes)
-__attribute__((weak)) bool cAbilityParam::getParam(s32 Lv, s32& param) const {
-    // local: u32 i;
-    // local: cParamData* pData;
-    DDON_STUB("cAbilityParam::getParam")
-    return {};
+bool cAbilityParam::getParam(s32 Lv, s32& param) const {
+    // DWARF local not rendered: cParamData* pData;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: the value the loop at 0x63bc40 carries; no location-less local in scope fits
+    u32 v0_0 = this->mParamDataArray.::MtArray::mLength;
+    // inferred: DWARF's location-less 'i' (lexical block [0x63bc30, 0x63bc50), [0x63bc56, 0x63bc5d)) is the counter this loop steps (DWARF's stale constant 0)
+    u32 i;
+    // inferred: the value the loop at 0x63bc40 carries; no location-less local in scope fits
+    MtObject* * v0_3;
+    if (v0_0 == static_cast<u32>(0)) {
+        return false;
+    } else {
+        v0_3 = this->mParamDataArray.::MtArray::mpArray;
+        i = static_cast<u32>(0);
+    }
+    for (;;) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i]) + static_cast<long>(8))) == static_cast<unsigned int>(Lv)) {
+            param = static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i]) + static_cast<long>(12)));
+            return true;
+        } else {
+            if ((i + static_cast<u32>(1)) < v0_0) {
+                i = i + static_cast<u32>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -446,9 +512,13 @@ MT_CTSTR rAbilityList::getExt() const {
 // void rAbilityList::setDataList(const MtArray& list);
 
 // Address: 0x0063cfd0 - 0x0063cfe6 (22 bytes)
-__attribute__((weak)) const cAbilityData* rAbilityList::getData(s32 index) {
-    DDON_STUB("rAbilityList::getData")
-    return nullptr;
+const cAbilityData* rAbilityList::getData(s32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<unsigned int>(index) < this->mDataList.::MtArray::mLength) {
+        return static_cast<const cAbilityData*>(this->mDataList.::MtArray::getBuffer()[index]);
+    } else {
+        return static_cast<const cAbilityData*>(nullptr);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

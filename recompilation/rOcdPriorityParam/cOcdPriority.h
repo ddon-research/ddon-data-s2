@@ -11,6 +11,7 @@
 class MtAllocator;
 class MtDTI;
 class MtPropertyList;
+class sObjCondition;
 
 // Declarations
 class cOcdPriorityParam;
@@ -24,6 +25,8 @@ using u32 = unsigned int;
 
 class cOcdPriorityParam : public MtObject
 {
+    // inferred: sObjCondition::getPriorityData names cOcdPriorityParam::mOcdUID
+    friend class sObjCondition;
 public:
     class MyDTI;
 public:
@@ -71,3 +74,21 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cOcdPriorityParam::isMultiApply() const {
+    return this->mIsMultiApply;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cOcdPriorityParam::isMultiNumLimit() const {
+    return this->mIsMultiNumLimit;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cOcdPriorityParam::getMultiApplyNum() const {
+    return this->mMultiApplyNum;
+}

@@ -226,7 +226,8 @@ __attribute__((weak)) rSoundRequest* rSoundAreaInfo::getAttributeResToScrAttr(u3
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
-inline rSoundStreamRequest* rSoundAreaInfo::getSndCycleBgmRes() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+rSoundStreamRequest* rSoundAreaInfo::getSndCycleBgmRes() {
     return this->mpCycleBgmSTQRes.mpPtr;
 }
 

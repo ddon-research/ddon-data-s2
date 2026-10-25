@@ -144,10 +144,7 @@ void cpHumanWarpCtrl::setOwner(MtObject* pOwner) {
 void cpHumanWarpCtrl::requestOneWayWarp(const MtVector3& worldPos, const f32 angle) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mHumanWarpInfo.elems[0].mWarpRno = static_cast<u32>(1);
-    this->mHumanWarpInfo.elems[0].mWarpWorldPos.x = worldPos.x;
-    this->mHumanWarpInfo.elems[0].mWarpWorldPos.y = worldPos.y;
-    this->mHumanWarpInfo.elems[0].mWarpWorldPos.z = worldPos.z;
-    this->mHumanWarpInfo.elems[0].mWarpWorldPos.pad_ = 0.0f;
+    this->mHumanWarpInfo.elems[0].mWarpWorldPos = worldPos;
     this->mHumanWarpInfo.elems[0].mWarpAngle = angle;
 }
 

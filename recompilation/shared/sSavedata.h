@@ -26,6 +26,8 @@ struct SceSaveDataFingerprint;
 struct SceSaveDataIcon;
 struct SceSaveDataTitleId;
 struct _SceKernelSema;
+class cGUIUtility;
+class uGUIOption;
 
 // Declarations
 class sSavedata;
@@ -60,6 +62,10 @@ using u8 = unsigned char;
 
 class sSavedata : public cSystem
 {
+    // inferred: cGUIUtility::IsDirectChat names sSavedata::mpInstance
+    friend class cGUIUtility;
+    // inferred: uGUIOption::updateReflectionData names sSavedata::mpInstance
+    friend class uGUIOption;
 public:
     enum
     {

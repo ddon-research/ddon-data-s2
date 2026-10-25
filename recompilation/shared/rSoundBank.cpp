@@ -138,10 +138,19 @@ const rSoundBank::Element* rSoundBank::getElement(u32 index) const {
 }
 
 // Address: 0x00e46050 - 0x00e46088 (56 bytes)
-__attribute__((weak)) const rSoundBank::Bus* rSoundBank::getBus(u32 no) const {
-    // local: u32 i;
-    DDON_STUB("rSoundBank::getBus")
-    return nullptr;
+const rSoundBank::Bus* rSoundBank::getBus(u32 no) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mBusNum != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0xe46050, 0xe46087)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mpBusArray[i].mBusNo == no) {
+                return &this->mpBusArray[i];
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mBusNum);
+    }
+    return static_cast<const rSoundBank::Bus*>(nullptr);
 }
 
 // Address: 0x00e46090 - 0x00e460a2 (18 bytes)

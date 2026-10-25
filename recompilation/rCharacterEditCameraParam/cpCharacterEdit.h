@@ -35,6 +35,7 @@ class rSoundStreamRequest;
 class rTexture;
 class uCnsEdit;
 class uCnsScaleFix;
+class uMockUpModel;
 class uModel;
 
 // Declarations
@@ -54,6 +55,8 @@ using u8 = unsigned char;
 
 class cpCharacterEdit : public cpComponent
 {
+    // inferred: uMockUpModel::move names cpCharacterEdit::mpResource
+    friend class uMockUpModel;
 public:
     enum
     {

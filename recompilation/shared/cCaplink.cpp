@@ -833,9 +833,32 @@ __attribute__((weak)) void nCaplink::Object::cWebsocketClientListener::JsonParse
 }
 
 // Address: 0x00ded960 - 0x00ded9a7 (71 bytes)
-__attribute__((weak)) void nCaplink::Object::cWebsocketClientListener::JsonParser::number(s64 value) {
-    DDON_STUB("nCaplink::Object::cWebsocketClientListener::JsonParser::number")
-    /* stub */
+void nCaplink::Object::cWebsocketClientListener::JsonParser::number(s64 value) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: unsigned char used as s8
+    if (this->mbCode != false) {
+        this->mpParent->mCode = static_cast<s32>(static_cast<unsigned int>(value));
+    } else {
+        if (this->mbChatId != false) {
+            this->mNotify.mChatId = static_cast<s32>(static_cast<unsigned int>(value));
+        } else {
+            if (this->mbIdType != false) {
+                this->mNotify.mIdType = static_cast<s8>(static_cast<unsigned char>(value));
+            } else {
+                if (this->mbChatType != false) {
+                    this->mNotify.mChatType = static_cast<s32>(static_cast<unsigned int>(value));
+                } else {
+                    if (this->mbStampId != false) {
+                        this->mNotify.mStampId = static_cast<s32>(static_cast<unsigned int>(value));
+                    } else {
+                        if (this->mbPlatformId != false) {
+                            this->mNotify.mPlatformId = static_cast<s32>(static_cast<unsigned int>(value));
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00ded9b0 - 0x00ded9b1 (1 bytes)

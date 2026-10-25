@@ -134,12 +134,36 @@ MT_CTSTR rSoundBossBgm::getExt() const {
 // u32 rSoundBossBgm::getListNum() const;
 
 // Address: 0x006ecaf0 - 0x006ecb2a (58 bytes)
-__attribute__((weak)) rSoundBossBgm::cSoundBossBgm* rSoundBossBgm::getBossBgmInfo(u32 enemyId) {
-    // local: u32 listNum;
-    // local: cSoundBossBgm* pData;
-    // local: u32 i;
-    DDON_STUB("rSoundBossBgm::getBossBgmInfo")
-    return nullptr;
+rSoundBossBgm::cSoundBossBgm* rSoundBossBgm::getBossBgmInfo(u32 enemyId) {
+    // DWARF local not rendered: cSoundBossBgm* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    u32 listNum = this->::rSoundBossBgm::getListNum();
+    // inferred: the value carried to 0x6ecb29; no location-less local in scope fits
+    rSoundBossBgm::cSoundBossBgm* v2_0;
+    if (listNum == static_cast<u32>(0)) {
+        v2_0 = static_cast<rSoundBossBgm::cSoundBossBgm*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0x6ecb10 carries; no location-less local in scope fits
+        rSoundBossBgm::cSoundBossBgm* v0_3 = this->mpArrayData;
+        // inferred: DWARF's location-less 'i' (lexical block [0x6ecaf5, 0x6ecb29)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        // inferred: the value the loop at 0x6ecb10 carries; no location-less local in scope fits
+        for (u32* v0_2 = &v0_3->mEnemyId;;) {
+            if ((*v0_2) != enemyId) {
+                if ((i + static_cast<u32>(1)) < listNum) {
+                    i = i + static_cast<u32>(1);
+                    v0_2 += static_cast<int>(6);
+                } else {
+                    break;
+                }
+            } else {
+                v2_0 = &v0_3[i];
+                return v2_0;
+            }
+        }
+        v2_0 = static_cast<rSoundBossBgm::cSoundBossBgm*>(nullptr);
+    }
+    return v2_0;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

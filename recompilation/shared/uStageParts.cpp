@@ -18,12 +18,13 @@
 #include "rStageCustomParts.h"
 #include "rStageCustomPartsEx.h"
 #include "sCollision.h"
+#include "sUnit.h"
 #include "uCoord.h"
 #include "../rCharacterEditCameraParam/uScheduler.h"
 #include "uScrollCollisionGeometry.h"
-#include "uSoundGenerator.h"
-#include "uSoundOcclusion.h"
-#include "uSoundTrigger.h"
+#include "../rCharacterEditCameraParam/uSoundGenerator.h"
+#include "../rCharacterEditCameraParam/uSoundOcclusion.h"
+#include "../rCharacterEditCameraParam/uSoundTrigger.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -138,12 +139,75 @@ __attribute__((weak)) void uStagePartsCtrl::kill() {
 }
 
 // Address: 0x00d39720 - 0x00d397ca (170 bytes)
-__attribute__((weak)) void uStagePartsCtrl::updatePtr() {
-    // local: u32 idx;
-    // local: u32 i;
-    // local: cSplitLot* pSplitLot;
-    DDON_STUB("uStagePartsCtrl::updatePtr")
-    /* stub */
+void uStagePartsCtrl::updatePtr() {
+    // DWARF local not rendered: u32 idx;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cSplitLot* pSplitLot;
+    // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0xd39760 carries; no location-less local in scope fits
+    u32 v0_0;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_1;
+    if (this->mpFltrSchdl != static_cast<uScheduler*>(nullptr)) {
+        if (this->mpFltrSchdl->::cUnit::isEnable() == false) {
+            this->mpFltrSchdl = static_cast<uScheduler*>(nullptr);
+            v0_0 = this->mPartsDataAry.::MtArray::mLength;
+            if (v0_0 != static_cast<u32>(0)) {
+                i0_1 = static_cast<unsigned int>(0);
+            } else {
+                goto region_d3978e;
+            }
+        } else {
+            v0_0 = this->mPartsDataAry.::MtArray::mLength;
+            if (v0_0 != static_cast<u32>(0)) {
+                i0_1 = static_cast<unsigned int>(0);
+            } else {
+                goto region_d3978e;
+            }
+        }
+    } else {
+        v0_0 = this->mPartsDataAry.::MtArray::mLength;
+        if (v0_0 != static_cast<u32>(0)) {
+            i0_1 = static_cast<unsigned int>(0);
+        } else {
+            goto region_d3978e;
+        }
+    }
+    for (;;) {
+        if (this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
+            if (static_cast<cUnit*>(this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_1)])->::cUnit::isEnable() == false) {
+                this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_1)] = static_cast<MtObject*>(nullptr);
+            }
+        }
+        if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
+            i0_1 += static_cast<unsigned int>(1);
+        } else {
+            break;
+        }
+    }
+    region_d3978e:;
+    if (this->mSplitLotAry.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0xd397a0 carries; no location-less local in scope fits
+        u32 v2_0 = this->mSplitLotAry.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+            if (this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(i2_3)] != static_cast<MtObject*>(nullptr)) {
+                static_cast<cSplitLot*>(this->mSplitLotAry.::MtArray::getBuffer()[static_cast<int>(i2_3)])->::cSplitLot::updatePtr();
+                if ((i2_3 + static_cast<unsigned int>(1)) < this->mSplitLotAry.::MtArray::mLength) {
+                    v2_0 = this->mSplitLotAry.::MtArray::mLength;
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00d397d0 - 0x00d3987c (172 bytes)
@@ -481,14 +545,81 @@ __attribute__((weak)) s32 uStagePartsCtrl::getPartsIndexNo(cAISvNavPathFinding* 
 }
 
 // Address: 0x00d3b770 - 0x00d3b87c (268 bytes)
-__attribute__((weak)) void uStagePartsCtrl::stopMoveUnitLight(bool sleep) {
-    // local: u32 i;
-    // local: uScheduler* pSchdl;
-    // local: uStagePartsMdl* pMdl;
-    // local: u32 i;
-    // local: cUnit* pUnit;
-    DDON_STUB("uStagePartsCtrl::stopMoveUnitLight")
-    /* stub */
+void uStagePartsCtrl::stopMoveUnitLight(bool sleep) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uScheduler* pSchdl;
+    // DWARF local not rendered: uStagePartsMdl* pMdl;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cUnit* pUnit;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from uStagePartsCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from cUnit*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(136))) != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0xd3b7a0 carries; no location-less local in scope fits
+        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(136));
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_9 = static_cast<unsigned int>(0);
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1_3;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i3_3;
+        // inferred: the value carried to 0xd3b861; no location-less local in scope fits
+        unsigned int v5_0;
+        for (;;) {
+            if (this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_9)] == static_cast<MtObject*>(nullptr)) {
+                v5_0 = v0_0;
+            } else {
+                // inferred: the value the loop at 0xd3b7e0 carries; no location-less local in scope fits
+                uScheduler* v1_10 = static_cast<uStagePartsMdl*>(this->mPartsDataAry.::MtArray::getBuffer()[static_cast<int>(i0_9)])->::uStagePartsMdl::getLightSdl();
+                if (v1_10 == static_cast<uScheduler*>(nullptr)) {
+                    v5_0 = v0_0;
+                } else {
+                    if (v1_10->::uScheduler::getUnitNum() != static_cast<u32>(0)) {
+                        if (sleep == false) {
+                            i3_3 = static_cast<unsigned int>(0);
+                            for (;;) {
+                                // inferred: a temporary for the result of the call at 0xd3b825, used 3 times; no DWARF local holds it
+                                cUnit* t1 = v1_10->::uScheduler::getUnit(i3_3);
+                                if (t1 != static_cast<cUnit*>(nullptr)) {
+                                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+                                        ::sUnit::getInstance()->::sUnit::removeUnitGroup(t1, static_cast<u32>(55));
+                                    }
+                                }
+                                if ((i3_3 + static_cast<unsigned int>(1)) < v1_10->::uScheduler::getUnitNum()) {
+                                    i3_3 += static_cast<unsigned int>(1);
+                                } else {
+                                    break;
+                                }
+                            }
+                        } else {
+                            i1_3 = static_cast<unsigned int>(0);
+                            for (;;) {
+                                // inferred: a temporary for the result of the call at 0xd3b7e5, used 3 times; no DWARF local holds it
+                                cUnit* t0 = v1_10->::uScheduler::getUnit(i1_3);
+                                if (t0 != static_cast<cUnit*>(nullptr)) {
+                                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+                                        ::sUnit::getInstance()->::sUnit::setUnitGroup(t0, static_cast<u32>(55));
+                                    }
+                                }
+                                if ((i1_3 + static_cast<unsigned int>(1)) < v1_10->::uScheduler::getUnitNum()) {
+                                    i1_3 += static_cast<unsigned int>(1);
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    v5_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(136));
+                }
+            }
+            if ((i0_9 + static_cast<unsigned int>(1)) < v5_0) {
+                v0_0 = v5_0;
+                i0_9 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

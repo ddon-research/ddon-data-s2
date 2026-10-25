@@ -63,7 +63,7 @@ void MtDataWriter::writeU16(u16 n) {
     if ((this->mSeekPt + static_cast<u32>(1)) >= this->mBufsiz) {
         this->flush();
     }
-    *reinterpret_cast<unsigned short*>(&this->mBuffer[this->mSeekPt]) = n;
+    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(n, &this->mBuffer[this->mSeekPt]);
     this->mSeekPt = this->mSeekPt + static_cast<u32>(2);
 }
 
@@ -73,7 +73,7 @@ void MtDataWriter::writeU32(u32 n) {
     if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
         this->flush();
     }
-    *reinterpret_cast<unsigned int*>(&this->mBuffer[this->mSeekPt]) = n;
+    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(n, &this->mBuffer[this->mSeekPt]);
     this->mSeekPt = this->mSeekPt + static_cast<u32>(4);
 }
 
@@ -83,7 +83,7 @@ void MtDataWriter::writeU64(u64 n) {
     if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
         this->flush();
     }
-    *reinterpret_cast<unsigned long*>(&this->mBuffer[this->mSeekPt]) = static_cast<unsigned long>(n);
+    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(n), &this->mBuffer[this->mSeekPt]);
     this->mSeekPt = this->mSeekPt + static_cast<u32>(8);
 }
 
@@ -93,7 +93,7 @@ void MtDataWriter::writeS16(s16 n) {
     if ((this->mSeekPt + static_cast<u32>(1)) >= this->mBufsiz) {
         this->flush();
     }
-    *reinterpret_cast<unsigned short*>(&this->mBuffer[this->mSeekPt]) = static_cast<unsigned short>(n);
+    [](unsigned short v, void* p) { typedef unsigned short t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned short>(n), &this->mBuffer[this->mSeekPt]);
     this->mSeekPt = this->mSeekPt + static_cast<u32>(2);
 }
 
@@ -103,7 +103,7 @@ void MtDataWriter::writeS32(s32 n) {
     if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
         this->flush();
     }
-    *reinterpret_cast<unsigned int*>(&this->mBuffer[this->mSeekPt]) = static_cast<unsigned int>(n);
+    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned int>(n), &this->mBuffer[this->mSeekPt]);
     this->mSeekPt = this->mSeekPt + static_cast<u32>(4);
 }
 
@@ -113,7 +113,7 @@ void MtDataWriter::writeS64(s64 n) {
     if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
         this->flush();
     }
-    *reinterpret_cast<unsigned long*>(&this->mBuffer[this->mSeekPt]) = static_cast<unsigned long>(n);
+    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(n), &this->mBuffer[this->mSeekPt]);
     this->mSeekPt = this->mSeekPt + static_cast<u32>(8);
 }
 
@@ -124,7 +124,7 @@ void MtDataWriter::writeF32(f32 n) {
     if ((this->mSeekPt + static_cast<u32>(3)) >= this->mBufsiz) {
         this->flush();
     }
-    *reinterpret_cast<unsigned int*>(&this->mBuffer[this->mSeekPt]) = *reinterpret_cast<unsigned int*>(&n);
+    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(*reinterpret_cast<unsigned int*>(&n), &this->mBuffer[this->mSeekPt]);
     this->mSeekPt = this->mSeekPt + static_cast<u32>(4);
 }
 
@@ -135,7 +135,7 @@ void MtDataWriter::writeF64(f64 n) {
     if ((this->mSeekPt + static_cast<u32>(7)) >= this->mBufsiz) {
         this->flush();
     }
-    *reinterpret_cast<unsigned long*>(&this->mBuffer[this->mSeekPt]) = *reinterpret_cast<unsigned long*>(&n);
+    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(*reinterpret_cast<unsigned long*>(&n), &this->mBuffer[this->mSeekPt]);
     this->mSeekPt = this->mSeekPt + static_cast<u32>(8);
 }
 
@@ -171,7 +171,7 @@ void MtDataWriter::writeV4(const MtFloat4& ft4) {
 // Address: 0x00dc26e0 - 0x00dc2717 (55 bytes)
 void MtDataWriter::writeString(MT_CTSTR str) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->write(static_cast<const void*>(str), static_cast<u32>(::strlen(str) + static_cast<size_t>(1)));
+    this->write(static_cast<const void*>(str), static_cast<unsigned int>(::strlen(str) + static_cast<size_t>(1)));
 }
 
 // Address: 0x00dc2720 - 0x00dc2795 (117 bytes)
@@ -293,13 +293,13 @@ u32 MtDataWriter::getLength() {
 // Address: 0x00dc24e0 - 0x00dc24ea (10 bytes)
 void MtDataWriter::setU32(u32 bufofs, u32 value) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    *reinterpret_cast<unsigned int*>(&this->mBuffer[bufofs]) = value;
+    [](unsigned int v, void* p) { typedef unsigned int t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(value, &this->mBuffer[bufofs]);
 }
 
 // Address: 0x00dc24f0 - 0x00dc24fb (11 bytes)
 void MtDataWriter::setU64(u32 bufofs, u64 value) {
     // Approximate from the ELF: a read of bytes through a cast pointer; the body oracle reports this body.
-    *reinterpret_cast<unsigned long*>(&this->mBuffer[bufofs]) = static_cast<unsigned long>(value);
+    [](unsigned long v, void* p) { typedef unsigned long t __attribute__((aligned(1))); *static_cast<t*>(p) = v; }(static_cast<unsigned long>(value), &this->mBuffer[bufofs]);
 }
 
 // No out-of-line body: no code in the ELF

@@ -244,9 +244,13 @@ __attribute__((weak)) cZoneLayout::cInGameGroupManager* cZoneLayout::getGroupMan
 // const cZoneLayout::cInGameGroupManager* cZoneLayout::getGroupManagerFromGroupIDConst(s32 GroupID) const;
 
 // Address: 0x0106a750 - 0x0106a768 (24 bytes)
-__attribute__((weak)) cZoneLayout::cInGameGroupManager* cZoneLayout::getGroupManagerFromIndex(s32 GroupIndex) {
-    DDON_STUB("cZoneLayout::getGroupManagerFromIndex")
-    return nullptr;
+cZoneLayout::cInGameGroupManager* cZoneLayout::getGroupManagerFromIndex(s32 GroupIndex) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (GroupIndex < static_cast<int>(this->mGroupManagerArray.::MtArray::mLength)) {
+        return static_cast<cZoneLayout::cInGameGroupManager*>(this->mGroupManagerArray.::MtArray::mpArray[static_cast<unsigned int>(GroupIndex)]);
+    } else {
+        return static_cast<cZoneLayout::cInGameGroupManager*>(nullptr);
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

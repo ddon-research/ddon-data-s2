@@ -11,6 +11,7 @@
 #include "rModel.h"
 #include "sCollision.h"
 #include "uBaseModel.h"
+#include "uCoord.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -129,10 +130,7 @@ __attribute__((weak)) void uSimSoftBody::createProperty(MtPropertyList& s) {
 // Address: 0x01ad3d40 - 0x01ad3d69 (41 bytes)
 void uSimSoftBody::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWorldOffset.x = offset.x;
-    this->mWorldOffset.y = offset.y;
-    this->mWorldOffset.z = offset.z;
-    this->mWorldOffset.pad_ = 0.0f;
+    this->mWorldOffset = offset;
     this->mIsApplyWorldOffset = true;
 }
 
@@ -1039,10 +1037,18 @@ __attribute__((weak)) const MtMatrix uSimSoftBody::getTargetJointLocalMatrix(s32
 }
 
 // Address: 0x01ad41f0 - 0x01ad421f (47 bytes)
-__attribute__((weak)) s32 uSimSoftBody::getTargetJointIndexFromNo(s32 no) const {
-    // local: s32 ret;
-    DDON_STUB("uSimSoftBody::getTargetJointIndexFromNo")
-    return {};
+s32 uSimSoftBody::getTargetJointIndexFromNo(s32 no) const {
+    // DWARF local not rendered: s32 ret;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x11e0 from uModel*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x0 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as int
+    if (no > static_cast<s32>(-1)) {
+        if (static_cast<int>(this->mpTargetUnit->mJointNum) >= static_cast<int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpTargetUnit) + static_cast<long>(4576))) + static_cast<unsigned char>(no)) + static_cast<long>(0)))) {
+            return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpTargetUnit) + static_cast<long>(4576))) + static_cast<unsigned char>(no)) + static_cast<long>(0));
+        }
+    }
+    return static_cast<s32>(-1);
 }
 
 // Address: 0x01ad4220 - 0x01ad422c (12 bytes)
@@ -1112,9 +1118,13 @@ __attribute__((weak)) void uSimSoftBody::createSkinningMatrix(MtVector4* pdst, u
 }
 
 // Address: 0x01ad4480 - 0x01ad4496 (22 bytes)
-__attribute__((weak)) bool uSimSoftBody::isThisUnit(cUnit* punit) {
-    DDON_STUB("uSimSoftBody::isThisUnit")
-    return {};
+bool uSimSoftBody::isThisUnit(cUnit* punit) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (punit != this->mpTargetUnit) {
+        return punit == this->mpTargetUnit->::uCoord::mpParent;
+    } else {
+        return true;
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

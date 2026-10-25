@@ -104,10 +104,53 @@ void cpJob03::setup() {
 }
 
 // Address: 0x0049e580 - 0x0049e6e5 (357 bytes)
-__attribute__((weak)) void cpJob03::kill() {
-    // local: u32 i;
-    DDON_STUB("cpJob03::kill")
-    /* stub */
+void cpJob03::kill() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpCstmSkillShlSeList.elems[0] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mpCstmSkillShlSeList.elems[0]->::cResource::release();
+        this->mpCstmSkillShlSeList.elems[0] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mpCstmSkillShlSeList.elems[1] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mpCstmSkillShlSeList.elems[1]->::cResource::release();
+        this->mpCstmSkillShlSeList.elems[1] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mpCstmSkillShlSeList.elems[2] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mpCstmSkillShlSeList.elems[2]->::cResource::release();
+        this->mpCstmSkillShlSeList.elems[2] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mpCstmSkillShlSeList.elems[3] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mpCstmSkillShlSeList.elems[3]->::cResource::release();
+        this->mpCstmSkillShlSeList.elems[3] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mpShlCommonSe != static_cast<rSoundRequest*>(nullptr)) {
+        this->mpShlCommonSe->::cResource::release();
+        this->mpShlCommonSe = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mpArrowMod != static_cast<uJobEquip*>(nullptr)) {
+        this->mpArrowMod->kill();
+        this->mpArrowMod = static_cast<uJobEquip*>(nullptr);
+    }
+    if (this->mpLandEfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
+        this->mpLandEfcUnit->kill();
+    }
+    if (this->mpLandHitEfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
+        this->mpLandHitEfcUnit->kill();
+    }
+    if (this->mpCs05EfcUnit != static_cast<cpJob03::uLineCtrlUnit*>(nullptr)) {
+        this->mpCs05EfcUnit->kill();
+    }
+    if (this->mpEfcBakuretsu != static_cast<cEfcHandle*>(nullptr)) {
+        static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mpEfcBakuretsu, static_cast<u32>(4));
+        this->mpEfcBakuretsu = static_cast<cEfcHandle*>(nullptr);
+    }
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x49e6aa read, used once; no DWARF local holds it
+        sSound* t0 = ::sSound::getInstance();
+        static_cast<sSoundExt*>(t0)->::sSoundExt::requestSeEx(this->::cpJobBase::mpHuman->::uDDOModel::mpMotionSe->::cpMotionSe::getRequest(static_cast<u32>(3)), static_cast<u32>(111), static_cast<MtObject*>(this->::cpJobBase::mpHuman), static_cast<const uCoord*>(this->mpArrowMod), static_cast<s32>(-1));
+        return;
+    }
 }
 
 // Address: 0x0049e7c0 - 0x0049e80f (79 bytes)

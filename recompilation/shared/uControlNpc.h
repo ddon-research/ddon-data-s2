@@ -14,6 +14,7 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class MtString;
+class cFSMUnit;
 class cpHpDamageCtrl;
 class cpTalk;
 class uDDOModel;
@@ -36,6 +37,8 @@ using u8 = unsigned char;
 
 class uControlNpc : public uControl
 {
+    // inferred: cFSMUnit::stateUpdateSetEyeClose names uControlNpc::mIsEyeClose
+    friend class cFSMUnit;
     // inferred: cpHpDamageCtrl::callbackDamageAfter_calc names uControlNpc::mJobLv
     friend class cpHpDamageCtrl;
     // inferred: cpTalk::startFaceMot names uControlNpc::mIsEyeClose
@@ -254,6 +257,12 @@ inline u32 uControlNpc::getNpcItem() {
 // approximate: only approximate callers check this inline body
 inline bool uControlNpc::isFsmEventNpc() const {
     return this->mIsFsmEventNpc;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s8 uControlNpc::getDefNPCMotCategory() const {
+    return this->mDefNPCMotCategory;
 }
 
 // Inline, no code of its own: checked where it is inlined.

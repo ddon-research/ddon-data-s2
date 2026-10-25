@@ -10,6 +10,7 @@
 #include "../rCharacterEditCameraParam/aStage.h"
 #include "../rCharacterEditCameraParam/cArea.h"
 #include "../shared/cContextInterface.h"
+#include "../shared/cHumanAction.h"
 #include "../shared/cNetGameServer.h"
 #include "../rCharacterEdit/cNetSerializer.h"
 #include "../shared/cUnit.h"
@@ -782,10 +783,83 @@ bool nSessionManager::cNetSessionManager::startFlow(nNet::cProgress& progress) {
 }
 
 // Address: 0x00390d30 - 0x00390e58 (296 bytes)
-__attribute__((weak)) bool nSessionManager::cNetSessionManager::finalFlow(nNet::cProgress& progress) {
-    // local: s32 session_id;
-    DDON_STUB("nSessionManager::cNetSessionManager::finalFlow")
-    return {};
+bool nSessionManager::cNetSessionManager::finalFlow(nNet::cProgress& progress) {
+    // DWARF local not rendered: s32 session_id;
+    // Approximate from the ELF: a load named after a store only its type keeps apart; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from nNet::cProgress*
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0xe50
+    switch (progress.mState) {
+        case static_cast<nNet::STATE>(0):
+        {
+            // inferred: a temporary for the value the load at 0x390d57 read, used once; no DWARF local holds it
+            unsigned char t0 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&progress) + static_cast<long>(8));
+            if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mIsNowQuickMatch = false;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchTimer = 0.0f;
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno = static_cast<s32>(0);
+                this->::nSessionManager::cNetSessionManager::initFinalFlow(t0, progress.mFlag);
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqFinalParty(true) != false) {
+                    progress.mResult.::nNet::cResult::init();
+                    progress.mState = static_cast<nNet::STATE>(2);
+                    progress.mTimer = 0.0f;
+                    return false;
+                } else {
+                    progress.mState = static_cast<nNet::STATE>(4);
+                    progress.mResult.mError.mNative = static_cast<s32>(0);
+                    progress.mResult.mError.mCause = static_cast<s32>(0);
+                    progress.mResult.mError.mNo = static_cast<s32>(0);
+                    return false;
+                }
+            } else {
+                this->::nSessionManager::cNetSessionManager::initFinalFlow(t0, progress.mFlag);
+                if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::reqFinalParty(true) != false) {
+                    progress.mResult.::nNet::cResult::init();
+                    progress.mState = static_cast<nNet::STATE>(2);
+                    progress.mTimer = 0.0f;
+                    return false;
+                } else {
+                    progress.mState = static_cast<nNet::STATE>(4);
+                    progress.mResult.mError.mNative = static_cast<s32>(0);
+                    progress.mResult.mError.mCause = static_cast<s32>(0);
+                    progress.mResult.mError.mNo = static_cast<s32>(0);
+                    return false;
+                }
+            }
+            break;
+        }
+        case static_cast<nNet::STATE>(2):
+        {
+            if (progress.::nNet::cProgress::getCancelFlag() != false) {
+                progress.mState = static_cast<nNet::STATE>(4);
+                return false;
+            } else {
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::finalPartyFlow();
+                return false;
+            }
+            break;
+        }
+        case static_cast<nNet::STATE>(3):
+        {
+            progress.mResult.::nNet::cResult::success();
+            progress.mState = static_cast<nNet::STATE>(6);
+            return false;
+        }
+        case static_cast<nNet::STATE>(4):
+        {
+            progress.mResult.::nNet::cResult::error();
+            progress.mState = static_cast<nNet::STATE>(6);
+            return false;
+        }
+        default:
+        {
+            if (progress.::nNet::cProgress::getWaitFlag() == false) {
+                return true;
+            } else {
+                return false;
+            }
+            break;
+        }
+    }
 }
 
 // Address: 0x003915c0 - 0x003917e0 (544 bytes)
@@ -1081,10 +1155,19 @@ void nSessionManager::cNetSessionManager::setReadyAction(bool withPawn) {
 }
 
 // Address: 0x0038f600 - 0x0038f62f (47 bytes)
-__attribute__((weak)) bool nSessionManager::cNetSessionManager::isSetReadyAction() {
-    // local: uPlayer* pPl;
-    DDON_STUB("nSessionManager::cNetSessionManager::isSetReadyAction")
-    return {};
+bool nSessionManager::cNetSessionManager::isSetReadyAction() {
+    // DWARF local not rendered: uPlayer* pPl;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
+        if (::nHumanActUtility::getActionNo(*::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()) != static_cast<u32>(373)) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0038f630 - 0x0038f722 (242 bytes)

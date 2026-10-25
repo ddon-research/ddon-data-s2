@@ -399,10 +399,58 @@ __attribute__((weak)) bool nNetwork::Session::addListener(nNetwork::SessionListe
 }
 
 // Address: 0x011a13b0 - 0x011a14b5 (261 bytes)
-__attribute__((weak)) void nNetwork::Session::removeListener(nNetwork::SessionListener* p) {
-    // local: u32 i;
-    DDON_STUB("nNetwork::Session::removeListener")
-    /* stub */
+void nNetwork::Session::removeListener(nNetwork::SessionListener* p) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (p == this->mpListener[0]) {
+        this->mpListener[0] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[1]) {
+        this->mpListener[1] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[2]) {
+        this->mpListener[2] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[3]) {
+        this->mpListener[3] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[4]) {
+        this->mpListener[4] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[5]) {
+        this->mpListener[5] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[6]) {
+        this->mpListener[6] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[7]) {
+        this->mpListener[7] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[8]) {
+        this->mpListener[8] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[9]) {
+        this->mpListener[9] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[10]) {
+        this->mpListener[10] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[11]) {
+        this->mpListener[11] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[12]) {
+        this->mpListener[12] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[13]) {
+        this->mpListener[13] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[14]) {
+        this->mpListener[14] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
+    if (p == this->mpListener[15]) {
+        this->mpListener[15] = static_cast<nNetwork::SessionListener*>(nullptr);
+    }
 }
 
 // Address: 0x011a14c0 - 0x011a1757 (663 bytes)

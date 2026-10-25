@@ -84,8 +84,35 @@ inline rCycleQuestInfo::rCycleQuestInfo() {
 // Address: 0x0065a0a0 - 0x0065a151 (177 bytes)
 // Also emitted as: _ZN15rCycleQuestInfoD0Ev at 0x0065a160
 rCycleQuestInfo::~rCycleQuestInfo() {
-    DDON_STUB("rCycleQuestInfo::~rCycleQuestInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mCycleQuestInfo.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x65a0d0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mCycleQuestInfo.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mCycleQuestInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mCycleQuestInfo.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCycleQuestInfo.::MtArray::mLength) {
+                    v0_0 = this->mCycleQuestInfo.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mCycleQuestInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCycleQuestInfo.::MtArray::mpArray));
+    }
+    this->mCycleQuestInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mCycleQuestInfo.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mCycleQuestInfo.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0065a230 - 0x0065a313 (227 bytes)
@@ -213,8 +240,38 @@ __attribute__((weak)) void rCycleQuestInfo::cCycleQuestInfo::createProperty(MtPr
 
 // Address: 0x0065ae50 - 0x0065af3d (237 bytes)
 __attribute__((weak)) bool rCycleQuestInfo::cCycleQuestInfo::save(MtDataWriter& w) {
-    DDON_STUB("rCycleQuestInfo::cCycleQuestInfo::save")
-    return {};
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from rCycleQuestInfo::cCycleQuestInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14 from MtObject*
+    w.writeU32(this->mCycleNo);
+    w.writeU32(this->mCycleSubNo);
+    w.writeU32(this->mContentNameIdx);
+    w.writeU32(this->mContentInfoIdx);
+    w.writeU32(this->mGatherInfoIdx);
+    w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(40)));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(40))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            // inferred: a temporary for the value the load at 0x65aec7 read, used 4 times; no DWARF local holds it
+            MtObject* t0 = this->mSituationInfo.::MtArray::getBuffer()[static_cast<int>(i0_3)];
+            w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(8)));
+            w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(12)));
+            w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(16)));
+            w.writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(20)));
+            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(40)))) {
+                i0_3 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    w.writeU32(this->mGatherNpcId);
+    w.writeU32(this->mGatherStageNo);
+    w.writeU32(this->mGatherStartPos);
+    return true;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)
@@ -251,7 +308,8 @@ const MtDTI& rCycleQuestInfo::cCycleQuestSituationInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rCycleQuestInfo::cCycleQuestSituationInfo::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rCycleQuestInfo::cCycleQuestSituationInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rCycleQuestInfo::cCycleQuestSituationInfo::DTI)->memAlloc(sz, align, ::rCycleQuestInfo::cCycleQuestSituationInfo::DTI.::MtDTI::getID());
 }
 

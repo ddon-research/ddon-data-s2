@@ -222,8 +222,7 @@ uShlKeepOwnerLog::uShlKeepOwnerLog() {
 // Address: 0x00cee990 - 0x00cee9c1 (49 bytes)
 // Also emitted as: _ZN16uShlKeepOwnerLogD0Ev at 0x00cee9d0
 uShlKeepOwnerLog::~uShlKeepOwnerLog() {
-    DDON_STUB("uShlKeepOwnerLog::~uShlKeepOwnerLog")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x00ceea20 - 0x00ceea25 (5 bytes)
@@ -312,17 +311,75 @@ __attribute__((weak)) void uShlKeepOwnerLog::addLogNode() {
 // void uShlKeepOwnerLog::eraseTopNode();
 
 // Address: 0x00cef1d0 - 0x00cef1eb (27 bytes)
-__attribute__((weak)) cShlLogNode* uShlKeepOwnerLog::findLastNode() {
-    // local: s32 index;
-    DDON_STUB("uShlKeepOwnerLog::findLastNode")
-    return nullptr;
+cShlLogNode* uShlKeepOwnerLog::findLastNode() {
+    // DWARF local not rendered: s32 index;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (static_cast<int>(this->mLogNodeArray.::MtArray::mLength - static_cast<u32>(1)) > static_cast<int>(-1)) {
+        return static_cast<cShlLogNode*>(this->mLogNodeArray.::MtArray::getBuffer()[static_cast<int>(this->mLogNodeArray.::MtArray::mLength - static_cast<u32>(1))]);
+    } else {
+        return static_cast<cShlLogNode*>(nullptr);
+    }
 }
 
 // Address: 0x00cef1f0 - 0x00cef27a (138 bytes)
-__attribute__((weak)) void uShlKeepOwnerLog::eraseLastNode() {
-    // local: s32 index;
-    DDON_STUB("uShlKeepOwnerLog::eraseLastNode")
-    /* stub */
+void uShlKeepOwnerLog::eraseLastNode() {
+    // DWARF local not rendered: s32 index;
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a temporary for the value the load at 0xcef1fa read, used 4 times; no DWARF local holds it
+    u32 t0 = this->mLogNodeArray.::MtArray::mLength;
+    if (static_cast<int>(t0 - static_cast<u32>(1)) <= static_cast<int>(-1)) {
+    } else {
+        // inferred: the value the loop at 0xcef250 carries; the location-less local in scope that fits is declared on no line of the value's writes
+        int v0_1;
+        // inferred: the value the loop at 0xcef250 carries; no location-less local in scope fits
+        u32 v0_2;
+        // inferred: the value the loop at 0xcef250 carries; no location-less local in scope fits
+        u32 v0_5;
+        // inferred: the value carried to 0xcef26b; no location-less local in scope fits
+        u32 v1_5;
+        if (this->mLogNodeArray.::MtArray::mAutoDelete != false) {
+            if (this->mLogNodeArray.::MtArray::mpArray[static_cast<int>(t0 - static_cast<u32>(1))] != static_cast<MtObject*>(nullptr)) {
+                delete this->mLogNodeArray.::MtArray::mpArray[static_cast<int>(t0 - static_cast<u32>(1))];
+                if (static_cast<int>(t0) >= static_cast<int>(this->mLogNodeArray.::MtArray::mLength)) {
+                    v1_5 = this->mLogNodeArray.::MtArray::mLength;
+                    goto region_cef26b;
+                } else {
+                    v0_1 = static_cast<int>(t0);
+                    v0_2 = this->mLogNodeArray.::MtArray::mLength;
+                    v0_5 = this->mLogNodeArray.::MtArray::mLength;
+                }
+            } else {
+                if (static_cast<int>(t0) >= static_cast<int>(t0)) {
+                    v1_5 = t0;
+                    goto region_cef26b;
+                } else {
+                    v0_1 = static_cast<int>(t0);
+                    v0_2 = t0;
+                    v0_5 = t0;
+                }
+            }
+        } else {
+            if (static_cast<int>(t0) >= static_cast<int>(t0)) {
+                v1_5 = t0;
+                goto region_cef26b;
+            } else {
+                v0_1 = static_cast<int>(t0);
+                v0_2 = t0;
+                v0_5 = t0;
+            }
+        }
+        for (;;) {
+            this->mLogNodeArray.::MtArray::mpArray[v0_1 - static_cast<int>(1)] = this->mLogNodeArray.::MtArray::mpArray[v0_1];
+            if (v0_2 != static_cast<unsigned int>(v0_1 + static_cast<int>(1))) {
+                v0_1 = v0_1 + static_cast<int>(1);
+            } else {
+                v1_5 = v0_5;
+                break;
+            }
+        }
+        region_cef26b:;
+        this->mLogNodeArray.::MtArray::mLength = v1_5 - static_cast<u32>(1);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (155 bytes)

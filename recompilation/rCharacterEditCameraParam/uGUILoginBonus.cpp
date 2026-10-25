@@ -776,9 +776,9 @@ __attribute__((weak)) void uGUILoginBonus::moveEvent() {
 }
 
 // Address: 0x00b019a0 - 0x00b019ba (26 bytes)
-__attribute__((weak)) void uGUILoginBonus::evEnd() {
-    DDON_STUB("uGUILoginBonus::evEnd")
-    /* stub */
+void uGUILoginBonus::evEnd() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUILoginBonus::updateExit);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (64 bytes)
@@ -827,19 +827,290 @@ u32 uGUILoginBonus::evCtrlAdjTab(cControl::Message* msg) {
 }
 
 // Address: 0x00aff3d0 - 0x00aff45a (138 bytes)
-__attribute__((weak)) u32 uGUILoginBonus::evCtrlAdjCursor(cControl::Message* msg) {
-    // local: const bool isUp;
-    // local: const bool isDown;
-    // local: const bool isTop;
-    // local: const bool isBottom;
-    DDON_STUB("uGUILoginBonus::evCtrlAdjCursor")
-    return {};
+u32 uGUILoginBonus::evCtrlAdjCursor(cControl::Message* msg) {
+    // DWARF local not rendered: const bool isUp;
+    // DWARF local not rendered: const bool isDown;
+    // DWARF local not rendered: const bool isTop;
+    // DWARF local not rendered: const bool isBottom;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from uGUIBase::cMatrix*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from unsigned long
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff3e2, held ahead of the effects the ELF orders after it
+        uGUIBase::cMatrix* t0 = this->mpMatCtrl;
+        if (t0 != static_cast<uGUIBase::cMatrix*>(nullptr)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff3ee, held ahead of the effects the ELF orders after it
+            cControl* t1 = msg->pSender;
+            if (t0 == t1) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff3f4, held ahead of the effects the ELF orders after it
+                nGUIExt::MSG_REASON t2 = msg->reason;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff3f8, held ahead of the effects the ELF orders after it
+                s32 t3 = t0->::uGUIBase::cMatrix::getCurrentRow();
+                if (t3 == static_cast<s32>(0)) {
+                    if (t2 != static_cast<nGUIExt::MSG_REASON>(1)) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff407, held ahead of the effects the ELF orders after it
+                        s32 t4 = t0->::uGUIBase::cMatrix::getRow();
+                        if (t3 == (t4 - static_cast<s32>(1))) {
+                            if (t2 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff417, held ahead of the effects the ELF orders after it
+                                unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff41a, held ahead of the effects the ELF orders after it
+                                s32 t6 = t0->::cControl::getOldPos();
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff422, held ahead of the effects the ELF orders after it
+                                unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(144));
+                                t0->setCurrentPos(t6, false);
+                                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
+                                    nGUIExt::MSG_REASON t10 = msg->reason;
+                                    if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                        this->mIsPushUpBtn = true;
+                                    }
+                                }
+                                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                                return static_cast<u32>(0);
+                            }
+                        }
+                        if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
+                            nGUIExt::MSG_REASON t10 = msg->reason;
+                            if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                this->mIsPushUpBtn = true;
+                            }
+                        }
+                        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                        return static_cast<u32>(0);
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff417, held ahead of the effects the ELF orders after it
+                        unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff41a, held ahead of the effects the ELF orders after it
+                        s32 t6 = t0->::cControl::getOldPos();
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff422, held ahead of the effects the ELF orders after it
+                        unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(144));
+                        t0->setCurrentPos(t6, false);
+                        if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
+                            nGUIExt::MSG_REASON t10 = msg->reason;
+                            if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                this->mIsPushUpBtn = true;
+                            }
+                        }
+                        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                        return static_cast<u32>(0);
+                    }
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff407, held ahead of the effects the ELF orders after it
+                    s32 t4 = t0->::uGUIBase::cMatrix::getRow();
+                    if (t3 == (t4 - static_cast<s32>(1))) {
+                        if (t2 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff417, held ahead of the effects the ELF orders after it
+                            unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff41a, held ahead of the effects the ELF orders after it
+                            s32 t6 = t0->::cControl::getOldPos();
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff422, held ahead of the effects the ELF orders after it
+                            unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(144));
+                            t0->setCurrentPos(t6, false);
+                            if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
+                                nGUIExt::MSG_REASON t10 = msg->reason;
+                                if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                    this->mIsPushUpBtn = true;
+                                }
+                            }
+                            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                            return static_cast<u32>(0);
+                        }
+                    }
+                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
+                        nGUIExt::MSG_REASON t10 = msg->reason;
+                        if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                            this->mIsPushUpBtn = true;
+                        }
+                    }
+                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                    return static_cast<u32>(0);
+                }
+            } else {
+                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
+                    nGUIExt::MSG_REASON t10 = msg->reason;
+                    if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                        this->mIsPushUpBtn = true;
+                    }
+                }
+                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                return static_cast<u32>(0);
+            }
+        } else {
+            if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff438, held ahead of the effects the ELF orders after it
+                nGUIExt::MSG_REASON t10 = msg->reason;
+                if (t10 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                    this->mIsPushUpBtn = true;
+                }
+            }
+            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+            return static_cast<u32>(0);
+        }
+    } else {
+        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00aff460 - 0x00aff535 (213 bytes)
-__attribute__((weak)) u32 uGUILoginBonus::evCtrlLClick(cControl::Message* msg) {
-    DDON_STUB("uGUILoginBonus::evCtrlLClick")
-    return {};
+u32 uGUILoginBonus::evCtrlLClick(cControl::Message* msg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from uGUIBase::cMatrix*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from unsigned long
+    // inferred: a temporary for the value the load at 0xaff46d read, used twice; no DWARF local holds it
+    s32 t0 = msg->click_vol;
+    if (t0 != static_cast<s32>(-1)) {
+        this->mCtrlStat = static_cast<u32>(0);
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff480, held ahead of the effects the ELF orders after it
+        uGUIBase::cMatrix* t1 = this->mpMatCtrl;
+        if (t1 != static_cast<uGUIBase::cMatrix*>(nullptr)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff48c, held ahead of the effects the ELF orders after it
+            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(0));
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff491, held ahead of the effects the ELF orders after it
+            unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t2) + static_cast<long>(144));
+            t1->setCurrentPos(t0, false);
+            this->mIsMatrixClick = true;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff49e, held ahead of the effects the ELF orders after it
+            uGUIBase::cMatrix* t5 = this->mpMatCtrl;
+            if (t5 != static_cast<uGUIBase::cMatrix*>(nullptr)) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4aa, held ahead of the effects the ELF orders after it
+                cControl* t6 = msg->pSender;
+                if (t5 == t6) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4b0, held ahead of the effects the ELF orders after it
+                    nGUIExt::MSG_REASON t7 = msg->reason;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4b4, held ahead of the effects the ELF orders after it
+                    s32 t8 = t5->::uGUIBase::cMatrix::getCurrentRow();
+                    if (t8 == static_cast<s32>(0)) {
+                        if (t7 != static_cast<nGUIExt::MSG_REASON>(1)) {
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4c3, held ahead of the effects the ELF orders after it
+                            s32 t9 = t5->::uGUIBase::cMatrix::getRow();
+                            if (t8 == (t9 - static_cast<s32>(1))) {
+                                if (t7 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d3, held ahead of the effects the ELF orders after it
+                                    unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(0));
+                                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d6, held ahead of the effects the ELF orders after it
+                                    s32 t11 = t5->::cControl::getOldPos();
+                                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4de, held ahead of the effects the ELF orders after it
+                                    unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(144));
+                                    t5->setCurrentPos(t11, false);
+                                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
+                                        nGUIExt::MSG_REASON t15 = msg->reason;
+                                        if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                            this->mIsPushUpBtn = true;
+                                        }
+                                    }
+                                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                                    return static_cast<u32>(0);
+                                }
+                            }
+                            if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
+                                nGUIExt::MSG_REASON t15 = msg->reason;
+                                if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                    this->mIsPushUpBtn = true;
+                                }
+                            }
+                            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                            return static_cast<u32>(0);
+                        } else {
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d3, held ahead of the effects the ELF orders after it
+                            unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(0));
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d6, held ahead of the effects the ELF orders after it
+                            s32 t11 = t5->::cControl::getOldPos();
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4de, held ahead of the effects the ELF orders after it
+                            unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(144));
+                            t5->setCurrentPos(t11, false);
+                            if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
+                                nGUIExt::MSG_REASON t15 = msg->reason;
+                                if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                    this->mIsPushUpBtn = true;
+                                }
+                            }
+                            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                            return static_cast<u32>(0);
+                        }
+                    } else {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4c3, held ahead of the effects the ELF orders after it
+                        s32 t9 = t5->::uGUIBase::cMatrix::getRow();
+                        if (t8 == (t9 - static_cast<s32>(1))) {
+                            if (t7 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d3, held ahead of the effects the ELF orders after it
+                                unsigned long t10 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + static_cast<long>(0));
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4d6, held ahead of the effects the ELF orders after it
+                                s32 t11 = t5->::cControl::getOldPos();
+                                // inferred: an ordered temporary, read before a later effect: the value read at 0xaff4de, held ahead of the effects the ELF orders after it
+                                unsigned long t13 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t10) + static_cast<long>(144));
+                                t5->setCurrentPos(t11, false);
+                                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
+                                    nGUIExt::MSG_REASON t15 = msg->reason;
+                                    if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                        this->mIsPushUpBtn = true;
+                                    }
+                                }
+                                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                                return static_cast<u32>(0);
+                            }
+                        }
+                        if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                            // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
+                            nGUIExt::MSG_REASON t15 = msg->reason;
+                            if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                                this->mIsPushUpBtn = true;
+                            }
+                        }
+                        this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                        return static_cast<u32>(0);
+                    }
+                } else {
+                    if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                        // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
+                        nGUIExt::MSG_REASON t15 = msg->reason;
+                        if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                            this->mIsPushUpBtn = true;
+                        }
+                    }
+                    this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                    return static_cast<u32>(0);
+                }
+            } else {
+                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
+                    nGUIExt::MSG_REASON t15 = msg->reason;
+                    if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                        this->mIsPushUpBtn = true;
+                    }
+                }
+                this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+                return static_cast<u32>(0);
+            }
+        } else {
+            this->mIsMatrixClick = true;
+            if (msg != static_cast<cControl::Message*>(nullptr)) {
+                if (this->mBtn.::uGUIBase::cReferenceUIButton::isFocus() != false) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xaff513, held ahead of the effects the ELF orders after it
+                    nGUIExt::MSG_REASON t15 = msg->reason;
+                    if (t15 == static_cast<nGUIExt::MSG_REASON>(0)) {
+                        this->mIsPushUpBtn = true;
+                    }
+                }
+            }
+            this->::uGUIBase::setInputEvent(static_cast<u32>(70));
+            return static_cast<u32>(0);
+        }
+    } else {
+        this->mCtrlStat = static_cast<u32>(1);
+        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+        return static_cast<u32>(0);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

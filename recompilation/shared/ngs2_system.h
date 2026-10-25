@@ -5,6 +5,7 @@
 
 // Declarations
 struct SceNgs2ContextBufferInfo;
+struct SceNgs2RackOption;
 struct SceNgs2UserFxProcessContext;
 struct SceNgs2WaveformBlock;
 struct SceNgs2WaveformFormat;
@@ -26,6 +27,20 @@ public:
     size_t hostBufferSize;  // offset: 0x8
     uintptr_t reserved[5];  // offset: 0x10
     uintptr_t userData;  // offset: 0x38
+};
+
+struct SceNgs2RackOption
+{
+public:
+    size_t size;  // offset: 0x0
+    char name[16];  // offset: 0x8
+    uint32_t flags;  // offset: 0x18
+    uint32_t maxGrainSamples;  // offset: 0x1c
+    uint32_t maxVoices;  // offset: 0x20
+    uint32_t maxInputDelayBlocks;  // offset: 0x24
+    uint32_t maxMatrices;  // offset: 0x28
+    uint32_t maxPorts;  // offset: 0x2c
+    uint32_t aReserved[20];  // offset: 0x30
 };
 
 struct SceNgs2UserFxProcessContext

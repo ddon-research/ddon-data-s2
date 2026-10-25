@@ -41,7 +41,8 @@ const MtDTI& cPawnAIActInter::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* cPawnAIActInter::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* cPawnAIActInter::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPawnAIActInter::DTI)->memAlloc(sz, align, ::cPawnAIActInter::DTI.::MtDTI::getID());
 }
 
@@ -188,9 +189,13 @@ u32 cPawnAIAction::getPawnAIActInterNum() const {
 }
 
 // Address: 0x006c9bf0 - 0x006c9c03 (19 bytes)
-__attribute__((weak)) cPawnAIActInter* cPawnAIAction::getPawnAIActInter(u32 idx) {
-    DDON_STUB("cPawnAIAction::getPawnAIActInter")
-    return nullptr;
+cPawnAIActInter* cPawnAIAction::getPawnAIActInter(u32 idx) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (idx < this->mpActInters.::MtArray::mLength) {
+        return static_cast<cPawnAIActInter*>(this->mpActInters.::MtArray::getBuffer()[static_cast<int>(idx)]);
+    } else {
+        return static_cast<cPawnAIActInter*>(nullptr);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -332,12 +337,25 @@ __attribute__((weak)) cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTyp
 }
 
 // Address: 0x006ca990 - 0x006ca9cd (61 bytes)
-__attribute__((weak)) cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTypedArray<cPawnAIAction>& src, u32 id) {
-    // local: u32 num;
-    // local: u32 i;
-    // local: cPawnAIAction* p_ai_act;
-    DDON_STUB("cPawnAIAction::findActInterfaceFromID")
-    return nullptr;
+cPawnAIAction* cPawnAIAction::findActInterfaceFromID(MtTypedArray<cPawnAIAction>& src, u32 id) {
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: cPawnAIAction* p_ai_act;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtTypedArray<cPawnAIAction>*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&src) + static_cast<long>(8))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if (src.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(src.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) != id) {
+                } else {
+                    return static_cast<cPawnAIAction*>(src.::MtArray::getBuffer()[static_cast<int>(i)]);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&src) + static_cast<long>(8))));
+    }
+    return static_cast<cPawnAIAction*>(nullptr);
 }
 
 // Address: 0x006ca9d0 - 0x006cac1f (591 bytes)

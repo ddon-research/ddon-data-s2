@@ -15,6 +15,7 @@
 #include "cCharacterData.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
+#include "cContextPlayerInfo.h"
 #include "cGameTime.h"
 #include "cNetBase.h"
 #include "cNetGameServer.h"
@@ -26,13 +27,17 @@
 #include "nAbility.h"
 #include "nDDOUtility.h"
 #include "nHuman.h"
+#include "../rAbilityList/rAbilityList.h"
 #include "../rAdjustParam/rAdjustParam.h"
 #include "rArchive.h"
 #include "rArchiveListArray.h"
 #include "../rAreaInfo/rAreaInfo.h"
 #include "../rAreaInfoJointArea/rAreaInfoJointArea.h"
 #include "../rAreaInfoStage/rAreaInfoStage.h"
+#include "rGUIMessage.h"
+#include "rJobLevelUpTbl.h"
 #include "../rLandInfo/rLandInfo.h"
+#include "rMsgSet.h"
 #include "rPlayerExpTable.h"
 #include "../rStageToSpot/rStageToSpot.h"
 #include "../rWeaponResTable/rWeaponResTable.h"
@@ -1078,10 +1083,11 @@ u8 sGame::getReviveStock() {
 }
 
 // Address: 0x007831c0 - 0x007831f1 (49 bytes)
-__attribute__((weak)) void sGame::setReviveStock(u8 stock) {
-    // local: cContextInstHm* pInst;
-    DDON_STUB("sGame::setReviveStock")
-    /* stub */
+void sGame::setReviveStock(u8 stock) {
+    // DWARF local not rendered: cContextInstHm* pInst;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    ::cContextInterface::setReviveStock(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer(), stock);
+    this->mCharData.mCharData.mReviveStock = stock;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1206,16 +1212,30 @@ __attribute__((weak)) void sGame::setChargeCourse(u32 courseId, bool flag, u64 e
 // void sGame::setChargeCourseVersion(u32 version);
 
 // Address: 0x00784b20 - 0x00784b58 (56 bytes)
-__attribute__((weak)) sGame::chargeCourseParam* sGame::getChargeCourse(u32 courseId) {
-    // local: u32 i;
-    DDON_STUB("sGame::getChargeCourse")
-    return nullptr;
+sGame::chargeCourseParam* sGame::getChargeCourse(u32 courseId) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34a0 from sGame*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) == courseId) {
+                return static_cast<sGame::chargeCourseParam*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i)]);
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))));
+    }
+    return static_cast<sGame::chargeCourseParam*>(nullptr);
 }
 
 // Address: 0x00784b60 - 0x00784b79 (25 bytes)
-__attribute__((weak)) sGame::chargeCourseParam* sGame::getChargeCourseIndex(u32 index) {
-    DDON_STUB("sGame::getChargeCourseIndex")
-    return nullptr;
+sGame::chargeCourseParam* sGame::getChargeCourseIndex(u32 index) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (index < this->mChargeCourseParam.::MtArray::mLength) {
+        return static_cast<sGame::chargeCourseParam*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(index)]);
+    } else {
+        return static_cast<sGame::chargeCourseParam*>(nullptr);
+    }
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (38 bytes)
@@ -1226,27 +1246,70 @@ __attribute__((weak)) sGame::chargeCourseParam* sGame::getChargeCourseIndex(u32 
 // u32 sGame::getChargeCourseNum();
 
 // Address: 0x00784b80 - 0x00784bc6 (70 bytes)
-__attribute__((weak)) u64 sGame::getChargeCourseEndTime(u32 courseId) {
-    // local: chargeCourseParam* pParam;
-    DDON_STUB("sGame::getChargeCourseEndTime")
-    return {};
+u64 sGame::getChargeCourseEndTime(u32 courseId) {
+    // DWARF local not rendered: chargeCourseParam* pParam;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34a0 from sGame*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1 = static_cast<unsigned int>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i1)]) + static_cast<long>(8))) != courseId) {
+            } else {
+                if (this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i1)] != static_cast<MtObject*>(nullptr)) {
+                    return static_cast<u64>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i1)]) + static_cast<long>(24)));
+                } else {
+                    return static_cast<u64>(0);
+                }
+            }
+            i1 += static_cast<unsigned int>(1);
+        } while (i1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))));
+    }
+    return static_cast<u64>(0);
 }
 
 // No out-of-line body: no code in the ELF
 // u64 sGame::getChargeCourseEndTimeIndex(u32 index);
 
 // Address: 0x00784be0 - 0x00784c25 (69 bytes)
-__attribute__((weak)) bool sGame::isChargeCourseEnable(u32 courseId) {
-    // local: chargeCourseParam* pParam;
-    DDON_STUB("sGame::isChargeCourseEnable")
-    return {};
+bool sGame::isChargeCourseEnable(u32 courseId) {
+    // DWARF local not rendered: chargeCourseParam* pParam;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34a0 from sGame*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xc from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0 = static_cast<unsigned int>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(8))) != courseId) {
+            } else {
+                if (this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
+                    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(12))) != static_cast<unsigned char>(0);
+                } else {
+                    return false;
+                }
+            }
+            i0 += static_cast<unsigned int>(1);
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472))));
+    }
+    return false;
 }
 
 // Address: 0x00784c30 - 0x00784c59 (41 bytes)
-__attribute__((weak)) bool sGame::isChargeCourseEnableIndex(u32 index) {
-    // local: chargeCourseParam* pParam;
-    DDON_STUB("sGame::isChargeCourseEnableIndex")
-    return {};
+bool sGame::isChargeCourseEnableIndex(u32 index) {
+    // DWARF local not rendered: chargeCourseParam* pParam;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34a0 from sGame*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xc from MtObject*
+    if (index < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(13472)))) {
+        if (this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(index)] != static_cast<MtObject*>(nullptr)) {
+            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mChargeCourseParam.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(12))) != static_cast<unsigned char>(0);
+        }
+    }
+    return false;
 }
 
 // Address: 0x00785360 - 0x0078539d (61 bytes)
@@ -1621,9 +1684,23 @@ bool sGame::isFadeEnd() {
 }
 
 // Address: 0x00785b90 - 0x00785bad (29 bytes)
-__attribute__((weak)) bool sGame::isFadeOut() {
-    DDON_STUB("sGame::isFadeOut")
-    return {};
+bool sGame::isFadeOut() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54 from uFade*
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpFade != static_cast<uFade*>(nullptr)) {
+        if (this->mpFade->::uFade::isEnd() != false) {
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFade) + static_cast<long>(84))) <= static_cast<int>(1)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00785bb0 - 0x00785be0 (48 bytes)
@@ -1637,9 +1714,23 @@ void sGame::eraseFade() {
 }
 
 // Address: 0x00785be0 - 0x00785bfd (29 bytes)
-__attribute__((weak)) bool sGame::isFadeBlack() {
-    DDON_STUB("sGame::isFadeBlack")
-    return {};
+bool sGame::isFadeBlack() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54 from uFade*
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpFade != static_cast<uFade*>(nullptr)) {
+        if (this->mpFade->::uFade::isEnd() != false) {
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFade) + static_cast<long>(84))) <= static_cast<int>(1)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00785c00 - 0x00785c17 (23 bytes)
@@ -1997,10 +2088,66 @@ __attribute__((weak)) void sGame::createHumanParam() {
 }
 
 // Address: 0x007869c0 - 0x00786b28 (360 bytes)
-__attribute__((weak)) void sGame::deleteHumanParam() {
-    // local: u32 i;
-    DDON_STUB("sGame::deleteHumanParam")
-    /* stub */
+void sGame::deleteHumanParam() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpBaseParam != static_cast<rAdjustParam*>(nullptr)) {
+        this->mpBaseParam->::cResource::release();
+        this->mpBaseParam = static_cast<rAdjustParam*>(nullptr);
+    }
+    if (this->mpJobBaseParam != static_cast<rJobBaseParam*>(nullptr)) {
+        this->mpJobBaseParam->::cResource::release();
+        this->mpJobBaseParam = static_cast<rJobBaseParam*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[0] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[0]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[0] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[1] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[1]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[1] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[2] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[2]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[2] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[3] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[3]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[3] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[4] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[4]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[4] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[5] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[5]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[5] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[6] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[6]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[6] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[7] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[7]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[7] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[8] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[8]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[8] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpJobLevelUpTbl2.elems[9] != static_cast<rJobLevelUpTbl2*>(nullptr)) {
+        this->mpJobLevelUpTbl2.elems[9]->::cResource::release();
+        this->mpJobLevelUpTbl2.elems[9] = static_cast<rJobLevelUpTbl2*>(nullptr);
+    }
+    if (this->mpAblityList != static_cast<rAbilityList*>(nullptr)) {
+        this->mpAblityList->::cResource::release();
+        this->mpAblityList = static_cast<rAbilityList*>(nullptr);
+    }
+    if (this->mpExpTable != static_cast<rPlayerExpTable*>(nullptr)) {
+        this->mpExpTable->::cResource::release();
+        this->mpExpTable = static_cast<rPlayerExpTable*>(nullptr);
+    }
 }
 
 // Address: 0x00786b30 - 0x00786b5a (42 bytes)
@@ -2243,17 +2390,50 @@ __attribute__((weak)) u32 sGame::getArea(s32 stageNo, MtVector3* pPos) {
 // bool sGame::isExistArea(u32 AreaId);
 
 // Address: 0x00787380 - 0x007873a5 (37 bytes)
-__attribute__((weak)) u32 sGame::getAreaIdFromIdx(u32 index) {
-    DDON_STUB("sGame::getAreaIdFromIdx")
-    return {};
+u32 sGame::getAreaIdFromIdx(u32 index) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (this->mpAreaInfo != static_cast<rAreaInfo*>(nullptr)) {
+        if (index < this->mpAreaInfo->mAreaInfo.::MtArray::mLength) {
+            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpAreaInfo->mAreaInfo.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(8));
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x007873b0 - 0x007873e5 (53 bytes)
-__attribute__((weak)) u32 sGame::getAreaIndexFromId(u32 AreaId) {
-    // local: const u32 area_num;
-    // local: u32 i;
-    DDON_STUB("sGame::getAreaIndexFromId")
-    return {};
+u32 sGame::getAreaIndexFromId(u32 AreaId) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rAreaInfo*
+    // inferred: the value carried to 0x7873e4; no location-less local in scope fits
+    u32 v2_0;
+    if (this->mpAreaInfo == static_cast<rAreaInfo*>(nullptr)) {
+        v2_0 = static_cast<u32>(0);
+    } else {
+        const u32 area_num = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpAreaInfo) + static_cast<long>(120));
+        if (area_num == static_cast<u32>(0)) {
+            v2_0 = static_cast<u32>(0);
+        } else {
+            // inferred: the value the loop at 0x7873d0 carries; no location-less local in scope fits
+            MtObject* * v0_2 = this->mpAreaInfo->mAreaInfo.::MtArray::getBuffer();
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_0 = static_cast<unsigned int>(0);;) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_0)]) + static_cast<long>(8))) == AreaId) {
+                    v2_0 = i0_0;
+                    return v2_0;
+                } else {
+                    if ((i0_0 + static_cast<unsigned int>(1)) < area_num) {
+                        i0_0 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            v2_0 = area_num;
+        }
+    }
+    return v2_0;
 }
 
 // Address: 0x007873f0 - 0x00787465 (117 bytes)
@@ -2304,9 +2484,15 @@ __attribute__((weak)) u32 sGame::getEnableAreaNumInLand(u32 landId) {
 }
 
 // Address: 0x00787680 - 0x007876a5 (37 bytes)
-__attribute__((weak)) u32 sGame::getLandIdFromIdx(u32 index) {
-    DDON_STUB("sGame::getLandIdFromIdx")
-    return {};
+u32 sGame::getLandIdFromIdx(u32 index) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (this->mpLandInfo != static_cast<rLandInfo*>(nullptr)) {
+        if (index < this->mpLandInfo->mLandInfo.::MtArray::mLength) {
+            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpLandInfo->mLandInfo.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(8));
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x007876b0 - 0x00787752 (162 bytes)
@@ -2317,11 +2503,107 @@ __attribute__((weak)) u32 sGame::getLandIdFromStage(s32 stageNo) {
 }
 
 // Address: 0x00787760 - 0x0078788e (302 bytes)
-__attribute__((weak)) void sGame::loadCommonData() {
-    // local: rGUIMessage* pMsgData;
-    // local: rMsgSet* pMsgSetData;
-    DDON_STUB("sGame::loadCommonData")
-    /* stub */
+void sGame::loadCommonData() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from cTalkMsgData*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from unsigned long
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x78776e, held ahead of the effects the ELF orders after it
+    cTalkMsgData* t0 = this->mpCommonMsgData;
+    if (t0 != static_cast<cTalkMsgData*>(nullptr)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x78777b, held ahead of the effects the ELF orders after it
+        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(0));
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x78777e, held ahead of the effects the ELF orders after it
+        unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(8));
+        delete t0;
+        this->mpCommonMsgData = static_cast<cTalkMsgData*>(nullptr);
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x78778d, held ahead of the effects the ELF orders after it
+        rStageToSpot* t4 = this->mpStageToSpot;
+        if (t4 != static_cast<rStageToSpot*>(nullptr)) {
+            t4->::cResource::release();
+            this->mpStageToSpot = static_cast<rStageToSpot*>(nullptr);
+        }
+        if ((this->mpCommonMsgData = new (static_cast<u32>(16)) ::cTalkMsgData) != static_cast<cTalkMsgData*>(nullptr)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x7877dd, held ahead of the effects the ELF orders after it
+            sArchiveManager* t9 = ::sArchiveManager::getInstance();
+            rGUIMessage* pMsgData = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rGUIMessage::DTI, "ui\\00_message\\examine_message\\common\\common_examine", static_cast<u32>(1), false));
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x787801, held ahead of the effects the ELF orders after it
+            cTalkMsgData* t11 = this->mpCommonMsgData;
+            t11->::cTalkMsgData::setMsgData(pMsgData);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x787811, held ahead of the effects the ELF orders after it
+            sArchiveManager* t13 = ::sArchiveManager::getInstance();
+            rMsgSet* pMsgSetData = static_cast<rMsgSet*>(t13->::sArchiveManager::createRes(::rMsgSet::DTI, "ui\\00_message\\examine_message\\common\\common_examine", static_cast<u32>(1), false));
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x78782e, held ahead of the effects the ELF orders after it
+            cTalkMsgData* t15 = this->mpCommonMsgData;
+            t15->::cTalkMsgData::setMsgSetData(pMsgSetData);
+            if (pMsgData != static_cast<rGUIMessage*>(nullptr)) {
+                pMsgData->::cResource::release();
+            }
+            if (pMsgSetData != static_cast<rMsgSet*>(nullptr)) {
+                pMsgSetData->::cResource::release();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
+                sArchiveManager* t19 = ::sArchiveManager::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
+                cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
+                this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
+                sArchiveManager* t19 = ::sArchiveManager::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
+                cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
+                this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+            }
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
+            sArchiveManager* t19 = ::sArchiveManager::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
+            cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
+            this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+        }
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x78778d, held ahead of the effects the ELF orders after it
+        rStageToSpot* t4 = this->mpStageToSpot;
+        if (t4 != static_cast<rStageToSpot*>(nullptr)) {
+            t4->::cResource::release();
+            this->mpStageToSpot = static_cast<rStageToSpot*>(nullptr);
+        }
+        if ((this->mpCommonMsgData = new (static_cast<u32>(16)) ::cTalkMsgData) != static_cast<cTalkMsgData*>(nullptr)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x7877dd, held ahead of the effects the ELF orders after it
+            sArchiveManager* t9 = ::sArchiveManager::getInstance();
+            rGUIMessage* pMsgData = static_cast<rGUIMessage*>(t9->::sArchiveManager::createRes(::rGUIMessage::DTI, "ui\\00_message\\examine_message\\common\\common_examine", static_cast<u32>(1), false));
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x787801, held ahead of the effects the ELF orders after it
+            cTalkMsgData* t11 = this->mpCommonMsgData;
+            t11->::cTalkMsgData::setMsgData(pMsgData);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x787811, held ahead of the effects the ELF orders after it
+            sArchiveManager* t13 = ::sArchiveManager::getInstance();
+            rMsgSet* pMsgSetData = static_cast<rMsgSet*>(t13->::sArchiveManager::createRes(::rMsgSet::DTI, "ui\\00_message\\examine_message\\common\\common_examine", static_cast<u32>(1), false));
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x78782e, held ahead of the effects the ELF orders after it
+            cTalkMsgData* t15 = this->mpCommonMsgData;
+            t15->::cTalkMsgData::setMsgSetData(pMsgSetData);
+            if (pMsgData != static_cast<rGUIMessage*>(nullptr)) {
+                pMsgData->::cResource::release();
+            }
+            if (pMsgSetData != static_cast<rMsgSet*>(nullptr)) {
+                pMsgSetData->::cResource::release();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
+                sArchiveManager* t19 = ::sArchiveManager::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
+                cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
+                this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
+                sArchiveManager* t19 = ::sArchiveManager::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
+                cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
+                this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+            }
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x78785f, held ahead of the effects the ELF orders after it
+            sArchiveManager* t19 = ::sArchiveManager::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x787878, held ahead of the effects the ELF orders after it
+            cResource* t20 = t19->::sArchiveManager::createRes(::rStageToSpot::DTI, "param\\stage_to_spot", static_cast<u32>(1), false);
+            this->mpStageToSpot = static_cast<rStageToSpot*>(t20);
+        }
+    }
 }
 
 // Address: 0x00787890 - 0x007878d9 (73 bytes)
@@ -2346,11 +2628,38 @@ void sGame::releaseCommonData() {
 // cTalkMsgData* sGame::getExmineMsgData() const;
 
 // Address: 0x00787be0 - 0x00787c65 (133 bytes)
-__attribute__((weak)) cStageToSpot* sGame::getStageToSpot(u32 stageNo) {
-    // local: u32 i;
-    // local: cStageToSpot* pData;
-    DDON_STUB("sGame::getStageToSpot")
-    return nullptr;
+cStageToSpot* sGame::getStageToSpot(u32 stageNo) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cStageToSpot* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x787c5a; no location-less local in scope fits
+    cStageToSpot* v1_0;
+    if (this->mpStageToSpot == static_cast<rStageToSpot*>(nullptr)) {
+        v1_0 = static_cast<cStageToSpot*>(nullptr);
+    } else {
+        if (this->mpStageToSpot->getDataNum() == static_cast<u32>(0)) {
+            v1_0 = static_cast<cStageToSpot*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x787c2c, used 3 times; no DWARF local holds it
+                cStageToSpot* t0 = this->mpStageToSpot->getData(i0_2);
+                if (t0 != static_cast<cStageToSpot*>(nullptr)) {
+                    if (t0->mStageNo == stageNo) {
+                        v1_0 = t0;
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < this->mpStageToSpot->getDataNum()) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cStageToSpot*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)

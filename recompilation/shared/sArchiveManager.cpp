@@ -203,18 +203,137 @@ __attribute__((weak)) void sArchiveManager::moveArcLoader() {
 }
 
 // Address: 0x00720fa0 - 0x007210d9 (313 bytes)
-__attribute__((weak)) void sArchiveManager::moveArcLoaderErase() {
-    // local: s32 ref_num;
-    // local: Profile __profile;
-    // local: s32 del_idx;
-    // local: s32 begin_idx;
-    // local: s32 enable_idx;
-    // local: cArcLoaderBase* p_tmp_del;
-    // local: cArcLoaderBase* p_tmp_enable;
-    // local: s32 i;
-    // local: cArcLoaderBase* p_tmp;
-    DDON_STUB("sArchiveManager::moveArcLoaderErase")
-    /* stub */
+void sArchiveManager::moveArcLoaderErase() {
+    // DWARF local not rendered: Profile __profile;
+    // DWARF local not rendered: s32 del_idx;
+    // DWARF local not rendered: s32 begin_idx;
+    // DWARF local not rendered: cArcLoaderBase* p_tmp_del;
+    // DWARF local not rendered: cArcLoaderBase* p_tmp_enable;
+    // DWARF local not rendered: cArcLoaderBase* p_tmp;
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x720fc0 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    s32 v0_2 = this->mArcLoaderNum;
+    if (v0_2 <= static_cast<s32>(0)) {
+    } else {
+        // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
+        int i0_0 = static_cast<int>(0);
+        // inferred: the value the loop at 0x720ff2 carries; the location-less local in scope that fits is declared on no line of the value's writes
+        int v1_1;
+        // inferred: the value the loop at 0x720ff2 carries; no location-less local in scope fits
+        unsigned int v1_3;
+        // inferred: the value the loop at 0x720ff2 carries; the location-less local in scope that fits is declared on no line of the value's writes
+        s32 v1_4;
+        // inferred: the value the loop at 0x721000 carries; no location-less local in scope fits
+        unsigned int v2_2;
+        // inferred: the value carried to 0x721022; no location-less local in scope fits
+        cArcLoaderBase* v3_0;
+        // inferred: the value carried to 0x721022; no location-less local in scope fits
+        unsigned int v3_1;
+        // inferred: the value the loop at 0x721070 carries; no location-less local in scope fits
+        unsigned int v4_1;
+        s32 enable_idx;
+        // inferred: the value the loop at 0x721070 carries; the location-less local in scope that fits is declared on no line of the value's writes
+        s32 v4_4;
+        // inferred: the value carried to 0x72109d; the location-less local in scope that fits is declared on no line of the value's writes
+        s32 v6_5;
+        for (;;) {
+            if (this->mArcLoaderStack.elems[(static_cast<unsigned int>(i0_0) <= static_cast<unsigned int>(255)) ? i0_0 : static_cast<int>(0)] != static_cast<cArcLoaderBase*>(nullptr)) {
+                if ((i0_0 + static_cast<int>(1)) < v0_2) {
+                    i0_0 = i0_0 + static_cast<int>(1);
+                } else {
+                    v6_5 = v0_2;
+                    break;
+                }
+            } else {
+                if (i0_0 <= static_cast<int>(-1)) {
+                    v6_5 = v0_2;
+                } else {
+                    v1_1 = i0_0;
+                    v1_3 = i0_0;
+                    v1_4 = v0_2;
+                    for (;;) {
+                        if (static_cast<int>(v1_3 + static_cast<unsigned int>(1)) >= v1_4) {
+                            v6_5 = v1_4;
+                            goto loop_720fc0_end;
+                        } else {
+                            v2_2 = v1_3 + static_cast<unsigned int>(1);
+                        }
+                        for (;;) {
+                            v3_0 = this->mArcLoaderStack.elems[(v2_2 <= static_cast<unsigned int>(255)) ? v2_2 : static_cast<unsigned int>(0)];
+                            if (v3_0 != static_cast<cArcLoaderBase*>(nullptr)) {
+                                v3_1 = (v2_2 <= static_cast<unsigned int>(255)) ? v2_2 : static_cast<unsigned int>(0);
+                                break;
+                            } else {
+                                if (static_cast<int>(v2_2 + static_cast<unsigned int>(1)) < v1_4) {
+                                    v2_2 += static_cast<unsigned int>(1);
+                                } else {
+                                    v6_5 = v1_4;
+                                    goto loop_720fc0_end;
+                                }
+                            }
+                        }
+                        if (static_cast<int>(v2_2) <= static_cast<int>(-1)) {
+                            v6_5 = v1_4;
+                            goto loop_720fc0_end;
+                        } else {
+                            // inferred: a temporary for the value the load at 0x721039 read, used once; no DWARF local holds it
+                            cArcLoaderBase* t0 = this->mArcLoaderStack.elems[(static_cast<unsigned int>(v1_1) <= static_cast<unsigned int>(255)) ? static_cast<unsigned int>(v1_1) : static_cast<unsigned int>(0)];
+                            this->mArcLoaderStack.elems[(static_cast<unsigned int>(v1_1) <= static_cast<unsigned int>(255)) ? static_cast<unsigned int>(v1_1) : static_cast<unsigned int>(0)] = v3_0;
+                            this->mArcLoaderStack.elems[v3_1] = t0;
+                            v3_0->mHandle = static_cast<s16>(static_cast<unsigned short>(v1_1));
+                            v4_4 = this->mArcLoaderNum;
+                            if ((v1_1 + static_cast<int>(1)) >= v4_4) {
+                                v6_5 = v4_4;
+                                goto loop_720fc0_end;
+                            } else {
+                                v4_1 = v1_1 + static_cast<int>(1);
+                                enable_idx = v2_2;
+                            }
+                        }
+                        for (;;) {
+                            if (this->mArcLoaderStack.elems[(v4_1 <= static_cast<unsigned int>(255)) ? v4_1 : static_cast<unsigned int>(0)] == static_cast<cArcLoaderBase*>(nullptr)) {
+                                break;
+                            } else {
+                                if (static_cast<int>(v4_1 + static_cast<unsigned int>(1)) < v4_4) {
+                                    v4_1 += static_cast<unsigned int>(1);
+                                } else {
+                                    v6_5 = v4_4;
+                                    goto loop_720fc0_end;
+                                }
+                            }
+                        }
+                        if (static_cast<int>(v4_1) > static_cast<int>(-1)) {
+                            v1_1 = v4_1;
+                            v1_3 = enable_idx;
+                            v1_4 = v4_4;
+                        } else {
+                            v6_5 = v4_4;
+                            goto loop_720fc0_end;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        loop_720fc0_end:;
+        if (v6_5 <= static_cast<s32>(0)) {
+        } else {
+            // inferred: DWARF's location-less 'i' (lexical block [0x72109f, 0x7210d8)) is the counter this loop steps (DWARF's stale constant 0)
+            s32 i = static_cast<s32>(0);
+            for (s32 ref_num = v6_5;;) {
+                if (this->mArcLoaderStack.elems[(static_cast<unsigned int>(i) <= static_cast<unsigned int>(255)) ? i : static_cast<s32>(0)] != static_cast<cArcLoaderBase*>(nullptr)) {
+                    if ((i + static_cast<s32>(1)) < ref_num) {
+                        i = i + static_cast<s32>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    this->mArcLoaderNum = i;
+                    return;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00721100 - 0x0072130e (526 bytes)

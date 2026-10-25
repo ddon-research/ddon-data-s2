@@ -372,9 +372,9 @@ __attribute__((weak)) void uGUISystemMsg::setExitFunc(uGUISystemMsg::EXIT_FUNC_T
 }
 
 // Address: 0x00c5f500 - 0x00c5f527 (39 bytes)
-__attribute__((weak)) bool uGUISystemMsg::isStop() const {
-    DDON_STUB("uGUISystemMsg::isStop")
-    return {};
+bool uGUISystemMsg::isStop() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::uGUIBase::mpCurrentFunc == static_cast<void(uGUIBase::*)()>(&::uGUISystemMsg::updateStop);
 }
 
 // Address: 0x00c5f530 - 0x00c5f56f (63 bytes)
@@ -421,9 +421,9 @@ __attribute__((weak)) void uGUISystemMsg::updateDisp(bool bInit) {
 }
 
 // Address: 0x00c5d0f0 - 0x00c5d107 (23 bytes)
-__attribute__((weak)) void uGUISystemMsg::updateInit() {
-    DDON_STUB("uGUISystemMsg::updateInit")
-    /* stub */
+void uGUISystemMsg::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUISystemMsg::updateWait);
 }
 
 // Address: 0x00c5c680 - 0x00c5c689 (9 bytes)

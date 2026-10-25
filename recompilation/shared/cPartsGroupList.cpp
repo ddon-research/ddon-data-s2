@@ -8,6 +8,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cAreaHit.h"
+#include "cResource.h"
 #include "rLayout.h"
 #include "rLayoutGroupParam.h"
 #ifndef DDON_STUB
@@ -73,8 +74,39 @@ cPartsGroupList::cPartsGroupList() {
 // Address: 0x0042dda0 - 0x0042de4d (173 bytes)
 // Also emitted as: _ZN15cPartsGroupListD0Ev at 0x0042de50
 cPartsGroupList::~cPartsGroupList() {
-    DDON_STUB("cPartsGroupList::~cPartsGroupList")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpGroupParamList != static_cast<rLayoutGroupParamList*>(nullptr)) {
+        this->mpGroupParamList->::cResource::release();
+        this->mpGroupParamList = static_cast<rLayoutGroupParamList*>(nullptr);
+    }
+    if (this->mGroupList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x42dde0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mGroupList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mGroupList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mGroupList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGroupList.::MtArray::mLength) {
+                    v0_0 = this->mGroupList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mGroupList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGroupList.::MtArray::mpArray));
+    }
+    this->mGroupList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mGroupList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mGroupList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // No out-of-line body: no code in the ELF

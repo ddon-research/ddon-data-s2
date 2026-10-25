@@ -11,6 +11,7 @@
 #include "../shared/MtObject.h"
 #include "../shared/cControl.h"
 #include "../shared/cItemParam.h"
+#include "../shared/cUnit.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/nGUIExt.h"
 #include "../shared/nGUIItem.h"
@@ -18,6 +19,11 @@
 #include "../shared/sGUIExt.h"
 #include "../shared/uGUIBase.h"
 #include "uGUIPopCmd01.h"
+#include "uGUIPopDetail01.h"
+#include "uGUIPopListDialog.h"
+#include "uGUIPopNumber01.h"
+#include "uGUIShopBuy.h"
+#include "uGUISystemMsg.h"
 #include "uGUIsMenuBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -98,9 +104,63 @@ __attribute__((weak)) void uGUIUseItemBase::move() {
 }
 
 // Address: 0x00c66c90 - 0x00c66dd5 (325 bytes)
-__attribute__((weak)) void uGUIUseItemBase::updatePtr() {
-    DDON_STUB("uGUIUseItemBase::updatePtr")
-    /* stub */
+void uGUIUseItemBase::updatePtr() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpDetail != static_cast<uGUIPopDetail01*>(nullptr)) {
+        if (this->mpDetail->::cUnit::isEnable()) {
+        } else {
+            this->mpDetail = static_cast<uGUIPopDetail01*>(nullptr);
+        }
+    }
+    if (this->mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
+        if (this->mpShareUnit->::cUnit::isEnable()) {
+        } else {
+            this->mpShareUnit = static_cast<uGUIUseItemBase*>(nullptr);
+        }
+    }
+    if (this->mpUnitPopNumber != static_cast<uGUIPopNumber01*>(nullptr)) {
+        if (this->mpUnitPopNumber->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitPopNumber = static_cast<uGUIPopNumber01*>(nullptr);
+        }
+    }
+    if (this->mpUnitPopCmd != static_cast<uGUIPopCmd01*>(nullptr)) {
+        if (this->mpUnitPopCmd->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitPopCmd = static_cast<uGUIPopCmd01*>(nullptr);
+        }
+    }
+    if (this->mpUnitPopCmd2 != static_cast<uGUIPopCmd01*>(nullptr)) {
+        if (this->mpUnitPopCmd2->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitPopCmd2 = static_cast<uGUIPopCmd01*>(nullptr);
+        }
+    }
+    if (this->mpUnitSystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+        if (this->mpUnitSystemMsg->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitSystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+        }
+    }
+    if (this->mpUnitPopList != static_cast<uGUIPopListDialog*>(nullptr)) {
+        if (this->mpUnitPopList->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitPopList = static_cast<uGUIPopListDialog*>(nullptr);
+        }
+    }
+    if (this->mpUnitPopBuy != static_cast<uGUIShopBuy*>(nullptr)) {
+        if (this->mpUnitPopBuy->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitPopBuy = static_cast<uGUIShopBuy*>(nullptr);
+        }
+    }
+    if (this->mpWaitPopBase != static_cast<uGUIBase*>(nullptr)) {
+        if (this->mpWaitPopBase->::cUnit::isEnable()) {
+        } else {
+            this->mpWaitPopBase = static_cast<uGUIBase*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x00c66de0 - 0x00c66e6d (141 bytes)
@@ -285,9 +345,69 @@ void uGUIUseItemBase::updateExit() {
 }
 
 // Address: 0x00c66ee0 - 0x00c66fa0 (192 bytes)
-__attribute__((weak)) void uGUIUseItemBase::updateWaitPopup() {
-    DDON_STUB("uGUIUseItemBase::updateWaitPopup")
-    /* stub */
+void uGUIUseItemBase::updateWaitPopup() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpUnitPopBuy != static_cast<uGUIShopBuy*>(nullptr)) {
+        if (this->mIsShopExecute != false) {
+            if (this->mpUnitPopBuy->::uGUIShopBuy::isActive() == false) {
+                this->mIsShopExecute = false;
+                this->setFlowId(static_cast<u32>(4));
+            }
+            return;
+        }
+    }
+    // inferred: the value the loop at 0xc66f36 carries; no location-less local in scope fits
+    const MtDTI* v0_0;
+    // inferred: the value the loop at 0xc66f36 carries; no location-less local in scope fits
+    MT_CTSTR v0_1;
+    if (this->mpWaitPopBase != static_cast<uGUIBase*>(nullptr)) {
+        if (this->mpWaitPopBase->mResult != static_cast<uGUIBase::GUI_RESULT>(1)) {
+            return;
+        } else {
+            // inferred: a temporary for the result of the call at 0xc66f28, used once; no DWARF local holds it
+            const MtDTI& t0 = this->mpWaitPopBase->getDTI();
+            v0_1 = ::uGUIPopListDialog::DTI.::MtDTI::mName;
+            v0_0 = &t0;
+        }
+    } else {
+        this->setFlowId(static_cast<u32>(4));
+        return;
+    }
+    // inferred: the value the loop at 0xc66f5d carries; no location-less local in scope fits
+    const MtDTI* v1_0;
+    // inferred: the value the loop at 0xc66f5d carries; no location-less local in scope fits
+    MT_CTSTR v1_1;
+    for (;;) {
+        if (v0_1 == v0_0->mName) {
+            this->mpWaitPopBase->mEndType = static_cast<u32>(0);
+            this->setFlowId(static_cast<u32>(4));
+            return;
+        } else {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                // inferred: a temporary for the result of the call at 0xc66f4f, used once; no DWARF local holds it
+                const MtDTI& t1 = this->mpWaitPopBase->getDTI();
+                v1_1 = ::uGUISystemMsg::DTI.::MtDTI::mName;
+                v1_0 = &t1;
+                break;
+            }
+        }
+    }
+    for (;;) {
+        if (v1_1 != v1_0->mName) {
+            if (v1_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                this->setFlowId(static_cast<u32>(4));
+                return;
+            } else {
+                v1_0 = v1_0->mpParent;
+            }
+        } else {
+            break;
+        }
+    }
+    this->mpWaitPopBase->mEndType = static_cast<u32>(0);
+    this->setFlowId(static_cast<u32>(4));
 }
 
 // Defined in the class (its body was written in a header).
@@ -309,9 +429,9 @@ void uGUIUseItemBase::updateOneFrameWait() {
 // void uGUIUseItemBase::updateOnlineShopWait();
 
 // Address: 0x01ae02d0 - 0x01ae02e7 (23 bytes)
-__attribute__((weak)) void uGUIUseItemBase::execOneFrameWait() {
-    DDON_STUB("uGUIUseItemBase::execOneFrameWait")
-    /* stub */
+void uGUIUseItemBase::execOneFrameWait() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateOneFrameWait);
 }
 
 // Address: 0x00c68a60 - 0x00c68b44 (228 bytes)
@@ -469,9 +589,45 @@ void uGUIUseItemBase::setFocus(bool b) {
 // void uGUIUseItemBase::setExeCtrl(bool b);
 
 // Address: 0x00c68bd0 - 0x00c68cac (220 bytes)
-__attribute__((weak)) void uGUIUseItemBase::setFlowId(u32 flowId) {
-    DDON_STUB("uGUIUseItemBase::setFlowId")
-    /* stub */
+void uGUIUseItemBase::setFlowId(u32 flowId) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mFlowId = flowId;
+    switch (flowId - static_cast<u32>(2)) {
+        case static_cast<u32>(0):
+        {
+            this->mIsExeCtrl = true;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateWait);
+            break;
+        }
+        case static_cast<u32>(2):
+        {
+            this->mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateOneFrameWait);
+            break;
+        }
+        case static_cast<u32>(3):
+        {
+            this->mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateWaitPopup);
+            break;
+        }
+        case static_cast<u32>(6):
+        {
+            this->mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateWaitServer);
+            break;
+        }
+        case static_cast<u32>(8):
+        {
+            this->mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateExit);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // Address: 0x00c68cb0 - 0x00c68cb7 (7 bytes)

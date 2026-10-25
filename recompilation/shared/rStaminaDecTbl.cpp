@@ -71,8 +71,39 @@ inline void cStaminaDecList::operator delete(void* p_addr) {
 // Address: 0x00706a40 - 0x00706ae6 (166 bytes)
 // Also emitted as: _ZN15cStaminaDecListD0Ev at 0x00706af0
 cStaminaDecList::~cStaminaDecList() {
-    DDON_STUB("cStaminaDecList::~cStaminaDecList")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mStaminaDecList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x706a70 carries; no location-less local in scope fits
+        u32 v0_0 = this->mStaminaDecList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mStaminaDecList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mStaminaDecList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mStaminaDecList.::MtArray::mLength) {
+                    v0_0 = this->mStaminaDecList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mStaminaDecList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mStaminaDecList.::MtArray::mpArray));
+    }
+    this->mStaminaDecList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mStaminaDecList.::MtArray::mLength = static_cast<u32>(0);
+    this->mCType = static_cast<nStamina::CONTINUATION_TYPE>(0);
+    this->mExecuteType = static_cast<nStamina::UPDATE_TYPE>(0);
+    this->mStaminaType = static_cast<u32>(0);
+    this->mValueType = static_cast<nStamina::VALUE_TYPE>(0);
+    this->mStaminaDecList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
 }
 
 // Address: 0x00706bc0 - 0x00706bc1 (1 bytes)
@@ -300,8 +331,35 @@ inline rStaminaDecTbl::rStaminaDecTbl() {
 // Address: 0x00706f80 - 0x00707031 (177 bytes)
 // Also emitted as: _ZN14rStaminaDecTblD0Ev at 0x00707040
 rStaminaDecTbl::~rStaminaDecTbl() {
-    DDON_STUB("rStaminaDecTbl::~rStaminaDecTbl")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mDecTbl.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x706fb0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mDecTbl.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mDecTbl.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mDecTbl.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mDecTbl.::MtArray::mLength) {
+                    v0_0 = this->mDecTbl.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mDecTbl.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mDecTbl.::MtArray::mpArray));
+    }
+    this->mDecTbl.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mDecTbl.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mDecTbl.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x00707110 - 0x007071f8 (232 bytes)
@@ -374,9 +432,13 @@ void rStaminaDecTbl::clear() {
 // MtTypedArray<cStaminaDecList>& rStaminaDecTbl::getTbl();
 
 // Address: 0x007076f0 - 0x00707705 (21 bytes)
-__attribute__((weak)) cStaminaDecList* rStaminaDecTbl::getStaminaDecList(u32 tblIndex) const {
-    DDON_STUB("rStaminaDecTbl::getStaminaDecList")
-    return nullptr;
+cStaminaDecList* rStaminaDecTbl::getStaminaDecList(u32 tblIndex) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (tblIndex < this->mDecTbl.::MtArray::mLength) {
+        return static_cast<cStaminaDecList*>(this->mDecTbl.::MtArray::mpArray[tblIndex]);
+    } else {
+        return static_cast<cStaminaDecList*>(nullptr);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

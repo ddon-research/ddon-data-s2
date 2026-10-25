@@ -188,9 +188,12 @@ __attribute__((weak)) void sGUI::setUseSystemFont(bool v) {
 }
 
 // Address: 0x01b9fcb0 - 0x01b9fcb8 (8 bytes)
-__attribute__((weak)) bool sGUI::isUseSystemFont() const {
-    DDON_STUB("sGUI::isUseSystemFont")
-    return {};
+bool sGUI::isUseSystemFont() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x20 from const sGUI*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(32))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01243830 - 0x01243920 (240 bytes)
@@ -530,9 +533,10 @@ void sGUI::setUseIconFontFilter(bool v) {
 }
 
 // Address: 0x01b9fd10 - 0x01b9fd17 (7 bytes)
-__attribute__((weak)) bool sGUI::isUseIconFontFilter() const {
-    DDON_STUB("sGUI::isUseIconFontFilter")
-    return {};
+bool sGUI::isUseIconFontFilter() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mAttr & static_cast<u32>(1));
 }
 
 // No out-of-line body: no code in the ELF
@@ -762,10 +766,33 @@ __attribute__((weak)) void sGUI::createClassInfo(const MtDTI* pDti, nGUI::CLASS_
 // void sGUI::deleteClassInfo(nGUI::CLASS_INFO* & pInfo);
 
 // Address: 0x012448e0 - 0x01244905 (37 bytes)
-__attribute__((weak)) const nGUI::CLASS_INFO* sGUI::getClassInfo(const nGUI::CLASS_INFO* pInfo, const u32 dtiId) const {
-    // local: const CLASS_INFO* pWork;
-    DDON_STUB("sGUI::getClassInfo")
-    return nullptr;
+const nGUI::CLASS_INFO* sGUI::getClassInfo(const nGUI::CLASS_INFO* pInfo, const u32 dtiId) const {
+    // DWARF local not rendered: const CLASS_INFO* pWork;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x1244904; no location-less local in scope fits
+    const nGUI::CLASS_INFO* v2_0;
+    if (pInfo->dtiId == static_cast<u32>(0)) {
+        v2_0 = static_cast<const nGUI::CLASS_INFO*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0x12448f0 carries; no location-less local in scope fits
+        u32 v0_0 = pInfo->dtiId;
+        // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+        for (const nGUI::CLASS_INFO* p0_1 = pInfo;;) {
+            if (dtiId != v0_0) {
+                if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p0_1) + static_cast<long>(16))) != static_cast<unsigned int>(0)) {
+                    v0_0 = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p0_1) + static_cast<long>(16));
+                    p0_1 += static_cast<int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                v2_0 = p0_1;
+                return v2_0;
+            }
+        }
+        v2_0 = static_cast<const nGUI::CLASS_INFO*>(nullptr);
+    }
+    return v2_0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

@@ -1098,6 +1098,13 @@ inline CDataClanScoutEntryParam::CDataClanScoutEntryParam() {
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline CDataClanSearchParam::CDataClanSearchParam() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_ucNameSearchType = static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline CDataClanShopBuffInfo::CDataClanShopBuffInfo() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_unBuffID = static_cast<u32>(0);

@@ -5,10 +5,16 @@
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/MtObject.h"
 #include "cMenuBase.h"
 #include "cMenuBaseClan.h"
 #include "cMenuEntryBoard.h"
+#include "../rLayout/cNetSessionManager.h"
 #include "../shared/cSystem.h"
+#include "nMenu.h"
+#include "../shared/sContextManager.h"
+#include "../shared/sNetwork.h"
+#include "../shared/sNetworkExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -109,25 +115,88 @@ __attribute__((weak)) void sMenu::reset() {
 // sMenu* sMenu::getInstance();
 
 // Address: 0x007eaae0 - 0x007eab4a (106 bytes)
-__attribute__((weak)) bool sMenu::isMaskMenu(const nMenu::MENU_PARTS* pParts, u32 index) {
-    DDON_STUB("sMenu::isMaskMenu")
-    return {};
+bool sMenu::isMaskMenu(const nMenu::MENU_PARTS* pParts, u32 index) {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a test whose arms are both empty; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    if (pParts != static_cast<const nMenu::MENU_PARTS*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x7eaaee read, used 3 times; no DWARF local holds it
+        const u32 t0 = pParts[index].attr;
+        // inferred: a temporary for the result of the call at 0x7eab02, used once; no DWARF local holds it
+        bool t1 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader();
+        // inferred: a temporary for the result of the call at 0x7eab1d, used twice; no DWARF local holds it
+        bool t2 = ::sContextManager::getInstance()->::sContextManager::isExistPartyPawn(static_cast<u8>(1), static_cast<u32>(0), false);
+        if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(1)) != static_cast<u32>(0)) {
+            if (t1 == false) {
+                if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
+                    if (t2 == false) {
+                    }
+                }
+                return true;
+            }
+        }
+        if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
+            if (t2 == false) {
+                return true;
+            }
+        }
+        return static_cast<bool>(t0 & static_cast<u32>(1));
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x007eab50 - 0x007eabae (94 bytes)
-__attribute__((weak)) bool sMenu::isMaskMenu(const nMenu::MENU_PARTS& Parts) {
-    DDON_STUB("sMenu::isMaskMenu")
-    return {};
+bool sMenu::isMaskMenu(const nMenu::MENU_PARTS& Parts) {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a test whose arms are both empty; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    // inferred: a temporary for the value the load at 0x7eab57 read, used 3 times; no DWARF local holds it
+    const u32 t0 = Parts.attr;
+    // inferred: a temporary for the result of the call at 0x7eab6a, used once; no DWARF local holds it
+    bool t1 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader();
+    // inferred: a temporary for the result of the call at 0x7eab85, used twice; no DWARF local holds it
+    bool t2 = ::sContextManager::getInstance()->::sContextManager::isExistPartyPawn(static_cast<u8>(1), static_cast<u32>(0), false);
+    if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(1)) != static_cast<u32>(0)) {
+        if (t1 == false) {
+            if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
+                if (t2 == false) {
+                }
+            }
+            return true;
+        }
+    }
+    if (((t0 >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
+        if (t2 == false) {
+            return true;
+        }
+    }
+    return static_cast<bool>(t0 & static_cast<u32>(1));
 }
 
 // Address: 0x007eabb0 - 0x007eac0e (94 bytes)
-__attribute__((weak)) bool sMenu::checkMask(u32 attr) {
-    // local: bool isMask;
-    // local: bool isLeader;
-    // local: bool isNotLeader;
-    // local: bool isNotExistPawn;
-    DDON_STUB("sMenu::checkMask")
-    return {};
+bool sMenu::checkMask(u32 attr) {
+    // DWARF local not rendered: bool isMask;
+    // DWARF local not rendered: bool isNotLeader;
+    // DWARF local not rendered: bool isNotExistPawn;
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a test whose arms are both empty; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as bool
+    bool isLeader = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLeader();
+    // inferred: a temporary for the result of the call at 0x7eabe5, used twice; no DWARF local holds it
+    bool t0 = ::sContextManager::getInstance()->::sContextManager::isExistPartyPawn(static_cast<u8>(1), static_cast<u32>(0), false);
+    if (((attr >> static_cast<u32>(8)) & static_cast<u32>(1)) != static_cast<u32>(0)) {
+        if (isLeader == false) {
+            if (((attr >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
+                if (t0 == false) {
+                }
+            }
+            return true;
+        }
+    }
+    if (((attr >> static_cast<u32>(8)) & static_cast<u32>(128)) != static_cast<u32>(0)) {
+        if (t0 == false) {
+            return true;
+        }
+    }
+    return static_cast<bool>(attr & static_cast<u32>(1));
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
@@ -169,9 +238,32 @@ void sMenu::updateMenu(cMenuBase* pMenu) {
 }
 
 // Address: 0x007eade0 - 0x007eae2a (74 bytes)
-__attribute__((weak)) bool sMenu::checkMoveMenu(cMenuBase* pMenu, bool checkNowMove) {
-    DDON_STUB("sMenu::checkMoveMenu")
-    return {};
+bool sMenu::checkMoveMenu(cMenuBase* pMenu, bool checkNowMove) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (this->mMenuArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1 = static_cast<unsigned int>(0);
+        do {
+            if (pMenu != this->mMenuArray.::MtArray::mpArray[i1]) {
+            } else {
+                if (static_cast<int>(i1) > static_cast<int>(-1)) {
+                    if (checkNowMove != false) {
+                        if (pMenu->::cMenuBase::getNowMove() != false) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            i1 += static_cast<unsigned int>(1);
+        } while (i1 < this->mMenuArray.::MtArray::mLength);
+    }
+    return false;
 }
 
 // No out-of-line body: 12 inlined copies in 6 functions (85 bytes)

@@ -8,6 +8,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtPrimitive2D.h"
 #include "cBlendState.h"
+#include "cDraw.h"
 #include "cSystem.h"
 #include "nDraw.h"
 #ifndef DDON_STUB
@@ -310,10 +311,22 @@ sGpuParticle::Context::~Context() {
 }
 
 // Address: 0x01234aa0 - 0x01234b0f (111 bytes)
-__attribute__((weak)) void sGpuParticle::Context::update(cDraw* p_draw) {
-    // local: DrawCtx* p_ctx;
-    DDON_STUB("sGpuParticle::Context::update")
-    /* stub */
+void sGpuParticle::Context::update(cDraw* p_draw) {
+    // DWARF local not rendered: DrawCtx* p_ctx;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from cDraw*
+    // inferred: a temporary for the value the load at 0x1234aa0 read, used 10 times; no DWARF local holds it
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p_draw) + static_cast<long>(136));
+    this->mDrawCtx[t0].p_texture = static_cast<rTexture*>(nullptr);
+    this->mDrawCtx[t0].used = static_cast<u32>(0);
+    this->mDrawCtx[t0].p_idx_buffer = static_cast<u16*>(nullptr);
+    this->mDrawCtx[t0].p_vtx_buffer = static_cast<void*>(nullptr);
+    this->mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(0);
+    this->mDrawCtx[t0].p_temp_ib = static_cast<u16*>(nullptr);
+    this->mDrawCtx[t0].p_temp_vb = static_cast<void*>(nullptr);
+    this->mDrawCtx[t0].temp_ib_size = static_cast<u32>(0);
+    this->mDrawCtx[t0].temp_vb_size = static_cast<u32>(0);
+    this->mDrawCtx[t0].drawn = static_cast<u32>(0);
 }
 
 // Address: 0x01234b10 - 0x01234d86 (630 bytes)
@@ -773,11 +786,99 @@ sGpuParticle::ContextInfParticle::~ContextInfParticle() {
 // void sGpuParticle::StaticBuffer::operator delete[](void*);
 
 // Address: 0x01b9f630 - 0x01b9f75e (302 bytes)
-__attribute__((weak)) s32 sGpuParticle::ContextParticle::allocateParticle(cDraw* p_draw) {
-    // local: DrawCtx* p_ctx;
-    // local: s32 buff_st;
-    DDON_STUB("sGpuParticle::ContextParticle::allocateParticle")
-    return {};
+s32 sGpuParticle::ContextParticle::allocateParticle(cDraw* p_draw) {
+    // DWARF local not rendered: DrawCtx* p_ctx;
+    // DWARF local not rendered: s32 buff_st;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from cDraw*
+    // inferred: a temporary for the value the load at 0x1b9f644 read, used 13 times; no DWARF local holds it
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p_draw) + static_cast<long>(136));
+    if (this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state == static_cast<sGpuParticle::Context::eState>(0)) {
+        // inferred: a temporary for the value the load at 0x1b9f667 read, used 6 times; no DWARF local holds it
+        u32 t1 = this->::sGpuParticle::Context::mMaxCapacity;
+        // inferred: a temporary for the result of the call at 0x1b9f69e, used twice; no DWARF local holds it
+        s32 t2 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocBuffer(&this->::sGpuParticle::Context::mDrawCtx[t0].p_vtx_buffer, t1 * static_cast<u32>(128), &this->::sGpuParticle::Context::mDrawCtx[t0].vtx_buffer_ofs, &this->::sGpuParticle::Context::mDrawCtx[t0].p_idx_buffer, t1 * static_cast<u32>(10), &this->::sGpuParticle::Context::mDrawCtx[t0].idx_buffer_ofs);
+        if (t2 == static_cast<s32>(0)) {
+            if (this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb != static_cast<void*>(nullptr)) {
+                if (this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib != static_cast<u16*>(nullptr)) {
+                    if (this->::sGpuParticle::Context::mDrawCtx[t0].temp_vb_size >= (t1 * static_cast<u32>(128))) {
+                        if (this->::sGpuParticle::Context::mDrawCtx[t0].temp_ib_size < (t1 * static_cast<u32>(10))) {
+                            // inferred: a temporary for the result of the call at 0x1b9f6fc, used twice; no DWARF local holds it
+                            s32 t3 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocTempBuffer(&this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb, t1 * static_cast<u32>(128), &this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib, t1 * static_cast<u32>(10));
+                            this->::sGpuParticle::Context::mDrawCtx[t0].temp_vb_size = t1 * static_cast<u32>(128);
+                            this->::sGpuParticle::Context::mDrawCtx[t0].temp_ib_size = t1 * static_cast<u32>(10);
+                            if (t3 != static_cast<s32>(0)) {
+                                this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+                                return t3;
+                            } else {
+                                this->::sGpuParticle::Context::mDrawCtx[t0].p_current_ptr = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb;
+                                this->::sGpuParticle::Context::mDrawCtx[t0].p_current_idx = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib;
+                                this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                                this->::sGpuParticle::Context::mDrawCtx[t0].used = static_cast<u32>(0);
+                                return static_cast<s32>(0);
+                            }
+                        } else {
+                            this->::sGpuParticle::Context::mDrawCtx[t0].p_current_ptr = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb;
+                            this->::sGpuParticle::Context::mDrawCtx[t0].p_current_idx = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib;
+                            this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                            this->::sGpuParticle::Context::mDrawCtx[t0].used = static_cast<u32>(0);
+                            return static_cast<s32>(0);
+                        }
+                    } else {
+                        // inferred: a temporary for the result of the call at 0x1b9f6fc, used twice; no DWARF local holds it
+                        s32 t3 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocTempBuffer(&this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb, t1 * static_cast<u32>(128), &this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib, t1 * static_cast<u32>(10));
+                        this->::sGpuParticle::Context::mDrawCtx[t0].temp_vb_size = t1 * static_cast<u32>(128);
+                        this->::sGpuParticle::Context::mDrawCtx[t0].temp_ib_size = t1 * static_cast<u32>(10);
+                        if (t3 != static_cast<s32>(0)) {
+                            this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+                            return t3;
+                        } else {
+                            this->::sGpuParticle::Context::mDrawCtx[t0].p_current_ptr = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb;
+                            this->::sGpuParticle::Context::mDrawCtx[t0].p_current_idx = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib;
+                            this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                            this->::sGpuParticle::Context::mDrawCtx[t0].used = static_cast<u32>(0);
+                            return static_cast<s32>(0);
+                        }
+                    }
+                } else {
+                    // inferred: a temporary for the result of the call at 0x1b9f6fc, used twice; no DWARF local holds it
+                    s32 t3 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocTempBuffer(&this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb, t1 * static_cast<u32>(128), &this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib, t1 * static_cast<u32>(10));
+                    this->::sGpuParticle::Context::mDrawCtx[t0].temp_vb_size = t1 * static_cast<u32>(128);
+                    this->::sGpuParticle::Context::mDrawCtx[t0].temp_ib_size = t1 * static_cast<u32>(10);
+                    if (t3 != static_cast<s32>(0)) {
+                        this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+                        return t3;
+                    } else {
+                        this->::sGpuParticle::Context::mDrawCtx[t0].p_current_ptr = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb;
+                        this->::sGpuParticle::Context::mDrawCtx[t0].p_current_idx = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib;
+                        this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                        this->::sGpuParticle::Context::mDrawCtx[t0].used = static_cast<u32>(0);
+                        return static_cast<s32>(0);
+                    }
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0x1b9f6fc, used twice; no DWARF local holds it
+                s32 t3 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocTempBuffer(&this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb, t1 * static_cast<u32>(128), &this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib, t1 * static_cast<u32>(10));
+                this->::sGpuParticle::Context::mDrawCtx[t0].temp_vb_size = t1 * static_cast<u32>(128);
+                this->::sGpuParticle::Context::mDrawCtx[t0].temp_ib_size = t1 * static_cast<u32>(10);
+                if (t3 != static_cast<s32>(0)) {
+                    this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+                    return t3;
+                } else {
+                    this->::sGpuParticle::Context::mDrawCtx[t0].p_current_ptr = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb;
+                    this->::sGpuParticle::Context::mDrawCtx[t0].p_current_idx = this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib;
+                    this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                    this->::sGpuParticle::Context::mDrawCtx[t0].used = static_cast<u32>(0);
+                    return static_cast<s32>(0);
+                }
+            }
+        } else {
+            this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+            return t2;
+        }
+    } else {
+        return static_cast<s32>(1);
+    }
 }
 
 // Address: 0x01b9f760 - 0x01b9f7fa (154 bytes)
@@ -966,11 +1067,145 @@ sGpuParticle::ContextLine::~ContextLine() {
 }
 
 // Address: 0x01b9f1a0 - 0x01b9f2c9 (297 bytes)
-__attribute__((weak)) s32 sGpuParticle::ContextPolyline::allocateParticle(cDraw* p_draw) {
-    // local: PolylineCtx* p_polyctx;
-    // local: s32 buff_st;
-    DDON_STUB("sGpuParticle::ContextPolyline::allocateParticle")
-    return {};
+s32 sGpuParticle::ContextPolyline::allocateParticle(cDraw* p_draw) {
+    // DWARF local not rendered: PolylineCtx* p_polyctx;
+    // DWARF local not rendered: s32 buff_st;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from cDraw*
+    // inferred: a temporary for the value the load at 0x1b9f1b4 read, used 6 times; no DWARF local holds it
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p_draw) + static_cast<long>(136));
+    if (this->mPolyLineCtx[t0].p_ctx->buffer_state == static_cast<sGpuParticle::Context::eState>(0)) {
+        // inferred: a temporary for the value the load at 0x1b9f1e1 read, used 6 times; no DWARF local holds it
+        u32 t1 = this->::sGpuParticle::Context::mMaxCapacity;
+        // inferred: a temporary for the result of the call at 0x1b9f21a, used twice; no DWARF local holds it
+        s32 t2 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocBuffer(&this->mPolyLineCtx[t0].p_ctx->p_vtx_buffer, t1 * static_cast<u32>(64), &this->mPolyLineCtx[t0].p_ctx->vtx_buffer_ofs, &this->mPolyLineCtx[t0].p_ctx->p_idx_buffer, (t1 * static_cast<u32>(4)) + static_cast<u32>(1024), &this->mPolyLineCtx[t0].p_ctx->idx_buffer_ofs);
+        // inferred: a temporary for the value the load at 0x1b9f223 read, used 8 times; no DWARF local holds it
+        sGpuParticle::Context::DrawCtx* t3 = this->mPolyLineCtx[t0].p_ctx;
+        if (t2 == static_cast<s32>(0)) {
+            if (t3->p_temp_vb != static_cast<void*>(nullptr)) {
+                if (t3->p_temp_ib != static_cast<u16*>(nullptr)) {
+                    if (t3->temp_vb_size >= (t1 * static_cast<u32>(64))) {
+                        if (t3->temp_ib_size < ((t1 * static_cast<u32>(4)) + static_cast<u32>(1024))) {
+                            // inferred: a temporary for the result of the call at 0x1b9f25b, used twice; no DWARF local holds it
+                            s32 t4 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocTempBuffer(&t3->p_temp_vb, t1 * static_cast<u32>(64), &t3->p_temp_ib, (t1 * static_cast<u32>(4)) + static_cast<u32>(1024));
+                            // inferred: a temporary for the value the load at 0x1b9f264 read, used 8 times; no DWARF local holds it
+                            sGpuParticle::Context::DrawCtx* t5 = this->mPolyLineCtx[t0].p_ctx;
+                            t5->temp_vb_size = t1 * static_cast<u32>(64);
+                            t5->temp_ib_size = (t1 * static_cast<u32>(4)) + static_cast<u32>(1024);
+                            if (t4 != static_cast<s32>(0)) {
+                                t5->buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+                                return t4;
+                            } else {
+                                // inferred: a temporary for the value the load at 0x1b9f289 read, used once; no DWARF local holds it
+                                void* t6 = t5->p_temp_vb;
+                                // inferred: a temporary for the value the load at 0x1b9f28d read, used once; no DWARF local holds it
+                                u16* t7 = t5->p_temp_ib;
+                                // inferred: a temporary for the value the load at 0x1b9f291 read, used twice; no DWARF local holds it
+                                u32 t8 = this->::sGpuParticle::Context::mMaxCapacity;
+                                this->mPolyLineCtx[t0].max_vtx = t8 * static_cast<u32>(2);
+                                this->mPolyLineCtx[t0].max_idx = (t8 * static_cast<u32>(2)) + static_cast<u32>(512);
+                                t5->p_current_ptr = t6;
+                                t5->p_current_idx = t7;
+                                t5->buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                                t5->used = static_cast<u32>(0);
+                                return static_cast<s32>(0);
+                            }
+                        } else {
+                            // inferred: a temporary for the value the load at 0x1b9f291 read, used twice; no DWARF local holds it
+                            u32 t8 = this->::sGpuParticle::Context::mMaxCapacity;
+                            this->mPolyLineCtx[t0].max_vtx = t8 * static_cast<u32>(2);
+                            this->mPolyLineCtx[t0].max_idx = (t8 * static_cast<u32>(2)) + static_cast<u32>(512);
+                            t3->p_current_ptr = t3->p_temp_vb;
+                            t3->p_current_idx = t3->p_temp_ib;
+                            t3->buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                            t3->used = static_cast<u32>(0);
+                            return static_cast<s32>(0);
+                        }
+                    } else {
+                        // inferred: a temporary for the result of the call at 0x1b9f25b, used twice; no DWARF local holds it
+                        s32 t4 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocTempBuffer(&t3->p_temp_vb, t1 * static_cast<u32>(64), &t3->p_temp_ib, (t1 * static_cast<u32>(4)) + static_cast<u32>(1024));
+                        // inferred: a temporary for the value the load at 0x1b9f264 read, used 8 times; no DWARF local holds it
+                        sGpuParticle::Context::DrawCtx* t5 = this->mPolyLineCtx[t0].p_ctx;
+                        t5->temp_vb_size = t1 * static_cast<u32>(64);
+                        t5->temp_ib_size = (t1 * static_cast<u32>(4)) + static_cast<u32>(1024);
+                        if (t4 != static_cast<s32>(0)) {
+                            t5->buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+                            return t4;
+                        } else {
+                            // inferred: a temporary for the value the load at 0x1b9f289 read, used once; no DWARF local holds it
+                            void* t6 = t5->p_temp_vb;
+                            // inferred: a temporary for the value the load at 0x1b9f28d read, used once; no DWARF local holds it
+                            u16* t7 = t5->p_temp_ib;
+                            // inferred: a temporary for the value the load at 0x1b9f291 read, used twice; no DWARF local holds it
+                            u32 t8 = this->::sGpuParticle::Context::mMaxCapacity;
+                            this->mPolyLineCtx[t0].max_vtx = t8 * static_cast<u32>(2);
+                            this->mPolyLineCtx[t0].max_idx = (t8 * static_cast<u32>(2)) + static_cast<u32>(512);
+                            t5->p_current_ptr = t6;
+                            t5->p_current_idx = t7;
+                            t5->buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                            t5->used = static_cast<u32>(0);
+                            return static_cast<s32>(0);
+                        }
+                    }
+                } else {
+                    // inferred: a temporary for the result of the call at 0x1b9f25b, used twice; no DWARF local holds it
+                    s32 t4 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocTempBuffer(&t3->p_temp_vb, t1 * static_cast<u32>(64), &t3->p_temp_ib, (t1 * static_cast<u32>(4)) + static_cast<u32>(1024));
+                    // inferred: a temporary for the value the load at 0x1b9f264 read, used 8 times; no DWARF local holds it
+                    sGpuParticle::Context::DrawCtx* t5 = this->mPolyLineCtx[t0].p_ctx;
+                    t5->temp_vb_size = t1 * static_cast<u32>(64);
+                    t5->temp_ib_size = (t1 * static_cast<u32>(4)) + static_cast<u32>(1024);
+                    if (t4 != static_cast<s32>(0)) {
+                        t5->buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+                        return t4;
+                    } else {
+                        // inferred: a temporary for the value the load at 0x1b9f289 read, used once; no DWARF local holds it
+                        void* t6 = t5->p_temp_vb;
+                        // inferred: a temporary for the value the load at 0x1b9f28d read, used once; no DWARF local holds it
+                        u16* t7 = t5->p_temp_ib;
+                        // inferred: a temporary for the value the load at 0x1b9f291 read, used twice; no DWARF local holds it
+                        u32 t8 = this->::sGpuParticle::Context::mMaxCapacity;
+                        this->mPolyLineCtx[t0].max_vtx = t8 * static_cast<u32>(2);
+                        this->mPolyLineCtx[t0].max_idx = (t8 * static_cast<u32>(2)) + static_cast<u32>(512);
+                        t5->p_current_ptr = t6;
+                        t5->p_current_idx = t7;
+                        t5->buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                        t5->used = static_cast<u32>(0);
+                        return static_cast<s32>(0);
+                    }
+                }
+            } else {
+                // inferred: a temporary for the result of the call at 0x1b9f25b, used twice; no DWARF local holds it
+                s32 t4 = (::sGpuParticle::mpInstance)->::sGpuParticle::allocTempBuffer(&t3->p_temp_vb, t1 * static_cast<u32>(64), &t3->p_temp_ib, (t1 * static_cast<u32>(4)) + static_cast<u32>(1024));
+                // inferred: a temporary for the value the load at 0x1b9f264 read, used 8 times; no DWARF local holds it
+                sGpuParticle::Context::DrawCtx* t5 = this->mPolyLineCtx[t0].p_ctx;
+                t5->temp_vb_size = t1 * static_cast<u32>(64);
+                t5->temp_ib_size = (t1 * static_cast<u32>(4)) + static_cast<u32>(1024);
+                if (t4 != static_cast<s32>(0)) {
+                    t5->buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+                    return t4;
+                } else {
+                    // inferred: a temporary for the value the load at 0x1b9f289 read, used once; no DWARF local holds it
+                    void* t6 = t5->p_temp_vb;
+                    // inferred: a temporary for the value the load at 0x1b9f28d read, used once; no DWARF local holds it
+                    u16* t7 = t5->p_temp_ib;
+                    // inferred: a temporary for the value the load at 0x1b9f291 read, used twice; no DWARF local holds it
+                    u32 t8 = this->::sGpuParticle::Context::mMaxCapacity;
+                    this->mPolyLineCtx[t0].max_vtx = t8 * static_cast<u32>(2);
+                    this->mPolyLineCtx[t0].max_idx = (t8 * static_cast<u32>(2)) + static_cast<u32>(512);
+                    t5->p_current_ptr = t6;
+                    t5->p_current_idx = t7;
+                    t5->buffer_state = static_cast<sGpuParticle::Context::eState>(1);
+                    t5->used = static_cast<u32>(0);
+                    return static_cast<s32>(0);
+                }
+            }
+        } else {
+            t3->buffer_state = static_cast<sGpuParticle::Context::eState>(2);
+            return t2;
+        }
+    } else {
+        return static_cast<s32>(1);
+    }
 }
 
 // Address: 0x01b9f2d0 - 0x01b9f2d6 (6 bytes)
@@ -1047,10 +1282,37 @@ sGpuParticle::ContextPolyline::~ContextPolyline() {
 // s32 sGpuParticle::ContextPolyline::allocateBuffer(sGpuParticle::ContextPolyline::PolylineCtx* p_ctx);
 
 // Address: 0x01b9f2e0 - 0x01b9f3b9 (217 bytes)
-__attribute__((weak)) void sGpuParticle::ContextPolyline::update(cDraw* p_draw) {
-    // local: PolylineCtx* p_polyctx;
-    DDON_STUB("sGpuParticle::ContextPolyline::update")
-    /* stub */
+void sGpuParticle::ContextPolyline::update(cDraw* p_draw) {
+    // DWARF local not rendered: PolylineCtx* p_polyctx;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from cDraw*
+    // inferred: a temporary for the value the load at 0x1b9f2e0 read, used 14 times; no DWARF local holds it
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p_draw) + static_cast<long>(136));
+    this->::sGpuParticle::Context::mDrawCtx[t0].p_texture = static_cast<rTexture*>(nullptr);
+    this->::sGpuParticle::Context::mDrawCtx[t0].used = static_cast<u32>(0);
+    this->::sGpuParticle::Context::mDrawCtx[t0].p_idx_buffer = static_cast<u16*>(nullptr);
+    this->::sGpuParticle::Context::mDrawCtx[t0].p_vtx_buffer = static_cast<void*>(nullptr);
+    this->::sGpuParticle::Context::mDrawCtx[t0].buffer_state = static_cast<sGpuParticle::Context::eState>(0);
+    this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_ib = static_cast<u16*>(nullptr);
+    this->::sGpuParticle::Context::mDrawCtx[t0].p_temp_vb = static_cast<void*>(nullptr);
+    this->::sGpuParticle::Context::mDrawCtx[t0].temp_ib_size = static_cast<u32>(0);
+    this->::sGpuParticle::Context::mDrawCtx[t0].temp_vb_size = static_cast<u32>(0);
+    this->::sGpuParticle::Context::mDrawCtx[t0].drawn = static_cast<u32>(0);
+    // inferred: a temporary for the value the load at 0x1b9f352 read, used 8 times; no DWARF local holds it
+    sGpuParticle::Context::DrawCtx* t1 = this->mPolyLineCtx[t0].p_ctx;
+    t1->used = static_cast<u32>(0);
+    t1->p_idx_buffer = static_cast<u16*>(nullptr);
+    t1->p_vtx_buffer = static_cast<void*>(nullptr);
+    t1->buffer_state = static_cast<sGpuParticle::Context::eState>(0);
+    t1->p_temp_ib = static_cast<u16*>(nullptr);
+    t1->p_temp_vb = static_cast<void*>(nullptr);
+    t1->temp_ib_size = static_cast<u32>(0);
+    t1->temp_vb_size = static_cast<u32>(0);
+    this->mPolyLineCtx[t0].current_idx = static_cast<u32>(0);
+    this->mPolyLineCtx[t0].num_vtx = static_cast<u32>(0);
+    this->mPolyLineCtx[t0].max_vtx = static_cast<u32>(0);
+    this->mPolyLineCtx[t0].num_idx = static_cast<u32>(0);
+    this->mPolyLineCtx[t0].max_idx = static_cast<u32>(0);
 }
 
 // Address: 0x01b9f3c0 - 0x01b9f621 (609 bytes)

@@ -33,6 +33,8 @@ using u32 = unsigned int;
 
 class cStaminaCtrl : public MtObject
 {
+    // inferred: uHuman::checkStaminaOut names uHuman::mStaminaCtrl.mSleepRecover
+    friend class uHuman;
 public:
     enum OVERRIDE_PRIO
     {

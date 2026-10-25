@@ -5,9 +5,11 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtSynchronize.h"
+#include "../shared/cArcLoader.h"
 #include "../shared/cCharacterData.h"
 #include "../shared/cComponentManager.h"
 #include "../shared/cContextInterface.h"
+#include "../shared/cEditParam.h"
 #include "../shared/cEquipData.h"
 #include "../shared/cResource.h"
 #include "../shared/cpActionManager.h"
@@ -17,13 +19,18 @@
 #include "../shared/cpIKCtrl.h"
 #include "../shared/cpJointEx2.h"
 #include "cpMotionFilter.h"
+#include "../shared/cpPivotCtrl.h"
 #include "cpTinyChain.h"
 #include "../shared/nMotion.h"
+#include "../rCharacterEdit/rCharacterEdit.h"
+#include "../rMotionFilter/rMotionFilter.h"
 #include "../shared/rMotionList.h"
 #include "../shared/rMotionParam.h"
 #include "../shared/sArchiveManager.h"
+#include "../shared/uArmor.h"
 #include "../shared/uDDOModel.h"
 #include "../shared/uModel.h"
+#include "../shared/uWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -128,11 +135,55 @@ __attribute__((weak)) void uMockUpModel::setup() {
 }
 
 // Address: 0x00ca1600 - 0x00ca1745 (325 bytes)
-__attribute__((weak)) void uMockUpModel::move() {
-    // local: f32 rate;
-    // local: rCharacterEdit* pRes;
-    DDON_STUB("uMockUpModel::move")
-    /* stub */
+void uMockUpModel::move() {
+    // DWARF local not rendered: f32 rate;
+    // DWARF local not rendered: rCharacterEdit* pRes;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a load named after a store only its type keeps apart; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->::uDDOModel::mpPivotCtrl->::cpPivotCtrl::before();
+    this->::uDDOModel::mMayaScale = true;
+    this->::uDDOModel::mForceScale = true;
+    if (this->mUpdateBodyReq != false) {
+        this->::uMockUpModel::updateBody(true);
+        this->mUpdateBodyReq = false;
+    }
+    this->::uMockUpModel::updateEquipLoad();
+    if (this->mpCharacterEdit != static_cast<cpCharacterEdit*>(nullptr)) {
+        if (this->mpMotionFilter != static_cast<cpMotionFilter*>(nullptr)) {
+            if (this->mpCharacterEdit->mpResource != static_cast<rCharacterEdit*>(nullptr)) {
+                if (this->mpCharacterEdit->mpResource->mpEditParam != static_cast<cEditParam*>(nullptr)) {
+                    this->mpMotionFilter->mSex = this->mpCharacterEdit->mpResource->mpEditParam->mBodyType;
+                    this->mpMotionFilter->::cpMotionFilter::setManWoman(this->mpCharacterEdit->mpResource->mpEditParam->mMotionFilter.::cEditValue::getValue());
+                    this->mpMotionFilter->::cpMotionFilter::update();
+                }
+            }
+        }
+    }
+    this->::uMockUpModel::updateArmIK();
+    this->::uDDOModel::move();
+    if (this->mpJointEx2 != static_cast<cpJointEx2*>(nullptr)) {
+        this->mpJointEx2->::cpJointEx2::update();
+    }
+    if (this->mpIKCtrl != static_cast<cpIKCtrl*>(nullptr)) {
+        this->mpIKCtrl->::cpIKCtrl::updateIKHandle();
+    }
+    if (this->mSimResetReq != false) {
+        this->mSimResetReq = false;
+        if (this->mpEquip != static_cast<cpEquip*>(nullptr)) {
+            this->mpEquip->::cpEquip::resetSimulation();
+        }
+        if (this->mpTinyChain != static_cast<cpTinyChain*>(nullptr)) {
+            this->mpTinyChain->::cpTinyChain::reset();
+        }
+    }
+    if (this->mpEquip != static_cast<cpEquip*>(nullptr)) {
+        this->mpEquip->::cpEquip::setGrassWind(this->mIsGrassWind);
+    }
+    this->::uDDOModel::mpPivotCtrl->::cpPivotCtrl::after();
+    this->::uDDOModel::requestCommandCacheReset();
+    if (this->mFrameCount != static_cast<u32>(10)) {
+        this->mFrameCount = this->mFrameCount + static_cast<u32>(1);
+    }
 }
 
 // Address: 0x00ca1c40 - 0x00ca1d03 (195 bytes)
@@ -145,9 +196,50 @@ __attribute__((weak)) void uMockUpModel::after() {
 
 // Address: 0x00ca1430 - 0x00ca159c (364 bytes)
 __attribute__((weak)) void uMockUpModel::updateBody(bool SetInitAction) {
-    // local: rMotionFilter* pRes;
-    DDON_STUB("uMockUpModel::updateBody")
-    /* stub */
+    // DWARF local not rendered: rMotionFilter* pRes;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x98 from cpCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x70 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x1c from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x624 from cpCharacterEdit*
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpCharacterEdit != static_cast<cpCharacterEdit*>(nullptr)) {
+        if (this->mpMotionFilter != static_cast<cpMotionFilter*>(nullptr)) {
+            this->mpMotionFilter->::cpMotionFilter::removeConstraint();
+        }
+        if (this->mpIKCtrl != static_cast<cpIKCtrl*>(nullptr)) {
+            this->mpIKCtrl->::cpIKCtrl::deleteConstraint();
+        }
+        this->mpCharacterEdit->::cpCharacterEdit::updateBody(true);
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpCharacterEdit) + static_cast<long>(152))) != static_cast<unsigned long>(0)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpCharacterEdit) + static_cast<long>(152))) + static_cast<long>(112))) != static_cast<unsigned long>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpCharacterEdit) + static_cast<long>(152))) + static_cast<long>(112))) + static_cast<long>(28))) != static_cast<unsigned char>(0)) {
+                    this->mSex = static_cast<u32>(1);
+                } else {
+                    this->mSex = static_cast<u32>(0);
+                }
+            }
+        }
+    }
+    if (this->mpIKCtrl != static_cast<cpIKCtrl*>(nullptr)) {
+        this->mpIKCtrl->::cpIKCtrl::init();
+    }
+    if ((this->mpMotionFilter = static_cast<cpMotionFilter*>(this->::uDDOModel::mComponentMgr.::cComponentManager::find(::cpMotionFilter::DTI, true))) != static_cast<cpMotionFilter*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0xca1516, used 3 times; no DWARF local holds it
+        cResource* t0 = ::sArchiveManager::getInstance()->::sArchiveManager::createRes("Human", "RES_ID_MOTION_FILTER_MOT_FILTER", static_cast<u32>(1), false);
+        if (t0 != static_cast<cResource*>(nullptr)) {
+            this->mpMotionFilter->::cpMotionFilter::setResource(static_cast<rMotionFilter*>(t0));
+            t0->::cResource::release();
+        }
+        this->mpMotionFilter->::cpMotionFilter::init();
+    }
+    this->mSetInitAction = SetInitAction;
+    if (this->mpCharacterEdit != static_cast<cpCharacterEdit*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpCharacterEdit) + static_cast<long>(1572))) == static_cast<unsigned char>(0)) {
+            this->setMotionEx(static_cast<u32>(3), static_cast<u32>(3302), 0.0f, 0.0f, 1.0f, static_cast<u32>(0));
+        }
+    }
+    this->mSimResetReq = true;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -205,9 +297,20 @@ __attribute__((weak)) void uMockUpModel::updateArmIK() {
 // void uMockUpModel::setEquipData(const cEquipData& equip_data);
 
 // Address: 0x00ca20e0 - 0x00ca213f (95 bytes)
-__attribute__((weak)) void uMockUpModel::setupEdit(rCharacterEdit* pRes) {
-    DDON_STUB("uMockUpModel::setupEdit")
-    /* stub */
+void uMockUpModel::setupEdit(rCharacterEdit* pRes) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as u32
+    if (this->mpCharacterEdit == static_cast<cpCharacterEdit*>(nullptr)) {
+        return;
+    }
+    this->mpCharacterEdit->::cpCharacterEdit::setResource(pRes);
+    this->mpCharacterEdit->::cpCharacterEdit::updateBody(true);
+    if (pRes != static_cast<rCharacterEdit*>(nullptr)) {
+        if (pRes->mpEditParam != static_cast<cEditParam*>(nullptr)) {
+            this->mSex = static_cast<u32>(pRes->mpEditParam->mBodyType != static_cast<u8>(0));
+        }
+    }
+    this->mFrameCount = static_cast<u32>(0);
 }
 
 // Address: 0x00ca2140 - 0x00ca2204 (196 bytes)
@@ -245,17 +348,348 @@ __attribute__((weak)) void uMockUpModel::requestLoadEquipCore(const uMockUpModel
 }
 
 // Address: 0x00ca2910 - 0x00ca293f (47 bytes)
-__attribute__((weak)) void uMockUpModel::removeEquip(u8 category) {
-    DDON_STUB("uMockUpModel::removeEquip")
-    /* stub */
+void uMockUpModel::removeEquip(u8 category) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as const nCharacterData::EQUIP_SLOT_TYPE
+    if (this->::uMockUpModel::resetEquipReq(category) == false) {
+        return;
+    }
+    this->mpEquip->::cpEquip::removeEquip(static_cast<const nCharacterData::EQUIP_SLOT_TYPE>(category));
 }
 
 // Address: 0x00ca2d80 - 0x00ca2f6d (493 bytes)
 __attribute__((weak)) bool uMockUpModel::resetEquipReq(u8 category) {
-    // local: const u32 index;
-    // local: stRequest& req;
-    DDON_STUB("uMockUpModel::resetEquipReq")
-    return {};
+    // DWARF local not rendered: stRequest& req;
+    // Approximate from the ELF: a constant over array elements; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as nCharacterData::EQUIP_SLOT_TYPE
+    const u32 index = ::cEquipData::convEquipCateToIndex(static_cast<nCharacterData::EQUIP_SLOT_TYPE>(category));
+    if (this->mReq[index].mIsLoading != false) {
+        this->mReq[index].mIsOff = false;
+        this->mReq[index].mNextItem.mId = static_cast<u32>(0);
+        this->mReq[index].mNextItem.mCraftElementItemNo[2] = static_cast<unsigned int>(0);
+        this->mReq[index].mNextItem.mCraftElementItemNo[3] = static_cast<unsigned int>(0);
+        this->mReq[index].mNextItem.mCraftElementItemNo[0] = static_cast<unsigned int>(0);
+        this->mReq[index].mNextItem.mCraftElementItemNo[1] = static_cast<unsigned int>(0);
+        this->mReq[index].mNextItem.mUID[56] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[57] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[58] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[59] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[60] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[61] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[62] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[63] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[48] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[49] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[50] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[51] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[52] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[53] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[54] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[55] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[40] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[41] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[42] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[43] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[44] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[45] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[46] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[47] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[32] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[33] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[34] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[35] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[36] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[37] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[38] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[39] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[24] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[25] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[26] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[27] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[28] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[29] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[30] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[31] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[16] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[17] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[18] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[19] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[20] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[21] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[22] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[23] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[8] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[9] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[10] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[11] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[12] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[13] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[14] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[15] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[0] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[1] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[2] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[3] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[4] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[5] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[6] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mUID[7] = static_cast<char>(0);
+        this->mReq[index].mNextItem.mColor = static_cast<s32>(-1);
+        this->mReq[index].mNextItem.mSex = static_cast<u8>(255);
+        // inferred: a temporary for the value the load at 0xca2e6d read, used 4 times; no DWARF local holds it
+        cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
+        if (this->mReq[index].mTicket != t0) {
+            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mReq[index].mTicket);
+            this->mReq[index].mTicket = static_cast<TICKET>(t0);
+            this->mReq[index].mIsLoading = false;
+            if (this->mReq[index].mNowItem.mId != static_cast<u32>(0)) {
+                // inferred: a temporary for the value the load at 0xca2ea5 read, used twice; no DWARF local holds it
+                cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+                if (t0 != t1) {
+                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(static_cast<TICKET>(t0));
+                    this->mReq[index].mTicket = static_cast<TICKET>(t1);
+                }
+                this->mReq[index].mNowItem.mId = static_cast<u32>(0);
+                this->mReq[index].mNowItem.mCraftElementItemNo[2] = static_cast<unsigned int>(0);
+                this->mReq[index].mNowItem.mCraftElementItemNo[3] = static_cast<unsigned int>(0);
+                this->mReq[index].mNowItem.mCraftElementItemNo[0] = static_cast<unsigned int>(0);
+                this->mReq[index].mNowItem.mCraftElementItemNo[1] = static_cast<unsigned int>(0);
+                this->mReq[index].mNowItem.mUID[56] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[57] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[58] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[59] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[60] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[61] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[62] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[63] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[48] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[49] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[50] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[51] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[52] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[53] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[54] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[55] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[40] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[41] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[42] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[43] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[44] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[45] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[46] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[47] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[32] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[33] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[34] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[35] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[36] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[37] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[38] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[39] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[24] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[25] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[26] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[27] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[28] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[29] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[30] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[31] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[16] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[17] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[18] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[19] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[20] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[21] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[22] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[23] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[8] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[9] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[10] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[11] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[12] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[13] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[14] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[15] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[0] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[1] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[2] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[3] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[4] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[5] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[6] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[7] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mColor = static_cast<s32>(-1);
+                this->mReq[index].mNowItem.mSex = static_cast<u8>(255);
+                return true;
+            }
+        } else {
+            this->mReq[index].mIsLoading = false;
+            if (this->mReq[index].mNowItem.mId != static_cast<u32>(0)) {
+                // inferred: a temporary for the value the load at 0xca2ea5 read, used twice; no DWARF local holds it
+                cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+                if (this->mReq[index].mTicket != t1) {
+                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mReq[index].mTicket);
+                    this->mReq[index].mTicket = static_cast<TICKET>(t1);
+                }
+                this->mReq[index].mNowItem.mId = static_cast<u32>(0);
+                this->mReq[index].mNowItem.mCraftElementItemNo[2] = static_cast<unsigned int>(0);
+                this->mReq[index].mNowItem.mCraftElementItemNo[3] = static_cast<unsigned int>(0);
+                this->mReq[index].mNowItem.mCraftElementItemNo[0] = static_cast<unsigned int>(0);
+                this->mReq[index].mNowItem.mCraftElementItemNo[1] = static_cast<unsigned int>(0);
+                this->mReq[index].mNowItem.mUID[56] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[57] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[58] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[59] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[60] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[61] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[62] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[63] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[48] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[49] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[50] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[51] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[52] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[53] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[54] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[55] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[40] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[41] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[42] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[43] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[44] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[45] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[46] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[47] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[32] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[33] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[34] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[35] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[36] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[37] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[38] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[39] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[24] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[25] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[26] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[27] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[28] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[29] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[30] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[31] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[16] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[17] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[18] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[19] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[20] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[21] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[22] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[23] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[8] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[9] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[10] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[11] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[12] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[13] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[14] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[15] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[0] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[1] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[2] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[3] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[4] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[5] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[6] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mUID[7] = static_cast<char>(0);
+                this->mReq[index].mNowItem.mColor = static_cast<s32>(-1);
+                this->mReq[index].mNowItem.mSex = static_cast<u8>(255);
+                return true;
+            }
+        }
+        return false;
+    } else {
+        if (this->mReq[index].mNowItem.mId != static_cast<u32>(0)) {
+            // inferred: a temporary for the value the load at 0xca2ea5 read, used twice; no DWARF local holds it
+            cArcLoaderBase* const t1 = ::sArchiveManager::INVALID_TICKET;
+            if (this->mReq[index].mTicket != t1) {
+                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mReq[index].mTicket);
+                this->mReq[index].mTicket = static_cast<TICKET>(t1);
+            }
+            this->mReq[index].mNowItem.mId = static_cast<u32>(0);
+            this->mReq[index].mNowItem.mCraftElementItemNo[2] = static_cast<unsigned int>(0);
+            this->mReq[index].mNowItem.mCraftElementItemNo[3] = static_cast<unsigned int>(0);
+            this->mReq[index].mNowItem.mCraftElementItemNo[0] = static_cast<unsigned int>(0);
+            this->mReq[index].mNowItem.mCraftElementItemNo[1] = static_cast<unsigned int>(0);
+            this->mReq[index].mNowItem.mUID[56] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[57] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[58] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[59] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[60] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[61] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[62] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[63] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[48] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[49] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[50] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[51] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[52] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[53] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[54] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[55] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[40] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[41] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[42] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[43] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[44] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[45] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[46] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[47] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[32] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[33] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[34] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[35] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[36] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[37] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[38] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[39] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[24] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[25] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[26] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[27] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[28] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[29] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[30] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[31] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[16] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[17] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[18] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[19] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[20] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[21] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[22] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[23] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[8] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[9] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[10] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[11] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[12] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[13] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[14] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[15] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[0] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[1] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[2] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[3] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[4] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[5] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[6] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mUID[7] = static_cast<char>(0);
+            this->mReq[index].mNowItem.mColor = static_cast<s32>(-1);
+            this->mReq[index].mNowItem.mSex = static_cast<u8>(255);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 // Address: 0x00ca30c0 - 0x00ca3114 (84 bytes)
@@ -266,11 +700,60 @@ __attribute__((weak)) bool uMockUpModel::isComplete() {
 }
 
 // Address: 0x00ca1d10 - 0x00ca2042 (818 bytes)
-__attribute__((weak)) void uMockUpModel::setDisp(bool isDisp) {
-    // local: u32 i;
-    // local: u32 i;
-    DDON_STUB("uMockUpModel::setDisp")
-    /* stub */
+void uMockUpModel::setDisp(bool isDisp) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+    if (this->mpEquip != static_cast<cpEquip*>(nullptr)) {
+        if (this->mpEquip->::cpEquip::getWeapon(static_cast<u32>(0)) != static_cast<uWeapon*>(nullptr)) {
+            this->mpEquip->::cpEquip::getWeapon(static_cast<u32>(0))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getWeapon(static_cast<u32>(1)) != static_cast<uWeapon*>(nullptr)) {
+            this->mpEquip->::cpEquip::getWeapon(static_cast<u32>(1))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getWeapon(static_cast<u32>(2)) != static_cast<uWeapon*>(nullptr)) {
+            this->mpEquip->::cpEquip::getWeapon(static_cast<u32>(2))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getWeapon(static_cast<u32>(3)) != static_cast<uWeapon*>(nullptr)) {
+            this->mpEquip->::cpEquip::getWeapon(static_cast<u32>(3))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getArmor(static_cast<u32>(0)) != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getArmor(static_cast<u32>(0))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getArmor(static_cast<u32>(1)) != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getArmor(static_cast<u32>(1))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getArmor(static_cast<u32>(2)) != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getArmor(static_cast<u32>(2))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getArmor(static_cast<u32>(3)) != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getArmor(static_cast<u32>(3))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getArmor(static_cast<u32>(4)) != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getArmor(static_cast<u32>(4))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getArmor(static_cast<u32>(5)) != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getArmor(static_cast<u32>(5))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getArmor(static_cast<u32>(6)) != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getArmor(static_cast<u32>(6))->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getHair() != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getHair()->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getBeard() != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getBeard()->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getMakeup() != static_cast<uArmor*>(nullptr)) {
+            this->mpEquip->::cpEquip::getMakeup()->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+        }
+        if (this->mpEquip->::cpEquip::getLantern() != static_cast<uWeapon*>(nullptr)) {
+            this->mpEquip->::cpEquip::getLantern()->::uDDOModel::changeDrawModelFlag(static_cast<u32>(1), isDisp);
+            return;
+        }
+    }
 }
 
 // Address: 0x00ca3120 - 0x00ca329a (378 bytes)

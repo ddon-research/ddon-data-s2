@@ -108,9 +108,13 @@ bool rOccluderEx::save(MtStream& out) {
 }
 
 // Address: 0x006b17d0 - 0x006b17e5 (21 bytes)
-__attribute__((weak)) sOccluderEx::Area* rOccluderEx::getArea(u32 index) {
-    DDON_STUB("rOccluderEx::getArea")
-    return nullptr;
+sOccluderEx::Area* rOccluderEx::getArea(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mAreaList.mLength) {
+        return static_cast<sOccluderEx::Area*>(this->mAreaList.mpArray[index]);
+    } else {
+        return static_cast<sOccluderEx::Area*>(nullptr);
+    }
 }
 
 // No out-of-line body: no code in the ELF

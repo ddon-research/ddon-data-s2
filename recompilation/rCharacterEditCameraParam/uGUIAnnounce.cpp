@@ -5,10 +5,17 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
+#include "../shared/cGUIInstance.h"
+#include "../rLayout/cNetSessionManager.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../rStageConnect/sArea.h"
+#include "../rStageConnect/sAreaExt.h"
 #include "../shared/sGUIExt.h"
+#include "../shared/sNetwork.h"
+#include "../shared/sNetworkExt.h"
+#include "../shared/sQuestManagerExt.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
@@ -170,9 +177,26 @@ __attribute__((weak)) void uGUIAnnounce::updateNoLeader() {
 }
 
 // Address: 0x00924c80 - 0x00924cec (108 bytes)
-__attribute__((weak)) void uGUIAnnounce::updateEntryBoardReady() {
-    DDON_STUB("uGUIAnnounce::updateEntryBoardReady")
-    /* stub */
+void uGUIAnnounce::updateEntryBoardReady() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x167b
+    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isEntryBoardReadyWait() != false) {
+        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->mEntryBoardReady == false) {
+            if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isStage() == false) {
+                this->mType = static_cast<u32>(0);
+                this->mFrame = 0.0f;
+                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+            }
+        } else {
+            this->mType = static_cast<u32>(0);
+            this->mFrame = 0.0f;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+        }
+    } else {
+        this->mType = static_cast<u32>(0);
+        this->mFrame = 0.0f;
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+    }
 }
 
 // Address: 0x00924cf0 - 0x00924ed5 (485 bytes)
@@ -196,9 +220,25 @@ __attribute__((weak)) void uGUIAnnounce::updateEntryBoardReentry() {
 }
 
 // Address: 0x00925010 - 0x00925092 (130 bytes)
-__attribute__((weak)) void uGUIAnnounce::updateDisableContents() {
-    DDON_STUB("uGUIAnnounce::updateDisableContents")
-    /* stub */
+void uGUIAnnounce::updateDisableContents() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isPartyLarge(true) != false) {
+        if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() != false) {
+            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEnableEntryBoard() != false) {
+                this->mType = static_cast<u32>(0);
+                this->mFrame = 0.0f;
+                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+            }
+        } else {
+            this->mType = static_cast<u32>(0);
+            this->mFrame = 0.0f;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+        }
+    } else {
+        this->mType = static_cast<u32>(0);
+        this->mFrame = 0.0f;
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+    }
 }
 
 // Address: 0x009250a0 - 0x00925193 (243 bytes)
@@ -209,9 +249,15 @@ __attribute__((weak)) void uGUIAnnounce::updateNoSituation() {
 }
 
 // Address: 0x009248c0 - 0x009248ff (63 bytes)
-__attribute__((weak)) void uGUIAnnounce::updateEndWait() {
-    DDON_STUB("uGUIAnnounce::updateEndWait")
-    /* stub */
+void uGUIAnnounce::updateEndWait() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
+        if (this->mpInstAnim->isAnimationEnd() != false) {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateExit);
+        }
+    } else {
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateExit);
+    }
 }
 
 // Address: 0x009251b0 - 0x009251b9 (9 bytes)

@@ -5,6 +5,8 @@
 #include "CharacterCommon.h"
 #include "CharacterEdit.h"
 #include "Common.h"
+#include "Craft.h"
+#include "EntryBoard.h"
 #include "Item.h"
 #include "MtCollection.h"
 #include "MtString.h"
@@ -508,6 +510,67 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_ENEMY_GROUP_LEAVE_NOTICE::Wr
 // No out-of-line body: no code in the ELF
 // bool nUserSession::CPacket_C2S_ENEMY_GROUP_LEAVE_NOTICE::isReceived() const;
 
+// No out-of-line body: 2 inlined copies in 1 function (266 bytes)
+//   in cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_CREATE_REQ at 0x019c67e2-0x019c6867 (called at C2SSender.inc:3661)
+//   in cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_CREATE_REQ at 0x019c67e2-0x019c6867 (called at C2S.h:17124)
+// nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ();
+
+// Address: 0x01a34310 - 0x01a343b0 (160 bytes)
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::WritePacket(CPacket* pPacket, u64 in_BoardID, const char* in_strPassword, const CEntryItemParam& in_Param) {
+    DDON_STUB("nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::WritePacket")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::ReadPacket(CPacket*);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::Error() const;
+
+// No out-of-line body: no code in the ELF
+// u64 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::BoardID() const;
+
+// No out-of-line body: no code in the ELF
+// const char* nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::Password() const;
+
+// No out-of-line body: no code in the ELF
+// const CEntryItemParam& nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::Param() const;
+
+// No out-of-line body: no code in the ELF
+// CEntryItemParam& nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::Param();
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (66 bytes)
+//   in cNetGameServer::joinEntryBoardItem at 0x00361226-0x00361247 (called at C2SSender.inc:3679)
+//   in cNetGameServer::joinEntryBoardItem at 0x00361226-0x00361247 (called at C2S.h:17226)
+// nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ();
+
+// Address: 0x01a33fa0 - 0x01a34040 (160 bytes)
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::WritePacket(CPacket* pPacket, u64 in_BoardID, u32 in_EntryID, const char* in_strPassword) {
+    DDON_STUB("nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::WritePacket")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::ReadPacket(CPacket*);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::Error() const;
+
+// No out-of-line body: no code in the ELF
+// u64 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::BoardID() const;
+
+// No out-of-line body: no code in the ELF
+// u32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::EntryID() const;
+
+// No out-of-line body: no code in the ELF
+// const char* nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::Password() const;
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::isReceived() const;
+
 // No out-of-line body: 2 inlined copies in 1 function (102 bytes)
 //   in cNetGameServer::inviteEntryBoardItem at 0x00361d9b-0x00361dce (called at C2SSender.inc:3760)
 //   in cNetGameServer::inviteEntryBoardItem at 0x00361d9b-0x00361dce (called at C2S.h:17575)
@@ -533,6 +596,38 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_INVITE_REQ:
 
 // No out-of-line body: no code in the ELF
 // bool nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_INVITE_REQ::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (266 bytes)
+//   in cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ at 0x019c6a92-0x019c6b17 (called at C2SSender.inc:3670)
+//   in cSeedGameSvConnection::Send_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ at 0x019c6a92-0x019c6b17 (called at C2S.h:17175)
+// nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ();
+
+// Address: 0x01a34270 - 0x01a34310 (160 bytes)
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::WritePacket(CPacket* pPacket, u64 in_BoardID, const char* in_strPassword, const CEntryItemParam& in_Param) {
+    DDON_STUB("nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::WritePacket")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::ReadPacket(CPacket*);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::Error() const;
+
+// No out-of-line body: no code in the ELF
+// u64 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::BoardID() const;
+
+// No out-of-line body: no code in the ELF
+// const char* nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::Password() const;
+
+// No out-of-line body: no code in the ELF
+// const CEntryItemParam& nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::Param() const;
+
+// No out-of-line body: no code in the ELF
+// CEntryItemParam& nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::Param();
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ::isReceived() const;
 
 // No out-of-line body: 2 inlined copies in 1 function (118 bytes)
 //   in cNetGameServer::reqGetCaplinkAchieveReward at 0x00367e92-0x00367ecd (called at C2SSender.inc:4876)
@@ -1108,6 +1203,35 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_LEARN_SKILL_REQ::WritePacket
 
 // No out-of-line body: no code in the ELF
 // bool nUserSession::CPacket_C2S_LEARN_SKILL_REQ::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (58 bytes)
+//   in cNetGameServer::sendChatMessage at 0x00343643-0x00343660 (called at C2SSender.inc:142)
+//   in cNetGameServer::sendChatMessage at 0x00343643-0x00343660 (called at C2S.h:1223)
+// nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::CPacket_C2S_LOBBY_CHAT_MSG_REQ();
+
+// Address: 0x01a3a680 - 0x01a3a721 (161 bytes)
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::WritePacket(CPacket* pPacket, u8 in_Type, u32 in_TargetID, const char* in_strMessage) {
+    DDON_STUB("nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::WritePacket")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::ReadPacket(CPacket*);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::Error() const;
+
+// No out-of-line body: no code in the ELF
+// u8 nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::Type() const;
+
+// No out-of-line body: no code in the ELF
+// u32 nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::TargetID() const;
+
+// No out-of-line body: no code in the ELF
+// const char* nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::Message() const;
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_C2S_LOBBY_CHAT_MSG_REQ::isReceived() const;
 
 // No out-of-line body: 2 inlined copies in 1 function (58 bytes)
 //   in cNetGameServer::login at 0x00342521-0x0034253e (called at C2SSender.inc:25)
@@ -1802,6 +1926,161 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_SET_SKILL_REQ::WritePacket(C
 
 // No out-of-line body: no code in the ELF
 // bool nUserSession::CPacket_C2S_SET_SKILL_REQ::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (226 bytes)
+//   in cSeedGameSvConnection::Send_C2S_START_ATTACH_ELEMENT_REQ at 0x019bdf05-0x019bdf76 (called at C2SSender.inc:3139)
+//   in cSeedGameSvConnection::Send_C2S_START_ATTACH_ELEMENT_REQ at 0x019bdf05-0x019bdf76 (called at C2S.h:14806)
+// nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::CPacket_C2S_START_ATTACH_ELEMENT_REQ();
+
+// Address: 0x01a360b0 - 0x01a3623f (399 bytes)
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, const MtTypedArray<CDataCraftElement>& in_CraftElementList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList) {
+    DDON_STUB("nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::WritePacket")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::ReadPacket(CPacket*);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::Error() const;
+
+// No out-of-line body: no code in the ELF
+// const char* nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::EquipItemUID() const;
+
+// No out-of-line body: no code in the ELF
+// const MtTypedArray<CDataCraftElement>& nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::CraftElementList() const;
+
+// No out-of-line body: no code in the ELF
+// MtTypedArray<CDataCraftElement>& nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::CraftElementList();
+
+// No out-of-line body: no code in the ELF
+// u32 nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::CraftMainPawnID() const;
+
+// No out-of-line body: no code in the ELF
+// const MtTypedArray<CDataCraftSupportPawnID>& nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::CraftSupportPawnIDList() const;
+
+// No out-of-line body: no code in the ELF
+// MtTypedArray<CDataCraftSupportPawnID>& nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::CraftSupportPawnIDList();
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (226 bytes)
+//   in cSeedGameSvConnection::Send_C2S_START_DETACH_ELEMENT_REQ at 0x019be1b5-0x019be226 (called at C2SSender.inc:3148)
+//   in cSeedGameSvConnection::Send_C2S_START_DETACH_ELEMENT_REQ at 0x019be1b5-0x019be226 (called at C2S.h:14863)
+// nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::CPacket_C2S_START_DETACH_ELEMENT_REQ();
+
+// Address: 0x01a35ef0 - 0x01a3607f (399 bytes)
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, const MtTypedArray<CDataCraftElement>& in_CraftElementList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList) {
+    DDON_STUB("nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::WritePacket")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::ReadPacket(CPacket*);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::Error() const;
+
+// No out-of-line body: no code in the ELF
+// const char* nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::EquipItemUID() const;
+
+// No out-of-line body: no code in the ELF
+// const MtTypedArray<CDataCraftElement>& nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::CraftElementList() const;
+
+// No out-of-line body: no code in the ELF
+// MtTypedArray<CDataCraftElement>& nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::CraftElementList();
+
+// No out-of-line body: no code in the ELF
+// u32 nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::CraftMainPawnID() const;
+
+// No out-of-line body: no code in the ELF
+// const MtTypedArray<CDataCraftSupportPawnID>& nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::CraftSupportPawnIDList() const;
+
+// No out-of-line body: no code in the ELF
+// MtTypedArray<CDataCraftSupportPawnID>& nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::CraftSupportPawnIDList();
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_C2S_START_DETACH_ELEMENT_REQ::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (240 bytes)
+//   in cSeedGameSvConnection::Send_C2S_START_EQUIP_COLOR_CHANGE_REQ at 0x019be46c-0x019be4e4 (called at C2SSender.inc:3157)
+//   in cSeedGameSvConnection::Send_C2S_START_EQUIP_COLOR_CHANGE_REQ at 0x019be46c-0x019be4e4 (called at C2S.h:14921)
+// nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ();
+
+// Address: 0x01a35cf0 - 0x01a35e88 (408 bytes)
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, u8 in_Color, const MtTypedArray<CDataCraftColorant>& in_CraftColorantList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList) {
+    DDON_STUB("nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::WritePacket")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::ReadPacket(CPacket*);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::Error() const;
+
+// No out-of-line body: no code in the ELF
+// const char* nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::EquipItemUID() const;
+
+// No out-of-line body: no code in the ELF
+// u8 nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::Color() const;
+
+// No out-of-line body: no code in the ELF
+// const MtTypedArray<CDataCraftColorant>& nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::CraftColorantList() const;
+
+// No out-of-line body: no code in the ELF
+// MtTypedArray<CDataCraftColorant>& nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::CraftColorantList();
+
+// No out-of-line body: no code in the ELF
+// u32 nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::CraftMainPawnID() const;
+
+// No out-of-line body: no code in the ELF
+// const MtTypedArray<CDataCraftSupportPawnID>& nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::CraftSupportPawnIDList() const;
+
+// No out-of-line body: no code in the ELF
+// MtTypedArray<CDataCraftSupportPawnID>& nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::CraftSupportPawnIDList();
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ::isReceived() const;
+
+// No out-of-line body: 2 inlined copies in 1 function (226 bytes)
+//   in cSeedGameSvConnection::Send_C2S_START_EQUIP_GRADE_UP_REQ at 0x019bdc55-0x019bdcc6 (called at C2SSender.inc:3130)
+//   in cSeedGameSvConnection::Send_C2S_START_EQUIP_GRADE_UP_REQ at 0x019bdc55-0x019bdcc6 (called at C2S.h:14749)
+// nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::CPacket_C2S_START_EQUIP_GRADE_UP_REQ();
+
+// Address: 0x01a36240 - 0x01a363cf (399 bytes)
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, const MtTypedArray<CDataCraftMaterial>& in_CraftMaterialList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList) {
+    DDON_STUB("nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::WritePacket")
+    return {};
+}
+
+// No out-of-line body: no code in the ELF
+// s32 nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::ReadPacket(CPacket*);
+
+// No out-of-line body: no code in the ELF
+// u16 nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::Error() const;
+
+// No out-of-line body: no code in the ELF
+// const char* nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::EquipItemUID() const;
+
+// No out-of-line body: no code in the ELF
+// const MtTypedArray<CDataCraftMaterial>& nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::CraftMaterialList() const;
+
+// No out-of-line body: no code in the ELF
+// MtTypedArray<CDataCraftMaterial>& nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::CraftMaterialList();
+
+// No out-of-line body: no code in the ELF
+// u32 nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::CraftMainPawnID() const;
+
+// No out-of-line body: no code in the ELF
+// const MtTypedArray<CDataCraftSupportPawnID>& nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::CraftSupportPawnIDList() const;
+
+// No out-of-line body: no code in the ELF
+// MtTypedArray<CDataCraftSupportPawnID>& nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::CraftSupportPawnIDList();
+
+// No out-of-line body: no code in the ELF
+// bool nUserSession::CPacket_C2S_START_EQUIP_GRADE_UP_REQ::isReceived() const;
 
 // No out-of-line body: 2 inlined copies in 1 function (156 bytes)
 //   in cNetGameServer::stayInn at 0x003582fa-0x00358348 (called at C2SSender.inc:2086)

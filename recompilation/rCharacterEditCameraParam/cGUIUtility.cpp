@@ -2,6 +2,7 @@
 #include <new>
 #include "cGUIUtility.h"
 #include "../shared/MtCollection.h"
+#include "../shared/MtDTI.h"
 #include "../shared/MtMath.h"
 #include "../shared/MtString.h"
 #include "cAcquirementData.h"
@@ -9,6 +10,7 @@
 #include "../shared/cEquipData.h"
 #include "../shared/cGUIInstance.h"
 #include "../shared/cGUIObject.h"
+#include "../shared/cNetGameServer.h"
 #include "../shared/nCharacterData.h"
 #include "../shared/nGUIExt.h"
 #include "../shared/nHuman.h"
@@ -22,8 +24,11 @@
 #include "../shared/sGame.h"
 #include "../shared/sItemManager.h"
 #include "sKeyboard.h"
+#include "../shared/sNetwork.h"
+#include "../shared/sNetworkExt.h"
 #include "../shared/sPadExt.h"
 #include "../shared/sPlayerManager.h"
+#include "../shared/sQuestManagerExt.h"
 #include "../shared/sSavedata.h"
 #include "../shared/sSavedataExt.h"
 #include "../shared/sUnit.h"
@@ -487,10 +492,32 @@ __attribute__((weak)) const MtColor& cGUIUtility::getColorFromCraftColorNo(u32 c
 }
 
 // Address: 0x00207150 - 0x0020717c (44 bytes)
-__attribute__((weak)) bool cGUIUtility::isEnableEquipIcon(u32 SlotNo, u32 JobId, u32 EquipJewelryNum) {
-    // local: const u32 jewelry_no;
-    DDON_STUB("cGUIUtility::isEnableEquipIcon")
-    return {};
+bool cGUIUtility::isEnableEquipIcon(u32 SlotNo, u32 JobId, u32 EquipJewelryNum) {
+    // DWARF local not rendered: const u32 jewelry_no;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if ((SlotNo - static_cast<u32>(10)) <= static_cast<u32>(4)) {
+        if ((SlotNo - static_cast<u32>(10)) != static_cast<u32>(0)) {
+            if ((SlotNo - static_cast<u32>(10)) >= EquipJewelryNum) {
+                return false;
+            }
+        }
+        return true;
+    } else {
+        if ((SlotNo - static_cast<u32>(17)) <= static_cast<u32>(1)) {
+            if (JobId != static_cast<u32>(3)) {
+                if (JobId == static_cast<u32>(9)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (15 bytes)
@@ -598,9 +625,22 @@ const rAcquirement::cNormalSkillData* cGUIUtility::getNormalSkillData(nHuman::JO
 // nHuman::HM_SKILL_LV cGUIUtility::getNormalSkillMaxLevel(nHuman::JOB_ENUM JobId, u32 SlotNo);
 
 // Address: 0x00204590 - 0x002045e7 (87 bytes)
-__attribute__((weak)) void cGUIUtility::setGUIUnitEnable(uGUIBase* pBase, bool b) {
-    DDON_STUB("cGUIUtility::setGUIUnitEnable")
-    /* stub */
+void cGUIUtility::setGUIUnitEnable(uGUIBase* pBase, bool b) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uGUIBase*
+    if (pBase == static_cast<uGUIBase*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x204595 read, used 3 times; no DWARF local holds it
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pBase) + static_cast<long>(16));
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pBase) + static_cast<long>(16)) = (b == false) ? (((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) & static_cast<unsigned int>(4294950911)) : (((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) | static_cast<unsigned int>(16384));
+    if ((((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) & static_cast<unsigned int>(18439)) != static_cast<unsigned int>(18434)) {
+        return;
+    }
+    if ((((b == false) ? (((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) & static_cast<unsigned int>(4294950911)) : (((b == false) ? (t0 & static_cast<unsigned int>(4294966271)) : (t0 | static_cast<unsigned int>(1024))) | static_cast<unsigned int>(16384))) & static_cast<unsigned int>(18439)) == static_cast<unsigned int>(18434)) {
+        return;
+    }
+    pBase->callbackChangeVisibleTrueToFalse();
 }
 
 // No out-of-line body: 688 inlined copies in 353 functions (10988 bytes)
@@ -844,10 +884,22 @@ __attribute__((weak)) void cGUIUtility::setCurrentFrameTree(cGUIObject* pObj, f3
 }
 
 // Address: 0x00204660 - 0x002046b2 (82 bytes)
-__attribute__((weak)) void cGUIUtility::setCurrentFrameTree(cGUIInstAnimation* pInstAnim, f32 frame, bool fix) {
-    // local: cGUIObject* child;
-    DDON_STUB("cGUIUtility::setCurrentFrameTree")
-    /* stub */
+void cGUIUtility::setCurrentFrameTree(cGUIInstAnimation* pInstAnim, f32 frame, bool fix) {
+    // DWARF local not rendered: cGUIObject* child;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (pInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
+        if (pInstAnim->::cGUIInstAnimation::getRootObject() != static_cast<cGUIObjRoot*>(nullptr)) {
+            // inferred: the value the loop at 0x204690 carries; no location-less local in scope fits
+            for (cGUIObjRoot* v0_3 = pInstAnim->::cGUIInstAnimation::getRootObject();;) {
+                ::cGUIUtility::setCurrentFrameTree(static_cast<cGUIObject*>(v0_3), frame, fix);
+                if (v0_3->::cGUIObject::getNext() != static_cast<cGUIObject*>(nullptr)) {
+                    v0_3 = static_cast<cGUIObjRoot*>(v0_3->::cGUIObject::getNext());
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (39 bytes)
@@ -1636,10 +1688,30 @@ __attribute__((weak)) f32 cGUIUtility::CalcHeadUiAlpha(const nGUIExt::HeadUiInfo
 }
 
 // Address: 0x00205ed0 - 0x00205f3b (107 bytes)
-__attribute__((weak)) bool cGUIUtility::IsPartyEntry(const cContextInstHm* contextInstHm) {
-    // local: bool is_party_entry;
-    DDON_STUB("cGUIUtility::IsPartyEntry")
-    return {};
+bool cGUIUtility::IsPartyEntry(const cContextInstHm* contextInstHm) {
+    // DWARF local not rendered: bool is_party_entry;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the value the load at 0x205ee1 read, used once; no DWARF local holds it
+    sGame* t0 = ::sGame::getInstance();
+    // inferred: a temporary for the result of the call at 0x205ee4, used twice; no DWARF local holds it
+    s32 t1 = ::cContextInterface::getMemberIndex(contextInstHm);
+    if (t1 > static_cast<s32>(-1)) {
+        if (t0->::sGame::isParty(t1) != false) {
+            // inferred: a temporary for the value the load at 0x205f04 read, used once; no DWARF local holds it
+            cNetGameServer* t2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+            if (t2->::cNetGameServer::isPlayEntry(::cContextInterface::getMemberIndex(contextInstHm)) != false) {
+                // inferred: a temporary for the result of the call at 0x205f2b, used once; no DWARF local holds it
+                bool t3 = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isCycleContentsPlayNow();
+                return t3 == false;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00205f40 - 0x00205fc9 (137 bytes)
@@ -1670,12 +1742,17 @@ bool cGUIUtility::IsValidOcdId(u32 ocdId) {
 }
 
 // Address: 0x00205ff0 - 0x0020600b (27 bytes)
-__attribute__((weak)) bool cGUIUtility::IsValidAccumulationOcdId(u32 ocdId) {
-    // local: bool is_valid;
-    // local: const u64 valid_accumulation_bad_ocd_id_bitmap;
-    // local: const u64 mask;
-    DDON_STUB("cGUIUtility::IsValidAccumulationOcdId")
-    return {};
+bool cGUIUtility::IsValidAccumulationOcdId(u32 ocdId) {
+    // DWARF local not rendered: bool is_valid;
+    // DWARF local not rendered: const u64 valid_accumulation_bad_ocd_id_bitmap;
+    // DWARF local not rendered: const u64 mask;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if ((ocdId - static_cast<u32>(4097)) <= static_cast<u32>(30)) {
+        return ((static_cast<unsigned long>(100599799) >> static_cast<unsigned long>((ocdId - static_cast<u32>(4097)) & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00206010 - 0x0020602c (28 bytes)
@@ -1872,13 +1949,50 @@ __attribute__((weak)) u32 cGUIUtility::getCaplinkFriendAttrMsgIndex(u32 attr) {
 
 // Address: 0x00204380 - 0x0020446a (234 bytes)
 __attribute__((weak)) bool cGUIUtility::copyParameterlValueSet(cGUIInstance* pDest, cGUIInstance* pOrg, s32 flag) {
-    // local: bool isInstAnim;
-    // local: cGUIInstAnimation* pOrgAnim;
-    // local: cGUIInstAnimation* pDestAnim;
-    // local: cGUIInstNull* pDestAnim;
-    // local: cGUIInstNull* pOrgAnim;
-    DDON_STUB("cGUIUtility::copyParameterlValueSet")
-    return {};
+    // DWARF local not rendered: bool isInstAnim;
+    // DWARF local not rendered: cGUIInstAnimation* pOrgAnim;
+    // DWARF local not rendered: cGUIInstAnimation* pDestAnim;
+    // DWARF local not rendered: cGUIInstNull* pDestAnim;
+    // DWARF local not rendered: cGUIInstNull* pOrgAnim;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as bool
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a cGUIInstNull member read past the end of cGUIInstance, which DWARF gives no other deriving class a member at 0xb0
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a cGUIInstNull member read past the end of cGUIInstance, which DWARF gives no other deriving class a member at 0xb4
+    if (pOrg != static_cast<cGUIInstance*>(nullptr)) {
+        if (pDest != static_cast<cGUIInstance*>(nullptr)) {
+            if (pDest->::cGUIInstance::getDuplicateId() == pOrg->mId) {
+                pDest->::cGUIInstance::setExecute(static_cast<bool>((pOrg->mAttr & static_cast<u32>(8)) >> static_cast<u32>(3)));
+                if (pDest->getDTI().::MtDTI::getID() == ::cGUIInstAnimation::DTI.::MtDTI::mID) {
+                    if ((flag & static_cast<s32>(1)) != static_cast<s32>(0)) {
+                        static_cast<cGUIInstAnimation*>(pDest)->::cGUIInstAnimation::setSequenceId(static_cast<cGUIInstAnimation*>(pOrg)->::cGUIInstAnimation::getSequenceId());
+                    }
+                    if ((flag & static_cast<s32>(2)) != static_cast<s32>(0)) {
+                        static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPositionX(static_cast<cGUIInstNull*>(pOrg)->mPosition.x);
+                    }
+                    if ((flag & static_cast<s32>(4)) != static_cast<s32>(0)) {
+                        static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPositionY(static_cast<cGUIInstNull*>(pOrg)->mPosition.y);
+                    }
+                    if ((flag & static_cast<s32>(8)) != static_cast<s32>(0)) {
+                        static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPosition(static_cast<cGUIInstNull*>(pOrg)->mPosition);
+                    }
+                } else {
+                    if (pDest->getDTI().::MtDTI::getID() == ::cGUIInstNull::DTI.::MtDTI::mID) {
+                        if ((flag & static_cast<s32>(2)) != static_cast<s32>(0)) {
+                            static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPositionX(static_cast<cGUIInstNull*>(pOrg)->mPosition.x);
+                        }
+                        if ((flag & static_cast<s32>(4)) != static_cast<s32>(0)) {
+                            static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPositionY(static_cast<cGUIInstNull*>(pOrg)->mPosition.y);
+                        }
+                        if ((flag & static_cast<s32>(8)) != static_cast<s32>(0)) {
+                            static_cast<cGUIInstNull*>(pDest)->::cGUIInstNull::setPosition(static_cast<cGUIInstNull*>(pOrg)->mPosition);
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x00204520 - 0x00204590 (112 bytes)

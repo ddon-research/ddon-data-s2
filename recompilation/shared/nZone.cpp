@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtCollision.h"
 #include "MtDTI.h"
+#include "MtDataWriter.h"
 #include "MtGeometry3D.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
@@ -130,9 +131,17 @@ __attribute__((weak)) void nZone::ShapeInfoBase::loadBinary(MtDataReader& r) {
 }
 
 // Address: 0x011aa650 - 0x011aa696 (70 bytes)
-__attribute__((weak)) void nZone::ShapeInfoBase::saveBinary(MtDataWriter& w) {
-    DDON_STUB("nZone::ShapeInfoBase::saveBinary")
-    /* stub */
+void nZone::ShapeInfoBase::saveBinary(MtDataWriter& w) {
+    // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    w.writeF32(this->mDecay);
+    // inferred: a temporary for the value the load at 0x11aa66c read, used once; no DWARF local holds it
+    bool t0 = this->mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
+    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
 }
 
 // Address: 0x01b891b0 - 0x01b891b3 (3 bytes)
@@ -406,9 +415,40 @@ __attribute__((weak)) void nZone::ShapeInfoOBB::loadBinary(MtDataReader& r) {
 }
 
 // Address: 0x011b0ff0 - 0x011b1094 (164 bytes)
-__attribute__((weak)) void nZone::ShapeInfoOBB::saveBinary(MtDataWriter& w) {
-    DDON_STUB("nZone::ShapeInfoOBB::saveBinary")
-    /* stub */
+void nZone::ShapeInfoOBB::saveBinary(MtDataWriter& w) {
+    // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    w.writeF32(this->::nZone::ShapeInfoBase::mDecay);
+    // inferred: a temporary for the value the load at 0x11b100f read, used once; no DWARF local holds it
+    bool t0 = this->::nZone::ShapeInfoBase::mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+        w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
+        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+        w.write(static_cast<const void*>(&this->mOBB), static_cast<u32>(80));
+        w.writeF32(this->mDecayY);
+        w.writeF32(this->mDecayZ);
+        // inferred: a temporary for the value the load at 0x11b1064 read, used once; no DWARF local holds it
+        bool t1 = this->mIsEnableExtendedDecay;
+        if (w.mSeekPt >= w.mBufsiz) {
+            w.flush();
+        }
+        w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t1);
+        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+    } else {
+        w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
+        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+        w.write(static_cast<const void*>(&this->mOBB), static_cast<u32>(80));
+        w.writeF32(this->mDecayY);
+        w.writeF32(this->mDecayZ);
+        // inferred: a temporary for the value the load at 0x11b1064 read, used once; no DWARF local holds it
+        bool t1 = this->mIsEnableExtendedDecay;
+        if (w.mSeekPt >= w.mBufsiz) {
+            w.flush();
+        }
+        w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t1);
+        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+    }
 }
 
 // Address: 0x011b10a0 - 0x011b10a3 (3 bytes)
@@ -710,9 +750,18 @@ __attribute__((weak)) void nZone::ShapeInfoPanel::loadBinary(MtDataReader& r) {
 }
 
 // Address: 0x011b74f0 - 0x011b7556 (102 bytes)
-__attribute__((weak)) void nZone::ShapeInfoPanel::saveBinary(MtDataWriter& w) {
-    DDON_STUB("nZone::ShapeInfoPanel::saveBinary")
-    /* stub */
+void nZone::ShapeInfoPanel::saveBinary(MtDataWriter& w) {
+    // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    w.writeF32(this->::nZone::ShapeInfoBase::mDecay);
+    // inferred: a temporary for the value the load at 0x11b750f read, used once; no DWARF local holds it
+    bool t0 = this->::nZone::ShapeInfoBase::mIsNativeData;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
+    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+    w.write(static_cast<const void*>(&this->mVertex[0]), static_cast<u32>(64));
 }
 
 // Address: 0x011b7620 - 0x011b7623 (3 bytes)
@@ -1187,9 +1236,10 @@ __attribute__((weak)) void nZone::cContentsPool::cContentsList::createProperty(M
 // void nZone::cContentsPool::cContentsList::setContentsGroupID(s32);
 
 // Address: 0x01b88de0 - 0x01b88de4 (4 bytes)
-__attribute__((weak)) u32 nZone::cContentsPool::cContentsList::getZoneContentsNum() const {
-    DDON_STUB("nZone::cContentsPool::cContentsList::getZoneContentsNum")
-    return {};
+u32 nZone::cContentsPool::cContentsList::getZoneContentsNum() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x10 from const nZone::cContentsPool::cContentsList*
+    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(16));
 }
 
 // No out-of-line body: 10 inlined copies in 4 functions (136 bytes)
@@ -1443,10 +1493,108 @@ __attribute__((weak)) bool nZone::cLayoutElement::loadBinary(MtDataReader& r) {
 }
 
 // Address: 0x011bbbc0 - 0x011bbd31 (369 bytes)
-__attribute__((weak)) bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
-    // local: MtSerializer sz;
-    DDON_STUB("nZone::cLayoutElement::saveBinary")
-    return {};
+bool nZone::cLayoutElement::saveBinary(MtDataWriter& w) {
+    // Approximate from the ELF: a frame object built in several branches; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    w.writeS32(this->mPriority);
+    if (this->mpShapeInfo != static_cast<nZone::ShapeInfoBase*>(nullptr)) {
+        this->mpShapeInfo->saveBinary(w);
+        w.writeS32(this->mContentsPoolID);
+        w.writeS32(this->mContentsPoolGroupID);
+        // inferred: a temporary for the value the load at 0x11bbc20 read, used once; no DWARF local holds it
+        bool t0 = this->mIsEnable;
+        if (w.mSeekPt >= w.mBufsiz) {
+            w.flush();
+        }
+        w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
+        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+        w.writeU32(this->mIndex);
+        w.writeU32(this->mLayoutGroupIndex);
+        w.writeU32(this->mIndexOfLayoutGroup);
+        w.writeU32(this->mUniqueID);
+        w.writeS32(this->mGroupID);
+        if (this->mpExtendObj != static_cast<MtObject*>(nullptr)) {
+            if (w.mSeekPt >= w.mBufsiz) {
+                w.flush();
+                w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(1);
+                w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+                MtSerializer sz(static_cast<s32>(65536));
+                // inferred: a temporary for the result of the call at 0x11bbcd9, used once; no DWARF local holds it
+                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), this->mpExtendObj, static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+                if (t1 == false) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(1);
+                w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+                MtSerializer sz(static_cast<s32>(65536));
+                // inferred: a temporary for the result of the call at 0x11bbcd9, used once; no DWARF local holds it
+                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), this->mpExtendObj, static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+                if (t1 == false) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            if (w.mSeekPt >= w.mBufsiz) {
+                w.flush();
+            }
+            w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(0);
+            w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+            return true;
+        }
+    } else {
+        w.writeS32(this->mContentsPoolID);
+        w.writeS32(this->mContentsPoolGroupID);
+        // inferred: a temporary for the value the load at 0x11bbc20 read, used once; no DWARF local holds it
+        bool t0 = this->mIsEnable;
+        if (w.mSeekPt >= w.mBufsiz) {
+            w.flush();
+        }
+        w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
+        w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+        w.writeU32(this->mIndex);
+        w.writeU32(this->mLayoutGroupIndex);
+        w.writeU32(this->mIndexOfLayoutGroup);
+        w.writeU32(this->mUniqueID);
+        w.writeS32(this->mGroupID);
+        if (this->mpExtendObj != static_cast<MtObject*>(nullptr)) {
+            if (w.mSeekPt >= w.mBufsiz) {
+                w.flush();
+                w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(1);
+                w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+                MtSerializer sz(static_cast<s32>(65536));
+                // inferred: a temporary for the result of the call at 0x11bbcd9, used once; no DWARF local holds it
+                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), this->mpExtendObj, static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+                if (t1 == false) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(1);
+                w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+                MtSerializer sz(static_cast<s32>(65536));
+                // inferred: a temporary for the result of the call at 0x11bbcd9, used once; no DWARF local holds it
+                bool t1 = sz.::MtSerializer::serializeBinary(w, static_cast<u16>(0), this->mpExtendObj, static_cast<MtSerializer::MODE>(0), static_cast<const MtDTI*>(nullptr));
+                if (t1 == false) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            if (w.mSeekPt >= w.mBufsiz) {
+                w.flush();
+            }
+            w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(0);
+            w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+            return true;
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)

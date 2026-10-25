@@ -148,3 +148,8 @@ inline cSoundParamOfs::cSoundParamOfs() {
     this->mLfeCurveId = static_cast<s16>(0);
     this->mDirectionalCurveId = static_cast<s16>(0);
 }
+
+// Inline, no code of its own: checked where it is inlined.
+inline f32 cSoundParamOfs::getVolume() {
+    return this->mVolume;
+}

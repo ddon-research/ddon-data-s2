@@ -73,7 +73,7 @@ public:
 
 class cMenuSupportMenu : public cMenuSupport
 {
-    // inferred: cMenuBase::setListCursor names cMenuSupportMenu::mListCursor
+    // inferred: cMenuBase::isDecideMenu names cMenuSupportMenu::mMenuNum
     friend class cMenuBase;
     // inferred: cMenuQuickMatchCancel::moveQuickMatchCancel names cMenuSupportMenu::mMenuNum
     friend class cMenuQuickMatchCancel;
@@ -334,6 +334,12 @@ inline u32 cMenuSupportList::getSortListCount() {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void cMenuSupportList::reqRemake() {
     this->mReqRemake = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuSupportList::stAddMenu* cMenuSupportList::getEmptyAddMenu() {
+    return this->mpAddMenu;
 }
 
 // Inline, no code of its own: checked where it is inlined.

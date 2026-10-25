@@ -1842,6 +1842,8 @@ public:
 public:
     class Sbc : public MtObject
     {
+        // inferred: sCollision::unregistResource calls sCollision::Sbc::releaseAllDynamicData
+        friend class sCollision;
     public:
         class MyDTI;
         class Parts;
@@ -3925,4 +3927,10 @@ inline sCollision* sCollision::getInstance() {
 // approximate: only approximate callers check this inline body
 inline u32 sCollision::Sbc::getPartsNum() const {
     return this->mPartsArrayNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 sCollision::SbcInfo::getSbcAttribute() const {
+    return this->pMaterialInfo->::nCollision::ScrMaterialInfo::attribute;
 }

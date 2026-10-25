@@ -69,17 +69,27 @@ u32 rNpcLedgerList::getLedgerSize() const {
 }
 
 // Address: 0x006ac0b0 - 0x006ac0be (14 bytes)
-__attribute__((weak)) const rNpcLedgerList::cItem* rNpcLedgerList::getNpcInfo(u32 index) const {
-    DDON_STUB("rNpcLedgerList::getNpcInfo")
-    return nullptr;
+const rNpcLedgerList::cItem* rNpcLedgerList::getNpcInfo(u32 index) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<const rNpcLedgerList::cItem*>(this->mArray.::MtArray::mpArray[index]);
 }
 
 // Address: 0x006ac0c0 - 0x006ac0f7 (55 bytes)
-__attribute__((weak)) const rNpcLedgerList::cItem* rNpcLedgerList::searchNpcInfo(u32 npcId) const {
-    // local: const u32 num;
-    // local: u32 i;
-    DDON_STUB("rNpcLedgerList::searchNpcInfo")
-    return nullptr;
+const rNpcLedgerList::cItem* rNpcLedgerList::searchNpcInfo(u32 npcId) const {
+    // DWARF local not rendered: const u32 num;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from MtObject*
+    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x6ac0c6, 0x6ac0f3)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mArray.::MtArray::mpArray[i]) + static_cast<long>(40))) == npcId) {
+                return static_cast<const rNpcLedgerList::cItem*>(this->mArray.::MtArray::mpArray[i]);
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mArray.::MtArray::mLength);
+    }
+    return static_cast<const rNpcLedgerList::cItem*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF

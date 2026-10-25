@@ -163,26 +163,104 @@ __attribute__((weak)) u32 rStageList::getVersion(s32 stgNo) const {
 // u32 rStageList::getVersionForAlt(s32 stgNo) const;
 
 // Address: 0x006c2cb0 - 0x006c2d16 (102 bytes)
-__attribute__((weak)) bool rStageList::isLobby(s32 stgNo) const {
-    // local: const Info* pInfo;
-    DDON_STUB("rStageList::isLobby")
-    return {};
+bool rStageList::isLobby(s32 stgNo) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x0 from const rStageList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x88 from const unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x80 from const unsigned long
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2cc1, held ahead of the effects the ELF orders after it
+    const unsigned long t0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2cc4, held ahead of the effects the ELF orders after it
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(136));
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2cc4, held ahead of the effects the ELF orders after it
+    u32 t1 = this->getNum();
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i3 = static_cast<unsigned int>(0);
+    if (t1 != static_cast<u32>(0)) {
+        do {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2ce0, held ahead of the effects the ELF orders after it
+            const unsigned long t4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2ce8, held ahead of the effects the ELF orders after it
+            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + static_cast<long>(128));
+            const rStageList::Info* pInfo = this->getInfo(i3);
+            if (pInfo != static_cast<const rStageList::Info*>(nullptr)) {
+                if (pInfo->mStageNo != static_cast<unsigned int>(stgNo)) {
+                } else {
+                    return pInfo->mType == static_cast<u32>(1);
+                }
+            }
+            i3 += static_cast<unsigned int>(1);
+        } while (i3 < t1);
+    }
+    return false;
 }
 
 // Address: 0x006c2d80 - 0x006c2de6 (102 bytes)
-__attribute__((weak)) bool rStageList::isField(s32 stgNo) const {
-    // local: const Info* pInfo;
-    DDON_STUB("rStageList::isField")
-    return {};
+bool rStageList::isField(s32 stgNo) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x0 from const rStageList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x88 from const unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x80 from const unsigned long
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2d91, held ahead of the effects the ELF orders after it
+    const unsigned long t0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2d94, held ahead of the effects the ELF orders after it
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(136));
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2d94, held ahead of the effects the ELF orders after it
+    u32 t1 = this->getNum();
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i3 = static_cast<unsigned int>(0);
+    if (t1 != static_cast<u32>(0)) {
+        do {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2db0, held ahead of the effects the ELF orders after it
+            const unsigned long t4 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x6c2db8, held ahead of the effects the ELF orders after it
+            unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t4) + static_cast<long>(128));
+            const rStageList::Info* pInfo = this->getInfo(i3);
+            if (pInfo != static_cast<const rStageList::Info*>(nullptr)) {
+                if (pInfo->mStageNo != static_cast<unsigned int>(stgNo)) {
+                } else {
+                    return pInfo->mType == static_cast<u32>(2);
+                }
+            }
+            i3 += static_cast<unsigned int>(1);
+        } while (i3 < t1);
+    }
+    return false;
 }
 
 // Address: 0x006c2d20 - 0x006c2d7f (95 bytes)
-__attribute__((weak)) rStageList::Info* rStageList::searchInfo(s32 stgNo) const {
-    // local: const u32 numOfStages;
-    // local: u32 i;
-    // local: Info* pInfo;
-    DDON_STUB("rStageList::searchInfo")
-    return nullptr;
+rStageList::Info* rStageList::searchInfo(s32 stgNo) const {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: Info* pInfo;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    const u32 numOfStages = this->getNum();
+    // inferred: the value carried to 0x6c2d76; no location-less local in scope fits
+    rStageList::Info* v1_0;
+    if (numOfStages == static_cast<u32>(0)) {
+        v1_0 = static_cast<rStageList::Info*>(nullptr);
+    } else {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            // inferred: a temporary for the result of the call at 0x6c2d59, used 3 times; no DWARF local holds it
+            rStageList::Info* t0 = this->getInfo(i0_2);
+            if (t0 != static_cast<rStageList::Info*>(nullptr)) {
+                if (t0->mStageNo == static_cast<unsigned int>(stgNo)) {
+                    v1_0 = t0;
+                    break;
+                }
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < numOfStages) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                v1_0 = static_cast<rStageList::Info*>(nullptr);
+                break;
+            }
+        }
+    }
+    return v1_0;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

@@ -9,6 +9,7 @@
 #include "MtString.h"
 #include "MtTime.h"
 #include "Quest.h"
+#include "cCycleQuestManagerBase.h"
 #include "nMarker.h"
 #include "sQuestManagerExt.h"
 #ifndef DDON_STUB
@@ -418,9 +419,10 @@ void* nQuest::cOrderCondition::operator new(size_t sz, u32 align) {
 // void nQuest::cOrderCondition::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x0062c3f0 - 0x0062c3f5 (5 bytes)
-__attribute__((weak)) nQuest::ORDER_CONDITION_TYPE nQuest::cOrderCondition::getConditionType() const {
-    DDON_STUB("nQuest::cOrderCondition::getConditionType")
-    return {};
+nQuest::ORDER_CONDITION_TYPE nQuest::cOrderCondition::getConditionType() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::ORDER_CONDITION_TYPE
+    return static_cast<nQuest::ORDER_CONDITION_TYPE>(this->mConditionType);
 }
 
 // No out-of-line body: 11 inlined copies in 5 functions (44 bytes)
@@ -1021,8 +1023,35 @@ nQuest::cDeliveredItemInfo::cDeliveredItemInfo() {
 // Address: 0x0062dce0 - 0x0062dd7d (157 bytes)
 // Also emitted as: _ZN6nQuest18cDeliveredItemInfoD0Ev at 0x0062dd80
 nQuest::cDeliveredItemInfo::~cDeliveredItemInfo() {
-    DDON_STUB("nQuest::cDeliveredItemInfo::~cDeliveredItemInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mCharacterDeliverInfo.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x62dd10 carries; no location-less local in scope fits
+        u32 v0_0 = this->mCharacterDeliverInfo.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mCharacterDeliverInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mCharacterDeliverInfo.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCharacterDeliverInfo.::MtArray::mLength) {
+                    v0_0 = this->mCharacterDeliverInfo.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mCharacterDeliverInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCharacterDeliverInfo.::MtArray::mpArray));
+    }
+    this->mCharacterDeliverInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mCharacterDeliverInfo.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mCharacterDeliverInfo.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0062de40 - 0x0062de41 (1 bytes)
@@ -1318,9 +1347,9 @@ u32 nQuest::cQuestMarker::getTargetType() const {
 }
 
 // Address: 0x0062e380 - 0x0062e385 (5 bytes)
-__attribute__((weak)) void nQuest::cQuestMarker::setTargetType(u32 targetType) {
-    DDON_STUB("nQuest::cQuestMarker::setTargetType")
-    /* stub */
+void nQuest::cQuestMarker::setTargetType(u32 targetType) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mTargetType = static_cast<unsigned char>(targetType);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1342,9 +1371,9 @@ s32 nQuest::cQuestMarker::getStageNo() const {
 }
 
 // Address: 0x0062e3d0 - 0x0062e3dc (12 bytes)
-__attribute__((weak)) void nQuest::cQuestMarker::setStageNo(s32 stageNo) {
-    DDON_STUB("nQuest::cQuestMarker::setStageNo")
-    /* stub */
+void nQuest::cQuestMarker::setStageNo(s32 stageNo) {
+    // Approximate from the ELF: a wider integer converted to a narrower signed type, whose value clang wraps; the body oracle reports this body.
+    this->mMarkerInfo.::nMarker::cMarkerInfo::setStageNo(static_cast<short>(stageNo));
 }
 
 // Address: 0x0062e3e0 - 0x0062e3e4 (4 bytes)
@@ -1568,9 +1597,10 @@ inline void nQuest::cCycleContentsInfo::operator delete(void* p_addr) {
 // void nQuest::cCycleContentsInfo::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x0062e770 - 0x0062e789 (25 bytes)
-__attribute__((weak)) MT_CTSTR nQuest::cCycleContentsInfo::getContentsName() const {
-    DDON_STUB("nQuest::cCycleContentsInfo::getContentsName")
-    return {};
+MT_CTSTR nQuest::cCycleContentsInfo::getContentsName() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1583,11 +1613,21 @@ bool nQuest::cCycleContentsInfo::isPlayContents() const {
 }
 
 // Address: 0x0062e7b0 - 0x0062e7dc (44 bytes)
-__attribute__((weak)) u32 nQuest::cCycleContentsInfo::getRanking() const {
-    // local: u32 length;
-    // local: u32 i;
-    DDON_STUB("nQuest::cCycleContentsInfo::getRanking")
-    return {};
+u32 nQuest::cCycleContentsInfo::getRanking() const {
+    // DWARF local not rendered: u32 length;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    if (this->mContentsRank.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x62e7b5, 0x62e7db)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mContentsRank.::MtArray::mpArray[i]) + static_cast<long>(8))) == static_cast<unsigned char>(1)) {
+                return static_cast<nQuest::cCycleContentsPersonalRankInfo*>(this->mContentsRank.::MtArray::mpArray[i])->::nQuest::cCycleContentsPersonalRankInfo::getRanking();
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mContentsRank.::MtArray::mLength);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x0062e7e0 - 0x0062e7e4 (4 bytes)
@@ -1597,35 +1637,49 @@ u32 nQuest::cCycleContentsInfo::getPoint() const {
 }
 
 // Address: 0x0062e7f0 - 0x0062e81c (44 bytes)
-__attribute__((weak)) u32 nQuest::cCycleContentsInfo::getRankPoint() const {
-    // local: u32 length;
-    // local: u32 i;
-    DDON_STUB("nQuest::cCycleContentsInfo::getRankPoint")
-    return {};
+u32 nQuest::cCycleContentsInfo::getRankPoint() const {
+    // DWARF local not rendered: u32 length;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    if (this->mContentsRank.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x62e7f5, 0x62e81b)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mContentsRank.::MtArray::mpArray[i]) + static_cast<long>(8))) == static_cast<unsigned char>(1)) {
+                return static_cast<nQuest::cCycleContentsPersonalRankInfo*>(this->mContentsRank.::MtArray::mpArray[i])->::nQuest::cCycleContentsPersonalRankInfo::getScore();
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mContentsRank.::MtArray::mLength);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x0062e820 - 0x0062e839 (25 bytes)
-__attribute__((weak)) MT_CTSTR nQuest::cCycleContentsInfo::getContentsInfo() const {
-    DDON_STUB("nQuest::cCycleContentsInfo::getContentsInfo")
-    return {};
+MT_CTSTR nQuest::cCycleContentsInfo::getContentsInfo() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
 }
 
 // Address: 0x0062e840 - 0x0062e859 (25 bytes)
-__attribute__((weak)) MT_CTSTR nQuest::cCycleContentsInfo::getOrderPlace() const {
-    DDON_STUB("nQuest::cCycleContentsInfo::getOrderPlace")
-    return {};
+MT_CTSTR nQuest::cCycleContentsInfo::getOrderPlace() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsOrderPlace(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
 }
 
 // Address: 0x0062e860 - 0x0062e880 (32 bytes)
-__attribute__((weak)) MT_CTSTR nQuest::cCycleContentsInfo::getPhaseName() const {
-    DDON_STUB("nQuest::cCycleContentsInfo::getPhaseName")
-    return {};
+MT_CTSTR nQuest::cCycleContentsInfo::getPhaseName() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory), this->mPeriod, this->::nQuest::cCycleContentsInfo::getSituation());
 }
 
 // Address: 0x0062e880 - 0x0062e8a0 (32 bytes)
-__attribute__((weak)) MT_CTSTR nQuest::cCycleContentsInfo::getPhaseInfo() const {
-    DDON_STUB("nQuest::cCycleContentsInfo::getPhaseInfo")
-    return {};
+MT_CTSTR nQuest::cCycleContentsInfo::getPhaseInfo() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory), this->mPeriod, this->::nQuest::cCycleContentsInfo::getSituation());
 }
 
 // No out-of-line body: no code in the ELF
@@ -1708,10 +1762,15 @@ nQuest::CYCLE_CONTENTS_PERIOD nQuest::cCycleContentsInfo::getCycleContentsPeriod
 }
 
 // Address: 0x0062ea10 - 0x0062ea4e (62 bytes)
-__attribute__((weak)) nQuest::CYCLE_CONTENTS_PERIOD nQuest::cCycleContentsInfo::getCycleContentsPeriodRealTime() const {
-    // local: cCycleQuestManagerBase* pMgr;
-    DDON_STUB("nQuest::cCycleContentsInfo::getCycleContentsPeriodRealTime")
-    return {};
+nQuest::CYCLE_CONTENTS_PERIOD nQuest::cCycleContentsInfo::getCycleContentsPeriodRealTime() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
+    cCycleQuestManagerBase* pMgr = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsMgr(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
+    if (pMgr != static_cast<cCycleQuestManagerBase*>(nullptr)) {
+        return pMgr->::cCycleQuestManagerBase::getCycleContentsPeriodFromSubCategory(static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory));
+    } else {
+        return static_cast<nQuest::CYCLE_CONTENTS_PERIOD>(0);
+    }
 }
 
 // No out-of-line body: 5 inlined copies in 4 functions (18 bytes)
@@ -1742,8 +1801,7 @@ nQuest::cCycleContentsInfo::cCycleContentsInfo() {
 // Address: 0x0062ebe0 - 0x0062ebf7 (23 bytes)
 // Also emitted as: _ZN6nQuest18cCycleContentsInfoD0Ev at 0x0062ec00
 nQuest::cCycleContentsInfo::~cCycleContentsInfo() {
-    DDON_STUB("nQuest::cCycleContentsInfo::~cCycleContentsInfo")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x0062ec50 - 0x0062ec51 (1 bytes)
@@ -2124,12 +2182,28 @@ u32 nQuest::cGUINewspaperSetQuestInfo::getTargetEnemyLv(u32 idx) const {
 // bool nQuest::cGUINewspaperSetQuestInfo::isTargetEnemyParty(u32 idx) const;
 
 // Address: 0x0062f310 - 0x0062f34b (59 bytes)
-__attribute__((weak)) bool nQuest::cGUINewspaperSetQuestInfo::hasEnemyInfo(u32 enemyGroupId, u32 enemyLv) const {
-    // local: const u32 emIdNum;
-    // local: u32 i;
-    // local: cGUINewspaperSetQuestMonsterInfo* pEmId;
-    DDON_STUB("nQuest::cGUINewspaperSetQuestInfo::hasEnemyInfo")
-    return {};
+bool nQuest::cGUINewspaperSetQuestInfo::hasEnemyInfo(u32 enemyGroupId, u32 enemyLv) const {
+    // DWARF local not rendered: cGUINewspaperSetQuestMonsterInfo* pEmId;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    const u32 emIdNum = this->mTargetEnemyArray.::MtArray::mLength;
+    if (emIdNum != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x62f330 carries; no location-less local in scope fits
+        MtObject* * v0_4 = this->mTargetEnemyArray.::MtArray::mpArray;
+        // inferred: DWARF's location-less 'i' (lexical block [0x62f317, 0x62f348)) is the counter this loop steps (DWARF's stale constant 0)
+        for (u32 i = static_cast<u32>(0);;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + static_cast<long>(12))) == enemyGroupId) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_4[i]) + static_cast<long>(8))) == enemyLv) {
+                    return true;
+                }
+            }
+            if ((i + static_cast<u32>(1)) < emIdNum) {
+                i = i + static_cast<u32>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x0062f350 - 0x0062f357 (7 bytes)
@@ -2433,9 +2507,10 @@ __attribute__((weak)) nQuest::cCycleContentsResultPointInfo* nQuest::cCycleConte
 }
 
 // Address: 0x0062fd30 - 0x0062fd35 (5 bytes)
-__attribute__((weak)) nQuest::cCycleContentsResultPointInfo::RESULT_POINT_TYPE nQuest::cCycleContentsResultPointInfo::getType() const {
-    DDON_STUB("nQuest::cCycleContentsResultPointInfo::getType")
-    return {};
+nQuest::cCycleContentsResultPointInfo::RESULT_POINT_TYPE nQuest::cCycleContentsResultPointInfo::getType() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::cCycleContentsResultPointInfo::RESULT_POINT_TYPE
+    return static_cast<nQuest::cCycleContentsResultPointInfo::RESULT_POINT_TYPE>(this->mType);
 }
 
 // Address: 0x0062fd40 - 0x0062fd4f (15 bytes)
@@ -2567,9 +2642,10 @@ __attribute__((weak)) nQuest::cCycleContentsResultRewardInfo* nQuest::cCycleCont
 }
 
 // Address: 0x0062ffa0 - 0x0062ffa5 (5 bytes)
-__attribute__((weak)) nQuest::cCycleContentsResultRewardInfo::RESULT_REWARD_TYPE nQuest::cCycleContentsResultRewardInfo::getType() const {
-    DDON_STUB("nQuest::cCycleContentsResultRewardInfo::getType")
-    return {};
+nQuest::cCycleContentsResultRewardInfo::RESULT_REWARD_TYPE nQuest::cCycleContentsResultRewardInfo::getType() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::cCycleContentsResultRewardInfo::RESULT_REWARD_TYPE
+    return static_cast<nQuest::cCycleContentsResultRewardInfo::RESULT_REWARD_TYPE>(this->mType);
 }
 
 // Address: 0x0062ffb0 - 0x0062ffc1 (17 bytes)
@@ -2830,8 +2906,63 @@ nQuest::cCycleContentsResultInfo::cCycleContentsResultInfo() {
 // Address: 0x00630370 - 0x00630490 (288 bytes)
 // Also emitted as: _ZN6nQuest24cCycleContentsResultInfoD0Ev at 0x00630490
 nQuest::cCycleContentsResultInfo::~cCycleContentsResultInfo() {
-    DDON_STUB("nQuest::cCycleContentsResultInfo::~cCycleContentsResultInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mPointList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x6303a0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mPointList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mPointList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mPointList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPointList.::MtArray::mLength) {
+                    v0_0 = this->mPointList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mPointList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPointList.::MtArray::mpArray));
+    }
+    this->mPointList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mPointList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mPointList.::MtArray::mLength = static_cast<u32>(0);
+    if (this->mRewardList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x630410 carries; no location-less local in scope fits
+        u32 v2_0 = this->mRewardList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+            if (this->mRewardList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mRewardList.::MtArray::mpArray[i2_3];
+                if ((i2_3 + static_cast<unsigned int>(1)) < this->mRewardList.::MtArray::mLength) {
+                    v2_0 = this->mRewardList.::MtArray::mLength;
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mRewardList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRewardList.::MtArray::mpArray));
+    }
+    this->mRewardList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mRewardList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mRewardList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x006304c0 - 0x006304c1 (1 bytes)
@@ -2924,9 +3055,10 @@ __attribute__((weak)) MT_CTSTR nQuest::cCycleContentsRankingInfo::getClanName() 
 }
 
 // Address: 0x006308c0 - 0x006308c4 (4 bytes)
-__attribute__((weak)) u32 nQuest::cCycleContentsRankingInfo::getPoint() const {
-    DDON_STUB("nQuest::cCycleContentsRankingInfo::getPoint")
-    return {};
+u32 nQuest::cCycleContentsRankingInfo::getPoint() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x28 from const nQuest::cCycleContentsRankingInfo*
+    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(40));
 }
 
 // Address: 0x006308d0 - 0x006308d4 (4 bytes)
@@ -3056,8 +3188,35 @@ const nQuest::CycleContentsResultRewardList& nQuest::cCycleContentsRankingReward
 // Address: 0x00630da0 - 0x00630e3d (157 bytes)
 // Also emitted as: _ZN6nQuest31cCycleContentsRankingRewardInfoD0Ev at 0x00630e40
 nQuest::cCycleContentsRankingRewardInfo::~cCycleContentsRankingRewardInfo() {
-    DDON_STUB("nQuest::cCycleContentsRankingRewardInfo::~cCycleContentsRankingRewardInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mRewardList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x630dd0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mRewardList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mRewardList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mRewardList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRewardList.::MtArray::mLength) {
+                    v0_0 = this->mRewardList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mRewardList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRewardList.::MtArray::mpArray));
+    }
+    this->mRewardList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mRewardList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mRewardList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x00630f00 - 0x00630f01 (1 bytes)
@@ -3175,8 +3334,35 @@ const nQuest::CycleContentsResultRewardList& nQuest::cCycleContentsBorderRewardI
 // Address: 0x00631240 - 0x006312dd (157 bytes)
 // Also emitted as: _ZN6nQuest30cCycleContentsBorderRewardInfoD0Ev at 0x006312e0
 nQuest::cCycleContentsBorderRewardInfo::~cCycleContentsBorderRewardInfo() {
-    DDON_STUB("nQuest::cCycleContentsBorderRewardInfo::~cCycleContentsBorderRewardInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mRewardList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x631270 carries; no location-less local in scope fits
+        u32 v0_0 = this->mRewardList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mRewardList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mRewardList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRewardList.::MtArray::mLength) {
+                    v0_0 = this->mRewardList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mRewardList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRewardList.::MtArray::mpArray));
+    }
+    this->mRewardList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mRewardList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mRewardList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x006313a0 - 0x006313a1 (1 bytes)
@@ -4405,9 +4591,9 @@ __attribute__((weak)) void nQuest::cGUIBoardData::createProperty(MtPropertyList&
 // nQuest::cGUIBoardData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00634a30 - 0x00634a86 (86 bytes)
-__attribute__((weak)) MtObject* nQuest::cGUIBoardData::MyDTI::newInstance() const {
-    DDON_STUB("nQuest::cGUIBoardData::MyDTI::newInstance")
-    return nullptr;
+MtObject* nQuest::cGUIBoardData::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::nQuest::cGUIBoardData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4520,9 +4706,9 @@ __attribute__((weak)) void nQuest::cGUIDeliveryData::createProperty(MtPropertyLi
 // nQuest::cGUIDeliveryData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00634f80 - 0x00634fdd (93 bytes)
-__attribute__((weak)) MtObject* nQuest::cGUIDeliveryData::MyDTI::newInstance() const {
-    DDON_STUB("nQuest::cGUIDeliveryData::MyDTI::newInstance")
-    return nullptr;
+MtObject* nQuest::cGUIDeliveryData::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::nQuest::cGUIDeliveryData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -4545,9 +4731,11 @@ const MtDTI& nQuest::cGUIEventBoardData::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void nQuest::cGUIEventBoardData::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in nQuest::cGUIEventBoardData::MyDTI::newInstance at 0x00635474-0x0063549d (called at nQuest.cpp:7243)
-// void* nQuest::cGUIEventBoardData::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: parameters written where their values stand in every inlined copy
+inline void* nQuest::cGUIEventBoardData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIEventBoardData::DTI)->memAlloc(sz, align, ::nQuest::cGUIEventBoardData::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* nQuest::cGUIEventBoardData::operator new[](size_t sz, u32 align);
@@ -4611,9 +4799,9 @@ __attribute__((weak)) void nQuest::cGUIEventBoardData::createProperty(MtProperty
 // nQuest::cGUIEventBoardData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00635470 - 0x006354c6 (86 bytes)
-__attribute__((weak)) MtObject* nQuest::cGUIEventBoardData::MyDTI::newInstance() const {
-    DDON_STUB("nQuest::cGUIEventBoardData::MyDTI::newInstance")
-    return nullptr;
+MtObject* nQuest::cGUIEventBoardData::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::nQuest::cGUIEventBoardData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5045,9 +5233,9 @@ __attribute__((weak)) void nQuest::cGUIActiveData::createProperty(MtPropertyList
 // nQuest::cGUIActiveData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00636b60 - 0x00636bb6 (86 bytes)
-__attribute__((weak)) MtObject* nQuest::cGUIActiveData::MyDTI::newInstance() const {
-    DDON_STUB("nQuest::cGUIActiveData::MyDTI::newInstance")
-    return nullptr;
+MtObject* nQuest::cGUIActiveData::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::nQuest::cGUIActiveData;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5113,15 +5301,17 @@ __attribute__((weak)) nQuest::QUEST_ID nQuest::cCycleContentsSituationInfo::getQ
 }
 
 // Address: 0x00636f70 - 0x00636f93 (35 bytes)
-__attribute__((weak)) MT_CTSTR nQuest::cCycleContentsSituationInfo::getContentsName() const {
-    DDON_STUB("nQuest::cCycleContentsSituationInfo::getContentsName")
-    return {};
+MT_CTSTR nQuest::cCycleContentsSituationInfo::getContentsName() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationName(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory), static_cast<u32>(2), this->mSituationNo);
 }
 
 // Address: 0x00636fa0 - 0x00636fc3 (35 bytes)
-__attribute__((weak)) MT_CTSTR nQuest::cCycleContentsSituationInfo::getContentsInfo() const {
-    DDON_STUB("nQuest::cCycleContentsSituationInfo::getContentsInfo")
-    return {};
+MT_CTSTR nQuest::cCycleContentsSituationInfo::getContentsInfo() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::CYCLE_CONTENTS_CATEGORY
+    return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getCycleContentsSituationDetailedInfo(static_cast<nQuest::CYCLE_CONTENTS_CATEGORY>(this->mCycleContentsCategory), static_cast<nQuest::CYCLE_CONTENTS_SUB_CATEGORY>(this->mCycleContentsSubCategory), static_cast<u32>(2), this->mSituationNo);
 }
 
 // No out-of-line body: no code in the ELF
@@ -5152,9 +5342,17 @@ u32 nQuest::cCycleContentsSituationInfo::getOrderConditionNum() const {
 }
 
 // Address: 0x00637030 - 0x00637046 (22 bytes)
-__attribute__((weak)) u32 nQuest::cCycleContentsSituationInfo::getOrderConditionType(u32 idx) const {
-    DDON_STUB("nQuest::cCycleContentsSituationInfo::getOrderConditionType")
-    return {};
+u32 nQuest::cCycleContentsSituationInfo::getOrderConditionType(u32 idx) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x20 from const nQuest::cCycleContentsSituationInfo*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x20 from unsigned long
+    if (idx < this->mOrderConditions.::MtArray::mLength) {
+        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(32))) + static_cast<unsigned long>(idx * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(32));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00637050 - 0x0063707d (45 bytes)
@@ -5256,9 +5454,9 @@ nQuest::cCycleContentsSituationInfo::~cCycleContentsSituationInfo() {
 // nQuest::cCycleContentsSituationInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00636d80 - 0x00636e53 (211 bytes)
-__attribute__((weak)) MtObject* nQuest::cCycleContentsSituationInfo::MyDTI::newInstance() const {
-    DDON_STUB("nQuest::cCycleContentsSituationInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nQuest::cCycleContentsSituationInfo::MyDTI::newInstance() const {
+    // Approximate from the ELF: a constant over array elements; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::nQuest::cCycleContentsSituationInfo;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5339,9 +5537,17 @@ nQuest::RET_DISABLE_ORDER_CONDITION_TYPE nQuest::cEndContentsGroupQuestInfo::get
 // u32 nQuest::cEndContentsGroupQuestInfo::getOrderConditionNum() const;
 
 // Address: 0x00637730 - 0x00637746 (22 bytes)
-__attribute__((weak)) u32 nQuest::cEndContentsGroupQuestInfo::getOrderConditionType(u32 idx) const {
-    DDON_STUB("nQuest::cEndContentsGroupQuestInfo::getOrderConditionType")
-    return {};
+u32 nQuest::cEndContentsGroupQuestInfo::getOrderConditionType(u32 idx) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x20 from const nQuest::cEndContentsGroupQuestInfo*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x20 from unsigned long
+    if (idx < this->mOrderConditions.::MtArray::mLength) {
+        return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(32))) + static_cast<unsigned long>(idx * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(32));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00637750 - 0x0063777d (45 bytes)
@@ -5405,9 +5611,9 @@ nQuest::cEndContentsGroupQuestInfo::~cEndContentsGroupQuestInfo() {
 // nQuest::cEndContentsGroupQuestInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00637560 - 0x006375f5 (149 bytes)
-__attribute__((weak)) MtObject* nQuest::cEndContentsGroupQuestInfo::MyDTI::newInstance() const {
-    DDON_STUB("nQuest::cEndContentsGroupQuestInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nQuest::cEndContentsGroupQuestInfo::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::nQuest::cEndContentsGroupQuestInfo;
 }
 
 // No out-of-line body: no code in the ELF

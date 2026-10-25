@@ -27,7 +27,8 @@ const MtDTI& uEffect2DExt::getDTI() const {
 }
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline MtAllocator* uEffect2DExt::getAllocator() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+MtAllocator* uEffect2DExt::getAllocator() {
     return ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI);
 }
 
@@ -395,7 +396,8 @@ __attribute__((weak)) MtObject* uEffect2DExt::MyDTI::newInstance() const {
 // void* uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator new[](size_t s);
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline void uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
     ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI)->memFree(padr);
 }
 

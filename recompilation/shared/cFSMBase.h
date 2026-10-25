@@ -220,6 +220,12 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline MtObject* cFSMBase::getOwner() const {
+    return this->::cFSMCore::mpOwner;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cFSMBase::cParamCallMessage::cParamCallMessage() {
     this->mMsgType = static_cast<u32>(0);
     this->mQstNo = static_cast<u32>(0);

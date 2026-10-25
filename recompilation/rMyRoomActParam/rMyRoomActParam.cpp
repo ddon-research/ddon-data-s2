@@ -3,9 +3,11 @@
 #include "rMyRoomActParam.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -64,10 +66,30 @@ inline void cMyRoomActParam::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cMyRoomActParam::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (297 bytes)
-//   in cMyRoomActParam::MyDTI::newInstance at 0x006a6f2d-0x006a6fbe (called at rMyRoomActParam.cpp:46)
-//   in rTbl2<cMyRoomActParam>::allocData at 0x01a9d988-0x01a9d99a, 0x01a9d99d-0x01a9da23 (called at rTbl2.h:215)
-// cMyRoomActParam::cMyRoomActParam();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cMyRoomActParam::cMyRoomActParam() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mWaypoint = static_cast<u16>(0);
+    this->mPos = ::MtVector3::Zero;
+    this->mAngleY = 0.0f;
+    this->mNpcMotNo = static_cast<u16>(0);
+    this->mStartIdx = static_cast<u16>(0);
+    this->mNeedOM = static_cast<u32>(0);
+    this->mNeedOM4 = static_cast<u32>(0);
+    this->mNeedOM5 = static_cast<u32>(0);
+    this->mNeedOM2 = static_cast<u32>(0);
+    this->mNeedOM3 = static_cast<u32>(0);
+    this->mMessage = static_cast<s16>(-1);
+    this->mCondition = static_cast<u16>(0);
+    this->mLinkActNo = static_cast<s16>(-1);
+    this->mLinkActLv = static_cast<u16>(1);
+    this->mChangeEquip = static_cast<s16>(-1);
+    this->mIsGriffin = false;
+    this->mIsNotAvoid = false;
+    this->mIsSingle = false;
+}
 
 // Defined in the class (its body was written in a header).
 // cMyRoomActParam::~cMyRoomActParam();
@@ -197,9 +219,67 @@ inline void rMyRoomActParam::operator delete(void* p_addr) {
 // void rMyRoomActParam::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x006a7f60 - 0x006a80ee (398 bytes)
-__attribute__((weak)) bool rMyRoomActParam::loadData(MtDataReader& in, cMyRoomActParam* pData) {
-    DDON_STUB("rMyRoomActParam::loadData")
-    return {};
+bool rMyRoomActParam::loadData(MtDataReader& in, cMyRoomActParam* pData) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mPos.x);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mPos.y);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mPos.z);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mAngleY);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mWaypoint);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNpcMotNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mStartIdx);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNeedOM);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNeedOM2);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNeedOM3);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNeedOM4);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mNeedOM5);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mMessage);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCondition);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLinkActNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mLinkActLv);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mChangeEquip);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mIsGriffin);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mIsNotAvoid = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mIsSingle = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    return true;
 }
 
 // Address: 0x01a9d720 - 0x01a9d728 (8 bytes)

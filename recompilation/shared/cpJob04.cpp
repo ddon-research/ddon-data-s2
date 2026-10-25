@@ -5,9 +5,12 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "cContextInterface.h"
+#include "cHumanActId.h"
 #include "cpJobBase.h"
 #include "cpStateManager.h"
 #include "nDDOUtility.h"
+#include "nHumanMsg.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #ifndef DDON_STUB
@@ -1152,9 +1155,16 @@ bool cpJob04::isGuardBits() {
 }
 
 // Address: 0x004a6c60 - 0x004a6c90 (48 bytes)
-__attribute__((weak)) void cpJob04::setGuardBits(u32 isLv2) {
-    DDON_STUB("cpJob04::setGuardBits")
-    /* stub */
+void cpJob04::setGuardBits(u32 isLv2) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (isLv2 != static_cast<u32>(0)) {
+        this->mGuardBitFlgs = this->mGuardBitFlgs | static_cast<u8>(31);
+    } else {
+        this->mGuardBitFlgs = this->mGuardBitFlgs | static_cast<u8>(7);
+    }
+    this->mGuardBitProtectTimes = static_cast<s32>(static_cast<unsigned int>((static_cast<unsigned long>(isLv2 != static_cast<u32>(0)) * static_cast<unsigned long>(2)) + static_cast<unsigned long>(3)));
+    this->mNowGuardTimes = this->mGuardBitProtectTimes;
 }
 
 // Address: 0x004a6490 - 0x004a65e1 (337 bytes)
@@ -1241,10 +1251,61 @@ __attribute__((weak)) const uDDOModel* cpJob04::getOptionBigShlSecond() {
 // void cpJob04::resetHealHateInterval();
 
 // Address: 0x004a6f80 - 0x004a7015 (149 bytes)
-__attribute__((weak)) bool cpJob04::isCanFloating() {
-    // local: HM_SKILL_LV SkillLv;
-    DDON_STUB("cpJob04::isCanFloating")
-    return {};
+bool cpJob04::isCanFloating() {
+    // DWARF local not rendered: HM_SKILL_LV SkillLv;
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc68 from unsigned long
+    // inferred: a temporary for the value the load at 0x4a6f8e read, used 3 times; no DWARF local holds it
+    uHuman* t0 = this->::cpJobBase::mpHuman;
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(13376))) != static_cast<unsigned long>(0)) {
+        // inferred: a temporary for the result of the call at 0x4a6fac, used once; no DWARF local holds it
+        nHuman::GROW_NORMAL_SKILL_ENUM t1 = ::cHumanActId::getNormalSkillId(static_cast<u32>(8205), static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(13376))) + static_cast<long>(40))));
+        // inferred: a temporary for the value the load at 0x4a6fb4 read, used 4 times; no DWARF local holds it
+        unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(13376));
+        if (t2 != static_cast<unsigned long>(0)) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                return false;
+            } else {
+                // inferred: a temporary for the result of the call at 0x4a6fd9, used once; no DWARF local holds it
+                u32 t3 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + static_cast<long>(40))));
+                // inferred: a temporary for the result of the call at 0x4a6fe4, used twice; no DWARF local holds it
+                u32 t4 = ::nHuman::getNormalSkillIdArrayIndex(t1);
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + static_cast<unsigned long>(t3 * static_cast<u32>(40))) + static_cast<unsigned long>(t4 * static_cast<u32>(4))) + static_cast<long>(3176))) != static_cast<unsigned int>(0)) {
+                    return this->mCanFloating != false;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+    } else {
+        // inferred: a temporary for the result of the call at 0x4a6fac, used once; no DWARF local holds it
+        nHuman::GROW_NORMAL_SKILL_ENUM t1 = ::cHumanActId::getNormalSkillId(static_cast<u32>(8205), static_cast<nHuman::JOB_ENUM>(255));
+        // inferred: a temporary for the value the load at 0x4a6fb4 read, used 4 times; no DWARF local holds it
+        unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(13376));
+        if (t2 != static_cast<unsigned long>(0)) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                return false;
+            } else {
+                // inferred: a temporary for the result of the call at 0x4a6fd9, used once; no DWARF local holds it
+                u32 t3 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + static_cast<long>(40))));
+                // inferred: a temporary for the result of the call at 0x4a6fe4, used twice; no DWARF local holds it
+                u32 t4 = ::nHuman::getNormalSkillIdArrayIndex(t1);
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t2 + static_cast<unsigned long>(t3 * static_cast<u32>(40))) + static_cast<unsigned long>(t4 * static_cast<u32>(4))) + static_cast<long>(3176))) != static_cast<unsigned int>(0)) {
+                    return this->mCanFloating != false;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return false;
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (4 bytes)
@@ -1338,11 +1399,17 @@ __attribute__((weak)) bool cpJob04::isActiveShiftNormalCircle() {
 }
 
 // Address: 0x004a95b0 - 0x004a95dc (44 bytes)
-__attribute__((weak)) bool cpJob04::isActiveShiftCustomCircle() {
-    // local: u16 work;
-    // local: cContextInterface& pCon;
-    DDON_STUB("cpJob04::isActiveShiftCustomCircle")
-    return {};
+bool cpJob04::isActiveShiftCustomCircle() {
+    // DWARF local not rendered: cContextInterface& pCon;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    u16 work = ::cContextInterface::getCustomWork(this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextInstance, this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextCharacter);
+    if (((static_cast<unsigned long>(work) >> static_cast<unsigned long>(8)) & static_cast<unsigned long>(112)) == static_cast<unsigned long>(0)) {
+        return static_cast<bool>(static_cast<unsigned long>(work) >> static_cast<unsigned long>(15));
+    } else {
+        return true;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

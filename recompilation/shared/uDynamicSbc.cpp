@@ -110,9 +110,15 @@ __attribute__((weak)) void uDynamicSbc::draw(cDraw* pdraw) {
 }
 
 // Address: 0x01308760 - 0x01308782 (34 bytes)
-__attribute__((weak)) void uDynamicSbc::kill() {
-    DDON_STUB("uDynamicSbc::kill")
-    /* stub */
+void uDynamicSbc::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uDynamicSbc*
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) == static_cast<unsigned int>(0)) {
+        if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+        }
+    }
+    this->::uDynamicSbc::clear();
 }
 
 // Address: 0x01308790 - 0x013087aa (26 bytes)

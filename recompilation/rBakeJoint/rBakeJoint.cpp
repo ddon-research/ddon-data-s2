@@ -3,8 +3,10 @@
 #include "rBakeJoint.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -151,9 +153,14 @@ rBakeJoint::~rBakeJoint() {
 }
 
 // Address: 0x00648180 - 0x006481ef (111 bytes)
-__attribute__((weak)) bool rBakeJoint::loadData(MtDataReader& r, cBakeJoint* pData) {
-    DDON_STUB("rBakeJoint::loadData")
-    return {};
+bool rBakeJoint::loadData(MtDataReader& r, cBakeJoint* pData) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mBake);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mRefJnt = r.::MtDataReader::readU8();
+    return true;
 }
 
 // Address: 0x01a76a30 - 0x01a76a38 (8 bytes)

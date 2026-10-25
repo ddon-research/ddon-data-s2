@@ -3,8 +3,10 @@
 #include "rEnemyLocalEst.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -142,9 +144,35 @@ inline void rEnemyLocalEst::operator delete(void* p_addr) {
 // void rEnemyLocalEst::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x0066c220 - 0x0066c312 (242 bytes)
-__attribute__((weak)) bool rEnemyLocalEst::loadData(MtDataReader& in, cEnemyLocalEstTable* pData) {
-    DDON_STUB("rEnemyLocalEst::loadData")
-    return {};
+bool rEnemyLocalEst::loadData(MtDataReader& in, cEnemyLocalEstTable* pData) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mIdx);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBitNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mStatus);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mCheckBit);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mPlayAlways = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mControlType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mControlIndex);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mBitContrlCommand);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSetUpOff);
+    return true;
 }
 
 // Address: 0x01a8ad20 - 0x01a8ad28 (8 bytes)

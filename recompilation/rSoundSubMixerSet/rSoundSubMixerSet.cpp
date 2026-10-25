@@ -109,9 +109,13 @@ __attribute__((weak)) void rSoundSubMixerSet::createProperty(MtPropertyList& s) 
 }
 
 // Address: 0x006f1090 - 0x006f10a5 (21 bytes)
-__attribute__((weak)) rSoundSubMixerSet::BasicSubMixers* rSoundSubMixerSet::getBasicSubMixers(u32 index) const {
-    DDON_STUB("rSoundSubMixerSet::getBasicSubMixers")
-    return nullptr;
+rSoundSubMixerSet::BasicSubMixers* rSoundSubMixerSet::getBasicSubMixers(u32 index) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mSubMixerLists.mLength >= index) {
+        return static_cast<rSoundSubMixerSet::BasicSubMixers*>(this->mSubMixerLists.mpArray[index]);
+    } else {
+        return static_cast<rSoundSubMixerSet::BasicSubMixers*>(nullptr);
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -136,9 +140,14 @@ __attribute__((weak)) rSoundSubMixerSet::BasicSubMixers* rSoundSubMixerSet::getB
 // void rSoundSubMixerSet::erase(rSoundSubMixerSet::BasicSubMixers* pSubMixers);
 
 // Address: 0x006f1120 - 0x006f1169 (73 bytes)
-__attribute__((weak)) void rSoundSubMixerSet::clear() {
-    DDON_STUB("rSoundSubMixerSet::clear")
-    /* stub */
+void rSoundSubMixerSet::clear() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x78 from rSoundSubMixerSet*
+    if (this->mSubMixerLists.mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSubMixerLists.mpArray));
+    }
+    this->mSubMixerLists.mpArray = static_cast<MtObject* *>(nullptr);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(120)) = static_cast<unsigned long>(0);
 }
 
 // No out-of-line body: no code in the ELF

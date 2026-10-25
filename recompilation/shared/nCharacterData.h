@@ -7,6 +7,7 @@
 class BitReader;
 class BitWriter;
 class cItemParam;
+class uGUIPopDetail01;
 
 // Declarations
 namespace nCharacterData { struct stCharacterName; }
@@ -228,6 +229,8 @@ namespace nCharacterData {
     {
         // inferred: cItemParam::getItemNum names cItemParam::mItemParam.mItemNum_Guard
         friend class ::cItemParam;
+        // inferred: uGUIPopDetail01::setItemParam names cItemParam::mItemParam.mItemNum_Guard
+        friend class ::uGUIPopDetail01;
     public:
         u16 getItemNum() const;
         void setItemNum(u16 NewValue);

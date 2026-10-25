@@ -343,9 +343,25 @@ __attribute__((weak)) void nJobParam::cHumanBaseInfo::copyData(const nJobParam::
 }
 
 // Address: 0x0006b8d0 - 0x0006b964 (148 bytes)
-__attribute__((weak)) void nJobParam::cHumanBaseInfo::init() {
-    DDON_STUB("nJobParam::cHumanBaseInfo::init")
-    /* stub */
+void nJobParam::cHumanBaseInfo::init() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if ((::sGame::mpInstance) == static_cast<sGame*>(nullptr)) {
+        return;
+    }
+    this->mMaxHP_pri = (::sGame::mpInstance)->::sGame::getBaseParam(static_cast<u32>(0));
+    this->mHP_pri = ::sGame::getInstance()->::sGame::getBaseParam(static_cast<u32>(0));
+    this->::nJobParam::cHumanBaseInfo::setFinalMaxHP(this->::nJobParam::cHumanBaseInfo::getMaxHP());
+    if ((::sGame::mpInstance) == static_cast<sGame*>(nullptr)) {
+        return;
+    }
+    this->mStamina_pri = (::sGame::mpInstance)->::sGame::getBaseParam(static_cast<u32>(2));
+    this->mMaxStamina_pri = ::sGame::getInstance()->::sGame::getBaseParam(static_cast<u32>(2));
+    this->mFinalMaxStamina_pri = this->mMaxStamina_pri;
+    if ((::sGame::mpInstance) == static_cast<sGame*>(nullptr)) {
+        return;
+    }
+    this->mLostPower_pri = static_cast<unsigned int>(static_cast<long>((::sGame::mpInstance)->::sGame::getBaseParam(static_cast<u32>(4))));
+    this->mLostLv_pri = static_cast<u16>(1);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (55 bytes)
@@ -388,7 +404,8 @@ const MtDTI& nJobParam::cJobInfo::getDTI() const {
 }
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline MtAllocator* nJobParam::cJobInfo::getAllocator() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+MtAllocator* nJobParam::cJobInfo::getAllocator() {
     return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI);
 }
 

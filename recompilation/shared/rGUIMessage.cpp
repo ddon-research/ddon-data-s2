@@ -164,10 +164,15 @@ const rGUIMessage::INDEX* rGUIMessage::getIndex(MT_CTSTR name) const {
 }
 
 // Address: 0x012182d0 - 0x012182f1 (33 bytes)
-__attribute__((weak)) u32 rGUIMessage::getIndexFromName(MT_CTSTR name) const {
-    // local: const INDEX* pIndex;
-    DDON_STUB("rGUIMessage::getIndexFromName")
-    return {};
+u32 rGUIMessage::getIndexFromName(MT_CTSTR name) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    const rGUIMessage::INDEX* pIndex = this->::rGUIMessage::searchINDEXFromHashTable(name, static_cast<u32>(0));
+    if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+        return (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647);
+    } else {
+        return static_cast<u32>(4294967295);
+    }
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (45 bytes)

@@ -6,12 +6,14 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "cAction.h"
+#include "cHumanActId.h"
 #include "cpActionManager.h"
 #include "../rPawnAIAction/cpActionRequest.h"
 #include "cpEffectStatusManager.h"
 #include "cpInput.h"
 #include "cpOcdCtrl.h"
 #include "nHuman.h"
+#include "nHumanMsg.h"
 #include "nShlBase.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
@@ -173,10 +175,98 @@ __attribute__((weak)) void cHumanActBase::changeJobCommonMotion(u32& motNo) {
 }
 
 // Address: 0x0022dbf0 - 0x0022dcd0 (224 bytes)
-__attribute__((weak)) void cHumanActBase::getCustomSkillIDAndLevelFromActNo(u32 ActionNo) {
-    // local: HM_SKILL_LV maxLv;
-    DDON_STUB("cHumanActBase::getCustomSkillIDAndLevelFromActNo")
-    /* stub */
+void cHumanActBase::getCustomSkillIDAndLevelFromActNo(u32 ActionNo) {
+    // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x948 from unsigned long
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) != static_cast<unsigned long>(0)) {
+        // inferred: a temporary for the result of the call at 0x22dc1b, used twice; no DWARF local holds it
+        nHuman::CUSTOM_SKILL_ENUM t0 = ::cHumanActId::getCustomSkillId(ActionNo, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) + static_cast<long>(40))));
+        this->mCustomSkillID = t0;
+        // inferred: a temporary for the value the load at 0x22dc2a read, used 4 times; no DWARF local holds it
+        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376));
+        if (t1 != static_cast<unsigned long>(0)) {
+            if (static_cast<int>(this->mCustomSkillID) <= static_cast<int>(20)) {
+                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+                } else {
+                    // inferred: a temporary for the result of the call at 0x22dc5f, used once; no DWARF local holds it
+                    u32 t2 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(40))));
+                    // inferred: a temporary for the value the load at 0x22dc7e read, used twice; no DWARF local holds it
+                    unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t1 + static_cast<unsigned long>(t2 * static_cast<u32>(80))) + static_cast<unsigned long>(::nHuman::getCustomSkillIdArrayIndex(t0) * static_cast<u32>(4))) + static_cast<long>(2376));
+                    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(t3);
+                    if (t3 != static_cast<unsigned int>(0)) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) != static_cast<unsigned long>(0)) {
+                            nHuman::HM_SKILL_LV maxLv = ::cHumanActId::getCustomSkillLvMax(this->mCustomSkillID, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) + static_cast<long>(40))));
+                            if (static_cast<int>(maxLv) < static_cast<int>(this->mSkillLv)) {
+                                this->mSkillLv = maxLv;
+                            }
+                            if (static_cast<int>(this->mSkillLv) > static_cast<int>(5)) {
+                                this->mpHuman->mCanNextCustmSkillLevel = true;
+                            }
+                        } else {
+                            nHuman::HM_SKILL_LV maxLv = ::cHumanActId::getCustomSkillLvMax(this->mCustomSkillID, static_cast<nHuman::JOB_ENUM>(255));
+                            if (static_cast<int>(maxLv) < static_cast<int>(this->mSkillLv)) {
+                                this->mSkillLv = maxLv;
+                            }
+                            if (static_cast<int>(this->mSkillLv) > static_cast<int>(5)) {
+                                this->mpHuman->mCanNextCustmSkillLevel = true;
+                            }
+                        }
+                    }
+                }
+            } else {
+                this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+            }
+        } else {
+            this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+        }
+    } else {
+        // inferred: a temporary for the result of the call at 0x22dc1b, used twice; no DWARF local holds it
+        nHuman::CUSTOM_SKILL_ENUM t0 = ::cHumanActId::getCustomSkillId(ActionNo, static_cast<nHuman::JOB_ENUM>(255));
+        this->mCustomSkillID = t0;
+        // inferred: a temporary for the value the load at 0x22dc2a read, used 4 times; no DWARF local holds it
+        unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376));
+        if (t1 != static_cast<unsigned long>(0)) {
+            if (static_cast<int>(this->mCustomSkillID) <= static_cast<int>(20)) {
+                if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+                } else {
+                    // inferred: a temporary for the result of the call at 0x22dc5f, used once; no DWARF local holds it
+                    u32 t2 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(40))));
+                    // inferred: a temporary for the value the load at 0x22dc7e read, used twice; no DWARF local holds it
+                    unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t1 + static_cast<unsigned long>(t2 * static_cast<u32>(80))) + static_cast<unsigned long>(::nHuman::getCustomSkillIdArrayIndex(t0) * static_cast<u32>(4))) + static_cast<long>(2376));
+                    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(t3);
+                    if (t3 != static_cast<unsigned int>(0)) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) != static_cast<unsigned long>(0)) {
+                            nHuman::HM_SKILL_LV maxLv = ::cHumanActId::getCustomSkillLvMax(this->mCustomSkillID, static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpHuman) + static_cast<long>(13376))) + static_cast<long>(40))));
+                            if (static_cast<int>(maxLv) < static_cast<int>(this->mSkillLv)) {
+                                this->mSkillLv = maxLv;
+                            }
+                            if (static_cast<int>(this->mSkillLv) > static_cast<int>(5)) {
+                                this->mpHuman->mCanNextCustmSkillLevel = true;
+                            }
+                        } else {
+                            nHuman::HM_SKILL_LV maxLv = ::cHumanActId::getCustomSkillLvMax(this->mCustomSkillID, static_cast<nHuman::JOB_ENUM>(255));
+                            if (static_cast<int>(maxLv) < static_cast<int>(this->mSkillLv)) {
+                                this->mSkillLv = maxLv;
+                            }
+                            if (static_cast<int>(this->mSkillLv) > static_cast<int>(5)) {
+                                this->mpHuman->mCanNextCustmSkillLevel = true;
+                            }
+                        }
+                    }
+                }
+            } else {
+                this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+            }
+        } else {
+            this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(0);
+        }
+    }
 }
 
 // Address: 0x0022dce0 - 0x0022ddd1 (241 bytes)

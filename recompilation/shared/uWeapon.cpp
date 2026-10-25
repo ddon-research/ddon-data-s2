@@ -6,8 +6,12 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
+#include "cResource.h"
 #include "cUnit.h"
 #include "nWeapon.h"
+#include "rDDOModelMontage.h"
+#include "rModel.h"
 #include "../rNpcConstItem/rNpcConstItem.h"
 #include "sGame.h"
 #include "sNpcManager.h"
@@ -74,22 +78,62 @@ inline void uWeapon::operator delete(void* p_addr) {
 // Address: 0x00d59530 - 0x00d59625 (245 bytes)
 // Also emitted as: _ZN7uWeaponD0Ev at 0x00d59630
 uWeapon::~uWeapon() {
-    DDON_STUB("uWeapon::~uWeapon")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mCnsWeapon.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0xd59560 carries; no location-less local in scope fits
+        u32 v0_0 = this->mCnsWeapon.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mCnsWeapon.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mCnsWeapon.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCnsWeapon.::MtArray::mLength) {
+                    v0_0 = this->mCnsWeapon.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mCnsWeapon.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCnsWeapon.::MtArray::mpArray));
+    }
+    this->mCnsWeapon.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mCnsWeapon.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mCnsWeapon.::MtArray::mLength = static_cast<u32>(0);
+    if (this->mpModelRes != static_cast<rModel*>(nullptr)) {
+        this->mpModelRes->::cResource::release();
+        this->mpModelRes = static_cast<rModel*>(nullptr);
+    }
+    if (this->mpMontage != static_cast<rDDOModelMontage*>(nullptr)) {
+        this->mpMontage->::cResource::release();
+        this->mpMontage = static_cast<rDDOModelMontage*>(nullptr);
+    }
 }
 
 // Address: 0x00d58e20 - 0x00d58e3f (31 bytes)
-__attribute__((weak)) uWeapon* uWeapon::createWeaponModel(nWeapon::WEAPON_CATEGORY wepCategory, cWeaponResTable* pWepResData, uModel* pParent, nWeapon::MODEL_TYPE model_type, u8 partsPatern, s8 colorPatern) {
-    // local: uWeapon* pWpn;
-    DDON_STUB("uWeapon::createWeaponModel")
-    return nullptr;
+uWeapon* uWeapon::createWeaponModel(nWeapon::WEAPON_CATEGORY wepCategory, cWeaponResTable* pWepResData, uModel* pParent, nWeapon::MODEL_TYPE model_type, u8 partsPatern, s8 colorPatern) {
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: unsigned int used as s8
+    uWeapon* pWpn = ::uWeapon::createWeaponModelCore(static_cast<u32>(wepCategory), pWepResData, pParent, model_type, partsPatern, static_cast<s8>(static_cast<unsigned int>(colorPatern)));
+    if (pWpn != static_cast<uWeapon*>(nullptr)) {
+        pWpn->mWepCategory = wepCategory;
+    }
+    return pWpn;
 }
 
 // Address: 0x00d59360 - 0x00d59372 (18 bytes)
-__attribute__((weak)) uWeapon* uWeapon::createWeaponModel(nWeapon::OTHER_MODEL_INDEX index, cWeaponResTable* pWepResData, uModel* pParent, u8 partsPatern, s8 colorPatern) {
-    // local: uWeapon* pWpn;
-    DDON_STUB("uWeapon::createWeaponModel")
-    return nullptr;
+uWeapon* uWeapon::createWeaponModel(nWeapon::OTHER_MODEL_INDEX index, cWeaponResTable* pWepResData, uModel* pParent, u8 partsPatern, s8 colorPatern) {
+    // DWARF local not rendered: uWeapon* pWpn;
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: unsigned int used as s8
+    return ::uWeapon::createWeaponModelCore(static_cast<u32>(index), pWepResData, pParent, static_cast<nWeapon::MODEL_TYPE>(2), partsPatern, static_cast<s8>(static_cast<unsigned int>(colorPatern)));
 }
 
 // Address: 0x00d59300 - 0x00d59353 (83 bytes)

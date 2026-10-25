@@ -6,6 +6,7 @@
 #include "MtCollisionUtil.h"
 #include "MtColor.h"
 #include "MtDTI.h"
+#include "MtDataWriter.h"
 #include "MtGeometry3D.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
@@ -67,8 +68,35 @@ nCollision::cCollisionNode::cCollisionNode(const MtDTI* pEditGeometryDTI) {
 // Address: 0x0118de60 - 0x0118defd (157 bytes)
 // Also emitted as: _ZN10nCollision14cCollisionNodeD0Ev at 0x0118df00
 nCollision::cCollisionNode::~cCollisionNode() {
-    DDON_STUB("nCollision::cCollisionNode::~cCollisionNode")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mGeometryArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x118de90 carries; no location-less local in scope fits
+        u32 v0_0 = this->mGeometryArray.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mGeometryArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mGeometryArray.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mGeometryArray.::MtArray::mLength) {
+                    v0_0 = this->mGeometryArray.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mGeometryArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mGeometryArray.::MtArray::mpArray));
+    }
+    this->mGeometryArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mGeometryArray.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mGeometryArray.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0118dfc0 - 0x0118e2b0 (752 bytes)
@@ -332,19 +360,27 @@ MT_CTSTR nCollision::cCollisionNode::getEditDTIName() const {
 // bool nCollision::cCollisionNode::isSetup() const;
 
 // Address: 0x0118ec20 - 0x0118ec33 (19 bytes)
-__attribute__((weak)) nCollision::cGeometry* nCollision::cCollisionNode::getGeometryClass(u32 TargetIndex) {
-    // local: cGeometry* pTargetGeometry;
-    // local: const u32 GeometryNum;
-    DDON_STUB("nCollision::cCollisionNode::getGeometryClass")
-    return nullptr;
+nCollision::cGeometry* nCollision::cCollisionNode::getGeometryClass(u32 TargetIndex) {
+    // DWARF local not rendered: cGeometry* pTargetGeometry;
+    // DWARF local not rendered: const u32 GeometryNum;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (TargetIndex < this->mGeometryArray.::MtArray::mLength) {
+        return static_cast<nCollision::cGeometry*>(this->mGeometryArray.::MtArray::mpArray[TargetIndex]);
+    } else {
+        return static_cast<nCollision::cGeometry*>(nullptr);
+    }
 }
 
 // Address: 0x0118ec00 - 0x0118ec13 (19 bytes)
-__attribute__((weak)) const nCollision::cGeometry* nCollision::cCollisionNode::getGeometryClassConst(u32 TargetIndex) const {
-    // local: const cGeometry* pTargetGeometry;
-    // local: const u32 GeometryNum;
-    DDON_STUB("nCollision::cCollisionNode::getGeometryClassConst")
-    return nullptr;
+const nCollision::cGeometry* nCollision::cCollisionNode::getGeometryClassConst(u32 TargetIndex) const {
+    // DWARF local not rendered: const cGeometry* pTargetGeometry;
+    // DWARF local not rendered: const u32 GeometryNum;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (TargetIndex < this->mGeometryArray.::MtArray::mLength) {
+        return static_cast<const nCollision::cGeometry*>(this->mGeometryArray.::MtArray::mpArray[TargetIndex]);
+    } else {
+        return static_cast<const nCollision::cGeometry*>(nullptr);
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -711,9 +747,9 @@ __attribute__((weak)) MtObject* nCollision::cCollisionNodeObject::getGeometryUse
 // void nCollision::cCollisionNodeObject::registCallbackSetup(MT_MFUNC pSetupFunction);
 
 // Address: 0x01b85730 - 0x01b8573c (12 bytes)
-__attribute__((weak)) bool nCollision::cCollisionNodeObject::isRegistCallbackSetup() const {
-    DDON_STUB("nCollision::cCollisionNodeObject::isRegistCallbackSetup")
-    return {};
+bool nCollision::cCollisionNodeObject::isRegistCallbackSetup() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mpCallbackFuncSetup != static_cast<const MT_MFUNC>(0);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1646,9 +1682,17 @@ __attribute__((weak)) bool nCollision::cObjectBase::load(MtDataReader& r, MtStre
 }
 
 // Address: 0x01187a30 - 0x01187a66 (54 bytes)
-__attribute__((weak)) bool nCollision::cObjectBase::save(MtDataWriter& w, MtStream& out) {
-    DDON_STUB("nCollision::cObjectBase::save")
-    return {};
+bool nCollision::cObjectBase::save(MtDataWriter& w, MtStream& out) {
+    // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    // inferred: a temporary for the value the load at 0x1187a3a read, used once; no DWARF local holds it
+    bool t0 = this->mFlgActive;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
+    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+    return true;
 }
 
 // Address: 0x01187a70 - 0x01187a71 (1 bytes)

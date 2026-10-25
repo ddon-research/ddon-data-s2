@@ -168,9 +168,30 @@ __attribute__((weak)) void cAIGraph::setSize(u32 num) {
 }
 
 // Address: 0x0102a960 - 0x0102a9bf (95 bytes)
-__attribute__((weak)) void cAIGraph::setData(MtObject* obj, u32 index) {
-    DDON_STUB("cAIGraph::setData")
-    /* stub */
+void cAIGraph::setData(MtObject* obj, u32 index) {
+    // Approximate from the ELF: a store at a join copied into the arms; a temporary declared in several branches; the body oracle reports this body.
+    if (this->mDeleteNode != false) {
+        if (this->mpNode[index].mpCurrent != static_cast<MtObject*>(nullptr)) {
+            delete this->mpNode[index].mpCurrent;
+            // inferred: a temporary for the value the load at 0x102a99b read, used 3 times; no DWARF local holds it
+            cAIGraph::Node* t0 = this->mpNode;
+            t0[index].mpCurrent = obj;
+            t0[index].mID = static_cast<unsigned short>(index);
+            t0[index].mpParent = this;
+        } else {
+            // inferred: a temporary for the value the load at 0x102a99b read, used 3 times; no DWARF local holds it
+            cAIGraph::Node* t0 = this->mpNode;
+            t0[index].mpCurrent = obj;
+            t0[index].mID = static_cast<unsigned short>(index);
+            t0[index].mpParent = this;
+        }
+    } else {
+        // inferred: a temporary for the value the load at 0x102a99b read, used 3 times; no DWARF local holds it
+        cAIGraph::Node* t0 = this->mpNode;
+        t0[index].mpCurrent = obj;
+        t0[index].mID = static_cast<unsigned short>(index);
+        t0[index].mpParent = this;
+    }
 }
 
 // Address: 0x0102a9c0 - 0x0102aa79 (185 bytes)
@@ -198,9 +219,30 @@ __attribute__((weak)) void cAIGraph::setAreaSize(u32 num) {
 }
 
 // Address: 0x0102add0 - 0x0102ae2f (95 bytes)
-__attribute__((weak)) void cAIGraph::setAreaData(MtObject* obj, u32 index) {
-    DDON_STUB("cAIGraph::setAreaData")
-    /* stub */
+void cAIGraph::setAreaData(MtObject* obj, u32 index) {
+    // Approximate from the ELF: a store at a join copied into the arms; a temporary declared in several branches; the body oracle reports this body.
+    if (this->mDeleteArea != false) {
+        if (this->mpArea[index].::cAIGraph::Node::mpCurrent != static_cast<MtObject*>(nullptr)) {
+            delete this->mpArea[index].::cAIGraph::Node::mpCurrent;
+            // inferred: a temporary for the value the load at 0x102ae0b read, used 3 times; no DWARF local holds it
+            cAIGraph::Area* t0 = this->mpArea;
+            t0[index].::cAIGraph::Node::mpCurrent = obj;
+            t0[index].::cAIGraph::Node::mID = static_cast<unsigned short>(index);
+            t0[index].::cAIGraph::Node::mpParent = this;
+        } else {
+            // inferred: a temporary for the value the load at 0x102ae0b read, used 3 times; no DWARF local holds it
+            cAIGraph::Area* t0 = this->mpArea;
+            t0[index].::cAIGraph::Node::mpCurrent = obj;
+            t0[index].::cAIGraph::Node::mID = static_cast<unsigned short>(index);
+            t0[index].::cAIGraph::Node::mpParent = this;
+        }
+    } else {
+        // inferred: a temporary for the value the load at 0x102ae0b read, used 3 times; no DWARF local holds it
+        cAIGraph::Area* t0 = this->mpArea;
+        t0[index].::cAIGraph::Node::mpCurrent = obj;
+        t0[index].::cAIGraph::Node::mID = static_cast<unsigned short>(index);
+        t0[index].::cAIGraph::Node::mpParent = this;
+    }
 }
 
 // Address: 0x0102ac50 - 0x0102ad0a (186 bytes)
@@ -216,17 +258,53 @@ __attribute__((weak)) void cAIGraph::setAreaLinkSize(u32 size) {
 }
 
 // Address: 0x0102ae30 - 0x0102ae5c (44 bytes)
-__attribute__((weak)) void cAIGraph::insert(cAIGraph::Node* pNode, cAIGraph::Link* addLink) {
-    // local: Link* pLink;
-    DDON_STUB("cAIGraph::insert")
-    /* stub */
+void cAIGraph::insert(cAIGraph::Node* pNode, cAIGraph::Link* addLink) {
+    // DWARF local not rendered: Link* pLink;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x102ae40 carries; no location-less local in scope fits
+    cAIGraph::Link* v0_0;
+    if (pNode->mpLink == static_cast<cAIGraph::Link*>(nullptr)) {
+        pNode->mpLink = addLink;
+        pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + static_cast<int>(1));
+        return;
+    } else {
+        v0_0 = pNode->mpLink;
+    }
+    for (;;) {
+        if (v0_0->mpNext != static_cast<cAIGraph::Link*>(nullptr)) {
+            v0_0 = v0_0->mpNext;
+        } else {
+            break;
+        }
+    }
+    v0_0->mpNext = addLink;
+    pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + static_cast<int>(1));
 }
 
 // Address: 0x0102ae60 - 0x0102ae9f (63 bytes)
-__attribute__((weak)) void cAIGraph::remove(cAIGraph::Node* pNode, cAIGraph::Link* removeLink) {
-    // local: Link* pLink;
-    DDON_STUB("cAIGraph::remove")
-    /* stub */
+void cAIGraph::remove(cAIGraph::Node* pNode, cAIGraph::Link* removeLink) {
+    // DWARF local not rendered: Link* pLink;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (removeLink != pNode->mpLink) {
+        // inferred: the value the loop at 0x102ae70 carries; no location-less local in scope fits
+        cAIGraph::Link* v0_1 = pNode->mpLink;
+        for (;;) {
+            if (v0_1 == static_cast<cAIGraph::Link*>(nullptr)) {
+                return;
+            } else {
+                if (removeLink != v0_1->mpNext) {
+                    v0_1 = v0_1->mpNext;
+                } else {
+                    break;
+                }
+            }
+        }
+        v0_1->mpNext = removeLink->mpNext;
+    } else {
+        pNode->mpLink = removeLink->mpNext;
+    }
+    removeLink->mpNext = static_cast<cAIGraph::Link*>(nullptr);
+    pNode->mNumberOfLink = static_cast<unsigned char>(pNode->mNumberOfLink + static_cast<int>(255));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -298,9 +376,22 @@ const MtDTI& cAIGraph::Node::getDTI() const {
 // Address: 0x0102af70 - 0x0102afef (127 bytes)
 // Also emitted as: _ZN8cAIGraph4NodeD0Ev at 0x0102aff0
 cAIGraph::Node::~Node() {
-    // local: Link* e;
-    DDON_STUB("cAIGraph::Node::~Node")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mAutoDeleteLink != false) {
+        if (this->mpLink != static_cast<cAIGraph::Link*>(nullptr)) {
+            for (cAIGraph::Link* e = this->mpLink;;) {
+                this->mpLink = e->mpNext;
+                e->mpNext = static_cast<cAIGraph::Link*>(nullptr);
+                e->mpCurrent = static_cast<cAIGraph::Node*>(nullptr);
+                ::MtMemoryAllocator::getAllocator(::cAIGraph::DTI)->memFree(static_cast<void*>(e));
+                if (this->mpLink != static_cast<cAIGraph::Link*>(nullptr)) {
+                    e = this->mpLink;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x0102b090 - 0x0102b222 (402 bytes)

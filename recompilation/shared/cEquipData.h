@@ -15,6 +15,7 @@
 class MtAllocator;
 class MtDTI;
 class MtPropertyList;
+class cContextPlayerInfo;
 class cItemParam;
 namespace nCharacterData { struct stEquipData; }
 namespace nEquipDataJewelry { class cJewelryData; }
@@ -81,6 +82,8 @@ namespace nEquipAbilityInfo {
 
 class cEquipData : public MtObject
 {
+    // inferred: cContextPlayerInfo::getSpreadResistTotal names cEquipData::mKindParamS8[10]
+    friend class cContextPlayerInfo;
     // inferred: uHuman::makeOcdAttackInfoCore names cEquipData::mKindParamU16[0]
     friend class uHuman;
 public:
@@ -395,6 +398,12 @@ private:
     static const nCharacterData::EQUIP_SLOT_TYPE mEquipWepTbl[];
     static const nCharacterData::EQUIP_SLOT_TYPE mEquipArmorTbl[];
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cEquipData::getShieldStagger() const {
+    return this->mStShieldStagger;
+}
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it

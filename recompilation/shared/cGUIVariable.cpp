@@ -270,15 +270,22 @@ const MT_CTSTR* cGUIVariable::getEventPropertyTooltip() {
 // bool cGUIVariable::isDynamic() const;
 
 // Address: 0x01b73790 - 0x01b737a5 (21 bytes)
-__attribute__((weak)) void cGUIVariable::setLoopValue(bool v) {
-    DDON_STUB("cGUIVariable::setLoopValue")
-    /* stub */
+void cGUIVariable::setLoopValue(bool v) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (v) {
+        this->mAttr = this->mAttr | static_cast<u32>(2);
+    } else {
+        this->mAttr = this->mAttr & static_cast<u32>(65533);
+    }
 }
 
 // Address: 0x01b73780 - 0x01b73788 (8 bytes)
-__attribute__((weak)) bool cGUIVariable::isLoopValue() const {
-    DDON_STUB("cGUIVariable::isLoopValue")
-    return {};
+bool cGUIVariable::isLoopValue() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0xc from const cGUIVariable*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(12))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // No out-of-line body: no code in the ELF

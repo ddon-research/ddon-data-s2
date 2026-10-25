@@ -160,8 +160,7 @@ __attribute__((weak)) void uGUIPointer::pickItem(cItemParam* pParam, u32 uPrio) 
 // Address: 0x00b49e00 - 0x00b49e7b (123 bytes)
 void uGUIPointer::releaseItem() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mOffset.x = ::MtVector2::Zero.x;
-    this->mOffset.y = ::MtVector2::Zero.y;
+    this->mOffset = ::MtVector2::Zero;
     this->::uGUIPointer::setPointerPos(this->mBasePos, static_cast<s32>(2));
     this->mIsCatch = false;
     this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mpInstNullItemIcon), false);
@@ -246,8 +245,7 @@ void uGUIPointer::setPopCmdPrio(u32 uPrio) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mPopTargetPrio = static_cast<u32>(11);
     this->mPopCmdPrio = uPrio;
-    this->mPopCmdTarget.x = ::MtVector2::Zero.x;
-    this->mPopCmdTarget.y = ::MtVector2::Zero.y;
+    this->mPopCmdTarget = ::MtVector2::Zero;
 }
 
 // Address: 0x00b4a7b0 - 0x00b4a7bb (11 bytes)
@@ -347,15 +345,25 @@ void uGUIPointer::adjustScale() {
 }
 
 // Address: 0x00b4ab50 - 0x00b4ab8d (61 bytes)
-__attribute__((weak)) bool uGUIPointer::isForceSamplerLinear(cGUIObject* pObj) const {
-    DDON_STUB("uGUIPointer::isForceSamplerLinear")
-    return {};
+bool uGUIPointer::isForceSamplerLinear(cGUIObject* pObj) const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
+        if (this->mpInstNullPointer != static_cast<cGUIInstNull*>(nullptr)) {
+            if (this->mpInstNullPointer->mScale.x > 1.0f) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        return true;
+    }
 }
 
 // Address: 0x00b497f0 - 0x00b4980a (26 bytes)
-__attribute__((weak)) void uGUIPointer::updateInit() {
-    DDON_STUB("uGUIPointer::updateInit")
-    /* stub */
+void uGUIPointer::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPointer::updateWait);
 }
 
 // Address: 0x00b49810 - 0x00b49a4b (571 bytes)

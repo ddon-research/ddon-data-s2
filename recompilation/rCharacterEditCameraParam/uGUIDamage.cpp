@@ -161,9 +161,9 @@ __attribute__((weak)) void uGUIDamage::adjustScale() {
 }
 
 // Address: 0x00b4c210 - 0x00b4c22a (26 bytes)
-__attribute__((weak)) void uGUIDamage::updateInit() {
-    DDON_STUB("uGUIDamage::updateInit")
-    /* stub */
+void uGUIDamage::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDamage::updateWait);
 }
 
 // Address: 0x00b4c9a0 - 0x00b4cab5 (277 bytes)

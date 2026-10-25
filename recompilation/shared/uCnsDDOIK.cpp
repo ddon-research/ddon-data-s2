@@ -776,21 +776,151 @@ s32 uCnsDDOIK::getJointInfoNum() {
 // bool uCnsDDOIK::isEffCtrlOffsetDisable() const;
 
 // Address: 0x008bd010 - 0x008bd0aa (154 bytes)
-__attribute__((weak)) u32 uCnsDDOIK::getDependentJointNum() {
-    // local: u32 Num;
-    // local: Joint* pJnt;
-    // local: Joint* pJnt;
-    DDON_STUB("uCnsDDOIK::getDependentJointNum")
-    return {};
+u32 uCnsDDOIK::getDependentJointNum() {
+    // DWARF local not rendered: u32 Num;
+    // DWARF local not rendered: Joint* pJnt;
+    // DWARF local not rendered: Joint* pJnt;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xef8 from uCnsDDOIK*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xf08 from uCnsDDOIK*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mEffectorTargetModelEnable != false) {
+        if (this->mpEffectorTargetModel != static_cast<uModel*>(nullptr)) {
+            if (this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))] != static_cast<unsigned char>(255)) {
+                if (this->mUpVectorTargetModelEnable != false) {
+                    if (this->mpUpVectorTargetModel != static_cast<uModel*>(nullptr)) {
+                        if (this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))] != static_cast<unsigned char>(255)) {
+                            return static_cast<unsigned int>(static_cast<unsigned long>(((&this->mpEffectorTargetModel->mJoint[this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))]]) == static_cast<uModel::Joint*>(nullptr)) == false) + static_cast<unsigned long>(((&this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]]) == static_cast<uModel::Joint*>(nullptr)) == false));
+                        }
+                    }
+                }
+                return ((&this->mpEffectorTargetModel->mJoint[this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))]]) == static_cast<uModel::Joint*>(nullptr)) == false;
+            }
+        }
+    }
+    if (this->mUpVectorTargetModelEnable != false) {
+        if (this->mpUpVectorTargetModel != static_cast<uModel*>(nullptr)) {
+            if (this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))] != static_cast<unsigned char>(255)) {
+                return ((&this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]]) == static_cast<uModel::Joint*>(nullptr)) == false;
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x008bd0b0 - 0x008bd197 (231 bytes)
-__attribute__((weak)) uModel::Joint* uCnsDDOIK::getDependentJoint(u32 Idx) {
-    // local: Joint* pJnt;
-    // local: Joint* pJnt;
-    // local: Joint* pJnt;
-    DDON_STUB("uCnsDDOIK::getDependentJoint")
-    return nullptr;
+uModel::Joint* uCnsDDOIK::getDependentJoint(u32 Idx) {
+    // DWARF local not rendered: Joint* pJnt;
+    // DWARF local not rendered: Joint* pJnt;
+    // DWARF local not rendered: Joint* pJnt;
+    // Approximate from the ELF: a clamp the recompile turns around; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xef8 from uCnsDDOIK*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xf08 from uCnsDDOIK*
+    if (this->mEffectorTargetModelEnable != false) {
+        if (this->mUpVectorTargetModelEnable == false) {
+            if (this->mpEffectorTargetModel != static_cast<uModel*>(nullptr)) {
+                if (this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))] != static_cast<unsigned char>(255)) {
+                    if ((&this->mpEffectorTargetModel->mJoint[this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))]]) == static_cast<uModel::Joint*>(nullptr)) {
+                        return static_cast<uModel::Joint*>(nullptr);
+                    } else {
+                        return &this->mpEffectorTargetModel->mJoint[this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))]];
+                    }
+                } else {
+                    return static_cast<uModel::Joint*>(nullptr);
+                }
+            } else {
+                return static_cast<uModel::Joint*>(nullptr);
+            }
+        } else {
+            if (Idx != static_cast<u32>(1)) {
+                if (Idx == static_cast<u32>(0)) {
+                    if (this->mpEffectorTargetModel != static_cast<uModel*>(nullptr)) {
+                        if (this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))] != static_cast<unsigned char>(255)) {
+                            if ((&this->mpEffectorTargetModel->mJoint[this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))]]) == static_cast<uModel::Joint*>(nullptr)) {
+                                if (this->mpUpVectorTargetModel != static_cast<uModel*>(nullptr)) {
+                                    if (this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))] != static_cast<unsigned char>(255)) {
+                                        if ((&this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]]) == static_cast<uModel::Joint*>(nullptr)) {
+                                            return static_cast<uModel::Joint*>(nullptr);
+                                        } else {
+                                            return &this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]];
+                                        }
+                                    } else {
+                                        return static_cast<uModel::Joint*>(nullptr);
+                                    }
+                                } else {
+                                    return static_cast<uModel::Joint*>(nullptr);
+                                }
+                            } else {
+                                return &this->mpEffectorTargetModel->mJoint[this->mpEffectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3832))]];
+                            }
+                        } else {
+                            if (this->mpUpVectorTargetModel != static_cast<uModel*>(nullptr)) {
+                                if (this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))] != static_cast<unsigned char>(255)) {
+                                    if ((&this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]]) == static_cast<uModel::Joint*>(nullptr)) {
+                                        return static_cast<uModel::Joint*>(nullptr);
+                                    } else {
+                                        return &this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]];
+                                    }
+                                } else {
+                                    return static_cast<uModel::Joint*>(nullptr);
+                                }
+                            } else {
+                                return static_cast<uModel::Joint*>(nullptr);
+                            }
+                        }
+                    } else {
+                        if (this->mpUpVectorTargetModel != static_cast<uModel*>(nullptr)) {
+                            if (this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))] != static_cast<unsigned char>(255)) {
+                                if ((&this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]]) == static_cast<uModel::Joint*>(nullptr)) {
+                                    return static_cast<uModel::Joint*>(nullptr);
+                                } else {
+                                    return &this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]];
+                                }
+                            } else {
+                                return static_cast<uModel::Joint*>(nullptr);
+                            }
+                        } else {
+                            return static_cast<uModel::Joint*>(nullptr);
+                        }
+                    }
+                } else {
+                    return static_cast<uModel::Joint*>(nullptr);
+                }
+            } else {
+                if (this->mpUpVectorTargetModel != static_cast<uModel*>(nullptr)) {
+                    if (this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))] != static_cast<unsigned char>(255)) {
+                        if ((&this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]]) == static_cast<uModel::Joint*>(nullptr)) {
+                            return static_cast<uModel::Joint*>(nullptr);
+                        } else {
+                            return &this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]];
+                        }
+                    } else {
+                        return static_cast<uModel::Joint*>(nullptr);
+                    }
+                } else {
+                    return static_cast<uModel::Joint*>(nullptr);
+                }
+            }
+        }
+    } else {
+        if (this->mUpVectorTargetModelEnable != false) {
+            if (this->mpUpVectorTargetModel != static_cast<uModel*>(nullptr)) {
+                if (this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))] != static_cast<unsigned char>(255)) {
+                    if ((&this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]]) == static_cast<uModel::Joint*>(nullptr)) {
+                        return static_cast<uModel::Joint*>(nullptr);
+                    } else {
+                        return &this->mpUpVectorTargetModel->mJoint[this->mpUpVectorTargetModel->mJointTable[*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(3848))]];
+                    }
+                } else {
+                    return static_cast<uModel::Joint*>(nullptr);
+                }
+            } else {
+                return static_cast<uModel::Joint*>(nullptr);
+            }
+        } else {
+            return static_cast<uModel::Joint*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x008b41e0 - 0x008b41e1 (1 bytes)
@@ -855,10 +985,7 @@ u32 uCnsDDOIK::getStatus() {
 // Address: 0x008b4b30 - 0x008b4b68 (56 bytes)
 void uCnsDDOIK::setEffectorPos(const MtVector3& Pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mEffectorPos.x = Pos.x;
-    this->mEffectorPos.y = Pos.y;
-    this->mEffectorPos.z = Pos.z;
-    this->mEffectorPos.pad_ = 0.0f;
+    this->mEffectorPos = Pos;
     this->mEffectorPosEnable = true;
 }
 

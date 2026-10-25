@@ -1124,11 +1124,15 @@ __attribute__((weak)) void cPawnActInterface::updateAutoWeaponMode(cPawnActInter
 }
 
 // Address: 0x00432230 - 0x0043224c (28 bytes)
-__attribute__((weak)) cPawnActInterBase* cPawnActInterface::getActiveActInter() {
-    // local: cPawnActInterBase* p_cur;
-    // local: u32 step;
-    DDON_STUB("cPawnActInterface::getActiveActInter")
-    return nullptr;
+cPawnActInterBase* cPawnActInterface::getActiveActInter() {
+    // DWARF local not rendered: cPawnActInterBase* p_cur;
+    // DWARF local not rendered: u32 step;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mActInterStep < this->mActIntersMain.::MtArray::mLength) {
+        return static_cast<cPawnActInterBase*>(this->mActIntersMain.::MtArray::mpArray[this->mActInterStep]);
+    } else {
+        return static_cast<cPawnActInterBase*>(nullptr);
+    }
 }
 
 // No out-of-line body: no code in the ELF

@@ -270,9 +270,10 @@ bool cScenario::isEnable() {
 }
 
 // Address: 0x005589a0 - 0x005589a7 (7 bytes)
-__attribute__((weak)) bool cScenario::isHit() {
-    DDON_STUB("cScenario::isHit")
-    return {};
+bool cScenario::isHit() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as bool
+    return static_cast<bool>(this->mStatus & static_cast<u32>(1));
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (20 bytes)
@@ -301,9 +302,12 @@ void cScenario::kill() {
 }
 
 // Address: 0x00558740 - 0x00558749 (9 bytes)
-__attribute__((weak)) bool cScenario::isDone() {
-    DDON_STUB("cScenario::isDone")
-    return {};
+bool cScenario::isDone() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38 from cScenario*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(56))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // No out-of-line body: no code in the ELF

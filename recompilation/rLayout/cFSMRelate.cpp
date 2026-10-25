@@ -60,8 +60,8 @@ void* cFSMRelate::operator new(size_t sz, u32 align) {
 
 // Address: 0x001ef2a0 - 0x001ef2bb (27 bytes)
 cFSMRelate::cFSMRelate() {
-    DDON_STUB("cFSMRelate::cFSMRelate")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mFSMType = static_cast<u8>(0);
 }
 
 // Address: 0x001ef2c0 - 0x001ef33b (123 bytes)
@@ -112,8 +112,8 @@ __attribute__((weak)) void cFSMRelate::setFSMResource(rAIFSM* pr) {
 // cFSMRelate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x001ef1a0 - 0x001ef1ec (76 bytes)
-__attribute__((weak)) MtObject* cFSMRelate::MyDTI::newInstance() const {
-    DDON_STUB("cFSMRelate::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMRelate::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::cFSMRelate;
 }
 

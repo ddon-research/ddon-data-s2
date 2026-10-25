@@ -595,7 +595,6 @@ inline u32 nZone::cLayoutElement::getIndex() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline MtObject* nZone::cLayoutElement::getExtendObj() const {
     return this->mpExtendObj;
 }

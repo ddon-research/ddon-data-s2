@@ -1421,6 +1421,12 @@ inline u32 sItemManager::getShopBuyLimit() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool sItemManager::stRequest::getResult() const {
+    return this->mResult;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sItemManager::cItemBag::cGetItemListData::cGetItemListData() {
     this->mStorageType = static_cast<u8>(0);
     this->mCharType = static_cast<u8>(0);

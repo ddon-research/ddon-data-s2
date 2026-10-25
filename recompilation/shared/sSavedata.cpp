@@ -7,6 +7,7 @@
 #include "MtString.h"
 #include "MtThread.h"
 #include "cSystem.h"
+#include "../rCharacterEditCameraParam/sUserManager.h"
 #include "save_data.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -371,11 +372,42 @@ __attribute__((weak)) sSavedata::RESULT sSavedata::beginExistCheck() {
 // void sSavedata::unloadIcon();
 
 // Address: 0x00e4bb10 - 0x00e4bb91 (129 bytes)
-__attribute__((weak)) void sSavedata::initUserId() {
-    // local: bool isLogin;
-    // local: u32 loginUser;
-    DDON_STUB("sSavedata::initUserId")
-    /* stub */
+void sSavedata::initUserId() {
+    // DWARF local not rendered: bool isLogin;
+    // DWARF local not rendered: u32 loginUser;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if (this->mUserId != static_cast<SceUserServiceUserId>(0)) {
+        if ((::sUserManager::mpInstance)->mUserNum != static_cast<s32>(0)) {
+            if ((::sUserManager::mpInstance)->mUserNum == static_cast<s32>(1)) {
+                this->mUserId = (::sUserManager::mpInstance)->::sUserManager::getInitialUserId();
+                return;
+            } else {
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                unsigned int i0_3 = static_cast<unsigned int>(0);
+                // inferred: the value the loop at 0xe4bb67 carries; no location-less local in scope fits
+                sUserManager* v0_5 = ::sUserManager::mpInstance;
+                // inferred: the value the loop at 0xe4bb67 carries; no location-less local in scope fits
+                for (SceUserServiceUserId v0_8 = this->mUserId;;) {
+                    if (v0_8 == v0_5->::sUserManager::getUserId(static_cast<s32>(i0_3))) {
+                        return;
+                    } else {
+                        if ((i0_3 + static_cast<unsigned int>(1)) >= static_cast<unsigned int>((::sUserManager::mpInstance)->mUserNum)) {
+                            break;
+                        } else {
+                            i0_3 += static_cast<unsigned int>(1);
+                            v0_5 = ::sUserManager::mpInstance;
+                            v0_8 = this->mUserId;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        this->mUserId = (::sUserManager::mpInstance)->::sUserManager::getInitialUserId();
+        return;
+    }
+    this->mUserId = static_cast<SceUserServiceUserId>(0);
 }
 
 // Address: 0x00e4bd40 - 0x00e4be44 (260 bytes)

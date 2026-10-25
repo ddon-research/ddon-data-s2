@@ -84,7 +84,7 @@ using u8 = unsigned char;
 
 class MtProperty
 {
-    // inferred: MtPropertyList::length names MtProperty::mpPrev
+    // inferred: MtPropertyList::begin names MtProperty::mpPrev
     friend class MtPropertyList;
 public:
     enum TYPE

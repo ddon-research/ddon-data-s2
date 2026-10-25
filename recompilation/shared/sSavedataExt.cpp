@@ -7,6 +7,7 @@
 #include "MtDataWriter.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "nDDOIO.h"
 #include "sNetwork.h"
 #include "sNetworkExt.h"
 #include "sSavedata.h"
@@ -423,15 +424,217 @@ cStorageDataEdit::~cStorageDataEdit() {
 }
 
 // Address: 0x00836d50 - 0x008371ea (1178 bytes)
-__attribute__((weak)) void cStorageDataEdit::save(MtDataWriter& w, u32 SaveVersion) {
-    DDON_STUB("cStorageDataEdit::save")
-    /* stub */
+void cStorageDataEdit::save(MtDataWriter& w, u32 SaveVersion) {
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    w.::MtDataWriter::writeString(&this->mPlayerName[0]);
+    w.::MtDataWriter::writeString(&this->mComment[0]);
+    // inferred: a temporary for the value the load at 0x836d82 read, used once; no DWARF local holds it
+    u8 t0 = this->mBodyType;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = t0;
+    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+    w.writeS32(this->mHair);
+    w.writeS32(this->mBeard);
+    w.writeS32(this->mMakeup);
+    w.writeS32(this->mScar);
+    w.writeF32(this->mWrinkleValue);
+    w.writeS32(this->mEyePresetNo);
+    w.writeS32(this->mEyebrowTexNo);
+    w.writeS32(this->mNosePresetNo);
+    w.writeS32(this->mMouthPresetNo);
+    w.writeF32(this->mSokutoubuValue);
+    w.writeF32(this->mHitaiValue);
+    w.writeF32(this->mMimijyougeValue);
+    w.writeF32(this->mMabisasijyougeValue);
+    w.writeF32(this->mHitomiookisaValue);
+    w.writeF32(this->mMeookisaValue);
+    w.writeF32(this->mMekaitenValue);
+    w.writeF32(this->mKannkakuValue);
+    w.writeF32(this->mEyebrowUVOffsetYValue);
+    w.writeF32(this->mEyebrowUVOffsetXValue);
+    w.writeF32(this->mMayukaitenValue);
+    w.writeF32(this->mMikentakasaValue);
+    w.writeF32(this->mMikenhabaValue);
+    w.writeF32(this->mHanajyougeValue);
+    w.writeF32(this->mHanahabaValue);
+    w.writeF32(this->mHanatakasaValue);
+    w.writeF32(this->mHanakakudoValue);
+    w.writeF32(this->mHohobonejyougeValue);
+    w.writeF32(this->mHohoboneryouValue);
+    w.writeF32(this->mMimiookisaValue);
+    w.writeF32(this->mMimimukiValue);
+    if (SaveVersion > static_cast<u32>(16777237)) {
+        w.writeF32(this->mElfmimi);
+    }
+    w.writeF32(this->mHanakuchijyougeValue);
+    w.writeF32(this->mAgozengoValue);
+    w.writeF32(this->mKuchihabaValue);
+    w.writeF32(this->mKuchiatsusaValue);
+    w.writeF32(this->mHohonikuValue);
+    w.writeF32(this->mAgosakijyougeValue);
+    w.writeF32(this->mAgosakihabaValue);
+    w.writeF32(this->mErahonejyougeValue);
+    w.writeF32(this->mErahonehabaValue);
+    w.writeF32(this->mHeightValue);
+    w.writeF32(this->mHeadSizeValue);
+    w.writeF32(this->mNeckOffsetValue);
+    w.writeF32(this->mNeckScaleValue);
+    w.writeF32(this->mUpperBodyScaleXValue);
+    w.writeF32(this->mBellySizeValue);
+    w.writeF32(this->mTeatScaleValue);
+    w.writeF32(this->mTekubiSizeValue);
+    w.writeF32(this->mKoshiOffsetValue);
+    w.writeF32(this->mKoshiSizeValue);
+    w.writeF32(this->mAnkleOffsetValue);
+    w.writeF32(this->mFatValue);
+    w.writeF32(this->mMuscleValue);
+    w.writeF32(this->mMotionFilterValue);
+    w.writeS32(this->mColorSkin);
+    w.writeS32(this->mColorHair);
+    w.writeS32(this->mColorBeard);
+    w.writeS32(this->mColorEyebrow);
+    w.writeS32(this->mColorREye);
+    w.writeS32(this->mColorLEye);
+    w.writeS32(this->mColorMakeup);
 }
 
 // Address: 0x008371f0 - 0x008376af (1215 bytes)
-__attribute__((weak)) void cStorageDataEdit::load(MtDataReader& r, u32 CurrentVersion, u32 LoadVererion) {
-    DDON_STUB("cStorageDataEdit::load")
-    /* stub */
+void cStorageDataEdit::load(MtDataReader& r, u32 CurrentVersion, u32 LoadVererion) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    r.::MtDataReader::readString(&this->mPlayerName[0], static_cast<u32>(64));
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    r.::MtDataReader::readString(&this->mComment[0], static_cast<u32>(64));
+    ::nDDOIO::readData(r, this->mBodyType);
+    this->mHair = r.readS32();
+    this->mBeard = r.readS32();
+    this->mMakeup = r.readS32();
+    this->mScar = r.readS32();
+    this->mWrinkleValue = r.readF32();
+    this->mEyePresetNo = r.readS32();
+    this->mEyebrowTexNo = r.readS32();
+    this->mNosePresetNo = r.readS32();
+    this->mMouthPresetNo = r.readS32();
+    this->mSokutoubuValue = r.readF32();
+    this->mHitaiValue = r.readF32();
+    this->mMimijyougeValue = r.readF32();
+    this->mMabisasijyougeValue = r.readF32();
+    this->mHitomiookisaValue = r.readF32();
+    this->mMeookisaValue = r.readF32();
+    this->mMekaitenValue = r.readF32();
+    this->mKannkakuValue = r.readF32();
+    this->mEyebrowUVOffsetYValue = r.readF32();
+    this->mEyebrowUVOffsetXValue = r.readF32();
+    this->mMayukaitenValue = r.readF32();
+    this->mMikentakasaValue = r.readF32();
+    this->mMikenhabaValue = r.readF32();
+    this->mHanajyougeValue = r.readF32();
+    this->mHanahabaValue = r.readF32();
+    this->mHanatakasaValue = r.readF32();
+    this->mHanakakudoValue = r.readF32();
+    this->mHohobonejyougeValue = r.readF32();
+    this->mHohoboneryouValue = r.readF32();
+    this->mMimiookisaValue = r.readF32();
+    this->mMimimukiValue = r.readF32();
+    if (LoadVererion > static_cast<u32>(16777237)) {
+        this->mElfmimi = r.readF32();
+    } else {
+        this->mElfmimi = 0.0f;
+    }
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mHanakuchijyougeValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mAgozengoValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mKuchihabaValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mKuchiatsusaValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mHohonikuValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mAgosakijyougeValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mAgosakihabaValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mErahonejyougeValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mErahonehabaValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mHeightValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mHeadSizeValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mNeckOffsetValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mNeckScaleValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mUpperBodyScaleXValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mBellySizeValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTeatScaleValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mTekubiSizeValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mKoshiOffsetValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mKoshiSizeValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mAnkleOffsetValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mFatValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMuscleValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mMotionFilterValue);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mColorSkin);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mColorHair);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mColorBeard);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mColorEyebrow);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mColorREye);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mColorLEye);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, this->mColorMakeup);
+    this->mPlayerName[63] = static_cast<char>(0);
+    this->mComment[63] = static_cast<char>(0);
 }
 
 // Address: 0x01aca920 - 0x01aca923 (3 bytes)

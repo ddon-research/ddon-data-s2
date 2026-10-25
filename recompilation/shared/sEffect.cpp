@@ -12,11 +12,14 @@
 #include "MtSynchronize.h"
 #include "cSystem.h"
 #include "cWind.h"
+#include "nDrawMaterial.h"
+#include "nDrawMaterialStd.h"
 #include "sCollision.h"
 #include "sMain.h"
 #include "sUnit.h"
 #include "uEffect.h"
 #include "uEffect2D.h"
+#include "uEffectFilter.h"
 #include "uSimpleEffect.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -265,9 +268,25 @@ MOVE_LINE sEffect::getEffectForceEventMoveLine() const {
 }
 
 // Address: 0x01232170 - 0x012321a0 (48 bytes)
-__attribute__((weak)) bool sEffect::isValidMaterial(const nDraw::Material* pMaterial) const {
-    DDON_STUB("sEffect::isValidMaterial")
-    return {};
+bool sEffect::isValidMaterial(const nDraw::Material* pMaterial) const {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a temporary for the result of the call at 0x123217a, used once; no DWARF local holds it
+    const MtDTI& t0 = pMaterial->getDTI();
+    // inferred: the value the loop at 0x123218d carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::nDraw::MaterialStd::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x123218d carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            return true;
+        } else {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x01b9efa0 - 0x01b9efc8 (40 bytes)
@@ -688,39 +707,45 @@ void sEffect::setMultiBlurFilterDrawPriority(u32 DrawPriority) {
 }
 
 // Address: 0x01b9ead0 - 0x01b9eadf (15 bytes)
-__attribute__((weak)) u32 sEffect::getMultiBlurFilterPass() const {
-    DDON_STUB("sEffect::getMultiBlurFilterPass")
-    return {};
+u32 sEffect::getMultiBlurFilterPass() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x2f8 from const sEffect*
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(760))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
 }
 
 // Address: 0x01b9eae0 - 0x01b9eae8 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiBlurFilterPass(u32 FilterPass) {
-    DDON_STUB("sEffect::setMultiBlurFilterPass")
-    /* stub */
+void sEffect::setMultiBlurFilterPass(u32 FilterPass) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2f9 from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(761)) = static_cast<unsigned char>(FilterPass);
 }
 
 // Address: 0x01b9eaf0 - 0x01b9eaf8 (8 bytes)
-__attribute__((weak)) u32 sEffect::getMultiBlurFilterNum() const {
-    DDON_STUB("sEffect::getMultiBlurFilterNum")
-    return {};
+u32 sEffect::getMultiBlurFilterNum() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2fa from const sEffect*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(762));
 }
 
 // Address: 0x01b9eb00 - 0x01b9eb08 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiBlurFilterNum(u32 FilterNum) {
-    DDON_STUB("sEffect::setMultiBlurFilterNum")
-    /* stub */
+void sEffect::setMultiBlurFilterNum(u32 FilterNum) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2fa from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(762)) = static_cast<unsigned char>(FilterNum);
 }
 
 // Address: 0x01b9eb10 - 0x01b9eb18 (8 bytes)
-__attribute__((weak)) u32 sEffect::getMultiBlurFilterDrawMax() const {
-    DDON_STUB("sEffect::getMultiBlurFilterDrawMax")
-    return {};
+u32 sEffect::getMultiBlurFilterDrawMax() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2fb from const sEffect*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(763));
 }
 
 // Address: 0x01b9eb20 - 0x01b9eb28 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiBlurFilterDrawMax(u32 FilterDrawMax) {
-    DDON_STUB("sEffect::setMultiBlurFilterDrawMax")
-    /* stub */
+void sEffect::setMultiBlurFilterDrawMax(u32 FilterDrawMax) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2fb from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(763)) = static_cast<unsigned char>(FilterDrawMax);
 }
 
 // Address: 0x01232320 - 0x0123238a (106 bytes)
@@ -755,39 +780,45 @@ void sEffect::setMultiColorCorrectFilterDrawPriority(u32 DrawPriority) {
 }
 
 // Address: 0x01b9eb50 - 0x01b9eb5f (15 bytes)
-__attribute__((weak)) u32 sEffect::getMultiColorCorrectFilterPass() const {
-    DDON_STUB("sEffect::getMultiColorCorrectFilterPass")
-    return {};
+u32 sEffect::getMultiColorCorrectFilterPass() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x340 from const sEffect*
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(832))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
 }
 
 // Address: 0x01b9eb60 - 0x01b9eb68 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiColorCorrectFilterPass(u32 FilterPass) {
-    DDON_STUB("sEffect::setMultiColorCorrectFilterPass")
-    /* stub */
+void sEffect::setMultiColorCorrectFilterPass(u32 FilterPass) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x341 from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(833)) = static_cast<unsigned char>(FilterPass);
 }
 
 // Address: 0x01b9eb70 - 0x01b9eb78 (8 bytes)
-__attribute__((weak)) u32 sEffect::getMultiColorCorrectFilterNum() const {
-    DDON_STUB("sEffect::getMultiColorCorrectFilterNum")
-    return {};
+u32 sEffect::getMultiColorCorrectFilterNum() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x342 from const sEffect*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(834));
 }
 
 // Address: 0x01b9eb80 - 0x01b9eb88 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiColorCorrectFilterNum(u32 FilterNum) {
-    DDON_STUB("sEffect::setMultiColorCorrectFilterNum")
-    /* stub */
+void sEffect::setMultiColorCorrectFilterNum(u32 FilterNum) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x342 from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(834)) = static_cast<unsigned char>(FilterNum);
 }
 
 // Address: 0x01b9eb90 - 0x01b9eb98 (8 bytes)
-__attribute__((weak)) u32 sEffect::getMultiColorCorrectFilterDrawMax() const {
-    DDON_STUB("sEffect::getMultiColorCorrectFilterDrawMax")
-    return {};
+u32 sEffect::getMultiColorCorrectFilterDrawMax() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x343 from const sEffect*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(835));
 }
 
 // Address: 0x01b9eba0 - 0x01b9eba8 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiColorCorrectFilterDrawMax(u32 FilterDrawMax) {
-    DDON_STUB("sEffect::setMultiColorCorrectFilterDrawMax")
-    /* stub */
+void sEffect::setMultiColorCorrectFilterDrawMax(u32 FilterDrawMax) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x343 from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(835)) = static_cast<unsigned char>(FilterDrawMax);
 }
 
 // Address: 0x01232640 - 0x012326a5 (101 bytes)
@@ -822,39 +853,45 @@ void sEffect::setMultiGodRaysFilterDrawPriority(u32 DrawPriority) {
 }
 
 // Address: 0x01b9ebd0 - 0x01b9ebdf (15 bytes)
-__attribute__((weak)) u32 sEffect::getMultiGodRaysFilterPass() const {
-    DDON_STUB("sEffect::getMultiGodRaysFilterPass")
-    return {};
+u32 sEffect::getMultiGodRaysFilterPass() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x388 from const sEffect*
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(904))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
 }
 
 // Address: 0x01b9ebe0 - 0x01b9ebe8 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiGodRaysFilterPass(u32 FilterPass) {
-    DDON_STUB("sEffect::setMultiGodRaysFilterPass")
-    /* stub */
+void sEffect::setMultiGodRaysFilterPass(u32 FilterPass) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x389 from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(905)) = static_cast<unsigned char>(FilterPass);
 }
 
 // Address: 0x01b9ebf0 - 0x01b9ebf8 (8 bytes)
-__attribute__((weak)) u32 sEffect::getMultiGodRaysFilterNum() const {
-    DDON_STUB("sEffect::getMultiGodRaysFilterNum")
-    return {};
+u32 sEffect::getMultiGodRaysFilterNum() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x38a from const sEffect*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(906));
 }
 
 // Address: 0x01b9ec00 - 0x01b9ec08 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiGodRaysFilterNum(u32 FilterNum) {
-    DDON_STUB("sEffect::setMultiGodRaysFilterNum")
-    /* stub */
+void sEffect::setMultiGodRaysFilterNum(u32 FilterNum) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38a from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(906)) = static_cast<unsigned char>(FilterNum);
 }
 
 // Address: 0x01b9ec10 - 0x01b9ec18 (8 bytes)
-__attribute__((weak)) u32 sEffect::getMultiGodRaysFilterDrawMax() const {
-    DDON_STUB("sEffect::getMultiGodRaysFilterDrawMax")
-    return {};
+u32 sEffect::getMultiGodRaysFilterDrawMax() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x38b from const sEffect*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(907));
 }
 
 // Address: 0x01b9ec20 - 0x01b9ec28 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiGodRaysFilterDrawMax(u32 FilterDrawMax) {
-    DDON_STUB("sEffect::setMultiGodRaysFilterDrawMax")
-    /* stub */
+void sEffect::setMultiGodRaysFilterDrawMax(u32 FilterDrawMax) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38b from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(907)) = static_cast<unsigned char>(FilterDrawMax);
 }
 
 // Address: 0x012326b0 - 0x01232715 (101 bytes)
@@ -889,39 +926,45 @@ void sEffect::setMultiBloomFilterDrawPriority(u32 DrawPriority) {
 }
 
 // Address: 0x01b9ec50 - 0x01b9ec5f (15 bytes)
-__attribute__((weak)) u32 sEffect::getMultiBloomFilterPass() const {
-    DDON_STUB("sEffect::getMultiBloomFilterPass")
-    return {};
+u32 sEffect::getMultiBloomFilterPass() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x3d0 from const sEffect*
+    return ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(976))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(255);
 }
 
 // Address: 0x01b9ec60 - 0x01b9ec68 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiBloomFilterPass(u32 FilterPass) {
-    DDON_STUB("sEffect::setMultiBloomFilterPass")
-    /* stub */
+void sEffect::setMultiBloomFilterPass(u32 FilterPass) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x3d1 from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(977)) = static_cast<unsigned char>(FilterPass);
 }
 
 // Address: 0x01b9ec70 - 0x01b9ec78 (8 bytes)
-__attribute__((weak)) u32 sEffect::getMultiBloomFilterNum() const {
-    DDON_STUB("sEffect::getMultiBloomFilterNum")
-    return {};
+u32 sEffect::getMultiBloomFilterNum() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x3d2 from const sEffect*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(978));
 }
 
 // Address: 0x01b9ec80 - 0x01b9ec88 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiBloomFilterNum(u32 FilterNum) {
-    DDON_STUB("sEffect::setMultiBloomFilterNum")
-    /* stub */
+void sEffect::setMultiBloomFilterNum(u32 FilterNum) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x3d2 from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(978)) = static_cast<unsigned char>(FilterNum);
 }
 
 // Address: 0x01b9ec90 - 0x01b9ec98 (8 bytes)
-__attribute__((weak)) u32 sEffect::getMultiBloomFilterDrawMax() const {
-    DDON_STUB("sEffect::getMultiBloomFilterDrawMax")
-    return {};
+u32 sEffect::getMultiBloomFilterDrawMax() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x3d3 from const sEffect*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(979));
 }
 
 // Address: 0x01b9eca0 - 0x01b9eca8 (8 bytes)
-__attribute__((weak)) void sEffect::setMultiBloomFilterDrawMax(u32 FilterDrawMax) {
-    DDON_STUB("sEffect::setMultiBloomFilterDrawMax")
-    /* stub */
+void sEffect::setMultiBloomFilterDrawMax(u32 FilterDrawMax) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x3d3 from sEffect*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(979)) = static_cast<unsigned char>(FilterDrawMax);
 }
 
 // Address: 0x01232720 - 0x01232785 (101 bytes)
@@ -1092,9 +1135,58 @@ __attribute__((weak)) MtObject* sEffect::MyDTI::newInstance() const {
 
 // Address: 0x01232000 - 0x012320ef (239 bytes)
 __attribute__((weak)) void sEffect::MultiFilterControl::setup() {
-    // local: u32 ctr;
-    DDON_STUB("sEffect::MultiFilterControl::setup")
-    /* stub */
+    // DWARF local not rendered: u32 ctr;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uMultiFilter*
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpFilter[0] != static_cast<uMultiFilter*>(nullptr)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[0]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+        } else {
+            this->mpFilter[0] = static_cast<uMultiFilter*>(nullptr);
+        }
+    }
+    if (this->mpFilter[1] != static_cast<uMultiFilter*>(nullptr)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[1]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+        } else {
+            this->mpFilter[1] = static_cast<uMultiFilter*>(nullptr);
+        }
+    }
+    if (this->mpFilter[2] != static_cast<uMultiFilter*>(nullptr)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[2]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+        } else {
+            this->mpFilter[2] = static_cast<uMultiFilter*>(nullptr);
+        }
+    }
+    if (this->mpFilter[3] != static_cast<uMultiFilter*>(nullptr)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[3]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+        } else {
+            this->mpFilter[3] = static_cast<uMultiFilter*>(nullptr);
+        }
+    }
+    if (this->mpFilter[4] != static_cast<uMultiFilter*>(nullptr)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[4]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+        } else {
+            this->mpFilter[4] = static_cast<uMultiFilter*>(nullptr);
+        }
+    }
+    if (this->mpFilter[5] != static_cast<uMultiFilter*>(nullptr)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[5]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+        } else {
+            this->mpFilter[5] = static_cast<uMultiFilter*>(nullptr);
+        }
+    }
+    if (this->mpFilter[6] != static_cast<uMultiFilter*>(nullptr)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[6]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+        } else {
+            this->mpFilter[6] = static_cast<uMultiFilter*>(nullptr);
+        }
+    }
+    if (this->mpFilter[7] != static_cast<uMultiFilter*>(nullptr)) {
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpFilter[7]) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) <= static_cast<unsigned int>(1)) {
+        } else {
+            this->mpFilter[7] = static_cast<uMultiFilter*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x01232390 - 0x0123263c (684 bytes)

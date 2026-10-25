@@ -4,8 +4,22 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cArcLoader.h"
 #include "../shared/cUIObject.h"
+#include "../shared/cUnit.h"
 #include "../shared/nNet.h"
+#include "../shared/sArchiveManager.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
+#include "../shared/sUnit.h"
+#include "uGUIContentsBoard.h"
+#include "uGUIEntryBoardInfo.h"
+#include "uGUIMissionInfo.h"
+#include "../shared/uGUIMissionResult.h"
+#include "uGUINewspaper.h"
+#include "uGUIPopEventTop.h"
+#include "uGUIPopFilter.h"
+#include "uGUIPopTopSel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -91,8 +105,50 @@ void cGUIContentsExecutor::createProperty(MtPropertyList& s) {
 
 // Address: 0x000d0ba0 - 0x000d0cbe (286 bytes)
 __attribute__((weak)) void cGUIContentsExecutor::release() {
-    DDON_STUB("cGUIContentsExecutor::release")
-    /* stub */
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if ((::sUnit::mpInstance) != static_cast<sUnit*>(nullptr)) {
+        if (this->mpUnitTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
+            this->mpUnitTopSel->kill();
+            this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+        }
+        if (this->mpUnitPopEventTop != static_cast<uGUIPopEventTop*>(nullptr)) {
+            this->mpUnitPopEventTop->kill();
+            this->mpUnitPopEventTop = static_cast<uGUIPopEventTop*>(nullptr);
+        }
+        if (this->mpUnitMissionResult != static_cast<uGUIMissionResult*>(nullptr)) {
+            this->mpUnitMissionResult->kill();
+            this->mpUnitMissionResult = static_cast<uGUIMissionResult*>(nullptr);
+        }
+        if (this->mpUnitContentsBoard != static_cast<uGUIContentsBoard*>(nullptr)) {
+            this->mpUnitContentsBoard->kill();
+            this->mpUnitContentsBoard = static_cast<uGUIContentsBoard*>(nullptr);
+        }
+        if (this->mpUnitMissionInfo != static_cast<uGUIMissionInfo*>(nullptr)) {
+            this->mpUnitMissionInfo->kill();
+            this->mpUnitMissionInfo = static_cast<uGUIMissionInfo*>(nullptr);
+        }
+        if (this->mpUnitNewspaper != static_cast<uGUINewspaper*>(nullptr)) {
+            this->mpUnitNewspaper->kill();
+            this->mpUnitNewspaper = static_cast<uGUINewspaper*>(nullptr);
+        }
+        if (this->mpUnitPopFilter != static_cast<uGUIPopFilter*>(nullptr)) {
+            this->mpUnitPopFilter->kill();
+            this->mpUnitPopFilter = static_cast<uGUIPopFilter*>(nullptr);
+        }
+    }
+    if (::sGUI::getInstance() != static_cast<sGUI*>(nullptr)) {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteShopTitle();
+    }
+    ::nNet::resetEntryBoardInfo(this->mBoardInfo);
+    if (::sArchiveManager::getInstance() != static_cast<sArchiveManager*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0xd0ca8 read, used twice; no DWARF local holds it
+        cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
+        if (this->mArc != t0) {
+            ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mArc);
+            this->mArc = static_cast<TICKET>(t0);
+        }
+    }
 }
 
 // Address: 0x000d0ec0 - 0x000d44e0 (13856 bytes)
@@ -158,9 +214,57 @@ __attribute__((weak)) void cGUIContentsExecutor::update() {
 }
 
 // Address: 0x000d0dc0 - 0x000d0eb1 (241 bytes)
-__attribute__((weak)) void cGUIContentsExecutor::updateUnitPtr() {
-    DDON_STUB("cGUIContentsExecutor::updateUnitPtr")
-    /* stub */
+void cGUIContentsExecutor::updateUnitPtr() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpUnitTopSel != static_cast<uGUIPopTopSel*>(nullptr)) {
+        if (this->mpUnitTopSel->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitTopSel = static_cast<uGUIPopTopSel*>(nullptr);
+        }
+    }
+    if (this->mpUnitPopEventTop != static_cast<uGUIPopEventTop*>(nullptr)) {
+        if (this->mpUnitPopEventTop->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitPopEventTop = static_cast<uGUIPopEventTop*>(nullptr);
+        }
+    }
+    if (this->mpUnitEntryBoardInfo != static_cast<uGUIEntryBoardInfo*>(nullptr)) {
+        if (this->mpUnitEntryBoardInfo->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitEntryBoardInfo = static_cast<uGUIEntryBoardInfo*>(nullptr);
+        }
+    }
+    if (this->mpUnitMissionResult != static_cast<uGUIMissionResult*>(nullptr)) {
+        if (this->mpUnitMissionResult->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitMissionResult = static_cast<uGUIMissionResult*>(nullptr);
+        }
+    }
+    if (this->mpUnitContentsBoard != static_cast<uGUIContentsBoard*>(nullptr)) {
+        if (this->mpUnitContentsBoard->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitContentsBoard = static_cast<uGUIContentsBoard*>(nullptr);
+        }
+    }
+    if (this->mpUnitMissionInfo != static_cast<uGUIMissionInfo*>(nullptr)) {
+        if (this->mpUnitMissionInfo->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitMissionInfo = static_cast<uGUIMissionInfo*>(nullptr);
+        }
+    }
+    if (this->mpUnitNewspaper != static_cast<uGUINewspaper*>(nullptr)) {
+        if (this->mpUnitNewspaper->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitNewspaper = static_cast<uGUINewspaper*>(nullptr);
+        }
+    }
+    if (this->mpUnitPopFilter != static_cast<uGUIPopFilter*>(nullptr)) {
+        if (this->mpUnitPopFilter->::cUnit::isEnable()) {
+        } else {
+            this->mpUnitPopFilter = static_cast<uGUIPopFilter*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x000d0d60 - 0x000d0d7f (31 bytes)

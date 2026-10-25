@@ -23,7 +23,8 @@ const MtDTI& cAttackParam::getDTI() const {
 }
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline MtAllocator* cAttackParam::getAllocator() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+MtAllocator* cAttackParam::getAllocator() {
     return ::MtMemoryAllocator::getAllocator(::cAttackParam::DTI);
 }
 

@@ -107,3 +107,9 @@ public:
     cActParam mParam;  // offset: 0xc
     cActNetParam mNetParam;  // offset: 0x34
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline u32 cActParam::getDmDetailType() const {
+    return static_cast<unsigned int>(static_cast<long>(this->mParam4));
+}

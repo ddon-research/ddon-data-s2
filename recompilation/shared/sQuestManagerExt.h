@@ -88,6 +88,10 @@ namespace nQuest { class cQuestMarker; }
 namespace nQuest { class cTalkData; }
 class uCharacter;
 class uControl;
+class uGUIBase;
+class uGUIContentsBoard;
+class uGUIEntryBoardInfo;
+class uGUIMissionInfo;
 class uGUIPopTopSel;
 class uOmModel;
 
@@ -138,6 +142,14 @@ class sQuestManagerExt : public cSystem
 {
     // inferred: cNetGameServer::getCycleContentsSituationInfoList names sQuestManagerExt::mIsGetCycleContentsInfoList
     friend class cNetGameServer;
+    // inferred: uGUIBase::kill names sQuestManagerExt::mpInstance
+    friend class uGUIBase;
+    // inferred: uGUIContentsBoard::evCtrlChkout names sQuestManagerExt::mNowCallEntryBoardContentsType
+    friend class uGUIContentsBoard;
+    // inferred: uGUIEntryBoardInfo::evCtrlDecide names sQuestManagerExt::mNowCallEntryBoardContentsType
+    friend class uGUIEntryBoardInfo;
+    // inferred: uGUIMissionInfo::initSystem names sQuestManagerExt::mNowCallEntryBoardContentsType
+    friend class uGUIMissionInfo;
     // inferred: uGUIPopTopSel::evCtrlChkout names sQuestManagerExt::mNowCallEntryBoardContentsType
     friend class uGUIPopTopSel;
 public:
@@ -320,6 +332,8 @@ public:
 public:
     class cTouchOmInfo : public MtObject
     {
+        // inferred: sQuestManagerExt::isEndTextOm names sQuestManagerExt::cTouchOmInfo::mLayoutId
+        friend class sQuestManagerExt;
     public:
         class MyDTI;
     public:
@@ -1430,10 +1444,22 @@ inline sQuestManagerExt* sQuestManagerExt::getInstance() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 sQuestManagerExt::cKilledEnemy::getKilledNum() const {
+    return this->mKilledNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sQuestManagerExt::cKilledEnemy::cKilledEnemy() {
     this->mStageNo = static_cast<u32>(0);
     this->mEnemyId = static_cast<u32>(0);
     this->mKilledNum = static_cast<u32>(1);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cQuestManagerBase* sQuestManagerExt::cManagerInfo::getQuestManager() {
+    return this->mpMgr;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -1443,15 +1469,39 @@ inline sQuestManagerExt::cManagerInfo::cManagerInfo() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cQuestFunctionManagerBase* sQuestManagerExt::cFunctionInfo::getFunctionManager() {
+    return this->mpFuncMgr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sQuestManagerExt::cFunctionInfo::cFunctionInfo() {
     this->mType = static_cast<nQuest::FUNCTION_TYPE>(13);
     this->mpFuncMgr = static_cast<cQuestFunctionManagerBase*>(nullptr);
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline f32 sQuestManagerExt::cTimer::getRemainingTime() const {
+    return this->mRemainingTime;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline void sQuestManagerExt::cTimer::finish() {
     this->mHasStarted = false;
     this->mRemainingTime = 0.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline sQuestManagerExt::cTimer::cTimer() {
+    this->mHasStarted = false;
+    this->mMeasuringTime = 0.0f;
+    this->mRemainingTime = 0.0f;
+    this->mpCallbackFinish = static_cast<void(MtObject::*)()>(0);
+    this->mpCalssCallbackFinish = static_cast<MtObject*>(nullptr);
+    this->mStopTime = static_cast<t64>(0);
+    this->mFinishTime = static_cast<t64>(0);
+    this->mStartTime = static_cast<t64>(0);
 }
 
 // Inline, no code of its own: checked where it is inlined.

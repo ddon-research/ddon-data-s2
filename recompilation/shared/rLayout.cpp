@@ -309,10 +309,15 @@ inline void rLayout::SetInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void rLayout::SetInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 2 inlined copies in 2 functions (104 bytes)
-//   in rLayout::load at 0x006949b6-0x006949f3 (called at rLayout.cpp:264)
-//   in rLayout::SetInfo::MyDTI::newInstance at 0x00694eed-0x00694f18 (called at rLayout.cpp:543)
-// rLayout::SetInfo::SetInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+inline rLayout::SetInfo::SetInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: nLayout::stLayoutID(), nLayout::stSplitID() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mID = static_cast<s32>(0);
+    this->mLayoutID.mLayoutID = static_cast<u32>(67108863);
+    this->mSplitID.mSplitID = static_cast<u32>(0);
+    this->mpInfo = static_cast<cSetInfo*>(nullptr);
+}
 
 // Address: 0x00694f90 - 0x00694fc5 (53 bytes)
 // Also emitted as: _ZN7rLayout7SetInfoD0Ev at 0x00694fd0
@@ -408,15 +413,17 @@ void rLayout::SetInfo::setGroup(u32 group) {
 // const nLayout::stSplitID& rLayout::SetInfo::getSplitID() const;
 
 // Address: 0x01a999a0 - 0x01a999a5 (5 bytes)
-__attribute__((weak)) s32 rLayout::SetInfo::getSplitX() const {
-    DDON_STUB("rLayout::SetInfo::getSplitX")
-    return {};
+s32 rLayout::SetInfo::getSplitX() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x1c from const rLayout::SetInfo*
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(28));
 }
 
 // Address: 0x01a999c0 - 0x01a999c5 (5 bytes)
-__attribute__((weak)) s32 rLayout::SetInfo::getSplitZ() const {
-    DDON_STUB("rLayout::SetInfo::getSplitZ")
-    return {};
+s32 rLayout::SetInfo::getSplitZ() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x1e from const rLayout::SetInfo*
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(30));
 }
 
 // No out-of-line body: no code in the ELF

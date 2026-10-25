@@ -481,3 +481,33 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 cContextCharacter::getShlNetSts(u32 index) const {
+    return this->mShlNetSts[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 cContextCharacter::getShlUniqueId(u32 index) const {
+    return this->mShlUniqueId[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 cContextCharacter::getShlTargetUId(u32 index) const {
+    return this->mShlTargetUId[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s32 cContextCharacter::getShlGroup(u32 index) const {
+    return this->mShlGroup[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s32 cContextCharacter::getShlIndex(u32 index) const {
+    return this->mShlIndex[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool cContextCharacter::isShlReqSlave(u32 index) const {
+    return this->mIsShlReqSlave[index];
+}

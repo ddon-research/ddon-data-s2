@@ -107,9 +107,22 @@ __attribute__((weak)) void uFade::move() {
 }
 
 // Address: 0x008fcb20 - 0x008fcb76 (86 bytes)
-__attribute__((weak)) void uFade::kill() {
-    DDON_STUB("uFade::kill")
-    /* stub */
+void uFade::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uFade*
+    if (this->mpScheduler != static_cast<uScheduler*>(nullptr)) {
+        if (this->mpScheduler->::cUnit::isEnable()) {
+            this->mpScheduler->kill();
+        } else {
+            this->mpScheduler = static_cast<uScheduler*>(nullptr);
+        }
+    }
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+        return;
+    }
+    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    }
 }
 
 // Address: 0x008fca40 - 0x008fcb16 (214 bytes)

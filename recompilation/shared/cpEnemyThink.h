@@ -18,6 +18,7 @@ class MtDTI;
 class MtDataReader;
 class MtObject;
 class MtVector3;
+class cFSMUnit;
 namespace cThinkMgrName { class cThinkMgr; }
 class kTHINKDATA;
 class uDDOModel;
@@ -87,6 +88,8 @@ public:
 
 class cpEnemyThink : public cpThinkBase
 {
+    // inferred: cFSMUnit::stateExitSetNeck names cpEnemyThink::mIsFmsTarget
+    friend class cFSMUnit;
 public:
     class MyDTI;
 public:

@@ -251,9 +251,7 @@ __attribute__((weak)) void sUnit::applyWorldOffset(const MtVector3& offset, MOVE
 
 // Address: 0x012ab4c0 - 0x012ab5e3 (291 bytes)
 bool sUnit::remove(cUnit* punit) {
-    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a test after the last call or store that only chooses the result; a value a join carries, assigned on each way in; the body oracle reports this body.
-    // inferred: a temporary for the value a join carries at 0x12ab55e, assigned on each way in; no DWARF local holds it
-    cUnit* j0;
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a test after the last call or store that only chooses the result; the body oracle reports this body.
     if (punit != static_cast<cUnit*>(nullptr)) {
         if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
             if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
@@ -276,15 +274,18 @@ bool sUnit::remove(cUnit* punit) {
             cUnit* t1 = punit->mpPrevUnit;
             if (t1 != static_cast<cUnit*>(nullptr)) {
                 t1->mpNextUnit = t0;
-                j0 = punit->mpNextUnit;
+                if (punit->mpNextUnit != static_cast<cUnit*>(nullptr)) {
+                    punit->mpNextUnit->mpPrevUnit = t1;
+                } else {
+                    this->mMoveLine[punit->mMoveLine].mpBottom = t1;
+                }
             } else {
                 this->mMoveLine[punit->mMoveLine].mpTop = t0;
-                j0 = t0;
-            }
-            if (j0 != static_cast<cUnit*>(nullptr)) {
-                j0->mpPrevUnit = t1;
-            } else {
-                this->mMoveLine[punit->mMoveLine].mpBottom = t1;
+                if (t0 != static_cast<cUnit*>(nullptr)) {
+                    t0->mpPrevUnit = t1;
+                } else {
+                    this->mMoveLine[punit->mMoveLine].mpBottom = t1;
+                }
             }
             punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
             punit->mpNextUnit = static_cast<cUnit*>(nullptr);
@@ -305,10 +306,62 @@ bool sUnit::remove(cUnit* punit) {
 }
 
 // Address: 0x012abb60 - 0x012abc51 (241 bytes)
-__attribute__((weak)) bool sUnit::addTop(MOVE_LINE n, cUnit* punit, u64 groupbit) {
-    // local: MoveLine* pl;
-    DDON_STUB("sUnit::addTop")
-    return {};
+bool sUnit::addTop(MOVE_LINE n, cUnit* punit, u64 groupbit) {
+    // DWARF local not rendered: MoveLine* pl;
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
+    if (punit != static_cast<cUnit*>(nullptr)) {
+        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+            } else {
+                ::abort();
+            }
+            // inferred: a temporary for the value the load at 0x12abbb5 read, used 3 times; no DWARF local holds it
+            cUnit* t0 = this->mMoveLine[n].mpTop;
+            if (t0 != static_cast<cUnit*>(nullptr)) {
+                t0->mpPrevUnit = punit;
+            }
+            punit->mpNextUnit = t0;
+            punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
+            this->mMoveLine[n].mpTop = punit;
+            if (this->mMoveLine[n].mpBottom == static_cast<cUnit*>(nullptr)) {
+                this->mMoveLine[n].mpBottom = punit;
+                punit->mpNextUnit = static_cast<cUnit*>(nullptr);
+            }
+            punit->mMoveLine = n;
+            this->::sUnit::setUnitGroupBit(punit, groupbit);
+            this->evAddUnit(*punit);
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                    ::abort();
+                }
+            }
+            return true;
+        } else {
+            // inferred: a temporary for the value the load at 0x12abbb5 read, used 3 times; no DWARF local holds it
+            cUnit* t0 = this->mMoveLine[n].mpTop;
+            if (t0 != static_cast<cUnit*>(nullptr)) {
+                t0->mpPrevUnit = punit;
+            }
+            punit->mpNextUnit = t0;
+            punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
+            this->mMoveLine[n].mpTop = punit;
+            if (this->mMoveLine[n].mpBottom == static_cast<cUnit*>(nullptr)) {
+                this->mMoveLine[n].mpBottom = punit;
+                punit->mpNextUnit = static_cast<cUnit*>(nullptr);
+            }
+            punit->mMoveLine = n;
+            this->::sUnit::setUnitGroupBit(punit, groupbit);
+            this->evAddUnit(*punit);
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                    ::abort();
+                }
+            }
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -316,9 +369,61 @@ __attribute__((weak)) bool sUnit::addTop(MOVE_LINE n, cUnit* punit, u64 groupbit
 
 // Address: 0x012aa530 - 0x012aa621 (241 bytes)
 __attribute__((weak)) bool sUnit::addBottom(MOVE_LINE n, cUnit* punit, u64 groupbit) {
-    // local: MoveLine* pl;
-    DDON_STUB("sUnit::addBottom")
-    return {};
+    // DWARF local not rendered: MoveLine* pl;
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a temporary declared in several branches; the body oracle reports this body.
+    if (punit != static_cast<cUnit*>(nullptr)) {
+        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+            } else {
+                ::abort();
+            }
+            // inferred: a temporary for the value the load at 0x12aa585 read, used 3 times; no DWARF local holds it
+            cUnit* t0 = this->mMoveLine[n].mpBottom;
+            if (t0 != static_cast<cUnit*>(nullptr)) {
+                t0->mpNextUnit = punit;
+            }
+            punit->mpNextUnit = static_cast<cUnit*>(nullptr);
+            punit->mpPrevUnit = t0;
+            this->mMoveLine[n].mpBottom = punit;
+            if (this->mMoveLine[n].mpTop == static_cast<cUnit*>(nullptr)) {
+                this->mMoveLine[n].mpTop = punit;
+                punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
+            }
+            punit->mMoveLine = n;
+            this->::sUnit::setUnitGroupBit(punit, groupbit);
+            this->evAddUnit(*punit);
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                    ::abort();
+                }
+            }
+            return true;
+        } else {
+            // inferred: a temporary for the value the load at 0x12aa585 read, used 3 times; no DWARF local holds it
+            cUnit* t0 = this->mMoveLine[n].mpBottom;
+            if (t0 != static_cast<cUnit*>(nullptr)) {
+                t0->mpNextUnit = punit;
+            }
+            punit->mpNextUnit = static_cast<cUnit*>(nullptr);
+            punit->mpPrevUnit = t0;
+            this->mMoveLine[n].mpBottom = punit;
+            if (this->mMoveLine[n].mpTop == static_cast<cUnit*>(nullptr)) {
+                this->mMoveLine[n].mpTop = punit;
+                punit->mpPrevUnit = static_cast<cUnit*>(nullptr);
+            }
+            punit->mMoveLine = n;
+            this->::sUnit::setUnitGroupBit(punit, groupbit);
+            this->evAddUnit(*punit);
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                    ::abort();
+                }
+            }
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x012abe60 - 0x012abe78 (24 bytes)
@@ -571,9 +676,14 @@ __attribute__((weak)) bool sUnit::isGroupMove(const cUnit* punit) const {
 // bool sUnit::isGroupDraw(u32 group) const;
 
 // Address: 0x012ac300 - 0x012ac31a (26 bytes)
-__attribute__((weak)) bool sUnit::isGroupMove(u32 group) const {
-    DDON_STUB("sUnit::isGroupMove")
-    return {};
+bool sUnit::isGroupMove(u32 group) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (group < this->mGroupCount) {
+        return ((static_cast<unsigned long>(this->mGroupMoveFlag) >> static_cast<unsigned long>(group & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -817,11 +927,27 @@ MtUI* sUnit::MoveLine::createUI(MtProperty& prop) {
 }
 
 // Address: 0x012aa4c0 - 0x012aa4e2 (34 bytes)
-__attribute__((weak)) cUnit* sUnit::MoveLine::getUnit(u32 index) {
-    // local: u32 i;
-    // local: cUnit* punit;
-    DDON_STUB("sUnit::MoveLine::getUnit")
-    return nullptr;
+cUnit* sUnit::MoveLine::getUnit(u32 index) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpTop != static_cast<cUnit*>(nullptr)) {
+        // inferred: DWARF's location-less 'punit' (function scope) is the value the loop at 0x12aa4d0 carries
+        cUnit* punit = this->mpTop;
+        // inferred: the value the loop at 0x12aa4d0 carries; no location-less local in scope fits
+        for (u32 v0_1 = index + static_cast<u32>(1);;) {
+            if ((v0_1 - static_cast<u32>(1)) == static_cast<u32>(0)) {
+                return punit;
+            } else {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(punit) + static_cast<long>(24))) != static_cast<unsigned long>(0)) {
+                    punit = reinterpret_cast<cUnit*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(punit) + static_cast<long>(24)));
+                    v0_1 += static_cast<u32>(4294967295);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<cUnit*>(nullptr);
 }
 
 // Address: 0x012aa4f0 - 0x012aa51b (43 bytes)
@@ -834,11 +960,21 @@ void sUnit::MoveLine::setUnit(cUnit* punit, u32 i) {
 }
 
 // Address: 0x012aa4a0 - 0x012aa4bc (28 bytes)
-__attribute__((weak)) u32 sUnit::MoveLine::getCount() {
-    // local: u32 i;
-    // local: cUnit* punit;
-    DDON_STUB("sUnit::MoveLine::getCount")
-    return {};
+u32 sUnit::MoveLine::getCount() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int i0_0 = static_cast<unsigned int>(0);
+    // inferred: DWARF's location-less 'punit' (function scope) is the value the loop at 0x12aa4b6 carries
+    for (cUnit* punit = this->mpTop;;) {
+        if (punit == static_cast<cUnit*>(nullptr)) {
+            break;
+        } else {
+            i0_0 += static_cast<unsigned int>(1);
+            punit = reinterpret_cast<cUnit*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(punit) + static_cast<long>(24)));
+        }
+    }
+    return i0_0;
 }
 
 // Address: 0x01ba9300 - 0x01ba9301 (1 bytes)

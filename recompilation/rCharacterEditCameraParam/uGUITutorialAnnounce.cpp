@@ -205,9 +205,9 @@ __attribute__((weak)) void uGUITutorialAnnounce::move() {
 // sGUIExt::ANNOUNCE_TYPE uGUITutorialAnnounce::getAnnounceType() const;
 
 // Address: 0x00c649e0 - 0x00c649fa (26 bytes)
-__attribute__((weak)) void uGUITutorialAnnounce::updateInit() {
-    DDON_STUB("uGUITutorialAnnounce::updateInit")
-    /* stub */
+void uGUITutorialAnnounce::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialAnnounce::updateWait);
 }
 
 // Address: 0x00c64ac0 - 0x00c64bf2 (306 bytes)

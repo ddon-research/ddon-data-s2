@@ -77,8 +77,12 @@ inline void uGUIPopCmd01::operator delete(void* p_addr) {
 // Address: 0x00b98760 - 0x00b987ad (77 bytes)
 // Also emitted as: _ZN12uGUIPopCmd01D0Ev at 0x00b987b0
 uGUIPopCmd01::~uGUIPopCmd01() {
-    DDON_STUB("uGUIPopCmd01::~uGUIPopCmd01")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpGUIRes == static_cast<rGUI*>(nullptr)) {
+        return;
+    }
+    this->mpGUIRes->::cResource::release();
+    this->mpGUIRes = static_cast<rGUI*>(nullptr);
 }
 
 // Address: 0x00b98820 - 0x00b988cc (172 bytes)
@@ -283,9 +287,10 @@ __attribute__((weak)) void uGUIPopCmd01::updateWait() {
 }
 
 // Address: 0x00b99b80 - 0x00b99bb0 (48 bytes)
-__attribute__((weak)) void uGUIPopCmd01::updateAutoKill() {
-    DDON_STUB("uGUIPopCmd01::updateAutoKill")
-    /* stub */
+void uGUIPopCmd01::updateAutoKill() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIPopCmd01::executeWindow(false);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCmd01::updateExit);
 }
 
 // Address: 0x00b99bb0 - 0x00b99bb9 (9 bytes)

@@ -9,6 +9,7 @@
 #include "../shared/MtSerializer.h"
 #include "../shared/MtString.h"
 #include "../shared/cResource.h"
+#include "../shared/uShlBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -89,9 +90,13 @@ __attribute__((weak)) void cShlGroupParam::createProperty(MtPropertyList& s) {
 // void cShlGroupParam::setup();
 
 // Address: 0x006e5260 - 0x006e5272 (18 bytes)
-__attribute__((weak)) const cShlParamBase* cShlGroupParam::getParam(u32 index) const {
-    DDON_STUB("cShlGroupParam::getParam")
-    return nullptr;
+const cShlParamBase* cShlGroupParam::getParam(u32 index) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mShlList.mLength) {
+        return static_cast<const cShlParamBase*>(this->mShlList.mpArray[index]);
+    } else {
+        return static_cast<const cShlParamBase*>(nullptr);
+    }
 }
 
 // No out-of-line body: no code in the ELF

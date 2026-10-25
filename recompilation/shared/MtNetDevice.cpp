@@ -25,31 +25,31 @@ __attribute__((weak)) u16 MtNetByteOrder::hostToNet16(u16 host_u16) {
 }
 
 // Address: 0x00db6230 - 0x00db6235 (5 bytes)
-__attribute__((weak)) u32 MtNetByteOrder::netToHost32(u32 net_u32) {
-    // local: u32 ret;
-    DDON_STUB("MtNetByteOrder::netToHost32")
-    return {};
+u32 MtNetByteOrder::netToHost32(u32 net_u32) {
+    // DWARF local not rendered: u32 ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return ((((net_u32 & static_cast<u32>(255)) * static_cast<u32>(16777216)) | (((net_u32 >> static_cast<u32>(8)) & static_cast<u32>(255)) * static_cast<u32>(65536))) | (((net_u32 >> static_cast<u32>(16)) & static_cast<u32>(255)) * static_cast<u32>(256))) | ((net_u32 >> static_cast<u32>(24)) & static_cast<u32>(255));
 }
 
 // Address: 0x00db6240 - 0x00db6245 (5 bytes)
-__attribute__((weak)) u32 MtNetByteOrder::hostToNet32(u32 host_u32) {
-    // local: u32 ret;
-    DDON_STUB("MtNetByteOrder::hostToNet32")
-    return {};
+u32 MtNetByteOrder::hostToNet32(u32 host_u32) {
+    // DWARF local not rendered: u32 ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return ((((host_u32 & static_cast<u32>(255)) * static_cast<u32>(16777216)) | (((host_u32 >> static_cast<u32>(8)) & static_cast<u32>(255)) * static_cast<u32>(65536))) | (((host_u32 >> static_cast<u32>(16)) & static_cast<u32>(255)) * static_cast<u32>(256))) | ((host_u32 >> static_cast<u32>(24)) & static_cast<u32>(255));
 }
 
 // Address: 0x00db6250 - 0x00db6257 (7 bytes)
-__attribute__((weak)) u64 MtNetByteOrder::netToHost64(u64 net_u64) {
-    // local: u64 ret;
-    DDON_STUB("MtNetByteOrder::netToHost64")
-    return {};
+u64 MtNetByteOrder::netToHost64(u64 net_u64) {
+    // DWARF local not rendered: u64 ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return ((((((((net_u64 & static_cast<u64>(255)) * static_cast<u64>(72057594037927936)) | (((net_u64 >> static_cast<u64>(8)) & static_cast<u64>(255)) * static_cast<u64>(281474976710656))) | (((net_u64 >> static_cast<u64>(16)) & static_cast<u64>(255)) * static_cast<u64>(1099511627776))) | (((net_u64 >> static_cast<u64>(24)) & static_cast<u64>(255)) * static_cast<u64>(4294967296))) | (((net_u64 >> static_cast<u64>(32)) & static_cast<u64>(255)) * static_cast<u64>(16777216))) | (((net_u64 >> static_cast<u64>(40)) & static_cast<u64>(255)) * static_cast<u64>(65536))) | (((net_u64 >> static_cast<u64>(48)) & static_cast<u64>(255)) * static_cast<u64>(256))) | ((net_u64 >> static_cast<u64>(56)) & static_cast<u64>(255));
 }
 
 // Address: 0x00db6260 - 0x00db6267 (7 bytes)
-__attribute__((weak)) u64 MtNetByteOrder::hostToNet64(u64 host_u64) {
-    // local: u64 ret;
-    DDON_STUB("MtNetByteOrder::hostToNet64")
-    return {};
+u64 MtNetByteOrder::hostToNet64(u64 host_u64) {
+    // DWARF local not rendered: u64 ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return ((((((((host_u64 & static_cast<u64>(255)) * static_cast<u64>(72057594037927936)) | (((host_u64 >> static_cast<u64>(8)) & static_cast<u64>(255)) * static_cast<u64>(281474976710656))) | (((host_u64 >> static_cast<u64>(16)) & static_cast<u64>(255)) * static_cast<u64>(1099511627776))) | (((host_u64 >> static_cast<u64>(24)) & static_cast<u64>(255)) * static_cast<u64>(4294967296))) | (((host_u64 >> static_cast<u64>(32)) & static_cast<u64>(255)) * static_cast<u64>(16777216))) | (((host_u64 >> static_cast<u64>(40)) & static_cast<u64>(255)) * static_cast<u64>(65536))) | (((host_u64 >> static_cast<u64>(48)) & static_cast<u64>(255)) * static_cast<u64>(256))) | ((host_u64 >> static_cast<u64>(56)) & static_cast<u64>(255));
 }
 
 // No out-of-line body: no code in the ELF

@@ -99,9 +99,34 @@ __attribute__((weak)) void cParticleGenerator::initParam() {
 }
 
 // Address: 0x010a36f0 - 0x010a378b (155 bytes)
-__attribute__((weak)) void cParticleGenerator::resetParam() {
-    DDON_STUB("cParticleGenerator::resetParam")
-    /* stub */
+void cParticleGenerator::resetParam() {
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x68 from cParticleGenerator*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from rEffectList::EFL_LIFE_FRAME*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x52 from rEffectList::EFL_GENERATOR*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x56 from rEffectList::EFL_GENERATOR*
+    this->::cParticleManager::resetParam();
+    if (((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(104))) >> static_cast<unsigned int>(12)) & static_cast<unsigned int>(15)) <= static_cast<unsigned int>(6)) {
+        if (((static_cast<unsigned long>(102) >> static_cast<unsigned long>((static_cast<unsigned int>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(104))) >> static_cast<unsigned int>(12)) & static_cast<unsigned int>(15))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+            this->::cParticleManager::mKeepHoldFlag = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::cParticleManager::mpLifeParam) + static_cast<long>(12));
+        } else {
+            this->::cParticleManager::mKeepHoldFlag = static_cast<u32>(1);
+        }
+    } else {
+        this->::cParticleManager::mKeepHoldFlag = static_cast<u32>(1);
+    }
+    this->mPathInitFlag = static_cast<u32>(0);
+    if (0.0f > this->::cParticleManager::mpGeneratorParam->SetFrameDist) {
+        this->mSetFrameOfs = static_cast<float>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->::cParticleManager::mpGeneratorParam) + static_cast<long>(82)));
+    } else {
+        this->mSetFrameOfs = 0.0f;
+    }
+    if (0.0f > this->::cParticleManager::mpGeneratorParam->IntervalFrameDist) {
+        this->mIntervalFrameOfs = static_cast<float>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->::cParticleManager::mpGeneratorParam) + static_cast<long>(86)));
+    } else {
+        this->mIntervalFrameOfs = 0.0f;
+    }
 }
 
 // Address: 0x010a3790 - 0x010a390e (382 bytes)
@@ -167,10 +192,39 @@ __attribute__((weak)) bool cParticleGenerator::move() {
 }
 
 // Address: 0x010a4f50 - 0x010a4ff9 (169 bytes)
-__attribute__((weak)) void cParticleGenerator::updateConst() {
-    // local: cParticle* pParticle;
-    DDON_STUB("cParticleGenerator::updateConst")
-    /* stub */
+void cParticleGenerator::updateConst() {
+    // DWARF local not rendered: cParticle* pParticle;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->updateWorldMatrix();
+    if (this->mpPath != static_cast<cEffectPath*>(nullptr)) {
+        if ((this->mPathInitFlag & static_cast<u32>(1)) != static_cast<u32>(0)) {
+            if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(3)) {
+                this->::cParticleGenerator::calcPathStripLength(false);
+            }
+        } else {
+            if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(4)) {
+                this->::cParticleGenerator::initPathChain();
+            } else {
+                if ((this->::cParticleManager::mMoveType & static_cast<u32>(15)) == static_cast<u32>(3)) {
+                    this->::cParticleGenerator::calcPathStripLength(true);
+                }
+            }
+            this->mPathInitFlag = static_cast<u32>(1);
+        }
+    }
+    if (this->mpMoveTopParticle != static_cast<cParticle*>(nullptr)) {
+        if ((this->::cParticleManager::mStatus & static_cast<u32>(4)) != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x10a4fe0 carries; no location-less local in scope fits
+            for (cParticle* v0_3 = this->mpMoveTopParticle;;) {
+                this->::cParticleGenerator::updateConstParticleMove(v0_3);
+                if (v0_3->mpNext != static_cast<cParticle*>(nullptr)) {
+                    v0_3 = v0_3->mpNext;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 // Defined in the class (its body was written in a header).

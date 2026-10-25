@@ -22,6 +22,7 @@ class cNetGameServer;
 class rGUIMessage;
 class rTexture;
 class rTextureJpeg;
+class uGUIPhotoAlbum;
 
 // Declarations
 class sScreenShot;
@@ -42,6 +43,8 @@ class sScreenShot : public cSystem
 {
     // inferred: cNetGameServer::getPhotoAuthAddressReq names sScreenShot::mIsAuthAddrReqSucces
     friend class cNetGameServer;
+    // inferred: uGUIPhotoAlbum::kill names sScreenShot::mpInstance
+    friend class uGUIPhotoAlbum;
 public:
     enum
     {

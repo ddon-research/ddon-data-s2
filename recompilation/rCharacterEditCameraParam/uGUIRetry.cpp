@@ -288,12 +288,41 @@ __attribute__((weak)) void uGUIRetry::setNum(u32 index, u64 num) {
 }
 
 // Address: 0x00c21210 - 0x00c21260 (80 bytes)
-__attribute__((weak)) void uGUIRetry::setEnable(u32 index, bool isEnable) {
-    // local: stItem& item;
-    // local: const bool isFocus;
-    // local: const u32 seq_id;
-    DDON_STUB("uGUIRetry::setEnable")
-    /* stub */
+void uGUIRetry::setEnable(u32 index, bool isEnable) {
+    // DWARF local not rendered: stItem& item;
+    // DWARF local not rendered: const bool isFocus;
+    // DWARF local not rendered: const u32 seq_id;
+    // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as int
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (index <= static_cast<u32>(4)) {
+        this->mItem[index].isEnable = isEnable;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xc21222, held ahead of the effects the ELF orders after it
+        uGUIBase::cVerticalList* t0 = this->mpListCtrl;
+        if (t0 != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xc21231, held ahead of the effects the ELF orders after it
+            s32 t1 = t0->::cControl::getCurrentPos();
+            if (isEnable != false) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xc2124e, held ahead of the effects the ELF orders after it
+                cGUIInstAnimation* t2 = this->mItem[index].mpInstAnimText;
+                this->::uGUIBase::setSequenceId(t2, static_cast<unsigned int>((static_cast<unsigned long>(t1 == static_cast<int>(index)) * static_cast<unsigned long>(3)) + static_cast<unsigned long>(1)), false);
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xc2124e, held ahead of the effects the ELF orders after it
+                cGUIInstAnimation* t2 = this->mItem[index].mpInstAnimText;
+                this->::uGUIBase::setSequenceId(t2, static_cast<u32>(7), false);
+            }
+        } else {
+            if (isEnable != false) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xc2124e, held ahead of the effects the ELF orders after it
+                cGUIInstAnimation* t2 = this->mItem[index].mpInstAnimText;
+                this->::uGUIBase::setSequenceId(t2, static_cast<unsigned int>((static_cast<unsigned long>(index == static_cast<u32>(0)) * static_cast<unsigned long>(3)) + static_cast<unsigned long>(1)), false);
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xc2124e, held ahead of the effects the ELF orders after it
+                cGUIInstAnimation* t2 = this->mItem[index].mpInstAnimText;
+                this->::uGUIBase::setSequenceId(t2, static_cast<u32>(7), false);
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (51 bytes)

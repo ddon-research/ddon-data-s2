@@ -20,6 +20,7 @@ namespace nGUI { class Draw; }
 namespace nGUI { struct MTAG; }
 namespace nGUI { struct MessageDrawState; }
 namespace nGUI { struct VERTEX; }
+class rGUI;
 
 // Declarations
 class cGUIFontFilter;
@@ -34,6 +35,8 @@ using u32 = unsigned int;
 
 class cGUIFontFilter : public MtObject
 {
+    // inferred: rGUI::getFontFilterFromId names cGUIFontFilter::mId
+    friend class rGUI;
 public:
     class MyDTI;
 public:

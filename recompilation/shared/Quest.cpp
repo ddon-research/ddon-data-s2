@@ -296,6 +296,75 @@ __attribute__((weak)) MtObject* CDataContentsPlayEnd::MyDTI::newInstance() const
 }
 
 // No out-of-line body: no code in the ELF
+// MtDTI* CDataContentsPlayStartData::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void CDataContentsPlayStartData::usage();
+
+// Address: 0x01a2df60 - 0x01a2df68 (8 bytes)
+const MtDTI& CDataContentsPlayStartData::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return CDataContentsPlayStartData::DTI;
+}
+
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline MtAllocator* CDataContentsPlayStartData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContentsPlayStartData::DTI);
+}
+
+// No out-of-line body: no code in the ELF
+// void CDataContentsPlayStartData::setAllocator(u32);
+
+// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
+//   in CDataContentsPlayStartData::MyDTI::newInstance at 0x003c4ff4-0x003c501d (called at QuestImplement.inc:71)
+// void* CDataContentsPlayStartData::operator new(size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* CDataContentsPlayStartData::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* CDataContentsPlayStartData::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* CDataContentsPlayStartData::operator new[](size_t sz, void* p_addr);
+
+// Address: 0x003c5130 - 0x003c515a (42 bytes)
+__attribute__((weak)) void CDataContentsPlayStartData::operator delete(void* p_addr) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    ::CDataContentsPlayStartData::getAllocator()->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void CDataContentsPlayStartData::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void CDataContentsPlayStartData::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void CDataContentsPlayStartData::operator delete[](void* p_addr, u32 align);
+
+// No out-of-line body: 8 inlined copies in 4 functions (1788 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE at 0x002ef049-0x002ef137 (called at Quest.h:4395)
+//   in cSeedGameSvConnection::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE at 0x002ef049-0x002ef137 (called at Quest.h:4301)
+//   in CDataContentsPlayStartData::MyDTI::newInstance at 0x003c501d-0x003c50f2 (called at QuestImplement.inc:71)
+//   and 5 more (every copy is in <bundle>.inlined.json)
+// CDataContentsPlayStartData::CDataContentsPlayStartData();
+
+// No out-of-line body: no code in the ELF
+// CDataContentsPlayStartData::CDataContentsPlayStartData(u32, u32, u32, u32, u8, const MtTypedArray<CDataQuestProcessState>&, const MtTypedArray<CDataQuestEnemyInfo>&, const MtTypedArray<CDataQuestLayoutFlagSetInfo>&, const MtTypedArray<CDataCommonU32>&);
+
+// No out-of-line body: 2 inlined copies in 1 function (114 bytes)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x0041af21-0x0041af5a (called at QuestImplement.inc:71)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x0041af21-0x0041af5a (called at Quest.h:4289)
+// CDataContentsPlayStartData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x003c4ff0 - 0x003c50f7 (263 bytes)
+__attribute__((weak)) MtObject* CDataContentsPlayStartData::MyDTI::newInstance() const {
+    DDON_STUB("CDataContentsPlayStartData::MyDTI::newInstance")
+    return nullptr;
+}
+
+// No out-of-line body: no code in the ELF
 // MtDTI* CDataCycleContentsExtraReward::getMyDTIPtr();
 
 // No out-of-line body: no code in the ELF
@@ -4403,9 +4472,9 @@ __attribute__((weak)) void CDataRewardBoxItem::operator delete(void* p_addr) {
 // CDataRewardBoxItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bee30 - 0x003bee8f (95 bytes)
-__attribute__((weak)) MtObject* CDataRewardBoxItem::MyDTI::newInstance() const {
-    DDON_STUB("CDataRewardBoxItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataRewardBoxItem::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataRewardBoxItem;
 }
 
 // No out-of-line body: no code in the ELF
@@ -5186,6 +5255,75 @@ __attribute__((weak)) void CDataTimeGainQuestList::operator delete(void* p_addr)
 // Address: 0x003c1fd0 - 0x003c22fa (810 bytes)
 __attribute__((weak)) MtObject* CDataTimeGainQuestList::MyDTI::newInstance() const {
     DDON_STUB("CDataTimeGainQuestList::MyDTI::newInstance")
+    return nullptr;
+}
+
+// No out-of-line body: no code in the ELF
+// MtDTI* CDataTimeGainQuestPlayStartData::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void CDataTimeGainQuestPlayStartData::usage();
+
+// Address: 0x01a2df00 - 0x01a2df08 (8 bytes)
+const MtDTI& CDataTimeGainQuestPlayStartData::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return CDataTimeGainQuestPlayStartData::DTI;
+}
+
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline MtAllocator* CDataTimeGainQuestPlayStartData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataTimeGainQuestPlayStartData::DTI);
+}
+
+// No out-of-line body: no code in the ELF
+// void CDataTimeGainQuestPlayStartData::setAllocator(u32);
+
+// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
+//   in CDataTimeGainQuestPlayStartData::MyDTI::newInstance at 0x003c5194-0x003c51bd (called at QuestImplement.inc:72)
+// void* CDataTimeGainQuestPlayStartData::operator new(size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* CDataTimeGainQuestPlayStartData::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* CDataTimeGainQuestPlayStartData::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* CDataTimeGainQuestPlayStartData::operator new[](size_t sz, void* p_addr);
+
+// Address: 0x003c52e0 - 0x003c530a (42 bytes)
+__attribute__((weak)) void CDataTimeGainQuestPlayStartData::operator delete(void* p_addr) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    ::CDataTimeGainQuestPlayStartData::getAllocator()->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void CDataTimeGainQuestPlayStartData::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void CDataTimeGainQuestPlayStartData::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void CDataTimeGainQuestPlayStartData::operator delete[](void* p_addr, u32 align);
+
+// No out-of-line body: 6 inlined copies in 3 functions (1456 bytes)
+//   in cSeedGameSvConnection::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE at 0x002ef037-0x002ef137 (called at S2C.h:9388)
+//   in cSeedGameSvConnection::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE at 0x002ef037-0x002ef137 (called at Quest.h:4395)
+//   in CDataTimeGainQuestPlayStartData::MyDTI::newInstance at 0x003c51bd-0x003c52a4 (called at QuestImplement.inc:72)
+//   and 3 more (every copy is in <bundle>.inlined.json)
+// CDataTimeGainQuestPlayStartData::CDataTimeGainQuestPlayStartData();
+
+// No out-of-line body: no code in the ELF
+// CDataTimeGainQuestPlayStartData::CDataTimeGainQuestPlayStartData(const CContentsPlayStartData&);
+
+// No out-of-line body: 2 inlined copies in 1 function (114 bytes)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x0041af5a-0x0041af93 (called at QuestImplement.inc:72)
+//   in _GLOBAL__sub_I_cPacket.cpp at 0x0041af5a-0x0041af93 (called at Quest.h:4391)
+// CDataTimeGainQuestPlayStartData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x003c5190 - 0x003c52a9 (281 bytes)
+__attribute__((weak)) MtObject* CDataTimeGainQuestPlayStartData::MyDTI::newInstance() const {
+    DDON_STUB("CDataTimeGainQuestPlayStartData::MyDTI::newInstance")
     return nullptr;
 }
 

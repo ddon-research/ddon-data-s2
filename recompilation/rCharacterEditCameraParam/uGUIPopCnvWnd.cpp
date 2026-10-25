@@ -132,9 +132,9 @@ __attribute__((weak)) void uGUIPopCnvWnd::applyCandidateList(const nInputText::C
 }
 
 // Address: 0x00b9acf0 - 0x00b9ad0a (26 bytes)
-__attribute__((weak)) void uGUIPopCnvWnd::updateInit() {
-    DDON_STUB("uGUIPopCnvWnd::updateInit")
-    /* stub */
+void uGUIPopCnvWnd::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopCnvWnd::updateWait);
 }
 
 // Address: 0x00b9ae20 - 0x00b9aefc (220 bytes)

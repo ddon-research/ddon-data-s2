@@ -4,6 +4,7 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtColor.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/rTbl2.h"
@@ -135,13 +136,15 @@ inline void rEmblemColorTable::operator delete(void* p_addr) {
 // void rEmblemColorTable::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x0065cc30 - 0x0065cca7 (119 bytes)
-__attribute__((weak)) bool rEmblemColorTable::loadData(MtDataReader& r, cEmblemColorTable* pData) {
-    // local: s32 rr;
-    // local: s32 gg;
-    // local: s32 bb;
-    // local: s32 aa;
-    DDON_STUB("rEmblemColorTable::loadData")
-    return {};
+bool rEmblemColorTable::loadData(MtDataReader& r, cEmblemColorTable* pData) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    s32 rr = r.readS32();
+    s32 gg = r.readS32();
+    s32 bb = r.readS32();
+    s32 aa = r.readS32();
+    pData->mColor.rgba = static_cast<unsigned int>(((static_cast<unsigned long>(aa * static_cast<s32>(16777216)) | static_cast<unsigned long>((bb * static_cast<s32>(65536)) & static_cast<s32>(16711680))) | static_cast<unsigned long>(static_cast<unsigned char>(rr))) | static_cast<unsigned long>(static_cast<unsigned short>(gg * static_cast<s32>(256))));
+    return true;
 }
 
 // Address: 0x01a83a50 - 0x01a83a58 (8 bytes)

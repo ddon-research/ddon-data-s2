@@ -13,6 +13,8 @@ class MtDTI;
 class MtPropertyList;
 class cOcdBase;
 class rOcdImmuneParamRes;
+class rOcdStatusParamRes;
+class sPlayerManager;
 
 // Declarations
 class cOcdImmuneParamRes;
@@ -71,6 +73,10 @@ public:
 
 class cOcdStatusParamRes : public MtObject
 {
+    // inferred: rOcdStatusParamRes::loadData names cOcdStatusParamRes::mOcdUID
+    friend class rOcdStatusParamRes;
+    // inferred: sPlayerManager::getOcdStatusParamRes names cOcdStatusParamRes::mOcdUID
+    friend class sPlayerManager;
 public:
     class MyDTI;
 public:

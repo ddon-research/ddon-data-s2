@@ -192,6 +192,35 @@ inline rNPCMotionSet::InfoBinary::InfoBinary() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool rNPCMotionSet::InfoBinary::isTransOff() {
+    return this->mTransOff;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool rNPCMotionSet::InfoBinary::isRandomOn() {
+    return this->mRandomOn;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s16 rNPCMotionSet::InfoBinary::getTalkMot() {
+    return this->mTalkMot;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s16 rNPCMotionSet::InfoBinary::getHeadCtrl() {
+    return this->mHeadCtrl;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u8 rNPCMotionSet::InfoBinary::getTurnType() {
+    return this->mTurnType;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rNPCMotionSet::InfoBinary::MotDataBinary::MotDataBinary() {
     this->mMotionNo = static_cast<s16>(-1);
     this->mWait = static_cast<s16>(-1);

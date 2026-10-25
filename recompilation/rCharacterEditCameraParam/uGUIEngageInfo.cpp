@@ -4,10 +4,13 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/nGUI.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
 #include "../shared/sGame.h"
 #include "sSoundManager.h"
 #include "../shared/uGUI.h"
@@ -96,9 +99,22 @@ bool uGUIEngageInfo::loadResource() {
 }
 
 // Address: 0x00a75e30 - 0x00a75ef0 (192 bytes)
-__attribute__((weak)) void uGUIEngageInfo::setup() {
-    DDON_STUB("uGUIEngageInfo::setup")
-    /* stub */
+void uGUIEngageInfo::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(7)), true);
+    this->setPlay(true);
+    // inferred: a temporary for the result of the call at 0xa75e8f, used once; no DWARF local holds it
+    MT_CTSTR t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgHud(), static_cast<u32>(29));
+    // inferred: a temporary for the result of the call at 0xa75ea4, used twice; no DWARF local holds it
+    cGUIObject* t1 = this->::uGUIBase::getObjectFromId(static_cast<u32>(2), static_cast<u32>(3));
+    this->mpOBJ_msg_enemy_m_enemy = static_cast<cGUIObjMessage*>(t1);
+    this->::uGUIBase::setObjectMessage(t1, t0, static_cast<u32>(0), false);
+    this->::uGUIBase::setFlowAndInit(static_cast<u32>(2), false);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEngageInfo::updateInit);
 }
 
 // Address: 0x00a75f10 - 0x00a75f41 (49 bytes)
@@ -113,9 +129,9 @@ void uGUIEngageInfo::kill() {
 }
 
 // Address: 0x00a75ef0 - 0x00a75f0a (26 bytes)
-__attribute__((weak)) void uGUIEngageInfo::updateInit() {
-    DDON_STUB("uGUIEngageInfo::updateInit")
-    /* stub */
+void uGUIEngageInfo::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEngageInfo::updateWait);
 }
 
 // Address: 0x00a75f50 - 0x00a75fda (138 bytes)

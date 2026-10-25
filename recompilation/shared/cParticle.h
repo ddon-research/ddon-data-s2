@@ -6,6 +6,7 @@
 // Dependencies
 #include "MtColor.h"
 #include "MtMath.h"
+#include "nEffect.h"
 #include "nPrim.h"
 
 // Forward declarations
@@ -14,6 +15,7 @@ struct MtFloat3;
 class MtVector3;
 class cParticleGenerator;
 class cUnit;
+namespace nEffect { class SimpleCurve; }
 namespace nPrim { struct Material; }
 
 // Declarations
@@ -21,6 +23,8 @@ class cEffectStrip;
 class cLineParticle;
 class cMatrixParticle;
 class cParticle;
+class cParticleLifeCommon;
+class cParticleLifeCurveframe;
 class cParticleMoveAdd;
 class cParticleMoveBase;
 class cParticleMoveCommon;
@@ -278,6 +282,29 @@ protected:
     u32 mIntensity[2];  // offset: 0x68
     f32 mSrcIntensity;  // offset: 0x70
     f32 mSrcIntensityKeyframeRate;  // offset: 0x74
+};
+
+class cParticleLifeCommon
+{
+public:
+    void curveLifeRate();
+public:
+    f32 mLifeRate;  // offset: 0x0
+};
+
+class cParticleLifeCurveframe : public cParticleLifeCommon
+{
+public:
+    void reductionLifeFrame(u32 Shift);
+public:
+    u32 mLifeTimer : 16;  // offset: 0x4
+    u32 mLifeRno : 8;  // offset: 0x4
+    u32 mLifeCurveframe0807 : 8;  // offset: 0x4
+    u32 mLifeCurveframe1608 : 16;  // offset: 0x8
+    u32 mVanishFrame : 16;  // offset: 0x8
+    u32 mCurveFrame : 16;  // offset: 0xc
+    u32 mCurveTimer : 16;  // offset: 0xc
+    nEffect::SimpleCurve mLifeRateCurve;  // offset: 0x10
 };
 
 class cParticleMoveCommon

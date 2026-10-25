@@ -297,11 +297,16 @@ __attribute__((weak)) void MtDefaultAllocator::memFree(void* padr) {
 }
 
 // Address: 0x00d5d8f0 - 0x00d5d8fc (12 bytes)
-__attribute__((weak)) size_t MtDefaultAllocator::memSize(void* padr) {
-    // local: size_t size;
-    // local: uintptr* padrPtr;
-    DDON_STUB("MtDefaultAllocator::memSize")
-    return {};
+size_t MtDefaultAllocator::memSize(void* padr) {
+    // DWARF local not rendered: size_t size;
+    // DWARF local not rendered: uintptr* padrPtr;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xfffffffffffffff8 from void*
+    if (padr != static_cast<void*>(nullptr)) {
+        return static_cast<size_t>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(padr) + static_cast<long>(-8)));
+    } else {
+        return static_cast<size_t>(0);
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

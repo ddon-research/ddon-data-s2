@@ -480,9 +480,13 @@ __attribute__((weak)) void uSoundMotionSe::requestSe(cResource* pRequest, u32 re
 }
 
 // Address: 0x00d22610 - 0x00d2261e (14 bytes)
-__attribute__((weak)) void uSoundMotionSe::setMotSeSeqPageNo(u8 pageNo) {
-    DDON_STUB("uSoundMotionSe::setMotSeSeqPageNo")
-    /* stub */
+void uSoundMotionSe::setMotSeSeqPageNo(u8 pageNo) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pageNo <= static_cast<u8>(31)) {
+        this->mMotSeSeqPageNo = pageNo;
+    } else {
+        this->mMotSeSeqPageNo = static_cast<u8>(31);
+    }
 }
 
 // Address: 0x01b233e0 - 0x01b233e5 (5 bytes)
@@ -492,9 +496,13 @@ u8 uSoundMotionSe::getMotSeSeqPageNo() {
 }
 
 // Address: 0x00d22620 - 0x00d2262e (14 bytes)
-__attribute__((weak)) void uSoundMotionSe::setMotSeSeqStartIndex(u8 startIndex) {
-    DDON_STUB("uSoundMotionSe::setMotSeSeqStartIndex")
-    /* stub */
+void uSoundMotionSe::setMotSeSeqStartIndex(u8 startIndex) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (startIndex <= static_cast<u8>(32)) {
+        this->mMotSeSeqStartIndex = startIndex;
+    } else {
+        this->mMotSeSeqStartIndex = static_cast<u8>(32);
+    }
 }
 
 // Address: 0x01b233f0 - 0x01b233f5 (5 bytes)
@@ -504,9 +512,13 @@ u8 uSoundMotionSe::getMotSeSeqStartIndex() {
 }
 
 // Address: 0x00d22630 - 0x00d2263e (14 bytes)
-__attribute__((weak)) void uSoundMotionSe::setMotSeSeqNum(u8 seqNum) {
-    DDON_STUB("uSoundMotionSe::setMotSeSeqNum")
-    /* stub */
+void uSoundMotionSe::setMotSeSeqNum(u8 seqNum) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (seqNum <= static_cast<u8>(32)) {
+        this->mMotSeSeqNum = seqNum;
+    } else {
+        this->mMotSeSeqNum = static_cast<u8>(32);
+    }
 }
 
 // Address: 0x01b23400 - 0x01b23405 (5 bytes)
@@ -516,10 +528,15 @@ u8 uSoundMotionSe::getMotSeSeqNum() {
 }
 
 // Address: 0x00d22660 - 0x00d22675 (21 bytes)
-__attribute__((weak)) s16 uSoundMotionSe::getReqNo(rSoundMotionSe::cSoundMotionSeData::MOTION_SE_DATA* pMotionSeData) {
-    // local: s16 reqNo;
-    DDON_STUB("uSoundMotionSe::getReqNo")
-    return {};
+s16 uSoundMotionSe::getReqNo(rSoundMotionSe::cSoundMotionSeData::MOTION_SE_DATA* pMotionSeData) {
+    // DWARF local not rendered: s16 reqNo;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (pMotionSeData != static_cast<rSoundMotionSe::cSoundMotionSeData::MOTION_SE_DATA*>(nullptr)) {
+        return static_cast<s16>(static_cast<unsigned short>(this->::uSoundMotionSe::getReqId(pMotionSeData)));
+    } else {
+        return static_cast<s16>(-1);
+    }
 }
 
 // Address: 0x00d22680 - 0x00d22768 (232 bytes)

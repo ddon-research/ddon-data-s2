@@ -95,9 +95,14 @@ __attribute__((weak)) void uStageCraftPawnCtrl::move() {
 }
 
 // Address: 0x00d2b6b0 - 0x00d2b6df (47 bytes)
-__attribute__((weak)) void uStageCraftPawnCtrl::requestUpdatePawn() {
-    DDON_STUB("uStageCraftPawnCtrl::requestUpdatePawn")
-    /* stub */
+void uStageCraftPawnCtrl::requestUpdatePawn() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from uStageCraftPawnCtrl*
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) != static_cast<unsigned char>(1)) {
+        return;
+    }
+    this->::uStageCraftPawnCtrl::updatePawnList();
+    this->::uStageCraftPawnCtrl::updatePawnDisp();
 }
 
 // Address: 0x00d2beb0 - 0x00d2beb1 (1 bytes)
@@ -126,7 +131,7 @@ __attribute__((weak)) void uStageCraftPawnCtrl::moveMain() {
 // void uStageCraftPawnCtrl::moveExit();
 
 // Address: 0x00d2b360 - 0x00d2b418 (184 bytes)
-void uStageCraftPawnCtrl::updatePawnList() {
+__attribute__((weak)) void uStageCraftPawnCtrl::updatePawnList() {
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     ::memset(static_cast<void*>(&this->mMainPawnList[0]), static_cast<int>(0), static_cast<size_t>(640));
     if (::sCraftManager::getInstance()->::sCraftManager::getMyPawnNum() <= static_cast<s32>(0)) {

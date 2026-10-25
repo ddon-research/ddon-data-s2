@@ -72,8 +72,35 @@ inline rTblMenuComm::rTblMenuComm() {
 // Address: 0x0070a0d0 - 0x0070a18a (186 bytes)
 // Also emitted as: _ZN12rTblMenuCommD0Ev at 0x0070a190
 rTblMenuComm::~rTblMenuComm() {
-    DDON_STUB("rTblMenuComm::~rTblMenuComm")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x70a100 carries; no location-less local in scope fits
+        u32 v0_0 = this->mArray.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mArray.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
+                    v0_0 = this->mArray.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    }
+    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mArray.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x01ab5d90 - 0x01ab5d98 (8 bytes)
@@ -195,9 +222,14 @@ u32 rTblMenuComm::getCtgrNum() {
 }
 
 // Address: 0x0070a810 - 0x0070a82c (28 bytes)
-__attribute__((weak)) u32 rTblMenuComm::getMsgNum(u32 uCtgrIdx) {
-    DDON_STUB("rTblMenuComm::getMsgNum")
-    return {};
+u32 rTblMenuComm::getMsgNum(u32 uCtgrIdx) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
+    if (uCtgrIdx < this->mArray.::MtArray::mLength) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(uCtgrIdx)]) + static_cast<long>(24));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

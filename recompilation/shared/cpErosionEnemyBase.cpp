@@ -6,16 +6,20 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cHitInfoAfter.h"
+#include "cResource.h"
 #include "cUnit.h"
 #include "cpComponent.h"
 #include "cpEffectProvider.h"
 #include "cpEffectStatusManager.h"
 #include "cpObjCollision.h"
+#include "cpOcdCtrl.h"
 #include "nErosionEnemyBase.h"
 #include "nRegionStatus.h"
 #include "rAttackParam.h"
+#include "rSoundRequest.h"
 #include "sEffect.h"
 #include "sEffectExt.h"
+#include "../rPawnAIAction/sObjCollision.h"
 #include "uCharacter.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
@@ -103,10 +107,53 @@ __attribute__((weak)) void cpErosionEnemyBase::setup() {
 }
 
 // Address: 0x00153d10 - 0x00153e55 (325 bytes)
-__attribute__((weak)) void cpErosionEnemyBase::kill() {
-    // local: u32 i;
-    DDON_STUB("cpErosionEnemyBase::kill")
-    /* stub */
+void cpErosionEnemyBase::kill() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpErosionLinpunNode != static_cast<cHitNode*>(nullptr)) {
+        this->mpEnemy->::uDDOModel::getObjCollisionPtr()->::cpObjCollisionBase::killNode(this->mpErosionLinpunNode);
+    }
+    this->mpErosionLinpunNode = static_cast<cHitNode*>(nullptr);
+    if (this->mpErosionAttackParamRes[0] != static_cast<rAttackParam*>(nullptr)) {
+        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[0]);
+        if (this->mpErosionAttackParamRes[0] != static_cast<rAttackParam*>(nullptr)) {
+            this->mpErosionAttackParamRes[0]->::cResource::release();
+            this->mpErosionAttackParamRes[0] = static_cast<rAttackParam*>(nullptr);
+        }
+    }
+    if (this->mpErosionAttackParamRes[1] != static_cast<rAttackParam*>(nullptr)) {
+        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[1]);
+        if (this->mpErosionAttackParamRes[1] != static_cast<rAttackParam*>(nullptr)) {
+            this->mpErosionAttackParamRes[1]->::cResource::release();
+            this->mpErosionAttackParamRes[1] = static_cast<rAttackParam*>(nullptr);
+        }
+    }
+    if (this->mpErosionAttackParamRes[2] != static_cast<rAttackParam*>(nullptr)) {
+        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[2]);
+        if (this->mpErosionAttackParamRes[2] != static_cast<rAttackParam*>(nullptr)) {
+            this->mpErosionAttackParamRes[2]->::cResource::release();
+            this->mpErosionAttackParamRes[2] = static_cast<rAttackParam*>(nullptr);
+        }
+    }
+    if (this->mpErosionAttackParamRes[3] != static_cast<rAttackParam*>(nullptr)) {
+        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[3]);
+        if (this->mpErosionAttackParamRes[3] != static_cast<rAttackParam*>(nullptr)) {
+            this->mpErosionAttackParamRes[3]->::cResource::release();
+            this->mpErosionAttackParamRes[3] = static_cast<rAttackParam*>(nullptr);
+        }
+    }
+    if (this->mpErosionAttackParamRes[4] != static_cast<rAttackParam*>(nullptr)) {
+        ::sObjCollision::getInstance()->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[4]);
+        if (this->mpErosionAttackParamRes[4] != static_cast<rAttackParam*>(nullptr)) {
+            this->mpErosionAttackParamRes[4]->::cResource::release();
+            this->mpErosionAttackParamRes[4] = static_cast<rAttackParam*>(nullptr);
+        }
+    }
+    if (this->mpErosionSoundRes != static_cast<rSoundRequest*>(nullptr)) {
+        this->mpErosionSoundRes->::cResource::release();
+        this->mpErosionSoundRes = static_cast<rSoundRequest*>(nullptr);
+    }
 }
 
 // Address: 0x00153eb0 - 0x00153eb9 (9 bytes)
@@ -351,11 +398,52 @@ void cpErosionEnemyBase::reqOnSyncFlag(u64 syncFlag) {
 // rAttackParam* cpErosionEnemyBase::getErosionAttackParam(nErosionEnemyBase::EROSION_LEVEL level) const;
 
 // Address: 0x00154400 - 0x0015446f (111 bytes)
-__attribute__((weak)) bool cpErosionEnemyBase::isErosionCancelStatus(bool isCheckOcdCnacel) const {
-    // local: cpOcdCtrl* pOcdCtrl;
-    // local: uEnemy* pEnemy;
-    DDON_STUB("cpErosionEnemyBase::isErosionCancelStatus")
-    return {};
+bool cpErosionEnemyBase::isErosionCancelStatus(bool isCheckOcdCnacel) const {
+    // DWARF local not rendered: cpOcdCtrl* pOcdCtrl;
+    // DWARF local not rendered: uEnemy* pEnemy;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2768 from uCharacter*
+    if (this->mpEnemy->::uCharacter::isMoveFreeze() == false) {
+        if (isCheckOcdCnacel != false) {
+            if (this->mpEnemy->::uDDOModel::getOcdCtrlPtr() != static_cast<cpOcdCtrl*>(nullptr)) {
+                if (this->mpEnemy->::uDDOModel::getOcdCtrlPtr()->::cpOcdCtrl::isOcdActive(static_cast<u32>(16386)) == false) {
+                    if ((this->mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
+                            return this->mpEnemy->::uDDOModel::isDead();
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        return this->mpEnemy->::uDDOModel::isDead();
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                if ((this->mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
+                        return this->mpEnemy->::uDDOModel::isDead();
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return this->mpEnemy->::uDDOModel::isDead();
+                }
+            }
+        } else {
+            if ((this->mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
+                    return this->mpEnemy->::uDDOModel::isDead();
+                } else {
+                    return true;
+                }
+            } else {
+                return this->mpEnemy->::uDDOModel::isDead();
+            }
+        }
+    } else {
+        return true;
+    }
 }
 
 // Address: 0x00153e60 - 0x00153e91 (49 bytes)

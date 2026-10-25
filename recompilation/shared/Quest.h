@@ -22,6 +22,7 @@ class CDataAreaBonus;
 class CDataAreaInfoList;
 class CDataBorderRewardRecord;
 class CDataContentsPlayEnd;
+class CDataContentsPlayStartData;
 class CDataCycleContentsExtraReward;
 class CDataCycleContentsNews;
 class CDataCycleContentsNewsDetail;
@@ -91,6 +92,7 @@ class CDataSetQuestList;
 class CDataSetQuestOpenDate;
 class CDataSetQuestOrderList;
 class CDataTimeGainQuestList;
+class CDataTimeGainQuestPlayStartData;
 class CDataTimeLimitedQuestList;
 class CDataTimeLimitedQuestOrderList;
 class CDataTutorialQuestList;
@@ -99,6 +101,7 @@ class CDataWorldManageQuestList;
 class CDataWorldManageQuestOrderList;
 
 // Type aliases from DWARF
+using CContentsPlayStartData = CDataContentsPlayStartData;
 using CCycleContentsNoticeData = CDataCycleContentsNoticeData;
 using CLightQuestDetail = CDataLightQuestDetail;
 using CQuestContents = CDataQuestContents;
@@ -2049,6 +2052,46 @@ public:
     static MyDTI DTI;
 };
 
+class CDataContentsPlayStartData : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataContentsPlayStartData();
+    explicit CDataContentsPlayStartData(u32, u32, u32, u32, u8, const MtTypedArray<CDataQuestProcessState>&, const MtTypedArray<CDataQuestEnemyInfo>&, const MtTypedArray<CDataQuestLayoutFlagSetInfo>&, const MtTypedArray<CDataCommonU32>&);
+public:
+    u32 m_unKeyId;  // offset: 0x8
+    u32 m_unQuestScheduleId;  // offset: 0xc
+    u32 m_unQuestId;  // offset: 0x10
+    u32 m_unBaseLevel;  // offset: 0x14
+    u8 m_ucStartPos;  // offset: 0x18
+    MtTypedArray<CDataQuestProcessState> m_QuestProcessStateList;  // offset: 0x20
+    MtTypedArray<CDataQuestEnemyInfo> m_QuestEnemyInfoList;  // offset: 0x40
+    MtTypedArray<CDataQuestLayoutFlagSetInfo> m_QuestLayoutFlagSetInfoList;  // offset: 0x60
+    MtTypedArray<CDataCommonU32> m_QuestPhaseGroupIdList;  // offset: 0x80
+    static MyDTI DTI;
+};
+
 class CDataCycleContentsNoticeData : public CPacketDataBase
 {
 public:
@@ -2458,6 +2501,38 @@ public:
     b8 m_bIsJoinSupportPawn;  // offset: 0x1bf
     u8 m_ucJoinPawnNum;  // offset: 0x1c0
     MtTypedArray<CDataRewardItemDetail> m_RewardItemDetailList;  // offset: 0x1c8
+    static MyDTI DTI;
+};
+
+class CDataTimeGainQuestPlayStartData : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataTimeGainQuestPlayStartData();
+    explicit CDataTimeGainQuestPlayStartData(const CContentsPlayStartData&);
+public:
+    CContentsPlayStartData m_Common;  // offset: 0x8
     static MyDTI DTI;
 };
 
@@ -3271,6 +3346,14 @@ inline CDataQuestTalkInfo::CDataQuestTalkInfo() {
 inline CDataRewardAbility::CDataRewardAbility() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_unAbilityNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline CDataRewardBoxItem::CDataRewardBoxItem() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_unItemId = static_cast<u32>(0);
+    this->m_usNum = static_cast<u16>(0);
 }
 
 // Inline, no code of its own: checked where it is inlined.

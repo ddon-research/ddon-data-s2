@@ -22,6 +22,7 @@ class MtPropertyList;
 class MtStream;
 class MtString;
 class MtUI;
+class cEquipData;
 namespace nGUIItem { class cItem; }
 class sItemManager;
 class uHuman;
@@ -209,6 +210,8 @@ public:
 public:
     class rParam : public MtObject
     {
+        // inferred: sItemManager::getWalletItemToPoint names rItemList::rParam::mKindType
+        friend class sItemManager;
     public:
         enum PARAM_KIND
         {
@@ -984,6 +987,8 @@ public:
 public:
     class rItemParam : public MtObject
     {
+        // inferred: cEquipData::getMainWeaponItemRank names rItemList::rItemParam::mRank
+        friend class cEquipData;
         // inferred: nGUIItem::cItem::isThrowItem names rItemList::rItemParam::mCategory
         friend class nGUIItem::cItem;
         // inferred: sItemManager::reqKeyItemGetAnnounce names rItemList::rItemParam::mCategory

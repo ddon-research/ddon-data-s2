@@ -199,17 +199,26 @@ __attribute__((weak)) void rKeyConfigTextTable::sort(rKeyConfigTextTable::Predic
 // const nKeyConfigTextTable::KeyTexts& rKeyConfigTextTable::refSortedArray() const;
 
 // Address: 0x006910d0 - 0x006910e8 (24 bytes)
-__attribute__((weak)) const nKeyConfigTextTable::cKeyText* rKeyConfigTextTable::getSortedData(u32 index) const {
-    // local: const cKeyText* key_text;
-    DDON_STUB("rKeyConfigTextTable::getSortedData")
-    return nullptr;
+const nKeyConfigTextTable::cKeyText* rKeyConfigTextTable::getSortedData(u32 index) const {
+    // DWARF local not rendered: const cKeyText* key_text;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mSortedArray.::MtArray::mLength) {
+        return static_cast<const nKeyConfigTextTable::cKeyText*>(this->mSortedArray.::MtArray::mpArray[index]);
+    } else {
+        return static_cast<const nKeyConfigTextTable::cKeyText*>(nullptr);
+    }
 }
 
 // Address: 0x006910f0 - 0x0069110f (31 bytes)
-__attribute__((weak)) void rKeyConfigTextTable::setCustomSortNo(u32 index, u32 customSortNo) {
-    // local: cKeyText* const key_text;
-    DDON_STUB("rKeyConfigTextTable::setCustomSortNo")
-    /* stub */
+void rKeyConfigTextTable::setCustomSortNo(u32 index, u32 customSortNo) {
+    // DWARF local not rendered: cKeyText* const key_text;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1c from MtObject*
+    if (index < this->mSortedArray.::MtArray::mLength) {
+        if (this->mSortedArray.::MtArray::getBuffer()[static_cast<int>(index)] != static_cast<MtObject*>(nullptr)) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSortedArray.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(28)) = customSortNo;
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

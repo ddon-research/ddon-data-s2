@@ -33,9 +33,11 @@ const MtDTI& cJumpParam::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cJumpParam::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cJumpParam::MyDTI::newInstance at 0x006900a4-0x006900cd (called at rJumpParamTbl.cpp:24)
-// void* cJumpParam::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: parameters written where their values stand in every inlined copy
+inline void* cJumpParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cJumpParam::DTI)->memAlloc(sz, align, ::cJumpParam::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (38 bytes)
 //   in rTbl2<cJumpParam>::allocData at 0x01a97e1b-0x01a97e41 (called at rTbl2.h:215)
@@ -65,8 +67,14 @@ const MtDTI& cJumpParam::getDTI() const {
 
 // Address: 0x00690190 - 0x006901d5 (69 bytes)
 cJumpParam::cJumpParam() {
-    DDON_STUB("cJumpParam::cJumpParam")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mSpeedY = 20.0f;
+    this->mSpeedZ = 10.0f;
+    this->mGravity = -2.205f;
+    this->mAddMoveSpeedXZ = 0.0f;
+    this->mDampingZ = 0.0f;
+    this->mIsAwakening = false;
+    this->mAwakeJumpAdd = 3.95f;
 }
 
 // Address: 0x01a977e0 - 0x01a9785b (123 bytes)
@@ -95,9 +103,9 @@ __attribute__((weak)) void cJumpParam::createProperty(MtPropertyList& s) {
 // cJumpParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x006900a0 - 0x00690116 (118 bytes)
-__attribute__((weak)) MtObject* cJumpParam::MyDTI::newInstance() const {
-    DDON_STUB("cJumpParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* cJumpParam::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::cJumpParam;
 }
 
 // No out-of-line body: no code in the ELF

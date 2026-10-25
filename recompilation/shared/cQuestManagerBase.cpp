@@ -74,9 +74,13 @@ __attribute__((weak)) u32 cQuestManagerBase::getQuestOrderNum() const {
 }
 
 // Address: 0x00541e70 - 0x00541e9c (44 bytes)
-__attribute__((weak)) cQuestTask* cQuestManagerBase::getQuestTask(u32 index) const {
-    DDON_STUB("cQuestManagerBase::getQuestTask")
-    return nullptr;
+cQuestTask* cQuestManagerBase::getQuestTask(u32 index) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->getQuestNum()) {
+        return static_cast<cQuestTask*>(this->mQuestTask.::MtArray::mpArray[index]);
+    } else {
+        return static_cast<cQuestTask*>(nullptr);
+    }
 }
 
 // Address: 0x00541ea0 - 0x00541f48 (168 bytes)
@@ -349,8 +353,15 @@ cQuestManagerBase::cQuestManagerBase(MT_CTSTR managerName) {
 // Address: 0x00543350 - 0x005433a8 (88 bytes)
 // Also emitted as: _ZN17cQuestManagerBaseD0Ev at 0x005433b0
 cQuestManagerBase::~cQuestManagerBase() {
-    DDON_STUB("cQuestManagerBase::~cQuestManagerBase")
-    /* stub */
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i3 = static_cast<unsigned int>(0);
+    if (this->mQuestTask.::MtArray::mLength != static_cast<u32>(0)) {
+        do {
+            static_cast<cQuestTask*>(this->mQuestTask.::MtArray::getBuffer()[static_cast<int>(i3)])->::cQuestTask::forceDelete();
+            i3 += static_cast<unsigned int>(1);
+        } while (i3 < this->mQuestTask.::MtArray::mLength);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (128 bytes)

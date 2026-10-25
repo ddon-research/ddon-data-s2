@@ -327,6 +327,11 @@ namespace nJobParam {
 }  // namespace nJobParam
 
 // Inline, no code of its own: checked where it is inlined.
+inline f32 nJobParam::cHumanBaseInfo::getMaxHP() const {
+    return this->mMaxHP_pri;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline nJobParam::cJobInfo::cJobInfo() {
     this->mLv_pri = static_cast<u16>(0);
     this->mItemSealResist_pri = static_cast<u8>(0);

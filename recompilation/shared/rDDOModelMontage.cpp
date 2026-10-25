@@ -167,10 +167,17 @@ __attribute__((weak)) u32 rDDOModelMontage::applyColorBJ_NPC(cBakeModel* pBakeMo
 // bool rDDOModelMontage::isSwing();
 
 // Address: 0x0065ed50 - 0x0065ed74 (36 bytes)
-__attribute__((weak)) bool rDDOModelMontage::isBodyShakeBust(u32 no) {
-    // local: BODY_INFO* pb;
-    DDON_STUB("rDDOModelMontage::isBodyShakeBust")
-    return {};
+bool rDDOModelMontage::isBodyShakeBust(u32 no) {
+    // DWARF local not rendered: BODY_INFO* pb;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: u8 used as bool
+    if (this->::rDDOModelMontage::getModelType() <= static_cast<u32>(9)) {
+        if (((static_cast<unsigned long>(658) >> static_cast<unsigned long>(this->::rDDOModelMontage::getModelType() & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+            return static_cast<bool>(this->mpHeader->body[no].shakeBust);
+        }
+    }
+    return true;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (23 bytes)
@@ -249,10 +256,17 @@ __attribute__((weak)) u32 rDDOModelMontage::getHideInfo(u32 no) {
 }
 
 // Address: 0x0065ed80 - 0x0065eda4 (36 bytes)
-__attribute__((weak)) bool rDDOModelMontage::isPlayExpression(u32 no) {
-    // local: EXPRESSION_INFO* pe;
-    DDON_STUB("rDDOModelMontage::isPlayExpression")
-    return {};
+bool rDDOModelMontage::isPlayExpression(u32 no) {
+    // DWARF local not rendered: EXPRESSION_INFO* pe;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: u8 used as bool
+    if (this->::rDDOModelMontage::getModelType() <= static_cast<u32>(9)) {
+        if (((static_cast<unsigned long>(641) >> static_cast<unsigned long>(this->::rDDOModelMontage::getModelType() & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+            return static_cast<bool>(this->mpHeader->expression[no].playExpression);
+        }
+    }
+    return true;
 }
 
 // Address: 0x0065ed40 - 0x0065ed4f (15 bytes)

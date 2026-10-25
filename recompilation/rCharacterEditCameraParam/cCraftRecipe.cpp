@@ -11,6 +11,7 @@
 #include "../shared/nCharacterData.h"
 #include "rCraftRecipe.h"
 #include "../shared/rItemList.h"
+#include "sCraftManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -290,9 +291,43 @@ u32 cCraftRecipe::getEquipItemCategoyNum(nCharacterData::EQUIP_CATEGORY category
 }
 
 // Address: 0x00070da0 - 0x00070e2f (143 bytes)
-__attribute__((weak)) rCraftRecipe::cCraftRecipe* cCraftRecipe::getRecipeList(u32 itemCate, u32 index) {
-    DDON_STUB("cCraftRecipe::getRecipeList")
-    return nullptr;
+rCraftRecipe::cCraftRecipe* cCraftRecipe::getRecipeList(u32 itemCate, u32 index) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x70e24; no location-less local in scope fits
+    rCraftRecipe::cCraftRecipe* v2_0;
+    if (this->mRecipeType != static_cast<cCraftRecipe::RECIPE_TYPE>(1)) {
+        if (this->mRecipeType == static_cast<cCraftRecipe::RECIPE_TYPE>(0)) {
+            return this->::cCraftRecipe::getCreateRecipeList(itemCate, index);
+        } else {
+            v2_0 = static_cast<rCraftRecipe::cCraftRecipe*>(nullptr);
+        }
+    } else {
+        if (index >= this->mRecipeList[itemCate].::MtArray::mLength) {
+            v2_0 = static_cast<rCraftRecipe::cCraftRecipe*>(nullptr);
+        } else {
+            // inferred: the value the loop at 0x70de0 carries; no location-less local in scope fits
+            MtObject* v0_8 = this->mRecipeList[itemCate].::MtArray::mpArray[index];
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_3 = static_cast<unsigned int>(1);
+            // inferred: the value carried to 0x70e0f; no location-less local in scope fits
+            rCraftRecipe::cCraftRecipe* v1_0;
+            for (;;) {
+                if ((i0_3 - static_cast<unsigned int>(1)) > static_cast<unsigned int>(21)) {
+                    v2_0 = static_cast<rCraftRecipe::cCraftRecipe*>(nullptr);
+                    return v2_0;
+                } else {
+                    v1_0 = ::sCraftManager::getInstance()->::sCraftManager::getCraftRecipeCtrl(static_cast<sCraftManager::RECIPE_TYPE>(1), static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(i0_3))->::sCraftManager::cCraftRecipeControl::getRecipeDataToRecipeId(static_cast<cCraftRecipe::cCraftRecipeList*>(v0_8)->::cCraftRecipe::cCraftRecipeList::getRecipeId());
+                    if (v1_0 == static_cast<rCraftRecipe::cCraftRecipe*>(nullptr)) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            v2_0 = v1_0;
+        }
+    }
+    return v2_0;
 }
 
 // Address: 0x00070f90 - 0x00070fad (29 bytes)
@@ -324,11 +359,29 @@ __attribute__((weak)) rCraftRecipe::cCraftRecipe* cCraftRecipe::getRecipeList(u3
 }
 
 // Address: 0x00070fd0 - 0x0007100c (60 bytes)
-__attribute__((weak)) u32 cCraftRecipe::getRecipeIndex(u32 itemCate, u32 recipeId) {
-    // local: u32 i;
-    // local: cCraftRecipeList* pList;
-    DDON_STUB("cCraftRecipe::getRecipeIndex")
-    return {};
+u32 cCraftRecipe::getRecipeIndex(u32 itemCate, u32 recipeId) {
+    // DWARF local not rendered: cCraftRecipeList* pList;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (itemCate <= static_cast<u32>(8)) {
+        if (this->mRecipeList[itemCate].::MtArray::mLength == static_cast<u32>(0)) {
+            return static_cast<u32>(0);
+        }
+    } else {
+        return static_cast<u32>(0);
+    }
+    // inferred: DWARF's location-less 'i' (lexical block [0x70fd7, 0x71009)) is the counter this loop steps
+    u32 i = static_cast<u32>(0);
+    do {
+        if (this->mRecipeList[itemCate].::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mRecipeList[itemCate].::MtArray::mpArray[i]) + static_cast<long>(8))) != recipeId) {
+            } else {
+                return i;
+            }
+        }
+        i += static_cast<u32>(1);
+    } while (i < this->mRecipeList[itemCate].::MtArray::mLength);
+    return static_cast<u32>(0);
 }
 
 // Address: 0x000710e0 - 0x00071116 (54 bytes)

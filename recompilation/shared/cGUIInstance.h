@@ -28,6 +28,7 @@ class MtVector3;
 class MtVector4;
 class cGUIObjRoot;
 class cGUIObject;
+class cGUIUtility;
 class cGUIVariable;
 namespace nGUI { struct ANIM_SECTION; }
 namespace nGUI { class Draw; }
@@ -35,11 +36,15 @@ namespace nGUI { struct INIT_PARAM; }
 namespace nGUI { struct PROP_SETTER; }
 class rGUI;
 class uGUI;
+class uGUIActionPalette;
 class uGUIBase;
+class uGUIFKeyPalette;
 class uGUIGauge;
 class uGUIHudCustomSkillPallet;
 class uGUIMapMini;
 class uGUIPhoto;
+class uGUIPhotoAlbum;
+class uGUIPointer;
 
 // Declarations
 class cGUIInstAnimControl;
@@ -62,6 +67,8 @@ class cGUIInstance : public MtObject
 {
     // inferred: cGUIInstAnimVariable::setVariableId names cGUIInstance::mpUnit
     friend class cGUIInstAnimVariable;
+    // inferred: cGUIUtility::copyParameterlValueSet names cGUIInstance::mId
+    friend class cGUIUtility;
     // inferred: uGUI::updateInstanceMatrix names cGUIInstance::mAttr
     friend class uGUI;
     // inferred: uGUIHudCustomSkillPallet::setupInstances names cGUIInstance::mPriority
@@ -224,10 +231,24 @@ private:
 
 class cGUIInstNull : public cGUIInstance
 {
+    // inferred: cGUIInstAnimation::setResolutionAdjust calls cGUIInstNull::setChildResolutionAdjust
+    friend class cGUIInstAnimation;
+    // inferred: cGUIUtility::copyParameterlValueSet names cGUIInstNull::mPosition.x
+    friend class cGUIUtility;
+    // inferred: uGUIActionPalette::isForceSamplerLinear names cGUIInstNull::mScale.x
+    friend class uGUIActionPalette;
+    // inferred: uGUIBase::isForceSamplerLinear names cGUIInstNull::mScale.x
+    friend class uGUIBase;
+    // inferred: uGUIFKeyPalette::isForceSamplerLinear names cGUIInstNull::mScale.x
+    friend class uGUIFKeyPalette;
     // inferred: uGUIGauge::setupAura names cGUIInstNull::mPosition.x
     friend class uGUIGauge;
     // inferred: uGUIPhoto::initList names cGUIInstNull::mPosition.y
     friend class uGUIPhoto;
+    // inferred: uGUIPhotoAlbum::isForceSamplerLinear names cGUIInstNull::mScale.x
+    friend class uGUIPhotoAlbum;
+    // inferred: uGUIPointer::isForceSamplerLinear names cGUIInstNull::mScale.x
+    friend class uGUIPointer;
 public:
     class MyDTI;
 public:
@@ -622,12 +643,17 @@ inline cGUIObjRoot* cGUIInstAnimation::getRootObject() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cGUIInstance::getDuplicateId() const {
+    return this->mDuplicateId;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cGUIInstance* cGUIInstance::getChild() const {
     return this->mpChild;
 }
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline cGUIInstance* cGUIInstance::getParent() const {
     return this->mpParent;
 }

@@ -28,6 +28,7 @@ class cParticleManager;
 class cUnit;
 namespace nPrim { struct Material; }
 class rEffectList;
+class sEffectExt;
 
 // Declarations
 class uBaseEffect;
@@ -47,6 +48,8 @@ class uBaseEffect : public uCoord
 {
     // inferred: cParticleManager::setup names uBaseEffect::mTimeInterpolationRate
     friend class cParticleManager;
+    // inferred: sEffectExt::epvSetTimer names uBaseEffect::mStatus
+    friend class sEffectExt;
 public:
     enum BASE_STATUS
     {

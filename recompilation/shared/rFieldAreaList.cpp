@@ -82,22 +82,96 @@ __attribute__((weak)) u32 rFieldAreaList::getDispFieldAreaId(u32 landId, u32 are
 }
 
 // Address: 0x00676610 - 0x0067664c (60 bytes)
-__attribute__((weak)) const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfo(u32 fieldAreaId) const {
-    // local: u32 i;
-    // local: cFieldAreaInfo* pInfo;
-    DDON_STUB("rFieldAreaList::getFieldAreaInfo")
-    return nullptr;
+const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfo(u32 fieldAreaId) const {
+    // DWARF local not rendered: cFieldAreaInfo* pInfo;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x676630 carries; no location-less local in scope fits
+    u32 v0_0 = this->mArrayNum;
+    // inferred: the value carried to 0x67664b; no location-less local in scope fits
+    rFieldAreaList::cFieldAreaInfo* v2_0;
+    if (v0_0 == static_cast<u32>(0)) {
+        v2_0 = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0x676630 carries; no location-less local in scope fits
+        rFieldAreaList::cFieldAreaInfo* v0_3 = this->mpArray;
+        // inferred: DWARF's location-less 'i' (lexical block [0x676610, 0x67664b)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        // inferred: the value the loop at 0x676630 carries; no location-less local in scope fits
+        for (u32* v0_2 = &v0_3->mFieldAreaId;;) {
+            if ((*v0_2) != fieldAreaId) {
+                if ((i + static_cast<u32>(1)) < v0_0) {
+                    i = i + static_cast<u32>(1);
+                    v0_2 += static_cast<int>(22);
+                } else {
+                    break;
+                }
+            } else {
+                v2_0 = &v0_3[i];
+                return v2_0;
+            }
+        }
+        v2_0 = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
+    }
+    return v2_0;
 }
 
 // Address: 0x00676650 - 0x006766ad (93 bytes)
-__attribute__((weak)) const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromStageNo(s32 stageNo) const {
-    // local: u32 i;
-    // local: const u32 stageNum;
-    // local: cFieldAreaInfo* pInfo;
-    // local: u32 j;
-    // local: cStageNo* pStageNo;
-    DDON_STUB("rFieldAreaList::getFieldAreaInfoFromStageNo")
-    return nullptr;
+const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getFieldAreaInfoFromStageNo(s32 stageNo) const {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cFieldAreaInfo* pInfo;
+    // DWARF local not rendered: u32 j;
+    // DWARF local not rendered: cStageNo* pStageNo;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: the value the loop at 0x676665 carries; no location-less local in scope fits
+    u32 v0_3 = this->mArrayNum;
+    // inferred: the value carried to 0x6766ac; no location-less local in scope fits
+    rFieldAreaList::cFieldAreaInfo* v4_0;
+    if (v0_3 == static_cast<u32>(0)) {
+        v4_0 = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0x676665 carries; no location-less local in scope fits
+        rFieldAreaList::cFieldAreaInfo* v0_4 = this->mpArray;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_5 = static_cast<unsigned int>(0);
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1_0;
+        for (;;) {
+            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + static_cast<long>(16));
+            if (stageNum != static_cast<u32>(0)) {
+                // inferred: the value the loop at 0x676680 carries; no location-less local in scope fits
+                MtObject* * v1_3 = v0_4[i0_5].mStageNoList.::MtArray::getBuffer();
+                i1_0 = static_cast<unsigned int>(0);
+                for (;;) {
+                    if (v1_3[static_cast<int>(i1_0)] != static_cast<MtObject*>(nullptr)) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_3[static_cast<int>(i1_0)]) + static_cast<long>(8))) != static_cast<unsigned int>(stageNo)) {
+                            if ((i1_0 + static_cast<unsigned int>(1)) < stageNum) {
+                                i1_0 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        } else {
+                            v4_0 = &v0_4[i0_5];
+                            return v4_0;
+                        }
+                    } else {
+                        if ((i1_0 + static_cast<unsigned int>(1)) < stageNum) {
+                            i1_0 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if ((i0_5 + static_cast<unsigned int>(1)) < v0_3) {
+                i0_5 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+        v4_0 = static_cast<rFieldAreaList::cFieldAreaInfo*>(nullptr);
+    }
+    return v4_0;
 }
 
 // Address: 0x006766b0 - 0x00676709 (89 bytes)
@@ -110,28 +184,114 @@ __attribute__((weak)) const rFieldAreaList::cFieldAreaInfo* rFieldAreaList::getF
 }
 
 // Address: 0x00676710 - 0x00676799 (137 bytes)
-__attribute__((weak)) u32 rFieldAreaList::getFieldAreaIdFromBelongStage(s32 stageNo) const {
-    // local: u32 i;
-    // local: const u32 stageNum;
-    // local: const u32 belongStageNum;
-    // local: cFieldAreaInfo* pInfo;
-    // local: u32 j;
-    // local: cStageNo* pStageNo;
-    // local: u32 j;
-    // local: cStageNo* pStageNo;
-    DDON_STUB("rFieldAreaList::getFieldAreaIdFromBelongStage")
-    return {};
+u32 rFieldAreaList::getFieldAreaIdFromBelongStage(s32 stageNo) const {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cFieldAreaInfo* pInfo;
+    // DWARF local not rendered: u32 j;
+    // DWARF local not rendered: cStageNo* pStageNo;
+    // DWARF local not rendered: u32 j;
+    // DWARF local not rendered: cStageNo* pStageNo;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: the value the loop at 0x676722 carries; no location-less local in scope fits
+    u32 v0_3 = this->mArrayNum;
+    if (v0_3 != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x676722 carries; no location-less local in scope fits
+        rFieldAreaList::cFieldAreaInfo* v0_4 = this->mpArray;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_5 = static_cast<unsigned int>(0);
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1_0;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i3_0;
+        for (;;) {
+            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + static_cast<long>(16));
+            if (stageNum != static_cast<u32>(0)) {
+                // inferred: the value the loop at 0x676740 carries; no location-less local in scope fits
+                MtObject* * v1_2 = v0_4[i0_5].mStageNoList.::MtArray::getBuffer();
+                i1_0 = static_cast<unsigned int>(0);
+                for (;;) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_2[static_cast<int>(i1_0)]) + static_cast<long>(8))) == static_cast<unsigned int>(stageNo)) {
+                        return v0_4[i0_5].mFieldAreaId;
+                    } else {
+                        if ((i1_0 + static_cast<unsigned int>(1)) < stageNum) {
+                            i1_0 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            const u32 belongStageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + static_cast<long>(48));
+            if (belongStageNum != static_cast<u32>(0)) {
+                // inferred: the value the loop at 0x676770 carries; no location-less local in scope fits
+                MtObject* * v3_2 = v0_4[i0_5].mBelongStageNoList.::MtArray::getBuffer();
+                i3_0 = static_cast<unsigned int>(0);
+                for (;;) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_2[static_cast<int>(i3_0)]) + static_cast<long>(8))) == static_cast<unsigned int>(stageNo)) {
+                        return v0_4[i0_5].mFieldAreaId;
+                    } else {
+                        if ((i3_0 + static_cast<unsigned int>(1)) < belongStageNum) {
+                            i3_0 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if ((i0_5 + static_cast<unsigned int>(1)) < v0_3) {
+                i0_5 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x006767a0 - 0x006767f3 (83 bytes)
-__attribute__((weak)) u32 rFieldAreaList::getFieldAreaIdFromStageList(s32 stageNo) const {
-    // local: u32 i;
-    // local: const u32 stageNum;
-    // local: cFieldAreaInfo* pInfo;
-    // local: u32 j;
-    // local: cStageNo* pStageNo;
-    DDON_STUB("rFieldAreaList::getFieldAreaIdFromStageList")
-    return {};
+u32 rFieldAreaList::getFieldAreaIdFromStageList(s32 stageNo) const {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cFieldAreaInfo* pInfo;
+    // DWARF local not rendered: u32 j;
+    // DWARF local not rendered: cStageNo* pStageNo;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: the value the loop at 0x6767b2 carries; no location-less local in scope fits
+    u32 v0_3 = this->mArrayNum;
+    if (v0_3 != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x6767b2 carries; no location-less local in scope fits
+        rFieldAreaList::cFieldAreaInfo* v0_4 = this->mpArray;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_5 = static_cast<unsigned int>(0);
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1_0;
+        for (;;) {
+            const u32 stageNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&v0_4[i0_5]) + static_cast<long>(16));
+            if (stageNum != static_cast<u32>(0)) {
+                // inferred: the value the loop at 0x6767d0 carries; no location-less local in scope fits
+                MtObject* * v1_2 = v0_4[i0_5].mStageNoList.::MtArray::getBuffer();
+                i1_0 = static_cast<unsigned int>(0);
+                for (;;) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_2[static_cast<int>(i1_0)]) + static_cast<long>(8))) == static_cast<unsigned int>(stageNo)) {
+                        return v0_4[i0_5].mFieldAreaId;
+                    } else {
+                        if ((i1_0 + static_cast<unsigned int>(1)) < stageNum) {
+                            i1_0 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if ((i0_5 + static_cast<unsigned int>(1)) < v0_3) {
+                i0_5 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00676800 - 0x006768b3 (179 bytes)
@@ -327,7 +487,8 @@ const MtDTI& rFieldAreaList::cFieldAreaInfo::cStageNo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
-inline void* rFieldAreaList::cFieldAreaInfo::cStageNo::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rFieldAreaList::cFieldAreaInfo::cStageNo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memAlloc(sz, align, ::rFieldAreaList::cFieldAreaInfo::cStageNo::DTI.::MtDTI::getID());
 }
 

@@ -28,6 +28,7 @@ class cpCatchCtrl;
 class cpChantCommand;
 class cpJob01;
 class cpJob06;
+class cpSlave;
 struct pthread;
 class sApp;
 class sContextManager;
@@ -35,10 +36,15 @@ class sEffect;
 class sGUIExt;
 class sItemManager;
 class sNetwork;
+class sNetworkExt;
+class sObjCollision;
 class sVibration;
 class uCameraBase;
+class uControl;
 class uEffectExt;
 class uGUI;
+class uGUIChat;
+class uGUITelop;
 class uHuman;
 
 // Declarations
@@ -84,6 +90,8 @@ class sMain : public cSystem
     friend class cpJob01;
     // inferred: cpJob06::checkCheatMgcBigDamage names sMain::mDeltaTime
     friend class cpJob06;
+    // inferred: cpSlave::interpolatePos names sMain::mDeltaTime
+    friend class cpSlave;
     // inferred: sApp::execute names sMain::mExit
     friend class sApp;
     // inferred: sContextManager::move names sMain::mpInstance
@@ -96,14 +104,24 @@ class sMain : public cSystem
     friend class sItemManager;
     // inferred: sNetwork::reset names sMain::mpInstance
     friend class sNetwork;
+    // inferred: sNetworkExt::move names sMain::mDeltaTime
+    friend class sNetworkExt;
+    // inferred: sObjCollision::cheatCheck names sMain::mDeltaTime
+    friend class sObjCollision;
     // inferred: sVibration::getTimer names sMain::mpInstance
     friend class sVibration;
     // inferred: uCameraBase::getDeltaTime names sMain::mDeltaTime
     friend class uCameraBase;
+    // inferred: uControl::move names sMain::mDeltaTime
+    friend class uControl;
     // inferred: uEffectExt::doFinish names sMain::mDeltaTime
     friend class uEffectExt;
     // inferred: uGUI::moveAfter names sMain::mpInstance
     friend class uGUI;
+    // inferred: uGUIChat::updateIn names sMain::mDeltaTime
+    friend class uGUIChat;
+    // inferred: uGUITelop::updateWait names sMain::mDeltaTime
+    friend class uGUITelop;
     // inferred: uHuman::updateCsChangeSubGUI names sMain::mDeltaTime
     friend class uHuman;
 public:

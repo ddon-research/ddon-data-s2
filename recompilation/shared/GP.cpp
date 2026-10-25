@@ -79,9 +79,9 @@ __attribute__((weak)) void CDataCAPtoGPChangeElement::operator delete(void* p_ad
 // CDataCAPtoGPChangeElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d1cd0 - 0x003d1d2f (95 bytes)
-__attribute__((weak)) MtObject* CDataCAPtoGPChangeElement::MyDTI::newInstance() const {
-    DDON_STUB("CDataCAPtoGPChangeElement::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataCAPtoGPChangeElement::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataCAPtoGPChangeElement;
 }
 
 // No out-of-line body: no code in the ELF
@@ -150,9 +150,9 @@ __attribute__((weak)) void CDataGPCourseAvailable::operator delete(void* p_addr)
 // CDataGPCourseAvailable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d2bb0 - 0x003d2c17 (103 bytes)
-__attribute__((weak)) MtObject* CDataGPCourseAvailable::MyDTI::newInstance() const {
-    DDON_STUB("CDataGPCourseAvailable::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataGPCourseAvailable::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataGPCourseAvailable;
 }
 
 // No out-of-line body: no code in the ELF

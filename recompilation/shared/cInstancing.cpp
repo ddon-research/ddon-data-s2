@@ -291,11 +291,16 @@ const MtMatrix& cInstancingCulling::getWorldMatrix() const {
 // cInstancingCulling::VisibleList* cInstancingCulling::getVisibleList(u32);
 
 // Address: 0x01b68e80 - 0x01b68e91 (17 bytes)
-__attribute__((weak)) s32 cInstancingCulling::compare(const void* p_src1, const void* p_src2) {
-    // local: InstanceInfo* p_s1;
-    // local: InstanceInfo* p_s2;
-    DDON_STUB("cInstancingCulling::compare")
-    return {};
+s32 cInstancingCulling::compare(const void* p_src1, const void* p_src2) {
+    // DWARF local not rendered: InstanceInfo* p_s1;
+    // DWARF local not rendered: InstanceInfo* p_s2;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const void*
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p_src2) + static_cast<long>(0))) >= (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(p_src1) + static_cast<long>(0)))) {
+        return static_cast<s32>(-1);
+    } else {
+        return static_cast<s32>(1);
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -767,10 +772,10 @@ __attribute__((weak)) MtMatrix cInstancingFromMatrices::getInstanceMatrix(u32 in
 }
 
 // Address: 0x0101fbe0 - 0x0101fc03 (35 bytes)
-__attribute__((weak)) MtFloat3x4& cInstancingFromMatrices::getInstanceMatrix3x4(u32 index) {
-    // local: AreaInfo area;
-    DDON_STUB("cInstancingFromMatrices::getInstanceMatrix3x4")
-    __builtin_unreachable();
+MtFloat3x4& cInstancingFromMatrices::getInstanceMatrix3x4(u32 index) {
+    // DWARF local not rendered: AreaInfo area;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mArea[(index >> static_cast<u32>(8)) & static_cast<u32>(255)].mpInstanceMatrices[static_cast<unsigned char>(index)];
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

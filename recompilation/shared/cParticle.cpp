@@ -4,6 +4,7 @@
 #include "MtColor.h"
 #include "MtMath.h"
 #include "cUnit.h"
+#include "nEffect.h"
 #include "nPrim.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -358,6 +359,12 @@ void cParticle::kill() {
         this->mpSynchroUnit = static_cast<cUnit*>(nullptr);
     }
 }
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void cParticleLifeCommon::curveLifeRate();
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void cParticleLifeCurveframe::reductionLifeFrame(u32 Shift);
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // bool cParticleMoveCommon::isStop() const;

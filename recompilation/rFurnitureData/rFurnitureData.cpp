@@ -183,11 +183,34 @@ __attribute__((weak)) bool rFurnitureData::load(MtStream& in) {
 // cFurnitureData* rFurnitureData::searchData(u32 setNo);
 
 // Address: 0x0067a520 - 0x0067a58d (109 bytes)
-__attribute__((weak)) cFurnitureData* rFurnitureData::searchOmId(u32 omId) {
-    // local: u32 i;
-    // local: cFurnitureData* data;
-    DDON_STUB("rFurnitureData::searchOmId")
-    return nullptr;
+cFurnitureData* rFurnitureData::searchOmId(u32 omId) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cFurnitureData* data;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x67a582; no location-less local in scope fits
+    cFurnitureData* v1_0;
+    if (this->getDataNum() == static_cast<u32>(0)) {
+        v1_0 = static_cast<cFurnitureData*>(nullptr);
+    } else {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            // inferred: a temporary for the result of the call at 0x67a558, used 3 times; no DWARF local holds it
+            cFurnitureData* t0 = this->getData(i0_2);
+            if (t0 != static_cast<cFurnitureData*>(nullptr)) {
+                if (t0->mOmId == omId) {
+                    v1_0 = t0;
+                    break;
+                }
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < this->getDataNum()) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                v1_0 = static_cast<cFurnitureData*>(nullptr);
+                break;
+            }
+        }
+    }
+    return v1_0;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

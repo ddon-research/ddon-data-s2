@@ -4,6 +4,8 @@
 #include <cstddef>
 
 // Forward declarations
+class MtAABB;
+class MtCollision;
 struct MtFloat2A;
 struct MtFloat4A;
 class MtGeomAABB;
@@ -17,30 +19,26 @@ struct MtHalf2;
 struct MtInt3;
 class MtMatrix33;
 class MtTriangle;
+class cAreaHit;
 class cBVHCollision;
 class cChildRegionStatus;
-class cCommonSkyFogData;
+class cCnsBoneScaleCtrl;
 class cContextInterface;
-class cCustomWeatherParam;
-class cGroupParam;
+class cDamageMsg;
+class cHitInfoAfter;
 class cJumpParamCtrl;
 class cMenuEntryBoardItemList;
 class cPlActWpnBow;
-class cSetInfoOmBadStatus;
-class cSetInfoOmDoor;
-class cSetInfoOmNav;
 class cShlLogNode;
-class cSoundZoneListener;
-class cStageEpvCtrl;
+class cZoneListenerLight;
 class cpCatchCtrl;
-class cpHeadCtrl;
-class cpHugeble;
-class cpHumanWarpCtrl;
 class cpJob02;
 class cpJob06;
 class cpJob09;
 class cpObjCollisionBase;
 class cpShakeCtrl;
+class cpSlave;
+namespace nShlStick { class cStickObjectCtrl; }
 namespace nZone { class ShapeInfoPanel; }
 class rNavigationMesh;
 class sCollision;
@@ -49,18 +47,12 @@ class sEffectExt;
 class sGUIExt;
 class sGame;
 class sSoundManager;
-class sWorldOffset;
 class uBaseEffect;
 class uCharacter;
-class uCnsDDOIK;
 class uCorePointSearch;
 class uCustomSimSoftBody;
-class uDDOModel;
 class uEffect;
-class uEnemy;
 class uGUIAim;
-class uGUIGaugeEnemy;
-class uGUIGaugeNpcBase;
 class uHuman;
 class uLight;
 class uShlBase;
@@ -408,6 +400,10 @@ public:
 
 class alignas(16) MtVector3
 {
+    // inferred: MtAABB::getSurfaceVertex names MtVector3::pad_
+    friend class MtAABB;
+    // inferred: MtCollision::getAABBVertex names MtVector3::pad_
+    friend class MtCollision;
     // inferred: MtGeomAABB::load names MtGeomAABB::mAABB.minpos.pad_
     friend class MtGeomAABB;
     // inferred: MtGeomCapsule::load names MtGeomCapsule::mCapsule.p0.pad_
@@ -424,54 +420,46 @@ class alignas(16) MtVector3
     friend class MtGeomTriangle;
     // inferred: MtTriangle::getNearestEdgeFromUVW names MtLineSegment::p0.pad_
     friend class MtTriangle;
+    // inferred: cAreaHit::setup names cAreaHit::mWorld.pad_
+    friend class cAreaHit;
     // inferred: cBVHCollision::buildOnlineFast names cBVHCollision::mHeader.aabb.minpos.pad_
     friend class cBVHCollision;
     // inferred: cChildRegionStatus::setParamFromRes names cChildRegionStatus::mCoreJointOffset.pad_
     friend class cChildRegionStatus;
-    // inferred: cCommonSkyFogData::init names cCommonSkyFogData::mColor.pad_
-    friend class cCommonSkyFogData;
-    // inferred: cContextInterface::setCatchHitPos names cContextCharacter::mCatchHitPos.pad_
+    // inferred: cCnsBoneScaleCtrl::update names uCnsBoneScale::mScl.pad_
+    friend class cCnsBoneScaleCtrl;
+    // inferred: cContextInterface::setCliffNormal names cContextInstChar::mCliffNormal.pad_
     friend class cContextInterface;
-    // inferred: cCustomWeatherParam::setCustomShadowDir names cCustomWeatherParam::mCustomShadowDir.pad_
-    friend class cCustomWeatherParam;
-    // inferred: cGroupParam::setMarkerPos names cGroupParam::mMarkerPos.pad_
-    friend class cGroupParam;
+    // inferred: cDamageMsg::makeInfoFromHitNode names cDamageMsg::mData.mDamageDir.pad_
+    friend class cDamageMsg;
+    // inferred: cHitInfoAfter::makeInfoFromDmMsg names cHitInfoAfter::mLocalInfo.mHitPos.pad_
+    friend class cHitInfoAfter;
     // inferred: cJumpParamCtrl::updatePadAdjustPos names uCoord::mPos.pad_
     friend class cJumpParamCtrl;
     // inferred: cMenuEntryBoardItemList::initEntryBoardItemList names cMenuEntryBoardItemList::mRecruitPos.pad_
     friend class cMenuEntryBoardItemList;
     // inferred: cPlActWpnBow::initLow_Wait names uDDOModel::mVelocity.pad_
     friend class cPlActWpnBow;
-    // inferred: cSetInfoOmBadStatus::applyParam names cOmControl::InputLot::mBadPos.pad_
-    friend class cSetInfoOmBadStatus;
-    // inferred: cSetInfoOmDoor::applyParam names cOmControl::InputLot::mPRTPos.pad_
-    friend class cSetInfoOmDoor;
-    // inferred: cSetInfoOmNav::applyParam names cOmControl::InputLot::mNavOBBExtent.pad_
-    friend class cSetInfoOmNav;
     // inferred: cShlLogNode::keepLog names cShlLogNode::mPos.pad_
     friend class cShlLogNode;
-    // inferred: cSoundZoneListener::setMyPos names cSoundZoneListener::mMyPos.pad_
-    friend class cSoundZoneListener;
-    // inferred: cStageEpvCtrl::setOfsPos names cStageEpvCtrl::mOfsPos.pad_
-    friend class cStageEpvCtrl;
+    // inferred: cZoneListenerLight::cZoneListenerLight names cZoneListenerLight::mCheckPos.pad_
+    friend class cZoneListenerLight;
     // inferred: cpCatchCtrl::forceCancel names cpCatchCtrl::mCatchInfo.mHitPos.pad_
     friend class cpCatchCtrl;
-    // inferred: cpHeadCtrl::setTargetPos names cpHeadCtrl::mTargetPos.pad_
-    friend class cpHeadCtrl;
-    // inferred: cpHugeble::resetHugebleOldPos names cpHugeble::mHugebleOldPos.pad_
-    friend class cpHugeble;
-    // inferred: cpHumanWarpCtrl::requestOneWayWarp names cpHumanWarpCtrl::mHumanWarpInfo.elems[0].mWarpWorldPos.pad_
-    friend class cpHumanWarpCtrl;
     // inferred: cpJob02::update names uHuman::mCameraExPos.pad_
     friend class cpJob02;
     // inferred: cpJob06::setCS12EffectPos names uCoord::mPos.pad_
     friend class cpJob06;
-    // inferred: cpJob09::resetEffectCtrlData names cpJob09::mAlchemyCoreOfset.pad_
+    // inferred: cpJob09::finishAlchemyCoreEffec names cpJob09::mAlchemyCoreOfsetOld.pad_
     friend class cpJob09;
     // inferred: cpObjCollisionBase::objAdjust names MtVector3::pad_
     friend class cpObjCollisionBase;
     // inferred: cpShakeCtrl::shake names cpShakeCtrl::mDir.pad_
     friend class cpShakeCtrl;
+    // inferred: cpSlave::interpolatePos names uCoord::mPos.pad_
+    friend class cpSlave;
+    // inferred: nShlStick::cStickObjectCtrl::storeStickInfo names nShlStick::cStickObjectCtrl::mCapsule.p0.pad_
+    friend class nShlStick::cStickObjectCtrl;
     // inferred: nZone::ShapeInfoPanel::reversePanelDirection names nZone::ShapeInfoPanel::mVertex[1].pad_
     friend class nZone::ShapeInfoPanel;
     // inferred: rNavigationMesh::setNodeInfo names rNavigationMesh::nodeInfo::mAABB.minpos.pad_
@@ -488,37 +476,25 @@ class alignas(16) MtVector3
     friend class sGame;
     // inferred: sSoundManager::startBarReq names sSoundManager::mBarPos.pad_
     friend class sSoundManager;
-    // inferred: sWorldOffset::clear names sWorldOffset::mWorldOffset.pad_
-    friend class sWorldOffset;
     // inferred: uBaseEffect::setOfs names uBaseEffect::mOfs.pad_
     friend class uBaseEffect;
     // inferred: uCharacter::resetPos names uCharacter::mCheatCheckOldPos.pad_
     friend class uCharacter;
-    // inferred: uCnsDDOIK::setEffectorPos names uCnsDDOIK::mEffectorPos.pad_
-    friend class uCnsDDOIK;
     // inferred: uCorePointSearch::initCoreSearch names uCorePointSearch::mOffset0.pad_
     friend class uCorePointSearch;
     // inferred: uCustomSimSoftBody::getTargetBoundingAABB names MtAABB::minpos.pad_
     friend class uCustomSimSoftBody;
-    // inferred: uDDOModel::setTargetPos names uDDOModel::mTargetPos.pad_
-    friend class uDDOModel;
     // inferred: uEffect::setupUnitGenerator names cEffectJoint::mUpdateConstWorldOfs.pad_
     friend class uEffect;
-    // inferred: uEnemy::setFsmTarget names uEnemy::mFsmTargetPos.pad_
-    friend class uEnemy;
     // inferred: uGUIAim::setTargetMarkerPos names uGUIAim::cTargetMarker::mTargetPos.pad_
     friend class uGUIAim;
-    // inferred: uGUIGaugeEnemy::move names uGUIGaugeEnemy::mWorldOffset.pad_
-    friend class uGUIGaugeEnemy;
-    // inferred: uGUIGaugeNpcBase::move names uGUIGaugeNpcBase::mWorldOffset.pad_
-    friend class uGUIGaugeNpcBase;
     // inferred: uHuman::setupContextEnemyClimb names uHuman::mClimbJointOffset.pad_
     friend class uHuman;
     // inferred: uLight::setColor names uLight::mColor.pad_
     friend class uLight;
     // inferred: uShlBase::setShotCoord names uCoord::mPos.pad_
     friend class uShlBase;
-    // inferred: uSimSoftBody::applyWorldOffset names uSimSoftBody::mWorldOffset.pad_
+    // inferred: uSimSoftBody::getTargetBoundingAABB names MtAABB::minpos.pad_
     friend class uSimSoftBody;
     // inferred: uSky::setMieScattering names uSky::mMieScattering.pad_
     friend class uSky;
@@ -834,8 +810,26 @@ inline MtVector2::MtVector2(const MtVector2& v) {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline const MtVector2& MtVector2::operator=(const MtVector2& v) {
+    this->x = v.x;
+    this->y = v.y;
+    // inferred: the conventional `return *this;` of an assignment operator whose copies never use its result
+    return *this;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline MtVector3::MtVector3() {
     this->pad_ = 0.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline const MtVector3& MtVector3::operator=(const MtVector3& v) {
+    this->x = v.x;
+    this->y = v.y;
+    this->z = v.z;
+    this->pad_ = 0.0f;
+    // inferred: the conventional `return *this;` of an assignment operator whose copies never use its result
+    return *this;
 }
 
 // Inline, no code of its own: checked where it is inlined.

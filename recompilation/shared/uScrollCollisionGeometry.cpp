@@ -153,10 +153,15 @@ __attribute__((weak)) const uScrollCollisionGeometry::cGeometryInfo& uScrollColl
 }
 
 // Address: 0x00fde0f0 - 0x00fde10a (26 bytes)
-__attribute__((weak)) bool uScrollCollisionGeometry::isGeometryActive(u32 GeometryIndex) const {
-    // local: const cGeometryInfo& GeomInfo;
-    DDON_STUB("uScrollCollisionGeometry::isGeometryActive")
-    return {};
+bool uScrollCollisionGeometry::isGeometryActive(u32 GeometryIndex) const {
+    // DWARF local not rendered: const cGeometryInfo& GeomInfo;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x60 from MtObject*
+    if (GeometryIndex < this->mColliderGeometryArray.::MtArray::mLength) {
+        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mColliderGeometryArray.::MtArray::mpArray[GeometryIndex]) + static_cast<long>(96))) != static_cast<unsigned char>(0);
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -415,11 +420,110 @@ void uScrollCollisionGeometry::setEnableAutoSyncMove(bool FlgEnableSet) {
 // size_t uScrollCollisionGeometry::memSize(void*);
 
 // Address: 0x00fde6c0 - 0x00fde79b (219 bytes)
-__attribute__((weak)) void uScrollCollisionGeometry::moveForSystem() {
-    // local: const u32 MoveCode;
-    // local: cUnit* pOwnerUnit;
-    DDON_STUB("uScrollCollisionGeometry::moveForSystem")
-    /* stub */
+void uScrollCollisionGeometry::moveForSystem() {
+    // DWARF local not rendered: cUnit* pOwnerUnit;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
+    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+        if (this->mFlgEnableOwner != false) {
+            if (this->mpOwner != static_cast<MtObject*>(nullptr)) {
+                if (this->mFlgOwnerUnit != false) {
+                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpOwner) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(3)) <= static_cast<unsigned int>(1)) {
+                        this->kill();
+                    } else {
+                        this->::uScrollCollisionGeometry::syncOwner();
+                        if (this->mFlgUpdateOnce == false) {
+                            if (this->mFlgAlwayUpdate != false) {
+                                if (this->mFlgReserveMatrixSet != false) {
+                                    const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
+                                    this->mFlgStopSet = this->mFlgReserveResetSet;
+                                    this->mFlgReserveMatrixSet = false;
+                                    this->::uScrollCollisionGeometry::updateBoundingAABB();
+                                    (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                                } else {
+                                    this->::uScrollCollisionGeometry::updateBoundingAABB();
+                                    (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                                }
+                                this->mFlgUpdateOnce = false;
+                            }
+                        } else {
+                            if (this->mFlgReserveMatrixSet != false) {
+                                const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
+                                this->mFlgStopSet = this->mFlgReserveResetSet;
+                                this->mFlgReserveMatrixSet = false;
+                                this->::uScrollCollisionGeometry::updateBoundingAABB();
+                                (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                            } else {
+                                this->::uScrollCollisionGeometry::updateBoundingAABB();
+                                (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                            }
+                            this->mFlgUpdateOnce = false;
+                        }
+                    }
+                } else {
+                    this->::uScrollCollisionGeometry::syncOwner();
+                    if (this->mFlgUpdateOnce == false) {
+                        if (this->mFlgAlwayUpdate != false) {
+                            if (this->mFlgReserveMatrixSet != false) {
+                                const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
+                                this->mFlgStopSet = this->mFlgReserveResetSet;
+                                this->mFlgReserveMatrixSet = false;
+                                this->::uScrollCollisionGeometry::updateBoundingAABB();
+                                (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                            } else {
+                                this->::uScrollCollisionGeometry::updateBoundingAABB();
+                                (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                            }
+                            this->mFlgUpdateOnce = false;
+                        }
+                    } else {
+                        if (this->mFlgReserveMatrixSet != false) {
+                            const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
+                            this->mFlgStopSet = this->mFlgReserveResetSet;
+                            this->mFlgReserveMatrixSet = false;
+                            this->::uScrollCollisionGeometry::updateBoundingAABB();
+                            (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                        } else {
+                            this->::uScrollCollisionGeometry::updateBoundingAABB();
+                            (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                        }
+                        this->mFlgUpdateOnce = false;
+                    }
+                }
+            } else {
+                this->kill();
+            }
+        } else {
+            this->::uScrollCollisionGeometry::syncOwner();
+            if (this->mFlgUpdateOnce == false) {
+                if (this->mFlgAlwayUpdate != false) {
+                    if (this->mFlgReserveMatrixSet != false) {
+                        const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
+                        this->mFlgStopSet = this->mFlgReserveResetSet;
+                        this->mFlgReserveMatrixSet = false;
+                        this->::uScrollCollisionGeometry::updateBoundingAABB();
+                        (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                    } else {
+                        this->::uScrollCollisionGeometry::updateBoundingAABB();
+                        (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                    }
+                    this->mFlgUpdateOnce = false;
+                }
+            } else {
+                if (this->mFlgReserveMatrixSet != false) {
+                    const u32 MoveCode = this->mScrMatrix.::nCollision::cScrCollisionMoveMatrix::setMatrixForGame(&this->mReserveMatrix, this->mFlgReserveResetSet, this->mFlgStopSetControl);
+                    this->mFlgStopSet = this->mFlgReserveResetSet;
+                    this->mFlgReserveMatrixSet = false;
+                    this->::uScrollCollisionGeometry::updateBoundingAABB();
+                    (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, MoveCode);
+                } else {
+                    this->::uScrollCollisionGeometry::updateBoundingAABB();
+                    (::sCollision::mpInstance)->::sCollision::updateScrollCollisionNode(*this->mpScrollRegisterInfo, static_cast<u32>(0));
+                }
+                this->mFlgUpdateOnce = false;
+            }
+        }
+    }
 }
 
 // Address: 0x00fde7a0 - 0x00fdeae6 (838 bytes)
@@ -579,9 +683,10 @@ __attribute__((weak)) void uScrollCollisionGeometry::cGeometryInfo::setGeomConve
 }
 
 // Address: 0x00fdbda0 - 0x00fdbda8 (8 bytes)
-__attribute__((weak)) u32 uScrollCollisionGeometry::cGeometryInfo::getGeomConvexType() const {
-    DDON_STUB("uScrollCollisionGeometry::cGeometryInfo::getGeomConvexType")
-    return {};
+u32 uScrollCollisionGeometry::cGeometryInfo::getGeomConvexType() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtGeomConvex*
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpGeomConvex) + static_cast<long>(8));
 }
 
 // Address: 0x00fdc2c0 - 0x00fdc2c5 (5 bytes)
@@ -600,9 +705,11 @@ __attribute__((weak)) void uScrollCollisionGeometry::cGeometryInfo::setGeomConve
 }
 
 // Address: 0x00fdc320 - 0x00fdc34a (42 bytes)
-__attribute__((weak)) void uScrollCollisionGeometry::cGeometryInfo::copyGeomConvex(MtGeomConvex& NewGeomConvex) {
-    DDON_STUB("uScrollCollisionGeometry::cGeometryInfo::copyGeomConvex")
-    /* stub */
+void uScrollCollisionGeometry::cGeometryInfo::copyGeomConvex(MtGeomConvex& NewGeomConvex) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtGeomConvex*
+    this->::uScrollCollisionGeometry::cGeometryInfo::setGeomConvexType(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&NewGeomConvex) + static_cast<long>(8)));
+    this->mpGeomConvex->copy(NewGeomConvex);
 }
 
 // Address: 0x00fdc350 - 0x00fdc355 (5 bytes)

@@ -4,11 +4,15 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/nKeyCustom.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -94,13 +98,37 @@ bool uGUITextHud::loadResource() {
 }
 
 // Address: 0x00c61360 - 0x00c61518 (440 bytes)
-__attribute__((weak)) void uGUITextHud::setup() {
-    // local: u32 column_i;
-    // local: const u32(&base_obj_column_ids)[3];
-    // local: u32 row_i;
-    // local: const u32 base_obj_id;
-    DDON_STUB("uGUITextHud::setup")
-    /* stub */
+void uGUITextHud::setup() {
+    // DWARF local not rendered: u32 column_i;
+    // DWARF local not rendered: const u32(&base_obj_column_ids)[3];
+    // DWARF local not rendered: u32 row_i;
+    // DWARF local not rendered: const u32 base_obj_id;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(7)), true);
+    this->setPlay(true);
+    this->::uGUIBase::setFlowAndInit(static_cast<u32>(3), false);
+    this->mBaseObjs.elems[0].elems[0] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(23)));
+    this->mBaseObjs.elems[0].elems[1] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(21)));
+    this->mBaseObjs.elems[0].elems[2] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(26)));
+    this->mBaseObjs.elems[1].elems[0] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(24)));
+    this->mBaseObjs.elems[1].elems[1] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(18)));
+    this->mBaseObjs.elems[1].elems[2] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(27)));
+    this->mBaseObjs.elems[2].elems[0] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(25)));
+    this->mBaseObjs.elems[2].elems[1] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(22)));
+    this->mBaseObjs.elems[2].elems[2] = static_cast<cGUIObjPolygon*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(28)));
+    this->mpINST_msg_text = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(3), false));
+    this->mpOBJ_msg_text_m_text = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(3), static_cast<u32>(2)));
+    if (this->mpINST_msg_text != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpINST_msg_text->::cGUIInstance::setVisible(false);
+        if (this->mpINST_msg_text != static_cast<cGUIInstAnimation*>(nullptr)) {
+            this->mpINST_msg_text->::cGUIInstance::setExecute(false);
+        }
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITextHud::updateMain);
 }
 
 // Address: 0x00c615c0 - 0x00c615f1 (49 bytes)

@@ -67,8 +67,35 @@ cStageCtrl::cStageCtrl() {
 // Address: 0x0056e5b0 - 0x0056e64d (157 bytes)
 // Also emitted as: _ZN10cStageCtrlD0Ev at 0x0056e650
 cStageCtrl::~cStageCtrl() {
-    DDON_STUB("cStageCtrl::~cStageCtrl")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mAreaArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x56e5e0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mAreaArray.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mAreaArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mAreaArray.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAreaArray.::MtArray::mLength) {
+                    v0_0 = this->mAreaArray.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mAreaArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAreaArray.::MtArray::mpArray));
+    }
+    this->mAreaArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mAreaArray.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mAreaArray.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0056e710 - 0x0056e971 (609 bytes)
@@ -116,9 +143,13 @@ void cStageCtrl::clear() {
 // void cStageCtrl::copy(cStageCtrl* src);
 
 // Address: 0x0056ea10 - 0x0056ea23 (19 bytes)
-__attribute__((weak)) cStageCtrl::Area* cStageCtrl::getArea(u32 idx) {
-    DDON_STUB("cStageCtrl::getArea")
-    return nullptr;
+cStageCtrl::Area* cStageCtrl::getArea(u32 idx) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (idx < this->mAreaArray.::MtArray::mLength) {
+        return static_cast<cStageCtrl::Area*>(this->mAreaArray.::MtArray::getBuffer()[static_cast<int>(idx)]);
+    } else {
+        return static_cast<cStageCtrl::Area*>(nullptr);
+    }
 }
 
 // No out-of-line body: no code in the ELF

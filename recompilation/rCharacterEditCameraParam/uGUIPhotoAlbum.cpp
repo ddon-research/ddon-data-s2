@@ -15,6 +15,7 @@
 #include "../rGUI/rGUI.h"
 #include "../shared/rGUIMessage.h"
 #include "sScreenShot.h"
+#include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #include "uGUIPhotoUpload.h"
 #include "uGUISystemMsg.h"
@@ -177,15 +178,51 @@ __attribute__((weak)) void uGUIPhotoAlbum::updatePtr() {
 }
 
 // Address: 0x00b40db0 - 0x00b40e69 (185 bytes)
-__attribute__((weak)) void uGUIPhotoAlbum::updateInit() {
-    DDON_STUB("uGUIPhotoAlbum::updateInit")
-    /* stub */
+void uGUIPhotoAlbum::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIPhotoAlbum::init();
+    if (this->mFlowId == static_cast<u32>(7)) {
+        this->::uGUIPhotoAlbum::updateAlpha();
+        this->mFull.mNumPageBtn.::uGUIBase::cReferenceUINumPager::update();
+    } else {
+        if (this->mFlowId == static_cast<u32>(3)) {
+            this->mAlbum.mNumPageBtn.::uGUIBase::cReferenceUINumPager::update();
+            this->mAlbum.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+        }
+    }
+    this->mCateList.mCursor.::uGUIBase::cReferenceUIVlCursor::update();
+    this->mCateList.mEnable[0] = true;
+    this->mCateList.mEnable[1] = this->mbSetupPhoto;
+    if (this->::uGUIPhotoAlbum::changePhoto() != false) {
+        if (this->mAlbumMode == static_cast<uGUIPhotoAlbum::ALBUM_MODE>(1)) {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateUpload);
+        }
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateWait);
 }
 
 // Address: 0x00b41200 - 0x00b4129b (155 bytes)
-__attribute__((weak)) void uGUIPhotoAlbum::updateWait() {
-    DDON_STUB("uGUIPhotoAlbum::updateWait")
-    /* stub */
+void uGUIPhotoAlbum::updateWait() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mFlowId == static_cast<u32>(7)) {
+        this->::uGUIPhotoAlbum::updateAlpha();
+        this->mFull.mNumPageBtn.::uGUIBase::cReferenceUINumPager::update();
+    } else {
+        if (this->mFlowId == static_cast<u32>(3)) {
+            this->mAlbum.mNumPageBtn.::uGUIBase::cReferenceUINumPager::update();
+            this->mAlbum.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+        }
+    }
+    this->mCateList.mCursor.::uGUIBase::cReferenceUIVlCursor::update();
+    this->mCateList.mEnable[0] = true;
+    this->mCateList.mEnable[1] = this->mbSetupPhoto;
+    if (this->::uGUIPhotoAlbum::changePhoto() == false) {
+        return;
+    }
+    if (this->mAlbumMode != static_cast<uGUIPhotoAlbum::ALBUM_MODE>(1)) {
+        return;
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateUpload);
 }
 
 // Address: 0x00b41780 - 0x00b418e6 (358 bytes)
@@ -207,9 +244,66 @@ __attribute__((weak)) void uGUIPhotoAlbum::moveInput() {
 }
 
 // Address: 0x00b41a20 - 0x00b41b48 (296 bytes)
-__attribute__((weak)) void uGUIPhotoAlbum::moveEvent() {
-    DDON_STUB("uGUIPhotoAlbum::moveEvent")
-    /* stub */
+void uGUIPhotoAlbum::moveEvent() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
+        case static_cast<u32>(0):
+        {
+            this->::uGUIPhotoAlbum::adjustCategory();
+            this->::uGUIPhotoAlbum::evDecide();
+            break;
+        }
+        case static_cast<u32>(1):
+        {
+            if (this->mFlowId == static_cast<u32>(7)) {
+                this->mFlowId = static_cast<u32>(3);
+                this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(3)), true);
+                if (this->mFlowId == static_cast<u32>(7)) {
+                    if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                        this->mFull.mNumPageBtn.mNum = this->mpHCtrl->::cControl::getCurrentPos();
+                        this->mFull.mNumPageBtn.::uGUIBase::cReferenceUINumPager::changeString();
+                    } else {
+                        this->mFull.mNumPageBtn.mNum = static_cast<s32>(0);
+                        this->mFull.mNumPageBtn.::uGUIBase::cReferenceUINumPager::changeString();
+                    }
+                } else {
+                    if (this->mFlowId == static_cast<u32>(3)) {
+                        if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                            this->mAlbum.mNumPageBtn.mNum = this->mpHCtrl->::cControl::getCurrentPos();
+                            this->mAlbum.mNumPageBtn.::uGUIBase::cReferenceUINumPager::changeString();
+                            this->::uGUIPhotoAlbum::adjustCategory();
+                        } else {
+                            this->mAlbum.mNumPageBtn.mNum = static_cast<s32>(0);
+                            this->mAlbum.mNumPageBtn.::uGUIBase::cReferenceUINumPager::changeString();
+                            this->::uGUIPhotoAlbum::adjustCategory();
+                        }
+                    }
+                }
+            } else {
+                if (this->mFlowId == static_cast<u32>(3)) {
+                    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateExit);
+                }
+            }
+            break;
+        }
+        case static_cast<u32>(2):
+        {
+            this->::uGUIPhotoAlbum::adjustCategory();
+            break;
+        }
+        case static_cast<u32>(4):
+        {
+            if (this->mFlowId != static_cast<u32>(3)) {
+            } else {
+                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoAlbum::updateExit);
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // Address: 0x00b40e70 - 0x00b411f8 (904 bytes)
@@ -463,9 +557,19 @@ void uGUIPhotoAlbum::adjustScale() {
 }
 
 // Address: 0x00b42010 - 0x00b4204d (61 bytes)
-__attribute__((weak)) bool uGUIPhotoAlbum::isForceSamplerLinear(cGUIObject* pObj) const {
-    DDON_STUB("uGUIPhotoAlbum::isForceSamplerLinear")
-    return {};
+bool uGUIPhotoAlbum::isForceSamplerLinear(cGUIObject* pObj) const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
+        if (this->mpInstNullAlbum != static_cast<cGUIInstNull*>(nullptr)) {
+            if (this->mpInstNullAlbum->mScale.x > 1.0f) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        return true;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (142 bytes)

@@ -19,6 +19,7 @@ class cParentRegionStatusParam;
 class cpHpDamageCtrl;
 class rRegionBreakInfo;
 class uDDOModel;
+class uHuman;
 
 // Declarations
 class cParentRegionStatus;
@@ -36,6 +37,8 @@ using u32 = unsigned int;
 
 class cParentRegionStatus : public MtObject
 {
+    // inferred: uHuman::setupContextParam names cParentRegionStatus::mBlowInfo.mEnduranceMax
+    friend class uHuman;
 public:
     class MyDTI;
 public:
@@ -116,4 +119,10 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline nRegionStatus::P_REGION_CATEGORY cParentRegionStatus::getRegionCategory() const {
     return this->mRegionCategory;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nRegionStatus::REGION_REGENERATE_PRIORITY cParentRegionStatus::getRegenerateProprity() const {
+    return this->mRegenerateProprirty;
 }

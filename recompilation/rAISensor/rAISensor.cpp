@@ -150,8 +150,7 @@ inline rAISensor::rAISensor() {
 // Address: 0x00640fb0 - 0x00640fde (46 bytes)
 // Also emitted as: _ZN9rAISensorD0Ev at 0x00640fe0
 rAISensor::~rAISensor() {
-    DDON_STUB("rAISensor::~rAISensor")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x00641030 - 0x00641037 (7 bytes)
@@ -161,9 +160,13 @@ u32 rAISensor::getNodeNum() const {
 }
 
 // Address: 0x00641040 - 0x00641058 (24 bytes)
-__attribute__((weak)) const cAISensorNodeRes* rAISensor::getNode(u32 idx) const {
-    DDON_STUB("rAISensor::getNode")
-    return nullptr;
+const cAISensorNodeRes* rAISensor::getNode(u32 idx) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (idx < this->mNodes.::MtArray::mLength) {
+        return static_cast<const cAISensorNodeRes*>(this->mNodes.::MtArray::mpArray[idx]);
+    } else {
+        return static_cast<const cAISensorNodeRes*>(nullptr);
+    }
 }
 
 // Address: 0x00641110 - 0x00641523 (1043 bytes)

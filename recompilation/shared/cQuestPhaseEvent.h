@@ -130,6 +130,12 @@ inline cQuestPhaseEvent::cQuestPhaseEvent() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cQuestPhaseEvent::cParam::getValue() const {
+    return this->mValue;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline cQuestPhaseEvent::cParam::cParam() {
     this->mType = static_cast<u32>(0);
     this->mIdx = static_cast<u32>(0);

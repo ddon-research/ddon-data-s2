@@ -6,6 +6,7 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtPrimitive2D.h"
 #include "MtStlAllocator.h"
 #include "MtStlCustom.h"
@@ -240,9 +241,10 @@ rGUI* uGUI::getResource() const {
 }
 
 // Address: 0x01b61850 - 0x01b6185a (10 bytes)
-__attribute__((weak)) bool uGUI::isPlay() const {
-    DDON_STUB("uGUI::isPlay")
-    return {};
+bool uGUI::isPlay() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mAttr & static_cast<u32>(1));
 }
 
 // Address: 0x00f03780 - 0x00f03829 (169 bytes)
@@ -252,9 +254,12 @@ __attribute__((weak)) void uGUI::setPlay(bool v) {
 }
 
 // Address: 0x01b61ab0 - 0x01b61abb (11 bytes)
-__attribute__((weak)) bool uGUI::isWait() const {
-    DDON_STUB("uGUI::isWait")
-    return {};
+bool uGUI::isWait() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x340 from const uGUI*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(832))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01b61ac0 - 0x01b61adb (27 bytes)
@@ -270,9 +275,12 @@ void uGUI::setVirtualScreen(bool v) {
 }
 
 // Address: 0x01b61a20 - 0x01b61a2c (12 bytes)
-__attribute__((weak)) bool uGUI::isVirtualScreen() const {
-    DDON_STUB("uGUI::isVirtualScreen")
-    return {};
+bool uGUI::isVirtualScreen() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x340 from const uGUI*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(832))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x01b61a70 - 0x01b61a8b (27 bytes)
@@ -282,9 +290,12 @@ void uGUI::setUseViewInstance(bool v) {
 }
 
 // Address: 0x01b61a60 - 0x01b61a6c (12 bytes)
-__attribute__((weak)) bool uGUI::isUseViewInstance() const {
-    DDON_STUB("uGUI::isUseViewInstance")
-    return {};
+bool uGUI::isUseViewInstance() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x340 from const uGUI*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(832))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x01b61a90 - 0x01b61ab0 (32 bytes)
@@ -294,9 +305,12 @@ void uGUI::setManual3DPriority(bool v) {
 }
 
 // Address: 0x01b61860 - 0x01b6186c (12 bytes)
-__attribute__((weak)) bool uGUI::isManual3DPriority() const {
-    DDON_STUB("uGUI::isManual3DPriority")
-    return {};
+bool uGUI::isManual3DPriority() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x342 from const uGUI*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(834))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -309,9 +323,12 @@ void uGUI::setDrawStencil(bool v) {
 }
 
 // Address: 0x01b61830 - 0x01b6183c (12 bytes)
-__attribute__((weak)) bool uGUI::isDrawStencil() const {
-    DDON_STUB("uGUI::isDrawStencil")
-    return {};
+bool uGUI::isDrawStencil() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x340 from const uGUI*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(832))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x01b61b60 - 0x01b61b68 (8 bytes)
@@ -321,9 +338,10 @@ void uGUI::setStencilRef(u8 v) {
 }
 
 // Address: 0x01b61840 - 0x01b61848 (8 bytes)
-__attribute__((weak)) u8 uGUI::getStencilRef() const {
-    DDON_STUB("uGUI::getStencilRef")
-    return {};
+u8 uGUI::getStencilRef() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as u8
+    return static_cast<u8>(this->mStencilRef);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -367,11 +385,21 @@ u32 uGUI::getScreenLayer() const {
 // u32 uGUI::getScreenDrawPriority() const;
 
 // Address: 0x00f03830 - 0x00f03867 (55 bytes)
-__attribute__((weak)) cGUIVariable* uGUI::getVariable(u32 id) const {
-    // local: u32 i;
-    // local: cGUIVariable* pVariable;
-    DDON_STUB("uGUI::getVariable")
-    return nullptr;
+cGUIVariable* uGUI::getVariable(u32 id) const {
+    // DWARF local not rendered: cGUIVariable* pVariable;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (this->mVariableArray.mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0xf03830, 0xf03863)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mVariableArray.mpArray[i]) + static_cast<long>(8))) == id) {
+                return static_cast<cGUIVariable*>(this->mVariableArray.mpArray[i]);
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mVariableArray.mLength);
+    }
+    return static_cast<cGUIVariable*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -481,11 +509,32 @@ __attribute__((weak)) void uGUI::play(f32 delta) {
 }
 
 // Address: 0x00f049a0 - 0x00f049e8 (72 bytes)
-__attribute__((weak)) nGUI::FLOW* uGUI::getFlow(const u32 id) const {
-    // local: FLOW* pFlow;
-    // local: u32 i;
-    DDON_STUB("uGUI::getFlow")
-    return nullptr;
+nGUI::FLOW* uGUI::getFlow(const u32 id) const {
+    // DWARF local not rendered: FLOW* pFlow;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpResource != static_cast<rGUI*>(nullptr)) {
+        // inferred: the value the loop at 0xf049d0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mpResource->mpHeader->flowNum;
+        if (v0_0 != static_cast<u32>(0)) {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_1 = static_cast<unsigned int>(0);
+            // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+            for (nGUI::FLOW* p0_2 = this->mpResource->mpHeader->pFlow;;) {
+                if (p0_2->id == id) {
+                    return p0_2;
+                } else {
+                    if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
+                        i0_1 += static_cast<unsigned int>(1);
+                        p0_2 += static_cast<int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return static_cast<nGUI::FLOW*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -904,12 +953,49 @@ __attribute__((weak)) bool uGUI::moveFlowFunction(const nGUI::FLOW* pFlow) {
 }
 
 // Address: 0x00f07110 - 0x00f0719c (140 bytes)
-__attribute__((weak)) u32 uGUI::getProcessEndCondition(u32 id) const {
-    // local: FLOW* pFlow;
-    // local: FLOW_PROCESS* pProcess;
-    // local: PROCESS_WORK* pProcessWork;
-    DDON_STUB("uGUI::getProcessEndCondition")
-    return {};
+u32 uGUI::getProcessEndCondition(u32 id) const {
+    // DWARF local not rendered: FLOW* pFlow;
+    // DWARF local not rendered: FLOW_PROCESS* pProcess;
+    // DWARF local not rendered: PROCESS_WORK* pProcessWork;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0xf0716f; no location-less local in scope fits
+    nGUI::FLOW* v1_1;
+    if (id != static_cast<u32>(4294967295)) {
+        if (this->mpResource != static_cast<rGUI*>(nullptr)) {
+            // inferred: the value the loop at 0xf07150 carries; no location-less local in scope fits
+            u32 v0_1 = this->mpResource->mpHeader->flowNum;
+            if (v0_1 == static_cast<u32>(0)) {
+                return static_cast<u32>(4294967295);
+            } else {
+                // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+                nGUI::FLOW* p0_0 = this->mpResource->mpHeader->pFlow;
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                    if (p0_0->id != id) {
+                        if ((i0_2 + static_cast<unsigned int>(1)) >= v0_1) {
+                            return static_cast<u32>(4294967295);
+                        } else {
+                            p0_0 += static_cast<int>(1);
+                            i0_2 += static_cast<unsigned int>(1);
+                        }
+                    } else {
+                        v1_1 = p0_0;
+                        break;
+                    }
+                }
+            }
+        } else {
+            return static_cast<u32>(4294967295);
+        }
+    } else {
+        v1_1 = this->getPlayingFlow();
+    }
+    if (v1_1 != static_cast<nGUI::FLOW*>(nullptr)) {
+        if (v1_1->type == static_cast<u32>(2)) {
+            return this->mpProcessWork[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + static_cast<long>(24))].pFlow->endConditionType;
+        }
+    }
+    return static_cast<u32>(4294967295);
 }
 
 // Address: 0x00f071a0 - 0x00f073a4 (516 bytes)

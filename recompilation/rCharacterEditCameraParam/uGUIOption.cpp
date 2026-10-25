@@ -17,7 +17,15 @@
 #include "../shared/rGUIMessage.h"
 #include "../rTblMenuOption/rTblMenuOption.h"
 #include "../shared/sEffectExt.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
+#include "../shared/sPad.h"
+#include "../shared/sPadExt.h"
+#include "../shared/sRender.h"
+#include "../shared/sSavedata.h"
 #include "../shared/sSavedataExt.h"
+#include "../shared/sSound.h"
+#include "../shared/sSoundExt.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #include "uGUISystemMsg.h"
@@ -372,10 +380,19 @@ __attribute__((weak)) void uGUIOption::move() {
 // u32 uGUIOption::getOptionType();
 
 // Address: 0x00b96df0 - 0x00b96e15 (37 bytes)
-__attribute__((weak)) u8 uGUIOption::getOnlineStatusIndex(nCharacter::E_ONLINE_STATUS status) {
-    // local: u32 i;
-    DDON_STUB("uGUIOption::getOnlineStatusIndex")
-    return {};
+u8 uGUIOption::getOnlineStatusIndex(nCharacter::E_ONLINE_STATUS status) {
+    // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    const nCharacter::E_ONLINE_STATUS* p1 = ::uGUIOption::onlineStatusTblId;
+    do {
+        if ((*p1) == status) {
+            return static_cast<unsigned char>(i);
+        }
+        i += static_cast<u32>(1);
+        p1 += static_cast<int>(1);
+    } while (i <= static_cast<u32>(3));
+    return static_cast<u8>(0);
 }
 
 // Address: 0x00b8fb30 - 0x00b8fb47 (23 bytes)
@@ -405,9 +422,9 @@ __attribute__((weak)) void uGUIOption::moveEvent() {
 }
 
 // Address: 0x00b93090 - 0x00b930aa (26 bytes)
-__attribute__((weak)) void uGUIOption::updateInit() {
-    DDON_STUB("uGUIOption::updateInit")
-    /* stub */
+void uGUIOption::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWait);
 }
 
 // Address: 0x00b944e0 - 0x00b9457a (154 bytes)
@@ -452,9 +469,9 @@ __attribute__((weak)) void uGUIOption::updateWaitDataPulldown() {
 }
 
 // Address: 0x00b939b0 - 0x00b939ca (26 bytes)
-__attribute__((weak)) void uGUIOption::updateWaitCalibration() {
-    DDON_STUB("uGUIOption::updateWaitCalibration")
-    /* stub */
+void uGUIOption::updateWaitCalibration() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWaitData);
 }
 
 // Address: 0x00b939d0 - 0x00b93a14 (68 bytes)
@@ -480,9 +497,27 @@ __attribute__((weak)) void uGUIOption::setIdxPulldown(u32 pulldownId) {
 }
 
 // Address: 0x00b93a70 - 0x00b93b12 (162 bytes)
-__attribute__((weak)) void uGUIOption::updateSaveData() {
-    DDON_STUB("uGUIOption::updateSaveData")
-    /* stub */
+void uGUIOption::updateSaveData() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpVLCtgr != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+        this->mpVLCtgr->::cControl::mCtrlF = this->mpVLCtgr->::cControl::mCtrlF | static_cast<u32>(8);
+    }
+    if (this->mpHLTab != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        this->mpHLTab->::cControl::mCtrlF = this->mpHLTab->::cControl::mCtrlF | static_cast<u32>(8);
+    }
+    if (this->mpHLAOI != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        this->mpHLAOI->::cControl::mCtrlF = this->mpHLAOI->::cControl::mCtrlF | static_cast<u32>(8);
+    }
+    if (this->mpVLData != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+        this->mpVLData->::cControl::mCtrlF = this->mpVLData->::cControl::mCtrlF | static_cast<u32>(8);
+    }
+    if (this->mpCtrlApply != static_cast<cControl*>(nullptr)) {
+        this->mpCtrlApply->mCtrlF = this->mpCtrlApply->mCtrlF | static_cast<u32>(8);
+    }
+    if (this->mOptionType <= static_cast<u32>(1)) {
+        static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::saveData(static_cast<SAVEDATA_TYPE>(0));
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateExit);
 }
 
 // Address: 0x00b94c80 - 0x00b94c89 (9 bytes)
@@ -745,9 +780,38 @@ __attribute__((weak)) void uGUIOption::scrollPageNull() {
 }
 
 // Address: 0x00b938a0 - 0x00b93996 (246 bytes)
-__attribute__((weak)) bool uGUIOption::execDialog() {
-    DDON_STUB("uGUIOption::execDialog")
-    return {};
+bool uGUIOption::execDialog() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+        if (this->mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
+            if (this->mpGUISystemMsg->::uGUISystemMsg::getSerialNo() == static_cast<u32>(1)) {
+                if (this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1)) != static_cast<s32>(0)) {
+                    if (this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1)) == static_cast<s32>(1)) {
+                        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateExit);
+                    }
+                } else {
+                    this->::uGUIOption::saveOptionData();
+                    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateSaveData);
+                }
+            } else {
+                if (this->mpGUISystemMsg->::uGUISystemMsg::getSerialNo() == static_cast<u32>(0)) {
+                    if (this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1)) == static_cast<s32>(0)) {
+                        this->::uGUIOption::updatePage(true, false);
+                        this->::uGUIOption::updateDisp();
+                    }
+                }
+            }
+            if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+                this->mpGUISystemMsg->::uGUIBase::mEndType = static_cast<u32>(0);
+                this->mpGUISystemMsg->end();
+            }
+            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (83 bytes)
@@ -761,9 +825,280 @@ __attribute__((weak)) u32 uGUIOption::getDataType(u32 uCtgr, u32 uTab, u32 uCapt
 }
 
 // Address: 0x00b8fb50 - 0x00b8fe51 (769 bytes)
-__attribute__((weak)) void uGUIOption::updateReflectionData(const cStorageData::stOptionDataSystem* pOptionSys, const cCharacterData::stOptionData* pOptionChr) {
-    DDON_STUB("uGUIOption::updateReflectionData")
-    /* stub */
+void uGUIOption::updateReflectionData(const cStorageData::stOptionDataSystem* pOptionSys, const cCharacterData::stOptionData* pOptionChr) {
+    // Approximate from the ELF: a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fb67, held ahead of the effects the ELF orders after it
+    sRender* t0 = ::sRender::getInstance();
+    if (t0 == static_cast<sRender*>(nullptr)) {
+        return;
+    }
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fb7a, held ahead of the effects the ELF orders after it
+    sSound* t1 = ::sSound::mpInstance;
+    if (t1 == static_cast<sSound*>(nullptr)) {
+        return;
+    }
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fb8d, held ahead of the effects the ELF orders after it
+    sSavedata* t2 = ::sSavedata::mpInstance;
+    if (t2 == static_cast<sSavedata*>(nullptr)) {
+        return;
+    }
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fba0, held ahead of the effects the ELF orders after it
+    sPad* t3 = ::sPad::mpInstance;
+    if (t3 == static_cast<sPad*>(nullptr)) {
+        return;
+    }
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbac, held ahead of the effects the ELF orders after it
+    bool t4 = this->::uGUIBase::mIsEndLoadResource;
+    if (t4 == false) {
+        return;
+    }
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbb9, held ahead of the effects the ELF orders after it
+    u32 t5 = this->mOptionType;
+    if (t5 != static_cast<u32>(0)) {
+        if (t5 == static_cast<u32>(1)) {
+            if (pOptionSys != static_cast<const cStorageData::stOptionDataSystem*>(nullptr)) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbd5, held ahead of the effects the ELF orders after it
+                const u8 t6 = pOptionSys->mGamma;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbdf, held ahead of the effects the ELF orders after it
+                float t7 = 0.4f;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbe7, held ahead of the effects the ELF orders after it
+                float t8 = 100.0f;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbf3, held ahead of the effects the ELF orders after it
+                float t9 = 1.0f;
+                t0->mDACGamma = t9 + ((t7 * static_cast<float>(t6 - static_cast<int>(50))) / t8);
+                t0->mUpdateGamma = true;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc0a, held ahead of the effects the ELF orders after it
+                const u8 t10 = pOptionSys->mVolChatRcv;
+                static_cast<sSoundExt*>(t1)->::sSoundExt::setOptVolume(static_cast<u32>(0), static_cast<u32>(0), static_cast<float>(t10) / t8);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc23, held ahead of the effects the ELF orders after it
+                sSound* t11 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc26, held ahead of the effects the ELF orders after it
+                const u8 t12 = pOptionSys->mVolSysSE;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc32, held ahead of the effects the ELF orders after it
+                float t13 = 100.0f;
+                static_cast<sSoundExt*>(t11)->::sSoundExt::setOptVolume(static_cast<u32>(0), static_cast<u32>(2), static_cast<float>(t12) / t13);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc46, held ahead of the effects the ELF orders after it
+                sSound* t14 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc49, held ahead of the effects the ELF orders after it
+                const u8 t15 = pOptionSys->mVolVoiceNpc;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc55, held ahead of the effects the ELF orders after it
+                float t16 = 100.0f;
+                static_cast<sSoundExt*>(t14)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(0), static_cast<float>(t15) / t16);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc69, held ahead of the effects the ELF orders after it
+                sSound* t17 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc6c, held ahead of the effects the ELF orders after it
+                const u8 t18 = pOptionSys->mVolVoicePawn;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc78, held ahead of the effects the ELF orders after it
+                float t19 = 100.0f;
+                static_cast<sSoundExt*>(t17)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(1), static_cast<float>(t18) / t19);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc8f, held ahead of the effects the ELF orders after it
+                sSound* t20 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc92, held ahead of the effects the ELF orders after it
+                const u8 t21 = pOptionSys->mVolVoicePl;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc9e, held ahead of the effects the ELF orders after it
+                float t22 = 100.0f;
+                static_cast<sSoundExt*>(t20)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(2), static_cast<float>(t21) / t22);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcb5, held ahead of the effects the ELF orders after it
+                sSound* t23 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcb8, held ahead of the effects the ELF orders after it
+                const u8 t24 = pOptionSys->mVolVoicePt;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcc4, held ahead of the effects the ELF orders after it
+                float t25 = 100.0f;
+                static_cast<sSoundExt*>(t23)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(3), static_cast<float>(t24) / t25);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcdb, held ahead of the effects the ELF orders after it
+                sSound* t26 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcde, held ahead of the effects the ELF orders after it
+                const u8 t27 = pOptionSys->mVolVoiceEm;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcea, held ahead of the effects the ELF orders after it
+                float t28 = 100.0f;
+                static_cast<sSoundExt*>(t26)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(4), static_cast<float>(t27) / t28);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd01, held ahead of the effects the ELF orders after it
+                sSound* t29 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd04, held ahead of the effects the ELF orders after it
+                const u8 t30 = pOptionSys->mVolVoiceSCC;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd10, held ahead of the effects the ELF orders after it
+                float t31 = 100.0f;
+                static_cast<sSoundExt*>(t29)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(5), static_cast<float>(t30) / t31);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd27, held ahead of the effects the ELF orders after it
+                sSound* t32 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd2a, held ahead of the effects the ELF orders after it
+                const u8 t33 = pOptionSys->mVolBGMBattle;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd36, held ahead of the effects the ELF orders after it
+                float t34 = 100.0f;
+                static_cast<sSoundExt*>(t32)->::sSoundExt::setOptVolume(static_cast<u32>(2), static_cast<u32>(0), static_cast<float>(t33) / t34);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd4a, held ahead of the effects the ELF orders after it
+                sSound* t35 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd4d, held ahead of the effects the ELF orders after it
+                const u8 t36 = pOptionSys->mVolBGMOther;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd59, held ahead of the effects the ELF orders after it
+                float t37 = 100.0f;
+                static_cast<sSoundExt*>(t35)->::sSoundExt::setOptVolume(static_cast<u32>(2), static_cast<u32>(1), static_cast<float>(t36) / t37);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd70, held ahead of the effects the ELF orders after it
+                sSound* t38 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd73, held ahead of the effects the ELF orders after it
+                const u8 t39 = pOptionSys->mVolSEEnv;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd7f, held ahead of the effects the ELF orders after it
+                float t40 = 100.0f;
+                static_cast<sSoundExt*>(t38)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(0), static_cast<float>(t39) / t40);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd93, held ahead of the effects the ELF orders after it
+                sSound* t41 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd96, held ahead of the effects the ELF orders after it
+                const u8 t42 = pOptionSys->mVolSEEm;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fda2, held ahead of the effects the ELF orders after it
+                float t43 = 100.0f;
+                static_cast<sSoundExt*>(t41)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(1), static_cast<float>(t42) / t43);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdb9, held ahead of the effects the ELF orders after it
+                sSound* t44 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdbc, held ahead of the effects the ELF orders after it
+                const u8 t45 = pOptionSys->mVolSEPl;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdc8, held ahead of the effects the ELF orders after it
+                float t46 = 100.0f;
+                static_cast<sSoundExt*>(t44)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(2), static_cast<float>(t45) / t46);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fddf, held ahead of the effects the ELF orders after it
+                sSound* t47 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fde2, held ahead of the effects the ELF orders after it
+                const u8 t48 = pOptionSys->mVolSEPt;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdee, held ahead of the effects the ELF orders after it
+                float t49 = 100.0f;
+                static_cast<sSoundExt*>(t47)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(3), static_cast<float>(t48) / t49);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe05, held ahead of the effects the ELF orders after it
+                sSound* t50 = ::sSound::getInstance();
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe08, held ahead of the effects the ELF orders after it
+                const u8 t51 = pOptionSys->mVolSEOther;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe14, held ahead of the effects the ELF orders after it
+                float t52 = 100.0f;
+                static_cast<sSoundExt*>(t50)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(4), static_cast<float>(t51) / t52);
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe2b, held ahead of the effects the ELF orders after it
+                sPad* t55 = ::sPad::getInstance();
+                if (t55 != static_cast<sPad*>(nullptr)) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe33, held ahead of the effects the ELF orders after it
+                    const bool t56 = pOptionSys->mPadVibration;
+                    static_cast<sPadExt*>(t55)->::sPadExt::setVibrationEnable(t56);
+                }
+            }
+        }
+    } else {
+        if (pOptionSys != static_cast<const cStorageData::stOptionDataSystem*>(nullptr)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbd5, held ahead of the effects the ELF orders after it
+            const u8 t6 = pOptionSys->mGamma;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbdf, held ahead of the effects the ELF orders after it
+            float t7 = 0.4f;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbe7, held ahead of the effects the ELF orders after it
+            float t8 = 100.0f;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fbf3, held ahead of the effects the ELF orders after it
+            float t9 = 1.0f;
+            t0->mDACGamma = t9 + ((t7 * static_cast<float>(t6 - static_cast<int>(50))) / t8);
+            t0->mUpdateGamma = true;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc0a, held ahead of the effects the ELF orders after it
+            const u8 t10 = pOptionSys->mVolChatRcv;
+            static_cast<sSoundExt*>(t1)->::sSoundExt::setOptVolume(static_cast<u32>(0), static_cast<u32>(0), static_cast<float>(t10) / t8);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc23, held ahead of the effects the ELF orders after it
+            sSound* t11 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc26, held ahead of the effects the ELF orders after it
+            const u8 t12 = pOptionSys->mVolSysSE;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc32, held ahead of the effects the ELF orders after it
+            float t13 = 100.0f;
+            static_cast<sSoundExt*>(t11)->::sSoundExt::setOptVolume(static_cast<u32>(0), static_cast<u32>(2), static_cast<float>(t12) / t13);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc46, held ahead of the effects the ELF orders after it
+            sSound* t14 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc49, held ahead of the effects the ELF orders after it
+            const u8 t15 = pOptionSys->mVolVoiceNpc;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc55, held ahead of the effects the ELF orders after it
+            float t16 = 100.0f;
+            static_cast<sSoundExt*>(t14)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(0), static_cast<float>(t15) / t16);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc69, held ahead of the effects the ELF orders after it
+            sSound* t17 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc6c, held ahead of the effects the ELF orders after it
+            const u8 t18 = pOptionSys->mVolVoicePawn;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc78, held ahead of the effects the ELF orders after it
+            float t19 = 100.0f;
+            static_cast<sSoundExt*>(t17)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(1), static_cast<float>(t18) / t19);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc8f, held ahead of the effects the ELF orders after it
+            sSound* t20 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc92, held ahead of the effects the ELF orders after it
+            const u8 t21 = pOptionSys->mVolVoicePl;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fc9e, held ahead of the effects the ELF orders after it
+            float t22 = 100.0f;
+            static_cast<sSoundExt*>(t20)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(2), static_cast<float>(t21) / t22);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcb5, held ahead of the effects the ELF orders after it
+            sSound* t23 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcb8, held ahead of the effects the ELF orders after it
+            const u8 t24 = pOptionSys->mVolVoicePt;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcc4, held ahead of the effects the ELF orders after it
+            float t25 = 100.0f;
+            static_cast<sSoundExt*>(t23)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(3), static_cast<float>(t24) / t25);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcdb, held ahead of the effects the ELF orders after it
+            sSound* t26 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcde, held ahead of the effects the ELF orders after it
+            const u8 t27 = pOptionSys->mVolVoiceEm;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fcea, held ahead of the effects the ELF orders after it
+            float t28 = 100.0f;
+            static_cast<sSoundExt*>(t26)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(4), static_cast<float>(t27) / t28);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd01, held ahead of the effects the ELF orders after it
+            sSound* t29 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd04, held ahead of the effects the ELF orders after it
+            const u8 t30 = pOptionSys->mVolVoiceSCC;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd10, held ahead of the effects the ELF orders after it
+            float t31 = 100.0f;
+            static_cast<sSoundExt*>(t29)->::sSoundExt::setOptVolume(static_cast<u32>(1), static_cast<u32>(5), static_cast<float>(t30) / t31);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd27, held ahead of the effects the ELF orders after it
+            sSound* t32 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd2a, held ahead of the effects the ELF orders after it
+            const u8 t33 = pOptionSys->mVolBGMBattle;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd36, held ahead of the effects the ELF orders after it
+            float t34 = 100.0f;
+            static_cast<sSoundExt*>(t32)->::sSoundExt::setOptVolume(static_cast<u32>(2), static_cast<u32>(0), static_cast<float>(t33) / t34);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd4a, held ahead of the effects the ELF orders after it
+            sSound* t35 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd4d, held ahead of the effects the ELF orders after it
+            const u8 t36 = pOptionSys->mVolBGMOther;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd59, held ahead of the effects the ELF orders after it
+            float t37 = 100.0f;
+            static_cast<sSoundExt*>(t35)->::sSoundExt::setOptVolume(static_cast<u32>(2), static_cast<u32>(1), static_cast<float>(t36) / t37);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd70, held ahead of the effects the ELF orders after it
+            sSound* t38 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd73, held ahead of the effects the ELF orders after it
+            const u8 t39 = pOptionSys->mVolSEEnv;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd7f, held ahead of the effects the ELF orders after it
+            float t40 = 100.0f;
+            static_cast<sSoundExt*>(t38)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(0), static_cast<float>(t39) / t40);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd93, held ahead of the effects the ELF orders after it
+            sSound* t41 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fd96, held ahead of the effects the ELF orders after it
+            const u8 t42 = pOptionSys->mVolSEEm;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fda2, held ahead of the effects the ELF orders after it
+            float t43 = 100.0f;
+            static_cast<sSoundExt*>(t41)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(1), static_cast<float>(t42) / t43);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdb9, held ahead of the effects the ELF orders after it
+            sSound* t44 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdbc, held ahead of the effects the ELF orders after it
+            const u8 t45 = pOptionSys->mVolSEPl;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdc8, held ahead of the effects the ELF orders after it
+            float t46 = 100.0f;
+            static_cast<sSoundExt*>(t44)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(2), static_cast<float>(t45) / t46);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fddf, held ahead of the effects the ELF orders after it
+            sSound* t47 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fde2, held ahead of the effects the ELF orders after it
+            const u8 t48 = pOptionSys->mVolSEPt;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fdee, held ahead of the effects the ELF orders after it
+            float t49 = 100.0f;
+            static_cast<sSoundExt*>(t47)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(3), static_cast<float>(t48) / t49);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe05, held ahead of the effects the ELF orders after it
+            sSound* t50 = ::sSound::getInstance();
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe08, held ahead of the effects the ELF orders after it
+            const u8 t51 = pOptionSys->mVolSEOther;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe14, held ahead of the effects the ELF orders after it
+            float t52 = 100.0f;
+            static_cast<sSoundExt*>(t50)->::sSoundExt::setOptVolume(static_cast<u32>(3), static_cast<u32>(4), static_cast<float>(t51) / t52);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe2b, held ahead of the effects the ELF orders after it
+            sPad* t55 = ::sPad::getInstance();
+            if (t55 != static_cast<sPad*>(nullptr)) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xb8fe33, held ahead of the effects the ELF orders after it
+                const bool t56 = pOptionSys->mPadVibration;
+                static_cast<sPadExt*>(t55)->::sPadExt::setVibrationEnable(t56);
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (17 bytes)

@@ -41,6 +41,7 @@ namespace nJobParam { class cHumanBaseInfo; }
 namespace nJobParam { class cJobInfo; }
 namespace nNet { struct stClanEmblem; }
 namespace nSessionManager { class cNetSessionManager; }
+class sCameraExt;
 class sGame;
 class sNetworkExt;
 class uGUIEngageInfo;
@@ -75,6 +76,8 @@ class cCharacterData : public MtObject
     friend class cpJob02;
     // inferred: nSessionManager::cNetSessionManager::createFlow names sGame::mCharData.mCharData.mMatchProfile.mInviteWait
     friend class nSessionManager::cNetSessionManager;
+    // inferred: sCameraExt::init names sGame::mCharData.mCharData.mOption.mCamPosType
+    friend class sCameraExt;
     // inferred: sGame::initDecideCharacter names sGame::mCharData.mCharData.mOption.mIsClanNtc
     friend class sGame;
     // inferred: sNetworkExt::isClanLeader names sGame::mCharData.mCharData.mCardClan.mMyPost

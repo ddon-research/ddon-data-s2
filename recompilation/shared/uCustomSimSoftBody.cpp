@@ -66,7 +66,8 @@ inline void uCustomSimSoftBody::operator delete(void* p_addr) {
 // void uCustomSimSoftBody::operator delete[](void* p_addr, u32 align);
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline uCustomSimSoftBody::uCustomSimSoftBody() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+uCustomSimSoftBody::uCustomSimSoftBody() {
     this->mBakeRebuildComplete = false;
     this->mIsPause = false;
     this->mIsDeleteComplete = false;

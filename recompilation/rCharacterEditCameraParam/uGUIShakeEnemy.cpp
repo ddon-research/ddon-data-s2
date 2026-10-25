@@ -109,9 +109,9 @@ void uGUIShakeEnemy::kill() {
 }
 
 // Address: 0x00c39d90 - 0x00c39daa (26 bytes)
-__attribute__((weak)) void uGUIShakeEnemy::updateInit() {
-    DDON_STUB("uGUIShakeEnemy::updateInit")
-    /* stub */
+void uGUIShakeEnemy::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShakeEnemy::updateWait);
 }
 
 // Address: 0x00c39df0 - 0x00c39df5 (5 bytes)

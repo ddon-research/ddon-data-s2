@@ -235,23 +235,42 @@ inline rAIPawnAutoMotionTbl::rAIPawnAutoMotionTbl() {
 // Address: 0x0063f360 - 0x0063f38e (46 bytes)
 // Also emitted as: _ZN20rAIPawnAutoMotionTblD0Ev at 0x0063f390
 rAIPawnAutoMotionTbl::~rAIPawnAutoMotionTbl() {
-    DDON_STUB("rAIPawnAutoMotionTbl::~rAIPawnAutoMotionTbl")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x0063f3e0 - 0x0063f422 (66 bytes)
-__attribute__((weak)) bool rAIPawnAutoMotionTbl::isMatchMotType(u32 motGroup, u32 motType) {
-    // local: u32 num;
-    // local: u32 i;
-    // local: cAIPawnAutoMotionNode* p_node;
-    DDON_STUB("rAIPawnAutoMotionTbl::isMatchMotType")
-    return {};
+bool rAIPawnAutoMotionTbl::isMatchMotType(u32 motGroup, u32 motType) {
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: cAIPawnAutoMotionNode* p_node;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rAIPawnAutoMotionTbl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mArray.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(12))) == motGroup) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) != motType) {
+                    } else {
+                        return true;
+                    }
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))));
+    }
+    return false;
 }
 
 // Address: 0x0063f430 - 0x0063f446 (22 bytes)
-__attribute__((weak)) cAIPawnAutoMotionNode* rAIPawnAutoMotionTbl::getData(u32 idx) {
-    DDON_STUB("rAIPawnAutoMotionTbl::getData")
-    return nullptr;
+cAIPawnAutoMotionNode* rAIPawnAutoMotionTbl::getData(u32 idx) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (idx < this->mArray.::MtArray::mLength) {
+        return static_cast<cAIPawnAutoMotionNode*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(idx)]);
+    } else {
+        return static_cast<cAIPawnAutoMotionNode*>(nullptr);
+    }
 }
 
 // Address: 0x0063f450 - 0x0063f454 (4 bytes)

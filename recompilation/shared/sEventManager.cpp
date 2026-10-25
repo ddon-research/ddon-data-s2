@@ -182,19 +182,86 @@ void sEventManager::releaseCmnResource() {
 }
 
 // Address: 0x0077dc40 - 0x0077dcd6 (150 bytes)
-__attribute__((weak)) s32 sEventManager::getEventID(s32 stage, s32 no) {
-    // local: s32 evno;
-    // local: u32 i;
-    // local: cEventParam* param;
-    DDON_STUB("sEventManager::getEventID")
-    return {};
+s32 sEventManager::getEventID(s32 stage, s32 no) {
+    // DWARF local not rendered: s32 evno;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cEventParam* param;
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x77dcc4; no location-less local in scope fits
+    unsigned int v2_10;
+    if (this->mprEventParam == static_cast<rEventParam*>(nullptr)) {
+        v2_10 = static_cast<unsigned int>(4294967295);
+    } else {
+        if (this->mprEventParam->getDataNum() == static_cast<u32>(0)) {
+            v2_10 = static_cast<unsigned int>(4294967295);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x77dc8c, used 3 times; no DWARF local holds it
+                cEventParam* t0 = this->mprEventParam->getData(i0_3);
+                if (t0 != static_cast<cEventParam*>(nullptr)) {
+                    if (t0->mStage == static_cast<unsigned short>(stage)) {
+                        if (t0->mEvNo != static_cast<unsigned short>(no)) {
+                            if ((i0_3 + static_cast<unsigned int>(1)) < this->mprEventParam->getDataNum()) {
+                                i0_3 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        } else {
+                            v2_10 = i0_3;
+                            return static_cast<s32>(v2_10);
+                        }
+                    } else {
+                        if ((i0_3 + static_cast<unsigned int>(1)) < this->mprEventParam->getDataNum()) {
+                            i0_3 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mprEventParam->getDataNum()) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            v2_10 = static_cast<unsigned int>(4294967295);
+        }
+    }
+    return static_cast<s32>(v2_10);
 }
 
 // Address: 0x0077ea20 - 0x0077eab2 (146 bytes)
-__attribute__((weak)) void sEventManager::reqPlay(s32 no) {
-    // local: cEventParam* param;
-    DDON_STUB("sEventManager::reqPlay")
-    /* stub */
+void sEventManager::reqPlay(s32 no) {
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (no > static_cast<s32>(-1)) {
+        if (this->mprEventParam != static_cast<rEventParam*>(nullptr)) {
+            cEventParam* param = this->mprEventParam->getData(static_cast<u32>(no));
+            if (param != static_cast<cEventParam*>(nullptr)) {
+                // inferred: a temporary for the value the load at 0x77ea4c read, used 3 times; no DWARF local holds it
+                u16 t0 = param->mType;
+                if (t0 == static_cast<u16>(1)) {
+                    this->mRno = (this->mRno & static_cast<u32>(4294967040)) | static_cast<u32>(1);
+                    this->mReqEventNo = static_cast<s32>(-1);
+                    this->mEventNo = no;
+                    this->mpParam = param;
+                    this->mRno = static_cast<u32>(1);
+                } else {
+                    if (static_cast<unsigned char>(this->mRno) == static_cast<unsigned char>(0)) {
+                        this->mRno = static_cast<unsigned int>(((static_cast<unsigned long>(t0 == static_cast<u16>(2)) * static_cast<unsigned long>(5)) + static_cast<unsigned long>(1)) | static_cast<unsigned long>(this->mRno & static_cast<u32>(4294967040)));
+                        this->mReqEventNo = static_cast<s32>(-1);
+                        this->mEventNo = no;
+                        this->mpParam = param;
+                        this->mRno = static_cast<unsigned char>((static_cast<unsigned long>(t0 == static_cast<u16>(2)) * static_cast<unsigned long>(5)) + static_cast<unsigned long>(1));
+                    } else {
+                        this->mRno = static_cast<unsigned char>(this->mRno);
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x0077dbd0 - 0x0077dc35 (101 bytes)
@@ -462,9 +529,14 @@ bool sEventManager::isSyncReadyEventAll() {
 // void sEventManager::setSyncFinishEvent();
 
 // Address: 0x0077f770 - 0x0077f78d (29 bytes)
-__attribute__((weak)) bool sEventManager::isSyncFinishEventAll() {
-    DDON_STUB("sEventManager::isSyncFinishEventAll")
-    return {};
+bool sEventManager::isSyncFinishEventAll() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x98 from sEventManager*
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(152))) != static_cast<unsigned char>(0)) {
+        return false;
+    } else {
+        return this->::sEventManager::isSyncEventAll(static_cast<sEventManager::SYNC_FLAG>(2));
+    }
 }
 
 // Address: 0x0077e2b0 - 0x0077e2bb (11 bytes)

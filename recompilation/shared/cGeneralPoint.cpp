@@ -6,6 +6,8 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "uBaseModel.h"
+#include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -67,23 +69,97 @@ cGeneralPoint::cGeneralPoint() {
 // cGeneralPoint::~cGeneralPoint();
 
 // Address: 0x001fe620 - 0x001fe669 (73 bytes)
-__attribute__((weak)) uBaseModel* cGeneralPoint::getBaseModelOwner() {
-    // local: MtObject* p_owner;
-    DDON_STUB("cGeneralPoint::getBaseModelOwner")
-    return nullptr;
+uBaseModel* cGeneralPoint::getBaseModelOwner() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    MtObject* p_owner = this->mpOwner;
+    // inferred: the value carried to 0x1fe662; no location-less local in scope fits
+    MtObject* v2_0;
+    if (p_owner == static_cast<MtObject*>(nullptr)) {
+        v2_0 = static_cast<MtObject*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x1fe637, used twice; no DWARF local holds it
+        const MtDTI& t0 = p_owner->getDTI();
+        // inferred: the value the loop at 0x1fe650 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uBaseModel::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x1fe650 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<MtObject*>(nullptr);
+                    return static_cast<uBaseModel*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = p_owner;
+    }
+    return static_cast<uBaseModel*>(v2_0);
 }
 
 // Address: 0x001fe670 - 0x001fe6b9 (73 bytes)
-__attribute__((weak)) uDDOModel* cGeneralPoint::getDDOModelOwner() {
-    // local: MtObject* p_owner;
-    DDON_STUB("cGeneralPoint::getDDOModelOwner")
-    return nullptr;
+uDDOModel* cGeneralPoint::getDDOModelOwner() {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    MtObject* p_owner = this->mpOwner;
+    // inferred: the value carried to 0x1fe6b2; no location-less local in scope fits
+    MtObject* v2_0;
+    if (p_owner == static_cast<MtObject*>(nullptr)) {
+        v2_0 = static_cast<MtObject*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x1fe687, used twice; no DWARF local holds it
+        const MtDTI& t0 = p_owner->getDTI();
+        // inferred: the value the loop at 0x1fe6a0 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uDDOModel::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x1fe6a0 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<MtObject*>(nullptr);
+                    return static_cast<uDDOModel*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = p_owner;
+    }
+    return static_cast<uDDOModel*>(v2_0);
 }
 
 // Address: 0x001fe6c0 - 0x001fe70c (76 bytes)
-__attribute__((weak)) const uDDOModel* cGeneralPoint::getDDOModelOwner() const {
-    DDON_STUB("cGeneralPoint::getDDOModelOwner")
-    return nullptr;
+const uDDOModel* cGeneralPoint::getDDOModelOwner() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x8 from const MtDTI*
+    // inferred: the value the loop at 0x1fe6f0 carries; no location-less local in scope fits
+    MtObject* v0_2 = this->mpOwner;
+    // inferred: a temporary for the result of the call at 0x1fe6d0, used twice; no DWARF local holds it
+    const MtDTI& t0 = v0_2->getDTI();
+    // inferred: the value the loop at 0x1fe6f0 carries; no location-less local in scope fits
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+    if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t0) + static_cast<long>(8)))) {
+        // inferred: the value the loop at 0x1fe6f0 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) == static_cast<unsigned long>(0)) {
+                return static_cast<const uDDOModel*>(nullptr);
+            } else {
+                if (v0_1 != (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) + static_cast<long>(8)))) {
+                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<const uDDOModel*>(v0_2);
 }
 
 // Address: 0x001fe5e0 - 0x001fe5e7 (7 bytes)

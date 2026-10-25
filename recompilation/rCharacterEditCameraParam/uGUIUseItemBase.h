@@ -298,6 +298,12 @@ inline uGUIPopDetail01* uGUIUseItemBase::getPopDetail() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline uGUIPopListDialog* uGUIUseItemBase::getPopListDialog() {
+    return this->mpUnitPopList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline uGUISystemMsg* uGUIUseItemBase::getPopSystemMsg() {
     return this->mpUnitSystemMsg;
 }

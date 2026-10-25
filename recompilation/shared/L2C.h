@@ -9,6 +9,7 @@
 #include "Message.h"
 #include "MtCollection.h"
 #include "MtDTI.h"
+#include "MtString.h"
 #include "Server.h"
 #include "ServerSetting.h"
 #include "cPacket.h"
@@ -24,6 +25,7 @@ class CPacket;
 class MtAllocator;
 class MtDTI;
 class MtObject;
+class MtString;
 class sGame;
 
 // Declarations
@@ -33,12 +35,15 @@ namespace nLoginSession { class CPacket_L2C_CREATE_CHARACTER_DATA_RES; }
 namespace nLoginSession { class CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES; }
 namespace nLoginSession { class CPacket_L2C_DECIDE_CHARACTER_ID_RES; }
 namespace nLoginSession { class CPacket_L2C_DELETE_CHARACTER_INFO_RES; }
+namespace nLoginSession { class CPacket_L2C_EJECTION_NTC; }
 namespace nLoginSession { class CPacket_L2C_GET_CHARACTER_LIST_RES; }
 namespace nLoginSession { class CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC; }
 namespace nLoginSession { class CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES; }
 namespace nLoginSession { class CPacket_L2C_GET_GAME_SERVER_LIST_RES; }
+namespace nLoginSession { class CPacket_L2C_GET_GAME_SESSION_KEY_RES; }
 namespace nLoginSession { class CPacket_L2C_GET_LOGIN_SETTING_RES; }
 namespace nLoginSession { class CPacket_L2C_GP_COURSE_GET_INFO_RES; }
+namespace nLoginSession { class CPacket_L2C_LOGIN_RES; }
 namespace nLoginSession { class CPacket_L2C_LOGIN_WAIT_NUM_NTC; }
 namespace nLoginSession { class CPacket_L2C_LOGOUT_RES; }
 namespace nLoginSession { class CPacket_L2C_NEXT_CONNECT_SERVER_NTC; }
@@ -317,6 +322,47 @@ namespace nLoginSession {
 }  // namespace nLoginSession
 
 namespace nLoginSession {
+    class CPacket_L2C_EJECTION_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_L2C_EJECTION_NTC();
+        s32 WritePacket(CPacket*, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const char* Message() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtString m_wstrMessage;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nLoginSession
+
+namespace nLoginSession {
     class CPacket_L2C_GET_CHARACTER_LIST_RES : public ::CPacketDataBase
     {
     public:
@@ -488,6 +534,51 @@ namespace nLoginSession {
 }  // namespace nLoginSession
 
 namespace nLoginSession {
+    class CPacket_L2C_GET_GAME_SESSION_KEY_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_L2C_GET_GAME_SESSION_KEY_RES();
+        s32 WritePacket(CPacket*, s32, const char*, u16);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* SessionKey() const;
+        u16 GameServerUniqueID() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrSessionKey;  // offset: 0x10
+        u16 m_usGameServerUniqueID;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x1a
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nLoginSession
+
+namespace nLoginSession {
     class CPacket_L2C_GET_LOGIN_SETTING_RES : public ::CPacketDataBase
     {
     public:
@@ -577,6 +668,49 @@ namespace nLoginSession {
         MtTypedArray<CDataGPCourseEffectParam> m_Effects;  // offset: 0x30
         u32 m_unVersion;  // offset: 0x50
         bool m_bIsReceived;  // offset: 0x54
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nLoginSession
+
+namespace nLoginSession {
+    class CPacket_L2C_LOGIN_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_L2C_LOGIN_RES();
+        s32 WritePacket(CPacket* pPacket, s32 in_Result, const char* in_strOnetimeToken);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* OnetimeToken() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrOnetimeToken;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
     public:
         static MyDTI DTI;
     };
@@ -875,6 +1009,14 @@ inline nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::CPacket_L2C_DELETE_
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline nLoginSession::CPacket_L2C_EJECTION_NTC::CPacket_L2C_EJECTION_NTC() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::CPacket_L2C_GET_CHARACTER_LIST_RES() {
     // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
     this->m_usError = static_cast<u16>(0);
@@ -915,6 +1057,15 @@ inline nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::CPacket_L2C_GP_COURSE_
     this->m_usError = static_cast<u16>(0);
     this->m_unResult = static_cast<u32>(0);
     this->m_unVersion = static_cast<u32>(0);
+    this->m_bIsReceived = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nLoginSession::CPacket_L2C_LOGIN_RES::CPacket_L2C_LOGIN_RES() {
+    // inferred: the base constructor inlined with no DWARF copy left no code: CPacketDataBase() (its vtable store is dead under this class's; T967's rule for a base, 024 T1016)
+    this->m_usError = static_cast<u16>(0);
+    this->m_nResult = static_cast<s32>(0);
     this->m_bIsReceived = false;
 }
 

@@ -65,12 +65,16 @@ inline void cCaughtInfoParam::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cCaughtInfoParam::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (418 bytes)
-//   in cCaughtInfoParam::MyDTI::newInstance at 0x006515cd-0x00651632 (called at rCaughtInfoParam.cpp:25)
-//   in cCaughtInfoParam::MyDTI::newInstance at 0x006515cd-0x00651632 (called at rCaughtInfoParam.h:32)
-//   in rTbl2<cCaughtInfoParam>::allocData at 0x01a7c188-0x01a7c19a, 0x01a7c19d-0x01a7c1f7 (called at rTbl2.h:215)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// cCaughtInfoParam::cCaughtInfoParam();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cCaughtInfoParam::cCaughtInfoParam() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mCatchType = static_cast<u32>(0);
+    this->mCaughtActionTblNo = static_cast<u32>(0);
+    this->mConstOffsetPos = ::MtVector3::Zero;
+    this->mConstOffsetAngle = ::MtVector3::Zero;
+}
 
 // No out-of-line body: no code in the ELF
 // cCaughtInfoParam::cCaughtInfoParam(const cCaughtInfoParam&);

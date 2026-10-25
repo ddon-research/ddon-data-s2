@@ -15,15 +15,21 @@
 #include "../shared/cEquipData.h"
 #include "../shared/cOmControl.h"
 #include "cPlDeadFlow.h"
+#include "../shared/cResource.h"
 #include "../shared/cStageEpvCtrl.h"
+#include "../shared/cTalkMsgData.h"
 #include "../shared/cUnit.h"
+#include "../shared/cZoneLayout.h"
 #include "../shared/cpActionManager.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/nStage.h"
 #include "../shared/rCameraParamList.h"
+#include "../shared/rOccluderExt.h"
 #include "../rSoundAttributeSe/rSoundAttributeSe.h"
+#include "../rStageConnect/rStageConnect.h"
 #include "../shared/rStageCustomPartsEx.h"
 #include "../rStageInfo/rStageInfo.h"
+#include "../shared/rStartPos.h"
 #include "../shared/sArchiveManager.h"
 #include "../rStageConnect/sArea.h"
 #include "../rStageConnect/sAreaExt.h"
@@ -31,6 +37,8 @@
 #include "../shared/sCameraExt.h"
 #include "../shared/sCollision.h"
 #include "../shared/sContextManager.h"
+#include "../shared/sEffect.h"
+#include "../shared/sEffectExt.h"
 #include "sFlag.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
@@ -46,15 +54,22 @@
 #include "../shared/sWeatherManager.h"
 #include "../shared/uDDOModel.h"
 #include "uFSMTask.h"
+#include "../shared/uFilter.h"
 #include "uGUICredit.h"
+#include "uGUIQuickParty.h"
 #include "uLargeEnemyCamera.h"
 #include "../shared/uPlayer.h"
 #include "uScheduler.h"
 #include "../shared/uSkyFog.h"
+#include "uSoundGenerator.h"
+#include "uSoundOcclusion.h"
+#include "uSoundTrigger.h"
 #include "uStageCraftPawnCtrl.h"
 #include "../shared/uStageField.h"
 #include "../shared/uStageJoint.h"
+#include "uStageMyRoom.h"
 #include "../shared/uStageParts.h"
+#include "uStageRevivalPawn.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -201,15 +216,20 @@ MT_CTSTR aStage::getShaderSegment() {
 }
 
 // Address: 0x0194e980 - 0x0194e98b (11 bytes)
-__attribute__((weak)) bool aStage::isRnoMain() {
-    DDON_STUB("aStage::isRnoMain")
-    return {};
+bool aStage::isRnoMain() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from aStage*
+    return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(8))) == static_cast<unsigned char>(1);
 }
 
 // Address: 0x0194e990 - 0x0194e9ac (28 bytes)
-__attribute__((weak)) bool aStage::isRno0MainRno1Main() {
-    DDON_STUB("aStage::isRno0MainRno1Main")
-    return {};
+bool aStage::isRno0MainRno1Main() {
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; the body oracle reports this body.
+    if (static_cast<unsigned char>(this->::cArea::mRno) == static_cast<unsigned char>(1)) {
+        return (this->::cArea::mRno & static_cast<u32>(65280)) == static_cast<u32>(256);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0000cb60 - 0x0000cee3 (899 bytes)
@@ -541,9 +561,124 @@ __attribute__((weak)) void aStage::setRno1(u8 r1, u8 r2) {
 // void aStage::moveQuickMatch();
 
 // Address: 0x0000c880 - 0x0000cb1e (670 bytes)
-__attribute__((weak)) void aStage::updatePtr() {
-    DDON_STUB("aStage::updatePtr")
-    /* stub */
+void aStage::updatePtr() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->mStageEpvCtrl.::cStageEpvCtrl::updatePtr();
+    // inferred: the value carried to 0xc8c0; no location-less local in scope fits
+    uScheduler* v0_0;
+    if (this->mpLightSchdl == static_cast<uScheduler*>(nullptr)) {
+        v0_0 = static_cast<uScheduler*>(nullptr);
+    } else {
+        if (this->mpLightSchdl->::cUnit::isEnable()) {
+            v0_0 = this->mpLightSchdl;
+        } else {
+            this->mpLightSchdl = static_cast<uScheduler*>(nullptr);
+            v0_0 = static_cast<uScheduler*>(nullptr);
+        }
+    }
+    if (this->mpGUIQuickParty != static_cast<uGUIQuickParty*>(nullptr)) {
+        if (this->mpGUIQuickParty->::cUnit::isEnable()) {
+        } else {
+            this->mpGUIQuickParty = static_cast<uGUIQuickParty*>(nullptr);
+        }
+    }
+    if (this->mpScrSchdl != static_cast<uScheduler*>(nullptr)) {
+        if (this->mpScrSchdl->::cUnit::isEnable()) {
+        } else {
+            this->mpScrSchdl = static_cast<uScheduler*>(nullptr);
+        }
+    }
+    if (this->mpFltrSchdl != static_cast<uScheduler*>(nullptr)) {
+        if (this->mpFltrSchdl->::cUnit::isEnable()) {
+        } else {
+            this->mpFltrSchdl = static_cast<uScheduler*>(nullptr);
+        }
+    }
+    if (this->mpEffSchdl != static_cast<uScheduler*>(nullptr)) {
+        if (this->mpEffSchdl->::cUnit::isEnable()) {
+        } else {
+            this->mpEffSchdl = static_cast<uScheduler*>(nullptr);
+        }
+    }
+    if (this->mpLanternSchdl != static_cast<uScheduler*>(nullptr)) {
+        if (this->mpLanternSchdl->::cUnit::isEnable()) {
+        } else {
+            this->mpLanternSchdl = static_cast<uScheduler*>(nullptr);
+        }
+    }
+    if (v0_0 != static_cast<uScheduler*>(nullptr)) {
+        if (v0_0->::cUnit::isEnable()) {
+        } else {
+            this->mpLightSchdl = static_cast<uScheduler*>(nullptr);
+        }
+    }
+    if (this->mpStageJointCtrl != static_cast<uStageJointCtrl*>(nullptr)) {
+        if (this->mpStageJointCtrl->::cUnit::isEnable()) {
+        } else {
+            this->mpStageJointCtrl = static_cast<uStageJointCtrl*>(nullptr);
+        }
+    }
+    if (this->mpStageFieldCtrl != static_cast<uStageFieldCtrl*>(nullptr)) {
+        if (this->mpStageFieldCtrl->::cUnit::isEnable()) {
+        } else {
+            this->mpStageFieldCtrl = static_cast<uStageFieldCtrl*>(nullptr);
+        }
+    }
+    if (this->mpStagePartsCtrl != static_cast<uStagePartsCtrl*>(nullptr)) {
+        if (this->mpStagePartsCtrl->::cUnit::isEnable()) {
+        } else {
+            this->mpStagePartsCtrl = static_cast<uStagePartsCtrl*>(nullptr);
+        }
+    }
+    if (this->mpStageRevivalPawn != static_cast<uStageRevivalPawn*>(nullptr)) {
+        if (this->mpStageRevivalPawn->::cUnit::isEnable()) {
+        } else {
+            this->mpStageRevivalPawn = static_cast<uStageRevivalPawn*>(nullptr);
+        }
+    }
+    if (this->mpStageCraftPawnCtrl != static_cast<uStageCraftPawnCtrl*>(nullptr)) {
+        if (this->mpStageCraftPawnCtrl->::cUnit::isEnable()) {
+        } else {
+            this->mpStageCraftPawnCtrl = static_cast<uStageCraftPawnCtrl*>(nullptr);
+        }
+    }
+    if (this->mpStageMyRoom != static_cast<uStageMyRoom*>(nullptr)) {
+        if (this->mpStageMyRoom->::cUnit::isEnable()) {
+        } else {
+            this->mpStageMyRoom = static_cast<uStageMyRoom*>(nullptr);
+        }
+    }
+    if (this->mpSoundTrigger != static_cast<uSoundTrigger*>(nullptr)) {
+        if (this->mpSoundTrigger->::cUnit::isEnable()) {
+        } else {
+            this->mpSoundTrigger = static_cast<uSoundTrigger*>(nullptr);
+        }
+    }
+    if (this->mpSoundOcclusion != static_cast<uSoundOcclusion*>(nullptr)) {
+        if (this->mpSoundOcclusion->::cUnit::isEnable()) {
+        } else {
+            this->mpSoundOcclusion = static_cast<uSoundOcclusion*>(nullptr);
+        }
+    }
+    if (this->mpSoundGenerator != static_cast<uSoundGenerator*>(nullptr)) {
+        if (this->mpSoundGenerator->::cUnit::isEnable()) {
+        } else {
+            this->mpSoundGenerator = static_cast<uSoundGenerator*>(nullptr);
+        }
+    }
+    if (this->mpColorCorrectFilter != static_cast<uColorCorrectFilter*>(nullptr)) {
+        if (this->mpColorCorrectFilter->::cUnit::isEnable()) {
+        } else {
+            this->mpColorCorrectFilter = static_cast<uColorCorrectFilter*>(nullptr);
+        }
+    }
+    if (this->mpLargeCamera != static_cast<uLargeEnemyCamera*>(nullptr)) {
+        if (this->mpLargeCamera->::cUnit::isEnable()) {
+        } else {
+            this->mpLargeCamera = static_cast<uLargeEnemyCamera*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x0000a770 - 0x0000a9f3 (643 bytes)
@@ -696,10 +831,105 @@ __attribute__((weak)) void aStage::loadScenarioResource(s32 stgNo, u32 load_flag
 }
 
 // Address: 0x000138d0 - 0x00013bbd (749 bytes)
-__attribute__((weak)) void aStage::releaseStageResource() {
-    // local: u32 i;
-    DDON_STUB("aStage::releaseStageResource")
-    /* stub */
+void aStage::releaseStageResource() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a constant over array elements; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpStageInfo != static_cast<rStageInfo*>(nullptr)) {
+        this->mpStageInfo->::cResource::release();
+        this->mpStageInfo = static_cast<rStageInfo*>(nullptr);
+    }
+    if (this->mpFltrSchdl != static_cast<uScheduler*>(nullptr)) {
+        this->mpFltrSchdl->kill();
+        this->mpFltrSchdl = static_cast<uScheduler*>(nullptr);
+    }
+    if (this->mpScrSchdl != static_cast<uScheduler*>(nullptr)) {
+        this->mpScrSchdl->kill();
+        this->mpScrSchdl = static_cast<uScheduler*>(nullptr);
+    }
+    this->mEffSbcHandle[1] = static_cast<unsigned int>(4294967295);
+    this->mEffSbcHandle[2] = static_cast<unsigned int>(4294967295);
+    this->mScrSbcHandle[2] = static_cast<unsigned int>(4294967295);
+    this->mEffSbcHandle[0] = static_cast<unsigned int>(4294967295);
+    this->mScrSbcHandle[0] = static_cast<unsigned int>(4294967295);
+    this->mScrSbcHandle[1] = static_cast<unsigned int>(4294967295);
+    ::sCollision::getInstance()->::sCollision::unregistResourceAll();
+    if (this->mprOCC != static_cast<rOccluderEx*>(nullptr)) {
+        this->mprOCC->::cResource::release();
+        this->mprOCC = static_cast<rOccluderEx*>(nullptr);
+    }
+    if (this->mprStartPos != static_cast<rStartPos*>(nullptr)) {
+        this->mprStartPos->::cResource::release();
+        this->mprStartPos = static_cast<rStartPos*>(nullptr);
+    }
+    this->mStageEpvCtrl.::cStageEpvCtrl::releaseEpvCtrl();
+    static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::releaseEfcZoneAll();
+    // inferred: a temporary for the value the load at 0x139c3 read, used twice; no DWARF local holds it
+    const unsigned int t0 = ::cZoneLayout::INVALID_HANDLE;
+    if (t0 != this->mEfcEpvZoneGene) {
+        static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::eraseZoneEffectProvider(this->mEfcEpvZoneGene);
+        this->mEfcEpvZoneGene = t0;
+    }
+    if (this->mpEffSchdl != static_cast<uScheduler*>(nullptr)) {
+        this->mpEffSchdl->kill();
+        this->mpEffSchdl = static_cast<uScheduler*>(nullptr);
+    }
+    if (this->mpLanternSchdl != static_cast<uScheduler*>(nullptr)) {
+        this->mpLanternSchdl->kill();
+        this->mpLanternSchdl = static_cast<uScheduler*>(nullptr);
+    }
+    if (this->mpStageJointCtrl != static_cast<uStageJointCtrl*>(nullptr)) {
+        this->mpStageJointCtrl->kill();
+        this->mpStageJointCtrl = static_cast<uStageJointCtrl*>(nullptr);
+    }
+    if (this->mpStageFieldCtrl != static_cast<uStageFieldCtrl*>(nullptr)) {
+        this->mpStageFieldCtrl->kill();
+        this->mpStageFieldCtrl = static_cast<uStageFieldCtrl*>(nullptr);
+    }
+    if (this->mpStagePartsCtrl != static_cast<uStagePartsCtrl*>(nullptr)) {
+        this->mpStagePartsCtrl->kill();
+        this->mpStagePartsCtrl = static_cast<uStagePartsCtrl*>(nullptr);
+    }
+    if (this->mpStageRevivalPawn != static_cast<uStageRevivalPawn*>(nullptr)) {
+        this->mpStageRevivalPawn->kill();
+        this->mpStageRevivalPawn = static_cast<uStageRevivalPawn*>(nullptr);
+    }
+    if (this->mpStageCraftPawnCtrl != static_cast<uStageCraftPawnCtrl*>(nullptr)) {
+        this->mpStageCraftPawnCtrl->kill();
+        this->mpStageCraftPawnCtrl = static_cast<uStageCraftPawnCtrl*>(nullptr);
+    }
+    if (this->mpStageMyRoom != static_cast<uStageMyRoom*>(nullptr)) {
+        this->mpStageMyRoom->kill();
+        this->mpStageMyRoom = static_cast<uStageMyRoom*>(nullptr);
+    }
+    if (this->mpStageConnect != static_cast<rStageConnect*>(nullptr)) {
+        this->mpStageConnect->::cResource::release();
+        this->mpStageConnect = static_cast<rStageConnect*>(nullptr);
+    }
+    if (this->mpSoundTrigger != static_cast<uSoundTrigger*>(nullptr)) {
+        this->mpSoundTrigger->kill();
+        this->mpSoundTrigger = static_cast<uSoundTrigger*>(nullptr);
+    }
+    if (this->mpSoundOcclusion != static_cast<uSoundOcclusion*>(nullptr)) {
+        this->mpSoundOcclusion->kill();
+        this->mpSoundOcclusion = static_cast<uSoundOcclusion*>(nullptr);
+    }
+    if (this->mpSoundGenerator != static_cast<uSoundGenerator*>(nullptr)) {
+        this->mpSoundGenerator->kill();
+        this->mpSoundGenerator = static_cast<uSoundGenerator*>(nullptr);
+    }
+    if (this->mprSoundAttribute != static_cast<rSoundAttributeSe*>(nullptr)) {
+        this->mprSoundAttribute->::cResource::release();
+        this->mprSoundAttribute = static_cast<rSoundAttributeSe*>(nullptr);
+    }
+    static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::releaseBgmResource();
+    if (this->mStageType != static_cast<u32>(1)) {
+        static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::releaseBattleCommon();
+    }
+    if (this->mpStageMsgData != static_cast<cTalkMsgData*>(nullptr)) {
+        delete this->mpStageMsgData;
+        this->mpStageMsgData = static_cast<cTalkMsgData*>(nullptr);
+    }
 }
 
 // No out-of-line body: 19 inlined copies in 14 functions (141 bytes)
@@ -1312,23 +1542,20 @@ __attribute__((weak)) void aStage::loadStageFixFsm() {
 // Address: 0x00012b30 - 0x00012b90 (96 bytes)
 bool aStage::addFSMOrderFromName(MT_CTSTR filePath, u32 starter) {
     // DWARF local not rendered: bool isSuccess;
-    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
     if (this->mpFSMTaskCtrl != static_cast<cFSMTaskCtrl*>(nullptr)) {
         if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-            // inferred: a temporary for the result of the call at 0x12b6b, used once; no DWARF local holds it
-            bool t0 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskOrderFromName(filePath, starter);
-            // inferred: a temporary for the result of the call at 0x12b75, used twice; no DWARF local holds it
-            int t1 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
-            if (t1 != static_cast<int>(0)) {
-                ::abort();
-                return false;
-            } else {
-                return t0;
-            }
         } else {
             ::abort();
-            return false;
         }
+        // inferred: a temporary for the result of the call at 0x12b6b, used once; no DWARF local holds it
+        bool t0 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskOrderFromName(filePath, starter);
+        // inferred: a temporary for the result of the call at 0x12b75, used twice; no DWARF local holds it
+        int t1 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
+        if (t1 != static_cast<int>(0)) {
+            ::abort();
+        }
+        return t0;
     } else {
         return false;
     }
@@ -1337,23 +1564,20 @@ bool aStage::addFSMOrderFromName(MT_CTSTR filePath, u32 starter) {
 // Address: 0x00012ba0 - 0x00012bfb (91 bytes)
 bool aStage::addFSMEventFromName(MT_CTSTR filePath) {
     // DWARF local not rendered: bool isSuccess;
-    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; the body oracle reports this body.
     if (this->mpFSMTaskCtrl != static_cast<cFSMTaskCtrl*>(nullptr)) {
         if (::scePthreadMutexLock(&this->::cArea::mCs.mCSection) == static_cast<int>(0)) {
-            // inferred: a temporary for the result of the call at 0x12bd4, used once; no DWARF local holds it
-            bool t0 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskEventFromName(filePath);
-            // inferred: a temporary for the result of the call at 0x12bde, used twice; no DWARF local holds it
-            int t1 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
-            if (t1 != static_cast<int>(0)) {
-                ::abort();
-                return false;
-            } else {
-                return t0;
-            }
         } else {
             ::abort();
-            return false;
         }
+        // inferred: a temporary for the result of the call at 0x12bd4, used once; no DWARF local holds it
+        bool t0 = this->mpFSMTaskCtrl->::cFSMTaskCtrl::addFSMTaskEventFromName(filePath);
+        // inferred: a temporary for the result of the call at 0x12bde, used twice; no DWARF local holds it
+        int t1 = ::scePthreadMutexUnlock(&this->::cArea::mCs.mCSection);
+        if (t1 != static_cast<int>(0)) {
+            ::abort();
+        }
+        return t0;
     } else {
         return false;
     }
@@ -1535,15 +1759,33 @@ void aStage::requestEventPlay(nStage::stEventParam* param) {
 // bool aStage::isEventBusy();
 
 // Address: 0x00012e60 - 0x00012e82 (34 bytes)
-__attribute__((weak)) bool aStage::isEventMove() {
-    DDON_STUB("aStage::isEventMove")
-    return {};
+bool aStage::isEventMove() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a narrowed integer a test reads, which the recompile may fold into another range test; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (static_cast<unsigned char>(this->::cArea::mRno) == static_cast<unsigned char>(10)) {
+        if ((((this->::cArea::mRno >> static_cast<u32>(8)) & static_cast<u32>(255)) - static_cast<u32>(2)) > static_cast<u32>(6)) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00012e90 - 0x00012eb2 (34 bytes)
-__attribute__((weak)) bool aStage::isFsmEventMove() {
-    DDON_STUB("aStage::isFsmEventMove")
-    return {};
+bool aStage::isFsmEventMove() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a narrowed integer a test reads, which the recompile may fold into another range test; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (static_cast<unsigned char>(this->::cArea::mRno) == static_cast<unsigned char>(11)) {
+        if ((((this->::cArea::mRno >> static_cast<u32>(8)) & static_cast<u32>(255)) - static_cast<u32>(2)) > static_cast<u32>(13)) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00012030 - 0x0001209d (109 bytes)
@@ -1898,10 +2140,27 @@ bool aStage::isEndCreditGUI() {
 // void aStage::moveCreateMyPawnAnnounce();
 
 // Address: 0x00015450 - 0x0001549f (79 bytes)
-__attribute__((weak)) void aStage::setStageFeature(const CommonU32Vec& featureVec) {
-    // local: u32 i;
-    DDON_STUB("aStage::setStageFeature")
-    /* stub */
+void aStage::setStageFeature(const CommonU32Vec& featureVec) {
+    // Approximate from the ELF: a constant over array elements; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x18 from const MtTypedArray<CDataCommonU32>*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x8 from const MtTypedArray<CDataCommonU32>*
+    this->mStageFeature[4] = static_cast<unsigned int>(0);
+    this->mStageFeature[2] = static_cast<unsigned int>(0);
+    this->mStageFeature[3] = static_cast<unsigned int>(0);
+    this->mStageFeature[0] = static_cast<unsigned int>(0);
+    this->mStageFeature[1] = static_cast<unsigned int>(0);
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&featureVec) + static_cast<long>(8))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if (i <= static_cast<u32>(4)) {
+                this->mStageFeature[i] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&featureVec) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8));
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(&featureVec) + static_cast<long>(8))));
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (64 bytes)
@@ -1920,11 +2179,12 @@ u32 aStage::getStageFeature(u32 idx) {
 }
 
 // Address: 0x000154a0 - 0x000154ed (77 bytes)
-__attribute__((weak)) u32 aStage::getStageFeatureNum() {
-    // local: u8 count;
-    // local: u32 i;
-    DDON_STUB("aStage::getStageFeatureNum")
-    return {};
+u32 aStage::getStageFeatureNum() {
+    // DWARF local not rendered: u8 count;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return static_cast<unsigned char>((((static_cast<unsigned long>(this->mStageFeature[0] != static_cast<unsigned int>(0)) + static_cast<unsigned long>(this->mStageFeature[1] != static_cast<unsigned int>(0))) + static_cast<unsigned long>(this->mStageFeature[2] != static_cast<unsigned int>(0))) + static_cast<unsigned long>(this->mStageFeature[3] != static_cast<unsigned int>(0))) + static_cast<unsigned long>(this->mStageFeature[4] != static_cast<unsigned int>(0)));
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (92 bytes)

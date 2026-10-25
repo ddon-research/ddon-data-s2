@@ -4,15 +4,449 @@
 #include "MtAllocator.h"
 #include "MtColor.h"
 #include "MtDTI.h"
+#include "MtEaseCurve.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
+#include "cDraw.h"
+#include "cResource.h"
 #include "cUnit.h"
+#include "nDrawTexture.h"
+#include "rTexture.h"
 #include "sCamera.h"
 #include "sRender.h"
 #include "uCamera.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+// No out-of-line body: no code in the ELF
+// MtDTI* uColorCorrectFilter::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::usage();
+
+// Address: 0x01b5f170 - 0x01b5f178 (8 bytes)
+const MtDTI& uColorCorrectFilter::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return uColorCorrectFilter::DTI;
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// MtAllocator* uColorCorrectFilter::getAllocator();
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::setAllocator(u32);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void* uColorCorrectFilter::operator new(size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* uColorCorrectFilter::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* uColorCorrectFilter::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* uColorCorrectFilter::operator new[](size_t sz, void* p_addr);
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: operator delete from _ZN19uColorCorrectFilterD0Ev at 0x00ea9c98-0x00ea9cb9, its tail after the complete destructor, code DWARF attributes to no inlined copy; p_addr is its this; approximate: the deleting destructor's compare, which the body oracle reports, checks it
+inline void uColorCorrectFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uColorCorrectFilter::DTI)->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::operator delete[](void* p_addr, u32 align);
+
+// Address: 0x00ea9760 - 0x00ea9bd7 (1143 bytes)
+uColorCorrectFilter::uColorCorrectFilter() {
+    DDON_STUB("uColorCorrectFilter::uColorCorrectFilter")
+    /* stub */
+}
+
+// Address: 0x00ea9be0 - 0x00ea9c3e (94 bytes)
+// Also emitted as: _ZN19uColorCorrectFilterD0Ev at 0x00ea9c40
+uColorCorrectFilter::~uColorCorrectFilter() {
+    DDON_STUB("uColorCorrectFilter::~uColorCorrectFilter")
+    /* stub */
+}
+
+// Address: 0x00ea9cc0 - 0x00ea9eba (506 bytes)
+__attribute__((weak)) void uColorCorrectFilter::move() {
+    // local: u32 i;
+    DDON_STUB("uColorCorrectFilter::move")
+    /* stub */
+}
+
+// Address: 0x00ea9ec0 - 0x00ea9ee8 (40 bytes)
+void uColorCorrectFilter::draw(cDraw* pdraw) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pdraw->mContext.pscene == static_cast<nDraw::Scene*>(nullptr)) {
+        return;
+    }
+    ::uColorCorrectFilter::drawColorCorrect(pdraw, static_cast<uFilter*>(this), this->mParam, 1.0f);
+}
+
+// Address: 0x00eabab0 - 0x00eabab5 (5 bytes)
+MtUI* uColorCorrectFilter::createUI(MtProperty& prop) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::cUnit::createUI(prop);
+}
+
+// Address: 0x00eabac0 - 0x00eac40f (2383 bytes)
+__attribute__((weak)) void uColorCorrectFilter::createProperty(MtPropertyList& s) {
+    DDON_STUB("uColorCorrectFilter::createProperty")
+    /* stub */
+}
+
+// No out-of-line body: no code in the ELF
+// uColorCorrectFilter::Corrector* uColorCorrectFilter::getCorrector(u32);
+
+// No out-of-line body: no code in the ELF
+// MtVector3 uColorCorrectFilter::getGamma() const;
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::setGamma(const MtVector3&);
+
+// Address: 0x01b5eb70 - 0x01b5eb79 (9 bytes)
+f32 uColorCorrectFilter::getAttenuationStartZ() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mParam.mStartZ;
+}
+
+// Address: 0x01b5eb80 - 0x01b5ebaf (47 bytes)
+__attribute__((weak)) void uColorCorrectFilter::setAttenuationStartZ(f32 StartZ) {
+    DDON_STUB("uColorCorrectFilter::setAttenuationStartZ")
+    /* stub */
+}
+
+// Address: 0x01b5ebb0 - 0x01b5ebb9 (9 bytes)
+f32 uColorCorrectFilter::getAttenuationEndZ() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mParam.mEndZ;
+}
+
+// Address: 0x01b5ebc0 - 0x01b5ebdf (31 bytes)
+__attribute__((weak)) void uColorCorrectFilter::setAttenuationEndZ(f32 EndZ) {
+    DDON_STUB("uColorCorrectFilter::setAttenuationEndZ")
+    /* stub */
+}
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::setAttenuation(f32, f32);
+
+// Address: 0x00ea9ef0 - 0x00eabaad (7101 bytes)
+__attribute__((weak)) void uColorCorrectFilter::drawColorCorrect(cDraw* pdraw, uFilter* pOwner, const uColorCorrectFilter::ColorCorrectParam& Param, f32 Transparency) {
+    // local: f32 attRate;
+    // local: bool linear;
+    // local: bool gamma;
+    // local: bool tonecurve;
+    // local: bool attenuation;
+    // local: MtHermiteCurve& rToneCurveB;
+    // local: MtHermiteCurve& rToneCurveG;
+    // local: MtHermiteCurve& rToneCurveR;
+    // local: MtVector3 gammaVec;
+    // local: MtRect vp;
+    // local: ConstantTable* pct;
+    // local: const f32 dist;
+    // local: MtVector3 vCameraPos;
+    // local: MtVector4 param[8];
+    // local: const MtHermiteCurve* pcurve[3];
+    // local: u32 k;
+    // local: VERTEX* vertices;
+    // local: u32 i;
+    DDON_STUB("uColorCorrectFilter::drawColorCorrect")
+    /* stub */
+}
+
+// Address: 0x00eac470 - 0x00eac576 (262 bytes)
+__attribute__((weak)) void uColorCorrectFilter::setToneCurve(const MtHermiteCurve& curve) {
+    DDON_STUB("uColorCorrectFilter::setToneCurve")
+    /* stub */
+}
+
+// Address: 0x00eac410 - 0x00eac46b (91 bytes)
+__attribute__((weak)) MtHermiteCurve uColorCorrectFilter::getToneCurve() {
+    DDON_STUB("uColorCorrectFilter::getToneCurve")
+    __builtin_unreachable();
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// uColorCorrectFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x00ea96b0 - 0x00ea96f0 (64 bytes)
+__attribute__((weak)) MtObject* uColorCorrectFilter::MyDTI::newInstance() const {
+    DDON_STUB("uColorCorrectFilter::MyDTI::newInstance")
+    return nullptr;
+}
+
+// No out-of-line body: no code in the ELF
+// MtDTI* uColorCorrectFilter::Corrector::getMyDTIPtr();
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::usage();
+
+// Address: 0x01b5f160 - 0x01b5f168 (8 bytes)
+const MtDTI& uColorCorrectFilter::Corrector::getDTI() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return uColorCorrectFilter::Corrector::DTI;
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// MtAllocator* uColorCorrectFilter::Corrector::getAllocator();
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::setAllocator(u32);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void* uColorCorrectFilter::Corrector::operator new(size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* uColorCorrectFilter::Corrector::operator new[](size_t sz, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void* uColorCorrectFilter::Corrector::operator new(size_t sz, void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void* uColorCorrectFilter::Corrector::operator new[](size_t sz, void* p_addr);
+
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline void uColorCorrectFilter::Corrector::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uColorCorrectFilter::Corrector::DTI)->memFree(p_addr);
+}
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::operator delete[](void* p_addr);
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::operator delete(void* p_addr, u32 align);
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::operator delete[](void* p_addr, u32 align);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// uColorCorrectFilter::Corrector::Corrector();
+
+// Defined in the class (its body was written in a header).
+// uColorCorrectFilter::Corrector::~Corrector();
+
+// Address: 0x00ea8c70 - 0x00ea8c75 (5 bytes)
+MtUI* uColorCorrectFilter::Corrector::createUI(MtProperty& prop) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::MtObject::createUI(prop);
+}
+
+// Address: 0x00ea8c80 - 0x00ea8faa (810 bytes)
+__attribute__((weak)) void uColorCorrectFilter::Corrector::createProperty(MtPropertyList& s) {
+    DDON_STUB("uColorCorrectFilter::Corrector::createProperty")
+    /* stub */
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// MtMatrix uColorCorrectFilter::Corrector::getMatrix() const;
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// bool uColorCorrectFilter::Corrector::isEnable() const;
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::setEnable(bool);
+
+// No out-of-line body: no code in the ELF
+// u32 uColorCorrectFilter::Corrector::getType() const;
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::setType(u32);
+
+// No out-of-line body: no code in the ELF
+// MtVector3 uColorCorrectFilter::Corrector::getFactor() const;
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::setFactor(const MtVector3&);
+
+// No out-of-line body: no code in the ELF
+// MtVector3 uColorCorrectFilter::Corrector::getFactor2() const;
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Corrector::setFactor2(const MtVector3&);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// uColorCorrectFilter::Corrector::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+
+// Address: 0x00ea8b60 - 0x00ea8be3 (131 bytes)
+__attribute__((weak)) MtObject* uColorCorrectFilter::Corrector::MyDTI::newInstance() const {
+    DDON_STUB("uColorCorrectFilter::Corrector::MyDTI::newInstance")
+    return nullptr;
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void uColorCorrectFilter::Params::init();
+
+// Address: 0x00ea71d0 - 0x00ea8b58 (6536 bytes)
+__attribute__((weak)) MtMatrix uColorCorrectFilter::Params::getMatrix() const {
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: u32 i;
+    // local: MtMatrix mat;
+    // local: u32 i;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: MtMatrix m;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: MtMatrix m;
+    // local: MtMatrix mat;
+    // local: MtVector3 viw;
+    // local: MtMatrix mat;
+    // local: MtMatrix m;
+    // local: MtVector3 viw;
+    // local: MtMatrix mat;
+    // local: MtVector3 viw;
+    // local: MtMatrix mat;
+    // local: MtMatrix m;
+    // local: MtVector3 viw;
+    // local: MtMatrix mat;
+    // local: u32 i;
+    // local: u32 i;
+    // local: MtMatrix mat;
+    // local: u32 i;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: MtMatrix m;
+    // local: MtMatrix mat;
+    // local: f32 sum;
+    // local: u32 i;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    // local: MtMatrix mat;
+    DDON_STUB("uColorCorrectFilter::Params::getMatrix")
+    __builtin_unreachable();
+}
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// bool uColorCorrectFilter::Params::isEnable() const;
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Params::setEnable(bool);
+
+// No out-of-line body: no code in the ELF
+// u32 uColorCorrectFilter::Params::getType() const;
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void uColorCorrectFilter::Params::setType(u32 type);
+
+// No out-of-line body: no code in the ELF
+// MtVector3 uColorCorrectFilter::Params::getFactor() const;
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void uColorCorrectFilter::Params::setFactor(const MtVector3& v);
+
+// No out-of-line body: no code in the ELF
+// MtVector3 uColorCorrectFilter::Params::getFactor2() const;
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::Params::setFactor2(const MtVector3&);
+
+// Address: 0x00ea8fc0 - 0x00ea9217 (599 bytes)
+__attribute__((weak)) void uColorCorrectFilter::ColorCorrectParam::init() {
+    // local: u32 i;
+    DDON_STUB("uColorCorrectFilter::ColorCorrectParam::init")
+    /* stub */
+}
+
+// Address: 0x00ea9220 - 0x00ea925e (62 bytes)
+__attribute__((weak)) void uColorCorrectFilter::ColorCorrectParam::update(const uColorCorrectFilter::ColorCorrectParam& Param) {
+    // local: Texture* pToneMap;
+    // local: rTexture* pVolumeColorCorrect;
+    DDON_STUB("uColorCorrectFilter::ColorCorrectParam::update")
+    /* stub */
+}
+
+// Address: 0x00ea9260 - 0x00ea93c9 (361 bytes)
+__attribute__((weak)) void uColorCorrectFilter::ColorCorrectParam::createTextures() {
+    DDON_STUB("uColorCorrectFilter::ColorCorrectParam::createTextures")
+    /* stub */
+}
+
+// Address: 0x00ea93d0 - 0x00ea9419 (73 bytes)
+void uColorCorrectFilter::ColorCorrectParam::releaseTextures() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpToneMap != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpToneMap->release();
+        this->mpToneMap = static_cast<nDraw::Texture*>(nullptr);
+    }
+    if (this->mpVolumeColorCorrect == static_cast<rTexture*>(nullptr)) {
+        return;
+    }
+    this->mpVolumeColorCorrect->::cResource::release();
+    this->mpVolumeColorCorrect = static_cast<rTexture*>(nullptr);
+}
+
+// Address: 0x00ea9420 - 0x00ea9439 (25 bytes)
+bool uColorCorrectFilter::ColorCorrectParam::isTexturesCreated() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpToneMap != static_cast<nDraw::Texture*>(nullptr)) {
+        return this->mpVolumeColorCorrect != static_cast<rTexture*>(nullptr);
+    } else {
+        return false;
+    }
+}
+
+// No out-of-line body: no code in the ELF
+// uColorCorrectFilter::Params* uColorCorrectFilter::ColorCorrectParam::getCorrectorParams(u32 index);
+
+// No out-of-line body: no code in the ELF
+// MtVector3 uColorCorrectFilter::ColorCorrectParam::getPosition() const;
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void uColorCorrectFilter::ColorCorrectParam::setPosition(const MtVector3& Pos);
+
+// No out-of-line body: no code in the ELF
+// MtVector3 uColorCorrectFilter::ColorCorrectParam::getGamma() const;
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void uColorCorrectFilter::ColorCorrectParam::setGamma(const MtVector3& Gamma);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// f32 uColorCorrectFilter::ColorCorrectParam::getAttenuationStartZ() const;
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void uColorCorrectFilter::ColorCorrectParam::setAttenuationStartZ(f32 StartZ);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// f32 uColorCorrectFilter::ColorCorrectParam::getAttenuationEndZ() const;
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// void uColorCorrectFilter::ColorCorrectParam::setAttenuationEndZ(f32 EndZ);
+
+// Address: 0x00ea9460 - 0x00ea9487 (39 bytes)
+__attribute__((weak)) void uColorCorrectFilter::ColorCorrectParam::setAttenuation(f32 StartZ, f32 EndZ) {
+    DDON_STUB("uColorCorrectFilter::ColorCorrectParam::setAttenuation")
+    /* stub */
+}
+
+// Address: 0x00ea9490 - 0x00ea969c (524 bytes)
+__attribute__((weak)) void uColorCorrectFilter::ColorCorrectParam::updateMatrix() {
+    // local: u32 i;
+    DDON_STUB("uColorCorrectFilter::ColorCorrectParam::updateMatrix")
+    /* stub */
+}
+
+// No out-of-line body: no code in the ELF
+// rTexture* uColorCorrectFilter::ColorCorrectParam::getVolumeColorCorrect();
+
+// No out-of-line body: no code in the ELF
+// void uColorCorrectFilter::ColorCorrectParam::setVolumeColorCorrect(rTexture* ptex);
 
 // No out-of-line body: no code in the ELF
 // MtDTI* uDOFFilter::getMyDTIPtr();

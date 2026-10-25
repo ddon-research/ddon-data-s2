@@ -219,3 +219,9 @@ inline BakedQueue::BAKED_STATE::DECL BakedQueue::getState() {
 inline sBakingJointOrder* sBakingJointOrder::getInstance() {
     return ::sBakingJointOrder::mpInstance;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool sBakingJointOrder::isBakingJoint() {
+    return this->mIsEnableBakingJoint;
+}

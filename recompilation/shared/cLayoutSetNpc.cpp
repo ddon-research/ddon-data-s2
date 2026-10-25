@@ -120,11 +120,24 @@ __attribute__((weak)) bool cLayoutSetNpc::deleteAllUnit() {
 // s32 cLayoutSetNpc::getIndexFromID(u32 id) const;
 
 // Address: 0x002d6870 - 0x002d689e (46 bytes)
-__attribute__((weak)) MtObject* cLayoutSetNpc::getUnit(u32 id) {
-    // local: u32 i;
-    // local: uControlNpc* pCB;
-    DDON_STUB("cLayoutSetNpc::getUnit")
-    return nullptr;
+MtObject* cLayoutSetNpc::getUnit(u32 id) {
+    // DWARF local not rendered: uControlNpc* pCB;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1dc from MtObject*
+    if (this->::cLayoutSet::mUnitArray.mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x2d6870, 0x2d689d)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->::cLayoutSet::mUnitArray.mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::cLayoutSet::mUnitArray.mpArray[i]) + static_cast<long>(476))) != id) {
+                } else {
+                    return this->::cLayoutSet::mUnitArray.mpArray[i];
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->::cLayoutSet::mUnitArray.mLength);
+    }
+    return static_cast<MtObject*>(nullptr);
 }
 
 // Address: 0x002d6370 - 0x002d650d (413 bytes)

@@ -48,6 +48,8 @@ namespace nDraw { class Scene; }
 namespace nDraw { struct TECHNIQUE; }
 namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
+class uColorCorrectFilter;
+class uEffect2D;
 
 // Declarations
 class cDraw;
@@ -71,6 +73,10 @@ class cDraw : public MtObject
 {
     // inferred: cInstancingCulling::beginRecord names cDraw::mJobThreadIndex
     friend class cInstancingCulling;
+    // inferred: uColorCorrectFilter::draw names cDraw::mContext.pscene
+    friend class uColorCorrectFilter;
+    // inferred: uEffect2D::drawScene names cDraw::mJobThreadIndex
+    friend class uEffect2D;
 public:
     enum ENTRY_STATE
     {

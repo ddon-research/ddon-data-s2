@@ -12,6 +12,7 @@
 class MtAllocator;
 class MtDTI;
 class MtPropertyList;
+class cOcdBase;
 class cpOcdCtrl;
 
 // Declarations
@@ -27,6 +28,8 @@ using u32 = unsigned int;
 
 class cOcdCache : public MtObject
 {
+    // inferred: cOcdBase::isEnableInit names cOcdBase::mOcdActiveCache.mIsActive
+    friend class cOcdBase;
     // inferred: cpOcdCtrl::checkOcdDamageCache names cOcdCache::mReason
     friend class cpOcdCtrl;
 public:

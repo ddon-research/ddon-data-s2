@@ -23,6 +23,7 @@ class MtPropertyList;
 class MtString;
 class cKeyCustomParam;
 class rKeyCustomParam;
+class sInputManager;
 
 // Declarations
 class cKeyCustom;
@@ -260,6 +261,8 @@ public:
 
 class cKeyCustomManager : public MtObject
 {
+    // inferred: sInputManager::editCancel names cKeyCustomManager::mCustomArray.::MtArray::mpArray
+    friend class sInputManager;
 public:
     class MyDTI;
 public:

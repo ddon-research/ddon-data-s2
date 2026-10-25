@@ -14,6 +14,7 @@
 #include "../shared/rGUIMessage.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
+#include "../shared/sTutorialGuide.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #include "uGUITutorialPop.h"
@@ -197,9 +198,9 @@ void uGUIMenuTutorial::move() {
 // void uGUIMenuTutorial::setDirectOpenMode(bool bIsDirectOpenMode);
 
 // Address: 0x00b19890 - 0x00b198aa (26 bytes)
-__attribute__((weak)) void uGUIMenuTutorial::updateInit() {
-    DDON_STUB("uGUIMenuTutorial::updateInit")
-    /* stub */
+void uGUIMenuTutorial::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuTutorial::updateWaitCtgr);
 }
 
 // Address: 0x00b19a30 - 0x00b19a64 (52 bytes)
@@ -265,9 +266,9 @@ __attribute__((weak)) void uGUIMenuTutorial::moveEvent() {
 }
 
 // Address: 0x00b19f60 - 0x00b19f7a (26 bytes)
-__attribute__((weak)) void uGUIMenuTutorial::evEnd() {
-    DDON_STUB("uGUIMenuTutorial::evEnd")
-    /* stub */
+void uGUIMenuTutorial::evEnd() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuTutorial::updateExit);
 }
 
 // Address: 0x00b19da0 - 0x00b19f50 (432 bytes)
@@ -384,10 +385,19 @@ void uGUIMenuTutorial::updateScrollListDispCtgr(uGUIBase::cScrollListItemBase* p
 }
 
 // Address: 0x00b1a290 - 0x00b1a308 (120 bytes)
-__attribute__((weak)) void uGUIMenuTutorial::updateScrollListDispCaption(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index) {
-    // local: u32 dispIndex;
-    DDON_STUB("uGUIMenuTutorial::updateScrollListDispCaption")
-    /* stub */
+void uGUIMenuTutorial::updateScrollListDispCaption(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+        return;
+    }
+    if (pListItem == static_cast<uGUIBase::cScrollListInfoBase*>(nullptr)) {
+        return;
+    }
+    u32 dispIndex = this->mScrollListCaption.::uGUIBase::cScrollList::getDispIndex(pDispItem);
+    // inferred: a temporary for the value the load at 0xb1a2b8 read, used once; no DWARF local holds it
+    cGUIObject* t0 = this->mpObjListCptn[dispIndex];
+    this->::uGUIBase::setObjectMessage(t0, ::sTutorialGuide::getInstance()->::sTutorialGuide::getGuideName(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCaptionList.::MtArray::getBuffer()[static_cast<int>(Index)]) + static_cast<long>(8))), static_cast<u32>(0), false);
 }
 
 // Address: 0x00b1a280 - 0x00b1a281 (1 bytes)

@@ -5,13 +5,17 @@
 
 // Dependencies
 #include "MtDTI.h"
+#include "MtEaseCurve.h"
 #include "MtMath.h"
+#include "MtObject.h"
 #include "cUnit.h"
 
 // Forward declarations
 class MtAllocator;
 class MtColor;
 class MtDTI;
+class MtHermiteCurve;
+class MtMatrix;
 class MtObject;
 class MtProperty;
 class MtPropertyList;
@@ -27,6 +31,7 @@ class rTexture;
 class uCameraGame;
 
 // Declarations
+class uColorCorrectFilter;
 class uDOFFilter;
 class uFilter;
 class uMotionBlurFilter;
@@ -212,6 +217,200 @@ protected:
     f32 mRBScale;  // offset: 0xc0
 public:
     static MyDTI DTI;
+};
+
+class uColorCorrectFilter : public uFilter
+{
+public:
+    class MyDTI;
+    class Corrector;
+    struct Params;
+    class ColorCorrectParam;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    struct Params
+    {
+    public:
+        void init();
+        MtMatrix getMatrix() const;
+        bool isEnable() const;
+        void setEnable(bool);
+        u32 getType() const;
+        void setType(u32 type);
+        MtVector3 getFactor() const;
+        void setFactor(const MtVector3& v);
+        MtVector3 getFactor2() const;
+        void setFactor2(const MtVector3&);
+    public:
+        bool mEnable;  // offset: 0x0
+        u32 mType;  // offset: 0x4
+        MtVector3 mFactor;  // offset: 0x10
+        MtVector3 mFactor2;  // offset: 0x20
+    };
+public:
+    class ColorCorrectParam
+    {
+    public:
+        void init();
+        void update(const uColorCorrectFilter::ColorCorrectParam& Param);
+        void createTextures();
+        void releaseTextures();
+        bool isTexturesCreated() const;
+        uColorCorrectFilter::Params* getCorrectorParams(u32 index);
+        MtVector3 getPosition() const;
+        void setPosition(const MtVector3& Pos);
+        MtVector3 getGamma() const;
+        void setGamma(const MtVector3& Gamma);
+        f32 getAttenuationStartZ() const;
+        void setAttenuationStartZ(f32 StartZ);
+        f32 getAttenuationEndZ() const;
+        void setAttenuationEndZ(f32 EndZ);
+        void setAttenuation(f32 StartZ, f32 EndZ);
+        void updateMatrix();
+        rTexture* getVolumeColorCorrect();
+        void setVolumeColorCorrect(rTexture* ptex);
+    public:
+        uColorCorrectFilter::Params mParams[16];  // offset: 0x0
+        MtVector3 mPos;  // offset: 0x300
+        MtMatrix mMatrix;  // offset: 0x310
+        MtHermiteCurve mToneCurveR;  // offset: 0x350
+        MtHermiteCurve mToneCurveG;  // offset: 0x390
+        MtHermiteCurve mToneCurveB;  // offset: 0x3d0
+        MtVector3 mGamma;  // offset: 0x410
+        nDraw::Texture* mpToneMap;  // offset: 0x420
+        f32 mStartZ;  // offset: 0x428
+        f32 mEndZ;  // offset: 0x42c
+        u32 mAttenuationEnable;  // offset: 0x430
+        MtVector3 mCullingDir;  // offset: 0x440
+        f32 mCullingAngleStart;  // offset: 0x450
+        f32 mCullingAngleEnd;  // offset: 0x454
+        f32 mCullingRate;  // offset: 0x458
+        bool mCullingEnable;  // offset: 0x45c
+        bool mCullingBothDir;  // offset: 0x45d
+        bool mCullingOverlap;  // offset: 0x45e
+        bool mScreenAttenuateFlag;  // offset: 0x45f
+        f32 mScreenAttenuateDist;  // offset: 0x460
+        f32 mScreenAttenuateRate;  // offset: 0x464
+        u32 mVolumeInterpolateQuality;  // offset: 0x468
+        rTexture* mpVolumeColorCorrect;  // offset: 0x470
+    };
+public:
+    class Corrector : public MtObject
+    {
+    public:
+        enum TYPE
+        {
+            TYPE_UNUSED = 0,
+            TYPE_HUE = 1,
+            TYPE_CONTRAST = 2,
+            TYPE_CONTRAST2 = 3,
+            TYPE_CHROMA = 4,
+            TYPE_CHROMA2 = 5,
+            TYPE_BRIGHTNESS = 6,
+            TYPE_BRIGHTNESS2 = 7,
+            TYPE_SCALE = 8,
+            TYPE_SCALE2 = 9,
+            TYPE_INPUTLEVEL = 10,
+            TYPE_INPUTLEVEL2 = 11,
+            TYPE_OUTPUTLEVEL = 12,
+            TYPE_OUTPUTLEVEL2 = 13,
+            TYPE_SEPIA = 14,
+            TYPE_SEPIA2 = 15,
+            TYPE_NEGA = 16,
+            TYPE_NEGA2 = 17,
+            TYPE_GRAYSCALE = 18,
+            TYPE_RREPLACE = 19,
+            TYPE_GREPLACE = 20,
+            TYPE_BREPLACE = 21,
+            TYPE_ADD = 22,
+            TYPE_SUB = 23,
+        };
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        Corrector();
+        // Address: 0x01b5eb60 - 0x01b5eb61 (1 bytes)
+        virtual ~Corrector() {}
+        virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        MtMatrix getMatrix() const;
+        bool isEnable() const;
+        void setEnable(bool);
+        u32 getType() const;
+        void setType(u32);
+        MtVector3 getFactor() const;
+        void setFactor(const MtVector3&);
+        MtVector3 getFactor2() const;
+        void setFactor2(const MtVector3&);
+    protected:
+        uColorCorrectFilter::Params mParams;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    uColorCorrectFilter();
+    virtual ~uColorCorrectFilter();
+    virtual void move();  // vtable slot 9
+    virtual void draw(cDraw* pdraw);  // vtable slot 12
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    Corrector* getCorrector(u32);
+    MtVector3 getGamma() const;
+    void setGamma(const MtVector3&);
+    f32 getAttenuationStartZ() const;
+    void setAttenuationStartZ(f32 StartZ);
+    f32 getAttenuationEndZ() const;
+    void setAttenuationEndZ(f32 EndZ);
+    void setAttenuation(f32, f32);
+    static void drawColorCorrect(cDraw* pdraw, uFilter* pOwner, const ColorCorrectParam& Param, f32 Transparency);
+protected:
+    void setToneCurve(const MtHermiteCurve& curve);
+    MtHermiteCurve getToneCurve();
+protected:
+    Corrector mCorrector[16];  // offset: 0x60
+    ColorCorrectParam mParam;  // offset: 0x460
+public:
+    static MyDTI DTI;
+    static const u32 MAX_CORRECTOR = 16;
 };
 
 class uDOFFilter : public uFilter

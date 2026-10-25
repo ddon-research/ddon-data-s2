@@ -10,21 +10,32 @@
 #include "../rCharacterEditCameraParam/cEndContentsManager.h"
 #include "cNetGameServer.h"
 #include "../rLayout/cNetSessionManager.h"
+#include "cPawnQuestManager.h"
 #include "../rCharacterEditCameraParam/cPlayPointInfo.h"
 #include "cQuestManagerBase.h"
 #include "cQuestPhaseManager.h"
 #include "cQuestPhaseState.h"
 #include "cQuestTaskParam.h"
+#include "cpOcdCtrl.h"
 #include "nDDOUtility.h"
+#include "nLayout.h"
 #include "nQuest.h"
+#include "rEventParam.h"
+#include "../rStageConnect/sArea.h"
+#include "../rStageConnect/sAreaExt.h"
 #include "sEventManager.h"
+#include "../rCharacterEditCameraParam/sFlag.h"
 #include "sGame.h"
 #include "sItemManager.h"
 #include "sNetwork.h"
 #include "sNetworkExt.h"
+#include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
+#include "sSetManager.h"
 #include "sTalkManager.h"
 #include "sTutorialGuide.h"
+#include "uDDOModel.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -151,9 +162,15 @@ __attribute__((weak)) void cQuestPersonalData::pushPurpose(u32 purposeNo) {
 //   in cQuestTask::isDeliverNpc at 0x0055092f-0x0055093a (called at cQuestTask.cpp:2844)
 // bool cQuestPersonalData::isDeliverNpc(uControl* pCtrl) const;
 
-// No out-of-line body: 1 inlined copy in 1 function (22 bytes)
-//   in cQuestTask::getRequestDeliverProcessNo at 0x00550974-0x0055098a (called at cQuestTask.cpp:2862)
-// s32 cQuestPersonalData::getRequestDeliverProcessNo(uControl* pCtrl) const;
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+inline s32 cQuestPersonalData::getRequestDeliverProcessNo(uControl* pCtrl) const {
+    cQuestTask::cQuestProcess* pProcess = this->::cQuestPersonalData::getDeliverProcess(pCtrl);
+    if (pProcess != static_cast<cQuestTask::cQuestProcess*>(nullptr)) {
+        return pProcess->mProcessNo;
+    } else {
+        return static_cast<s32>(0);
+    }
+}
 
 // No out-of-line body: 1 inlined copy in 1 function (71 bytes)
 //   in cQuestTask::getBlockNo at 0x005503fe-0x00550445 (called at cQuestTask.cpp:2639)
@@ -167,21 +184,66 @@ __attribute__((weak)) void cQuestPersonalData::pushPurpose(u32 purposeNo) {
 // cQuestTask::cQuestProcess* cQuestPersonalData::getProcess(u32 processNo) const;
 
 // Address: 0x00550ef0 - 0x00550f1d (45 bytes)
-__attribute__((weak)) bool cQuestPersonalData::isFlag(u32 flagNo) const {
-    DDON_STUB("cQuestPersonalData::isFlag")
-    return {};
+bool cQuestPersonalData::isFlag(u32 flagNo) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x70 from const cQuestPersonalData*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x80 from const cQuestPersonalData*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(112))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i2 = static_cast<unsigned int>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(128))) + static_cast<unsigned long>(i2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == flagNo) {
+                return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(128))) + static_cast<unsigned long>(i2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0);
+            }
+            i2 += static_cast<unsigned int>(1);
+        } while (i2 < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(112))));
+    }
+    return false;
 }
 
 // Address: 0x00550fb0 - 0x00550fed (61 bytes)
-__attribute__((weak)) bool cQuestPersonalData::isFlagFsm(u32 flagNo) const {
-    DDON_STUB("cQuestPersonalData::isFlagFsm")
-    return {};
+bool cQuestPersonalData::isFlagFsm(u32 flagNo) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x90 from const cQuestPersonalData*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xa0 from const cQuestPersonalData*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(144))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i2 = static_cast<unsigned int>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(160))) + static_cast<unsigned long>(i2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == flagNo) {
+                return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(160))) + static_cast<unsigned long>(i2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0);
+            }
+            i2 += static_cast<unsigned int>(1);
+        } while (i2 < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(144))));
+    }
+    return false;
 }
 
 // Address: 0x00551040 - 0x0055107d (61 bytes)
-__attribute__((weak)) bool cQuestPersonalData::isLayoutFlag(u32 flagNo) const {
-    DDON_STUB("cQuestPersonalData::isLayoutFlag")
-    return {};
+bool cQuestPersonalData::isLayoutFlag(u32 flagNo) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0xb0 from const cQuestPersonalData*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xc0 from const cQuestPersonalData*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(176))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i2 = static_cast<unsigned int>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(192))) + static_cast<unsigned long>(i2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == flagNo) {
+                return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(192))) + static_cast<unsigned long>(i2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0);
+            }
+            i2 += static_cast<unsigned int>(1);
+        } while (i2 < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(176))));
+    }
+    return false;
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (45 bytes)
@@ -1163,11 +1225,19 @@ bool cQuestTask::isClanQuest() const {
 }
 
 // Address: 0x0054f030 - 0x0054f07e (78 bytes)
-__attribute__((weak)) bool cQuestTask::isClanClear() {
-    // local: const u16 orderLimit;
-    // local: const u32 clearNum;
-    DDON_STUB("cQuestTask::isClanClear")
-    return {};
+bool cQuestTask::isClanClear() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mTaskParam.::cQuestTaskParam::getBoardType() == static_cast<u32>(2)) {
+        const u16 orderLimit = this->mTaskParam.::cQuestTaskParam::getOrderLimit();
+        const u32 clearNum = this->mTaskParam.::cQuestTaskParam::getClearNum();
+        if (orderLimit != static_cast<u16>(0)) {
+            return clearNum >= orderLimit;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (27 bytes)
@@ -1556,23 +1626,87 @@ __attribute__((weak)) nQuest::QUEST_TYPE cQuestTask::getQuestType() const {
 }
 
 // Address: 0x0054ffb0 - 0x0054fff3 (67 bytes)
-__attribute__((weak)) void cQuestTask::overwriteEnemyDieNumForLight(u32 emDieNum) {
-    // local: cQuestPersonalData* pPersonalData;
-    DDON_STUB("cQuestTask::overwriteEnemyDieNumForLight")
-    /* stub */
+void cQuestTask::overwriteEnemyDieNumForLight(u32 emDieNum) {
+    // DWARF local not rendered: cQuestPersonalData* pPersonalData;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from cQuestPersonalData*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from cQuestPersonalData*
+    if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
+        // inferred: the value the loop at 0x54ffd0 carries; no location-less local in scope fits
+        unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpMyData) + static_cast<long>(16));
+        if (v0_0 != static_cast<unsigned int>(0)) {
+            // inferred: the value the loop at 0x54ffd0 carries; no location-less local in scope fits
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpMyData) + static_cast<long>(32));
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(182))) != static_cast<unsigned short>(0)) {
+                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(172)) = emDieNum;
+                    }
+                    return;
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00550010 - 0x00550057 (71 bytes)
-__attribute__((weak)) u32 cQuestTask::getEnemyDieNumForLight() const {
-    // local: cQuestPersonalData* pPersonalData;
-    DDON_STUB("cQuestTask::getEnemyDieNumForLight")
-    return {};
+u32 cQuestTask::getEnemyDieNumForLight() const {
+    // DWARF local not rendered: cQuestPersonalData* pPersonalData;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x550056; no location-less local in scope fits
+    u32 v2_0;
+    if (this->mpMyData == static_cast<cQuestPersonalData*>(nullptr)) {
+        v2_0 = static_cast<u32>(0);
+    } else {
+        // inferred: the value the loop at 0x550030 carries; no location-less local in scope fits
+        u32 v0_0 = this->mpMyData->mProcessList.::MtArray::mLength;
+        if (v0_0 == static_cast<u32>(0)) {
+            v2_0 = static_cast<u32>(0);
+        } else {
+            // inferred: the value the loop at 0x550030 carries; no location-less local in scope fits
+            MtObject* * v0_1 = this->mpMyData->mProcessList.::MtArray::mpArray;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_1[i0_2]) + static_cast<long>(182))) != static_cast<unsigned short>(0)) {
+                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                        i0_2 = i0_2 + static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v0_1[i0_2] == static_cast<MtObject*>(nullptr)) {
+                        v2_0 = static_cast<u32>(0);
+                    } else {
+                        v2_0 = static_cast<cQuestTask::cQuestProcess*>(v0_1[i0_2])->::cQuestTask::cQuestProcess::getDieEmNum();
+                    }
+                    return v2_0;
+                }
+            }
+            v2_0 = static_cast<u32>(0);
+        }
+    }
+    return v2_0;
 }
 
 // Address: 0x00550070 - 0x005500bf (79 bytes)
-__attribute__((weak)) bool cQuestTask::isSoloQuest() const {
-    DDON_STUB("cQuestTask::isSoloQuest")
-    return {};
+bool cQuestTask::isSoloQuest() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2c1 from const cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (::nQuest::isSoloQuest(this->mTaskParam.::cQuestTaskParam::getQuestType()) == false) {
+        if (this->mTaskParam.::cQuestTaskParam::isTutorialGuide() == false) {
+            return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(705))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+        }
+    }
+    return true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1720,10 +1854,18 @@ bool cQuestTask::isDeliverNpc(uControl* pCtrl) const {
 }
 
 // Address: 0x00550950 - 0x0055098c (60 bytes)
-__attribute__((weak)) s32 cQuestTask::getRequestDeliverProcessNo(uControl* pCtrl) const {
-    // local: cQuestPersonalData* pPersonalData;
-    DDON_STUB("cQuestTask::getRequestDeliverProcessNo")
-    return {};
+s32 cQuestTask::getRequestDeliverProcessNo(uControl* pCtrl) const {
+    // DWARF local not rendered: cQuestPersonalData* pPersonalData;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpLeaderData == static_cast<cQuestPersonalData*>(nullptr)) {
+        if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
+            return static_cast<unsigned short>(this->mpMyData->::cQuestPersonalData::getRequestDeliverProcessNo(pCtrl));
+        } else {
+            return static_cast<s32>(-1);
+        }
+    } else {
+        return static_cast<unsigned short>(this->mpLeaderData->::cQuestPersonalData::getRequestDeliverProcessNo(pCtrl));
+    }
 }
 
 // Address: 0x005509a0 - 0x005509c4 (36 bytes)
@@ -1785,15 +1927,20 @@ u32 cQuestTask::getDeliveryItemNum(u32 idx) const {
 }
 
 // Address: 0x00550b00 - 0x00550b0b (11 bytes)
-__attribute__((weak)) bool cQuestTask::isDecideDeliverItem() const {
-    DDON_STUB("cQuestTask::isDecideDeliverItem")
-    return {};
+bool cQuestTask::isDecideDeliverItem() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2c0 from const cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(704))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x00550af0 - 0x00550afe (14 bytes)
-__attribute__((weak)) void cQuestTask::notifyDecideDeliverItem(u32 npcId) {
-    DDON_STUB("cQuestTask::notifyDecideDeliverItem")
-    /* stub */
+void cQuestTask::notifyDecideDeliverItem(u32 npcId) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cQuestTask*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(704)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(704))) | static_cast<unsigned char>(2);
+    this->mDeliverDecideNpcId = npcId;
 }
 
 // Address: 0x00550b10 - 0x00550b78 (104 bytes)
@@ -1826,9 +1973,10 @@ __attribute__((weak)) void cQuestTask::orderWaitOrder() {
 }
 
 // Address: 0x00550bd0 - 0x00550bd8 (8 bytes)
-__attribute__((weak)) void cQuestTask::offProgressWaitOrder() {
-    DDON_STUB("cQuestTask::offProgressWaitOrder")
-    /* stub */
+void cQuestTask::offProgressWaitOrder() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cQuestTask*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(704)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(704))) & static_cast<unsigned char>(254);
 }
 
 // Address: 0x00550be0 - 0x00550beb (11 bytes)
@@ -1868,10 +2016,40 @@ __attribute__((weak)) bool cQuestTask::isFlag(u32 flagNo) const {
 }
 
 // Address: 0x00550f20 - 0x00550f60 (64 bytes)
-__attribute__((weak)) bool cQuestTask::isMyFlag(u32 flagNo) const {
-    // local: cQuestPersonalData* pData;
-    DDON_STUB("cQuestTask::isMyFlag")
-    return {};
+bool cQuestTask::isMyFlag(u32 flagNo) const {
+    // DWARF local not rendered: cQuestPersonalData* pData;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from cQuestPersonalData*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x80 from cQuestPersonalData*
+    // inferred: the value the loop at 0x550f40 carries; no location-less local in scope fits
+    unsigned int v0_0;
+    // inferred: the value the loop at 0x550f40 carries; no location-less local in scope fits
+    unsigned long v0_1;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_2;
+    if (this->mpMyData != static_cast<cQuestPersonalData*>(nullptr)) {
+        v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpMyData) + static_cast<long>(112));
+        if (v0_0 == static_cast<unsigned int>(0)) {
+            return false;
+        } else {
+            v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpMyData) + static_cast<long>(128));
+            i0_2 = static_cast<unsigned int>(0);
+        }
+    } else {
+        return false;
+    }
+    for (;;) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == flagNo) {
+            return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0);
+        } else {
+            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x00550f60 - 0x00550fb0 (80 bytes)
@@ -2131,9 +2309,12 @@ __attribute__((weak)) void cQuestTask::buyHint() {
 }
 
 // Address: 0x005526b0 - 0x005526bc (12 bytes)
-__attribute__((weak)) bool cQuestTask::playsEvent() const {
-    DDON_STUB("cQuestTask::playsEvent")
-    return {};
+bool cQuestTask::playsEvent() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2c0 from const cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(704))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x005526c0 - 0x005526db (27 bytes)
@@ -2178,9 +2359,10 @@ __attribute__((weak)) void cQuestTask::setCanProgressLeader(bool canProgress) {
 }
 
 // Address: 0x00552850 - 0x00552858 (8 bytes)
-__attribute__((weak)) void cQuestTask::resetCanProgressLeader() {
-    DDON_STUB("cQuestTask::resetCanProgressLeader")
-    /* stub */
+void cQuestTask::resetCanProgressLeader() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c1 from cQuestTask*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(705)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(705))) & static_cast<unsigned char>(252);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
@@ -2304,15 +2486,17 @@ __attribute__((weak)) void cQuestTask::leaderQuestProgress(u16 processNo, u16 bl
 }
 
 // Address: 0x00553700 - 0x00553708 (8 bytes)
-__attribute__((weak)) void cQuestTask::onCallClearAnnounce() {
-    DDON_STUB("cQuestTask::onCallClearAnnounce")
-    /* stub */
+void cQuestTask::onCallClearAnnounce() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cQuestTask*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(704)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(704))) | static_cast<unsigned char>(16);
 }
 
 // Address: 0x00553710 - 0x00553718 (8 bytes)
-__attribute__((weak)) void cQuestTask::matchSayMessage() {
-    DDON_STUB("cQuestTask::matchSayMessage")
-    /* stub */
+void cQuestTask::matchSayMessage() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c2 from cQuestTask*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(706)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(706))) | static_cast<unsigned char>(1);
 }
 
 // Address: 0x00553720 - 0x00553854 (308 bytes)
@@ -3539,9 +3723,28 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkTalkNpc(s32 stageNo, 
 }
 
 // Address: 0x001ad8a0 - 0x001ad907 (103 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkDieEnemy(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkDieEnemy")
-    return {};
+bool cQuestTask::cQuestProcess::checkDieEnemy(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7038 from sArea*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb0 from unsigned long
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isStage() != false) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) + static_cast<long>(176))) == static_cast<unsigned int>(stageNo)) {
+            if (setNo > static_cast<s32>(-1)) {
+                return ::sSetManager::getInstance()->::sSetManager::isKilledEnemy(static_cast<u32>(groupNo), static_cast<u32>(setNo));
+            } else {
+                return ::sSetManager::getInstance()->::sSetManager::isKilledEnemyGroup(static_cast<u32>(groupNo));
+            }
+        } else {
+            return false;
+        }
+    } else {
+        if (setNo > static_cast<s32>(-1)) {
+            return ::sSetManager::getInstance()->::sSetManager::isKilledEnemy(static_cast<u32>(groupNo), static_cast<u32>(setNo));
+        } else {
+            return ::sSetManager::getInstance()->::sSetManager::isKilledEnemyGroup(static_cast<u32>(groupNo));
+        }
+    }
 }
 
 // Address: 0x001ad910 - 0x001ad99a (138 bytes)
@@ -3909,15 +4112,17 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkEmHpLess(s32 stageNo,
 }
 
 // Address: 0x001afaf0 - 0x001afb13 (35 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkWeatherEq(s32 weatherId, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkWeatherEq")
-    return {};
+bool cQuestTask::cQuestProcess::checkWeatherEq(s32 weatherId, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as int
+    return weatherId == static_cast<int>(::sGame::getInstance()->::sGame::getWeatherID());
 }
 
 // Address: 0x001afb20 - 0x001afb43 (35 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkWeatherNotEq(s32 weatherId, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkWeatherNotEq")
-    return {};
+bool cQuestTask::cQuestProcess::checkWeatherNotEq(s32 weatherId, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as int
+    return weatherId != static_cast<int>(::sGame::getInstance()->::sGame::getWeatherID());
 }
 
 // Address: 0x001afb50 - 0x001afba5 (85 bytes)
@@ -3967,21 +4172,57 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkWaitOrder(s32 param01
 }
 
 // Address: 0x001aff30 - 0x001affae (126 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOmSetTouch(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    // local: const bool isSameLayoutId;
-    // local: const bool isSameSetNo;
-    // local: const bool isTouchOm;
-    DDON_STUB("cQuestTask::cQuestProcess::checkOmSetTouch")
-    return {};
+bool cQuestTask::cQuestProcess::checkOmSetTouch(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
+    // DWARF local not rendered: const bool isSameLayoutId;
+    // DWARF local not rendered: const bool isSameSetNo;
+    // DWARF local not rendered: const bool isTouchOm;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: a value cast to the type its use takes: u32 used as int
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x298 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (this->::cQuestTask::cQuestProcess::getQuestTask()->mpTouchOmInfo != static_cast<sQuestManagerExt::cTouchOmInfo*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1aff6b read, used once; no DWARF local holds it
+        const u32 t0 = this->::cQuestTask::cQuestProcess::getQuestTask()->mpTouchOmInfo->::sQuestManagerExt::cTouchOmInfo::getLayoutId().mLayoutID;
+        // inferred: a temporary for the result of the call at 0x1aff7c, used once; no DWARF local holds it
+        u32 t1 = this->::cQuestTask::cQuestProcess::getQuestTask()->mpTouchOmInfo->::sQuestManagerExt::cTouchOmInfo::getSetNo();
+        if (t0 == static_cast<unsigned int>((groupNo * static_cast<s32>(1024)) | (stageNo & static_cast<s32>(1023)))) {
+            if (setNo == static_cast<int>(t1)) {
+                return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(664))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+            }
+        }
+        return false;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x001affb0 - 0x001b002e (126 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOmReleaseTouch(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    // local: const bool isSameLayoutId;
-    // local: const bool isSameSetNo;
-    // local: const bool isReleaseOm;
-    DDON_STUB("cQuestTask::cQuestProcess::checkOmReleaseTouch")
-    return {};
+bool cQuestTask::cQuestProcess::checkOmReleaseTouch(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
+    // DWARF local not rendered: const bool isSameLayoutId;
+    // DWARF local not rendered: const bool isSameSetNo;
+    // DWARF local not rendered: const bool isReleaseOm;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: a value cast to the type its use takes: u32 used as int
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x298 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (this->::cQuestTask::cQuestProcess::getQuestTask()->mpTouchOmInfo != static_cast<sQuestManagerExt::cTouchOmInfo*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1affeb read, used once; no DWARF local holds it
+        const u32 t0 = this->::cQuestTask::cQuestProcess::getQuestTask()->mpTouchOmInfo->::sQuestManagerExt::cTouchOmInfo::getLayoutId().mLayoutID;
+        // inferred: a temporary for the result of the call at 0x1afffc, used once; no DWARF local holds it
+        u32 t1 = this->::cQuestTask::cQuestProcess::getQuestTask()->mpTouchOmInfo->::sQuestManagerExt::cTouchOmInfo::getSetNo();
+        if (t0 == static_cast<unsigned int>((groupNo * static_cast<s32>(1024)) | (stageNo & static_cast<s32>(1023)))) {
+            if (setNo == static_cast<int>(t1)) {
+                return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(664))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+            }
+        }
+        return false;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x001b0030 - 0x001b0159 (297 bytes)
@@ -4186,21 +4427,30 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkWorldManageQuestFlagO
 }
 
 // Address: 0x001b1760 - 0x001b1773 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkTouchEventBoard(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkTouchEventBoard")
-    return {};
+bool cQuestTask::cQuestProcess::checkTouchEventBoard(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x299 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(665))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x001b1780 - 0x001b1793 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenEntryRaidBoss(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenEntryRaidBoss")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenEntryRaidBoss(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x299 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(665))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x001b17a0 - 0x001b17b3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOepnEntryFortDefense(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOepnEntryFortDefense")
-    return {};
+bool cQuestTask::cQuestProcess::checkOepnEntryFortDefense(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x299 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(665))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x001b17c0 - 0x001b17e2 (34 bytes)
@@ -4229,27 +4479,38 @@ bool cQuestTask::cQuestProcess::checkLostMainPawn(s32 param01, s32 param02, s32 
 }
 
 // Address: 0x001b1860 - 0x001b1870 (16 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkSpTalkNpc(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkSpTalkNpc")
-    return {};
+bool cQuestTask::cQuestProcess::checkSpTalkNpc(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29a from cQuestTask*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) & static_cast<unsigned char>(1));
 }
 
 // Address: 0x001b1870 - 0x001b1883 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOepnJobMaster(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOepnJobMaster")
-    return {};
+bool cQuestTask::cQuestProcess::checkOepnJobMaster(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x299 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(665))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x001b1890 - 0x001b18a3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkTouchRimStone(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkTouchRimStone")
-    return {};
+bool cQuestTask::cQuestProcess::checkTouchRimStone(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x299 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(665))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x001b18b0 - 0x001b18c1 (17 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkGetAchievement(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkGetAchievement")
-    return {};
+bool cQuestTask::cQuestProcess::checkGetAchievement(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x299 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(665))) >> static_cast<unsigned long>(7));
 }
 
 // Address: 0x001b18d0 - 0x001b18d3 (3 bytes)
@@ -4332,9 +4593,18 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkTutorialTalkNpc(s32 s
 }
 
 // Address: 0x001b1fd0 - 0x001b2005 (53 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsLogin(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsLogin")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsLogin(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54ec from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5420 from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21740))) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21536)))) {
+        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(704))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x001b2010 - 0x001b2043 (51 bytes)
@@ -4365,9 +4635,16 @@ bool cQuestTask::cQuestProcess::checkIsLeftCycleTimer(s32 timeSec, s32 param02, 
 }
 
 // Address: 0x001b21b0 - 0x001b21e9 (57 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOmEndText(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOmEndText")
-    return {};
+bool cQuestTask::cQuestProcess::checkOmEndText(s32 stageNo, s32 groupNo, s32 setNo, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29a from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isEndTextOm(static_cast<u32>(stageNo), static_cast<u32>(groupNo), setNo) != false) {
+        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x001b21f0 - 0x001b22a2 (178 bytes)
@@ -4377,9 +4654,21 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkQuestOmEndText(s32 st
 }
 
 // Address: 0x001b22b0 - 0x001b22ee (62 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenAreaMaster(s32 areaId, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenAreaMaster")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenAreaMaster(s32 areaId, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as int
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29a from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (areaId != static_cast<s32>(0)) {
+        if (areaId == static_cast<int>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getAreaId())) {
+            return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+        } else {
+            return false;
+        }
+    } else {
+        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+    }
 }
 
 // Address: 0x001b22f0 - 0x001b23d8 (232 bytes)
@@ -4391,15 +4680,21 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkHaveItemAllBag(s32 it
 }
 
 // Address: 0x001b23e0 - 0x001b23f3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenNewspaper(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenNewspaper")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenNewspaper(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29a from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x001b2400 - 0x001b2413 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenQuestBoard(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenQuestBoard")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenQuestBoard(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29a from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x001b2420 - 0x001b2471 (81 bytes)
@@ -4435,9 +4730,12 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOrderJobTutorialQue
 }
 
 // Address: 0x001b26e0 - 0x001b26f3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOpenWarehouse(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOpenWarehouse")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOpenWarehouse(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29c from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(668))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x001b2700 - 0x001b2787 (135 bytes)
@@ -4455,27 +4753,38 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsMyquestLayoutFlagOf
 }
 
 // Address: 0x001b2820 - 0x001b2831 (17 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOpenWarehouseReward(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOpenWarehouseReward")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOpenWarehouseReward(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29c from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(668))) >> static_cast<unsigned long>(7));
 }
 
 // Address: 0x001b2840 - 0x001b2851 (17 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOrderLightQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOrderLightQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOrderLightQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29a from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) >> static_cast<unsigned long>(7));
 }
 
 // Address: 0x001b2860 - 0x001b2870 (16 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOrderWorldQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOrderWorldQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOrderWorldQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29b from cQuestTask*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(667))) & static_cast<unsigned char>(1));
 }
 
 // Address: 0x001b2870 - 0x001b2882 (18 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsLostMainPawn(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsLostMainPawn")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsLostMainPawn(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29b from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(667))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x001b2890 - 0x001b28a7 (23 bytes)
@@ -4485,10 +4794,15 @@ bool cQuestTask::cQuestProcess::checkIsFullOrderQuest(s32 param01, s32 param02, 
 }
 
 // Address: 0x001b28b0 - 0x001b28db (43 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsBadStatus(s32 param01, s32 param02, s32 param03, s32 param04) {
-    // local: uPlayer* pPl;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsBadStatus")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsBadStatus(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // DWARF local not rendered: uPlayer* pPl;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x504 from cpOcdCtrl*
+    if (::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer() != static_cast<uPlayer*>(nullptr)) {
+        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer()->::uDDOModel::getOcdCtrlPtr()) + static_cast<long>(1284))) != static_cast<unsigned int>(0);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x001b28e0 - 0x001b2903 (35 bytes)
@@ -4510,9 +4824,12 @@ bool cQuestTask::cQuestProcess::checkEnablePartyWarp(s32 param01, s32 param02, s
 }
 
 // Address: 0x001b2940 - 0x001b2953 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsHugeble(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsHugeble")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsHugeble(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29b from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(667))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x001b2960 - 0x001b29ad (77 bytes)
@@ -4524,27 +4841,39 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsDownEnemy(s32 param
 }
 
 // Address: 0x001b29b0 - 0x001b29c3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenAreaMasterSupplies(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenAreaMasterSupplies")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenAreaMasterSupplies(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29b from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(667))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x001b29d0 - 0x001b29e3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenEntryBoard(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenEntryBoard")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenEntryBoard(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29b from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(667))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x001b29f0 - 0x001b2a03 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkNoticeInterruptContents(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkNoticeInterruptContents")
-    return {};
+bool cQuestTask::cQuestProcess::checkNoticeInterruptContents(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29b from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(667))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x001b2a10 - 0x001b2a23 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenRetrySelect(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenRetrySelect")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenRetrySelect(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29b from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(667))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x001b2a30 - 0x001b2a5e (46 bytes)
@@ -4556,21 +4885,28 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsPlWeakening(s32 par
 }
 
 // Address: 0x001b2a60 - 0x001b2a71 (17 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkNoticePartyInvite(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkNoticePartyInvite")
-    return {};
+bool cQuestTask::cQuestProcess::checkNoticePartyInvite(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x298 from cQuestTask*
+    // inferred: a value cast to the type its use takes: unsigned int used as bool
+    return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(664))) >> static_cast<unsigned int>(31));
 }
 
 // Address: 0x001b2a80 - 0x001b2a91 (17 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsKilledAreaBoss(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsKilledAreaBoss")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsKilledAreaBoss(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x29c from cQuestTask*
+    // inferred: a value cast to the type its use takes: unsigned int used as bool
+    return static_cast<bool>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(668))) & static_cast<unsigned int>(1));
 }
 
 // Address: 0x001b2aa0 - 0x001b2ab2 (18 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsPartyReward(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsPartyReward")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsPartyReward(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29c from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(668))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x001b2ac0 - 0x001b2b28 (104 bytes)
@@ -4592,27 +4928,39 @@ bool cQuestTask::cQuestProcess::checkIsFullBag(s32 param01, s32 param02, s32 par
 }
 
 // Address: 0x001b2b30 - 0x001b2b43 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenCraftExam(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenCraftExam")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenCraftExam(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29c from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(668))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x001b2b50 - 0x001b2b63 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkLevelUpCraft(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkLevelUpCraft")
-    return {};
+bool cQuestTask::cQuestProcess::checkLevelUpCraft(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29c from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(668))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x001b2b70 - 0x001b2b83 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsClearLightQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsClearLightQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsClearLightQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29c from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(668))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x001b2b90 - 0x001b2ba3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenJobMasterReward(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenJobMasterReward")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenJobMasterReward(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29c from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(668))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x001b2bb0 - 0x001b2d33 (387 bytes)
@@ -4624,16 +4972,25 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkTouchActQuestNpc(s32 
 }
 
 // Address: 0x001b2d40 - 0x001b2d8a (74 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsLeaderAndJoinPawn(s32 pawnNum, s32 param02, s32 param03, s32 param04) {
-    // local: s32 memberPawnNum;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsLeaderAndJoinPawn")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsLeaderAndJoinPawn(s32 pawnNum, s32 param02, s32 param03, s32 param04) {
+    // DWARF local not rendered: s32 memberPawnNum;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54ec from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5420 from cNetGameServer*
+    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getGameSessionPawnMemberNum(true) < pawnNum) {
+        return false;
+    } else {
+        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21740))) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21536)));
+    }
 }
 
 // Address: 0x001b2d90 - 0x001b2da1 (17 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsAcceptLightQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsAcceptLightQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsAcceptLightQuest(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29a from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) >> static_cast<unsigned long>(7));
 }
 
 // Address: 0x001b2db0 - 0x001b2dea (58 bytes)
@@ -4646,9 +5003,12 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsReleaseWarpPoint(s3
 }
 
 // Address: 0x001b2df0 - 0x001b2e03 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsSetPlayerSkill(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsSetPlayerSkill")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsSetPlayerSkill(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29a from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(666))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x001b2e10 - 0x001b2e1c (12 bytes)
@@ -4664,9 +5024,15 @@ bool cQuestTask::cQuestProcess::checkIsNotOrderMyQuest(s32 param01, s32 param02,
 }
 
 // Address: 0x001b2e40 - 0x001b2e68 (40 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkHasMypawn(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkHasMypawn")
-    return {};
+bool cQuestTask::cQuestProcess::checkHasMypawn(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xfc from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5738 from cNetGameServer*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(252))) == static_cast<unsigned int>(1)) {
+        return false;
+    } else {
+        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(22328))) != static_cast<unsigned int>(0);
+    }
 }
 
 // Address: 0x001b2e70 - 0x001b2e7f (15 bytes)
@@ -4726,15 +5092,20 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsLoginBugFixedOnly(s
 }
 
 // Address: 0x001b3150 - 0x001b3160 (16 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsSearchClan(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsSearchClan")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsSearchClan(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) & static_cast<unsigned char>(1));
 }
 
 // Address: 0x001b3160 - 0x001b3172 (18 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOpenAreaListUi(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOpenAreaListUi")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOpenAreaListUi(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x001b3180 - 0x001b332a (426 bytes)
@@ -4753,34 +5124,57 @@ bool cQuestTask::cQuestProcess::checkDevidePlayer(s32 param01, s32 param02, s32 
 }
 
 // Address: 0x001b3340 - 0x001b3395 (85 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkNowPhase(s32 phaseId, s32 param02, s32 param03, s32 param04) {
-    // local: cQuestPhaseManager* pPhaseMgr;
-    DDON_STUB("cQuestTask::cQuestProcess::checkNowPhase")
-    return {};
+bool cQuestTask::cQuestProcess::checkNowPhase(s32 phaseId, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54ec from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5420 from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from cQuestPhaseManager*
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21740))) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21536)))) {
+        cQuestPhaseManager* pPhaseMgr = ::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestPhaseMgr();
+        if (pPhaseMgr != static_cast<cQuestPhaseManager*>(nullptr)) {
+            if (phaseId > static_cast<s32>(-1)) {
+                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPhaseMgr) + static_cast<long>(48))) == static_cast<unsigned int>(phaseId);
+            }
+        }
+        return false;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x001b33a0 - 0x001b33b3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsReleasePortal(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsReleasePortal")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsReleasePortal(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x001b33c0 - 0x001b33d3 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsGetAppraiseItem(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsGetAppraiseItem")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsGetAppraiseItem(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x001b33e0 - 0x001b33f5 (21 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsSetPartnerPawn(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsSetPartnerPawn")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsSetPartnerPawn(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x359c from sGame*
+    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sGame::getInstance()) + static_cast<long>(13724))) != static_cast<unsigned int>(0);
 }
 
 // Address: 0x001b3400 - 0x001b3413 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsPresentPartnerPawn(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsPresentPartnerPawn")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsPresentPartnerPawn(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x001b3420 - 0x001b342f (15 bytes)
@@ -4790,9 +5184,15 @@ bool cQuestTask::cQuestProcess::checkIsReleaseMyRoom(s32 param01, s32 param02, s
 }
 
 // Address: 0x001b3430 - 0x001b3468 (56 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsExistDividePlayer(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsExistDividePlayer")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsExistDividePlayer(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54ec from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5420 from cNetGameServer*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21740))) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(21536)))) {
+        return ::sQuestManagerExt::getInstance()->::sQuestManagerExt::isExistDividePlayer();
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x001b3470 - 0x001b3487 (23 bytes)
@@ -4830,9 +5230,12 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsFinishedEventOrderN
 }
 
 // Address: 0x001b3650 - 0x001b3663 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsPresentPartnerPawnNoMarker(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsPresentPartnerPawnNoMarker")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsPresentPartnerPawnNoMarker(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x001b3670 - 0x001b36a1 (49 bytes)
@@ -4890,10 +5293,18 @@ bool cQuestTask::cQuestProcess::checkCheckMoonAge(s32 moonAgeStart, s32 moonAgeE
 }
 
 // Address: 0x001b3820 - 0x001b3875 (85 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOrderPawnQuest(s32 orderGroupSerial, s32 noOrderGroupSerial, s32 param03, s32 param04) {
-    // local: cTalkData* pTalkData;
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOrderPawnQuest")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOrderPawnQuest(s32 orderGroupSerial, s32 noOrderGroupSerial, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::addTalkData(static_cast<u32>(7100), static_cast<u32>(0));
+    nQuest::cTalkData* pTalkData = this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::getTalkData(static_cast<u32>(7100));
+    if (pTalkData != static_cast<nQuest::cTalkData*>(nullptr)) {
+        pTalkData->mIsDispOrderUI = true;
+        pTalkData->mNoOrderGroupSerial = static_cast<u32>(noOrderGroupSerial);
+    }
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x001b3890 - 0x001b3af5 (613 bytes)
@@ -4954,21 +5365,29 @@ bool cQuestTask::cQuestProcess::checkPpNotLess(s32 point, s32 param02, s32 param
 }
 
 // Address: 0x001b3c60 - 0x001b3c73 (19 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkOpenPpShop(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkOpenPpShop")
-    return {};
+bool cQuestTask::cQuestProcess::checkOpenPpShop(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x001b3c80 - 0x001b3c91 (17 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkTouchClanBoard(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkTouchClanBoard")
-    return {};
+bool cQuestTask::cQuestProcess::checkTouchClanBoard(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29d from cQuestTask*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(669))) >> static_cast<unsigned long>(7));
 }
 
 // Address: 0x001b3ca0 - 0x001b3cb0 (16 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOneOffGather(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsOneOffGather")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsOneOffGather(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x29e from cQuestTask*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cQuestTask::cQuestProcess::getQuestTask()) + static_cast<long>(670))) & static_cast<unsigned char>(1));
 }
 
 // Address: 0x001b3cb0 - 0x001b3ce1 (49 bytes)
@@ -4984,9 +5403,10 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsOmBrokenQuestNoMark
 }
 
 // Address: 0x001a9210 - 0x001a923d (45 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkKeyItemPointEq(s32 idx, s32 num, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkKeyItemPointEq")
-    return {};
+bool cQuestTask::cQuestProcess::checkKeyItemPointEq(s32 idx, s32 num, s32 param03, s32 param04) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as int
+    return num == static_cast<int>(this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::getTaskParam().::cQuestTaskParam::getKeyItemPoint(static_cast<u32>(idx)));
 }
 
 // Address: 0x001b3dc0 - 0x001b3dfe (62 bytes)
@@ -5160,10 +5580,43 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::resultStageJump(s32 stageN
 
 // Address: 0x001b4cf0 - 0x001b4db3 (195 bytes)
 __attribute__((weak)) bool cQuestTask::cQuestProcess::resultEventExec(s32 stageNo, s32 eventNo, s32 jumpStageNo, s32 jumpStartPosNo) {
-    // local: cEventParam* pParam;
-    // local: const bool sameStage;
-    DDON_STUB("cQuestTask::cQuestProcess::resultEventExec")
-    return {};
+    // DWARF local not rendered: const bool sameStage;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7038 from sArea*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb0 from unsigned long
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: a temporary for the value the load at 0x1b4d18 read, used twice; no DWARF local holds it
+    sEventManager* t0 = ::sEventManager::getInstance();
+    cEventParam* pParam = t0->::sEventManager::getEventParam(t0->::sEventManager::getEventID(stageNo, eventNo));
+    if (pParam != static_cast<cEventParam*>(nullptr)) {
+        if (pParam->mType != static_cast<u16>(1)) {
+            if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isStage() != false) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) + static_cast<long>(176))) == static_cast<unsigned int>(stageNo)) {
+                    if (jumpStageNo > static_cast<s32>(0)) {
+                        ::sEventManager::getInstance()->::sEventManager::requestEvent(stageNo, eventNo, jumpStageNo, jumpStartPosNo);
+                    } else {
+                        ::sEventManager::getInstance()->::sEventManager::requestEvent(stageNo, eventNo, static_cast<s32>(-1), static_cast<s32>(-1));
+                    }
+                    this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::setPlaysEvent(true);
+                }
+            }
+        } else {
+            if (jumpStageNo > static_cast<s32>(0)) {
+                ::sEventManager::getInstance()->::sEventManager::requestEvent(stageNo, eventNo, jumpStageNo, jumpStartPosNo);
+            } else {
+                ::sEventManager::getInstance()->::sEventManager::requestEvent(stageNo, eventNo, static_cast<s32>(-1), static_cast<s32>(-1));
+            }
+            this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::setPlaysEvent(true);
+        }
+    } else {
+        if (jumpStageNo > static_cast<s32>(0)) {
+            ::sEventManager::getInstance()->::sEventManager::requestEvent(stageNo, eventNo, jumpStageNo, jumpStartPosNo);
+        } else {
+            ::sEventManager::getInstance()->::sEventManager::requestEvent(stageNo, eventNo, static_cast<s32>(-1), static_cast<s32>(-1));
+        }
+        this->::cQuestTask::cQuestProcess::getQuestTask()->::cQuestTask::setPlaysEvent(true);
+    }
+    return true;
 }
 
 // Address: 0x001b4dc0 - 0x001b4e71 (177 bytes)
@@ -5429,9 +5882,15 @@ bool cQuestTask::cQuestProcess::resultSetCheckPoint(s32 param01, s32 param02, s3
 }
 
 // Address: 0x001b58e0 - 0x001b590b (43 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultReturnCheckPoint(s32 processNo, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultReturnCheckPoint")
-    return {};
+bool cQuestTask::cQuestProcess::resultReturnCheckPoint(s32 processNo, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u16 used as unsigned int
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if (static_cast<unsigned int>(this->mProcessNo) == static_cast<unsigned int>(processNo)) {
+        this->mIsReturnCheckPoint = true;
+        ::sQuestManagerExt::getInstance()->::sQuestManagerExt::requestRestoreBgm(false);
+    }
+    return true;
 }
 
 // Address: 0x001b5910 - 0x001b5af6 (486 bytes)
@@ -5504,9 +5963,17 @@ __attribute__((weak)) bool cQuestTask::cQuestProcess::resultTutorialEnemyInvinci
 }
 
 // Address: 0x001b5fd0 - 0x001b6016 (70 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultResetTutorialFlag(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultResetTutorialFlag")
-    return {};
+bool cQuestTask::cQuestProcess::resultResetTutorialFlag(s32 param01, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; an | of disjoint bits; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x364 from sFlag*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x35c from sFlag*
+    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::csLock();
+    // inferred: a temporary for the value the load at 0x1b5fec read, used twice; no DWARF local holds it
+    sFlag* t0 = ::sFlag::getInstance();
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(868)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(860)) = static_cast<unsigned long>(0);
+    ::sQuestManagerExt::getInstance()->::sQuestManagerExt::csUnlock();
+    return true;
 }
 
 // Address: 0x001b6020 - 0x001b606d (77 bytes)
@@ -5775,9 +6242,10 @@ bool cQuestTask::cQuestProcess::resultRefreshOmKeyDisp(s32 param01, s32 param02,
 }
 
 // Address: 0x001b6be0 - 0x001b6c10 (48 bytes)
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultSwitchPawnQuestTalk(s32 type, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultSwitchPawnQuestTalk")
-    return {};
+bool cQuestTask::cQuestProcess::resultSwitchPawnQuestTalk(s32 type, s32 param02, s32 param03, s32 param04) {
+    // Approximate from the ELF: a wider integer converted to a narrower signed type, whose value clang wraps; the body oracle reports this body.
+    static_cast<cPawnQuestManager*>(::sQuestManagerExt::getInstance()->::sQuestManagerExt::getQuestManager(static_cast<nQuest::QUEST_TYPE>(10)))->::cPawnQuestManager::switchTalk(static_cast<signed char>(type));
+    return false;
 }
 
 // Address: 0x001b6c10 - 0x001b6c13 (3 bytes)

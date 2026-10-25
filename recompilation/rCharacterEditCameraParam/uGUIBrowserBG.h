@@ -26,6 +26,7 @@ class cGUIObjTexture;
 class rGUI;
 class rGUIMessage;
 class rTexture;
+class sGUIExt;
 
 // Declarations
 class uGUIBrowserBG;
@@ -40,6 +41,8 @@ using u32 = unsigned int;
 
 class uGUIBrowserBG : public uGUIBase
 {
+    // inferred: sGUIExt::setActiveEventBanner names uGUIBrowserBG::mIsKeyOff
+    friend class sGUIExt;
 public:
     enum
     {

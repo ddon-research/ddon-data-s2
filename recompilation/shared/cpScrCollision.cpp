@@ -10,6 +10,9 @@
 #include "cDelegate.h"
 #include "cUnit.h"
 #include "cpComponent.h"
+#include "nCollision.h"
+#include "rCollision.h"
+#include "rCollisionHeightField.h"
 #include "sCollision.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
@@ -294,10 +297,76 @@ __attribute__((weak)) u32 cpScrCollision::scrAdjust(MtVector3& NewPos, MtVector3
 // void cpScrCollision::offFlag(u32 flag);
 
 // Address: 0x0052e190 - 0x0052e229 (153 bytes)
-__attribute__((weak)) u32 cpScrCollision::callbackAdjustPosition(const sCollision::ScrCollisionInfo& NowScrCollisionInfo, const sCollision::SbcInfo& info, u32 param) {
-    // local: u32 attr;
-    DDON_STUB("cpScrCollision::callbackAdjustPosition")
-    return {};
+u32 cpScrCollision::callbackAdjustPosition(const sCollision::ScrCollisionInfo& NowScrCollisionInfo, const sCollision::SbcInfo& info, u32 param) {
+    // DWARF local not rendered: u32 attr;
+    // Approximate from the ELF: a load named after a store only its type keeps apart; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x52e19d, held ahead of the effects the ELF orders after it
+    const sCollision::SBC_HANDLE_HF t0 = info.::sCollision::SbcInfoBase::HitHeightFieldHandle;
+    if (t0 != static_cast<sCollision::SBC_HANDLE_HF>(4294967295)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1ac, held ahead of the effects the ELF orders after it
+        sCollision* t1 = ::sCollision::getInstance();
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1af, held ahead of the effects the ELF orders after it
+        sCollision::cSbcHeightField::cHeightField* t2 = t1->::sCollision::getSbcHeightFieldByHandle(t0);
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1b7, held ahead of the effects the ELF orders after it
+        rCollisionHeightField* t4 = t2->::sCollision::cSbcHeightField::cHeightField::getHeightFieldResource();
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1bc, held ahead of the effects the ELF orders after it
+        const s32 t6 = info.::sCollision::SbcInfoBase::HitHeightFieldU;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1bf, held ahead of the effects the ELF orders after it
+        const s32 t7 = info.::sCollision::SbcInfoBase::HitHeightFieldV;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1c2, held ahead of the effects the ELF orders after it
+        const u32 t8 = info.::sCollision::SbcInfoBase::HitHeightFieldTriID;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1c8, held ahead of the effects the ELF orders after it
+        nCollision::ScrMaterialInfo& t9 = t4->::rCollisionHeightField::getGridMaterial(static_cast<u32>(t6), static_cast<u32>(t7), t8);
+        // inferred: a temporary for the value the load at 0x52e1cd read, used twice; no DWARF local holds it
+        u32 t11 = t9.attribute;
+        if ((t9.attribute & static_cast<u32>(1572864)) != static_cast<u32>(0)) {
+            this->mIsAdjustSlopeHit = true;
+        }
+        this->mScrAdjustAttribute = t11;
+        return static_cast<u32>(0);
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1d1, held ahead of the effects the ELF orders after it
+        rCollision::PartsInfo* t12 = info.pPartsInfo;
+        if (t12 != static_cast<rCollision::PartsInfo*>(nullptr)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1d8, held ahead of the effects the ELF orders after it
+            rCollision::MaterialInfo* t13 = info.pMaterialInfo;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1dc, held ahead of the effects the ELF orders after it
+            u32 t14 = info.::sCollision::SbcInfo::getSbcAttribute();
+            if ((t13->::nCollision::ScrMaterialInfo::attribute & static_cast<u32>(1572864)) != static_cast<u32>(0)) {
+                this->mIsAdjustSlopeHit = true;
+            }
+            this->mScrAdjustAttribute = t14;
+            return static_cast<u32>(0);
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1e0, held ahead of the effects the ELF orders after it
+            uScrollCollisionGeometry* t15 = info.::sCollision::SbcInfoBase::pHitScrGeometry;
+            if (t15 != static_cast<uScrollCollisionGeometry*>(nullptr)) {
+                // inferred: a temporary for the result of the call at 0x52e1ea, used twice; no DWARF local holds it
+                u32 t16 = info.::sCollision::SbcInfo::getBasicCollisionAttribute();
+                if ((t16 & static_cast<u32>(1572864)) != static_cast<u32>(0)) {
+                    this->mIsAdjustSlopeHit = true;
+                }
+                this->mScrAdjustAttribute = t16;
+                return static_cast<u32>(0);
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x52e1f4, held ahead of the effects the ELF orders after it
+                bool t18 = info.::sCollision::SbcInfo::isHitDynamicSbc();
+                if (t18 != false) {
+                    // inferred: a temporary for the result of the call at 0x52e207, used twice; no DWARF local holds it
+                    u32 t20 = info.::sCollision::SbcInfo::getDynamicSbcAttribute();
+                    if ((t20 & static_cast<u32>(1572864)) != static_cast<u32>(0)) {
+                        this->mIsAdjustSlopeHit = true;
+                    }
+                    this->mScrAdjustAttribute = t20;
+                    return static_cast<u32>(0);
+                } else {
+                    this->mIsAdjustSlopeHit = true;
+                    this->mScrAdjustAttribute = static_cast<u32>(1073741823);
+                    return static_cast<u32>(0);
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x0052e5e0 - 0x0052e61f (63 bytes)

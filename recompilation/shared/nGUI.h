@@ -14,6 +14,7 @@ class MtDTI;
 struct MtFloat3;
 class MtHermiteCurve;
 class MtObject;
+class cGUIObject;
 namespace nDraw { class Texture; }
 namespace nGUI { struct PROP_SETTER; }
 class rGUIFont;
@@ -26,6 +27,7 @@ namespace nGUI { class BlendState; }
 namespace nGUI { struct BufferObject; }
 namespace nGUI { struct CAMERA_SETTING; }
 namespace nGUI { struct CLASS_INFO; }
+namespace nGUI { struct DRAW_LIST; }
 namespace nGUI { struct FLOW; }
 namespace nGUI { struct FLOW_FUNCTION; }
 namespace nGUI { struct FLOW_INPUT; }
@@ -322,6 +324,22 @@ namespace nGUI {
         u32 dtiId;  // offset: 0x0
         u32 setterNum;  // offset: 0x4
         const nGUI::PROP_SETTER* pPropSetter;  // offset: 0x8
+    };
+}  // namespace nGUI
+
+namespace nGUI {
+    struct DRAW_LIST
+    {
+    public:
+        enum TYPE
+        {
+            TYPE_DRAW_BEGIN = 0,
+            TYPE_DRAW_END = 1,
+            TYPE_END = 2,
+        };
+    public:
+        u32 type;  // offset: 0x0
+        cGUIObject* pObject;  // offset: 0x8
     };
 }  // namespace nGUI
 

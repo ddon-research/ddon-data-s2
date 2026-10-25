@@ -9,9 +9,15 @@
 #include "../shared/cBitCtrl.h"
 #include "cEmWorkRateCtrl.h"
 #include "cMethodConstantManagerBase.h"
+#include "../shared/cResource.h"
 #include "../shared/cpComponent.h"
 #include "nStatusEnemy.h"
+#include "../rDDOModelMontageEm/rDDOModelMontageEm.h"
+#include "../rEmScaleTable/rEmScaleTable.h"
+#include "../rEnemyStatusChange/rEnemyStatusChange.h"
+#include "../shared/uDDOModel.h"
 #include "uEnemy.h"
+#include "../shared/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -218,8 +224,47 @@ cpStatusChange::cpStatusChange() {
 // Address: 0x00539580 - 0x005396bb (315 bytes)
 // Also emitted as: _ZN14cpStatusChangeD0Ev at 0x005396c0
 cpStatusChange::~cpStatusChange() {
-    DDON_STUB("cpStatusChange::~cpStatusChange")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mcStatusChange.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x5395b0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mcStatusChange.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mcStatusChange.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mcStatusChange.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mcStatusChange.::MtArray::mLength) {
+                    v0_0 = this->mcStatusChange.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mcStatusChange.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mcStatusChange.::MtArray::mpArray));
+    }
+    this->mcStatusChange.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mcStatusChange.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mcStatusChange.::MtArray::mLength = static_cast<u32>(0);
+    if (this->mpResource != static_cast<rEnemyStatusChange*>(nullptr)) {
+        this->mpResource->::cResource::release();
+        this->mpResource = static_cast<rEnemyStatusChange*>(nullptr);
+    }
+    if (this->mpEmScaleTableResource != static_cast<rEmScaleTable*>(nullptr)) {
+        this->mpEmScaleTableResource->::cResource::release();
+        this->mpEmScaleTableResource = static_cast<rEmScaleTable*>(nullptr);
+    }
+    if (this->mpMontageEmResource != static_cast<rDDOModelMontageEm*>(nullptr)) {
+        this->mpMontageEmResource->::cResource::release();
+        this->mpMontageEmResource = static_cast<rDDOModelMontageEm*>(nullptr);
+    }
 }
 
 // Address: 0x005396f0 - 0x005396f5 (5 bytes)
@@ -353,10 +398,31 @@ __attribute__((weak)) void cpStatusChange::setConText(u32 groupoNo, u32 groupSub
 // void cpStatusChange::initStandby();
 
 // Address: 0x00539730 - 0x0053979d (109 bytes)
-__attribute__((weak)) void cpStatusChange::copyStatusOldBit() {
-    // local: uDDOModel* p_owner;
-    DDON_STUB("cpStatusChange::copyStatusOldBit")
-    /* stub */
+void cpStatusChange::copyStatusOldBit() {
+    // DWARF local not rendered: uDDOModel* p_owner;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x2150 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x58 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x14d0 from cpStatusChange*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x14f8 from cpStatusChange*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1518 from cpStatusChange*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1580 from cpStatusChange*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1538 from cpStatusChange*
+    if (this->::cpComponent::getOwner() == static_cast<MtObject*>(nullptr)) {
+        return;
+    }
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpComponent::getOwner()) + static_cast<long>(8528))) != static_cast<unsigned long>(0)) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpComponent::getOwner()) + static_cast<long>(8528))) + static_cast<long>(88))) != static_cast<unsigned long>(0)) {
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpComponent::getOwner()) + static_cast<long>(8528))) + static_cast<long>(88))) + static_cast<long>(16)) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpComponent::getOwner()) + static_cast<long>(8528))) + static_cast<long>(88))) + static_cast<long>(8));
+        }
+    }
+    this->mEmScaleBitCtrl.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(5328)));
+    this->mLocalBitCtrl.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(5368)));
+    this->mLocalBitCtrl2.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(5400)));
+    this->mMontageBitCtrl.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(5504)));
+    this->mSyncBitCtrl.mOldBitData = static_cast<BitData>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(5432)));
 }
 
 // Address: 0x005397a0 - 0x005398d2 (306 bytes)
@@ -481,20 +547,73 @@ __attribute__((weak)) bool cpStatusChange::callBackCheck(u32 index) {
 }
 
 // Address: 0x0053b4b0 - 0x0053b4d9 (41 bytes)
-__attribute__((weak)) bool cpStatusChange::repeatCheck_UnUse(u32 param) {
-    // local: cStatusChange* pStatusChange;
-    DDON_STUB("cpStatusChange::repeatCheck_UnUse")
-    return {};
+bool cpStatusChange::repeatCheck_UnUse(u32 param) {
+    // DWARF local not rendered: cStatusChange* pStatusChange;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x27 from MtObject*
+    if (param < this->mcStatusChange.::MtArray::mLength) {
+        if (this->mcStatusChange.::MtArray::getBuffer()[static_cast<int>(param)] != static_cast<MtObject*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mcStatusChange.::MtArray::getBuffer()[static_cast<int>(param)]) + static_cast<long>(8))) == static_cast<unsigned int>(2)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mcStatusChange.::MtArray::getBuffer()[static_cast<int>(param)]) + static_cast<long>(39)) = static_cast<unsigned char>(1);
+                return true;
+            }
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mcStatusChange.::MtArray::getBuffer()[static_cast<int>(param)]) + static_cast<long>(39)) = static_cast<unsigned char>(0);
+        }
+    }
+    return false;
 }
 
 // Address: 0x0053b380 - 0x0053b4b0 (304 bytes)
-__attribute__((weak)) bool cpStatusChange::repeat_ExecFunc(u32 repeatCount, u32 index) {
-    // local: uDDOModel* p_owner;
-    // local: cpEnemyThink* pEmThink;
-    // local: cEnemyStatusChange* pResData;
-    // local: cStatusChange* pStatusChange;
-    DDON_STUB("cpStatusChange::repeat_ExecFunc")
-    return {};
+bool cpStatusChange::repeat_ExecFunc(u32 repeatCount, u32 index) {
+    // DWARF local not rendered: uDDOModel* p_owner;
+    // DWARF local not rendered: cpEnemyThink* pEmThink;
+    // DWARF local not rendered: cEnemyStatusChange* pResData;
+    // DWARF local not rendered: cStatusChange* pStatusChange;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x2660 from MtObject*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from cpStatusChange*
+    if (this->::cpComponent::getOwner() != static_cast<MtObject*>(nullptr)) {
+        if (static_cast<uDDOModel*>(this->::cpComponent::getOwner())->::uDDOModel::isEnemy() != false) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpComponent::getOwner()) + static_cast<long>(9824))) != static_cast<unsigned long>(0)) {
+                // inferred: a temporary for the result of the call at 0x53b3c5, used 5 times; no DWARF local holds it
+                cEnemyStatusChange* t0 = this->mpResource->getData(index);
+                if (t0 != static_cast<cEnemyStatusChange*>(nullptr)) {
+                    if (index >= this->mcStatusChange.::MtArray::mLength) {
+                    } else {
+                        // inferred: the value the loop at 0x53b470 carries; no location-less local in scope fits
+                        MtObject* v0_11 = this->mcStatusChange.::MtArray::getBuffer()[static_cast<int>(index)];
+                        if (v0_11 != static_cast<MtObject*>(nullptr)) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_11) + static_cast<long>(25)) = static_cast<unsigned char>(1);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_11) + static_cast<long>(28)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_11) + static_cast<long>(28))) + static_cast<unsigned int>(1);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_11) + static_cast<long>(8)) = static_cast<unsigned int>(static_cast<unsigned long>((t0->mRepeatSetting - static_cast<u32>(5)) <= static_cast<u32>(1)) + static_cast<unsigned long>(3));
+                            this->::cpStatusChange::setChangeStatusBit(t0->mChangeStatus, t0->mSelectNo, t0->mBitContrlCommand);
+                            this->::cpStatusChange::setConText(t0->mGroupNo, t0->mGroupSubNo);
+                            this->::cpStatusChange::checkNextGroup(t0->mGroupNo, t0->mGroupSubNo, t0->mNextGroupSubNo, t0->mNextGroupSubOneGo);
+                            if (this->mpResource->getDataNum() != static_cast<u32>(0)) {
+                                // inferred: the counter this loop steps; no location-less local in scope fits
+                                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                                    if (i0_3 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(88)))) {
+                                        if (this->mcStatusChange.::MtArray::getBuffer()[static_cast<int>(i0_3)] != static_cast<MtObject*>(nullptr)) {
+                                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mcStatusChange.::MtArray::getBuffer()[static_cast<int>(i0_3)]) + static_cast<long>(36)) = static_cast<unsigned char>(0);
+                                        }
+                                    }
+                                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
+                                        i0_3 += static_cast<unsigned int>(1);
+                                    } else {
+                                        break;
+                                    }
+                                }
+                            }
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_11) + static_cast<long>(39)) = static_cast<unsigned char>(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x0053bf40 - 0x0053bf4c (12 bytes)
@@ -574,10 +693,18 @@ void cpStatusChange::setEmMotageBit(rBitTable* pRes) {
 }
 
 // Address: 0x0053bc70 - 0x0053bcc1 (81 bytes)
-__attribute__((weak)) void cpStatusChange::applyMontageFirstSet(u32 montage) {
-    // local: uDDOModel* p_owner;
-    DDON_STUB("cpStatusChange::applyMontageFirstSet")
-    /* stub */
+void cpStatusChange::applyMontageFirstSet(u32 montage) {
+    // DWARF local not rendered: uDDOModel* p_owner;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->::cpComponent::getOwner() == static_cast<MtObject*>(nullptr)) {
+        return;
+    }
+    if (this->mpMontageEmResource == static_cast<rDDOModelMontageEm*>(nullptr)) {
+        return;
+    }
+    this->mpMontageEmResource->applyMontageFirstSet(static_cast<uModel*>(this->::cpComponent::getOwner()), montage);
+    this->mMontageBitCtrl.::cBitCtrl::changeBitDataMaskOr(static_cast<BitData>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(montage) & static_cast<unsigned char>(63))));
 }
 
 // Address: 0x0053ba50 - 0x0053bb4a (250 bytes)

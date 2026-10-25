@@ -70,8 +70,39 @@ inline void rSoundSequenceSe::operator delete(void* p_addr) {
 // Address: 0x006fbf10 - 0x006fbfe3 (211 bytes)
 // Also emitted as: _ZN16rSoundSequenceSeD0Ev at 0x006fbff0
 rSoundSequenceSe::~rSoundSequenceSe() {
-    DDON_STUB("rSoundSequenceSe::~rSoundSequenceSe")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mSeqSe.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x6fbf40 carries; no location-less local in scope fits
+        u32 v0_0 = this->mSeqSe.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mSeqSe.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mSeqSe.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mSeqSe.::MtArray::mLength) {
+                    v0_0 = this->mSeqSe.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mSeqSe.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSeqSe.::MtArray::mpArray));
+    }
+    this->mSeqSe.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mSeqSe.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mSeqSe.::MtArray::mLength = static_cast<u32>(0);
+    if (this->mpRequest != static_cast<rSoundRequest*>(nullptr)) {
+        this->mpRequest->::cResource::release();
+        this->mpRequest = static_cast<rSoundRequest*>(nullptr);
+    }
 }
 
 // Address: 0x006fc020 - 0x006fc2a9 (649 bytes)
@@ -131,11 +162,16 @@ MT_CTSTR rSoundSequenceSe::getExt() const {
 // MtTypedArray<rSoundSequenceSe::SequenceSe>* rSoundSequenceSe::getSequenceSeArray();
 
 // Address: 0x006fc3e0 - 0x006fc3ff (31 bytes)
-__attribute__((weak)) rSoundSequenceSe::SequenceSe* rSoundSequenceSe::getSequenceSe(u32 index) {
-    // local: u32 dataNum;
-    // local: SequenceSe* pData;
-    DDON_STUB("rSoundSequenceSe::getSequenceSe")
-    return nullptr;
+rSoundSequenceSe::SequenceSe* rSoundSequenceSe::getSequenceSe(u32 index) {
+    // DWARF local not rendered: u32 dataNum;
+    // DWARF local not rendered: SequenceSe* pData;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (this->mSeqSe.::MtArray::mLength != static_cast<u32>(0)) {
+        if (index < this->mSeqSe.::MtArray::mLength) {
+            return static_cast<rSoundSequenceSe::SequenceSe*>(this->mSeqSe.::MtArray::getBuffer()[static_cast<int>(index)]);
+        }
+    }
+    return static_cast<rSoundSequenceSe::SequenceSe*>(nullptr);
 }
 
 // Address: 0x01ab3660 - 0x01ab3665 (5 bytes)
@@ -252,11 +288,17 @@ MtUI* rSoundSequenceSe::SequenceSe::createUI(MtProperty& prop) {
 }
 
 // Address: 0x006fc820 - 0x006fc839 (25 bytes)
-__attribute__((weak)) rSoundSequenceSe::SequenceSe::Command* rSoundSequenceSe::SequenceSe::getCommand(u32 index) {
-    // local: u32 dataNum;
-    // local: Command* pCommand;
-    DDON_STUB("rSoundSequenceSe::SequenceSe::getCommand")
-    return nullptr;
+rSoundSequenceSe::SequenceSe::Command* rSoundSequenceSe::SequenceSe::getCommand(u32 index) {
+    // DWARF local not rendered: u32 dataNum;
+    // DWARF local not rendered: Command* pCommand;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from rSoundSequenceSe::SequenceSe*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))) != static_cast<unsigned int>(0)) {
+        if (index < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32)))) {
+            return static_cast<rSoundSequenceSe::SequenceSe::Command*>(this->mCommand.::MtArray::getBuffer()[static_cast<int>(index)]);
+        }
+    }
+    return static_cast<rSoundSequenceSe::SequenceSe::Command*>(nullptr);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (3 bytes)

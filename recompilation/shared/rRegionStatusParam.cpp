@@ -269,7 +269,8 @@ const MtDTI& rChildRegionStatusParam::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rChildRegionStatusParam::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rChildRegionStatusParam::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rChildRegionStatusParam::DTI)->memAlloc(sz, align, ::rChildRegionStatusParam::DTI.::MtDTI::getID());
 }
 

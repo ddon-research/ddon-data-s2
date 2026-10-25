@@ -310,10 +310,10 @@ __attribute__((weak)) f32 nDDOMath::lerpAngleConstant(f32 CurrentAngle, f32 Targ
 
 // Address: 0x005b2cf0 - 0x005b2d20 (48 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nDDOMath.cpp:778
-__attribute__((weak)) u32 nDDOMath::lerp(u32 a, u32 b, f32 rate) {
-    // local: f64 ret;
-    DDON_STUB("nDDOMath::lerp")
-    return {};
+u32 nDDOMath::lerp(u32 a, u32 b, f32 rate) {
+    // DWARF local not rendered: f64 ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned int>(static_cast<long>(((1.0 - static_cast<double>(rate)) * static_cast<double>(a)) + (static_cast<double>(b) * static_cast<double>(rate))));
 }
 
 // Address: 0x005b26c0 - 0x005b26d9 (25 bytes)

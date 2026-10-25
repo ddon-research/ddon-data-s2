@@ -67,12 +67,20 @@ inline void cShotReqInfo::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cShotReqInfo::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (530 bytes)
-//   in cShotReqInfo::MyDTI::newInstance at 0x006e727d-0x006e72fe (called at rShotReqInfo.cpp:25)
-//   in cShotReqInfo::MyDTI::newInstance at 0x006e727d-0x006e72fe (called at rShotReqInfo.h:30)
-//   in rTbl2<cShotReqInfo>::allocData at 0x01ab16f8-0x01ab170a, 0x01ab170d-0x01ab1783 (called at rTbl2.h:215)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// cShotReqInfo::cShotReqInfo();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cShotReqInfo::cShotReqInfo() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mShotGroup = static_cast<u32>(0);
+    this->mShotIndex = static_cast<u32>(0);
+    this->mSetTarget = static_cast<u32>(0);
+    this->mJointNo = static_cast<u32>(255);
+    this->mIsConst = false;
+    this->mOffsetPos = ::MtVector3::Zero;
+    this->mOffsetDir = ::MtVector3::Zero;
+    this->mIsLockOnTarget = false;
+}
 
 // No out-of-line body: no code in the ELF
 // cShotReqInfo::cShotReqInfo(const cShotReqInfo&);

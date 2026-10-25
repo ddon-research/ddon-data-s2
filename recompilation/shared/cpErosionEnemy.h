@@ -57,6 +57,8 @@ using u64 = __uint64_t;
 
 class cTentacleInfo : public MtObject
 {
+    // inferred: cpErosionSuperEnemy::updateTentacle names cpErosionSuperEnemy::mTentacleInfoArray.elems[0].mRequestTentacleStop
+    friend class cpErosionSuperEnemy;
 public:
     enum
     {

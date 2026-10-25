@@ -416,10 +416,14 @@ MtUI* cContextCharacter::createUI(MtProperty& prop) {
 // MtTypedArray<cDamageMsg>* cContextCharacter::getServerDamageMsgArray();
 
 // Address: 0x00052910 - 0x00052926 (22 bytes)
-__attribute__((weak)) const cDamageMsg* cContextCharacter::getServerDamageMsgTop() const {
-    // local: u32 length;
-    DDON_STUB("cContextCharacter::getServerDamageMsgTop")
-    return nullptr;
+const cDamageMsg* cContextCharacter::getServerDamageMsgTop() const {
+    // DWARF local not rendered: u32 length;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mServerDamageMsgArray.::MtArray::mLength != static_cast<u32>(0)) {
+        return static_cast<const cDamageMsg*>(*this->mServerDamageMsgArray.::MtArray::mpArray);
+    } else {
+        return static_cast<const cDamageMsg*>(nullptr);
+    }
 }
 
 // Address: 0x00052930 - 0x000529bf (143 bytes)
@@ -459,10 +463,14 @@ __attribute__((weak)) void cContextCharacter::addServerDamageMsg(const cDamageMs
 // MtTypedArray<cDamageMsg>* cContextCharacter::getDamageMsgArray();
 
 // Address: 0x00052c40 - 0x00052c56 (22 bytes)
-__attribute__((weak)) const cDamageMsg* cContextCharacter::getDamageMsgTop() const {
-    // local: u32 length;
-    DDON_STUB("cContextCharacter::getDamageMsgTop")
-    return nullptr;
+const cDamageMsg* cContextCharacter::getDamageMsgTop() const {
+    // DWARF local not rendered: u32 length;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mDamageMsgArray.::MtArray::mLength != static_cast<u32>(0)) {
+        return static_cast<const cDamageMsg*>(*this->mDamageMsgArray.::MtArray::mpArray);
+    } else {
+        return static_cast<const cDamageMsg*>(nullptr);
+    }
 }
 
 // Address: 0x00052c60 - 0x00052cef (143 bytes)
@@ -849,9 +857,13 @@ __attribute__((weak)) void cContextCharacter::pushBowUpNetData(const nHumanBow::
 }
 
 // Address: 0x00052580 - 0x0005259f (31 bytes)
-__attribute__((weak)) void cContextCharacter::pushBowLockOnInfo(u32 index, u32 uid, u32 lockId) {
-    DDON_STUB("cContextCharacter::pushBowLockOnInfo")
-    /* stub */
+void cContextCharacter::pushBowLockOnInfo(u32 index, u32 uid, u32 lockId) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index <= static_cast<u32>(3)) {
+        this->mBowNetDataUp.mShlShotNum = static_cast<unsigned char>(index + static_cast<u32>(1));
+        this->mBowNetDataUp.mTargetUId[index] = uid;
+        this->mBowNetDataUp.mLockOnID[index] = lockId;
+    }
 }
 
 // Address: 0x000525a0 - 0x000525ba (26 bytes)
@@ -963,17 +975,49 @@ void cContextCharacter::clearCorePointSlaveMsgAll() {
 }
 
 // Address: 0x00052ed0 - 0x00052f0f (63 bytes)
-__attribute__((weak)) void cContextCharacter::clearCorePointSlaveMsgTop() {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::clearCorePointSlaveMsgTop")
-    /* stub */
+void cContextCharacter::clearCorePointSlaveMsgTop() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x52ee0 carries; no location-less local in scope fits
+    bool* v0_0 = &this->mCorePointSlaveMsg[0].mIsStandby;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+        if ((*v0_0) != false) {
+            this->mCorePointSlaveMsg[i0_1].mRegionCorePointID = static_cast<u16>(0);
+            this->mCorePointSlaveMsg[i0_1].mActiveTimer = static_cast<u16>(0);
+            *v0_0 = false;
+            return;
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                v0_0 += static_cast<int>(6);
+                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x00052e90 - 0x00052ecc (60 bytes)
-__attribute__((weak)) const nRegionStatus::stCorePointSlaveMsg& cContextCharacter::getCorePointSlaveMsgTop() const {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::getCorePointSlaveMsgTop")
-    __builtin_unreachable();
+const nRegionStatus::stCorePointSlaveMsg& cContextCharacter::getCorePointSlaveMsgTop() const {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_0 = static_cast<unsigned int>(0);
+    // inferred: the value the loop at 0x52ea0 carries; no location-less local in scope fits
+    for (const bool* v0_1 = &this->mCorePointSlaveMsg[0].mIsStandby;;) {
+        if ((*v0_1) != false) {
+            return this->mCorePointSlaveMsg[i0_0];
+        } else {
+            if ((i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                i0_0 = i0_0 + static_cast<unsigned int>(1);
+                v0_1 += static_cast<int>(6);
+            } else {
+                break;
+            }
+        }
+    }
+    return this->mCorePointSlaveMsg[0];
 }
 
 // Address: 0x00052f10 - 0x00052f57 (71 bytes)
@@ -1010,20 +1054,93 @@ __attribute__((weak)) const nObjCondition::stHolyAbsorpReqInfo& cContextCharacte
 }
 
 // Address: 0x00053070 - 0x000531d9 (361 bytes)
-__attribute__((weak)) void cContextCharacter::clearAbsorpReqInfoTop() {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::clearAbsorpReqInfoTop")
-    /* stub */
+void cContextCharacter::clearAbsorpReqInfoTop() {
+    // DWARF local not rendered: u32 i;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mAbsorpReqArray[0].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mAbsorpReqArray[0].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[0].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[0].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mAbsorpReqArray[0].mIsSeted = false;
+    }
+    if (this->mAbsorpReqArray[1].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mAbsorpReqArray[1].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[1].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[1].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mAbsorpReqArray[1].mIsSeted = false;
+    }
+    if (this->mAbsorpReqArray[2].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mAbsorpReqArray[2].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[2].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[2].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mAbsorpReqArray[2].mIsSeted = false;
+    }
+    if (this->mAbsorpReqArray[3].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mAbsorpReqArray[3].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[3].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[3].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mAbsorpReqArray[3].mIsSeted = false;
+    }
+    if (this->mAbsorpReqArray[4].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mAbsorpReqArray[4].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[4].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[4].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mAbsorpReqArray[4].mIsSeted = false;
+    }
+    if (this->mAbsorpReqArray[5].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mAbsorpReqArray[5].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[5].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[5].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mAbsorpReqArray[5].mIsSeted = false;
+    }
+    if (this->mAbsorpReqArray[6].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mAbsorpReqArray[6].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[6].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[6].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mAbsorpReqArray[6].mIsSeted = false;
+    }
+    if (this->mAbsorpReqArray[7].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mAbsorpReqArray[7].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[7].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mAbsorpReqArray[7].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mAbsorpReqArray[7].mIsSeted = false;
+    }
 }
 
 // No out-of-line body: no code in the ELF
 // const nObjCondition::stHolyAbsorpReqInfo& cContextCharacter::getAbsorpReqInfo(u32 index) const;
 
 // Address: 0x000531f0 - 0x0005323a (74 bytes)
-__attribute__((weak)) void cContextCharacter::registAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::registAbsorpReqMsg")
-    /* stub */
+void cContextCharacter::registAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x53200 carries; no location-less local in scope fits
+    bool* v0_0 = &this->mAbsorpReqArray[0].mIsSeted;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+        if ((*v0_0) == false) {
+            this->mAbsorpReqArray[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
+            this->mAbsorpReqArray[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
+            this->mAbsorpReqArray[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
+            *v0_0 = true;
+            return;
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                v0_0 += static_cast<int>(16);
+                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x00053240 - 0x00053287 (71 bytes)
@@ -1102,20 +1219,93 @@ __attribute__((weak)) const nObjCondition::stHolyAbsorpReqInfo& cContextCharacte
 }
 
 // Address: 0x00053440 - 0x000535a9 (361 bytes)
-__attribute__((weak)) void cContextCharacter::clearSoulAbsorpReqInfoTop() {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::clearSoulAbsorpReqInfoTop")
-    /* stub */
+void cContextCharacter::clearSoulAbsorpReqInfoTop() {
+    // DWARF local not rendered: u32 i;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mSoulAbsorpReqArray[0].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mSoulAbsorpReqArray[0].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[0].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[0].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mSoulAbsorpReqArray[0].mIsSeted = false;
+    }
+    if (this->mSoulAbsorpReqArray[1].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mSoulAbsorpReqArray[1].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[1].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[1].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mSoulAbsorpReqArray[1].mIsSeted = false;
+    }
+    if (this->mSoulAbsorpReqArray[2].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mSoulAbsorpReqArray[2].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[2].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[2].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mSoulAbsorpReqArray[2].mIsSeted = false;
+    }
+    if (this->mSoulAbsorpReqArray[3].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mSoulAbsorpReqArray[3].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[3].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[3].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mSoulAbsorpReqArray[3].mIsSeted = false;
+    }
+    if (this->mSoulAbsorpReqArray[4].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mSoulAbsorpReqArray[4].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[4].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[4].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mSoulAbsorpReqArray[4].mIsSeted = false;
+    }
+    if (this->mSoulAbsorpReqArray[5].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mSoulAbsorpReqArray[5].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[5].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[5].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mSoulAbsorpReqArray[5].mIsSeted = false;
+    }
+    if (this->mSoulAbsorpReqArray[6].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mSoulAbsorpReqArray[6].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[6].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[6].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mSoulAbsorpReqArray[6].mIsSeted = false;
+    }
+    if (this->mSoulAbsorpReqArray[7].::nObjCondition::stHolyAbsorpReqInfo::isSeted() == false) {
+    } else {
+        this->mSoulAbsorpReqArray[7].mReqMsg.mAtkUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[7].mReqMsg.mDfdUID = static_cast<u32>(0);
+        this->mSoulAbsorpReqArray[7].mReqMsg.mHealVal = static_cast<u16>(0);
+        this->mSoulAbsorpReqArray[7].mIsSeted = false;
+    }
 }
 
 // No out-of-line body: no code in the ELF
 // const nObjCondition::stHolyAbsorpReqInfo& cContextCharacter::getSoulAbsorpReqInfo(u32 index) const;
 
 // Address: 0x000535c0 - 0x0005360a (74 bytes)
-__attribute__((weak)) void cContextCharacter::registSoulAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::registSoulAbsorpReqMsg")
-    /* stub */
+void cContextCharacter::registSoulAbsorpReqMsg(const nObjCondition::stHolyAbsorpReqMsg& srcMsg) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x535d0 carries; no location-less local in scope fits
+    bool* v0_0 = &this->mSoulAbsorpReqArray[0].mIsSeted;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+        if ((*v0_0) == false) {
+            this->mSoulAbsorpReqArray[i0_1].mReqMsg.mAtkUID = srcMsg.mAtkUID;
+            this->mSoulAbsorpReqArray[i0_1].mReqMsg.mDfdUID = srcMsg.mDfdUID;
+            this->mSoulAbsorpReqArray[i0_1].mReqMsg.mHealVal = srcMsg.mHealVal;
+            *v0_0 = true;
+            return;
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                v0_0 += static_cast<int>(16);
+                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x00053610 - 0x00053657 (71 bytes)
@@ -1194,20 +1384,120 @@ __attribute__((weak)) const nHuman::stShellRequestInfo& cContextCharacter::getSh
 }
 
 // Address: 0x00053810 - 0x000539b9 (425 bytes)
-__attribute__((weak)) void cContextCharacter::clearShellRequestInfoTop() {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::clearShellRequestInfoTop")
-    /* stub */
+void cContextCharacter::clearShellRequestInfoTop() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6f4 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6e8 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6e0 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6d4 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6cc from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6c0 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6b8 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6ac from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6a4 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x698 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x690 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x684 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x67c from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x670 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x668 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x65c from cContextCharacter*
+    if (this->mSheRequestArray[0].::nHuman::stShellRequestInfo::isSeted() == false) {
+    } else {
+        this->mSheRequestArray[0].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1640)) = static_cast<unsigned short>(0);
+        this->mSheRequestArray[0].mReqMsg.mShotSys = static_cast<u32>(0);
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1628)) = static_cast<unsigned long>(0);
+        this->mSheRequestArray[0].mIsSeted = false;
+    }
+    if (this->mSheRequestArray[1].::nHuman::stShellRequestInfo::isSeted() == false) {
+    } else {
+        this->mSheRequestArray[1].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1660)) = static_cast<unsigned short>(0);
+        this->mSheRequestArray[1].mReqMsg.mShotSys = static_cast<u32>(0);
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1648)) = static_cast<unsigned long>(0);
+        this->mSheRequestArray[1].mIsSeted = false;
+    }
+    if (this->mSheRequestArray[2].::nHuman::stShellRequestInfo::isSeted() == false) {
+    } else {
+        this->mSheRequestArray[2].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1680)) = static_cast<unsigned short>(0);
+        this->mSheRequestArray[2].mReqMsg.mShotSys = static_cast<u32>(0);
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1668)) = static_cast<unsigned long>(0);
+        this->mSheRequestArray[2].mIsSeted = false;
+    }
+    if (this->mSheRequestArray[3].::nHuman::stShellRequestInfo::isSeted() == false) {
+    } else {
+        this->mSheRequestArray[3].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1700)) = static_cast<unsigned short>(0);
+        this->mSheRequestArray[3].mReqMsg.mShotSys = static_cast<u32>(0);
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1688)) = static_cast<unsigned long>(0);
+        this->mSheRequestArray[3].mIsSeted = false;
+    }
+    if (this->mSheRequestArray[4].::nHuman::stShellRequestInfo::isSeted() == false) {
+    } else {
+        this->mSheRequestArray[4].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1720)) = static_cast<unsigned short>(0);
+        this->mSheRequestArray[4].mReqMsg.mShotSys = static_cast<u32>(0);
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1708)) = static_cast<unsigned long>(0);
+        this->mSheRequestArray[4].mIsSeted = false;
+    }
+    if (this->mSheRequestArray[5].::nHuman::stShellRequestInfo::isSeted() == false) {
+    } else {
+        this->mSheRequestArray[5].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1740)) = static_cast<unsigned short>(0);
+        this->mSheRequestArray[5].mReqMsg.mShotSys = static_cast<u32>(0);
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1728)) = static_cast<unsigned long>(0);
+        this->mSheRequestArray[5].mIsSeted = false;
+    }
+    if (this->mSheRequestArray[6].::nHuman::stShellRequestInfo::isSeted() == false) {
+    } else {
+        this->mSheRequestArray[6].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1760)) = static_cast<unsigned short>(0);
+        this->mSheRequestArray[6].mReqMsg.mShotSys = static_cast<u32>(0);
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1748)) = static_cast<unsigned long>(0);
+        this->mSheRequestArray[6].mIsSeted = false;
+    }
+    if (this->mSheRequestArray[7].::nHuman::stShellRequestInfo::isSeted() == false) {
+    } else {
+        this->mSheRequestArray[7].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1780)) = static_cast<unsigned short>(0);
+        this->mSheRequestArray[7].mReqMsg.mShotSys = static_cast<u32>(0);
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1768)) = static_cast<unsigned long>(0);
+        this->mSheRequestArray[7].mIsSeted = false;
+    }
 }
 
 // No out-of-line body: no code in the ELF
 // const nHuman::stShellRequestInfo& cContextCharacter::getShellRequestInfo(u32 index) const;
 
 // Address: 0x000539d0 - 0x00053a36 (102 bytes)
-__attribute__((weak)) void cContextCharacter::registShellRequestMsg(const nHuman::stShellRequestMsg& srcMsg) {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::registShellRequestMsg")
-    /* stub */
+void cContextCharacter::registShellRequestMsg(const nHuman::stShellRequestMsg& srcMsg) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x539e0 carries; no location-less local in scope fits
+    bool* v0_0 = &this->mSheRequestArray[0].mIsSeted;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+        if ((*v0_0) == false) {
+            this->mSheRequestArray[i0_1].mReqMsg.mShlOwnerUID = srcMsg.mShlOwnerUID;
+            this->mSheRequestArray[i0_1].mReqMsg.mTargetUID = srcMsg.mTargetUID;
+            this->mSheRequestArray[i0_1].mReqMsg.mShotSys = srcMsg.mShotSys;
+            this->mSheRequestArray[i0_1].mReqMsg.mShotGroup = srcMsg.mShotGroup;
+            this->mSheRequestArray[i0_1].mReqMsg.mShotIndex = srcMsg.mShotIndex;
+            this->mSheRequestArray[i0_1].mReqMsg.mLockOnIndex = srcMsg.mLockOnIndex;
+            *v0_0 = true;
+            return;
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                v0_0 += static_cast<int>(20);
+                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x00053a40 - 0x00053a87 (71 bytes)
@@ -1223,10 +1513,65 @@ u32 cContextCharacter::getShellRequestInfoNum() const {
 // void cContextCharacter::clearShellRequestInfo(u32 index);
 
 // Address: 0x00053aa0 - 0x00053c01 (353 bytes)
-__attribute__((weak)) void cContextCharacter::clearShellRequestInfoArray() {
-    // local: u32 i;
-    DDON_STUB("cContextCharacter::clearShellRequestInfoArray")
-    /* stub */
+void cContextCharacter::clearShellRequestInfoArray() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x668 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x65c from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x67c from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x670 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x690 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x684 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6a4 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x698 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6b8 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6ac from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6cc from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6c0 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6e0 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6d4 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x6f4 from cContextCharacter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x6e8 from cContextCharacter*
+    this->mSheRequestArray[0].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1640)) = static_cast<unsigned short>(0);
+    this->mSheRequestArray[0].mReqMsg.mShotSys = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1628)) = static_cast<unsigned long>(0);
+    this->mSheRequestArray[0].mIsSeted = false;
+    this->mSheRequestArray[1].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1660)) = static_cast<unsigned short>(0);
+    this->mSheRequestArray[1].mReqMsg.mShotSys = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1648)) = static_cast<unsigned long>(0);
+    this->mSheRequestArray[1].mIsSeted = false;
+    this->mSheRequestArray[2].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1680)) = static_cast<unsigned short>(0);
+    this->mSheRequestArray[2].mReqMsg.mShotSys = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1668)) = static_cast<unsigned long>(0);
+    this->mSheRequestArray[2].mIsSeted = false;
+    this->mSheRequestArray[3].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1700)) = static_cast<unsigned short>(0);
+    this->mSheRequestArray[3].mReqMsg.mShotSys = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1688)) = static_cast<unsigned long>(0);
+    this->mSheRequestArray[3].mIsSeted = false;
+    this->mSheRequestArray[4].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1720)) = static_cast<unsigned short>(0);
+    this->mSheRequestArray[4].mReqMsg.mShotSys = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1708)) = static_cast<unsigned long>(0);
+    this->mSheRequestArray[4].mIsSeted = false;
+    this->mSheRequestArray[5].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1740)) = static_cast<unsigned short>(0);
+    this->mSheRequestArray[5].mReqMsg.mShotSys = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1728)) = static_cast<unsigned long>(0);
+    this->mSheRequestArray[5].mIsSeted = false;
+    this->mSheRequestArray[6].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1760)) = static_cast<unsigned short>(0);
+    this->mSheRequestArray[6].mReqMsg.mShotSys = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1748)) = static_cast<unsigned long>(0);
+    this->mSheRequestArray[6].mIsSeted = false;
+    this->mSheRequestArray[7].mReqMsg.mLockOnIndex = static_cast<u8>(0);
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(1780)) = static_cast<unsigned short>(0);
+    this->mSheRequestArray[7].mReqMsg.mShotSys = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(1768)) = static_cast<unsigned long>(0);
+    this->mSheRequestArray[7].mIsSeted = false;
 }
 
 // Address: 0x00053c10 - 0x00053c17 (7 bytes)

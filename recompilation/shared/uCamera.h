@@ -19,6 +19,7 @@ class MtUI;
 class MtVector3;
 class MtVector4;
 class uDOFFilter;
+class uHuman;
 
 // Declarations
 class uCamera;
@@ -35,6 +36,8 @@ class uCamera : public cUnit
 {
     // inferred: uDOFFilter::setNear names uCamera::mNearPlane
     friend class uDOFFilter;
+    // inferred: uHuman::getLODLevel names uCamera::mFov
+    friend class uHuman;
 public:
     class MyDTI;
 public:

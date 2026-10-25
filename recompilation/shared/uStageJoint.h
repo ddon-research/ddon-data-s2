@@ -320,6 +320,12 @@ inline s32 uStageJointCtrl::getPlayerCurrentAreaNo() const {
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline bool uStageJointMdl::isSetResource() {
+    return this->mIsSetResource;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline uScheduler* uStageJointMdl::getLightSdl() const {
     return this->mpLightSchdl;
 }

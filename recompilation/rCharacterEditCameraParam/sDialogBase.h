@@ -34,9 +34,9 @@ using u32 = unsigned int;
 
 class sDialogBase : public cSystem
 {
-    // inferred: cNetGameServer::isDispErrorDialog calls sDialogBase::getInfo
+    // inferred: cNetGameServer::isDispErrorDialog names sDialogBase::mpInstance
     friend class cNetGameServer;
-    // inferred: cNetLoginServer::isDispErrorDialog calls sDialogBase::getInfo
+    // inferred: cNetLoginServer::isDispErrorDialog names sDialogBase::mpInstance
     friend class cNetLoginServer;
 public:
     class MyDTI;

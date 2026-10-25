@@ -148,46 +148,31 @@ void cCustomWeatherParam::setCustomShadowGroup1(f32 val) {
 // Address: 0x0086a9e0 - 0x0086aa05 (37 bytes)
 void cCustomWeatherParam::setCustomShadowDir(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomShadowDir.x = val.x;
-    this->mCustomShadowDir.y = val.y;
-    this->mCustomShadowDir.z = val.z;
-    this->mCustomShadowDir.pad_ = 0.0f;
+    this->mCustomShadowDir = val;
 }
 
 // Address: 0x0086aa10 - 0x0086aa35 (37 bytes)
 void cCustomWeatherParam::setCustomSunDir(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomSunDir.x = val.x;
-    this->mCustomSunDir.y = val.y;
-    this->mCustomSunDir.z = val.z;
-    this->mCustomSunDir.pad_ = 0.0f;
+    this->mCustomSunDir = val;
 }
 
 // Address: 0x0086aa40 - 0x0086aa65 (37 bytes)
 void cCustomWeatherParam::setCustomHemiLightColor(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomHemiLightColor.x = val.x;
-    this->mCustomHemiLightColor.y = val.y;
-    this->mCustomHemiLightColor.z = val.z;
-    this->mCustomHemiLightColor.pad_ = 0.0f;
+    this->mCustomHemiLightColor = val;
 }
 
 // Address: 0x0086aa70 - 0x0086aa95 (37 bytes)
 void cCustomWeatherParam::setCustomHemiLightRevColor(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomHemiLightRevColor.x = val.x;
-    this->mCustomHemiLightRevColor.y = val.y;
-    this->mCustomHemiLightRevColor.z = val.z;
-    this->mCustomHemiLightRevColor.pad_ = 0.0f;
+    this->mCustomHemiLightRevColor = val;
 }
 
 // Address: 0x0086aaa0 - 0x0086aad1 (49 bytes)
 void cCustomWeatherParam::setCustomGrassWindDir(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomGrassWindDir.x = val.x;
-    this->mCustomGrassWindDir.y = val.y;
-    this->mCustomGrassWindDir.z = val.z;
-    this->mCustomGrassWindDir.pad_ = 0.0f;
+    this->mCustomGrassWindDir = val;
 }
 
 // Address: 0x0086ab00 - 0x0086ab06 (6 bytes)
@@ -211,10 +196,7 @@ void cCustomWeatherParam::setCustomFogExponentDensity(f32 val) {
 // Address: 0x0086ab30 - 0x0086ab61 (49 bytes)
 void cCustomWeatherParam::setCustomFogColor(const MtVector3& val) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mCustomFogColor.x = val.x;
-    this->mCustomFogColor.y = val.y;
-    this->mCustomFogColor.z = val.z;
-    this->mCustomFogColor.pad_ = 0.0f;
+    this->mCustomFogColor = val;
 }
 
 // Address: 0x0086aae0 - 0x0086aae6 (6 bytes)
@@ -990,14 +972,69 @@ __attribute__((weak)) void sWeatherManager::updateWeatherParamNowOld() {
 }
 
 // Address: 0x0086fb90 - 0x0086fc8b (251 bytes)
-__attribute__((weak)) void sWeatherManager::setWeatherID(s32 weatherID, f32 blend) {
-    // local: bool flash;
-    DDON_STUB("sWeatherManager::setWeatherID")
-    /* stub */
+void sWeatherManager::setWeatherID(s32 weatherID, f32 blend) {
+    // DWARF local not rendered: bool flash;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x86fc22; no location-less local in scope fits
+    unsigned int v2_9;
+    if (this->mpWeatherParamInfoTbl.mpPtr == static_cast<rWeatherParamInfoTbl*>(nullptr)) {
+        v2_9 = static_cast<unsigned int>(1);
+    } else {
+        if (this->mpWeatherParamInfoTbl.mpPtr->getDataNum() == static_cast<u32>(0)) {
+            v2_9 = static_cast<unsigned int>(1);
+        } else {
+            // inferred: the value the loop at 0x86fbf0 carries; no location-less local in scope fits
+            rWeatherParamInfoTbl* v0_10 = this->mpWeatherParamInfoTbl.mpPtr;
+            if (v0_10 == static_cast<rWeatherParamInfoTbl*>(nullptr)) {
+                v2_9 = static_cast<unsigned int>(1);
+            } else {
+                if (v0_10->getDataNum() == static_cast<u32>(0)) {
+                    v2_9 = static_cast<unsigned int>(1);
+                } else {
+                    // inferred: the counter this loop steps; no location-less local in scope fits
+                    for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                        // inferred: a temporary for the result of the call at 0x86fbf9, used twice; no DWARF local holds it
+                        cWeatherParamInfo* t0 = v0_10->getData(i0_3);
+                        if (t0 != static_cast<cWeatherParamInfo*>(nullptr)) {
+                            if (t0->mWeatherID != weatherID) {
+                                if ((i0_3 + static_cast<unsigned int>(1)) < v0_10->getDataNum()) {
+                                    i0_3 += static_cast<unsigned int>(1);
+                                } else {
+                                    break;
+                                }
+                            } else {
+                                v2_9 = weatherID;
+                                this->mWeatherIDOld = this->mWeatherID;
+                                this->mWeatherID = static_cast<s32>(v2_9);
+                                this->mWeatherBlend = blend;
+                                this->::sWeatherManager::updateWeatherParamNowOld();
+                                this->mWeatherChangeFrame = this->mpWeatherInfoNow->mToFrame;
+                                this->::sWeatherManager::changeWeatherScript(blend > 0.5f);
+                                return;
+                            }
+                        } else {
+                            if ((i0_3 + static_cast<unsigned int>(1)) < v0_10->getDataNum()) {
+                                i0_3 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    v2_9 = static_cast<unsigned int>(1);
+                }
+            }
+        }
+    }
+    this->mWeatherIDOld = this->mWeatherID;
+    this->mWeatherID = static_cast<s32>(v2_9);
+    this->mWeatherBlend = blend;
+    this->::sWeatherManager::updateWeatherParamNowOld();
+    this->mWeatherChangeFrame = this->mpWeatherInfoNow->mToFrame;
+    this->::sWeatherManager::changeWeatherScript(blend > 0.5f);
 }
 
 // Address: 0x008713b0 - 0x00871583 (467 bytes)
-void sWeatherManager::changeWeatherScript(bool flash) {
+__attribute__((weak)) void sWeatherManager::changeWeatherScript(bool flash) {
     // DWARF local not rendered: u32 step_idx;
     // DWARF local not rendered: cWeatherScriptCmdArray& res_array;
     // DWARF local not rendered: u32 step_idx;
@@ -2234,9 +2271,12 @@ void sWeatherManager::setWeatherSkyStableShadowCascade(s32 val) {
 // bool sWeatherManager::isWeatherSkyCloudOff() const;
 
 // Address: 0x00872220 - 0x0087222c (12 bytes)
-__attribute__((weak)) bool sWeatherManager::isWeatherSkyStableShadowCascadeSmoothOff() const {
-    DDON_STUB("sWeatherManager::isWeatherSkyStableShadowCascadeSmoothOff")
-    return {};
+bool sWeatherManager::isWeatherSkyStableShadowCascadeSmoothOff() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0xa78 from const sWeatherManager*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(2680))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x00872230 - 0x00872237 (7 bytes)

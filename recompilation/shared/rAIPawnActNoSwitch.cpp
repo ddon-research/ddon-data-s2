@@ -127,9 +127,11 @@ inline void* rAIPawnActNoSwitch::operator new(size_t sz, u32 align) {
 // No out-of-line body: no code in the ELF
 // void* rAIPawnActNoSwitch::operator new[](size_t sz, void* p_addr);
 
-// No out-of-line body: 1 inlined copy in 1 function (31 bytes)
-//   in rAIPawnActNoSwitch::~rAIPawnActNoSwitch at 0x0063ebf1-0x0063ec10 (called at rAIPawnActNoSwitch.cpp:178)
-// void rAIPawnActNoSwitch::operator delete(void* p_addr);
+// Inline, no code of its own: checked where it is inlined.
+// approximate: from its inlined copy in the deleting destructor, whose compare the body oracle reports
+inline void rAIPawnActNoSwitch::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIPawnActNoSwitch::DTI)->memFree(p_addr);
+}
 
 // No out-of-line body: no code in the ELF
 // void rAIPawnActNoSwitch::operator delete[](void* p_addr);

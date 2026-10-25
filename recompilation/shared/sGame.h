@@ -47,6 +47,8 @@ class cTalkMsgData;
 class cWeaponResTable;
 class cWepCateResTbl;
 class cpJob02;
+namespace nJobParam { class cHumanBaseInfo; }
+namespace nJobParam { class cJobInfo; }
 namespace nLoginSession { class CPacket_L2C_GP_COURSE_GET_INFO_RES; }
 namespace nNetBase { class cNetBase; }
 namespace nSessionManager { class cNetSessionManager; }
@@ -64,7 +66,11 @@ class rStageToSpot;
 class rTexture;
 class rWeaponResTable;
 class rWepCateResTbl;
+class sAreaExt;
+class sCameraExt;
+class sGUIExt;
 class sNetworkExt;
+class sPlayerManager;
 class uControl;
 class uDDOModel;
 class uFade;
@@ -152,12 +158,24 @@ class sGame : public cSystem
     friend class cGUIUtility;
     // inferred: cpJob02::update names sGame::mCharData.mCharData.mOption.mIsCamDrama
     friend class cpJob02;
+    // inferred: nJobParam::cHumanBaseInfo::init names sGame::mpInstance
+    friend class nJobParam::cHumanBaseInfo;
+    // inferred: nJobParam::cJobInfo::initJobStatus names sGame::mpInstance
+    friend class nJobParam::cJobInfo;
     // inferred: nNetBase::cNetBase::castMsgAddress names sGame::mpInstance
     friend class nNetBase::cNetBase;
     // inferred: nSessionManager::cNetSessionManager::endQuickMatch names sGame::mIsReqChangeServer
     friend class nSessionManager::cNetSessionManager;
+    // inferred: sAreaExt::jumpStage names sGame::mpInstance
+    friend class sAreaExt;
+    // inferred: sCameraExt::init names sGame::mCharData.mCharData.mOption.mCamPosType
+    friend class sCameraExt;
+    // inferred: sGUIExt::isBlackOut names sGame::mpInstance
+    friend class sGUIExt;
     // inferred: sNetworkExt::isClanLeader names sGame::mCharData.mCharData.mCardClan.mMyPost
     friend class sNetworkExt;
+    // inferred: sPlayerManager::updatePawnLobbyHeal names sGame::mStageNo
+    friend class sPlayerManager;
     // inferred: uGUIEngageInfo::updateWait names sGame::mCharData.mCharData.mOption.mIsEngageDisp
     friend class uGUIEngageInfo;
     // inferred: uGUIPhoto::setup names sGame::mDisableActionPlayer
@@ -740,6 +758,12 @@ inline s32 sGame::getReqStartPosNo() const {
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline s32 sGame::getStageNo() const {
+    return this->mStageNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline s32 sGame::getStageNoOld() const {
     return this->mStageNoOld;
 }
@@ -769,6 +793,11 @@ inline cPlayPointInfo* sGame::getPlayPointInfo() const {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline nNetBase::cNetBase* sGame::getNetBase() {
     return this->mpNetRpc;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool sGame::isParty(s32 memberIndex) {
+    return this->mIsParty[memberIndex];
 }
 
 // Inline, no code of its own: checked where it is inlined.

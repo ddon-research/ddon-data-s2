@@ -198,15 +198,87 @@ __attribute__((weak)) void uGUICaplinkFriendList::setFlowProcess(u32 flow_id) {
 }
 
 // Address: 0x009bea50 - 0x009beb11 (193 bytes)
-__attribute__((weak)) void uGUICaplinkFriendList::moveInput() {
-    DDON_STUB("uGUICaplinkFriendList::moveInput")
-    /* stub */
+void uGUICaplinkFriendList::moveInput() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mFlowId <= static_cast<u32>(43)) {
+        if (((static_cast<unsigned long>(8865351483396) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+            this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::execute();
+            if (this->mpCancelCtrl == static_cast<cControl*>(nullptr)) {
+            } else {
+                this->mpCancelCtrl->execute();
+            }
+            if (this->mpDecideCtrl == static_cast<cControl*>(nullptr)) {
+            } else {
+                this->mpDecideCtrl->execute();
+            }
+            if (this->mpTabCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+            } else {
+                this->mpTabCtrl->execute();
+            }
+            if (this->mpPageCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+            } else {
+                this->mpPageCtrl->execute();
+            }
+            if (this->mpButtonCtrl == static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+            } else {
+                this->mpButtonCtrl->execute();
+            }
+            if (this->mpListCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+            } else {
+                this->mpListCtrl->execute();
+            }
+            this->mMain.mPage.::uGUIBase::cReferenceUINumPager::execute();
+        }
+    }
 }
 
 // Address: 0x009beb20 - 0x009beba4 (132 bytes)
-__attribute__((weak)) void uGUICaplinkFriendList::moveEvent() {
-    DDON_STUB("uGUICaplinkFriendList::moveEvent")
-    /* stub */
+void uGUICaplinkFriendList::moveEvent() {
+    // Approximate from the ELF: a cast to the other signedness; a range test the recompile folds to a mask test; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (static_cast<int>(this->::uGUIBase::getInputEvent()) <= static_cast<int>(65)) {
+        if ((this->::uGUIBase::getInputEvent() - static_cast<u32>(52)) > static_cast<u32>(1)) {
+        } else {
+            this->::uGUICaplinkFriendList::eventAdjustPage();
+        }
+    } else {
+        switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(66)) {
+            case static_cast<u32>(0):
+            {
+                this->::uGUICaplinkFriendList::eventDecide();
+                break;
+            }
+            case static_cast<u32>(1):
+            {
+                if (this->mFlowId <= static_cast<u32>(43)) {
+                    if (((static_cast<unsigned long>(8865351483396) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                        this->::uGUICaplinkFriendList::setFlowId(static_cast<u32>(53), true);
+                    }
+                }
+                break;
+            }
+            case static_cast<u32>(2):
+            {
+                this->::uGUICaplinkFriendList::adjustListCursor();
+                break;
+            }
+            case static_cast<u32>(3):
+            {
+                this->::uGUICaplinkFriendList::eventAdjustPage();
+                break;
+            }
+            case static_cast<u32>(4):
+            {
+                this->::uGUICaplinkFriendList::eventAdjustTab();
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x009b83b0 - 0x009b8bd4 (2084 bytes)
@@ -883,7 +955,7 @@ __attribute__((weak)) void uGUICaplinkFriendList::eventDecide() {
 // void uGUICaplinkFriendList::eventAdjustCursor();
 
 // Address: 0x009bee80 - 0x009bef29 (169 bytes)
-void uGUICaplinkFriendList::eventAdjustPage() {
+__attribute__((weak)) void uGUICaplinkFriendList::eventAdjustPage() {
     // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
     if (this->mpPageCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
         this->mMain.mPage.mNum = this->mpPageCtrl->::cControl::getCurrentPos();
@@ -927,7 +999,7 @@ void uGUICaplinkFriendList::eventAdjustPage() {
 }
 
 // Address: 0x009bef30 - 0x009bf000 (208 bytes)
-void uGUICaplinkFriendList::eventAdjustTab() {
+__attribute__((weak)) void uGUICaplinkFriendList::eventAdjustTab() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
         this->mpListCtrl->setCurrentPos(static_cast<s32>(0), false);
@@ -1021,9 +1093,23 @@ u32 uGUICaplinkFriendList::evCtrlAdjustTab(cControl::Message* msg) {
 }
 
 // Address: 0x009b7690 - 0x009b76f6 (102 bytes)
-__attribute__((weak)) u32 uGUICaplinkFriendList::evCtrlMouseClick(cControl::Message* msg) {
-    DDON_STUB("uGUICaplinkFriendList::evCtrlMouseClick")
-    return {};
+u32 uGUICaplinkFriendList::evCtrlMouseClick(cControl::Message* msg) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        if (msg->pSender != static_cast<cControl*>(nullptr)) {
+            if (msg->pSender != this->mpListCtrl) {
+                if (msg->pSender != this->mpButtonCtrl) {
+                    return static_cast<u32>(0);
+                }
+                if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                    this->mpListCtrl->setCurrentPos(this->mpListCtrl->::cControl::getItemNum() - static_cast<s32>(1), false);
+                }
+            }
+            this->::uGUICaplinkFriendList::adjustListCursor();
+            return this->::uGUICaplinkFriendList::evCtrlDecide(msg);
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

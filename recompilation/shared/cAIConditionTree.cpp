@@ -801,17 +801,29 @@ bool cAIConditionTree::VariableWorkNode::getBool() {
 }
 
 // Address: 0x01325500 - 0x01325517 (23 bytes)
-__attribute__((weak)) s32 cAIConditionTree::VariableWorkNode::getS32() {
-    // local: VariableNode* pRes;
-    DDON_STUB("cAIConditionTree::VariableWorkNode::getS32")
-    return {};
+s32 cAIConditionTree::VariableWorkNode::getS32() {
+    // DWARF local not rendered: VariableNode* pRes;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x60 from rAIConditionTreeNode*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cAIConditionTreeNode::mpResource) + static_cast<long>(96))) == static_cast<unsigned char>(0)) {
+        return this->mS32;
+    } else {
+        return static_cast<s32>(static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(this->mS32) & static_cast<unsigned char>(31))));
+    }
 }
 
 // Address: 0x01325520 - 0x0132553a (26 bytes)
-__attribute__((weak)) s64 cAIConditionTree::VariableWorkNode::getS64() {
-    // local: VariableNode* pRes;
-    DDON_STUB("cAIConditionTree::VariableWorkNode::getS64")
-    return {};
+s64 cAIConditionTree::VariableWorkNode::getS64() {
+    // DWARF local not rendered: VariableNode* pRes;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x60 from rAIConditionTreeNode*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cAIConditionTreeNode::mpResource) + static_cast<long>(96))) == static_cast<unsigned char>(0)) {
+        return this->mS64;
+    } else {
+        return static_cast<s64>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(this->mS64) & static_cast<unsigned char>(63)));
+    }
 }
 
 // Address: 0x01bc7570 - 0x01bc7576 (6 bytes)
@@ -913,8 +925,41 @@ inline void* cAIConditionTreeNode::operator new(size_t sz, u32 align) {
 // Address: 0x01321db0 - 0x01321e5f (175 bytes)
 // Also emitted as: _ZN20cAIConditionTreeNodeD0Ev at 0x01321e70
 cAIConditionTreeNode::~cAIConditionTreeNode() {
-    DDON_STUB("cAIConditionTreeNode::~cAIConditionTreeNode")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpChildList != static_cast<cAIConditionTreeNode* *>(nullptr)) {
+        if (this->mChildNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x1321df6 carries; no location-less local in scope fits
+            u32 v0_0 = this->mChildNum;
+            // inferred: the value the loop at 0x1321df6 carries; no location-less local in scope fits
+            cAIConditionTreeNode* * v0_1 = this->mpChildList;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(1);;) {
+                if (v0_1 != static_cast<cAIConditionTreeNode* *>(nullptr)) {
+                    if (v0_1[i0_3 - static_cast<unsigned int>(1)] != static_cast<cAIConditionTreeNode*>(nullptr)) {
+                        delete v0_1[i0_3 - static_cast<unsigned int>(1)];
+                        this->mpChildList[i0_3 - static_cast<unsigned int>(1)] = static_cast<cAIConditionTreeNode*>(nullptr);
+                        if (i0_3 >= this->mChildNum) {
+                            break;
+                        }
+                        v0_0 = this->mChildNum;
+                    } else {
+                        if (i0_3 >= v0_0) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (i0_3 >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = this->mpChildList;
+                i0_3 += static_cast<unsigned int>(1);
+            }
+        }
+        ::MtMemoryAllocator::getAllocator(::cAIConditionTreeNode::DTI)->memFree(static_cast<void*>(this->mpChildList));
+    }
+    this->mChildNum = static_cast<u32>(0);
+    this->mpChildList = static_cast<cAIConditionTreeNode* *>(nullptr);
 }
 
 // Address: 0x01321fc0 - 0x013220aa (234 bytes)

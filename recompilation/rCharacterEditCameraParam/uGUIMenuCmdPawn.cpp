@@ -145,9 +145,9 @@ void uGUIMenuCmdPawn::kill() {
 }
 
 // Address: 0x00b10010 - 0x00b1002a (26 bytes)
-__attribute__((weak)) void uGUIMenuCmdPawn::updateInit() {
-    DDON_STUB("uGUIMenuCmdPawn::updateInit")
-    /* stub */
+void uGUIMenuCmdPawn::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuCmdPawn::updateWait);
 }
 
 // Address: 0x00b105f0 - 0x00b107ea (506 bytes)
@@ -175,9 +175,9 @@ __attribute__((weak)) void uGUIMenuCmdPawn::moveEvent() {
 }
 
 // Address: 0x00b10800 - 0x00b1081a (26 bytes)
-__attribute__((weak)) void uGUIMenuCmdPawn::evEnd() {
-    DDON_STUB("uGUIMenuCmdPawn::evEnd")
-    /* stub */
+void uGUIMenuCmdPawn::evEnd() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMenuCmdPawn::updateExit);
 }
 
 // Address: 0x00b104a0 - 0x00b105b3 (275 bytes)

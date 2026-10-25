@@ -4,6 +4,7 @@
 #include "MtAllocator.h"
 #include "MtMemory.h"
 #include "nNetworkCoder.h"
+#include "nOcdMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -50,11 +51,20 @@ bool nNetMsgData::isIncludePacket(u32 bit, u32 includePacket) {
 }
 
 // Address: 0x00175780 - 0x0017579f (31 bytes)
-__attribute__((weak)) void nNetMsgData::decomposeOcdActiveMsg(nObjCondition::stOcdActiveInfo& dstInfo, const nObjCondition::stOcdActiveMsg& srcMsg) {
-    // local: u8 bankMask;
-    // local: u8 activeMask;
-    DDON_STUB("nNetMsgData::decomposeOcdActiveMsg")
-    /* stub */
+void nNetMsgData::decomposeOcdActiveMsg(nObjCondition::stOcdActiveInfo& dstInfo, const nObjCondition::stOcdActiveMsg& srcMsg) {
+    // DWARF local not rendered: u8 bankMask;
+    // DWARF local not rendered: u8 activeMask;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u8
+    // inferred: a temporary for the value the load at 0x175780 read, used twice; no DWARF local holds it
+    const u8 t0 = srcMsg.mOcdUIDMsg;
+    dstInfo.mBank = static_cast<u8>(static_cast<unsigned long>(t0) >> static_cast<unsigned long>(5));
+    dstInfo.mIndex = t0 & static_cast<u8>(31);
+    // inferred: a temporary for the value the load at 0x17578e read, used twice; no DWARF local holds it
+    const u8 t1 = srcMsg.mOcdActiveLvMsg;
+    dstInfo.mActiveLv = static_cast<u8>(static_cast<unsigned long>(t1) >> static_cast<unsigned long>(4));
+    dstInfo.mImmuneLv = t1 & static_cast<u8>(15);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (37 bytes)
@@ -63,11 +73,17 @@ __attribute__((weak)) void nNetMsgData::decomposeOcdActiveMsg(nObjCondition::stO
 
 // Address: 0x00178460 - 0x00178477 (23 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE/prog/nNetMsgData.cpp:2748
-__attribute__((weak)) void nNetMsgData::composeOcdActiveMsg(nObjCondition::stOcdActiveMsg& dstMsg, const nObjCondition::stOcdActiveInfo& srcInfo) {
-    // local: u8 OcdID;
-    // local: u8 activeLv;
-    DDON_STUB("nNetMsgData::composeOcdActiveMsg")
-    /* stub */
+void nNetMsgData::composeOcdActiveMsg(nObjCondition::stOcdActiveMsg& dstMsg, const nObjCondition::stOcdActiveInfo& srcInfo) {
+    // DWARF local not rendered: u8 OcdID;
+    // DWARF local not rendered: u8 activeLv;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a temporary for the value the load at 0x178462 read, used once; no DWARF local holds it
+    const u8 t0 = srcInfo.mActiveLv;
+    // inferred: a temporary for the value the load at 0x17846e read, used once; no DWARF local holds it
+    const u8 t1 = srcInfo.mImmuneLv;
+    dstMsg.mOcdUIDMsg = static_cast<unsigned char>(static_cast<unsigned long>(srcInfo.mIndex) | static_cast<unsigned long>(srcInfo.mBank * static_cast<int>(32)));
+    dstMsg.mOcdActiveLvMsg = static_cast<unsigned char>(static_cast<unsigned long>(t1) | static_cast<unsigned long>(t0 * static_cast<int>(16)));
 }
 
 // No out-of-line body: no code in the ELF
@@ -133,8 +149,9 @@ void nNetMsgData::Head::freeData(nNetMsgData::Head::stMsgHead* pData) {
 // u8 nNetMsgData::Head::stMsgHead::getMsgGroup() const;
 
 // Address: 0x001729d0 - 0x001729d5 (5 bytes)
-__attribute__((weak)) u8 nNetMsgData::Head::stMsgHead::getMsgId() const {
-    DDON_STUB("nNetMsgData::Head::stMsgHead::getMsgId")
-    return {};
+u8 nNetMsgData::Head::stMsgHead::getMsgId() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x8 from const nNetMsgData::Head::stMsgHead*
+    return *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(8));
 }
 

@@ -3,8 +3,10 @@
 #include "rStatusCheck.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -142,9 +144,34 @@ inline void rStatusCheck::operator delete(void* p_addr) {
 // void rStatusCheck::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x006c5580 - 0x006c5675 (245 bytes)
-__attribute__((weak)) bool rStatusCheck::loadData(MtDataReader& in, cStatusCheck* pData) {
-    DDON_STUB("rStatusCheck::loadData")
-    return {};
+bool rStatusCheck::loadData(MtDataReader& in, cStatusCheck* pData) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mGroup);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mResult);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSystemParam[0]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSystemParam[1]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mSystemParam[2]);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, pData->mResultAdd);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mResultOver = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mTypeReverse = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    return true;
 }
 
 // Address: 0x01aa97b0 - 0x01aa97b8 (8 bytes)

@@ -218,9 +218,10 @@ void cSoundMultiBandEQ::setLowQ(f32 q) {
 }
 
 // Address: 0x012ecbe0 - 0x012ecbea (10 bytes)
-__attribute__((weak)) bool cSoundMultiBandEQ::getLowEnable() const {
-    DDON_STUB("cSoundMultiBandEQ::getLowEnable")
-    return {};
+bool cSoundMultiBandEQ::getLowEnable() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mUnitEnable & static_cast<u32>(1));
 }
 
 // Address: 0x012ecbf0 - 0x012ecbf9 (9 bytes)
@@ -279,9 +280,12 @@ __attribute__((weak)) void cSoundMultiBandEQ::setMidLowQ(f32 q) {
 }
 
 // Address: 0x012ed4b0 - 0x012ed4bb (11 bytes)
-__attribute__((weak)) bool cSoundMultiBandEQ::getMidLowEnable() const {
-    DDON_STUB("cSoundMultiBandEQ::getMidLowEnable")
-    return {};
+bool cSoundMultiBandEQ::getMidLowEnable() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x298 from const cSoundMultiBandEQ*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(664))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x012ed4c0 - 0x012ed4c9 (9 bytes)
@@ -327,9 +331,12 @@ __attribute__((weak)) void cSoundMultiBandEQ::setMidHighQ(f32 q) {
 }
 
 // Address: 0x012edd30 - 0x012edd3c (12 bytes)
-__attribute__((weak)) bool cSoundMultiBandEQ::getMidHighEnable() const {
-    DDON_STUB("cSoundMultiBandEQ::getMidHighEnable")
-    return {};
+bool cSoundMultiBandEQ::getMidHighEnable() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x298 from const cSoundMultiBandEQ*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(664))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x012edd40 - 0x012edd49 (9 bytes)
@@ -378,9 +385,12 @@ void cSoundMultiBandEQ::setHighQ(f32 q) {
 }
 
 // Address: 0x012ee180 - 0x012ee18c (12 bytes)
-__attribute__((weak)) bool cSoundMultiBandEQ::getHighEnable() const {
-    DDON_STUB("cSoundMultiBandEQ::getHighEnable")
-    return {};
+bool cSoundMultiBandEQ::getHighEnable() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x298 from const cSoundMultiBandEQ*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(664))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x012ee190 - 0x012ee199 (9 bytes)

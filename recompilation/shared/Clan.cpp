@@ -955,9 +955,11 @@ inline MtAllocator* CDataClanSearchParam::getAllocator() {
 // No out-of-line body: no code in the ELF
 // void CDataClanSearchParam::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in CDataClanSearchParam::MyDTI::newInstance at 0x003d5d34-0x003d5d5d (called at ClanImplement.inc:14)
-// void* CDataClanSearchParam::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
+inline void* CDataClanSearchParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanSearchParam::DTI)->memAlloc(sz, align, ::CDataClanSearchParam::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* CDataClanSearchParam::operator new[](size_t sz, u32 align);
@@ -999,9 +1001,9 @@ __attribute__((weak)) void CDataClanSearchParam::operator delete(void* p_addr) {
 // CDataClanSearchParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003d5d30 - 0x003d5d93 (99 bytes)
-__attribute__((weak)) MtObject* CDataClanSearchParam::MyDTI::newInstance() const {
-    DDON_STUB("CDataClanSearchParam::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataClanSearchParam::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataClanSearchParam;
 }
 
 // No out-of-line body: no code in the ELF

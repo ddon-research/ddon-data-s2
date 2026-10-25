@@ -344,9 +344,31 @@ void cParentRegionStatus::regenerateMasterSlave() {
 }
 
 // Address: 0x00150e10 - 0x00150e74 (100 bytes)
-__attribute__((weak)) bool cParentRegionStatus::isEnableRegenerate(bool isMaster) const {
-    DDON_STUB("cParentRegionStatus::isEnableRegenerate")
-    return {};
+bool cParentRegionStatus::isEnableRegenerate(bool isMaster) const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mNo != static_cast<u32>(0)) {
+        if (isMaster != false) {
+            if (this->mpOwnerHpDmageCtrl != static_cast<cpHpDamageCtrl*>(nullptr)) {
+                if (this->mpOwnerHpDmageCtrl->::cpHpDamageCtrl::isDeadDying() != false) {
+                    return false;
+                }
+            }
+            if (this->mpOwnerModel != static_cast<uDDOModel*>(nullptr)) {
+                if (::cContextInterface::isDead(this->mpOwnerModel->mContextInterface.mpContextInstance, this->mpOwnerModel->mContextInterface.mpContextCharacter, this->mNo) != false) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: no code in the ELF

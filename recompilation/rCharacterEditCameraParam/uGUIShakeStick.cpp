@@ -116,9 +116,10 @@ __attribute__((weak)) void uGUIShakeStick::setCount(s32 count, s32 countMax) {
 }
 
 // Address: 0x00c3aa50 - 0x00c3aa74 (36 bytes)
-__attribute__((weak)) void uGUIShakeStick::setSuccess() {
-    DDON_STUB("uGUIShakeStick::setSuccess")
-    /* stub */
+void uGUIShakeStick::setSuccess() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShakeStick::updateSuccess);
+    this->::uGUIBase::mRoutine = static_cast<u32>(0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -131,9 +132,9 @@ __attribute__((weak)) void uGUIShakeStick::setSuccess() {
 // void uGUIShakeStick::setHide();
 
 // Address: 0x00c3a580 - 0x00c3a59a (26 bytes)
-__attribute__((weak)) void uGUIShakeStick::updateInit() {
-    DDON_STUB("uGUIShakeStick::updateInit")
-    /* stub */
+void uGUIShakeStick::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShakeStick::updateHide);
 }
 
 // Address: 0x00c3a5e0 - 0x00c3a68d (173 bytes)

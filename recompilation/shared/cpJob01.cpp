@@ -6,11 +6,13 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cGuardInfo.h"
+#include "cHumanActId.h"
 #include "cpActionManager.h"
 #include "../rPawnAIAction/cpAltitudeFallCtrl.h"
 #include "cpJobBase.h"
 #include "cpObjCollision.h"
 #include "nDDOUtility.h"
+#include "nHumanMsg.h"
 #include "rAttackParam.h"
 #include "sMain.h"
 #include "uDDOModel.h"
@@ -221,13 +223,36 @@ __attribute__((weak)) void cpJob01::checkReplaceInfo(cHitInfoAfter& HitInfo) {
 }
 
 // Address: 0x00499d60 - 0x00499de6 (134 bytes)
-__attribute__((weak)) bool cpJob01::checkCndEnableDelayCombo() const {
-    // local: u32 ActNo;
-    // local: GROW_NORMAL_SKILL_ENUM skillID;
-    // local: HM_SKILL_LV SkillLv;
-    // local: bool result;
-    DDON_STUB("cpJob01::checkCndEnableDelayCombo")
-    return {};
+bool cpJob01::checkCndEnableDelayCombo() const {
+    // DWARF local not rendered: u32 ActNo;
+    // DWARF local not rendered: HM_SKILL_LV SkillLv;
+    // DWARF local not rendered: bool result;
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc68 from unsigned long
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        nHuman::GROW_NORMAL_SKILL_ENUM skillID = ::cHumanActId::getNormalSkillId(static_cast<u32>(8217), static_cast<nHuman::JOB_ENUM>(1));
+        // inferred: a temporary for the value the load at 0x499d8a read, used 4 times; no DWARF local holds it
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+        if (t0 != static_cast<unsigned long>(0)) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                return false;
+            } else {
+                // inferred: a temporary for the result of the call at 0x499db3, used once; no DWARF local holds it
+                u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                // inferred: a temporary for the result of the call at 0x499dbe, used once; no DWARF local holds it
+                u32 t2 = ::nHuman::getNormalSkillIdArrayIndex(skillID);
+                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(40))) + static_cast<unsigned long>(t2 * static_cast<u32>(4))) + static_cast<long>(3176))) != static_cast<unsigned int>(0);
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)
@@ -254,10 +279,23 @@ __attribute__((weak)) bool cpJob01::checkCndEnableDelayCombo() const {
 // void cpJob01::setCounterWait(bool flag);
 
 // Address: 0x00499df0 - 0x00499e21 (49 bytes)
-__attribute__((weak)) bool cpJob01::isCanCustom13() {
-    // local: u32 nowAct;
-    DDON_STUB("cpJob01::isCanCustom13")
-    return {};
+bool cpJob01::isCanCustom13() {
+    // DWARF local not rendered: u32 nowAct;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        if (this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr() != static_cast<cpActionManager*>(nullptr)) {
+            if ((this->::cpJobBase::mpHuman->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() & static_cast<u32>(4294967292)) == static_cast<u32>(4136)) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (9 bytes)

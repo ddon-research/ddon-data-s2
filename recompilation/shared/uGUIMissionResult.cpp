@@ -14,6 +14,7 @@
 #include "cUnit.h"
 #include "rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "uGUI.h"
 #include "uGUIBase.h"
 #include "../rCharacterEditCameraParam/uGUIPopDetail01.h"
 #include "../rCharacterEditCameraParam/uGUISystemMsg.h"
@@ -290,9 +291,83 @@ __attribute__((weak)) void uGUIMissionResult::moveInput() {
 }
 
 // Address: 0x00b27600 - 0x00b276e0 (224 bytes)
-__attribute__((weak)) void uGUIMissionResult::moveEvent() {
-    DDON_STUB("uGUIMissionResult::moveEvent")
-    /* stub */
+void uGUIMissionResult::moveEvent() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    switch (this->::uGUIBase::getInputEvent() - static_cast<u32>(52)) {
+        case static_cast<u32>(0):
+        {
+            if (this->mpVLCmnCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                if (this->mNowTab == static_cast<u32>(1)) {
+                    this->mpVLCmnCtrl->setCurrentPos(static_cast<s32>(0), false);
+                    this->::uGUIMissionResult::updateDisp();
+                } else {
+                    this->::uGUIMissionResult::updateDisp();
+                }
+            } else {
+                this->::uGUIMissionResult::updateDisp();
+            }
+            break;
+        }
+        case static_cast<u32>(1):
+        {
+            if (this->mpVLCmnCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                if (this->mNowTab == static_cast<u32>(1)) {
+                    this->mpVLCmnCtrl->setCurrentPos(static_cast<s32>(0), false);
+                    this->::uGUIMissionResult::updateDisp();
+                } else {
+                    this->::uGUIMissionResult::updateDisp();
+                }
+            } else {
+                this->::uGUIMissionResult::updateDisp();
+            }
+            break;
+        }
+        case static_cast<u32>(14):
+        {
+            this->::uGUIMissionResult::setControl();
+            this->::uGUIMissionResult::updateDisp();
+            break;
+        }
+        case static_cast<u32>(15):
+        {
+            this->::uGUIMissionResult::setControl();
+            this->::uGUIMissionResult::updateDisp();
+            break;
+        }
+        case static_cast<u32>(16):
+        {
+            if (this->mpVLCmnCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                if (this->mNowTab == static_cast<u32>(1)) {
+                    this->mpVLCmnCtrl->setCurrentPos(static_cast<s32>(0), false);
+                    this->::uGUIMissionResult::updateDisp();
+                } else {
+                    this->::uGUIMissionResult::updateDisp();
+                }
+            } else {
+                this->::uGUIMissionResult::updateDisp();
+            }
+            break;
+        }
+        case static_cast<u32>(17):
+        {
+            this->::uGUIMissionResult::updateDisp();
+            break;
+        }
+        case static_cast<u32>(18):
+        {
+            this->::uGUIMissionResult::evTabMove();
+            break;
+        }
+        case static_cast<u32>(19):
+        {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateExit);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -603,10 +678,25 @@ __attribute__((weak)) void uGUIMissionResult::setRewardTab() {
 }
 
 // Address: 0x00b252d0 - 0x00b253ab (219 bytes)
-__attribute__((weak)) void uGUIMissionResult::setScoreTab() {
-    // local: MtString str;
-    DDON_STUB("uGUIMissionResult::setScoreTab")
-    /* stub */
+void uGUIMissionResult::setScoreTab() {
+    // DWARF local not rendered: MtString str;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(1), true, true);
+    this->setPlayingFlow(this->::uGUI::getFlow(static_cast<u32>(5)), true);
+    this->::uGUIMissionResult::setCommon();
+    this->mpVLCmnCtrl->::cControl::resetItemNum(static_cast<s32>(2), static_cast<const u32*>(nullptr), static_cast<s32>(0));
+    this->mpVLCmnCtrl->setCurrentPos(static_cast<s32>(0), false);
+    this->::uGUIMissionResult::setControl();
+    if (this->mScore.mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        if (this->::uGUIMissionResult::isRanking() != false) {
+            this->mScore.mpInst->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000003));
+        } else {
+            this->mScore.mpInst->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000001));
+        }
+    }
+    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::execute();
+    this->::uGUIMissionResult::updateDisp();
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateScoreWait);
 }
 
 // Address: 0x00b253b0 - 0x00b25502 (338 bytes)

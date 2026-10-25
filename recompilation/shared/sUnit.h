@@ -22,8 +22,11 @@ class MtUI;
 class MtVector3;
 class cDraw;
 class cGUIClanExecutor;
+class cGUIContentsExecutor;
 class cUnit;
 class sRender;
+class sScene;
+class uScrollCollisionGeometryModel;
 
 // Declarations
 class sUnit;
@@ -115,8 +118,14 @@ class sUnit : public cSystem
 {
     // inferred: cGUIClanExecutor::~cGUIClanExecutor names sUnit::mpInstance
     friend class cGUIClanExecutor;
+    // inferred: cGUIContentsExecutor::release names sUnit::mpInstance
+    friend class cGUIContentsExecutor;
     // inferred: sRender::beforeMove names sUnit::mpInstance
     friend class sRender;
+    // inferred: sScene::getShadowUnit names sUnit::mpInstance
+    friend class sScene;
+    // inferred: uScrollCollisionGeometryModel::registOwner names sUnit::mpInstance
+    friend class uScrollCollisionGeometryModel;
 public:
     class MyDTI;
     class MoveLine;

@@ -141,5 +141,11 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline size_t CPacketBase::Capacity() const {
+    return this->m_pEnd - this->m_pWriter;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline CPacketDataBase::CPacketDataBase() {
 }

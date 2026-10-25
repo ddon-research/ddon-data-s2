@@ -192,8 +192,35 @@ __attribute__((weak)) void cPawnQuestManager::callbackOrder(u32 errorCode) {
 // Address: 0x00152180 - 0x00152225 (165 bytes)
 // Also emitted as: _ZN17cPawnQuestManagerD0Ev at 0x00152230
 cPawnQuestManager::~cPawnQuestManager() {
-    DDON_STUB("cPawnQuestManager::~cPawnQuestManager")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mPawnQuestInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x1521b0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mPawnQuestInfoList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mPawnQuestInfoList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mPawnQuestInfoList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPawnQuestInfoList.::MtArray::mLength) {
+                    v0_0 = this->mPawnQuestInfoList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mPawnQuestInfoList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPawnQuestInfoList.::MtArray::mpArray));
+    }
+    this->mPawnQuestInfoList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mPawnQuestInfoList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mPawnQuestInfoList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

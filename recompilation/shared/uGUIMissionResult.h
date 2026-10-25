@@ -442,6 +442,11 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+inline bool uGUIMissionResult::isRanking() {
+    return this->mResultData.mIsRanking;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline uGUIMissionResult::cChargeEffectInfo::cChargeEffectInfo() {
     this->mCourseId = static_cast<u32>(0);
     this->mEffectId = static_cast<u32>(0);

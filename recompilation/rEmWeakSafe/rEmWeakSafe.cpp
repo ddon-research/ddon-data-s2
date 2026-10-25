@@ -65,12 +65,16 @@ inline void cEmWeakSafe::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cEmWeakSafe::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (328 bytes)
-//   in cEmWeakSafe::MyDTI::newInstance at 0x0066a51d-0x0066a56b (called at rEmWeakSafe.cpp:45)
-//   in cEmWeakSafe::MyDTI::newInstance at 0x0066a51d-0x0066a56b (called at rEmWeakSafe.h:49)
-//   in rTbl2<cEmWeakSafe>::loadCore at 0x01a899cd-0x01a899e9, 0x01a899ec-0x01a89a26 (called at rTbl2.h:215)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// cEmWeakSafe::cEmWeakSafe();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cEmWeakSafe::cEmWeakSafe() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mParentJntNo = static_cast<s32>(-1);
+    this->mKeepSphereRad = 5.0f;
+    this->mSafeJntNo = static_cast<s32>(0);
+    this->mOffset = ::MtVector3::Zero;
+}
 
 // Defined in the class (its body was written in a header).
 // cEmWeakSafe::~cEmWeakSafe();

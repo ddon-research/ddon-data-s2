@@ -461,3 +461,9 @@ public:
     static MtCriticalSection mCS;
     static const u32 InvalidOmID = 0;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline uBaseModel* cOmControl::getUnit() const {
+    return this->mpuModel;
+}

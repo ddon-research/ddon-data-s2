@@ -30,6 +30,8 @@ using u8 = unsigned char;
 
 class cNpcIsNoSetPS3 : public MtObject
 {
+    // inferred: rNpcIsNoSetPS3::loadData names cNpcIsNoSetPS3::mStageNo
+    friend class rNpcIsNoSetPS3;
 public:
     class MyDTI;
 public:

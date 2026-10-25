@@ -16,6 +16,7 @@ class MtDTI;
 class MtPropertyList;
 class MtString;
 namespace nCharacterData { struct stItemParam; }
+class uGUIPopDetail01;
 class uUIMockUp;
 
 // Declarations
@@ -80,6 +81,8 @@ public:
 
 class cItemParam : public MtObject
 {
+    // inferred: uGUIPopDetail01::setItemParam names cItemParam::mItemParam.mItemNum_Guard
+    friend class uGUIPopDetail01;
     // inferred: uUIMockUp::changeEquip names cItemParam::mColorNo
     friend class uUIMockUp;
 public:

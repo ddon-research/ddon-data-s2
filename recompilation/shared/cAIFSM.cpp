@@ -1040,10 +1040,13 @@ cAIFSM::Core::ClearTransitionFromAllOnceParam::~ClearTransitionFromAllOnceParam(
 }
 
 // Address: 0x01b6b1c0 - 0x01b6b1cd (13 bytes)
-__attribute__((weak)) void cAIFSM::Core::ClearTransitionFromAllOnceParam::copy(cAICopiableParameter* pParam) {
-    // local: ClearTransitionFromAllOnceParam* pp;
-    DDON_STUB("cAIFSM::Core::ClearTransitionFromAllOnceParam::copy")
-    /* stub */
+void cAIFSM::Core::ClearTransitionFromAllOnceParam::copy(cAICopiableParameter* pParam) {
+    // DWARF local not rendered: ClearTransitionFromAllOnceParam* pp;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from cAICopiableParameter*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from cAICopiableParameter*
+    this->mType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8));
+    this->mStateID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(12));
 }
 
 // Address: 0x01b6b000 - 0x01b6b005 (5 bytes)
@@ -1124,8 +1127,39 @@ inline void cAIFSMData::operator delete(void* p_addr) {
 // Address: 0x01031af0 - 0x01031ba4 (180 bytes)
 // Also emitted as: _ZN10cAIFSMDataD0Ev at 0x01031bd0
 cAIFSMData::~cAIFSMData() {
-    DDON_STUB("cAIFSMData::~cAIFSMData")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpCore != static_cast<cAIFSMData::Core* *>(nullptr)) {
+        if (this->mCoreNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x1031b24 carries; no location-less local in scope fits
+            u32 v0_0 = this->mCoreNum;
+            // inferred: the value the loop at 0x1031b24 carries; no location-less local in scope fits
+            cAIFSMData::Core* * v0_1 = this->mpCore;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                if (v0_1[i0_3] != static_cast<cAIFSMData::Core*>(nullptr)) {
+                    delete v0_1[i0_3];
+                    if ((i0_3 + static_cast<unsigned int>(1)) >= this->mCoreNum) {
+                        break;
+                    }
+                    v0_0 = this->mCoreNum;
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = this->mpCore;
+                i0_3 += static_cast<unsigned int>(1);
+            }
+        }
+        ::MtMemoryAllocator::getAllocator(::cAIFSMData::DTI)->memFree(static_cast<void*>(this->mpCore));
+    }
+    this->mCoreNum = static_cast<u32>(0);
+    this->mpCore = static_cast<cAIFSMData::Core* *>(nullptr);
+    if (this->mStreamData != static_cast<u32*>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::cAIFSMData::DTI)->memFree(static_cast<void*>(this->mStreamData));
+    }
+    this->mStreamDataSize = static_cast<u32>(0);
+    this->mStreamData = static_cast<u32*>(nullptr);
 }
 
 // Address: 0x01031c00 - 0x01031e2c (556 bytes)

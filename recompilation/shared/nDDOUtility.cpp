@@ -11,6 +11,8 @@
 #include "cStaminaCtrl.h"
 #include "cpHumanWarpCtrl.h"
 #include "cpInput.h"
+#include "../rStageConnect/sArea.h"
+#include "../rCharacterEditCameraParam/sFlag.h"
 #include "../rCharacterEditCameraParam/uEnemy.h"
 #include "uGUIBase.h"
 #include "../rCharacterEditCameraParam/uGUIChat.h"
@@ -33,9 +35,14 @@
 
 // Address: 0x005b53d0 - 0x005b5414 (68 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nDDOUtility.cpp:213
-__attribute__((weak)) void nDDOUtility::requestOnTutorialFlg(s32 questTarget) {
-    DDON_STUB("nDDOUtility::requestOnTutorialFlg")
-    /* stub */
+void nDDOUtility::requestOnTutorialFlg(s32 questTarget) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7038 from sArea*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb0 from unsigned long
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) + static_cast<long>(176))) != static_cast<unsigned int>(550)) {
+        return;
+    }
+    ::sFlag::getInstance()->::sFlag::setFlag(static_cast<u32>(10), static_cast<u32>(questTarget), true, true, false);
 }
 
 // Address: 0x005b5420 - 0x005b5493 (115 bytes)

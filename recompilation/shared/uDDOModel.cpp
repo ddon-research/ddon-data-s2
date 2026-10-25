@@ -45,10 +45,13 @@
 #include "nObjCollision.h"
 #include "nObjCondition.h"
 #include "rAttackParam.h"
+#include "rMotionList.h"
 #include "sAIPawnNotice.h"
+#include "sControlManager.h"
 #include "sOmManager.h"
 #include "sSetManager.h"
 #include "uControl.h"
+#include "uControlNpc.h"
 #include "uModel.h"
 #include "uShlBase.h"
 #ifndef DDON_STUB
@@ -143,10 +146,58 @@ __attribute__((weak)) void uDDOModel::move() {
 }
 
 // Address: 0x008d8960 - 0x008d8b51 (497 bytes)
-__attribute__((weak)) void uDDOModel::sync() {
-    // local: u32 i;
-    DDON_STUB("uDDOModel::sync")
-    /* stub */
+void uDDOModel::sync() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mIsMaster != false) {
+        ::cContextInterface::setShlDelte(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter, this->mShlDeleteBit);
+    }
+    this->mShlDeleteBit = static_cast<u32>(0);
+    this->mComponentMgr.::cComponentManager::sync();
+    if (this->::uDDOModel::getHpDamageCtrlPtr() != static_cast<cpHpDamageCtrl*>(nullptr)) {
+        this->::uDDOModel::getHpDamageCtrlPtr()->::cpHpDamageCtrl::checkCalcDamage();
+    }
+    if (this->mTouchRelReqArray.elems[0].mpRelease != static_cast<uDDOModel*>(nullptr)) {
+        this->releaseTouchTarget(this->mTouchRelReqArray.elems[0].mpRelease, this->mTouchRelReqArray.elems[0].mTouchReleaseType);
+        this->mTouchRelReqArray.elems[0].mpRelease = static_cast<uDDOModel*>(nullptr);
+        this->mTouchRelReqArray.elems[0].mTouchReleaseType = static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(0);
+    }
+    if (this->mTouchRelReqArray.elems[1].mpRelease != static_cast<uDDOModel*>(nullptr)) {
+        this->releaseTouchTarget(this->mTouchRelReqArray.elems[1].mpRelease, this->mTouchRelReqArray.elems[1].mTouchReleaseType);
+        this->mTouchRelReqArray.elems[1].mpRelease = static_cast<uDDOModel*>(nullptr);
+        this->mTouchRelReqArray.elems[1].mTouchReleaseType = static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(0);
+    }
+    if (this->mTouchRelReqArray.elems[2].mpRelease != static_cast<uDDOModel*>(nullptr)) {
+        this->releaseTouchTarget(this->mTouchRelReqArray.elems[2].mpRelease, this->mTouchRelReqArray.elems[2].mTouchReleaseType);
+        this->mTouchRelReqArray.elems[2].mpRelease = static_cast<uDDOModel*>(nullptr);
+        this->mTouchRelReqArray.elems[2].mTouchReleaseType = static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(0);
+    }
+    if (this->mTouchRelReqArray.elems[3].mpRelease != static_cast<uDDOModel*>(nullptr)) {
+        this->releaseTouchTarget(this->mTouchRelReqArray.elems[3].mpRelease, this->mTouchRelReqArray.elems[3].mTouchReleaseType);
+        this->mTouchRelReqArray.elems[3].mpRelease = static_cast<uDDOModel*>(nullptr);
+        this->mTouchRelReqArray.elems[3].mTouchReleaseType = static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(0);
+    }
+    if (this->mTouchRelReqArray.elems[4].mpRelease != static_cast<uDDOModel*>(nullptr)) {
+        this->releaseTouchTarget(this->mTouchRelReqArray.elems[4].mpRelease, this->mTouchRelReqArray.elems[4].mTouchReleaseType);
+        this->mTouchRelReqArray.elems[4].mpRelease = static_cast<uDDOModel*>(nullptr);
+        this->mTouchRelReqArray.elems[4].mTouchReleaseType = static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(0);
+    }
+    if (this->mTouchRelReqArray.elems[5].mpRelease != static_cast<uDDOModel*>(nullptr)) {
+        this->releaseTouchTarget(this->mTouchRelReqArray.elems[5].mpRelease, this->mTouchRelReqArray.elems[5].mTouchReleaseType);
+        this->mTouchRelReqArray.elems[5].mpRelease = static_cast<uDDOModel*>(nullptr);
+        this->mTouchRelReqArray.elems[5].mTouchReleaseType = static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(0);
+    }
+    if (this->mTouchRelReqArray.elems[6].mpRelease != static_cast<uDDOModel*>(nullptr)) {
+        this->releaseTouchTarget(this->mTouchRelReqArray.elems[6].mpRelease, this->mTouchRelReqArray.elems[6].mTouchReleaseType);
+        this->mTouchRelReqArray.elems[6].mpRelease = static_cast<uDDOModel*>(nullptr);
+        this->mTouchRelReqArray.elems[6].mTouchReleaseType = static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(0);
+    }
+    if (this->mTouchRelReqArray.elems[7].mpRelease != static_cast<uDDOModel*>(nullptr)) {
+        this->releaseTouchTarget(this->mTouchRelReqArray.elems[7].mpRelease, this->mTouchRelReqArray.elems[7].mTouchReleaseType);
+        this->mTouchRelReqArray.elems[7].mpRelease = static_cast<uDDOModel*>(nullptr);
+        this->mTouchRelReqArray.elems[7].mTouchReleaseType = static_cast<nDDOModel::TOUCH_RELEASE_TYPE>(0);
+    }
 }
 
 // Address: 0x008d8b60 - 0x008d8c27 (199 bytes)
@@ -164,9 +215,37 @@ __attribute__((weak)) void uDDOModel::draw(cDraw* pDraw) {
 }
 
 // Address: 0x008d8e00 - 0x008d8e7d (125 bytes)
-__attribute__((weak)) void uDDOModel::kill() {
-    DDON_STUB("uDDOModel::kill")
-    /* stub */
+void uDDOModel::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uDDOModel*
+    if (this->mpCtrl != static_cast<uControl*>(nullptr)) {
+        if (this->mpCtrl->::cUnit::isEnable()) {
+            this->mpCtrl->::uControl::sendMasterParam();
+            // inferred: a temporary for the value the load at 0x8d8e2f read, used once; no DWARF local holds it
+            sSetManager* t0 = ::sSetManager::getInstance();
+            t0->::sSetManager::setReleaseMaster(::cContextInterface::getUniqueId(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter));
+            this->mComponentMgr.::cComponentManager::kill();
+            if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) == static_cast<unsigned int>(0)) {
+                if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+                }
+            }
+        } else {
+            this->mComponentMgr.::cComponentManager::kill();
+            if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) == static_cast<unsigned int>(0)) {
+                if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+                }
+            }
+        }
+    } else {
+        this->mComponentMgr.::cComponentManager::kill();
+        if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) == static_cast<unsigned int>(0)) {
+            if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+            }
+        }
+    }
 }
 
 // Address: 0x008d6d00 - 0x008d6d1c (28 bytes)
@@ -518,18 +597,29 @@ u32 uDDOModel::getMotionNo(u32 type) const {
 }
 
 // Address: 0x008d92f0 - 0x008d932c (60 bytes)
-__attribute__((weak)) bool uDDOModel::isExistMotionNo(u32 motNo) {
-    // local: rMotionList* pl;
-    // local: MOTION_INFO* pMi;
-    DDON_STUB("uDDOModel::isExistMotionNo")
-    return {};
+bool uDDOModel::isExistMotionNo(u32 motNo) {
+    // DWARF local not rendered: rMotionList* pl;
+    // DWARF local not rendered: MOTION_INFO* pMi;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (motNo == static_cast<u32>(65535)) {
+    } else {
+        if (this->::uModel::mpMotionList[(motNo >> static_cast<u32>(8)) & static_cast<u32>(15)] != static_cast<rMotionList*>(nullptr)) {
+            return this->::uModel::mpMotionList[(motNo >> static_cast<u32>(8)) & static_cast<u32>(15)]->::rMotionList::getMotionInfo(static_cast<unsigned char>(motNo)) != static_cast<nMotion::MOTION_INFO*>(nullptr);
+        }
+    }
+    return false;
 }
 
 // Address: 0x008d9330 - 0x008d935b (43 bytes)
-__attribute__((weak)) nMotion::MOTION_INFO* uDDOModel::getMotionInfo(u32 motNo) const {
-    // local: rMotionList* pMotList;
-    DDON_STUB("uDDOModel::getMotionInfo")
-    return nullptr;
+nMotion::MOTION_INFO* uDDOModel::getMotionInfo(u32 motNo) const {
+    // DWARF local not rendered: rMotionList* pMotList;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (motNo != static_cast<u32>(65535)) {
+        if (this->::uModel::mpMotionList[(motNo >> static_cast<u32>(8)) & static_cast<u32>(15)] != static_cast<rMotionList*>(nullptr)) {
+            return this->::uModel::mpMotionList[(motNo >> static_cast<u32>(8)) & static_cast<u32>(15)]->::rMotionList::getMotionInfo(static_cast<unsigned char>(motNo));
+        }
+    }
+    return static_cast<nMotion::MOTION_INFO*>(nullptr);
 }
 
 // Address: 0x008d9020 - 0x008d90a2 (130 bytes)
@@ -573,11 +663,32 @@ __attribute__((weak)) void uDDOModel::applyWorldOffset(const MtVector3& offset, 
 }
 
 // Address: 0x008d8c30 - 0x008d8ccf (159 bytes)
-__attribute__((weak)) bool uDDOModel::invalidGroupKill() {
-    // local: cpLayout* pCpLayout;
-    // local: cOmControl* pCtrl;
-    DDON_STUB("uDDOModel::invalidGroupKill")
-    return {};
+bool uDDOModel::invalidGroupKill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x1f68 from uDDOModel*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    cpLayout* pCpLayout = this->::uDDOModel::getLayoutPtr();
+    if (pCpLayout != static_cast<cpLayout*>(nullptr)) {
+        if (pCpLayout->::cpLayout::invalidGroupKill() != false) {
+            if ((this->mUnitId & static_cast<u32>(1154)) != static_cast<u32>(0)) {
+                if (this->mpCtrl != static_cast<uControl*>(nullptr)) {
+                    ::sControlManager::getInstance()->releaseUnit(this->mpCtrl);
+                } else {
+                    ::sControlManager::getInstance()->::sControlManager::killUnit(this);
+                }
+            } else {
+                if (((static_cast<unsigned long>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(8040))) >> static_cast<unsigned long>(8)) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                    cOmControl* pCtrl = ::sOmManager::getInstance()->::sOmManager::getOmCtrl(this->::cUnit::getUnitParam());
+                    if (pCtrl != static_cast<cOmControl*>(nullptr)) {
+                        ::sOmManager::getInstance()->::sOmManager::releaseOmCtrl(pCtrl);
+                    }
+                    return true;
+                }
+            }
+            return true;
+        }
+    }
+    return false;
 }
 
 // Address: 0x008d8e80 - 0x008d8ea2 (34 bytes)
@@ -617,9 +728,21 @@ cContextInstance* uDDOModel::getContextInst() {
 // uControl* uDDOModel::getCtrl() const;
 
 // Address: 0x008d8f50 - 0x008d8f78 (40 bytes)
-__attribute__((weak)) uControlNpc* uDDOModel::getCtrlNpc() {
-    DDON_STUB("uDDOModel::getCtrlNpc")
-    return nullptr;
+uControlNpc* uDDOModel::getCtrlNpc() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpCtrl != static_cast<uControl*>(nullptr)) {
+        if (this->mpCtrl->::cUnit::isEnable()) {
+            if (this->mpCtrl->::uControl::isNpc() == false) {
+                return static_cast<uControlNpc*>(nullptr);
+            } else {
+                return static_cast<uControlNpc*>(this->mpCtrl);
+            }
+        } else {
+            return static_cast<uControlNpc*>(nullptr);
+        }
+    } else {
+        return static_cast<uControlNpc*>(nullptr);
+    }
 }
 
 // No out-of-line body: 42 inlined copies in 18 functions (287 bytes)
@@ -699,10 +822,7 @@ const MtVector3& uDDOModel::getTargetPos() {
 // Address: 0x008d6a50 - 0x008d6a9d (77 bytes)
 void uDDOModel::setTargetPos(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetPos.x = pos.x;
-    this->mTargetPos.y = pos.y;
-    this->mTargetPos.z = pos.z;
-    this->mTargetPos.pad_ = 0.0f;
+    this->mTargetPos = pos;
     ::cContextInterface::setTargetPos(this->mContextInterface.mpContextInstance, this->mContextInterface.mpContextCharacter, this->mTargetPos);
 }
 
@@ -779,15 +899,25 @@ void uDDOModel::checkReplaceInfo(cHitInfoAfter& HitInfo) {
 }
 
 // Address: 0x008d8eb0 - 0x008d8ed7 (39 bytes)
-__attribute__((weak)) bool uDDOModel::isCtrlPlayer() {
-    DDON_STUB("uDDOModel::isCtrlPlayer")
-    return {};
+bool uDDOModel::isCtrlPlayer() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpCtrl != static_cast<uControl*>(nullptr)) {
+        if (this->mpCtrl->::cUnit::isEnable()) {
+            return this->mpCtrl->::uControl::isPlayer();
+        }
+    }
+    return false;
 }
 
 // Address: 0x008d8ee0 - 0x008d8f0a (42 bytes)
-__attribute__((weak)) bool uDDOModel::isCtrlPawn() {
-    DDON_STUB("uDDOModel::isCtrlPawn")
-    return {};
+bool uDDOModel::isCtrlPawn() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpCtrl != static_cast<uControl*>(nullptr)) {
+        if (this->mpCtrl->::cUnit::isEnable()) {
+            return this->mpCtrl->::uControl::isPawn();
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
@@ -795,9 +925,14 @@ __attribute__((weak)) bool uDDOModel::isCtrlPawn() {
 // bool uDDOModel::isCtrlNpc();
 
 // Address: 0x008d8f20 - 0x008d8f4a (42 bytes)
-__attribute__((weak)) bool uDDOModel::isCtrlEnemy() {
-    DDON_STUB("uDDOModel::isCtrlEnemy")
-    return {};
+bool uDDOModel::isCtrlEnemy() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpCtrl != static_cast<uControl*>(nullptr)) {
+        if (this->mpCtrl->::cUnit::isEnable()) {
+            return this->mpCtrl->::uControl::isEnemy();
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (26 bytes)
@@ -1259,11 +1394,22 @@ __attribute__((weak)) void uDDOModel::callbackHealedTest(cHitInfo* pHitInfo) {
 }
 
 // Address: 0x008dd530 - 0x008dd55e (46 bytes)
-__attribute__((weak)) void uDDOModel::callbackPush(uDDOModel* pModel, const MtVector3& push) {
-    // local: cpObjCollisionBase* pObjCollision;
-    // local: cpObjCollisionBase* pModel_ObjCollision;
-    DDON_STUB("uDDOModel::callbackPush")
-    /* stub */
+void uDDOModel::callbackPush(uDDOModel* pModel, const MtVector3& push) {
+    // DWARF local not rendered: cpObjCollisionBase* pObjCollision;
+    // DWARF local not rendered: cpObjCollisionBase* pModel_ObjCollision;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c0 from cpObjCollisionBase*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (pModel == static_cast<uDDOModel*>(nullptr)) {
+        return;
+    }
+    if (this->::uDDOModel::getObjCollisionPtr() == static_cast<cpObjCollisionBase*>(nullptr)) {
+        return;
+    }
+    if (pModel->::uDDOModel::getObjCollisionPtr() == static_cast<cpObjCollisionBase*>(nullptr)) {
+        return;
+    }
+    this->::uDDOModel::getObjCollisionPtr()->mHitFlag.mPushHit = static_cast<unsigned int>(static_cast<unsigned long>(this->::uDDOModel::getObjCollisionPtr()->mHitFlag.mPushHit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pModel->::uDDOModel::getObjCollisionPtr()) + static_cast<long>(704))) & static_cast<unsigned char>(31))));
 }
 
 // Defined in the class (its body was written in a header).
@@ -2872,9 +3018,14 @@ void uDDOModel::setNowAtkAdjustUniqueId(u16 uniqueId) {
 // bool uDDOModel::isOwnerBeaDown() const;
 
 // Address: 0x008dc460 - 0x008dc476 (22 bytes)
-__attribute__((weak)) nCatch::CATCH_TYPE uDDOModel::getCatchType() {
-    DDON_STUB("uDDOModel::getCatchType")
-    return {};
+nCatch::CATCH_TYPE uDDOModel::getCatchType() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as nCatch::CATCH_TYPE
+    if (this->::uDDOModel::getCatchCtrlPtr() != static_cast<cpCatchCtrl*>(nullptr)) {
+        return static_cast<nCatch::CATCH_TYPE>(this->::uDDOModel::getCatchCtrlPtr()->mCatchType);
+    } else {
+        return static_cast<nCatch::CATCH_TYPE>(0);
+    }
 }
 
 // Address: 0x008dc480 - 0x008dc48d (13 bytes)

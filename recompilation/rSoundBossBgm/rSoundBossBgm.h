@@ -114,6 +114,12 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 rSoundBossBgm::getListNum() const {
+    return this->mArrayDataNum;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rSoundBossBgm::cSoundBossBgm::cSoundBossBgm() {
     this->mEnemyId = static_cast<u32>(4294967295);
     this->mBgmNo = static_cast<u32>(0);

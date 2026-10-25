@@ -30,6 +30,8 @@ using u8 = unsigned char;
 
 class cNpcIsUseJobParamEx : public MtObject
 {
+    // inferred: rNpcIsUseJobParamEx::loadData names cNpcIsUseJobParamEx::mStageNo
+    friend class rNpcIsUseJobParamEx;
 public:
     class MyDTI;
 public:

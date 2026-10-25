@@ -11,7 +11,7 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMath.h"
 #include "../shared/cControl.h"
-#include "../shared/cGUIControlMgr.h"
+#include "cGUIControlMgr.h"
 #include "../shared/uGUIBase.h"
 
 // Forward declarations

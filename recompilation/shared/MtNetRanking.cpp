@@ -256,7 +256,7 @@ void MtNetRanking::endRequest(MtNetRequest* req) {
 
 // Address: 0x00dbecc0 - 0x00dbed5a (154 bytes)
 void MtNetRanking::startFailRequest(MtNetRequest* req) {
-    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    // Approximate from the ELF: a cast to the other signedness; a range test the recompile folds to a mask test; the body oracle reports this body.
     MtNetError err;
     req->getFatal(&err);
     // inferred: a temporary for the result of the call at 0xdbecf1, used 3 times; no DWARF local holds it

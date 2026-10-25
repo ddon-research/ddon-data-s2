@@ -165,9 +165,9 @@ __attribute__((weak)) void uGUITutorialPop::move() {
 // u32 uGUITutorialPop::getGuideNo();
 
 // Address: 0x00c65be0 - 0x00c65bfa (26 bytes)
-__attribute__((weak)) void uGUITutorialPop::updateInit() {
-    DDON_STUB("uGUITutorialPop::updateInit")
-    /* stub */
+void uGUITutorialPop::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialPop::updateWait);
 }
 
 // Address: 0x00c65e70 - 0x00c65eab (59 bytes)
@@ -196,9 +196,19 @@ void uGUITutorialPop::moveInput() {
 }
 
 // Address: 0x00c65f00 - 0x00c65f37 (55 bytes)
-__attribute__((weak)) void uGUITutorialPop::moveEvent() {
-    DDON_STUB("uGUITutorialPop::moveEvent")
-    /* stub */
+void uGUITutorialPop::moveEvent() {
+    // Approximate from the ELF: a range test the recompile folds to a mask test; the body oracle reports this body.
+    if ((this->::uGUIBase::getInputEvent() - static_cast<u32>(52)) > static_cast<u32>(1)) {
+        if (this->::uGUIBase::getInputEvent() == static_cast<u32>(67)) {
+            this->::uGUITutorialPop::evPageMove();
+        } else {
+            if (this->::uGUIBase::getInputEvent() == static_cast<u32>(66)) {
+                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialPop::updateExit);
+            }
+        }
+    } else {
+        this->::uGUITutorialPop::evPageMove();
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (25 bytes)

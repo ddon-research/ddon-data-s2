@@ -7,16 +7,43 @@
 #include "_rtc.h"
 
 // Forward declarations
-struct SceImeEvent;
 struct SceRtcTick;
 
 // Declarations
 struct SceImeColor;
+struct SceImeEditText;
+struct SceImeEvent;
+union SceImeEventParam;
 struct SceImeKeyboardInfo;
 struct SceImeKeyboardParam;
+struct SceImeKeyboardResourceIdArray;
 struct SceImeKeycode;
 struct SceImeParamExtended;
+struct SceImeRect;
 struct SceImeTextAreaProperty;
+
+enum SceImeCaretMovementDirection
+{
+    SCE_IME_CARET_MOVE_STILL = 0,
+    SCE_IME_CARET_MOVE_LEFT = 1,
+    SCE_IME_CARET_MOVE_RIGHT = 2,
+    SCE_IME_CARET_MOVE_UP = 3,
+    SCE_IME_CARET_MOVE_DOWN = 4,
+    SCE_IME_CARET_MOVE_HOME = 5,
+    SCE_IME_CARET_MOVE_END = 6,
+    SCE_IME_CARET_MOVE_PAGE_UP = 7,
+    SCE_IME_CARET_MOVE_PAGE_DOWN = 8,
+    SCE_IME_CARET_MOVE_TOP = 9,
+    SCE_IME_CARET_MOVE_BOTTOM = 10,
+};
+
+enum SceImeDeviceType
+{
+    SCE_IME_DEVICE_TYPE_NONE = 0,
+    SCE_IME_DEVICE_TYPE_CONTROLLER = 1,
+    SCE_IME_DEVICE_TYPE_EXT_KEYBOARD = 2,
+    SCE_IME_DEVICE_TYPE_REMOTE_OSK = 3,
+};
 
 enum SceImeEnterLabel
 {
@@ -24,6 +51,35 @@ enum SceImeEnterLabel
     SCE_IME_ENTER_LABEL_SEND = 1,
     SCE_IME_ENTER_LABEL_SEARCH = 2,
     SCE_IME_ENTER_LABEL_GO = 3,
+};
+
+enum SceImeEventId
+{
+    SCE_IME_EVENT_OPEN = 0,
+    SCE_IME_EVENT_UPDATE_TEXT = 1,
+    SCE_IME_EVENT_UPDATE_CARET = 2,
+    SCE_IME_EVENT_CHANGE_SIZE = 3,
+    SCE_IME_EVENT_PRESS_CLOSE = 4,
+    SCE_IME_EVENT_PRESS_ENTER = 5,
+    SCE_IME_EVENT_ABORT = 6,
+    SCE_IME_EVENT_CANDIDATE_LIST_START = 7,
+    SCE_IME_EVENT_CANDIDATE_LIST_END = 8,
+    SCE_IME_EVENT_CANDIDATE_WORD = 9,
+    SCE_IME_EVENT_CANDIDATE_INDEX = 10,
+    SCE_IME_EVENT_CANDIDATE_DONE = 11,
+    SCE_IME_EVENT_CANDIDATE_CANCEL = 12,
+    SCE_IME_EVENT_CHANGE_DEVICE = 14,
+    SCE_IME_EVENT_JUMP_TO_NEXT_OBJECT = 15,
+    SCE_IME_EVENT_JUMP_TO_BEFORE_OBJECT = 16,
+    SCE_IME_EVENT_CHANGE_WINDOW_TYPE = 17,
+    SCE_IME_EVENT_CHANGE_INPUT_METHOD_STATE = 18,
+    SCE_IME_KEYBOARD_EVENT_OPEN = 256,
+    SCE_IME_KEYBOARD_EVENT_KEYCODE_DOWN = 257,
+    SCE_IME_KEYBOARD_EVENT_KEYCODE_UP = 258,
+    SCE_IME_KEYBOARD_EVENT_KEYCODE_REPEAT = 259,
+    SCE_IME_KEYBOARD_EVENT_CONNECTION = 260,
+    SCE_IME_KEYBOARD_EVENT_DISCONNECTION = 261,
+    SCE_IME_KEYBOARD_EVENT_ABORT = 262,
 };
 
 enum SceImeHorizontalAlignment
@@ -92,6 +148,17 @@ enum SceImePanelPriority
     SCE_IME_PANEL_PRIORITY_SYMBOL = 2,
     SCE_IME_PANEL_PRIORITY_ACCENT = 3,
 };
+
+typedef enum
+{
+    SCE_IME_PANEL_TYPE_HIDE = 0,
+    SCE_IME_PANEL_TYPE_OSK = 1,
+    SCE_IME_PANEL_TYPE_DIALOG = 2,
+    SCE_IME_PANEL_TYPE_CANDIDATE = 3,
+    SCE_IME_PANEL_TYPE_EDIT = 4,
+    SCE_IME_PANEL_TYPE_EDIT_AND_CANDIDATE = 5,
+    SCE_IME_PANEL_TYPE_ACCESSIBILITY = 6,
+} SceImePanelType;
 
 enum SceImeTextAreaMode
 {
@@ -163,6 +230,13 @@ public:
     int8_t reserved2[8];  // offset: 0x18
 };
 
+struct SceImeKeyboardResourceIdArray
+{
+public:
+    SceUserServiceUserId userId;  // offset: 0x0
+    uint32_t resourceId[5];  // offset: 0x4
+};
+
 struct SceImeKeycode
 {
 public:
@@ -196,10 +270,51 @@ public:
     int8_t reserved[60];  // offset: 0x48
 };
 
+struct SceImeRect
+{
+public:
+    float x;  // offset: 0x0
+    float y;  // offset: 0x4
+    uint32_t width;  // offset: 0x8
+    uint32_t height;  // offset: 0xc
+};
+
 struct SceImeTextAreaProperty
 {
 public:
     SceImeTextAreaMode mode;  // offset: 0x0
     uint32_t index;  // offset: 0x4
     int32_t length;  // offset: 0x8
+};
+
+struct SceImeEditText
+{
+public:
+    wchar_t* str;  // offset: 0x0
+    uint32_t caretIndex;  // offset: 0x8
+    uint32_t areaNum;  // offset: 0xc
+    SceImeTextAreaProperty textArea[4];  // offset: 0x10
+};
+
+union SceImeEventParam
+{
+public:
+    SceImeRect rect;  // offset: 0x0
+    SceImeEditText text;  // offset: 0x0
+    SceImeCaretMovementDirection caretMove;  // offset: 0x0
+    SceImeKeycode keycode;  // offset: 0x0
+    SceImeKeyboardResourceIdArray resourceIdArray;  // offset: 0x0
+    wchar_t* candidateWord;  // offset: 0x0
+    int32_t candidateIndex;  // offset: 0x0
+    SceImeDeviceType deviceType;  // offset: 0x0
+    SceImePanelType panelType;  // offset: 0x0
+    uint32_t inputMethodState;  // offset: 0x0
+    int8_t reserved[64];  // offset: 0x0
+};
+
+struct SceImeEvent
+{
+public:
+    SceImeEventId id;  // offset: 0x0
+    SceImeEventParam param;  // offset: 0x8
 };

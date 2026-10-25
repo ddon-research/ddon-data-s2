@@ -125,19 +125,36 @@ __attribute__((weak)) void sVibration::setVibration(rVibration* pVibration) {
 }
 
 // Address: 0x012aeeb0 - 0x012aef0f (95 bytes)
-__attribute__((weak)) u32 sVibration::getPadVibrationNum() const {
-    // local: u32 vibrationNum;
-    // local: u32 ctr;
-    DDON_STUB("sVibration::getPadVibrationNum")
-    return {};
+u32 sVibration::getPadVibrationNum() const {
+    // DWARF local not rendered: u32 vibrationNum;
+    // DWARF local not rendered: u32 ctr;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x9e from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x15e from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x21e from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x2de from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x39e from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x45e from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x51e from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x5de from const sVibration*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return static_cast<unsigned int>(((((((static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(158))) & static_cast<unsigned short>(1)) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(350))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(542))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(734))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(926))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(1118))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(1310))) & static_cast<unsigned short>(1))) + static_cast<unsigned long>((*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(1502))) & static_cast<unsigned short>(1)));
 }
 
 // Address: 0x012aef10 - 0x012aef6c (92 bytes)
-__attribute__((weak)) u32 sVibration::getCameraVibrationNum() const {
-    // local: u32 vibrationNum;
-    // local: u32 ctr;
-    DDON_STUB("sVibration::getCameraVibrationNum")
-    return {};
+u32 sVibration::getCameraVibrationNum() const {
+    // DWARF local not rendered: u32 vibrationNum;
+    // DWARF local not rendered: u32 ctr;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x9c from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x15c from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x21c from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x2dc from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x39c from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x45c from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x51c from const sVibration*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x5dc from const sVibration*
+    return (((((((((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(156))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1)) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(348))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(540))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(732))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(924))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(1116))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(1308))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1))) + (((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(1500))) >> static_cast<unsigned int>(17)) & static_cast<unsigned int>(1));
 }
 
 // Address: 0x01ba9550 - 0x01ba9551 (1 bytes)

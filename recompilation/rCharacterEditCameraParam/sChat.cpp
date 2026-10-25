@@ -271,10 +271,11 @@ __attribute__((weak)) u32 sChat::getMsgQueue(sChat::stMsgQueue* * queueArray, u3
 // u32 sChat::getMsgQueueNum(sChat::stMsgQueue* * queueArray);
 
 // Address: 0x00749830 - 0x00749837 (7 bytes)
-__attribute__((weak)) bool sChat::checkFilter(s32 filterGroup, s32 filterBit) {
-    // local: u32 checkBit;
-    DDON_STUB("sChat::checkFilter")
-    return {};
+bool sChat::checkFilter(s32 filterGroup, s32 filterBit) {
+    // DWARF local not rendered: u32 checkBit;
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(static_cast<unsigned int>(filterBit)) >> static_cast<unsigned long>(static_cast<unsigned int>(filterGroup) & static_cast<unsigned int>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (92 bytes)

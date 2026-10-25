@@ -263,9 +263,10 @@ u32 nDraw::Texture::getArrayCount() const {
 }
 
 // Address: 0x01b82e80 - 0x01b82e8c (12 bytes)
-__attribute__((weak)) u32 nDraw::Texture::getLevelCount() const {
-    DDON_STUB("nDraw::Texture::getLevelCount")
-    return {};
+u32 nDraw::Texture::getLevelCount() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x2a from const nDraw::Texture*
+    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(42))) >> static_cast<unsigned long>(40));
 }
 
 // Address: 0x01b82f20 - 0x01b82f24 (4 bytes)
@@ -357,10 +358,16 @@ __attribute__((weak)) MtSize nDraw::Texture::calcBufferSize(u32 w, u32 h, u32 le
 }
 
 // Address: 0x01163330 - 0x01163350 (32 bytes)
-__attribute__((weak)) u32 nDraw::Texture::calcMipLevelCount(u32 size) {
-    // local: u32 n;
-    DDON_STUB("nDraw::Texture::calcMipLevelCount")
-    return {};
+u32 nDraw::Texture::calcMipLevelCount(u32 size) {
+    // DWARF local not rendered: u32 n;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i1 = static_cast<unsigned int>(4294967295);
+    do {
+        i1 += static_cast<unsigned int>(1);
+    } while (size >= static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(i1 + static_cast<unsigned int>(256)) & static_cast<unsigned char>(31))));
+    return i1;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

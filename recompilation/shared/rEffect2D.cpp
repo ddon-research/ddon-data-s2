@@ -14,6 +14,8 @@
 #include "MtStream.h"
 #include "cResource.h"
 #include "nEffect.h"
+#include "rEffectAnim.h"
+#include "rModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -302,15 +304,15 @@ __attribute__((weak)) void rEffect2D::ResourceInfo::createParticleResources(rEff
 }
 
 // Address: 0x011f1b10 - 0x011f1b15 (5 bytes)
-__attribute__((weak)) rEffectAnim* rEffect2D::ResourceInfo::getAnim() {
-    DDON_STUB("rEffect2D::ResourceInfo::getAnim")
-    return nullptr;
+rEffectAnim* rEffect2D::ResourceInfo::getAnim() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<rEffectAnim*>(this->mpChar);
 }
 
 // Address: 0x011f1b20 - 0x011f1b25 (5 bytes)
-__attribute__((weak)) rModel* rEffect2D::ResourceInfo::getModel() {
-    DDON_STUB("rEffect2D::ResourceInfo::getModel")
-    return nullptr;
+rModel* rEffect2D::ResourceInfo::getModel() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<rModel*>(this->mpChar);
 }
 
 // No out-of-line body: no code in the ELF
@@ -326,9 +328,9 @@ __attribute__((weak)) rModel* rEffect2D::ResourceInfo::getModel() {
 // rTexture* rEffect2D::ResourceInfo::getTexture(u32 No);
 
 // Address: 0x011f1b50 - 0x011f1b59 (9 bytes)
-__attribute__((weak)) bool rEffect2D::ResourceInfo::checkCreate() {
-    DDON_STUB("rEffect2D::ResourceInfo::checkCreate")
-    return {};
+bool rEffect2D::ResourceInfo::checkCreate() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned short>(this->mStatus) == static_cast<unsigned short>(0);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

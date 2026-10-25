@@ -15,6 +15,7 @@ class MtObject;
 class MtVector3;
 class cGeneralPoint;
 class cGeneralPointPtr;
+class cpLockOn;
 
 // Declarations
 class cGeneralPointIterator;
@@ -53,6 +54,10 @@ private:
 
 class sGeneralPoint : public cSystem
 {
+    // inferred: cGeneralPointPtr::cGeneralPointPtr names sGeneralPoint::mpInstance
+    friend class cGeneralPointPtr;
+    // inferred: cpLockOn::releaseLockOnTarget names sGeneralPoint::mpInstance
+    friend class cpLockOn;
 public:
     class MyDTI;
 public:

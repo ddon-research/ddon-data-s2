@@ -74,6 +74,8 @@ public:
 public:
     class cInvInfo : public MtObject
     {
+        // inferred: cpInvincibleCtrl::defineInvincible names cpInvincibleCtrl::mInvInfo[1].mAttr
+        friend class cpInvincibleCtrl;
     public:
         class MyDTI;
     public:
@@ -219,6 +221,12 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cpInvincibleCtrl::getInvTypeFlagPrivate() const {
+    return this->mInvTypeFlag;
+}
 
 // Inline, no code of its own: checked where it is inlined.
 inline cpInvincibleCtrl::cInvInfo::cInvInfo() {

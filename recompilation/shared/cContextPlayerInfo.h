@@ -35,6 +35,7 @@ class cOcdStatusParamRes;
 class cPlActWpnBow;
 namespace nJobParam { class cHumanBaseInfo; }
 namespace nJobParam { class cJobInfo; }
+class sPlayerManager;
 class uHuman;
 class uNpc;
 
@@ -64,6 +65,8 @@ class cContextPlayerInfo : public cContext
     friend class cNetGameServer;
     // inferred: cPlActWpnBow::finalUp_Shot names cContextPlayerInfo::mCurrentJob_pri
     friend class cPlActWpnBow;
+    // inferred: sPlayerManager::recoveryPrologueStatus names cContextPlayerInfo::mCurrentJob_pri
+    friend class sPlayerManager;
     // inferred: uHuman::deleteHealingCircle names cContextPlayerInfo::mCurrentJob_pri
     friend class uHuman;
     // inferred: uNpc::setGripFinger names cContextPlayerInfo::mCurrentJob_pri

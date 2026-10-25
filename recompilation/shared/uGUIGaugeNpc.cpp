@@ -10,6 +10,7 @@
 #include "../rCharacterEditCameraParam/aStage.h"
 #include "../rCharacterEditCameraParam/cArea.h"
 #include "cGUIInstance.h"
+#include "cGUIObject.h"
 #include "cResource.h"
 #include "cUnit.h"
 #include "nDDOUtility.h"
@@ -155,9 +156,11 @@ __attribute__((weak)) void uGUIGaugeNpc::setTitleName(MT_CTSTR name) {
 // bool uGUIGaugeNpc::checkClosedByOmCtrl(cOmControl* omCtrl);
 
 // Address: 0x00b62be0 - 0x00b62c16 (54 bytes)
-__attribute__((weak)) void uGUIGaugeNpc::updateInit() {
-    DDON_STUB("uGUIGaugeNpc::updateInit")
-    /* stub */
+void uGUIGaugeNpc::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIGaugeNpc::updateMode();
+    this->::uGUIGaugeNpc::updateDisp();
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeNpc::updateWait);
 }
 
 // Address: 0x00b63c20 - 0x00b64120 (1280 bytes)
@@ -554,10 +557,7 @@ void uGUIGaugeNpcBase::kill() {
 void uGUIGaugeNpcBase::move() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::uGUIBase::move();
-    this->mWorldOffset.x = ::MtVector3::Zero.x;
-    this->mWorldOffset.y = ::MtVector3::Zero.y;
-    this->mWorldOffset.z = ::MtVector3::Zero.z;
-    this->mWorldOffset.pad_ = 0.0f;
+    this->mWorldOffset = ::MtVector3::Zero;
 }
 
 // Address: 0x00b61c50 - 0x00b61c8d (61 bytes)
@@ -596,10 +596,7 @@ void uGUIGaugeNpcBase::updatePtr() {
 // Address: 0x00b61cf0 - 0x00b61d21 (49 bytes)
 void uGUIGaugeNpcBase::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mWorldOffset.x = offset.x;
-    this->mWorldOffset.y = offset.y;
-    this->mWorldOffset.z = offset.z;
-    this->mWorldOffset.pad_ = 0.0f;
+    this->mWorldOffset = offset;
 }
 
 // Address: 0x00b61d30 - 0x00b61d59 (41 bytes)
@@ -618,7 +615,7 @@ void uGUIGaugeNpcBase::setUnit(uDDOModel* pUnit) {
 }
 
 // Address: 0x00b61d60 - 0x00b61f15 (437 bytes)
-void uGUIGaugeNpcBase::setupInstances() {
+__attribute__((weak)) void uGUIGaugeNpcBase::setupInstances() {
     // DWARF local not rendered: const u32 INST_fix_jyoutai_ids[2];
     // DWARF local not rendered: u32 i;
     // Proven from the ELF: the body oracle checks this body (022 D5).
@@ -747,15 +744,32 @@ uGUITouchTargetSelector::~uGUITouchTargetSelector() {
 }
 
 // Address: 0x00b656a0 - 0x00b65795 (245 bytes)
-__attribute__((weak)) void uGUITouchTargetSelector::setup() {
-    DDON_STUB("uGUITouchTargetSelector::setup")
-    /* stub */
+void uGUITouchTargetSelector::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->setPlay(true);
+    this->::uGUIBase::setFlowAndInit(static_cast<u32>(16), false);
+    this->::uGUIGaugeNpcBase::setupInstances();
+    this->mpOBJ_target_m_key = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->::uGUIGaugeNpcBase::mpINST_target), static_cast<u32>(3)));
+    this->mpOBJ_target_left = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->::uGUIGaugeNpcBase::mpINST_target), static_cast<u32>(4)));
+    this->mpOBJ_target_right = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->::uGUIGaugeNpcBase::mpINST_target), static_cast<u32>(5)));
+    this->mpOBJ_target_center = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->::uGUIGaugeNpcBase::mpINST_target), static_cast<u32>(6)));
+    if (this->::uGUIGaugeNpcBase::mpINST_Null_all != static_cast<cGUIInstNull*>(nullptr)) {
+        this->::uGUIGaugeNpcBase::mpINST_Null_all->::cGUIInstance::setVisible(false);
+        if (this->::uGUIGaugeNpcBase::mpINST_Null_all != static_cast<cGUIInstNull*>(nullptr)) {
+            this->::uGUIGaugeNpcBase::mpINST_Null_all->::cGUIInstance::setExecute(false);
+        }
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITouchTargetSelector::updateInit);
 }
 
 // Address: 0x00b657a0 - 0x00b657ba (26 bytes)
-__attribute__((weak)) void uGUITouchTargetSelector::updateInit() {
-    DDON_STUB("uGUITouchTargetSelector::updateInit")
-    /* stub */
+void uGUITouchTargetSelector::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITouchTargetSelector::updateWait);
 }
 
 // Address: 0x00b657c0 - 0x00b65dac (1516 bytes)

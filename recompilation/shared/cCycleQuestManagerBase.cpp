@@ -134,11 +134,12 @@ __attribute__((weak)) nQuest::QUEST_ID cCycleQuestManagerBase::getMainTaskQuestI
 // u32 cCycleQuestManagerBase::getCyclePurposeMaxNum() const;
 
 // Address: 0x00075280 - 0x000752ac (44 bytes)
-__attribute__((weak)) u32 cCycleQuestManagerBase::getCyclePurposeNum() const {
-    // local: u32 purposeNum;
-    // local: u32 i;
-    DDON_STUB("cCycleQuestManagerBase::getCyclePurposeNum")
-    return {};
+u32 cCycleQuestManagerBase::getCyclePurposeNum() const {
+    // DWARF local not rendered: u32 purposeNum;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return static_cast<unsigned int>((static_cast<unsigned long>(this->mCyclePurpose[0] != static_cast<int>(-1)) + static_cast<unsigned long>(this->mCyclePurpose[1] != static_cast<int>(-1))) + static_cast<unsigned long>(this->mCyclePurpose[2] != static_cast<int>(-1)));
 }
 
 // Address: 0x000752b0 - 0x000752e0 (48 bytes)
@@ -166,10 +167,20 @@ void cCycleQuestManagerBase::addCyclePurposeNo(u32 purposeNo) {
 }
 
 // Address: 0x00075310 - 0x00075338 (40 bytes)
-__attribute__((weak)) void cCycleQuestManagerBase::removeCyclePurposeNo(u32 purposeNo) {
-    // local: u32 i;
-    DDON_STUB("cCycleQuestManagerBase::removeCyclePurposeNo")
-    /* stub */
+void cCycleQuestManagerBase::removeCyclePurposeNo(u32 purposeNo) {
+    // Approximate from the ELF: a pointer stepped beside a counter; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as int
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    int* p1 = &this->mCyclePurpose[0];
+    do {
+        if ((*p1) == static_cast<int>(purposeNo)) {
+            *p1 = static_cast<int>(-1);
+            return;
+        }
+        i += static_cast<u32>(1);
+        p1 += static_cast<int>(1);
+    } while (i <= static_cast<u32>(2));
 }
 
 // Address: 0x00075540 - 0x0007554b (11 bytes)
@@ -433,7 +444,7 @@ nQuest::CYCLE_CONTENTS_PERIOD cCycleQuestManagerBase::getCycleContentsPeriodFrom
     // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
     // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
     // inferred: the value the loop at 0x76880 carries; no location-less local in scope fits
-    const u32 v0_8 = this->mSubCategory.::MtArray::mLength;
+    u32 v0_8 = this->mSubCategory.::MtArray::mLength;
     if (v0_8 != static_cast<u32>(0)) {
         // inferred: the counter this loop steps; no location-less local in scope fits
         for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
@@ -580,12 +591,28 @@ __attribute__((weak)) MT_CTSTR cCycleQuestManagerBase::getPlaySituationName() co
 // bool cCycleQuestManagerBase::isDistEnable(nQuest::SCHEDULE_ID cycleContentsScheduleId) const;
 
 // Address: 0x00076720 - 0x0007678a (106 bytes)
-__attribute__((weak)) cCycleQuestSubCategoryManager* cCycleQuestManagerBase::getSubCategoryMgr(nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) const {
-    // local: const u32 num;
-    // local: u32 i;
-    // local: cCycleQuestSubCategoryManager* pMgr;
-    DDON_STUB("cCycleQuestManagerBase::getSubCategoryMgr")
-    return nullptr;
+cCycleQuestSubCategoryManager* cCycleQuestManagerBase::getSubCategoryMgr(nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) const {
+    // DWARF local not rendered: cCycleQuestSubCategoryManager* pMgr;
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    const u32 num = this->mSubCategory.::MtArray::mLength;
+    // inferred: DWARF's location-less 'i' (lexical block [0x7673b, 0x76778)) is the counter this loop steps (DWARF's stale constant 0)
+    u32 i = static_cast<u32>(0);
+    if (num != static_cast<u32>(0)) {
+        do {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x76750, held ahead of the effects the ELF orders after it
+            MtObject* * t0 = this->mSubCategory.::MtArray::mpArray;
+            // inferred: a temporary for the value the load at 0x76754 read, used 3 times; no DWARF local holds it
+            MtObject* t1 = t0[i];
+            if (t1 != static_cast<MtObject*>(nullptr)) {
+                if (subCategory != static_cast<cCycleQuestSubCategoryManager*>(t1)->::cCycleQuestSubCategoryManager::getSubCategoryType()) {
+                } else {
+                    return static_cast<cCycleQuestSubCategoryManager*>(t1);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < num);
+    }
+    return static_cast<cCycleQuestSubCategoryManager*>(nullptr);
 }
 
 // Address: 0x00074fc0 - 0x00075097 (215 bytes)

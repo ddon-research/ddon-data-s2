@@ -16,6 +16,7 @@ class MtDTI;
 class MtObject;
 struct SceUserServiceLoginUserIdList;
 class cUserManagerListener;
+class sSavedata;
 
 // Declarations
 class sUserManager;
@@ -33,6 +34,8 @@ using u32 = unsigned int;
 
 class sUserManager : public cSystem
 {
+    // inferred: sSavedata::initUserId names sUserManager::mpInstance
+    friend class sSavedata;
 public:
     class MyDTI;
     struct GamepadInfo;

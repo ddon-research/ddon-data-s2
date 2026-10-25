@@ -5,6 +5,7 @@
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtDataReader.h"
+#include "../shared/MtDataWriter.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
@@ -83,8 +84,35 @@ inline rAreaInfoJointArea::rAreaInfoJointArea() {
 // Address: 0x006443f0 - 0x006444a1 (177 bytes)
 // Also emitted as: _ZN18rAreaInfoJointAreaD0Ev at 0x006444b0
 rAreaInfoJointArea::~rAreaInfoJointArea() {
-    DDON_STUB("rAreaInfoJointArea::~rAreaInfoJointArea")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mAreaInfoJointArea.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x644420 carries; no location-less local in scope fits
+        u32 v0_0 = this->mAreaInfoJointArea.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mAreaInfoJointArea.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mAreaInfoJointArea.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mAreaInfoJointArea.::MtArray::mLength) {
+                    v0_0 = this->mAreaInfoJointArea.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mAreaInfoJointArea.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAreaInfoJointArea.::MtArray::mpArray));
+    }
+    this->mAreaInfoJointArea.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mAreaInfoJointArea.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mAreaInfoJointArea.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x00644580 - 0x00644663 (227 bytes)
@@ -94,10 +122,30 @@ __attribute__((weak)) void rAreaInfoJointArea::createProperty(MtPropertyList& s)
 }
 
 // Address: 0x00644670 - 0x00644769 (249 bytes)
-__attribute__((weak)) bool rAreaInfoJointArea::save(MtStream& out) {
-    // local: MtDataWriter w;
-    DDON_STUB("rAreaInfoJointArea::save")
-    return {};
+bool rAreaInfoJointArea::save(MtStream& out) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rAreaInfoJointArea*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
+    (&w)->writeU32(static_cast<u32>(4870721));
+    (&w)->writeU32(static_cast<u32>(2));
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            // inferred: a temporary for the value the load at 0x64470b read, used twice; no DWARF local holds it
+            MtObject* t3 = this->mAreaInfoJointArea.::MtArray::getBuffer()[static_cast<int>(i0_3)];
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(12)));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(8)));
+            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)))) {
+                i0_3 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return true;
 }
 
 // Address: 0x00644770 - 0x00644817 (167 bytes)
@@ -149,7 +197,8 @@ const MtDTI& rAreaInfoJointArea::cAreaInfoJointArea::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …))
-inline void* rAreaInfoJointArea::cAreaInfoJointArea::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rAreaInfoJointArea::cAreaInfoJointArea::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memAlloc(sz, align, ::rAreaInfoJointArea::cAreaInfoJointArea::DTI.::MtDTI::getID());
 }
 

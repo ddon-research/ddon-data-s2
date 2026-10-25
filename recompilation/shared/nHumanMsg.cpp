@@ -36,10 +36,18 @@ __attribute__((weak)) bool nHuman::isEnableCustomSkillId(nHuman::CUSTOM_SKILL_EN
 
 // Address: 0x005ecd20 - 0x005ecd3c (28 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nHuman.cpp:1010
-__attribute__((weak)) bool nHuman::CSGroupConvertCSMsg2Info(const u8 csSlotMsg, nHuman::CUSTOM_SKILL_GROUP& group, u8& slot) {
-    // local: u8 tmp_group;
-    DDON_STUB("nHuman::CSGroupConvertCSMsg2Info")
-    return {};
+bool nHuman::CSGroupConvertCSMsg2Info(const u8 csSlotMsg, nHuman::CUSTOM_SKILL_GROUP& group, u8& slot) {
+    // DWARF local not rendered: u8 tmp_group;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as nHuman::CUSTOM_SKILL_GROUP
+    slot = csSlotMsg & static_cast<u8>(15);
+    if (csSlotMsg > static_cast<u8>(31)) {
+        return false;
+    } else {
+        group = static_cast<nHuman::CUSTOM_SKILL_GROUP>(static_cast<unsigned long>(csSlotMsg) >> static_cast<unsigned long>(4));
+        return true;
+    }
 }
 
 // Address: 0x005ecd40 - 0x005ecd55 (21 bytes)

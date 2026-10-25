@@ -8,6 +8,7 @@
 #include "../rStageList/rStageList.h"
 #include "../shared/sArchiveManager.h"
 #include "sArea.h"
+#include "../shared/sGame.h"
 #include "../shared/sNetwork.h"
 #include "../shared/sNetworkExt.h"
 #ifndef DDON_STUB
@@ -167,9 +168,32 @@ __attribute__((weak)) void sAreaExt::jumpStage(s32 stageNo, s32 posNo) {
 }
 
 // Address: 0x00722c80 - 0x00722d2a (170 bytes)
-__attribute__((weak)) void sAreaExt::jumpStage(const MtDTI& dti, s32 stageNo, s32 posNo) {
-    DDON_STUB("sAreaExt::jumpStage")
-    /* stub */
+void sAreaExt::jumpStage(const MtDTI& dti, s32 stageNo, s32 posNo) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: the value the loop at 0x722cc0 carries; no location-less local in scope fits
+    rStageList* v0_3 = this->::sAreaExt::getStageList();
+    if (v0_3 != static_cast<rStageList*>(nullptr)) {
+        if (v0_3->getNum() != static_cast<u32>(0)) {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_10 = static_cast<unsigned int>(0);;) {
+                if (v0_3->getInfo(i0_10)->mStageNo == static_cast<unsigned int>(stageNo)) {
+                    if (::sGame::getInstance() != static_cast<sGame*>(nullptr)) {
+                        ::sGame::getInstance()->mGuardData.mReqStageNo = stageNo;
+                        ::sGame::getInstance()->mGuardData.mReqStartPosNo = posNo;
+                    }
+                    this->::sArea::jump(dti);
+                    return;
+                } else {
+                    if ((i0_10 + static_cast<unsigned int>(1)) < v0_3->getNum()) {
+                        i0_10 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00722db0 - 0x00722de0 (48 bytes)
@@ -181,9 +205,10 @@ __attribute__((weak)) s32 sAreaExt::getLobbyJumpPosNo() {
 }
 
 // Address: 0x00722de0 - 0x00722dea (10 bytes)
-__attribute__((weak)) bool sAreaExt::isAreaLoading() const {
-    DDON_STUB("sAreaExt::isAreaLoading")
-    return {};
+bool sAreaExt::isAreaLoading() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mLoadingInfo.data & static_cast<u32>(1));
 }
 
 // No out-of-line body: no code in the ELF
@@ -271,10 +296,16 @@ __attribute__((weak)) bool sAreaExt::isJobActArea() const {
 }
 
 // Address: 0x00722430 - 0x0072245c (44 bytes)
-__attribute__((weak)) bool sAreaExt::isJobActArea(s32 stgNo) const {
-    // local: u32 type;
-    DDON_STUB("sAreaExt::isJobActArea")
-    return {};
+bool sAreaExt::isJobActArea(s32 stgNo) const {
+    // DWARF local not rendered: u32 type;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::sAreaExt::getStageList() != static_cast<rStageList*>(nullptr)) {
+        if ((this->::sAreaExt::getStageList()->::rStageList::getStageType(stgNo) | static_cast<u32>(2)) == static_cast<u32>(3)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -345,12 +376,41 @@ __attribute__((weak)) s32 sAreaExt::convertStageId(s32 stgNo) const {
 }
 
 // Address: 0x00722e50 - 0x00722ec9 (121 bytes)
-__attribute__((weak)) s32 sAreaExt::convertStageIndex(s32 stgNo) const {
-    // local: s32 tblNo;
-    // local: rStageList* list;
-    // local: u32 i;
-    DDON_STUB("sAreaExt::convertStageIndex")
-    return {};
+s32 sAreaExt::convertStageIndex(s32 stgNo) const {
+    // DWARF local not rendered: s32 tblNo;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: the value carried to 0x722ebd; no location-less local in scope fits
+    unsigned int v2_9;
+    if (stgNo <= static_cast<s32>(99)) {
+        v2_9 = static_cast<unsigned int>(4294967295);
+    } else {
+        rStageList* list = this->::sAreaExt::getStageList();
+        if (list == static_cast<rStageList*>(nullptr)) {
+            v2_9 = static_cast<unsigned int>(4294967295);
+        } else {
+            if (list->getNum() == static_cast<u32>(0)) {
+                v2_9 = static_cast<unsigned int>(4294967295);
+            } else {
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                    if (list->getInfo(i0_3)->mStageNo != static_cast<unsigned int>(stgNo)) {
+                        if ((i0_3 + static_cast<unsigned int>(1)) < list->getNum()) {
+                            i0_3 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    } else {
+                        v2_9 = i0_3;
+                        return static_cast<s32>(v2_9);
+                    }
+                }
+                v2_9 = static_cast<unsigned int>(4294967295);
+            }
+        }
+    }
+    return static_cast<s32>(v2_9);
 }
 
 // Address: 0x00722d30 - 0x00722da8 (120 bytes)
@@ -472,9 +532,15 @@ __attribute__((weak)) u8 sAreaExt::getRecommendLevel(s32 stgNo) const {
 }
 
 // Address: 0x00723510 - 0x0072352c (28 bytes)
-__attribute__((weak)) bool sAreaExt::isDisableCreateCharacter(s32 stgNo) const {
-    DDON_STUB("sAreaExt::isDisableCreateCharacter")
-    return {};
+bool sAreaExt::isDisableCreateCharacter(s32 stgNo) const {
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (static_cast<unsigned int>(stgNo - static_cast<s32>(150)) <= static_cast<unsigned int>(10)) {
+        return static_cast<bool>((static_cast<unsigned long>(1027) >> static_cast<unsigned long>(static_cast<unsigned char>(stgNo + static_cast<s32>(106)) & static_cast<unsigned char>(31))) & static_cast<unsigned long>(1));
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)

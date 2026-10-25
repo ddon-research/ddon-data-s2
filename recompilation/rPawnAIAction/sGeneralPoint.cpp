@@ -5,6 +5,7 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/cGeneralPoint.h"
+#include "../shared/cGeneralPointPtr.h"
 #include "../shared/cSystem.h"
 #include "../shared/nDDOUtility.h"
 #ifndef DDON_STUB
@@ -220,12 +221,22 @@ __attribute__((weak)) void sGeneralPoint::updateGeneralPointStack() {
 // s32 sGeneralPoint::findEnableGeneralPoint(s32 beginIdx, bool enable);
 
 // Address: 0x00789980 - 0x007899a1 (33 bytes)
-__attribute__((weak)) int sGeneralPoint::sortDataFunc(const void* a, const void* b) {
-    // local: const cGeneralPoint* p_a;
-    // local: const cGeneralPoint* p_b;
-    // local: int ret;
-    DDON_STUB("sGeneralPoint::sortDataFunc")
-    return {};
+int sGeneralPoint::sortDataFunc(const void* a, const void* b) {
+    // DWARF local not rendered: const cGeneralPoint* p_a;
+    // DWARF local not rendered: const cGeneralPoint* p_b;
+    // DWARF local not rendered: int ret;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x0 from const void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x4c from const unsigned long
+    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(a) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(b) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+            return static_cast<int>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(a) + static_cast<long>(0))) + static_cast<long>(76))) - (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(b) + static_cast<long>(0))) + static_cast<long>(76))));
+        } else {
+            return static_cast<int>(-1);
+        }
+    } else {
+        return static_cast<int>(1);
+    }
 }
 
 // Address: 0x007899b0 - 0x00789a2d (125 bytes)
@@ -269,10 +280,14 @@ __attribute__((weak)) void sGeneralPoint::addPtr(cGeneralPointPtr* pPtr) {
 }
 
 // Address: 0x00789ad0 - 0x00789af6 (38 bytes)
-__attribute__((weak)) void sGeneralPoint::erasePtr(cGeneralPointPtr* pPtr) {
-    // local: s32 ptr_idx;
-    DDON_STUB("sGeneralPoint::erasePtr")
-    /* stub */
+void sGeneralPoint::erasePtr(cGeneralPointPtr* pPtr) {
+    // DWARF local not rendered: s32 ptr_idx;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from cGeneralPointPtr*
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + static_cast<long>(8))) > static_cast<int>(-1)) {
+        this->mPointPtrArray.elems[((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + static_cast<long>(8))) <= static_cast<unsigned int>(6143)) ? (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pPtr) + static_cast<long>(8))) : static_cast<unsigned int>(0)] = static_cast<cGeneralPointPtr*>(nullptr);
+        this->mPointPtrEraseReq = true;
+    }
 }
 
 // No out-of-line body: 22 inlined copies in 20 functions (207 bytes)

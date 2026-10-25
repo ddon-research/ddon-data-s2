@@ -1033,9 +1033,10 @@ void uCnsTinyChain::cChainGroup::setAttrForce(u32 attr) {
 }
 
 // Address: 0x01b68170 - 0x01b68175 (5 bytes)
-__attribute__((weak)) u32 uCnsTinyChain::cChainGroup::getAttrCollision() {
-    DDON_STUB("uCnsTinyChain::cChainGroup::getAttrCollision")
-    return {};
+u32 uCnsTinyChain::cChainGroup::getAttrCollision() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2c from uCnsTinyChain::cChainGroup*
+    return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(44));
 }
 
 // Address: 0x01b68180 - 0x01b68185 (5 bytes)
@@ -1213,9 +1214,10 @@ void uCnsTinyChain::cChainNode::setRefJointNo(u32 no) {
 }
 
 // Address: 0x01b680b0 - 0x01b680bc (12 bytes)
-__attribute__((weak)) u32 uCnsTinyChain::cChainNode::getRefJointNo() const {
-    DDON_STUB("uCnsTinyChain::cChainNode::getRefJointNo")
-    return {};
+u32 uCnsTinyChain::cChainNode::getRefJointNo() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xc from const uCnsTinyChain::cChainNode*
+    return static_cast<unsigned char>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(12))) >> static_cast<unsigned long>(40));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -1294,9 +1296,11 @@ __attribute__((weak)) f32 uCnsTinyChain::cChainNode::getAngleLimit() const {
 // f32 uCnsTinyChain::cChainNode::getR() const;
 
 // Address: 0x01b68100 - 0x01b68110 (16 bytes)
-__attribute__((weak)) void uCnsTinyChain::cChainNode::setShapeObject(u32 shape) {
-    DDON_STUB("uCnsTinyChain::cChainNode::setShapeObject")
-    /* stub */
+void uCnsTinyChain::cChainNode::setShapeObject(u32 shape) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a wider integer stored into a bitfield; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x1c0 from uCnsTinyChain::cChainGroup*
+    this->mShapeObject = shape;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpChainGroup) + static_cast<long>(448)) = static_cast<unsigned char>(1);
 }
 
 // Address: 0x01b680f0 - 0x01b680f5 (5 bytes)

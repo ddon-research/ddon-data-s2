@@ -9,6 +9,7 @@
 #include "MtObject.h"
 #include "cContext.h"
 #include "cContextInterface.h"
+#include "cEquipData.h"
 #include "nAbility.h"
 #include "nDDOUtility.h"
 #include "nHuman.h"
@@ -19,6 +20,7 @@
 #include "sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sPlayerManager.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #ifndef DDON_STUB
@@ -175,7 +177,7 @@ void cContextPlayerInfo::setExp(nHuman::JOB_ENUM jobNo, u64 exp, u64 addExp, u64
     if (ui == false) {
         return;
     }
-    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::addGainInfoQueue(static_cast<u32>(0), static_cast<s32>(addExp), static_cast<s32>(extraExp));
+    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::addGainInfoQueue(static_cast<u32>(0), static_cast<s32>(static_cast<unsigned int>(addExp)), static_cast<s32>(static_cast<unsigned int>(extraExp)));
 }
 
 // No out-of-line body: no code in the ELF
@@ -447,10 +449,41 @@ __attribute__((weak)) bool cContextPlayerInfo::setAbilityNotCalcStatus(nAbility:
 // void cContextPlayerInfo::setReceiveAbility(CDataSetAcquirementParam* pAbility);
 
 // Address: 0x000673e0 - 0x00067475 (149 bytes)
-__attribute__((weak)) void cContextPlayerInfo::setAbilityLevelUp(nAbility::ABILITY_ID id, s32 lv) {
-    // local: u32 i;
-    DDON_STUB("cContextPlayerInfo::setAbilityLevelUp")
-    /* stub */
+void cContextPlayerInfo::setAbilityLevelUp(nAbility::ABILITY_ID id, s32 lv) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mAbilityInfoList.elems[0].mAbilityId == id) {
+        this->mAbilityInfoList.elems[0].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[1].mAbilityId == id) {
+        this->mAbilityInfoList.elems[1].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[2].mAbilityId == id) {
+        this->mAbilityInfoList.elems[2].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[3].mAbilityId == id) {
+        this->mAbilityInfoList.elems[3].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[4].mAbilityId == id) {
+        this->mAbilityInfoList.elems[4].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[5].mAbilityId == id) {
+        this->mAbilityInfoList.elems[5].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[6].mAbilityId == id) {
+        this->mAbilityInfoList.elems[6].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[7].mAbilityId == id) {
+        this->mAbilityInfoList.elems[7].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[8].mAbilityId == id) {
+        this->mAbilityInfoList.elems[8].mLevel = lv;
+    }
+    if (this->mAbilityInfoList.elems[9].mAbilityId == id) {
+        this->mAbilityInfoList.elems[9].mLevel = lv;
+    }
+    this->::cContextPlayerInfo::calcStatus(this->mCurrentJob_pri);
 }
 
 // Address: 0x00067480 - 0x000674cf (79 bytes)
@@ -1099,14 +1132,20 @@ __attribute__((weak)) f32 cContextPlayerInfo::getWeight() const {
 // nHuman::WEIGHT_TYPE cContextPlayerInfo::getWeightType() const;
 
 // Address: 0x0006a2c0 - 0x0006a312 (82 bytes)
-__attribute__((weak)) nHuman::WEIGHT_TYPE cContextPlayerInfo::getWeightType(const f32 weight) {
-    // local: u32 Type;
-    // local: WEIGHT_TYPE WeightType;
-    // local: u32 uIntWeight;
-    // local: u32 i;
-    // local: f32 weightRange;
-    DDON_STUB("cContextPlayerInfo::getWeightType")
-    return {};
+nHuman::WEIGHT_TYPE cContextPlayerInfo::getWeightType(const f32 weight) {
+    // DWARF local not rendered: u32 Type;
+    // DWARF local not rendered: WEIGHT_TYPE WeightType;
+    // DWARF local not rendered: u32 uIntWeight;
+    // DWARF local not rendered: f32 weightRange;
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; the body oracle reports this body.
+    u32 i = static_cast<u32>(19);
+    do {
+        if (static_cast<unsigned int>(static_cast<long>(::sPlayerManager::getInstance()->::sPlayerManager::getHumanAdjustParam(i))) >= static_cast<unsigned int>(static_cast<long>(weight))) {
+            return static_cast<nHuman::WEIGHT_TYPE>(i - static_cast<u32>(19));
+        }
+        i += static_cast<u32>(1);
+    } while (i <= static_cast<u32>(24));
+    return static_cast<nHuman::WEIGHT_TYPE>(5);
 }
 
 // Address: 0x0006a320 - 0x0006a34e (46 bytes)
@@ -1207,175 +1246,485 @@ __attribute__((weak)) s16 cContextPlayerInfo::getDarkResistTotal() const {
 }
 
 // Address: 0x0006a7a0 - 0x0006a7f4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getSpreadResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getSpreadResistTotal")
-    return {};
+s16 cContextPlayerInfo::getSpreadResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6a7cb read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mSpreadResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[10])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006a800 - 0x0006a854 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getFreezeResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getFreezeResistTotal")
-    return {};
+s16 cContextPlayerInfo::getFreezeResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6a82b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mFreezeResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[11])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006a860 - 0x0006a8b4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getShockResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getShockResistTotal")
-    return {};
+s16 cContextPlayerInfo::getShockResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6a88b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mShockResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[12])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006a8c0 - 0x0006a914 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getAbsorbResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getAbsorbResistTotal")
-    return {};
+s16 cContextPlayerInfo::getAbsorbResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6a8eb read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mAbsorbResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[13])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006a920 - 0x0006a974 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getDarkElmResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getDarkElmResistTotal")
-    return {};
+s16 cContextPlayerInfo::getDarkElmResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6a94b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mDarkElmResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[3])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006a980 - 0x0006a9d4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getPoisonResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getPoisonResistTotal")
-    return {};
+s16 cContextPlayerInfo::getPoisonResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6a9ab read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mPoisonResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[0])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006a9e0 - 0x0006aa34 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getSlowResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getSlowResistTotal")
-    return {};
+s16 cContextPlayerInfo::getSlowResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6aa0b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mSlowResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[1])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006aa40 - 0x0006aa94 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getSleepResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getSleepResistTotal")
-    return {};
+s16 cContextPlayerInfo::getSleepResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6aa6b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mSleepResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[4])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006aaa0 - 0x0006aaf4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getStunResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getStunResistTotal")
-    return {};
+s16 cContextPlayerInfo::getStunResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6aacb read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mStunResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[14])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ab00 - 0x0006ab54 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getWetResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getWetResistTotal")
-    return {};
+s16 cContextPlayerInfo::getWetResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6ab2b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mWetResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[5])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ab60 - 0x0006abb4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getOilResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getOilResistTotal")
-    return {};
+s16 cContextPlayerInfo::getOilResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6ab8b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mOilResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[2])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006abc0 - 0x0006ac14 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getSealResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getSealResistTotal")
-    return {};
+s16 cContextPlayerInfo::getSealResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6abeb read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mSealResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[6])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ac20 - 0x0006ac74 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getCurseResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getCurseResistTotal")
-    return {};
+s16 cContextPlayerInfo::getCurseResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6ac4b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mCurseResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[15])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ac80 - 0x0006acd4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getSoftResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getSoftResistTotal")
-    return {};
+s16 cContextPlayerInfo::getSoftResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6acab read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mSoftResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[7])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ace0 - 0x0006ad34 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getStoneResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getStoneResistTotal")
-    return {};
+s16 cContextPlayerInfo::getStoneResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6ad0b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mStoneResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[8])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ad40 - 0x0006ad94 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getGoldResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getGoldResistTotal")
-    return {};
+s16 cContextPlayerInfo::getGoldResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6ad6b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mGoldResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[9])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ada0 - 0x0006adf4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getFireReduceResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getFireReduceResistTotal")
-    return {};
+s16 cContextPlayerInfo::getFireReduceResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6adcb read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mFireReduceResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[16])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ae00 - 0x0006ae54 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getIceReduceResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getIceReduceResistTotal")
-    return {};
+s16 cContextPlayerInfo::getIceReduceResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6ae2b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mIceReduceResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[17])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006ae60 - 0x0006aeb4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getThunderReduceResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getThunderReduceResistTotal")
-    return {};
+s16 cContextPlayerInfo::getThunderReduceResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6ae8b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mThunderReduceResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[18])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006aec0 - 0x0006af14 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getHolyReduceResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getHolyReduceResistTotal")
-    return {};
+s16 cContextPlayerInfo::getHolyReduceResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6aeeb read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mHolyReduceResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[19])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006af20 - 0x0006af74 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getDarkReduceResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getDarkReduceResistTotal")
-    return {};
+s16 cContextPlayerInfo::getDarkReduceResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6af4b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mDarkReduceResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[20])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006af80 - 0x0006afbe (62 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getAtkDownResistTotal() const {
-    // local: cContextInterface& inter;
-    DDON_STUB("cContextPlayerInfo::getAtkDownResistTotal")
-    return {};
+s16 cContextPlayerInfo::getAtkDownResistTotal() const {
+    // DWARF local not rendered: cContextInterface& inter;
+    // Approximate from the ELF: a cast to the other signedness; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    // inferred: a temporary for the value the load at 0x6af99 read, used once; no DWARF local holds it
+    const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mAtkDownResist_pri;
+    return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[21])));
 }
 
 // Address: 0x0006afc0 - 0x0006b014 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getDefDownResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getDefDownResistTotal")
-    return {};
+s16 cContextPlayerInfo::getDefDownResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6afeb read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mDefDownResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[22])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006b020 - 0x0006b074 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getMAtkDownResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getMAtkDownResistTotal")
-    return {};
+s16 cContextPlayerInfo::getMAtkDownResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6b04b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mMAtkDownResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[23])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006b080 - 0x0006b0d4 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getMDefDownResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getMDefDownResistTotal")
-    return {};
+s16 cContextPlayerInfo::getMDefDownResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6b0ab read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mMDefDownResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[24])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006b0e0 - 0x0006b134 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getErosionResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getErosionResistTotal")
-    return {};
+s16 cContextPlayerInfo::getErosionResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6b10b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mErosionResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[25])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x0006b140 - 0x0006b194 (84 bytes)
-__attribute__((weak)) s16 cContextPlayerInfo::getItemSealResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getItemSealResistTotal")
-    return {};
+s16 cContextPlayerInfo::getItemSealResistTotal() const {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned short used as s16
+    if (this->mCurrentJob_pri != static_cast<u8>(0)) {
+        if (this->mCurrentJob_pri != static_cast<u8>(255)) {
+            if (this->mCurrentJob_pri <= static_cast<u8>(10)) {
+                // inferred: a temporary for the value the load at 0x6b16b read, used once; no DWARF local holds it
+                const u8 t0 = this->mFinalJobInfoList.elems[(static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) <= static_cast<unsigned int>(9)) ? static_cast<unsigned int>(this->mCurrentJob_pri - static_cast<int>(1)) : static_cast<unsigned int>(0)].mItemSealResist_pri;
+                return static_cast<s16>(static_cast<unsigned short>(static_cast<unsigned long>(t0) + static_cast<unsigned long>(::cContextInterface::getContextEquip(this->mpOwnerContext).mKindParamS8[26])));
+            }
+        }
+    }
+    return static_cast<s16>(0);
 }
 
 // Address: 0x00069ef0 - 0x00069fb2 (194 bytes)
-__attribute__((weak)) u32 cContextPlayerInfo::getShieldStaggerTotal() const {
-    // local: u32 shield;
-    // local: s32 level;
-    // local: s32 param;
-    DDON_STUB("cContextPlayerInfo::getShieldStaggerTotal")
-    return {};
+u32 cContextPlayerInfo::getShieldStaggerTotal() const {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x69f0e, held ahead of the effects the ELF orders after it
+    cContextInstHm* t0 = this->mpOwnerContext;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x69f15, held ahead of the effects the ELF orders after it
+    cEquipData& t1 = ::cContextInterface::getContextEquip(t0);
+    u32 shield = t1.::cEquipData::getShieldStagger();
+    s32 level;
+    s32 param;
+    if (this->::cContextPlayerInfo::checkAbility(static_cast<nAbility::ABILITY_ID>(88), level, param, static_cast<u32>(0)) != false) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x69f3d, held ahead of the effects the ELF orders after it
+        s32 t4 = param;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x69f42, held ahead of the effects the ELF orders after it
+        float t5 = 100.0f;
+        if (this->::cContextPlayerInfo::checkAbility(static_cast<nAbility::ABILITY_ID>(301), level, param, static_cast<u32>(0)) != false) {
+            return static_cast<unsigned int>(static_cast<long>((static_cast<float>(param) / 100.0f) * static_cast<float>(static_cast<unsigned int>(static_cast<long>((static_cast<float>(t4) / t5) * static_cast<float>(shield))))));
+        } else {
+            return static_cast<unsigned int>(static_cast<long>((static_cast<float>(t4) / t5) * static_cast<float>(shield)));
+        }
+    } else {
+        if (this->::cContextPlayerInfo::checkAbility(static_cast<nAbility::ABILITY_ID>(301), level, param, static_cast<u32>(0)) != false) {
+            return static_cast<unsigned int>(static_cast<long>((static_cast<float>(param) / 100.0f) * static_cast<float>(shield)));
+        } else {
+            return shield;
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (5 bytes)

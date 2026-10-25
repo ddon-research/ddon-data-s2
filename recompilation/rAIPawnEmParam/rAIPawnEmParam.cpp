@@ -3,9 +3,11 @@
 #include "rAIPawnEmParam.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cAIObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
@@ -152,9 +154,38 @@ rAIPawnEmParam::~rAIPawnEmParam() {
 }
 
 // Address: 0x0063fd70 - 0x0063feba (330 bytes)
-__attribute__((weak)) bool rAIPawnEmParam::loadData(MtDataReader& r, cAIPawnEmNode* pData) {
-    DDON_STUB("rAIPawnEmParam::loadData")
-    return {};
+bool rAIPawnEmParam::loadData(MtDataReader& r, cAIPawnEmNode* pData) {
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    pData->mEmStatusNo = r.readU32();
+    // inferred: a temporary for the result of the call at 0x63fd97, used once; no DWARF local holds it
+    u32 t0 = r.readU32();
+    r.read(static_cast<void*>(&pData->mWeakAttrFlag), t0 * static_cast<u32>(4));
+    // inferred: a temporary for the result of the call at 0x63fdb7, used once; no DWARF local holds it
+    u32 t1 = r.readU32();
+    r.read(static_cast<void*>(&pData->mDisableAttrFlag), t1 * static_cast<u32>(4));
+    // inferred: a temporary for the result of the call at 0x63fdd7, used once; no DWARF local holds it
+    u32 t2 = r.readU32();
+    r.read(static_cast<void*>(&pData->mTargetPosFlag), t2 * static_cast<u32>(4));
+    pData->mActiveCoreRegionNo = r.readS32();
+    pData->mAddPrio = r.readS32();
+    // inferred: a temporary for the result of the call at 0x63fe11, used once; no DWARF local holds it
+    u32 t3 = r.readU32();
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    r.read(static_cast<void*>(&pData->mAIPawnEmParamFlag), t3 * static_cast<u32>(4));
+    ::nDDOIO::readData(r, pData->mFlgDefaultAttr);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mAttackNoInterval = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mLayer);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mActiveMaskEffectResionNo);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mEmSpStatus);
+    return true;
 }
 
 // Address: 0x01a72440 - 0x01a72448 (8 bytes)

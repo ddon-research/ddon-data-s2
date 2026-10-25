@@ -768,6 +768,18 @@ inline u32 cGroupParam::getInvalidFlag() const {
 
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
+inline bool cGroupParam::isDieStageBoss() const {
+    return this->mIsDieStageBoss;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cGroupParam::isResetList() const {
+    return this->mIsResetList;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
 inline cGroupParam::EmSetInfo::EmSetInfo() {
     this->mID = static_cast<u32>(0);
     this->mLayerNo = static_cast<u32>(0);

@@ -8,6 +8,7 @@
 #include "MtObject.h"
 #include "cBlowShrinkDmInfo.h"
 #include "cChildRegionStatus.h"
+#include "cDamageMsg.h"
 #include "cHitInfoAfterLocal.h"
 #include "cOcdDamageInfo.h"
 #include "nObjCollision.h"
@@ -183,9 +184,45 @@ cHitInfoAfter::~cHitInfoAfter() {
 }
 
 // Address: 0x0020bc00 - 0x0020bcdc (220 bytes)
-__attribute__((weak)) void cHitInfoAfter::makeInfoFromDmMsg(const cDamageMsg* pDmMsg, uDDOModel* pReceiver) {
-    DDON_STUB("cHitInfoAfter::makeInfoFromDmMsg")
-    /* stub */
+void cHitInfoAfter::makeInfoFromDmMsg(const cDamageMsg* pDmMsg, uDDOModel* pReceiver) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; code after a join copied into the arms; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x7c from const cDamageMsg*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (pDmMsg == static_cast<const cDamageMsg*>(nullptr)) {
+        return;
+    }
+    this->mIsReceiveInfo = pDmMsg->::cDamageMsg::isReceiveInfo();
+    this->mCommonInfo.::cHitInfoAfterCommon::makeInfoFromDmMsg(pDmMsg, pReceiver);
+    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
+        if (this->mCommonInfo.mpChildRegion != static_cast<cChildRegionStatus*>(nullptr)) {
+            if (this->mCommonInfo.mpAttackParam->mAttackType2 <= static_cast<u8>(3)) {
+                this->mHpDamageInfo.mAttackReactionType = this->mCommonInfo.mpChildRegion->mAttackReactionType[this->mCommonInfo.mpAttackParam->mAttackType2];
+            }
+        }
+    }
+    this->mOcdDamageInfo.::cOcdDamageInfo::getInfoFromCM(this->mCommonInfo);
+    if (this->mIsReceiveInfo != false) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x20bc79 read, used once; no DWARF local holds it
+    const f32 t0 = pDmMsg->mLocalInfo.mHitPos.y;
+    // inferred: a temporary for the value the load at 0x20bc7f read, used once; no DWARF local holds it
+    const f32 t1 = pDmMsg->mLocalInfo.mHitPos.z;
+    // inferred: a temporary for the value the load at 0x20bc85 read, used once; no DWARF local holds it
+    uShlBase* t2 = pDmMsg->mLocalInfo.mpShlAtkPtr;
+    // inferred: a temporary for the value the load at 0x20bc89 read, used once; no DWARF local holds it
+    const f32 t3 = pDmMsg->mLocalInfo.mHitStopTime;
+    // inferred: a temporary for the value the load at 0x20bc8f read, used twice; no DWARF local holds it
+    const unsigned short t4 = *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(pDmMsg) + static_cast<long>(124));
+    this->mLocalInfo.mHitPos.x = pDmMsg->mLocalInfo.mHitPos.x;
+    this->mLocalInfo.mHitPos.y = t0;
+    this->mLocalInfo.mHitPos.z = t1;
+    this->mLocalInfo.mHitPos.pad_ = 0.0f;
+    this->mLocalInfo.mpShlAtkPtr = t2;
+    this->mLocalInfo.mHitStopTime = t3;
+    this->mLocalInfo.mHitStopFlag = static_cast<unsigned char>(t4);
+    this->mLocalInfo.mIsForceHitStop = static_cast<bool>(static_cast<unsigned long>(t4) >> static_cast<unsigned long>(8));
 }
 
 // No out-of-line body: no code in the ELF
@@ -212,15 +249,24 @@ bool cHitInfoAfter::checkAttackParamAngleFlag(u32 flag) const {
 }
 
 // Address: 0x0020bd20 - 0x0020bd36 (22 bytes)
-__attribute__((weak)) bool cHitInfoAfter::checkAttackParamGuard(nObjCollision::GUARD_ANGLE_TYPE type) const {
-    DDON_STUB("cHitInfoAfter::checkAttackParamGuard")
-    return {};
+bool cHitInfoAfter::checkAttackParamGuard(nObjCollision::GUARD_ANGLE_TYPE type) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: nObjCollision::GUARD_ANGLE_TYPE used as unsigned int
+    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
+        return this->mCommonInfo.mpAttackParam->mGuardAngle == static_cast<unsigned int>(type);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0020bd40 - 0x0020bd56 (22 bytes)
-__attribute__((weak)) bool cHitInfoAfter::checkAttackParamAttackId(u32 attackId) const {
-    DDON_STUB("cHitInfoAfter::checkAttackParamAttackId")
-    return {};
+bool cHitInfoAfter::checkAttackParamAttackId(u32 attackId) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mCommonInfo.mpAttackParam != static_cast<cAttackParam*>(nullptr)) {
+        return this->mCommonInfo.mpAttackParam->mAttackID == attackId;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0020bd60 - 0x0020bd96 (54 bytes)

@@ -231,9 +231,19 @@ void uGUIActionPalette::adjustScale() {
 }
 
 // Address: 0x0091d9b0 - 0x0091d9ed (61 bytes)
-__attribute__((weak)) bool uGUIActionPalette::isForceSamplerLinear(cGUIObject* pObj) const {
-    DDON_STUB("uGUIActionPalette::isForceSamplerLinear")
-    return {};
+bool uGUIActionPalette::isForceSamplerLinear(cGUIObject* pObj) const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
+        if (this->mpInstNullGuideRoot != static_cast<cGUIInstNull*>(nullptr)) {
+            if (this->mpInstNullGuideRoot->mScale.x > 1.0f) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        return true;
+    }
 }
 
 // Address: 0x0091d9f0 - 0x0091ddc0 (976 bytes)

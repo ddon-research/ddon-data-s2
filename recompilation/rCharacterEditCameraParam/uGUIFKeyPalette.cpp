@@ -10,6 +10,8 @@
 #include "../shared/nKeyCustom.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sSavedata.h"
+#include "../shared/sSavedataExt.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -129,10 +131,25 @@ void uGUIFKeyPalette::kill() {
 }
 
 // Address: 0x00a89c20 - 0x00a89cea (202 bytes)
-__attribute__((weak)) void uGUIFKeyPalette::move() {
-    // local: u32 i;
-    DDON_STUB("uGUIFKeyPalette::move")
-    /* stub */
+void uGUIFKeyPalette::move() {
+    // DWARF local not rendered: u32 i;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (static_cast<sSavedataExt*>(::sSavedata::getInstance())->::sSavedataExt::getStorageData().mOptionSys.mActPltType == static_cast<u8>(0)) {
+        return;
+    }
+    this->::uGUIBase::move();
+    this->mSCMBtn[0].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[1].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[2].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[3].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[4].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[5].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[6].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[7].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[8].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[9].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[10].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+    this->mSCMBtn[11].mIcon.::uGUIBase::cReferenceUIIconItem::update();
 }
 
 // Address: 0x00a89cf0 - 0x00a89cf5 (5 bytes)
@@ -200,9 +217,19 @@ void uGUIFKeyPalette::adjustScale() {
 }
 
 // Address: 0x00a89de0 - 0x00a89e1d (61 bytes)
-__attribute__((weak)) bool uGUIFKeyPalette::isForceSamplerLinear(cGUIObject* pObj) const {
-    DDON_STUB("uGUIFKeyPalette::isForceSamplerLinear")
-    return {};
+bool uGUIFKeyPalette::isForceSamplerLinear(cGUIObject* pObj) const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::uGUIBase::isForceSamplerLinear(pObj) == false) {
+        if (this->mpInstNullGuideRoot != static_cast<cGUIInstNull*>(nullptr)) {
+            if (this->mpInstNullGuideRoot->mScale.x > 1.0f) {
+                return true;
+            }
+        }
+        return false;
+    } else {
+        return true;
+    }
 }
 
 // Address: 0x00a89ac0 - 0x00a89bee (302 bytes)
@@ -224,9 +251,9 @@ __attribute__((weak)) void uGUIFKeyPalette::setSCMEditMode(u32 uMode) {
 // void uGUIFKeyPalette::setPlayFlow(u32 flow_id);
 
 // Address: 0x00a89bf0 - 0x00a89c0a (26 bytes)
-__attribute__((weak)) void uGUIFKeyPalette::updateInit() {
-    DDON_STUB("uGUIFKeyPalette::updateInit")
-    /* stub */
+void uGUIFKeyPalette::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIFKeyPalette::updateWait);
 }
 
 // Address: 0x00a89e20 - 0x00a89e25 (5 bytes)

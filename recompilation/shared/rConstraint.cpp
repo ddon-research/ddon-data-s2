@@ -5,6 +5,7 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "cResource.h"
+#include "uConstraint.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -73,9 +74,12 @@ __attribute__((weak)) void rConstraint::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x012114c0 - 0x012114cd (13 bytes)
-__attribute__((weak)) void rConstraint::copyUnitProperty(uConstraint* pSrcUnit) {
-    DDON_STUB("rConstraint::copyUnitProperty")
-    /* stub */
+void rConstraint::copyUnitProperty(uConstraint* pSrcUnit) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from rConstraint*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x70 from rConstraint*
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(116)) = pSrcUnit->mPri;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(112)) = pSrcUnit->mID;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

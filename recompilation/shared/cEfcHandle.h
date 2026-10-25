@@ -10,11 +10,13 @@
 // Forward declarations
 class MtAllocator;
 class MtDTI;
+class cPlActWpnBow;
 class cUnit;
 class cpChantCommand;
 class cpJob06;
 class cpJob08;
 class cpJob09;
+class cpJob10;
 class sEffectExt;
 class uHuman;
 class uPlayer;
@@ -36,6 +38,8 @@ using u64 = __uint64_t;
 
 class cEfcHandle : public MtObject
 {
+    // inferred: cPlActWpnBow::updateEfcHandle names cEfcHandle::mpOwner
+    friend class cPlActWpnBow;
     // inferred: cpChantCommand::updateEfcHandle names cEfcHandle::mpOwner
     friend class cpChantCommand;
     // inferred: cpJob06::updateEfcHandle names cEfcHandle::mpOwner
@@ -44,7 +48,9 @@ class cEfcHandle : public MtObject
     friend class cpJob08;
     // inferred: cpJob09::updateEfcHandle names cEfcHandle::mpOwner
     friend class cpJob09;
-    // inferred: sEffectExt::setHandleOwner names cEfcHandle::mpOwner
+    // inferred: cpJob10::updateEfcHandle names cEfcHandle::mpOwner
+    friend class cpJob10;
+    // inferred: sEffectExt::endEffect names cEfcHandle::mpOwner
     friend class sEffectExt;
     // inferred: uHuman::updateEfcHandle names cEfcHandle::mpOwner
     friend class uHuman;
@@ -149,4 +155,10 @@ inline cEfcHandle::cEfcHandle() {
     this->mIndex = static_cast<s32>(0);
     this->mpOwner = static_cast<cUnit*>(nullptr);
     this->mArrowJointNo = static_cast<s32>(-1);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cEfcHandle::getUnitType() const {
+    return this->UnitType;
 }

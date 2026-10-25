@@ -224,19 +224,36 @@ __attribute__((weak)) void sOmManager::releaseOmCtrl(cOmControl* pctrl) {
 }
 
 // Address: 0x007fed90 - 0x007fedd1 (65 bytes)
-__attribute__((weak)) cOmControl* sOmManager::getOmCtrl(u32 uniqueId) {
-    // local: u32 num;
-    // local: u32 i;
-    // local: cOmControl* p;
-    DDON_STUB("sOmManager::getOmCtrl")
-    return nullptr;
+cOmControl* sOmManager::getOmCtrl(u32 uniqueId) {
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: cOmControl* p;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xd0 from sOmManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xe0 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(224))) != uniqueId) {
+                } else {
+                    return static_cast<cOmControl*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i)]);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+    }
+    return static_cast<cOmControl*>(nullptr);
 }
 
 // Address: 0x007febb0 - 0x007febc9 (25 bytes)
-__attribute__((weak)) cOmControl* sOmManager::getOmCtrlFromIndex(u32 index) {
-    // local: u32 cnum;
-    DDON_STUB("sOmManager::getOmCtrlFromIndex")
-    return nullptr;
+cOmControl* sOmManager::getOmCtrlFromIndex(u32 index) {
+    // DWARF local not rendered: u32 cnum;
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (index < this->mRefOmCtrlArray.::MtArray::mLength) {
+        return static_cast<cOmControl*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(index)]);
+    } else {
+        return static_cast<cOmControl*>(nullptr);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (138 bytes)
@@ -322,12 +339,26 @@ __attribute__((weak)) void sOmManager::releaseOmInsCtrl(cOmControl* pctrl) {
 }
 
 // Address: 0x007fbf50 - 0x007fbf90 (64 bytes)
-__attribute__((weak)) uOmSwingInstancing* sOmManager::getOmInsUnit(s32 omID) {
-    // local: u32 unum;
-    // local: u32 ucnt;
-    // local: uOmSwingInstancing* puins;
-    DDON_STUB("sOmManager::getOmInsUnit")
-    return nullptr;
+uOmSwingInstancing* sOmManager::getOmInsUnit(s32 omID) {
+    // DWARF local not rendered: u32 unum;
+    // DWARF local not rendered: uOmSwingInstancing* puins;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1b0 from sOmManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x12c0 from MtObject*
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(432))) != static_cast<unsigned int>(0)) {
+        u32 ucnt = static_cast<u32>(0);
+        do {
+            if (this->mpuOmIns.::MtArray::getBuffer()[static_cast<int>(ucnt)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpuOmIns.::MtArray::getBuffer()[static_cast<int>(ucnt)]) + static_cast<long>(4800))) != static_cast<unsigned int>(omID)) {
+                } else {
+                    return static_cast<uOmSwingInstancing*>(this->mpuOmIns.::MtArray::getBuffer()[static_cast<int>(ucnt)]);
+                }
+            }
+            ucnt += static_cast<u32>(1);
+        } while (ucnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(432))));
+    }
+    return static_cast<uOmSwingInstancing*>(nullptr);
 }
 
 // Address: 0x007fb970 - 0x007fbc39 (713 bytes)
@@ -369,12 +400,26 @@ __attribute__((weak)) void sOmManager::releaseTreeInsCtrl(cOmTreeControl* pctrl)
 }
 
 // Address: 0x007fbf10 - 0x007fbf50 (64 bytes)
-__attribute__((weak)) uOmSwingInstancing* sOmManager::getTreeInsUnit(s32 omID) {
-    // local: u32 unum;
-    // local: u32 ucnt;
-    // local: uOmSwingInstancing* puins;
-    DDON_STUB("sOmManager::getTreeInsUnit")
-    return nullptr;
+uOmSwingInstancing* sOmManager::getTreeInsUnit(s32 omID) {
+    // DWARF local not rendered: u32 unum;
+    // DWARF local not rendered: uOmSwingInstancing* puins;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1f8 from sOmManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x12c0 from MtObject*
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(504))) != static_cast<unsigned int>(0)) {
+        u32 ucnt = static_cast<u32>(0);
+        do {
+            if (this->mpuTreeIns.::MtArray::getBuffer()[static_cast<int>(ucnt)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpuTreeIns.::MtArray::getBuffer()[static_cast<int>(ucnt)]) + static_cast<long>(4800))) != static_cast<unsigned int>(omID)) {
+                } else {
+                    return static_cast<uOmSwingInstancing*>(this->mpuTreeIns.::MtArray::getBuffer()[static_cast<int>(ucnt)]);
+                }
+            }
+            ucnt += static_cast<u32>(1);
+        } while (ucnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(504))));
+    }
+    return static_cast<uOmSwingInstancing*>(nullptr);
 }
 
 // Address: 0x007fbc40 - 0x007fbf09 (713 bytes)
@@ -420,17 +465,63 @@ void sOmManager::fadeIn(f32 frame) {
 // void sOmManager::moveBell();
 
 // Address: 0x007fed30 - 0x007fed85 (85 bytes)
-__attribute__((weak)) bool sOmManager::isDoor(u32 uniqueId) {
-    // local: cOmControl* pctrl;
-    DDON_STUB("sOmManager::isDoor")
-    return {};
+bool sOmManager::isDoor(u32 uniqueId) {
+    // DWARF local not rendered: cOmControl* pctrl;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xd0 from sOmManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xe0 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from unsigned long
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0 = static_cast<unsigned int>(0);
+        do {
+            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(224))) != uniqueId) {
+                } else {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(144))) != static_cast<unsigned long>(0)) {
+                        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(144))) + static_cast<long>(16))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            i0 += static_cast<unsigned int>(1);
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+    }
+    return false;
 }
 
 // Address: 0x007fede0 - 0x007fee35 (85 bytes)
-__attribute__((weak)) bool sOmManager::isCanOpenDoor(u32 uniqueId) {
-    // local: cOmControl* pctrl;
-    DDON_STUB("sOmManager::isCanOpenDoor")
-    return {};
+bool sOmManager::isCanOpenDoor(u32 uniqueId) {
+    // DWARF local not rendered: cOmControl* pctrl;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xd0 from sOmManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xe0 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from unsigned long
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0 = static_cast<unsigned int>(0);
+        do {
+            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(224))) != uniqueId) {
+                } else {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(144))) != static_cast<unsigned long>(0)) {
+                        return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(144))) + static_cast<long>(16))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
+                    } else {
+                        return false;
+                    }
+                }
+            }
+            i0 += static_cast<unsigned int>(1);
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+    }
+    return false;
 }
 
 // Address: 0x007fee40 - 0x007feea1 (97 bytes)
@@ -512,11 +603,29 @@ __attribute__((weak)) bool sOmManager::isBreakable(u32 uniqueId) {
 // bool sOmManager::isPullLever(u32 uniqueID);
 
 // Address: 0x007ff300 - 0x007ff34a (74 bytes)
-__attribute__((weak)) bool sOmManager::isUseItem(u32 uniqueID) {
-    // local: cOmControl* pctrl;
-    // local: u32 v;
-    DDON_STUB("sOmManager::isUseItem")
-    return {};
+bool sOmManager::isUseItem(u32 uniqueID) {
+    // DWARF local not rendered: cOmControl* pctrl;
+    // DWARF local not rendered: u32 v;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xd0 from sOmManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xe0 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xa9 from MtObject*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
+        unsigned int i0 = static_cast<unsigned int>(0);
+        do {
+            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(224))) != uniqueID) {
+                } else {
+                    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i0)]) + static_cast<long>(169))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
+                }
+            }
+            i0 += static_cast<unsigned int>(1);
+        } while (i0 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+    }
+    return false;
 }
 
 // Address: 0x007ff350 - 0x007ff396 (70 bytes)
@@ -580,12 +689,28 @@ __attribute__((weak)) const MtVector3& sOmManager::getAtkOmPosNum(u32 index) {
 // void sOmManager::moveAtkOmPos();
 
 // Address: 0x00801930 - 0x0080197b (75 bytes)
-__attribute__((weak)) cOmControl* sOmManager::getTarasuk() {
-    // local: u32 num;
-    // local: u32 cnt;
-    // local: cOmControl* pctrl;
-    DDON_STUB("sOmManager::getTarasuk")
-    return nullptr;
+cOmControl* sOmManager::getTarasuk() {
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: cOmControl* pctrl;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x130 from sOmManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x30 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(304))) != static_cast<unsigned int>(0)) {
+        u32 cnt = static_cast<u32>(0);
+        do {
+            if (this->mFastOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(cnt)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mFastOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(cnt)]) + static_cast<long>(48))) != static_cast<unsigned long>(0)) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mFastOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(cnt)]) + static_cast<long>(136))) != static_cast<unsigned int>(522940)) {
+                    } else {
+                        return static_cast<cOmControl*>(this->mFastOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(cnt)]);
+                    }
+                }
+            }
+            cnt += static_cast<u32>(1);
+        } while (cnt < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(304))));
+    }
+    return static_cast<cOmControl*>(nullptr);
 }
 
 // Address: 0x00801980 - 0x008019d0 (80 bytes)
@@ -951,10 +1076,25 @@ __attribute__((weak)) bool sOmManager::isDoneGimmick(u32 in_uid) {
 }
 
 // Address: 0x00801bc0 - 0x00801c07 (71 bytes)
-__attribute__((weak)) uBaseModel* sOmManager::getLayoutUnit(u32 uniqueId) {
-    // local: cOmControl* p_om;
-    DDON_STUB("sOmManager::getLayoutUnit")
-    return nullptr;
+uBaseModel* sOmManager::getLayoutUnit(u32 uniqueId) {
+    // DWARF local not rendered: cOmControl* p_om;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xd0 from sOmManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xe0 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i1 = static_cast<unsigned int>(0);
+        do {
+            if (this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i1)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i1)]) + static_cast<long>(224))) != uniqueId) {
+                } else {
+                    return static_cast<cOmControl*>(this->mRefOmCtrlArray.::MtArray::getBuffer()[static_cast<int>(i1)])->::cOmControl::getUnit();
+                }
+            }
+            i1 += static_cast<unsigned int>(1);
+        } while (i1 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(208))));
+    }
+    return static_cast<uBaseModel*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF

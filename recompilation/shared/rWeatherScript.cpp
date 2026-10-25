@@ -348,8 +348,7 @@ __attribute__((weak)) void cWeatherScriptIO::operator delete(void* p_addr) {
 // Address: 0x01a65a00 - 0x01a65a17 (23 bytes)
 // Also emitted as: _ZN16cWeatherScriptIOD0Ev at 0x01a65a60
 cWeatherScriptIO::~cWeatherScriptIO() {
-    DDON_STUB("cWeatherScriptIO::~cWeatherScriptIO")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x00716a90 - 0x00716b16 (134 bytes)

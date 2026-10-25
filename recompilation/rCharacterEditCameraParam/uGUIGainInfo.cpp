@@ -4,10 +4,17 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
+#include "../shared/cUnit.h"
 #include "../shared/nGUI.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
+#include "../shared/sMain.h"
+#include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -93,9 +100,21 @@ bool uGUIGainInfo::loadResource() {
 }
 
 // Address: 0x00a92f80 - 0x00a93086 (262 bytes)
-__attribute__((weak)) void uGUIGainInfo::setup() {
-    DDON_STUB("uGUIGainInfo::setup")
-    /* stub */
+void uGUIGainInfo::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(12)), true);
+    this->setPlay(false);
+    this->mpInstNullAll = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(16), false));
+    this->mpInstNullBonus = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(13), false));
+    this->mpInstAnimText0 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(8), false));
+    this->mpInstAnimText1 = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(11), false));
+    this->mpObjMsgText0 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(8), static_cast<u32>(21)));
+    this->mpObjMsgText1 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(11), static_cast<u32>(21)));
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateSleep);
 }
 
 // Address: 0x00a930a0 - 0x00a930d1 (49 bytes)
@@ -175,15 +194,24 @@ __attribute__((weak)) void uGUIGainInfo::updateInit() {
 }
 
 // Address: 0x00a93a30 - 0x00a93a76 (70 bytes)
-__attribute__((weak)) void uGUIGainInfo::updateIn() {
-    DDON_STUB("uGUIGainInfo::updateIn")
-    /* stub */
+void uGUIGainInfo::updateIn() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0xa93a3d, used once; no DWARF local holds it
+    nGUI::FLOW* t0 = this->getPlayingFlow();
+    if (t0 != this->::uGUI::getFlow(static_cast<u32>(3))) {
+        return;
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateWait);
 }
 
 // Address: 0x00a93a80 - 0x00a93aea (106 bytes)
-__attribute__((weak)) void uGUIGainInfo::updateWait() {
-    DDON_STUB("uGUIGainInfo::updateWait")
-    /* stub */
+void uGUIGainInfo::updateWait() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mWait = this->::cUnit::getDeltaTime() + this->mWait;
+    if (this->mWait > (::sMain::getInstance()->::sMain::getFps() * this->mWaitMax)) {
+        this->::uGUIBase::setFlowAndInit(static_cast<u32>(5), false);
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGainInfo::updateOut);
+    }
 }
 
 // Address: 0x00a93af0 - 0x00a93af1 (1 bytes)

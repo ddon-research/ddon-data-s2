@@ -257,7 +257,8 @@ const MtDTI& cSpotEnemyData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: only approximate callers check this inline body
-inline void* cSpotEnemyData::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* cSpotEnemyData::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cSpotEnemyData::DTI)->memAlloc(sz, align, ::cSpotEnemyData::DTI.::MtDTI::getID());
 }
 
@@ -329,7 +330,8 @@ const MtDTI& cSpotItemData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; constant parameters of one value written in their declaration order where it stands, once each (2.7.0; rCharacterEdit's proven operator new reads memAlloc(sz, align, …)); approximate: only approximate callers check this inline body
-inline void* cSpotItemData::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* cSpotItemData::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cSpotItemData::DTI)->memAlloc(sz, align, ::cSpotItemData::DTI.::MtDTI::getID());
 }
 

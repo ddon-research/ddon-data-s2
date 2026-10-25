@@ -8,7 +8,9 @@
 #include "cResource.h"
 #include "cUnit.h"
 #include "rGeometry2.h"
+#include "sUnit.h"
 #include "uGeometry2.h"
+#include "uModel.h"
 #include "uScrollCollision.h"
 #include "uScrollCollisionGeometry.h"
 #ifndef DDON_STUB
@@ -176,11 +178,23 @@ rGeometry2* uScrollCollisionGeometryModel::getRegistResource() {
 // void uScrollCollisionGeometryModel::setActive(bool set);
 
 // Address: 0x0130b030 - 0x0130b0b4 (132 bytes)
-__attribute__((weak)) void uScrollCollisionGeometryModel::registOwner(uModel* pOwner) {
-    // local: const s32 NewOwnerMoveLine;
-    // local: const s32 MyMoveLine;
-    DDON_STUB("uScrollCollisionGeometryModel::registOwner")
-    /* stub */
+void uScrollCollisionGeometryModel::registOwner(uModel* pOwner) {
+    // DWARF local not rendered: const s32 NewOwnerMoveLine;
+    // DWARF local not rendered: const s32 MyMoveLine;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uModel*
+    if (pOwner == static_cast<uModel*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x130b04e read, used once; no DWARF local holds it
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pOwner) + static_cast<long>(16));
+    // inferred: a temporary for the result of the call at 0x130b068, used once; no DWARF local holds it
+    u32 t1 = (::sUnit::mpInstance)->getMoveLineOrder(this->::cUnit::mMoveLine);
+    if ((::sUnit::mpInstance)->getMoveLineOrder(pOwner->::cUnit::mMoveLine) < t1) {
+        this->mFlgOwnerRegist = true;
+        this->mpOwnerModel = pOwner;
+        this->::uScrollCollisionGeometryModel::registMemberToUnit();
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -263,9 +277,24 @@ __attribute__((weak)) void uScrollCollisionGeometryModel::setDummyU32(u32) {
 }
 
 // Address: 0x0130b510 - 0x0130b5a2 (146 bytes)
-__attribute__((weak)) void uScrollCollisionGeometryModel::setGroupGeometry(uModel* pOwnerModel, uScrollCollisionGeometryGroupModel* pParentUnit, uGeometry2* pGroupGeometry) {
-    DDON_STUB("uScrollCollisionGeometryModel::setGroupGeometry")
-    /* stub */
+void uScrollCollisionGeometryModel::setGroupGeometry(uModel* pOwnerModel, uScrollCollisionGeometryGroupModel* pParentUnit, uGeometry2* pGroupGeometry) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uModel*
+    this->mFlgGroupMode = true;
+    this->mpParentGeometryGroup = pParentUnit;
+    this->mpGeometryUnit_Inside = pGroupGeometry;
+    if (pOwnerModel == static_cast<uModel*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x130b53d read, used once; no DWARF local holds it
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pOwnerModel) + static_cast<long>(16));
+    // inferred: a temporary for the result of the call at 0x130b557, used once; no DWARF local holds it
+    u32 t1 = (::sUnit::mpInstance)->getMoveLineOrder(this->::cUnit::mMoveLine);
+    if ((::sUnit::mpInstance)->getMoveLineOrder(pOwnerModel->::cUnit::mMoveLine) < t1) {
+        this->mFlgOwnerRegist = true;
+        this->mpOwnerModel = pOwnerModel;
+        this->::uScrollCollisionGeometryModel::registMemberToUnit();
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

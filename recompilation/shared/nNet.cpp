@@ -7,8 +7,12 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtNetObject.h"
+#include "MtObject.h"
 #include "Party.h"
+#include "../rLayout/cNetSessionManager.h"
 #include "nHuman.h"
+#include "sNetwork.h"
+#include "sNetworkExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -91,9 +95,15 @@ __attribute__((weak)) void nNet::clearBaseInfo(CCommunityCharacterBaseInfo& info
 }
 
 // Address: 0x00617440 - 0x00617456 (22 bytes)
-__attribute__((weak)) bool nNet::isOnline(u8 onlineStatus) {
-    DDON_STUB("nNet::isOnline")
-    return {};
+bool nNet::isOnline(u8 onlineStatus) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (onlineStatus <= static_cast<u8>(12)) {
+        return static_cast<bool>((static_cast<unsigned long>(2042) >> static_cast<unsigned long>(onlineStatus & static_cast<u8>(31))) & static_cast<unsigned long>(1));
+    } else {
+        return true;
+    }
 }
 
 // Address: 0x00617460 - 0x006175e2 (386 bytes)
@@ -256,11 +266,21 @@ __attribute__((weak)) void nNet::convBoardItemInfoToParam(CEntryItemParam& param
 
 // Address: 0x00618dd0 - 0x00618e08 (56 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nNet.cpp:707
-__attribute__((weak)) const CEntryMemberData* nNet::getMemberInfo(nNet::stEntryBoardItemInfo& info, u32 characterId) {
-    // local: u32 i;
-    // local: CEntryMemberData* pMember;
-    DDON_STUB("nNet::getMemberInfo")
-    return nullptr;
+const CEntryMemberData* nNet::getMemberInfo(nNet::stEntryBoardItemInfo& info, u32 characterId) {
+    // DWARF local not rendered: CEntryMemberData* pMember;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xa8 from nNet::stEntryBoardItemInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&info) + static_cast<long>(168))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(info.MemberList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(32))) == characterId) {
+                return static_cast<const CEntryMemberData*>(info.MemberList.::MtArray::getBuffer()[static_cast<int>(i)]);
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&info) + static_cast<long>(168))));
+    }
+    return static_cast<const CEntryMemberData*>(nullptr);
 }
 
 // Address: 0x00618e10 - 0x00618e54 (68 bytes)
@@ -312,9 +332,10 @@ __attribute__((weak)) void nNet::clearRollBit(u32& itemRankCheckRoleType, nJob::
 
 // Address: 0x006196b0 - 0x006196b7 (7 bytes)
 // Source: D:\publishDDO_PS4_02_02_Master\DDO_02_02\DD_ONLINE\prog/nNet.cpp:897
-__attribute__((weak)) bool nNet::checkRollBit(u32 itemRankCheckRoleType, nJob::E_ROLE_TYPE rollType) {
-    DDON_STUB("nNet::checkRollBit")
-    return {};
+bool nNet::checkRollBit(u32 itemRankCheckRoleType, nJob::E_ROLE_TYPE rollType) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(itemRankCheckRoleType) >> (static_cast<unsigned long>(rollType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x006196c0 - 0x00619752 (146 bytes)
@@ -326,9 +347,11 @@ __attribute__((weak)) void nNet::resetPawnFeedback(nNet::stPawnFeedback& feedbac
 }
 
 // Address: 0x00619760 - 0x00619783 (35 bytes)
-__attribute__((weak)) u32 nNet::getClientVersion() {
-    DDON_STUB("nNet::getClientVersion")
-    return {};
+u32 nNet::getClientVersion() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    return static_cast<u32>(static_cast<unsigned long>(static_cast<unsigned short>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::getSessionChannel() * static_cast<u32>(256))) | static_cast<unsigned long>(538968082));
 }
 
 // No out-of-line body: no code in the ELF

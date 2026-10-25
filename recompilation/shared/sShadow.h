@@ -52,6 +52,8 @@ using uintptr = __uintptr_t;
 
 class sShadow : public cSystem
 {
+    // inferred: uShadow::kill names sShadow::mpInstance
+    friend class uShadow;
 public:
     enum RESOURCE_TYPE
     {

@@ -6,9 +6,12 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "MtString.h"
+#include "cNetGameServer.h"
 #include "nCharacterData.h"
 #include "rItemList.h"
 #include "sItemManager.h"
+#include "sNetwork.h"
+#include "sNetworkExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -287,9 +290,9 @@ u32 cItemParam::getItemNum() const {
 }
 
 // Address: 0x0196fd60 - 0x0196fd65 (5 bytes)
-__attribute__((weak)) void cItemParam::setItemNum(u32 ItemNum) {
-    DDON_STUB("cItemParam::setItemNum")
-    /* stub */
+void cItemParam::setItemNum(u32 ItemNum) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mItemParam.mItemNum_Guard = static_cast<unsigned short>(ItemNum);
 }
 
 // No out-of-line body: no code in the ELF
@@ -385,15 +388,41 @@ __attribute__((weak)) u8 cItemParam::getColorSortNo() const {
 // bool cItemParam::isEquip() const;
 
 // Address: 0x000e08a0 - 0x000e08ce (46 bytes)
-__attribute__((weak)) bool cItemParam::isPlayerEquip() const {
-    DDON_STUB("cItemParam::isPlayerEquip")
-    return {};
+bool cItemParam::isPlayerEquip() const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mEquipCharID != static_cast<u32>(0)) {
+        if (this->mEquipCharType == static_cast<u8>(1)) {
+            if (this->mEquipCharID != static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x000e08d0 - 0x000e08fe (46 bytes)
-__attribute__((weak)) bool cItemParam::isPawnEquip() const {
-    DDON_STUB("cItemParam::isPawnEquip")
-    return {};
+bool cItemParam::isPawnEquip() const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mEquipCharID != static_cast<u32>(0)) {
+        if (this->mEquipCharType == static_cast<u8>(2)) {
+            if (this->mEquipCharID == static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: no code in the ELF

@@ -189,9 +189,15 @@ __attribute__((weak)) void cRemoteProcedure::addGroup(const MtString& group) {
 // void cRemoteProcedure::sendGroup(const MtString& group, cRemoteCall& call);
 
 // Address: 0x01026570 - 0x010265a8 (56 bytes)
-__attribute__((weak)) bool cRemoteProcedure::process(cRemoteCall& call, s32 member) {
-    DDON_STUB("cRemoteProcedure::process")
-    return {};
+bool cRemoteProcedure::process(cRemoteCall& call, s32 member) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpParent != static_cast<MtObject*>(nullptr)) {
+        if (this->mpCallback != static_cast<cRemoteProcedure::PROCESS_CALLBACK>(0)) {
+            (this->mpParent->*this->mpCallback)(call, member);
+            return true;
+        }
+    }
+    return false;
 }
 
 // Address: 0x010264b0 - 0x010264b3 (3 bytes)

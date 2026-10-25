@@ -12,7 +12,7 @@
 #include "aStage.h"
 #include "cArea.h"
 #include "../shared/cControl.h"
-#include "../shared/cGUIControlMgr.h"
+#include "cGUIControlMgr.h"
 #include "../shared/cGUIInstance.h"
 #include "../shared/cGUIObject.h"
 #include "../shared/cNetGameServer.h"
@@ -1880,10 +1880,43 @@ __attribute__((weak)) void uGUINewspaper::updateEventInfoPopup() {
 }
 
 // Address: 0x00b8cd30 - 0x00b8ce1a (234 bytes)
-__attribute__((weak)) void uGUINewspaper::clearRankingDisp() {
-    // local: u32 idx;
-    DDON_STUB("uGUINewspaper::clearRankingDisp")
-    /* stub */
+void uGUINewspaper::clearRankingDisp() {
+    // DWARF local not rendered: u32 idx;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->mRankingScrollbar.::uGUIBase::cScrollList::clearInfo();
+    this->mRankingListNum = static_cast<u32>(0);
+    if (this->mRankingList[0].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[0].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[1].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[1].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[2].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[2].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[3].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[3].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[4].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[4].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[5].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[5].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[6].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[6].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[7].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[7].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[8].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[8].mpInst->::cGUIInstance::setVisible(false);
+    }
+    if (this->mRankingList[9].mpInst != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mRankingList[9].mpInst->::cGUIInstance::setVisible(false);
+        return;
+    }
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (428 bytes)

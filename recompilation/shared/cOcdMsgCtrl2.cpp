@@ -6,6 +6,7 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cUnit.h"
+#include "cpOcdCtrl.h"
 #include "nDDOUtility.h"
 #include "nObjCondition.h"
 #include "uDDOModel.h"
@@ -161,13 +162,61 @@ __attribute__((weak)) void cOcdMsgCtrl2::receiveOcdMsgData() {
 }
 
 // Address: 0x00179b00 - 0x00179bc8 (200 bytes)
-__attribute__((weak)) void cOcdMsgCtrl2::callBackReceiveActiveLv(u32 OcdUID, u32 currentLv, u32 receiveLv, bool initFlag, bool isAction) {
-    // local: u32 applyNum;
-    // local: u32 i;
-    // local: u32 applyNum;
-    // local: u32 i;
-    DDON_STUB("cOcdMsgCtrl2::callBackReceiveActiveLv")
-    /* stub */
+void cOcdMsgCtrl2::callBackReceiveActiveLv(u32 OcdUID, u32 currentLv, u32 receiveLv, bool initFlag, bool isAction) {
+    // DWARF local not rendered: u32 applyNum;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 applyNum;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (currentLv != receiveLv) {
+        // inferred: the value the loop at 0x179b50 carries; no location-less local in scope fits
+        u32 v0_3;
+        if (currentLv >= receiveLv) {
+            goto region_179b68;
+        } else {
+            if (currentLv == static_cast<u32>(0)) {
+                this->mpOcdCtrl->::cpOcdCtrl::callbackReceiveActive(OcdUID, initFlag, isAction);
+                if (((receiveLv - currentLv) - static_cast<u32>(1)) == static_cast<u32>(0)) {
+                    goto region_179b68;
+                } else {
+                    v0_3 = (receiveLv - currentLv) - static_cast<u32>(1);
+                }
+            } else {
+                if ((receiveLv - currentLv) == static_cast<u32>(0)) {
+                    goto region_179b68;
+                } else {
+                    v0_3 = receiveLv - currentLv;
+                }
+            }
+        }
+        for (;;) {
+            this->mpOcdCtrl->::cpOcdCtrl::callMulti(OcdUID, this->mInitFlag);
+            if ((v0_3 - static_cast<u32>(1)) != static_cast<u32>(0)) {
+                v0_3 += static_cast<u32>(4294967295);
+            } else {
+                break;
+            }
+        }
+        region_179b68:;
+        if (receiveLv >= currentLv) {
+        } else {
+            this->mpOcdCtrl->::cpOcdCtrl::callFinal(OcdUID);
+            if (receiveLv != static_cast<u32>(0)) {
+                this->mpOcdCtrl->::cpOcdCtrl::callInit(OcdUID, this->mInitFlag);
+                if (receiveLv != static_cast<u32>(1)) {
+                    // inferred: the value the loop at 0x179ba0 carries; no location-less local in scope fits
+                    for (u32 v2_10 = receiveLv - static_cast<u32>(1);;) {
+                        this->mpOcdCtrl->::cpOcdCtrl::callMulti(OcdUID, this->mInitFlag);
+                        if ((v2_10 - static_cast<u32>(1)) != static_cast<u32>(0)) {
+                            v2_10 += static_cast<u32>(4294967295);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (143 bytes)

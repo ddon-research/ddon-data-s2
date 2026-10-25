@@ -5,12 +5,14 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cGUIInstance.h"
 #include "../shared/cResource.h"
 #include "../shared/nDDOModel.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/nGUIAim.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -193,9 +195,9 @@ __attribute__((weak)) void uGUIAim::adjustScale() {
 }
 
 // Address: 0x00922830 - 0x0092284a (26 bytes)
-__attribute__((weak)) void uGUIAim::updateInit() {
-    DDON_STUB("uGUIAim::updateInit")
-    /* stub */
+void uGUIAim::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAim::updateWait);
 }
 
 // Address: 0x00923350 - 0x00923500 (432 bytes)
@@ -225,9 +227,21 @@ __attribute__((weak)) void uGUIAim::updateLoop() {
 }
 
 // Address: 0x00923710 - 0x0092377a (106 bytes)
-__attribute__((weak)) void uGUIAim::updateEnd() {
-    DDON_STUB("uGUIAim::updateEnd")
-    /* stub */
+void uGUIAim::updateEnd() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::uGUI::isEndFlowAnimation(false) == false) {
+        return;
+    }
+    this->mMode = static_cast<uGUIAim::MODE>(0);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAim::updateWait);
+    if (this->mData.mpINST_Null_all == static_cast<cGUIInstNull*>(nullptr)) {
+        return;
+    }
+    this->mData.mpINST_Null_all->::cGUIInstance::setVisible(false);
+    if (this->mData.mpINST_Null_all == static_cast<cGUIInstNull*>(nullptr)) {
+        return;
+    }
+    this->mData.mpINST_Null_all->::cGUIInstance::setExecute(false);
 }
 
 // No out-of-line body: no code in the ELF

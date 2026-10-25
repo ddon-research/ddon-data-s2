@@ -11,7 +11,9 @@
 #include "MtSynchronize.h"
 #include "cDynamicBVHCollision.h"
 #include "cSystem.h"
+#include "cUnit.h"
 #include "nDraw.h"
+#include "sUnit.h"
 #include "uShadow.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -894,12 +896,39 @@ __attribute__((weak)) bool sScene::isMultiShadowUnit() {
 }
 
 // Address: 0x012774b0 - 0x0127753d (141 bytes)
-__attribute__((weak)) uShadow* sScene::getShadowUnit(uLight* light) {
-    // local: const UNIT_MAP* psmap;
-    // local: u32 i;
-    // local: uShadow* pshadow;
-    DDON_STUB("sScene::getShadowUnit")
-    return nullptr;
+uShadow* sScene::getShadowUnit(uLight* light) {
+    // DWARF local not rendered: const UNIT_MAP* psmap;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShadow* pshadow;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x127752b; no location-less local in scope fits
+    cUnit* v1_8;
+    if (light == static_cast<uLight*>(nullptr)) {
+        v1_8 = static_cast<cUnit*>(nullptr);
+    } else {
+        if (this->mUnitMap[4].count == static_cast<u32>(0)) {
+            v1_8 = static_cast<cUnit*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the value the load at 0x12774fa read, used twice; no DWARF local holds it
+                cUnit* t0 = this->mpUnitPool[i0_3 + this->mUnitMap[4].offset];
+                if ((::sUnit::mpInstance)->::sUnit::isDrawUnit(t0) != false) {
+                    if (static_cast<uShadow*>(t0)->::uShadow::isMappedTo(light) != false) {
+                        v1_8 = t0;
+                        break;
+                    }
+                }
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitMap[4].count) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    v1_8 = static_cast<cUnit*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<uShadow*>(v1_8);
 }
 
 // Address: 0x01274040 - 0x012740e3 (163 bytes)

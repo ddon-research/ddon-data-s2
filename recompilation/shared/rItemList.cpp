@@ -9,6 +9,7 @@
 #include "MtObject.h"
 #include "cResource.h"
 #include "nCharacterData.h"
+#include "nDDOIO.h"
 #include "nWeapon.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -177,11 +178,25 @@ __attribute__((weak)) void rItemList::releaseWork() {
 }
 
 // Address: 0x0068d060 - 0x0068d0ab (75 bytes)
-__attribute__((weak)) rItemList::rItemParam* rItemList::getItemList(u32 no) const {
-    // local: rItemParam* pParam;
-    // local: u16 index;
-    DDON_STUB("rItemList::getItemList")
-    return nullptr;
+rItemList::rItemParam* rItemList::getItemList(u32 no) const {
+    // DWARF local not rendered: rItemParam* pParam;
+    // DWARF local not rendered: u16 index;
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; the body oracle reports this body.
+    if (this->mpIndexTbl != static_cast<u16*>(nullptr)) {
+        if (this->mMaxId >= no) {
+            // inferred: a temporary for the value the load at 0x68d084 read, used twice; no DWARF local holds it
+            unsigned short t0 = this->mpIndexTbl[no];
+            if (t0 < this->getListNum()) {
+                return &this->mpItemList[t0];
+            } else {
+                return static_cast<rItemList::rItemParam*>(nullptr);
+            }
+        } else {
+            return static_cast<rItemList::rItemParam*>(nullptr);
+        }
+    } else {
+        return static_cast<rItemList::rItemParam*>(nullptr);
+    }
 }
 
 // Address: 0x0068d0b0 - 0x0068d0df (47 bytes)
@@ -195,11 +210,46 @@ rItemList::rItemParam* rItemList::getItemListByIndex(u32 index) const {
 }
 
 // Address: 0x0068d0e0 - 0x0068d178 (152 bytes)
-__attribute__((weak)) rItemList::rItemParam* rItemList::getItemListByArcTagNo(u32 arcTagNo) const {
-    // local: u32 i;
-    // local: rItemParam* pParam;
-    DDON_STUB("rItemList::getItemListByArcTagNo")
-    return nullptr;
+rItemList::rItemParam* rItemList::getItemListByArcTagNo(u32 arcTagNo) const {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: rItemParam* pParam;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x68d16d; no location-less local in scope fits
+    rItemList::rItemParam* v1_0;
+    if (this->getListNum() == static_cast<u32>(0)) {
+        v1_0 = static_cast<rItemList::rItemParam*>(nullptr);
+    } else {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            if ((&this->mpItemList[i0_2]) != static_cast<rItemList::rItemParam*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&this->mpItemList[i0_2]) + static_cast<long>(72))) != static_cast<unsigned long>(0)) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&this->mpItemList[i0_2]) + static_cast<long>(72))) + static_cast<long>(8))) == arcTagNo) {
+                        v1_0 = &this->mpItemList[i0_2];
+                        break;
+                    }
+                } else {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&this->mpItemList[i0_2]) + static_cast<long>(80))) != static_cast<unsigned long>(0)) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&this->mpItemList[i0_2]) + static_cast<long>(80))) + static_cast<long>(8))) == arcTagNo) {
+                            v1_0 = &this->mpItemList[i0_2];
+                            break;
+                        }
+                    } else {
+                        if (arcTagNo == static_cast<u32>(0)) {
+                            v1_0 = &this->mpItemList[i0_2];
+                            break;
+                        }
+                    }
+                }
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < this->getListNum()) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                v1_0 = static_cast<rItemList::rItemParam*>(nullptr);
+                break;
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x0068d180 - 0x0068d249 (201 bytes)
@@ -438,9 +488,10 @@ __attribute__((weak)) u32 rItemList::rItemParam::getStackMax(nCharacterData::ITE
 // u8 rItemList::rItemParam::getGrade() const;
 
 // Address: 0x0068bec0 - 0x0068beca (10 bytes)
-__attribute__((weak)) bool rItemList::rItemParam::getUseJob(u32 jobType) const {
-    DDON_STUB("rItemList::rItemParam::getUseJob")
-    return {};
+bool rItemList::rItemParam::getUseJob(u32 jobType) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mIsUseJob) >> static_cast<unsigned long>(jobType & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // No out-of-line body: 38 inlined copies in 17 functions (141 bytes)
@@ -478,16 +529,29 @@ u32 rItemList::rItemParam::getWepCategory() const {
 }
 
 // Address: 0x0068bee0 - 0x0068bf02 (34 bytes)
-__attribute__((weak)) u32 rItemList::rItemParam::getEquipCategory() const {
-    // local: u8 equip;
-    DDON_STUB("rItemList::rItemParam::getEquipCategory")
-    return {};
+u32 rItemList::rItemParam::getEquipCategory() const {
+    // DWARF local not rendered: u8 equip;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x10 from const rItemList::rItemParam*
+    // inferred: a value cast to the type its use takes: const unsigned char used as u32
+    if (this->mCategory == static_cast<u8>(3)) {
+        if ((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(16))) <= static_cast<unsigned char>(12)) {
+            return static_cast<u32>(((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(16))) == static_cast<unsigned char>(12)) ? static_cast<unsigned char>(4) : (*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(16))));
+        }
+    }
+    return static_cast<u32>(13);
 }
 
 // Address: 0x0068bf10 - 0x0068bf20 (16 bytes)
-__attribute__((weak)) rItemList::rItemParam::EQUIP_SUB_CATEGORY rItemList::rItemParam::getEquipSubCategory() const {
-    DDON_STUB("rItemList::rItemParam::getEquipSubCategory")
-    return {};
+rItemList::rItemParam::EQUIP_SUB_CATEGORY rItemList::rItemParam::getEquipSubCategory() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x12 from const rItemList::rItemParam*
+    // inferred: a value cast to the type its use takes: const unsigned short used as rItemList::rItemParam::EQUIP_SUB_CATEGORY
+    if (this->mCategory == static_cast<u8>(3)) {
+        return static_cast<rItemList::rItemParam::EQUIP_SUB_CATEGORY>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(18)));
+    } else {
+        return static_cast<rItemList::rItemParam::EQUIP_SUB_CATEGORY>(0);
+    }
 }
 
 // Address: 0x0068bf20 - 0x0068bf64 (68 bytes)
@@ -514,9 +578,19 @@ __attribute__((weak)) bool rItemList::rItemParam::isArmor() const {
 }
 
 // Address: 0x0068bfd0 - 0x0068bfe7 (23 bytes)
-__attribute__((weak)) bool rItemList::rItemParam::isCostume() const {
-    DDON_STUB("rItemList::rItemParam::isCostume")
-    return {};
+bool rItemList::rItemParam::isCostume() const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x10 from const rItemList::rItemParam*
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mCategory == static_cast<u8>(3)) {
+        if ((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(16))) != static_cast<unsigned char>(12)) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0068bff0 - 0x0068c013 (35 bytes)
@@ -580,9 +654,18 @@ u8 rItemList::rItemParam::getEleSlot() const {
 }
 
 // Address: 0x0068c0c0 - 0x0068c0e6 (38 bytes)
-__attribute__((weak)) s8 rItemList::rItemParam::getMaterialColNo() const {
-    DDON_STUB("rItemList::rItemParam::getMaterialColNo")
-    return {};
+s8 rItemList::rItemParam::getMaterialColNo() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as s8
+    if (this->mpWeaponParam != static_cast<rItemList::rWeaponParam*>(nullptr)) {
+        return static_cast<s8>(this->mpWeaponParam->mColorNo);
+    } else {
+        if (this->mpProtectorParam != static_cast<rItemList::rProtectorParam*>(nullptr)) {
+            return static_cast<s8>(this->mpProtectorParam->mColorNo);
+        } else {
+            return static_cast<s8>(0);
+        }
+    }
 }
 
 // Address: 0x0068c0f0 - 0x0068c116 (38 bytes)
@@ -923,9 +1006,17 @@ __attribute__((weak)) bool rItemList::rParam::load(MtDataReader& in) {
 }
 
 // Address: 0x0068a0a0 - 0x0068a0ec (76 bytes)
-__attribute__((weak)) bool rItemList::rParam::save(MtDataWriter& out) {
-    DDON_STUB("rItemList::rParam::save")
-    return {};
+bool rItemList::rParam::save(MtDataWriter& out) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s16 used as u16
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from rItemList::rParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xe from rItemList::rParam*
+    out.writeU16(static_cast<u16>(this->mKindType));
+    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(10)));
+    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(12)));
+    out.writeU16(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(14)));
+    return true;
 }
 
 // No out-of-line body: 20 inlined copies in 12 functions (140 bytes)
@@ -1065,9 +1156,15 @@ MtUI* rItemList::rVsEnemyParam::createUI(MtProperty& prop) {
 }
 
 // Address: 0x0068a370 - 0x0068a3bf (79 bytes)
-__attribute__((weak)) bool rItemList::rVsEnemyParam::load(MtDataReader& in) {
-    DDON_STUB("rItemList::rVsEnemyParam::load")
-    return {};
+bool rItemList::rVsEnemyParam::load(MtDataReader& in) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mKindType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(in, this->mParam);
+    return true;
 }
 
 // Address: 0x0068a3c0 - 0x0068a410 (80 bytes)

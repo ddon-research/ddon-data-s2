@@ -16,6 +16,7 @@
 #include "../rShakeCtrl/rShakeCtrl.h"
 #include "uCnsShakeCtrl.h"
 #include "../shared/uDDOModel.h"
+#include "../shared/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -295,10 +296,81 @@ void cpShakeCtrl::shake(cHitInfoAfter* pHitInfo, bool force_shake, s32 ResourceN
 
 // Address: 0x005305f0 - 0x005306ff (271 bytes)
 __attribute__((weak)) uCnsShakeCtrl* cpShakeCtrl::findNearestCnsShakeCtrl(s32 JntNo) {
-    // local: Joint* pJnt;
-    // local: uCnsShakeCtrl* pCnsShakeCtrl;
-    DDON_STUB("cpShakeCtrl::findNearestCnsShakeCtrl")
-    return nullptr;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x5306ed; no location-less local in scope fits
+    MtObject* v4_9;
+    if (this->mpModel == static_cast<uDDOModel*>(nullptr)) {
+        v4_9 = static_cast<MtObject*>(nullptr);
+    } else {
+        if (this->mpModel->::uModel::mJointTable[static_cast<unsigned char>(JntNo)] == static_cast<unsigned char>(255)) {
+            v4_9 = static_cast<MtObject*>(nullptr);
+        } else {
+            if ((&this->mpModel->::uModel::mJoint[this->mpModel->::uModel::mJointTable[static_cast<unsigned char>(JntNo)]]) == static_cast<uModel::Joint*>(nullptr)) {
+                v4_9 = static_cast<MtObject*>(nullptr);
+            } else {
+                // inferred: the value the loop at 0x530650 carries; no location-less local in scope fits
+                uModel::Joint* v0_9 = &this->mpModel->::uModel::mJoint[this->mpModel->::uModel::mJointTable[static_cast<unsigned char>(JntNo)]];
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                unsigned int i1_3;
+                for (;;) {
+                    if (this->mpResource != static_cast<rShakeCtrl*>(nullptr)) {
+                        // inferred: the value the loop at 0x530680 carries; no location-less local in scope fits
+                        u32 v1_10 = v0_9->mNo;
+                        if (this->mpResource->getDataNum() != static_cast<u32>(0)) {
+                            i1_3 = static_cast<unsigned int>(0);
+                            for (;;) {
+                                if (i1_3 < this->mCnsShakeCtrlArray.::MtArray::mLength) {
+                                    // inferred: a temporary for the result of the call at 0x530691, used twice; no DWARF local holds it
+                                    cShakeCtrl* t0 = this->mpResource->getData(i1_3);
+                                    if (t0 != static_cast<cShakeCtrl*>(nullptr)) {
+                                        if (t0->mJntNo == static_cast<int>(v1_10)) {
+                                            uCnsShakeCtrl* pCnsShakeCtrl = static_cast<uCnsShakeCtrl*>(this->mCnsShakeCtrlArray.::MtArray::mpArray[i1_3]);
+                                            if (pCnsShakeCtrl == static_cast<uCnsShakeCtrl*>(nullptr)) {
+                                                if ((i1_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
+                                                    i1_3 += static_cast<unsigned int>(1);
+                                                } else {
+                                                    break;
+                                                }
+                                            } else {
+                                                v4_9 = pCnsShakeCtrl;
+                                                return static_cast<uCnsShakeCtrl*>(v4_9);
+                                            }
+                                        } else {
+                                            if ((i1_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
+                                                i1_3 += static_cast<unsigned int>(1);
+                                            } else {
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        if ((i1_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
+                                            i1_3 += static_cast<unsigned int>(1);
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if ((i1_3 + static_cast<unsigned int>(1)) < this->mpResource->getDataNum()) {
+                                        i1_3 += static_cast<unsigned int>(1);
+                                    } else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    uModel::Joint* pJnt = v0_9->::uModel::Joint::getParentJoint();
+                    if (pJnt != static_cast<uModel::Joint*>(nullptr)) {
+                        v0_9 = pJnt;
+                    } else {
+                        break;
+                    }
+                }
+                v4_9 = static_cast<MtObject*>(nullptr);
+            }
+        }
+    }
+    return static_cast<uCnsShakeCtrl*>(v4_9);
 }
 
 // Address: 0x00530290 - 0x005302e0 (80 bytes)

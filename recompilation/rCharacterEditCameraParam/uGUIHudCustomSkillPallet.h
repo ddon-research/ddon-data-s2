@@ -7,7 +7,7 @@
 #include "../shared/MtDTI.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/nHumanMsg.h"
-#include "../shared/uGUIBaseExt.h"
+#include "uGUIBaseExt.h"
 
 // Forward declarations
 class MtAllocator;

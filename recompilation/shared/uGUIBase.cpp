@@ -17,6 +17,7 @@
 #include "MtSynchronize.h"
 #include "cArcLoader.h"
 #include "cControl.h"
+#include "cDraw.h"
 #include "cGUIExtNetMgr.h"
 #include "cGUIInstance.h"
 #include "../rCharacterEditCameraParam/cGUIObjTextureRef.h"
@@ -24,16 +25,20 @@
 #include "../rCharacterEditCameraParam/cGUIUtility.h"
 #include "cGUIVariable.h"
 #include "cInputTextKeyboardHook.h"
+#include "cItemParam.h"
 #include "../rCharacterEditCameraParam/cQuestSvRequestManager.h"
 #include "cResource.h"
 #include "cUIObject.h"
 #include "cUnit.h"
 #include "nDDOUtility.h"
 #include "nGUIExt.h"
+#include "nGUIItem.h"
 #include "nHuman.h"
 #include "nKeyCustom.h"
+#include "nNet.h"
 #include "nQuest.h"
 #include "rArchiveListArray.h"
+#include "../rEmblemColorTable/rEmblemColorTable.h"
 #include "rGUIMessage.h"
 #include "rItemList.h"
 #include "sArchiveManager.h"
@@ -43,8 +48,10 @@
 #include "sGame.h"
 #include "sItemManager.h"
 #include "sKeyboardInterface.h"
+#include "sQuestManagerExt.h"
 #include "sUnit.h"
 #include "uGUI.h"
+#include "../rCharacterEditCameraParam/uGUIMap.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -287,9 +294,20 @@ u32 uGUIBase::evCtrlcReferenceUIToggleBtnSwitch(cControl::Message* msg) {
 }
 
 // Address: 0x00972930 - 0x00972968 (56 bytes)
-__attribute__((weak)) u32 uGUIBase::evCtrlcReferenceUICheckListCancel(cControl::Message* msg) {
-    DDON_STUB("uGUIBase::evCtrlcReferenceUICheckListCancel")
-    return {};
+u32 uGUIBase::evCtrlcReferenceUICheckListCancel(cControl::Message* msg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x4dc from void*
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        if (msg->pSender != static_cast<cControl*>(nullptr)) {
+            if (msg->pData != static_cast<void*>(nullptr)) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(msg->pData) + static_cast<long>(1244)) = static_cast<unsigned int>(2);
+                msg->changeSE = static_cast<u32>(5);
+                this->mInputEventId = static_cast<u32>(57);
+                return static_cast<u32>(1);
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00972970 - 0x00972ae6 (374 bytes)
@@ -348,52 +366,258 @@ __attribute__((weak)) u32 uGUIBase::evCtrlcReferenceUICheckListHListClick(cContr
 // u32 uGUIBase::cReferenceUINumBoxEvCtrl(cControl::Message* pMsg, u32 InputEvent);
 
 // Address: 0x01adbea0 - 0x01adbed0 (48 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorRMove(cControl::Message* pMsg) {
-    DDON_STUB("uGUIBase::cReferenceUINumBoxEvCtrlCursorRMove")
-    return {};
+u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorRMove(cControl::Message* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x110 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x838 from unsigned long
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1adbea7 read, used 4 times; no DWARF local holds it
+        void* t0 = pMsg->pData;
+        if (t0 != static_cast<void*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(25);
+                return static_cast<u32>(1);
+            }
+        }
+        return static_cast<u32>(0);
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x01adbed0 - 0x01adbf00 (48 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorLMove(cControl::Message* pMsg) {
-    DDON_STUB("uGUIBase::cReferenceUINumBoxEvCtrlCursorLMove")
-    return {};
+u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorLMove(cControl::Message* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x110 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x838 from unsigned long
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1adbed7 read, used 4 times; no DWARF local holds it
+        void* t0 = pMsg->pData;
+        if (t0 != static_cast<void*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(24);
+                return static_cast<u32>(1);
+            }
+        }
+        return static_cast<u32>(0);
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x01adbf00 - 0x01adbf30 (48 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorUMove(cControl::Message* pMsg) {
-    DDON_STUB("uGUIBase::cReferenceUINumBoxEvCtrlCursorUMove")
-    return {};
+u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorUMove(cControl::Message* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x110 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x838 from unsigned long
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1adbf07 read, used 4 times; no DWARF local holds it
+        void* t0 = pMsg->pData;
+        if (t0 != static_cast<void*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(22);
+                return static_cast<u32>(1);
+            }
+        }
+        return static_cast<u32>(0);
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x01adbf30 - 0x01adbf60 (48 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorDMove(cControl::Message* pMsg) {
-    DDON_STUB("uGUIBase::cReferenceUINumBoxEvCtrlCursorDMove")
-    return {};
+u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorDMove(cControl::Message* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x110 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x838 from unsigned long
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1adbf37 read, used 4 times; no DWARF local holds it
+        void* t0 = pMsg->pData;
+        if (t0 != static_cast<void*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(23);
+                return static_cast<u32>(1);
+            }
+        }
+        return static_cast<u32>(0);
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x01adbf90 - 0x01adbfc0 (48 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorDecide(cControl::Message* pMsg) {
-    DDON_STUB("uGUIBase::cReferenceUINumBoxEvCtrlCursorDecide")
-    return {};
+u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorDecide(cControl::Message* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x110 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x838 from unsigned long
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1adbf97 read, used 4 times; no DWARF local holds it
+        void* t0 = pMsg->pData;
+        if (t0 != static_cast<void*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(26);
+                return static_cast<u32>(1);
+            }
+        }
+        return static_cast<u32>(0);
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x01adbf60 - 0x01adbf90 (48 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorCancel(cControl::Message* pMsg) {
-    DDON_STUB("uGUIBase::cReferenceUINumBoxEvCtrlCursorCancel")
-    return {};
+u32 uGUIBase::cReferenceUINumBoxEvCtrlCursorCancel(cControl::Message* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x110 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x838 from unsigned long
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1adbf67 read, used 4 times; no DWARF local holds it
+        void* t0 = pMsg->pData;
+        if (t0 != static_cast<void*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(27);
+                return static_cast<u32>(1);
+            }
+        }
+        return static_cast<u32>(0);
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x01adbfc0 - 0x01adbff0 (48 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUINumBoxEvCtrlLClickOOMT(cControl::Message* pMsg) {
-    DDON_STUB("uGUIBase::cReferenceUINumBoxEvCtrlLClickOOMT")
-    return {};
+u32 uGUIBase::cReferenceUINumBoxEvCtrlLClickOOMT(cControl::Message* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x110 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x838 from unsigned long
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x1adbfc7 read, used 4 times; no DWARF local holds it
+        void* t0 = pMsg->pData;
+        if (t0 != static_cast<void*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(29);
+                return static_cast<u32>(1);
+            }
+        }
+        return static_cast<u32>(0);
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00976070 - 0x009760ed (125 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUINumBoxEvCtrlMouseWheel(cControl::Message* pMsg) {
-    // local: cControl* const sender;
-    DDON_STUB("uGUIBase::cReferenceUINumBoxEvCtrlMouseWheel")
-    return {};
+u32 uGUIBase::cReferenceUINumBoxEvCtrlMouseWheel(cControl::Message* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x110 from void*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x838 from unsigned long
+    cControl* const sender = pMsg->pSender;
+    if (sender != static_cast<cControl* const>(nullptr)) {
+        if (sender->mMouseExec.mIsOOMT == false) {
+            if (pMsg->click_vol == static_cast<s32>(2)) {
+                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(45)) {
+                    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+                        // inferred: a temporary for the value the load at 0x976095 read, used 4 times; no DWARF local holds it
+                        void* t0 = pMsg->pData;
+                        if (t0 != static_cast<void*>(nullptr)) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(31);
+                            }
+                        }
+                        return static_cast<u32>(0);
+                    }
+                } else {
+                    if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(44)) {
+                        if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+                            // inferred: a temporary for the value the load at 0x9760c4 read, used 4 times; no DWARF local holds it
+                            void* t1 = pMsg->pData;
+                            if (t1 != static_cast<void*>(nullptr)) {
+                                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(30);
+                                }
+                            }
+                            return static_cast<u32>(0);
+                        }
+                    }
+                }
+            }
+        } else {
+            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(45)) {
+                if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+                    // inferred: a temporary for the value the load at 0x976095 read, used 4 times; no DWARF local holds it
+                    void* t0 = pMsg->pData;
+                    if (t0 != static_cast<void*>(nullptr)) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(31);
+                        }
+                    }
+                    return static_cast<u32>(0);
+                }
+            } else {
+                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(44)) {
+                    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+                        // inferred: a temporary for the value the load at 0x9760c4 read, used 4 times; no DWARF local holds it
+                        void* t1 = pMsg->pData;
+                        if (t1 != static_cast<void*>(nullptr)) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(30);
+                            }
+                        }
+                        return static_cast<u32>(0);
+                    }
+                }
+            }
+        }
+    } else {
+        if (pMsg->click_vol == static_cast<s32>(2)) {
+            if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(45)) {
+                if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+                    // inferred: a temporary for the value the load at 0x976095 read, used 4 times; no DWARF local holds it
+                    void* t0 = pMsg->pData;
+                    if (t0 != static_cast<void*>(nullptr)) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(31);
+                        }
+                    }
+                    return static_cast<u32>(0);
+                }
+            } else {
+                if (pMsg->reason == static_cast<nGUIExt::MSG_REASON>(44)) {
+                    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+                        // inferred: a temporary for the value the load at 0x9760c4 read, used 4 times; no DWARF local holds it
+                        void* t1 = pMsg->pData;
+                        if (t1 != static_cast<void*>(nullptr)) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + static_cast<long>(272)) = static_cast<unsigned char>(1);
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t1) + static_cast<long>(16))) + static_cast<long>(2104)) = static_cast<unsigned int>(30);
+                            }
+                        }
+                        return static_cast<u32>(0);
+                    }
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00979e30 - 0x00979ed7 (167 bytes)
@@ -487,17 +711,23 @@ __attribute__((weak)) u32 uGUIBase::evCtrlScrollListChkout(cControl::Message* ms
 }
 
 // Address: 0x0096c7f0 - 0x0096c808 (24 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUIPullDown_evCtrlCancel(cControl::Message* msg) {
-    // local: cReferenceUIPullDown* pPullDown;
-    DDON_STUB("uGUIBase::cReferenceUIPullDown_evCtrlCancel")
-    return {};
+u32 uGUIBase::cReferenceUIPullDown_evCtrlCancel(cControl::Message* msg) {
+    // DWARF local not rendered: cReferenceUIPullDown* pPullDown;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5ec from void*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(msg->pData) + static_cast<long>(1516)) = static_cast<unsigned char>(1);
+    this->mInputEventId = static_cast<u32>(45);
+    return static_cast<u32>(0);
 }
 
 // Address: 0x0096c810 - 0x0096c828 (24 bytes)
-__attribute__((weak)) u32 uGUIBase::cReferenceUIPullDown_evCtrlDecide(cControl::Message* msg) {
-    // local: cReferenceUIPullDown* pPullDown;
-    DDON_STUB("uGUIBase::cReferenceUIPullDown_evCtrlDecide")
-    return {};
+u32 uGUIBase::cReferenceUIPullDown_evCtrlDecide(cControl::Message* msg) {
+    // DWARF local not rendered: cReferenceUIPullDown* pPullDown;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5ec from void*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(msg->pData) + static_cast<long>(1516)) = static_cast<unsigned char>(1);
+    this->mInputEventId = static_cast<u32>(46);
+    return static_cast<u32>(0);
 }
 
 // Address: 0x0096d340 - 0x0096d3a3 (99 bytes)
@@ -570,16 +800,119 @@ __attribute__((weak)) void uGUIBase::setup() {
 }
 
 // Address: 0x0094fbd0 - 0x0094fd23 (339 bytes)
-__attribute__((weak)) void uGUIBase::kill() {
-    DDON_STUB("uGUIBase::kill")
-    /* stub */
+void uGUIBase::kill() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uGUIBase*
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpItemMgrRequest != static_cast<sItemManager::stRequest*>(nullptr)) {
+        if (this->mpItemMgrRequest->::sItemManager::stRequest::isExit(static_cast<void*>(this)) == false) {
+            this->mpItemMgrRequest->mIsResultCancel = true;
+        }
+        this->mpItemMgrRequest = static_cast<sItemManager::stRequest*>(nullptr);
+    }
+    if ((::sQuestManagerExt::mpInstance) != static_cast<sQuestManagerExt*>(nullptr)) {
+        ::cQuestSvRequestManager::popRequest(static_cast<const MtObject*>(this));
+    }
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) == static_cast<unsigned int>(0)) {
+        if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) > static_cast<u32>(1)) {
+        } else {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+        }
+    }
+    if (this->mpEmblemColorTable != static_cast<rEmblemColorTable*>(nullptr)) {
+        this->mpEmblemColorTable->::cResource::release();
+        this->mpEmblemColorTable = static_cast<rEmblemColorTable*>(nullptr);
+    }
+    if (this->mpMsgOnlineStatus != static_cast<rGUIMessage*>(nullptr)) {
+        this->mpMsgOnlineStatus->::cResource::release();
+        this->mpMsgOnlineStatus = static_cast<rGUIMessage*>(nullptr);
+    }
+    if (this->mpMsgPawnPersonality != static_cast<rGUIMessage*>(nullptr)) {
+        this->mpMsgPawnPersonality->::cResource::release();
+        this->mpMsgPawnPersonality = static_cast<rGUIMessage*>(nullptr);
+    }
+    if (this->mpMsgPawnFeedbackComment != static_cast<rGUIMessage*>(nullptr)) {
+        this->mpMsgPawnFeedbackComment->::cResource::release();
+        this->mpMsgPawnFeedbackComment = static_cast<rGUIMessage*>(nullptr);
+    }
+    if (this->mpMsgPawnShareRange != static_cast<rGUIMessage*>(nullptr)) {
+        this->mpMsgPawnShareRange->::cResource::release();
+        this->mpMsgPawnShareRange = static_cast<rGUIMessage*>(nullptr);
+    }
+    if (this->mpMsgPawnStatus != static_cast<rGUIMessage*>(nullptr)) {
+        this->mpMsgPawnStatus->::cResource::release();
+        this->mpMsgPawnStatus = static_cast<rGUIMessage*>(nullptr);
+    }
+    if (this->mpMsgPlayStyleItem != static_cast<rGUIMessage*>(nullptr)) {
+        this->mpMsgPlayStyleItem->::cResource::release();
+        this->mpMsgPlayStyleItem = static_cast<rGUIMessage*>(nullptr);
+    }
+    if (this->mpMsgClanProfileItem != static_cast<rGUIMessage*>(nullptr)) {
+        this->mpMsgClanProfileItem->::cResource::release();
+        this->mpMsgClanProfileItem = static_cast<rGUIMessage*>(nullptr);
+    }
 }
 
 // Address: 0x0094fd40 - 0x0094fdd6 (150 bytes)
-__attribute__((weak)) void uGUIBase::draw(cDraw* pDraw) {
-    // local: u32 i;
-    DDON_STUB("uGUIBase::draw")
-    /* stub */
+void uGUIBase::draw(cDraw* pDraw) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x230 from cDraw*
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x1f48
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x710 from uGUIBase*
+    // inferred: the value the loop at 0x94fdc0 carries; no location-less local in scope fits
+    unsigned int v0_0;
+    // inferred: the value the loop at 0x94fdc0 carries; no location-less local in scope fits
+    MtObject* * v0_1;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_2;
+    if ((((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pDraw) + static_cast<long>(560))) & static_cast<unsigned long>(-281474976710656)) ^ static_cast<unsigned long>(281474976710656)) == static_cast<unsigned long>(0)) {
+        if (this->fixCameraRelatedScreenPos() != false) {
+            if ((this->mBaseF & static_cast<u32>(128)) == static_cast<u32>(0)) {
+                if ((this->mBaseF & static_cast<sGUIExt*>(::sGUI::getInstance())->mNDispGUIFromBaseF) == static_cast<u32>(0)) {
+                    this->::uGUI::draw(pDraw);
+                    v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(1808));
+                    if (v0_0 != static_cast<unsigned int>(0)) {
+                        v0_1 = this->mAryKeepInScreen.::MtArray::getBuffer();
+                        i0_2 = static_cast<unsigned int>(0);
+                    } else {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+    } else {
+        if ((this->mBaseF & static_cast<u32>(128)) == static_cast<u32>(0)) {
+            if ((this->mBaseF & static_cast<sGUIExt*>(::sGUI::getInstance())->mNDispGUIFromBaseF) == static_cast<u32>(0)) {
+                this->::uGUI::draw(pDraw);
+                v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(1808));
+                if (v0_0 != static_cast<unsigned int>(0)) {
+                    v0_1 = this->mAryKeepInScreen.::MtArray::getBuffer();
+                    i0_2 = static_cast<unsigned int>(0);
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+    }
+    for (;;) {
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(9)) = static_cast<unsigned char>(1);
+        if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+            i0_2 += static_cast<unsigned int>(1);
+        } else {
+            break;
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (110 bytes)
@@ -760,9 +1093,15 @@ void uGUIBase::setUseIItemMangerNetFunc(sItemManager::stRequest* pRequest) {
 }
 
 // Address: 0x009818a0 - 0x009818c3 (35 bytes)
-__attribute__((weak)) bool uGUIBase::isForceSamplerLinear(cGUIObject* pObj) const {
-    DDON_STUB("uGUIBase::isForceSamplerLinear")
-    return {};
+bool uGUIBase::isForceSamplerLinear(cGUIObject* pObj) const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpInstNullBase != static_cast<cGUIInstNull*>(nullptr)) {
+        if (this->mpInstNullBase->mScale.x > 1.0f) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Address: 0x009818d0 - 0x0098191d (77 bytes)
@@ -836,17 +1175,27 @@ s32 uGUIBase::getSMenuTab() {
 // u32 uGUIBase::getItemIconNo(u32 itemID);
 
 // Address: 0x009541e0 - 0x009541f8 (24 bytes)
-__attribute__((weak)) u32 uGUIBase::getVariableParamU32FromId(u32 varId) {
-    // local: cGUIVariable* pVar;
-    DDON_STUB("uGUIBase::getVariableParamU32FromId")
-    return {};
+u32 uGUIBase::getVariableParamU32FromId(u32 varId) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cGUIVariable*
+    cGUIVariable* pVar = this->::uGUI::getVariable(varId);
+    if (pVar != static_cast<cGUIVariable*>(nullptr)) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVar) + static_cast<long>(24));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00954200 - 0x00954218 (24 bytes)
-__attribute__((weak)) s32 uGUIBase::getVariableParamS32FromId(u32 varId) {
-    // local: cGUIVariable* pVar;
-    DDON_STUB("uGUIBase::getVariableParamS32FromId")
-    return {};
+s32 uGUIBase::getVariableParamS32FromId(u32 varId) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cGUIVariable*
+    cGUIVariable* pVar = this->::uGUI::getVariable(varId);
+    if (pVar != static_cast<cGUIVariable*>(nullptr)) {
+        return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVar) + static_cast<long>(24)));
+    } else {
+        return static_cast<s32>(0);
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -856,27 +1205,42 @@ __attribute__((weak)) s32 uGUIBase::getVariableParamS32FromId(u32 varId) {
 // u32 uGUIBase::getVariableParamU32FromName(MT_CTSTR varName);
 
 // Address: 0x00954240 - 0x00954258 (24 bytes)
-__attribute__((weak)) s32 uGUIBase::getVariableParamS32FromName(MT_CTSTR varName) {
-    // local: cGUIVariable* pVar;
-    DDON_STUB("uGUIBase::getVariableParamS32FromName")
-    return {};
+s32 uGUIBase::getVariableParamS32FromName(MT_CTSTR varName) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cGUIVariable*
+    cGUIVariable* pVar = this->::uGUI::getVariableFromName(varName);
+    if (pVar != static_cast<cGUIVariable*>(nullptr)) {
+        return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVar) + static_cast<long>(24)));
+    } else {
+        return static_cast<s32>(0);
+    }
 }
 
 // No out-of-line body: no code in the ELF
 // f32 uGUIBase::getVariableParamF32FromName(MT_CTSTR varName);
 
 // Address: 0x00954270 - 0x00954288 (24 bytes)
-__attribute__((weak)) u32 uGUIBase::getVariableInitParamU32FromId(u32 varId) {
-    // local: cGUIVariable* pVar;
-    DDON_STUB("uGUIBase::getVariableInitParamU32FromId")
-    return {};
+u32 uGUIBase::getVariableInitParamU32FromId(u32 varId) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from cGUIVariable*
+    cGUIVariable* pVar = this->::uGUI::getVariable(varId);
+    if (pVar != static_cast<cGUIVariable*>(nullptr)) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVar) + static_cast<long>(32));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00954290 - 0x009542a8 (24 bytes)
-__attribute__((weak)) s32 uGUIBase::getVariableInitParamS32FromId(u32 varId) {
-    // local: cGUIVariable* pVar;
-    DDON_STUB("uGUIBase::getVariableInitParamS32FromId")
-    return {};
+s32 uGUIBase::getVariableInitParamS32FromId(u32 varId) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from cGUIVariable*
+    cGUIVariable* pVar = this->::uGUI::getVariable(varId);
+    if (pVar != static_cast<cGUIVariable*>(nullptr)) {
+        return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pVar) + static_cast<long>(32)));
+    } else {
+        return static_cast<s32>(0);
+    }
 }
 
 // Address: 0x009542b0 - 0x009542c9 (25 bytes)
@@ -917,9 +1281,15 @@ __attribute__((weak)) bool uGUIBase::loadArchive() {
 }
 
 // Address: 0x0094fde0 - 0x0094fe0b (43 bytes)
-__attribute__((weak)) void uGUIBase::update() {
-    DDON_STUB("uGUIBase::update")
-    /* stub */
+void uGUIBase::update() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mIsCurrentFuncExecute == false) {
+        return;
+    }
+    if (this->mpCurrentFunc == static_cast<void(uGUIBase::*)()>(0)) {
+        return;
+    }
+    (this->*this->mpCurrentFunc)();
 }
 
 // Address: 0x0094fe10 - 0x0094fed2 (194 bytes)
@@ -1741,10 +2111,27 @@ __attribute__((weak)) void uGUIBase::subVariableRegister(uGUIBase::cDuplicateDat
 }
 
 // Address: 0x00954370 - 0x009543ad (61 bytes)
-__attribute__((weak)) void uGUIBase::evChangeFlow(const nGUI::FLOW* pNewFlow, const nGUI::FLOW* pNowFlow) {
-    // local: u32 i;
-    DDON_STUB("uGUIBase::evChangeFlow")
-    /* stub */
+void uGUIBase::evChangeFlow(const nGUI::FLOW* pNewFlow, const nGUI::FLOW* pNowFlow) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x710 from uGUIBase*
+    this->mIsFlowEnd = true;
+    // inferred: the value the loop at 0x954390 carries; no location-less local in scope fits
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(1808));
+    if (v0_0 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0x954390 carries; no location-less local in scope fits
+        MtObject* * v0_1 = this->mAryKeepInScreen.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(9)) = static_cast<unsigned char>(0);
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(12)) = static_cast<unsigned int>(0);
+            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x009543b0 - 0x00954412 (98 bytes)
@@ -2183,12 +2570,30 @@ void uGUIBase::setInputEvent(u32 EventId) {
 // bool uGUIBase::isExistInputEvent();
 
 // Address: 0x00981810 - 0x0098184e (62 bytes)
-__attribute__((weak)) bool uGUIBase::isMouseOver() const {
-    // local: u32 length;
-    // local: u32 i;
-    // local: cControl* pCtrl;
-    DDON_STUB("uGUIBase::isMouseOver")
-    return {};
+bool uGUIBase::isMouseOver() const {
+    // DWARF local not rendered: cControl* pCtrl;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x658 from const uGUIBase*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x668 from const uGUIBase*
+    u32 length = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(1624));
+    if (length != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x981830 carries; no location-less local in scope fits
+        unsigned long v0_2 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(1640));
+        // inferred: DWARF's location-less 'i' (lexical block [0x981816, 0x98184b)) is the counter this loop steps (DWARF's stale constant 0)
+        for (u32 i = static_cast<u32>(0);;) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(2836))) != static_cast<unsigned char>(0)) {
+                    return true;
+                }
+            }
+            if ((i + static_cast<u32>(1)) < length) {
+                i = i + static_cast<u32>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: 137 inlined copies in 127 functions (885 bytes)
@@ -4245,9 +4650,13 @@ void uGUIBase::cReferenceUIPullDown::reqSE(uGUIBase::cReferenceUIPullDown::SE ty
 }
 
 // Address: 0x0096f9b0 - 0x0096f9d2 (34 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIPullDown::changeTitleText(u32 idx) {
-    DDON_STUB("uGUIBase::cReferenceUIPullDown::changeTitleText")
-    /* stub */
+void uGUIBase::cReferenceUIPullDown::changeTitleText(u32 idx) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5d0 from uGUIBase::cReferenceUIPullDown*
+    if (idx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(1488)))) {
+        this->mCursorIdx = static_cast<s32>(idx);
+        this->::uGUIBase::cReferenceUIPullDown::setTitleText(static_cast<const uGUIBase::cReferenceUIPullDown::cMsg*>(this->mMsgArray.::MtArray::getBuffer()[static_cast<int>(idx)]));
+    }
 }
 
 // Address: 0x0096f9e0 - 0x0096fa68 (136 bytes)
@@ -4850,8 +5259,7 @@ uGUIBase::cScrollList::cScrollList() {
 // Address: 0x01adb9e0 - 0x01adba30 (80 bytes)
 // Also emitted as: _ZN8uGUIBase11cScrollListD0Ev at 0x01add700
 uGUIBase::cScrollList::~cScrollList() {
-    DDON_STUB("uGUIBase::cScrollList::~cScrollList")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // No out-of-line body: 95 inlined copies in 70 functions (23804 bytes)
@@ -5170,9 +5578,17 @@ void uGUIBase::cScrollList::setFocus(bool flag) {
 }
 
 // Address: 0x00980980 - 0x009809a6 (38 bytes)
-__attribute__((weak)) void uGUIBase::cScrollList::setEnableKey(bool flag) {
-    DDON_STUB("uGUIBase::cScrollList::setEnableKey")
-    /* stub */
+void uGUIBase::cScrollList::setEnableKey(bool flag) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc3c from uGUIBase::cVerticalList*
+    if (this->mpVCtrl == static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+        return;
+    }
+    if (flag != false) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpVCtrl) + static_cast<long>(3132)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpVCtrl) + static_cast<long>(3132))) & static_cast<unsigned int>(4294967287);
+    } else {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpVCtrl) + static_cast<long>(3132)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpVCtrl) + static_cast<long>(3132))) | static_cast<unsigned int>(8);
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (36 bytes)
@@ -5189,9 +5605,36 @@ __attribute__((weak)) void uGUIBase::cScrollList::setEnableKey(bool flag) {
 // void uGUIBase::cScrollList::setTrgLoop(bool flag);
 
 // Address: 0x009809c0 - 0x00980a18 (88 bytes)
-__attribute__((weak)) bool uGUIBase::cScrollList::moveEvent() {
-    DDON_STUB("uGUIBase::cScrollList::moveEvent")
-    return {};
+bool uGUIBase::cScrollList::moveEvent() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mIsInputEvent != false) {
+        if (this->mpOwner->::uGUIBase::getInputEvent() <= static_cast<u32>(15)) {
+            if (((static_cast<unsigned long>(48640) >> static_cast<unsigned long>(this->mpOwner->::uGUIBase::getInputEvent() & static_cast<u32>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                if (((static_cast<unsigned long>(16400) >> static_cast<unsigned long>(this->mpOwner->::uGUIBase::getInputEvent() & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                    if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                        this->::uGUIBase::cScrollList::setListPos(static_cast<u32>(this->mpVCtrl->::cControl::getCurrentPos()), false);
+                    } else {
+                        this->::uGUIBase::cScrollList::setListPos(static_cast<u32>(0), false);
+                    }
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                    this->::uGUIBase::cScrollList::setListPos(static_cast<u32>(this->mpVCtrl->::cControl::getCurrentPos()), false);
+                } else {
+                    this->::uGUIBase::cScrollList::setListPos(static_cast<u32>(0), false);
+                }
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00980a20 - 0x00980a39 (25 bytes)
@@ -5240,10 +5683,19 @@ __attribute__((weak)) void uGUIBase::cScrollList::setFocusCursor(bool bFocus) {
 }
 
 // Address: 0x0096fca0 - 0x0096fcd6 (54 bytes)
-__attribute__((weak)) u32 uGUIBase::cScrollList::getDispIndex(uGUIBase::cScrollListItemBase* pItem) {
-    // local: u32 i;
-    DDON_STUB("uGUIBase::cScrollList::getDispIndex")
-    return {};
+u32 uGUIBase::cScrollList::getDispIndex(uGUIBase::cScrollListItemBase* pItem) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xf8 from uGUIBase::cScrollList*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(248))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if (pItem == this->mItemArray.::MtArray::getBuffer()[static_cast<int>(i)]) {
+                return i;
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(248))));
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00980a40 - 0x00980a78 (56 bytes)
@@ -5865,7 +6317,8 @@ const MtDTI& uGUIBase::cVerticalList::getDTI() const {
 }
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline MtAllocator* uGUIBase::cVerticalList::getAllocator() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+MtAllocator* uGUIBase::cVerticalList::getAllocator() {
     return ::MtMemoryAllocator::getAllocator(::uGUIBase::cVerticalList::DTI);
 }
 
@@ -6733,8 +7186,7 @@ uGUIBase::cReferenceUITab::cReferenceUITab() {
 // Address: 0x01addc80 - 0x01addc97 (23 bytes)
 // Also emitted as: _ZN8uGUIBase15cReferenceUITabD0Ev at 0x01addca0
 uGUIBase::cReferenceUITab::~cReferenceUITab() {
-    DDON_STUB("uGUIBase::cReferenceUITab::~cReferenceUITab")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x00963680 - 0x00963767 (231 bytes)
@@ -6881,9 +7333,14 @@ __attribute__((weak)) cGUIObjNull* uGUIBase::cReferenceUITab::getNullPointerObj(
 }
 
 // Address: 0x00964b40 - 0x00964b53 (19 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUITab::setCtrlable(bool bEnable) {
-    DDON_STUB("uGUIBase::cReferenceUITab::setCtrlable")
-    /* stub */
+void uGUIBase::cReferenceUITab::setCtrlable(bool bEnable) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from uGUIBase::cReferenceUITab*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(88))) == static_cast<unsigned int>(0)) {
+        return;
+    }
+    this->mIsCtrlable = bEnable;
+    this->::uGUIBase::cReferenceUITab::setupLRGuide();
 }
 
 // Address: 0x00964c70 - 0x00964d15 (165 bytes)
@@ -6906,10 +7363,16 @@ __attribute__((weak)) void uGUIBase::cReferenceUITab::updateButtonGuide() {
 // uGUIBase::cReferenceUITab::SHAPE uGUIBase::cReferenceUITab::getShape(u32 index) const;
 
 // Address: 0x00964bc0 - 0x00964bdc (28 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUITab::setShape(u32 index, uGUIBase::cReferenceUITab::SHAPE shape) {
-    // local: cTabWork* const tab_work;
-    DDON_STUB("uGUIBase::cReferenceUITab::setShape")
-    /* stub */
+void uGUIBase::cReferenceUITab::setShape(u32 index, uGUIBase::cReferenceUITab::SHAPE shape) {
+    // DWARF local not rendered: cTabWork* const tab_work;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from uGUIBase::cReferenceUITab*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x150 from MtObject*
+    if (index < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(88)))) {
+        if (this->mWork.::MtArray::getBuffer()[static_cast<int>(index)] != static_cast<MtObject*>(nullptr)) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWork.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(336)) = static_cast<unsigned int>(shape);
+        }
+    }
 }
 
 // Address: 0x00964be0 - 0x00964c6e (142 bytes)
@@ -7107,8 +7570,7 @@ uGUIBase::cReferenceUIBtnGuide::cReferenceUIBtnGuide() {
 // Address: 0x01addd10 - 0x01addd27 (23 bytes)
 // Also emitted as: _ZN8uGUIBase20cReferenceUIBtnGuideD0Ev at 0x01addd30
 uGUIBase::cReferenceUIBtnGuide::~cReferenceUIBtnGuide() {
-    DDON_STUB("uGUIBase::cReferenceUIBtnGuide::~cReferenceUIBtnGuide")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x009650d0 - 0x00965355 (645 bytes)
@@ -7936,10 +8398,90 @@ uGUIBase::cValueList::cValueList(MT_CTSTR v0, MT_CTSTR v1, MT_CTSTR v2, MT_CTSTR
 // u32 uGUIBase::cValueList::getRegistNum() const;
 
 // Address: 0x009559c0 - 0x00955b07 (327 bytes)
-__attribute__((weak)) void uGUIBase::cValueList::clearStr() {
-    // local: u32 i;
-    DDON_STUB("uGUIBase::cValueList::clearStr")
-    /* stub */
+void uGUIBase::cValueList::clearStr() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xc from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x30 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2c from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x50 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x78 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9c from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x98 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xc0 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xbc from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xe4 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xe0 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x108 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x104 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x12c from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x128 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x150 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14c from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x174 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x170 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x198 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x194 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x1bc from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1b8 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x1e0 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1dc from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x204 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x200 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x228 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x224 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x24c from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x248 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x270 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x26c from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x294 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x290 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2b8 from uGUIBase::cValueList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2b4 from uGUIBase::cValueList*
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(12)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(8)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(48)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(44)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(84)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(80)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(120)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(116)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(156)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(152)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(192)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(188)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(228)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(224)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(264)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(260)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(300)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(296)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(336)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(332)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(372)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(368)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(408)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(404)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(444)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(440)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(480)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(476)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(516)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(512)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(552)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(548)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(588)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(584)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(624)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(620)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(660)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(656)) = static_cast<unsigned int>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(696)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(692)) = static_cast<unsigned int>(0);
+    this->mNum = static_cast<u32>(0);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
@@ -8174,9 +8716,42 @@ __attribute__((weak)) bool uGUIBase::cUnitWatcher::isEnd() {
 }
 
 // Address: 0x00955f10 - 0x00955fa8 (152 bytes)
-__attribute__((weak)) void uGUIBase::cUnitWatcher::clear() {
-    DDON_STUB("uGUIBase::cUnitWatcher::clear")
-    /* stub */
+void uGUIBase::cUnitWatcher::clear() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uGUIMap::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x30 from uGUIBase::cUnitWatcher*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x28 from uGUIBase::cUnitWatcher*
+    if (this->mKillReq != false) {
+        if (this->mpUnit != static_cast<uGUIBase*>(nullptr)) {
+            // inferred: a temporary for the result of the call at 0x955f2b, used once; no DWARF local holds it
+            const MtDTI& t0 = this->mpUnit->getDTI();
+            // inferred: the value the loop at 0x955f39 carries; no location-less local in scope fits
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uGUIMap::DTI) + static_cast<long>(8));
+            // inferred: the value the loop at 0x955f39 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                    } else {
+                        break;
+                    }
+                } else {
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::setFocusMap(static_cast<uGUIMap*>(nullptr));
+                    break;
+                }
+            }
+            if (this->mpUnit != static_cast<uGUIBase*>(nullptr)) {
+                this->mpUnit->kill();
+                this->mpUnit = static_cast<uGUIBase*>(nullptr);
+            }
+        }
+    }
+    this->mpUnit = static_cast<uGUIBase*>(nullptr);
+    this->mpOldUnit = static_cast<uGUIBase*>(nullptr);
+    this->mKillReq = false;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(48)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(40)) = static_cast<unsigned long>(0);
+    this->mEndFunc.mpUnit = static_cast<MtObject*>(nullptr);
 }
 
 // No out-of-line body: 11 inlined copies in 11 functions (82 bytes)
@@ -8822,8 +9397,7 @@ uGUIBase::cReferenceUIChargesInfo::cReferenceUIChargesInfo() {
 // Address: 0x00959600 - 0x00959617 (23 bytes)
 // Also emitted as: _ZN8uGUIBase23cReferenceUIChargesInfoD0Ev at 0x00959620
 uGUIBase::cReferenceUIChargesInfo::~cReferenceUIChargesInfo() {
-    DDON_STUB("uGUIBase::cReferenceUIChargesInfo::~cReferenceUIChargesInfo")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x00959670 - 0x00959bdf (1391 bytes)
@@ -9150,9 +9724,61 @@ __attribute__((weak)) void uGUIBase::cReferenceUIIconItem::update() {
 }
 
 // Address: 0x0095c250 - 0x0095c3b0 (352 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setEmpty() {
-    DDON_STUB("uGUIBase::cReferenceUIIconItem::setEmpty")
-    /* stub */
+void uGUIBase::cReferenceUIIconItem::setEmpty() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpInstances.elems[0] != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpInstances.elems[0]->::cGUIInstance::setVisible(false);
+    }
+    this->::uGUIBase::cReferenceUIIconItem::setColor(static_cast<u32>(0));
+    // inferred: the value carried to 0x95c2a1; no location-less local in scope fits
+    cGUIObjMessage* v1_3 = this->mpNums;
+    if (v1_3 != static_cast<cGUIObjMessage*>(nullptr)) {
+        // inferred: the value carried to 0x95c2a1; no location-less local in scope fits
+        uGUIBase* v1_4 = this->::uGUIBase::cSupportBase::mpUnit;
+        if (v1_4 != static_cast<uGUIBase*>(nullptr)) {
+            // inferred: the value carried to 0x95c2a1; no location-less local in scope fits
+            const char* v1_2;
+            if (this->mIsDispNumZero != false) {
+                v1_2 = "0";
+            } else {
+                v1_2 = "";
+            }
+            v1_4->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(v1_3), v1_2, static_cast<u32>(0), false);
+        }
+    }
+    this->mLocalNum = static_cast<u16>(0);
+    if (this->mpQuality != static_cast<cGUIObjMessage*>(nullptr)) {
+        if (this->::uGUIBase::cSupportBase::mpUnit != static_cast<uGUIBase*>(nullptr)) {
+            this->::uGUIBase::cSupportBase::mpUnit->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mpQuality), "", static_cast<u32>(0), false);
+        }
+    }
+    this->mQuality = static_cast<u8>(0);
+    if (this->mpGradeIcon[0] != static_cast<cGUIObjTexture*>(nullptr)) {
+        this->mpGradeIcon[0]->::cGUIObject::setCurrentFrame(0.0f, true);
+    }
+    if (this->mpGradeIcon[1] != static_cast<cGUIObjTexture*>(nullptr)) {
+        this->mpGradeIcon[1]->::cGUIObject::setCurrentFrame(0.0f, true);
+    }
+    if (this->mpGradeIcon[2] != static_cast<cGUIObjTexture*>(nullptr)) {
+        this->mpGradeIcon[2]->::cGUIObject::setCurrentFrame(0.0f, true);
+    }
+    if (this->mpGradeIcon[3] != static_cast<cGUIObjTexture*>(nullptr)) {
+        this->mpGradeIcon[3]->::cGUIObject::setCurrentFrame(0.0f, true);
+    }
+    this->mEquipColor = static_cast<uGUIBase::cReferenceUIIconItem::EQUIP_COLOR>(0);
+    if (this->mpColor != static_cast<cGUIObjTexture*>(nullptr)) {
+        this->mpColor->::cGUIObject::setCurrentFrame(0.0f, true);
+    }
+    this->mIsCheck = false;
+    if (this->mpCheck != static_cast<cGUIObjTexture*>(nullptr)) {
+        this->mpCheck->::cGUIObject::setVisible(false);
+    }
+    this->mItemId = static_cast<u32>(0);
+    this->mIsArms = false;
+    this->mIsEmpty = true;
+    this->::uGUIBase::cReferenceUIIconItem::setupIconFrame();
+    this->mIsDispName = false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (17 bytes)
@@ -9163,18 +9789,43 @@ __attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setEmpty() {
 // bool uGUIBase::cReferenceUIIconItem::isLoading();
 
 // Address: 0x0095c7e0 - 0x0095c825 (69 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setUnknown(bool isRare) {
-    // local: const u32 unknown_img_no;
-    // local: const u32 color;
-    DDON_STUB("uGUIBase::cReferenceUIIconItem::setUnknown")
-    /* stub */
+void uGUIBase::cReferenceUIIconItem::setUnknown(bool isRare) {
+    // DWARF local not rendered: const u32 unknown_img_no;
+    // DWARF local not rendered: const u32 color;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    this->setEmpty();
+    this->mIsEmpty = false;
+    this->::uGUIBase::cReferenceUIIconItem::setImage(static_cast<u32>(0));
+    this->::uGUIBase::cReferenceUIIconItem::setColor(static_cast<u32>(static_cast<unsigned long>(isRare) | static_cast<unsigned long>(300)));
+    this->::uGUIBase::cReferenceUIIconItem::setupIconFrame();
 }
 
 // Address: 0x0095c940 - 0x0095c9b4 (116 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setUnknown(rItemList::rItemParam* pParam) {
-    // local: const bool isRare;
-    DDON_STUB("uGUIBase::cReferenceUIIconItem::setUnknown")
-    /* stub */
+void uGUIBase::cReferenceUIIconItem::setUnknown(rItemList::rItemParam* pParam) {
+    // DWARF local not rendered: const bool isRare;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x60 from rItemList::rItemParam*
+    if (pParam != static_cast<rItemList::rItemParam*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x95c94f read, used once; no DWARF local holds it
+        unsigned char t0 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(96));
+        this->setEmpty();
+        this->mIsEmpty = false;
+        this->::uGUIBase::cReferenceUIIconItem::setImage(static_cast<u32>(0));
+        if (t0 <= static_cast<unsigned char>(4)) {
+            this->::uGUIBase::cReferenceUIIconItem::setColor(static_cast<u32>(300));
+        } else {
+            this->::uGUIBase::cReferenceUIIconItem::setColor(static_cast<u32>(301));
+        }
+        this->::uGUIBase::cReferenceUIIconItem::setupIconFrame();
+    } else {
+        this->setEmpty();
+        this->mIsEmpty = false;
+        this->::uGUIBase::cReferenceUIIconItem::setImage(static_cast<u32>(0));
+        this->::uGUIBase::cReferenceUIIconItem::setColor(static_cast<u32>(300));
+        this->::uGUIBase::cReferenceUIIconItem::setupIconFrame();
+    }
 }
 
 // Address: 0x0095c830 - 0x0095c936 (262 bytes)
@@ -9187,9 +9838,32 @@ __attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setImage(u32 img) {
 }
 
 // Address: 0x0095c9c0 - 0x0095ca9f (223 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setItem(nGUIItem::cItem* pItem) {
-    DDON_STUB("uGUIBase::cReferenceUIIconItem::setItem")
-    /* stub */
+void uGUIBase::cReferenceUIIconItem::setItem(nGUIItem::cItem* pItem) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38 from cItemParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x67 from cItemParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
+    if (pItem == static_cast<nGUIItem::cItem*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x95c9d6 read, used 5 times; no DWARF local holds it
+    cItemParam* t0 = pItem->::nGUIItem::cItem::getItemParam();
+    if (t0 != static_cast<cItemParam*>(nullptr)) {
+        this->setIconFromParam(::sItemManager::getInstance()->::sItemManager::getItemParam(t0->::cItemParam::getItemNo()));
+        if (this->mIsArms != false) {
+            this->::uGUIBase::cReferenceUIIconItem::setQuality(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(56)));
+            this->::uGUIBase::cReferenceUIIconItem::setEquipColorFromColorNo(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(103)));
+        } else {
+            this->::uGUIBase::cReferenceUIIconItem::setNum(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + static_cast<long>(12)));
+        }
+        this->mpItemParam = t0;
+    } else {
+        if (pItem->::nGUIItem::cItem::getResourceParam() != static_cast<rItemList::rItemParam*>(nullptr)) {
+            this->setIconFromParam(pItem->::nGUIItem::cItem::getResourceParam());
+        } else {
+            this->setIconFromParam(::sItemManager::getInstance()->::sItemManager::getItemParam(pItem->::nGUIItem::cItem::getItemNo()));
+        }
+    }
 }
 
 // Address: 0x0095d000 - 0x0095d2e5 (741 bytes)
@@ -9268,9 +9942,22 @@ __attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setIconFromParam(rIte
 }
 
 // Address: 0x0095caa0 - 0x0095cb1f (127 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setIconFromParam(cItemParam* pParam) {
-    DDON_STUB("uGUIBase::cReferenceUIIconItem::setIconFromParam")
-    /* stub */
+void uGUIBase::cReferenceUIIconItem::setIconFromParam(cItemParam* pParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38 from cItemParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x67 from cItemParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
+    if (pParam == static_cast<cItemParam*>(nullptr)) {
+        return;
+    }
+    this->setIconFromParam(::sItemManager::getInstance()->::sItemManager::getItemParam(pParam->::cItemParam::getItemNo()));
+    if (this->mIsArms != false) {
+        this->::uGUIBase::cReferenceUIIconItem::setQuality(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(56)));
+        this->::uGUIBase::cReferenceUIIconItem::setEquipColorFromColorNo(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(103)));
+    } else {
+        this->::uGUIBase::cReferenceUIIconItem::setNum(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pParam) + static_cast<long>(12)));
+    }
+    this->mpItemParam = pParam;
 }
 
 // No out-of-line body: 14 inlined copies in 13 functions (176 bytes)
@@ -9423,7 +10110,7 @@ void uGUIBase::cReferenceUIIconItem::setGrade(u32 grade) {
 // void uGUIBase::cReferenceUIIconItem::setEquipColor(uGUIBase::cReferenceUIIconItem::EQUIP_COLOR color);
 
 // Address: 0x0095cdc0 - 0x0095cf18 (344 bytes)
-void uGUIBase::cReferenceUIIconItem::setEquipColorFromColorNo(u32 color_no) {
+__attribute__((weak)) void uGUIBase::cReferenceUIIconItem::setEquipColorFromColorNo(u32 color_no) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     switch (color_no - static_cast<u32>(3)) {
         case static_cast<u32>(0):
@@ -9769,9 +10456,28 @@ void uGUIBase::cReferenceUIIconEquip::setIconFromParam(rItemList::rItemParam* pI
 }
 
 // Address: 0x0095dcd0 - 0x0095dd75 (165 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIIconEquip::setIconFromParam(cItemParam* pParam) {
-    DDON_STUB("uGUIBase::cReferenceUIIconEquip::setIconFromParam")
-    /* stub */
+void uGUIBase::cReferenceUIIconEquip::setIconFromParam(cItemParam* pParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x38 from cItemParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x67 from cItemParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
+    if (pParam != static_cast<cItemParam*>(nullptr)) {
+        this->setIconFromParam(::sItemManager::getInstance()->::sItemManager::getItemParam(pParam->::cItemParam::getItemNo()));
+        if (this->::uGUIBase::cReferenceUIIconItem::mIsArms != false) {
+            this->::uGUIBase::cReferenceUIIconItem::setQuality(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(56)));
+            this->::uGUIBase::cReferenceUIIconItem::setEquipColorFromColorNo(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(103)));
+        } else {
+            this->::uGUIBase::cReferenceUIIconItem::setNum(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pParam) + static_cast<long>(12)));
+        }
+        this->::uGUIBase::cReferenceUIIconItem::mpItemParam = pParam;
+    }
+    if (this->::uGUIBase::cReferenceUIIconItem::mItemId == static_cast<u32>(0)) {
+        return;
+    }
+    if (this->mpInstAnimCategoryIcon == static_cast<cGUIInstAnimation*>(nullptr)) {
+        return;
+    }
+    this->mpInstAnimCategoryIcon->::cGUIInstance::setVisible(false);
 }
 
 // Address: 0x0095dd80 - 0x0095dd8a (10 bytes)
@@ -9978,9 +10684,59 @@ __attribute__((weak)) void uGUIBase::cReferenceUIIconSkill::setImage(u32 id) {
 }
 
 // Address: 0x0095f0d0 - 0x0095f1de (270 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIIconSkill::setEmpty() {
-    DDON_STUB("uGUIBase::cReferenceUIIconSkill::setEmpty")
-    /* stub */
+void uGUIBase::cReferenceUIIconSkill::setEmpty() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->mId = static_cast<u16>(65535);
+    if (this->mpObjTexIcon != static_cast<cGUIObjTextureRef*>(nullptr)) {
+        this->mpObjTexIcon->::cGUIObject::setVisible(false);
+        if (this->mpObjTexIcon != static_cast<cGUIObjTextureRef*>(nullptr)) {
+            this->mpObjTexIcon->::cGUIObjTextureRef::setReferenceTexture(static_cast<rTexture*>(nullptr));
+        }
+    }
+    // inferred: a temporary for the value the load at 0x95f10b read, used twice; no DWARF local holds it
+    cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
+    if (this->mTicket != t0) {
+        ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mTicket);
+        this->mTicket = static_cast<TICKET>(t0);
+    }
+    this->mIsEnable = true;
+    if (this->::uGUIBase::cSupportBase::mpUnit != static_cast<uGUIBase*>(nullptr)) {
+        if (this->mpObjMsgLv != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->::uGUIBase::cSupportBase::mpUnit->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(this->mpObjMsgLv), "", static_cast<u32>(0), false);
+            if (this->mpObjNullLv != static_cast<cGUIObjNull*>(nullptr)) {
+                this->mpObjNullLv->::cGUIObject::setVisible(false);
+            }
+        }
+    }
+    this->mLevel = static_cast<u16>(0);
+    // inferred: the value carried to 0x95f186; no location-less local in scope fits
+    u16 v3_0 = this->mId;
+    // inferred: the value carried to 0x95f186; no location-less local in scope fits
+    float v3_8;
+    if (this->mType == static_cast<uGUIBase::cReferenceUIIconSkill::TYPE>(0)) {
+        v3_8 = 0.0f;
+    } else {
+        v3_8 = 100.0f;
+    }
+    // inferred: the value carried to 0x95f1ab; no location-less local in scope fits
+    float v4_9;
+    if (v3_0 == static_cast<u16>(65535)) {
+        v4_9 = 0.0f;
+    } else {
+        if (this->mIsEnable != false) {
+            v4_9 = 1.0f;
+        } else {
+            v4_9 = 10.0f;
+        }
+    }
+    if (this->mpInstAnimBase != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpInstAnimBase->::cGUIInstAnimation::setCurrentFrame(v3_8 + v4_9, true);
+    }
+    if (this->mpObjTexSetIcon != static_cast<cGUIObjTexture*>(nullptr)) {
+        this->mpObjTexSetIcon->::cGUIObject::setVisible(false);
+        return;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -11249,9 +12005,29 @@ __attribute__((weak)) void uGUIBase::cReferenceUIToggleBtn::setup(uGUIBase* pPar
 }
 
 // Address: 0x0096a970 - 0x0096a9ce (94 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIToggleBtn::update() {
-    DDON_STUB("uGUIBase::cReferenceUIToggleBtn::update")
-    /* stub */
+void uGUIBase::cReferenceUIToggleBtn::update() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc3c from cControl*
+    this->mSwitch = false;
+    this->updatePointerPos();
+    if (this->::uGUIBase::cSupportInstAnim::mpInstance == static_cast<cGUIInstAnimation*>(nullptr)) {
+        return;
+    }
+    if (this->mIsEnable != false) {
+        if (this->mFocus != false) {
+            if (this->mpCtrl != static_cast<cControl*>(nullptr)) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrl) + static_cast<long>(3132)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrl) + static_cast<long>(3132))) & static_cast<unsigned int>(4294967287);
+            }
+        } else {
+            if (this->mpCtrl != static_cast<cControl*>(nullptr)) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrl) + static_cast<long>(3132)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrl) + static_cast<long>(3132))) | static_cast<unsigned int>(8);
+            }
+        }
+    } else {
+        if (this->mpCtrl != static_cast<cControl*>(nullptr)) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrl) + static_cast<long>(3132)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrl) + static_cast<long>(3132))) | static_cast<unsigned int>(8);
+        }
+    }
 }
 
 // Address: 0x0096a9d0 - 0x0096ab25 (341 bytes)
@@ -12080,9 +12856,15 @@ void uGUIBase::cReferenceUICheckList::setVisible(bool b) {
 }
 
 // Address: 0x00973770 - 0x00973785 (21 bytes)
-__attribute__((weak)) bool uGUIBase::cReferenceUICheckList::isVisible() {
-    DDON_STUB("uGUIBase::cReferenceUICheckList::isVisible")
-    return {};
+bool uGUIBase::cReferenceUICheckList::isVisible() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x58 from cGUIInstNull*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    if (this->mData.mpINST_Null != static_cast<cGUIInstNull*>(nullptr)) {
+        return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mData.mpINST_Null) + static_cast<long>(88))) & static_cast<unsigned char>(1));
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (26 bytes)
@@ -12515,15 +13297,69 @@ __attribute__((weak)) void uGUIBase::cReferenceUIClanEmblem::setColor(uGUIBase::
 // s32 uGUIBase::cReferenceUIClanEmblem::getColorId(uGUIBase::cReferenceUIClanEmblem::COLOR_TYPE colorType) const;
 
 // Address: 0x009756a0 - 0x0097573f (159 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIClanEmblem::applyParam(const nNet::stClanEmblem& emblem) {
-    DDON_STUB("uGUIBase::cReferenceUIClanEmblem::applyParam")
-    /* stub */
+void uGUIBase::cReferenceUIClanEmblem::applyParam(const nNet::stClanEmblem& emblem) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; code after a join copied into the arms; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as unsigned int
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: a value cast to the type its use takes: const u8 used as int
+    this->::uGUIBase::cReferenceUIClanEmblem::setEmblemMark(emblem.mark);
+    // inferred: a temporary for the value the load at 0x9756ba read, used 5 times; no DWARF local holds it
+    const u8 t0 = emblem.base;
+    if (static_cast<unsigned int>(t0) != static_cast<unsigned int>(this->mBaseId)) {
+        if (t0 != static_cast<u8>(0)) {
+            if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getClanEmblemBaseNum() >= static_cast<int>(t0)) {
+                if (this->mInst.mpFix_pattern != static_cast<cGUIInstAnimation*>(nullptr)) {
+                    this->mInst.mpFix_pattern->::cGUIInstAnimation::setCurrentFrame(static_cast<float>(t0 - static_cast<int>(1)), true);
+                }
+                this->mBaseId = t0;
+            } else {
+                if (this->mInst.mpFix_pattern != static_cast<cGUIInstAnimation*>(nullptr)) {
+                    this->mInst.mpFix_pattern->::cGUIInstAnimation::setCurrentFrame(0.0f, true);
+                }
+                this->mBaseId = static_cast<s32>(0);
+            }
+        } else {
+            if (this->mInst.mpFix_pattern != static_cast<cGUIInstAnimation*>(nullptr)) {
+                this->mInst.mpFix_pattern->::cGUIInstAnimation::setCurrentFrame(0.0f, true);
+            }
+            this->mBaseId = static_cast<s32>(0);
+        }
+    }
+    this->::uGUIBase::cReferenceUIClanEmblem::setColor(static_cast<uGUIBase::cReferenceUIClanEmblem::COLOR_TYPE>(0), emblem.baseMainColor);
+    this->::uGUIBase::cReferenceUIClanEmblem::setColor(static_cast<uGUIBase::cReferenceUIClanEmblem::COLOR_TYPE>(1), emblem.baseSubColor);
 }
 
 // Address: 0x00975600 - 0x009756a0 (160 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUIClanEmblem::applyParam(const CClanParam& param) {
-    DDON_STUB("uGUIBase::cReferenceUIClanEmblem::applyParam")
-    /* stub */
+void uGUIBase::cReferenceUIClanEmblem::applyParam(const CClanParam& param) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; code after a join copied into the arms; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as unsigned int
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: a value cast to the type its use takes: const u8 used as int
+    this->::uGUIBase::cReferenceUIClanEmblem::setEmblemMark(param.m_ClanUserParam.m_ucEmblemMarkType);
+    // inferred: a temporary for the value the load at 0x97561b read, used 5 times; no DWARF local holds it
+    const u8 t0 = param.m_ClanUserParam.m_ucEmblemBaseType;
+    if (static_cast<unsigned int>(t0) != static_cast<unsigned int>(this->mBaseId)) {
+        if (t0 != static_cast<u8>(0)) {
+            if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getClanEmblemBaseNum() >= static_cast<int>(t0)) {
+                if (this->mInst.mpFix_pattern != static_cast<cGUIInstAnimation*>(nullptr)) {
+                    this->mInst.mpFix_pattern->::cGUIInstAnimation::setCurrentFrame(static_cast<float>(t0 - static_cast<int>(1)), true);
+                }
+                this->mBaseId = t0;
+            } else {
+                if (this->mInst.mpFix_pattern != static_cast<cGUIInstAnimation*>(nullptr)) {
+                    this->mInst.mpFix_pattern->::cGUIInstAnimation::setCurrentFrame(0.0f, true);
+                }
+                this->mBaseId = static_cast<s32>(0);
+            }
+        } else {
+            if (this->mInst.mpFix_pattern != static_cast<cGUIInstAnimation*>(nullptr)) {
+                this->mInst.mpFix_pattern->::cGUIInstAnimation::setCurrentFrame(0.0f, true);
+            }
+            this->mBaseId = static_cast<s32>(0);
+        }
+    }
+    this->::uGUIBase::cReferenceUIClanEmblem::setColor(static_cast<uGUIBase::cReferenceUIClanEmblem::COLOR_TYPE>(0), param.m_ClanUserParam.m_ucEmblemBaseMainColor);
+    this->::uGUIBase::cReferenceUIClanEmblem::setColor(static_cast<uGUIBase::cReferenceUIClanEmblem::COLOR_TYPE>(1), param.m_ClanUserParam.m_ucEmblemBaseSubColor);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (95 bytes)
@@ -12856,15 +13692,85 @@ __attribute__((weak)) void uGUIBase::cReferenceUINumBox::setMode(uGUIBase::cRefe
 // uGUIBase::cReferenceUINumBox::MODE uGUIBase::cReferenceUINumBox::getModeOld() const;
 
 // Address: 0x00976490 - 0x00976542 (178 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUINumBox::pushLArrow(s32 AddNum) {
-    DDON_STUB("uGUIBase::cReferenceUINumBox::pushLArrow")
-    /* stub */
+void uGUIBase::cReferenceUINumBox::pushLArrow(s32 AddNum) {
+    // Approximate from the ELF: a value compared with itself plus another; the body oracle reports this body.
+    // inferred: a temporary for the value the load at 0x97649f read, used 5 times; no DWARF local holds it
+    s32 t0 = this->::uGUIBase::cReferenceUINumBox::getCurrentNum();
+    if (this->mMinNum == t0) {
+        return;
+    }
+    if (this->mMinNum == this->mMaxNum) {
+        this->mCurrentNum = this->mMinNum;
+        this->mGrayOutType = static_cast<u32>(3);
+        this->mIsChangeNum = true;
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+    } else {
+        if (this->mMinNum < (AddNum + t0)) {
+            if ((AddNum + t0) < this->mMaxNum) {
+                this->mCurrentNum = AddNum + t0;
+                this->mGrayOutType = static_cast<u32>(0);
+                if (t0 != this->mCurrentNum) {
+                    this->mIsChangeNum = true;
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+                }
+            } else {
+                this->mCurrentNum = this->mMaxNum;
+                this->mGrayOutType = static_cast<u32>(2);
+                if (t0 != this->mMaxNum) {
+                    this->mIsChangeNum = true;
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+                }
+            }
+        } else {
+            this->mCurrentNum = this->mMinNum;
+            this->mGrayOutType = static_cast<u32>(1);
+            this->mIsChangeNum = true;
+            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+        }
+    }
+    this->::uGUIBase::cReferenceUINumBox::dispRefresh();
+    this->mIsPushAllowL = true;
 }
 
 // Address: 0x00976550 - 0x00976602 (178 bytes)
-__attribute__((weak)) void uGUIBase::cReferenceUINumBox::pushRArrow(s32 AddNum) {
-    DDON_STUB("uGUIBase::cReferenceUINumBox::pushRArrow")
-    /* stub */
+void uGUIBase::cReferenceUINumBox::pushRArrow(s32 AddNum) {
+    // Approximate from the ELF: a value compared with itself plus another; the body oracle reports this body.
+    // inferred: a temporary for the value the load at 0x97655f read, used 5 times; no DWARF local holds it
+    s32 t0 = this->::uGUIBase::cReferenceUINumBox::getCurrentNum();
+    if (this->mMaxNum == t0) {
+        return;
+    }
+    if (this->mMaxNum == this->mMinNum) {
+        this->mCurrentNum = this->mMaxNum;
+        this->mGrayOutType = static_cast<u32>(3);
+        this->mIsChangeNum = true;
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+    } else {
+        if (this->mMinNum < (AddNum + t0)) {
+            if ((AddNum + t0) < this->mMaxNum) {
+                this->mCurrentNum = AddNum + t0;
+                this->mGrayOutType = static_cast<u32>(0);
+                if (t0 != this->mCurrentNum) {
+                    this->mIsChangeNum = true;
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+                }
+            } else {
+                this->mCurrentNum = this->mMaxNum;
+                this->mGrayOutType = static_cast<u32>(2);
+                this->mIsChangeNum = true;
+                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+            }
+        } else {
+            this->mCurrentNum = this->mMinNum;
+            this->mGrayOutType = static_cast<u32>(1);
+            if (t0 != this->mMinNum) {
+                this->mIsChangeNum = true;
+                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(2));
+            }
+        }
+    }
+    this->::uGUIBase::cReferenceUINumBox::dispRefresh();
+    this->mIsPushAllowR = true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -13262,8 +14168,7 @@ uGUIBase::cReferenceUIPageDot::cReferenceUIPageDot() {
 // Address: 0x01ade130 - 0x01ade147 (23 bytes)
 // Also emitted as: _ZN8uGUIBase19cReferenceUIPageDotD0Ev at 0x01ade150
 uGUIBase::cReferenceUIPageDot::~cReferenceUIPageDot() {
-    DDON_STUB("uGUIBase::cReferenceUIPageDot::~cReferenceUIPageDot")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x00977d70 - 0x00978135 (965 bytes)
@@ -13576,9 +14481,13 @@ __attribute__((weak)) void uGUIBase::cReferenceUIRadioButton::setSelect(s32 idx,
 }
 
 // Address: 0x00979490 - 0x009794a9 (25 bytes)
-__attribute__((weak)) s32 uGUIBase::cReferenceUIRadioButton::getSelectIndex() {
-    DDON_STUB("uGUIBase::cReferenceUIRadioButton::getSelectIndex")
-    return {};
+s32 uGUIBase::cReferenceUIRadioButton::getSelectIndex() {
+    // Approximate from the ELF: a wider integer converted to a narrower signed type, whose value clang wraps; the body oracle reports this body.
+    if (this->mMode == static_cast<uGUIBase::cReferenceUIRadioButton::MODE>(1)) {
+        return static_cast<signed char>(this->mSingleObject.::uGUIBase::cReferenceUIRadioButton::cObject::isSelect() + static_cast<int>(255));
+    } else {
+        return this->mSelectIdx;
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (76 bytes)
@@ -14618,9 +15527,85 @@ __attribute__((weak)) void uGUIBase::cTextSlider::start(MT_CTSTR pMsg) {
 }
 
 // Address: 0x00956180 - 0x00956263 (227 bytes)
-__attribute__((weak)) bool uGUIBase::cTextSlider::update(f32 delta_time) {
-    DDON_STUB("uGUIBase::cTextSlider::update")
-    return {};
+bool uGUIBase::cTextSlider::update(f32 delta_time) {
+    // Approximate from the ELF: a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x95618a, held ahead of the effects the ELF orders after it
+    u32 t0 = this->mRno;
+    if (t0 == static_cast<u32>(2)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x956192, held ahead of the effects the ELF orders after it
+        f32 t1 = this->mSpeed;
+        // inferred: a temporary for the value the load at 0x956197 read, used twice; no DWARF local holds it
+        f32 t2 = this->mScrollWidth;
+        this->mScrollWidth = t2 - (t1 * delta_time);
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x9561a5, held ahead of the effects the ELF orders after it
+        f32 t3 = this->mDefaultPos;
+        if (this->mScrollWidth > 0.0f) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x9561b8, held ahead of the effects the ELF orders after it
+            cGUIInstNull* t4 = this->mpInstNull;
+            if (t4 != static_cast<cGUIInstNull*>(nullptr)) {
+                t4->::cGUIInstNull::setPositionX(t3 + (t2 - (t1 * delta_time)));
+                return true;
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x956216, held ahead of the effects the ELF orders after it
+                cGUIObjMessage* t11 = this->mpObjMsg;
+                if (t11 != static_cast<cGUIObjMessage*>(nullptr)) {
+                    t11->::cGUIObj2D::setPositionX(t3 + (t2 - (t1 * delta_time)));
+                }
+                return true;
+            }
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x956201, held ahead of the effects the ELF orders after it
+            cGUIInstNull* t9 = this->mpInstNull;
+            if (t9 != static_cast<cGUIInstNull*>(nullptr)) {
+                t9->::cGUIInstNull::setPositionX(t3);
+                this->mScrollWidth = 0.0f;
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x95623e, held ahead of the effects the ELF orders after it
+                f32 t16 = this->mEndFrame;
+                this->mTimer = t16;
+                this->mRno = static_cast<u32>(1);
+                return true;
+            } else {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x956229, held ahead of the effects the ELF orders after it
+                cGUIObjMessage* t14 = this->mpObjMsg;
+                if (t14 != static_cast<cGUIObjMessage*>(nullptr)) {
+                    t14->::cGUIObj2D::setPositionX(t3);
+                    this->mScrollWidth = 0.0f;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x95623e, held ahead of the effects the ELF orders after it
+                    f32 t16 = this->mEndFrame;
+                    this->mTimer = t16;
+                    this->mRno = static_cast<u32>(1);
+                    return true;
+                } else {
+                    this->mScrollWidth = 0.0f;
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0x95623e, held ahead of the effects the ELF orders after it
+                    f32 t16 = this->mEndFrame;
+                    this->mTimer = t16;
+                    this->mRno = static_cast<u32>(1);
+                    return true;
+                }
+            }
+        }
+    } else {
+        if (t0 == static_cast<u32>(1)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x9561d0, held ahead of the effects the ELF orders after it
+            f32 t7 = this->mTimer;
+            this->mTimer = t7 - delta_time;
+            if (0.0f >= this->mTimer) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0x9561eb, held ahead of the effects the ELF orders after it
+                f32 t8 = this->mScrollWidth;
+                if (t8 != 0.0f) {
+                    this->mRno = static_cast<u32>(2);
+                } else {
+                    this->mRno = static_cast<u32>(3);
+                }
+                return true;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (7 bytes)
@@ -14685,9 +15670,13 @@ __attribute__((weak)) void uGUIBase::cTexArcLoader::resizeTex(s32 SizeW, s32 Siz
 }
 
 // Address: 0x00956800 - 0x00956826 (38 bytes)
-__attribute__((weak)) void uGUIBase::cTexArcLoader::setBlendState(u32 BlendState) {
-    DDON_STUB("uGUIBase::cTexArcLoader::setBlendState")
-    /* stub */
+void uGUIBase::cTexArcLoader::setBlendState(u32 BlendState) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xf8 from cGUIObjTexture*
+    if (this->mpObjTex == static_cast<cGUIObjTexture*>(nullptr)) {
+        return;
+    }
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpObjTex) + static_cast<long>(248)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpObjTex) + static_cast<long>(248))) & static_cast<unsigned int>(4294963215)) | ((BlendState * static_cast<u32>(16)) & static_cast<u32>(4080));
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (50 bytes)

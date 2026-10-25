@@ -10,9 +10,12 @@
 #include "../rCharacterEditCameraParam/aStage.h"
 #include "../rCharacterEditCameraParam/cArea.h"
 #include "cResource.h"
+#include "../rLayout/cSetInfo.h"
+#include "../rLayout/cSetInfoCoord.h"
 #include "nLayout.h"
 #include "rLayout.h"
 #include "../rStageConnect/sArea.h"
+#include "uDDOModel.h"
 #include "uStageField.h"
 #include "uStageJoint.h"
 #include "uStageParts.h"
@@ -171,11 +174,23 @@ void cLayoutSet::setRequest() {
 }
 
 // Address: 0x002d3640 - 0x002d36aa (106 bytes)
-__attribute__((weak)) MtObject* cLayoutSet::getUnit(u32 id) {
-    // local: u32 i;
-    // local: uDDOModel* pCB;
-    DDON_STUB("cLayoutSet::getUnit")
-    return nullptr;
+MtObject* cLayoutSet::getUnit(u32 id) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    u32 i = static_cast<u32>(0);
+    if (this->mUnitArray.mLength != static_cast<u32>(0)) {
+        do {
+            uDDOModel* pCB = static_cast<uDDOModel*>(this->mUnitArray.mpArray[i]);
+            if (pCB != static_cast<uDDOModel*>(nullptr)) {
+                if (id != static_cast<unsigned int>(pCB->::uDDOModel::getSetNo())) {
+                } else {
+                    return pCB;
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mUnitArray.mLength);
+    }
+    return static_cast<MtObject*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -260,13 +275,151 @@ bool cLayoutSet::isLoadAreaChangeSet() const {
 }
 
 // Address: 0x002d3140 - 0x002d3221 (225 bytes)
-__attribute__((weak)) void cLayoutSet::moveSetUnit() {
-    // local: u32 i;
-    // local: SetInfo* psi;
-    // local: cSetInfoCoord* psic;
-    // local: u32 bit;
-    DDON_STUB("cLayoutSet::moveSetUnit")
-    /* stub */
+void cLayoutSet::moveSetUnit() {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: SetInfo* psi;
+    // DWARF local not rendered: cSetInfoCoord* psic;
+    // DWARF local not rendered: u32 bit;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mpRsrc != static_cast<rLayout*>(nullptr)) {
+        if (this->mpRsrc->::cResource::isUsage() != false) {
+            if (this->canSetUnit() != false) {
+                if (this->mUnitArray.mLength != static_cast<u32>(0)) {
+                    // inferred: the counter this loop steps; no location-less local in scope fits
+                    for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                        if (this->mUnitArray.mpArray[i0_3] == static_cast<MtObject*>(nullptr)) {
+                            if (this->isUseUnitData() != false) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mUnitDataArray.::MtArray::getBuffer()[static_cast<int>(i0_3)]) + static_cast<long>(8))) == static_cast<unsigned int>(0)) {
+                                    // inferred: a temporary for the result of the call at 0x2d31b8, used 4 times; no DWARF local holds it
+                                    rLayout::SetInfo* t0 = this->mpRsrc->getSetInfo(i0_3);
+                                    if (t0 != static_cast<rLayout::SetInfo*>(nullptr)) {
+                                        if (t0->mpInfo != static_cast<cSetInfo*>(nullptr)) {
+                                            if (static_cast<cSetInfoCoord*>(t0->mpInfo)->::cSetInfoCoord::getAreaHitNo() > static_cast<s32>(-1)) {
+                                                if (((static_cast<unsigned long>(this->::cLayoutSet::getAreaHitBit()) >> static_cast<unsigned long>(static_cast<cSetInfoCoord*>(t0->mpInfo)->::cSetInfoCoord::getAreaHitNo() & static_cast<s32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                                                    // inferred: a temporary for the result of the call at 0x2d31f0, used once; no DWARF local holds it
+                                                    MtObject* t1 = this->setLayoutUnit(this->mpRsrc, i0_3, false, static_cast<u32>(2));
+                                                    this->mUnitArray.mpArray[i0_3] = t1;
+                                                    if (this->mUnitArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                                                        this->mIsDeleted = false;
+                                                    }
+                                                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                                        i0_3 += static_cast<unsigned int>(1);
+                                                    } else {
+                                                        break;
+                                                    }
+                                                } else {
+                                                    if (this->mUnitArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                                                        this->mIsDeleted = false;
+                                                    }
+                                                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                                        i0_3 += static_cast<unsigned int>(1);
+                                                    } else {
+                                                        break;
+                                                    }
+                                                }
+                                            } else {
+                                                // inferred: a temporary for the result of the call at 0x2d31f0, used once; no DWARF local holds it
+                                                MtObject* t1 = this->setLayoutUnit(this->mpRsrc, i0_3, false, static_cast<u32>(2));
+                                                this->mUnitArray.mpArray[i0_3] = t1;
+                                                if (this->mUnitArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                                                    this->mIsDeleted = false;
+                                                }
+                                                if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                                    i0_3 += static_cast<unsigned int>(1);
+                                                } else {
+                                                    break;
+                                                }
+                                            }
+                                        } else {
+                                            if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                                i0_3 += static_cast<unsigned int>(1);
+                                            } else {
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                            i0_3 += static_cast<unsigned int>(1);
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                        i0_3 += static_cast<unsigned int>(1);
+                                    } else {
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // inferred: a temporary for the result of the call at 0x2d31b8, used 4 times; no DWARF local holds it
+                                rLayout::SetInfo* t0 = this->mpRsrc->getSetInfo(i0_3);
+                                if (t0 != static_cast<rLayout::SetInfo*>(nullptr)) {
+                                    if (t0->mpInfo != static_cast<cSetInfo*>(nullptr)) {
+                                        if (static_cast<cSetInfoCoord*>(t0->mpInfo)->::cSetInfoCoord::getAreaHitNo() > static_cast<s32>(-1)) {
+                                            if (((static_cast<unsigned long>(this->::cLayoutSet::getAreaHitBit()) >> static_cast<unsigned long>(static_cast<cSetInfoCoord*>(t0->mpInfo)->::cSetInfoCoord::getAreaHitNo() & static_cast<s32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                                                // inferred: a temporary for the result of the call at 0x2d31f0, used once; no DWARF local holds it
+                                                MtObject* t1 = this->setLayoutUnit(this->mpRsrc, i0_3, false, static_cast<u32>(2));
+                                                this->mUnitArray.mpArray[i0_3] = t1;
+                                                if (this->mUnitArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                                                    this->mIsDeleted = false;
+                                                }
+                                                if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                                    i0_3 += static_cast<unsigned int>(1);
+                                                } else {
+                                                    break;
+                                                }
+                                            } else {
+                                                if (this->mUnitArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                                                    this->mIsDeleted = false;
+                                                }
+                                                if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                                    i0_3 += static_cast<unsigned int>(1);
+                                                } else {
+                                                    break;
+                                                }
+                                            }
+                                        } else {
+                                            // inferred: a temporary for the result of the call at 0x2d31f0, used once; no DWARF local holds it
+                                            MtObject* t1 = this->setLayoutUnit(this->mpRsrc, i0_3, false, static_cast<u32>(2));
+                                            this->mUnitArray.mpArray[i0_3] = t1;
+                                            if (this->mUnitArray.mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                                                this->mIsDeleted = false;
+                                            }
+                                            if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                                i0_3 += static_cast<unsigned int>(1);
+                                            } else {
+                                                break;
+                                            }
+                                        }
+                                    } else {
+                                        if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                            i0_3 += static_cast<unsigned int>(1);
+                                        } else {
+                                            break;
+                                        }
+                                    }
+                                } else {
+                                    if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                        i0_3 += static_cast<unsigned int>(1);
+                                    } else {
+                                        break;
+                                    }
+                                }
+                            }
+                        } else {
+                            if ((i0_3 + static_cast<unsigned int>(1)) < this->mUnitArray.mLength) {
+                                i0_3 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x019aebc0 - 0x019aebc3 (3 bytes)
@@ -276,9 +429,14 @@ MtObject* cLayoutSet::setLayoutUnit(rLayout* pLayout, u32 no, bool isFroceSet, u
 }
 
 // Address: 0x002d3100 - 0x002d3132 (50 bytes)
-__attribute__((weak)) bool cLayoutSet::isUnitDataEmpty(u32 no) {
-    DDON_STUB("cLayoutSet::isUnitDataEmpty")
-    return {};
+bool cLayoutSet::isUnitDataEmpty(u32 no) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (this->isUseUnitData() != false) {
+        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mUnitDataArray.::MtArray::getBuffer()[static_cast<int>(no)]) + static_cast<long>(8))) == static_cast<unsigned int>(0);
+    } else {
+        return true;
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (41 bytes)

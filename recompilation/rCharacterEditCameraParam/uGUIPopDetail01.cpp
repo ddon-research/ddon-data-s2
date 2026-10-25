@@ -223,10 +223,46 @@ void uGUIPopDetail01::setItemParam(nGUIItem::cItem* p, nCharacterData::EQUIP_SLO
 }
 
 // Address: 0x00ba5f70 - 0x00ba6021 (177 bytes)
-__attribute__((weak)) void uGUIPopDetail01::setItemParam(cItemParam* pItemParam, rItemList::rItemParam* prItemParam, nCharacterData::EQUIP_SLOT_TYPE equipSlotType) {
-    // local: const u32 item_num;
-    DDON_STUB("uGUIPopDetail01::setItemParam")
-    /* stub */
+void uGUIPopDetail01::setItemParam(cItemParam* pItemParam, rItemList::rItemParam* prItemParam, nCharacterData::EQUIP_SLOT_TYPE equipSlotType) {
+    // DWARF local not rendered: const u32 item_num;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mEquipSlotType = equipSlotType;
+    if (this->mItem.::nGUIItem::cItem::isSameData(pItemParam, prItemParam) != false) {
+        if (pItemParam != static_cast<cItemParam*>(nullptr)) {
+            // inferred: a temporary for the value the load at 0xba5fa8 read, used once; no DWARF local holds it
+            u16 t0 = pItemParam->mItemParam.mItemNum_Guard;
+            if (t0 != this->mItem.::nGUIItem::cItem::getNum()) {
+                this->mItem.::nGUIItem::cItem::init();
+                this->mItemParam.::cItemParam::init(static_cast<u32>(0));
+                this->mItemParam.::cItemParam::copyParam(pItemParam);
+                this->mItem.::nGUIItem::cItem::setItemParam(&this->mItemParam);
+                this->mItem.::nGUIItem::cItem::setResourceParam(prItemParam);
+                this->::uGUIPopDetail01::updateEquipData();
+                this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+            }
+        } else {
+            if (this->mItem.::nGUIItem::cItem::getNum() != static_cast<u32>(0)) {
+                this->mItem.::nGUIItem::cItem::init();
+                this->mItemParam.::cItemParam::init(static_cast<u32>(0));
+                this->mItem.::nGUIItem::cItem::setItemParam(static_cast<cItemParam*>(nullptr));
+                this->mItem.::nGUIItem::cItem::setResourceParam(prItemParam);
+                this->::uGUIPopDetail01::updateEquipData();
+                this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+            }
+        }
+    } else {
+        this->mItem.::nGUIItem::cItem::init();
+        this->mItemParam.::cItemParam::init(static_cast<u32>(0));
+        if (pItemParam != static_cast<cItemParam*>(nullptr)) {
+            this->mItemParam.::cItemParam::copyParam(pItemParam);
+            this->mItem.::nGUIItem::cItem::setItemParam(&this->mItemParam);
+        } else {
+            this->mItem.::nGUIItem::cItem::setItemParam(static_cast<cItemParam*>(nullptr));
+        }
+        this->mItem.::nGUIItem::cItem::setResourceParam(prItemParam);
+        this->::uGUIPopDetail01::updateEquipData();
+        this->mRequestRefresh = static_cast<uGUIPopDetail01::REFRESH_MODE>(1);
+    }
 }
 
 // Address: 0x00ba6030 - 0x00ba603b (11 bytes)

@@ -8,6 +8,7 @@
 #include "../shared/cControl.h"
 #include "../shared/cGUIInstance.h"
 #include "../shared/cGUIObject.h"
+#include "cGUIUtility.h"
 #include "../shared/cResource.h"
 #include "../shared/nGUIExt.h"
 #include "../shared/rArchiveListArray.h"
@@ -272,9 +273,27 @@ void uGUIBrowserBG::kill() {
 }
 
 // Address: 0x009ac630 - 0x009ac68f (95 bytes)
-__attribute__((weak)) void uGUIBrowserBG::adjustScale() {
-    DDON_STUB("uGUIBrowserBG::adjustScale")
-    /* stub */
+void uGUIBrowserBG::adjustScale() {
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x1fa0
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x1fa4
+    this->::uGUIBase::adjustScale();
+    // inferred: a temporary for the value the load at 0x9ac646 read, used twice; no DWARF local holds it
+    sGUI* t0 = ::sGUI::getInstance();
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x9ac649, held ahead of the effects the ELF orders after it
+    float t1 = 1.0f;
+    // inferred: a temporary for the result of the call at 0x9ac651, used twice; no DWARF local holds it
+    f32 t2 = ::cGUIUtility::getScaleForDefaultResolution(t1);
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x9ac656, held ahead of the effects the ELF orders after it
+    f32 t3 = this->::uCoord::mPos.x;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x9ac65b, held ahead of the effects the ELF orders after it
+    f32 t4 = this->mWebSizeW;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x9ac66b, held ahead of the effects the ELF orders after it
+    float t5 = 32.0f;
+    // inferred: a temporary for the value the load at 0x9ac673 read, used once; no DWARF local holds it
+    f32 t6 = this->::uCoord::mPos.y;
+    static_cast<sGUIExt*>(t0)->mBrowserDispPos.x = static_cast<int>(t3 - (t4 * t2));
+    static_cast<sGUIExt*>(t0)->mBrowserDispPos.y = static_cast<int>(t6 + (t5 * t2));
 }
 
 // Address: 0x009abc60 - 0x009abd0f (175 bytes)

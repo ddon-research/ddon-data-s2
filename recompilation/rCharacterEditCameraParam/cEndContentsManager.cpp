@@ -86,15 +86,27 @@ bool cEndContentsManager::isPlayEnd() const {
 }
 
 // Address: 0x000baf00 - 0x000baf1d (29 bytes)
-__attribute__((weak)) bool cEndContentsManager::isDispPurpose() const {
-    DDON_STUB("cEndContentsManager::isDispPurpose")
-    return {};
+bool cEndContentsManager::isDispPurpose() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (this->mRno0 <= static_cast<u8>(8)) {
+        return static_cast<bool>((static_cast<unsigned long>(248) >> static_cast<unsigned long>(this->mRno0 & static_cast<u8>(31))) & static_cast<unsigned long>(1));
+    } else {
+        return true;
+    }
 }
 
 // Address: 0x000baf20 - 0x000baf3d (29 bytes)
-__attribute__((weak)) bool cEndContentsManager::isDispTimer() const {
-    DDON_STUB("cEndContentsManager::isDispTimer")
-    return {};
+bool cEndContentsManager::isDispTimer() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (this->mRno0 <= static_cast<u8>(8)) {
+        return static_cast<bool>((static_cast<unsigned long>(248) >> static_cast<unsigned long>(this->mRno0 & static_cast<u8>(31))) & static_cast<unsigned long>(1));
+    } else {
+        return true;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -143,11 +155,12 @@ __attribute__((weak)) u32 cEndContentsManager::getEndContentsEntryNpcId(u32 Grou
 // u32 cEndContentsManager::getEndContentsPurposeMaxNum() const;
 
 // Address: 0x000bae20 - 0x000bae4c (44 bytes)
-__attribute__((weak)) u32 cEndContentsManager::getEndContentsPurposeNum() const {
-    // local: u32 purposeNum;
-    // local: u32 i;
-    DDON_STUB("cEndContentsManager::getEndContentsPurposeNum")
-    return {};
+u32 cEndContentsManager::getEndContentsPurposeNum() const {
+    // DWARF local not rendered: u32 purposeNum;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return static_cast<unsigned int>((static_cast<unsigned long>(this->mEndContentsPurpose[0] != static_cast<int>(-1)) + static_cast<unsigned long>(this->mEndContentsPurpose[1] != static_cast<int>(-1))) + static_cast<unsigned long>(this->mEndContentsPurpose[2] != static_cast<int>(-1)));
 }
 
 // Address: 0x000bae50 - 0x000bae80 (48 bytes)
@@ -175,10 +188,20 @@ void cEndContentsManager::addEndContentsPurposeNo(u32 purposeNo) {
 }
 
 // Address: 0x000baeb0 - 0x000baed8 (40 bytes)
-__attribute__((weak)) void cEndContentsManager::removeEndContentsPurposeNo(u32 purposeNo) {
-    // local: u32 i;
-    DDON_STUB("cEndContentsManager::removeEndContentsPurposeNo")
-    /* stub */
+void cEndContentsManager::removeEndContentsPurposeNo(u32 purposeNo) {
+    // Approximate from the ELF: a pointer stepped beside a counter; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as int
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    int* p1 = &this->mEndContentsPurpose[0];
+    do {
+        if ((*p1) == static_cast<int>(purposeNo)) {
+            *p1 = static_cast<int>(-1);
+            return;
+        }
+        i += static_cast<u32>(1);
+        p1 += static_cast<int>(1);
+    } while (i <= static_cast<u32>(2));
 }
 
 // No out-of-line body: 5 inlined copies in 5 functions (152 bytes)

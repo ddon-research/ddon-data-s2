@@ -12,6 +12,12 @@
 #include "MtPrimitive3D.h"
 #include "cResource.h"
 #include "nEffect.h"
+#include "rEffectAnim.h"
+#include "rEffectStrip.h"
+#include "rModel.h"
+#include "rSoundRequest.h"
+#include "rTexture.h"
+#include "rVibration.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -243,18 +249,25 @@ bool rEffectList::isJointShare() const {
 // rEffectList::ResourceInfo* rEffectList::getUnitResourceInfo();
 
 // Address: 0x01b94e50 - 0x01b94e68 (24 bytes)
-__attribute__((weak)) u32 rEffectList::getResourceSize() const {
-    DDON_STUB("rEffectList::getResourceSize")
-    return {};
+u32 rEffectList::getResourceSize() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return static_cast<unsigned int>((static_cast<unsigned long>(this->mParamBuffSize) + static_cast<unsigned long>(this->mResourceInfoNum * static_cast<u32>(120))) + static_cast<unsigned long>(184));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
 // rEffectList* rEffectList::getSerialEffect();
 
 // Address: 0x011f44e0 - 0x011f44f6 (22 bytes)
-__attribute__((weak)) bool rEffectList::isCullingParticle(u32 ParticleType) {
-    DDON_STUB("rEffectList::isCullingParticle")
-    return {};
+bool rEffectList::isCullingParticle(u32 ParticleType) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (ParticleType <= static_cast<u32>(26)) {
+        return static_cast<bool>((static_cast<unsigned long>(117437311) >> static_cast<unsigned long>(static_cast<unsigned char>(ParticleType) & static_cast<unsigned char>(31))) & static_cast<unsigned long>(1));
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -333,10 +346,60 @@ MtObject* rEffectList::MyDTI::newInstance() const {
 // void rEffectList::ResourceInfo::operator delete[](void* pObj);
 
 // Address: 0x011f2d70 - 0x011f2e8f (287 bytes)
-__attribute__((weak)) void rEffectList::ResourceInfo::releaseResources() {
-    // local: u32 ctr;
-    DDON_STUB("rEffectList::ResourceInfo::releaseResources")
-    /* stub */
+void rEffectList::ResourceInfo::releaseResources() {
+    // DWARF local not rendered: u32 ctr;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->mStatus = static_cast<u32>(0);
+    this->mTrait = static_cast<u32>(0);
+    if (this->mpTexture[0] != static_cast<rTexture*>(nullptr)) {
+        this->mpTexture[0]->::cResource::release();
+        this->mpTexture[0] = static_cast<rTexture*>(nullptr);
+    }
+    if (this->mpTexture[1] != static_cast<rTexture*>(nullptr)) {
+        this->mpTexture[1]->::cResource::release();
+        this->mpTexture[1] = static_cast<rTexture*>(nullptr);
+    }
+    if (this->mpTexture[2] != static_cast<rTexture*>(nullptr)) {
+        this->mpTexture[2]->::cResource::release();
+        this->mpTexture[2] = static_cast<rTexture*>(nullptr);
+    }
+    if (this->mpAnim != static_cast<rEffectAnim*>(nullptr)) {
+        this->mpAnim->::cResource::release();
+        this->mpAnim = static_cast<rEffectAnim*>(nullptr);
+    }
+    if (this->mpModel != static_cast<rModel*>(nullptr)) {
+        this->mpModel->::cResource::release();
+        this->mpModel = static_cast<rModel*>(nullptr);
+    }
+    if (this->mpRangeStrip != static_cast<rEffectStrip*>(nullptr)) {
+        this->mpRangeStrip->::cResource::release();
+        this->mpRangeStrip = static_cast<rEffectStrip*>(nullptr);
+    }
+    if (this->mpPathStrip != static_cast<rEffectStrip*>(nullptr)) {
+        this->mpPathStrip->::cResource::release();
+        this->mpPathStrip = static_cast<rEffectStrip*>(nullptr);
+    }
+    if (this->mpBounceEffect != static_cast<rEffectList*>(nullptr)) {
+        this->mpBounceEffect->::cResource::release();
+        this->mpBounceEffect = static_cast<rEffectList*>(nullptr);
+    }
+    if (this->mpFinishEffect != static_cast<rEffectList*>(nullptr)) {
+        this->mpFinishEffect->::cResource::release();
+        this->mpFinishEffect = static_cast<rEffectList*>(nullptr);
+    }
+    if (this->mpExtVibration != static_cast<rVibration*>(nullptr)) {
+        this->mpExtVibration->::cResource::release();
+        this->mpExtVibration = static_cast<rVibration*>(nullptr);
+    }
+    if (this->mpSoundRequest != static_cast<rSoundRequest*>(nullptr)) {
+        this->mpSoundRequest->::cResource::release();
+        this->mpSoundRequest = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mpForce != static_cast<cResource*>(nullptr)) {
+        this->mpForce->::cResource::release();
+        this->mpForce = static_cast<cResource*>(nullptr);
+    }
 }
 
 // Address: 0x011f2e90 - 0x011f2f6a (218 bytes)

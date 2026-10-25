@@ -247,9 +247,9 @@ __attribute__((weak)) MtVector3 rStartPos::Info::getOfsPos(u32 idx) const {
 }
 
 // Address: 0x01ab3db0 - 0x01ab3ddf (47 bytes)
-__attribute__((weak)) void rStartPos::Info::setOfsPos(MtVector3& ofs, u32 idx) {
-    DDON_STUB("rStartPos::Info::setOfsPos")
-    /* stub */
+void rStartPos::Info::setOfsPos(MtVector3& ofs, u32 idx) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mOfsPos[idx] = ofs;
 }
 
 // Address: 0x01ab3de0 - 0x01ab3de6 (6 bytes)

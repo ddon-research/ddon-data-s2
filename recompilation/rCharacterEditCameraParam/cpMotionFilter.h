@@ -18,6 +18,7 @@ class MtVector3;
 class rMotionFilter;
 class uCnsMotFilter;
 class uDDOModel;
+class uMockUpModel;
 class uModel;
 
 // Declarations
@@ -33,6 +34,8 @@ using u32 = unsigned int;
 
 class cpMotionFilter : public cpComponent
 {
+    // inferred: uMockUpModel::move names cpMotionFilter::mSex
+    friend class uMockUpModel;
 public:
     enum DATA_ENUM
     {

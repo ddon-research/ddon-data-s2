@@ -143,9 +143,11 @@ void uGUIPhotoUpload::updatePtr() {
 }
 
 // Address: 0x00b43960 - 0x00b43996 (54 bytes)
-__attribute__((weak)) void uGUIPhotoUpload::updateInit() {
-    DDON_STUB("uGUIPhotoUpload::updateInit")
-    /* stub */
+void uGUIPhotoUpload::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIPhotoUpload::adjustCursor();
+    this->::uGUIPhotoUpload::updateWait();
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPhotoUpload::updateWait);
 }
 
 // Address: 0x00b43a40 - 0x00b43ba4 (356 bytes)
@@ -161,9 +163,32 @@ void uGUIPhotoUpload::updateExit() {
 }
 
 // Address: 0x00b440a0 - 0x00b44136 (150 bytes)
-__attribute__((weak)) void uGUIPhotoUpload::moveInput() {
-    DDON_STUB("uGUIPhotoUpload::moveInput")
-    /* stub */
+void uGUIPhotoUpload::moveInput() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (static_cast<unsigned int>(this->mProc) <= static_cast<unsigned int>(10)) {
+        if (((static_cast<unsigned long>(12) >> (static_cast<unsigned long>(this->mProc) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+            if (((static_cast<unsigned long>(48) >> (static_cast<unsigned long>(this->mProc) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                if (((static_cast<unsigned long>(1536) >> (static_cast<unsigned long>(this->mProc) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                    if (this->mpButtonCtrl != static_cast<cControl*>(nullptr)) {
+                        this->mpButtonCtrl->execute();
+                    }
+                }
+            } else {
+                this->mReference.mPulldown.::uGUIBase::cReferenceUIPullDown::execute();
+                this->mReference.mComment.::uGUIBase::cReferenceUITextBox::execute();
+            }
+        } else {
+            if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                this->mpHCtrl->execute();
+            }
+            if (this->mpVCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                this->mpVCtrl->execute();
+            }
+            this->mReference.mPulldown.::uGUIBase::cReferenceUIPullDown::execute();
+            this->mReference.mComment.::uGUIBase::cReferenceUITextBox::execute();
+        }
+    }
 }
 
 // Address: 0x00b44140 - 0x00b44288 (328 bytes)

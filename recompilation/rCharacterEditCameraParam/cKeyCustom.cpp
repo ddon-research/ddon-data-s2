@@ -645,13 +645,27 @@ __attribute__((weak)) void cKeyCustomManager::checkOverlap() {
 }
 
 // Address: 0x000eede0 - 0x000eee0a (42 bytes)
-__attribute__((weak)) bool cKeyCustomManager::isExistOverlap() {
-    // local: bool is_exist_overlap;
-    // local: u32 num;
-    // local: u32 i;
-    // local: cKeyCustom* pSrc;
-    DDON_STUB("cKeyCustomManager::isExistOverlap")
-    return {};
+bool cKeyCustomManager::isExistOverlap() {
+    // DWARF local not rendered: bool is_exist_overlap;
+    // DWARF local not rendered: u32 num;
+    // DWARF local not rendered: cKeyCustom* pSrc;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from cKeyCustomManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x28 from cKeyCustomManager*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from unsigned long
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24))) != static_cast<unsigned int>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0xeede3, 0xeee03)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(40))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(40))) != static_cast<unsigned int>(0)) {
+                return true;
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(24))));
+    }
+    return false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (21 bytes)

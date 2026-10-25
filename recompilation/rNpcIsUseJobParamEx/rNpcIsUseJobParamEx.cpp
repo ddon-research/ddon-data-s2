@@ -3,6 +3,7 @@
 #include "rNpcIsUseJobParamEx.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/rTbl2.h"
@@ -147,12 +148,20 @@ inline void rNpcIsUseJobParamEx::operator delete(void* p_addr) {
 // void rNpcIsUseJobParamEx::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x006abdb0 - 0x006abe23 (115 bytes)
-__attribute__((weak)) bool rNpcIsUseJobParamEx::loadData(MtDataReader& in, cNpcIsUseJobParamEx* pData) {
-    // local: u16 ReadU16;
-    // local: u8 ReadU8;
-    // local: u32 ReadU32;
-    DDON_STUB("rNpcIsUseJobParamEx::loadData")
-    return {};
+bool rNpcIsUseJobParamEx::loadData(MtDataReader& in, cNpcIsUseJobParamEx* pData) {
+    // DWARF local not rendered: u16 ReadU16;
+    // DWARF local not rendered: u8 ReadU8;
+    // DWARF local not rendered: u32 ReadU32;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pData != static_cast<cNpcIsUseJobParamEx*>(nullptr)) {
+        pData->mStageNo = in.readU16();
+        pData->mGroupNo = in.readU16();
+        pData->mUnitNo = in.::MtDataReader::readU8();
+        pData->mQuestId = in.readU32();
+        return true;
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01a9f450 - 0x01a9f458 (8 bytes)

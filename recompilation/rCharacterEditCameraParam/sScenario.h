@@ -47,6 +47,8 @@ using u32 = unsigned int;
 
 class SCE_AH_LIST : public MtObject
 {
+    // inferred: sScenario::getScenario names SCE_AH_LIST::mArray.mLength
+    friend class sScenario;
 public:
     class MyDTI;
 public:
@@ -159,7 +161,6 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
-// approximate: only approximate callers check this inline body
 inline sScenario* sScenario::getInstance() {
     return ::sScenario::mpInstance;
 }

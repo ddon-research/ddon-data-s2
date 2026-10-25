@@ -34,6 +34,8 @@ using u8 = unsigned char;
 
 class rMsgSet : public cResource
 {
+    // inferred: cTalkMsgData::setMsgSetData names rMsgSet::mArray.::MtArray::mLength
+    friend class cTalkMsgData;
 public:
     class MyDTI;
     class cMsgGroup;
@@ -97,7 +99,7 @@ public:
 public:
     class cMsgGroup : public MtObject
     {
-        // inferred: cTalkMsgData::isDispNpcName names rMsgSet::cMsgGroup::mNameDispOff
+        // inferred: cTalkMsgData::setDispGrpSerialNo names rMsgSet::cMsgGroup::mGroupSerial
         friend class cTalkMsgData;
     public:
         class MyDTI;

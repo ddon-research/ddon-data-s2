@@ -4,9 +4,12 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cGUIInstance.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -92,9 +95,17 @@ bool uGUIMousePointer::loadResource() {
 }
 
 // Address: 0x00b291f0 - 0x00b2929c (172 bytes)
-__attribute__((weak)) void uGUIMousePointer::setup() {
-    DDON_STUB("uGUIMousePointer::setup")
-    /* stub */
+void uGUIMousePointer::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(19)), true);
+    this->setPlay(true);
+    this->::uGUIBase::setInstNull(static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(3), false)), true);
+    this->mpInstAnim = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(2), false));
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMousePointer::updateInit);
 }
 
 // Address: 0x00b292c0 - 0x00b292f1 (49 bytes)
@@ -130,9 +141,9 @@ __attribute__((weak)) void uGUIMousePointer::setAnmType(u32 uAnmType) {
 }
 
 // Address: 0x00b292a0 - 0x00b292ba (26 bytes)
-__attribute__((weak)) void uGUIMousePointer::updateInit() {
-    DDON_STUB("uGUIMousePointer::updateInit")
-    /* stub */
+void uGUIMousePointer::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMousePointer::updateWait);
 }
 
 // Address: 0x00b29470 - 0x00b29643 (467 bytes)

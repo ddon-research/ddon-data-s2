@@ -180,10 +180,7 @@ void cpHeadCtrl::setResource(rHeadCtrl* pRes) {
 // Address: 0x00480a80 - 0x00480ab1 (49 bytes)
 void cpHeadCtrl::setTargetPos(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mTargetPos.x = pos.x;
-    this->mTargetPos.y = pos.y;
-    this->mTargetPos.z = pos.z;
-    this->mTargetPos.pad_ = 0.0f;
+    this->mTargetPos = pos;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)

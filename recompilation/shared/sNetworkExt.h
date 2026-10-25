@@ -38,7 +38,10 @@ class MtTime;
 class MtUI;
 struct SceNpId;
 class cCharacterData;
+class cMenuGroupChatMemberList;
+class cMenuInviteEntryBoardItem;
 class cMenuReadyEntryBoardItem;
+class cMenuRecentList;
 class cNetGameServer;
 class cNetLoginServer;
 class cNetStorage;
@@ -49,6 +52,7 @@ namespace nNet { struct stEntryBoardItemInfo; }
 namespace nSessionManager { class cNetSessionManager; }
 class sGame;
 class sSavedataExt;
+class uGUIAnnounce;
 
 // Declarations
 class sNetworkExt;
@@ -78,8 +82,16 @@ using u8 = unsigned char;
 
 class sNetworkExt : public sNetwork
 {
+    // inferred: cMenuGroupChatMemberList::createSortList names sNetworkExt::mGroupChatMemberMax
+    friend class cMenuGroupChatMemberList;
+    // inferred: cMenuInviteEntryBoardItem::initInviteEntryBoardItem names sNetworkExt::mSaveEntryInvitedInfo.mEntryBoardId
+    friend class cMenuInviteEntryBoardItem;
     // inferred: cMenuReadyEntryBoardItem::moveReadyEntryBoardItem names sNetworkExt::mEntryBoardReady
     friend class cMenuReadyEntryBoardItem;
+    // inferred: cMenuRecentList::initRecentList names sNetworkExt::mRecentListMax
+    friend class cMenuRecentList;
+    // inferred: cNetGameServer::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE names sNetworkExt::mIsCycleContentsPlayStart
+    friend class cNetGameServer;
     // inferred: cQuestTaskParam::isEndDistribution names sNetworkExt::mWorldServerTime
     friend class cQuestTaskParam;
     // inferred: nSessionManager::cNetSessionManager::endQuickMatch names sNetworkExt::mReserveJoinParty
@@ -88,6 +100,8 @@ class sNetworkExt : public sNetwork
     friend class sGame;
     // inferred: sSavedataExt::beginHddSpaceCheck names sNetworkExt::mAchievementBootup
     friend class sSavedataExt;
+    // inferred: uGUIAnnounce::updateEntryBoardReady names sNetworkExt::mEntryBoardReady
+    friend class uGUIAnnounce;
 public:
     enum LOGIN_RNO
     {
@@ -596,8 +610,20 @@ inline cNetGameServer* sNetworkExt::getGameServer() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 sNetworkExt::getClanMemberMax() {
+    return this->mClanMemberMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 sNetworkExt::getFriendListMax() {
     return this->mFriendListMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 sNetworkExt::getGroupChatMemberMax() {
+    return this->mGroupChatMemberMax;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -608,4 +634,15 @@ inline u32 sNetworkExt::getRecentListMax() {
 // Inline, no code of its own: checked where it is inlined.
 inline u32 sNetworkExt::getBlackListMax() {
     return this->mBlackListMax;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool sNetworkExt::isEntryBoardReadyWait() {
+    return this->mEntryBoardReadyWait;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool sNetworkExt::isLeaveOnTheWayBusy() {
+    return this->mLeaveOnTheWayBusy;
 }

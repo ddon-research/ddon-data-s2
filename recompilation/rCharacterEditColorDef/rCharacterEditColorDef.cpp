@@ -4,10 +4,12 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtColor.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cCharacterEditPaletteBase.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -137,17 +139,35 @@ inline void rCharacterEditColorDef::operator delete(void* p_addr) {
 // void rCharacterEditColorDef::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x00652e40 - 0x00652f58 (280 bytes)
-__attribute__((weak)) bool rCharacterEditColorDef::loadData(MtDataReader& r, cCharacterEditColorDef* pData) {
-    // local: f32 rr;
-    // local: f32 gg;
-    // local: f32 bb;
-    // local: f32 aa;
-    // local: u32 r32;
-    // local: u32 g32;
-    // local: u32 b32;
-    // local: u32 a32;
-    DDON_STUB("rCharacterEditColorDef::loadData")
-    return {};
+bool rCharacterEditColorDef::loadData(MtDataReader& r, cCharacterEditColorDef* pData) {
+    // DWARF local not rendered: f32 rr;
+    // DWARF local not rendered: f32 gg;
+    // DWARF local not rendered: f32 bb;
+    // DWARF local not rendered: f32 aa;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; an | of disjoint bits; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    pData->::cCharacterEditPaletteBase::loadData(r);
+    ::nDDOIO::readData(r, pData->mUse);
+    // inferred: a temporary for the result of the call at 0x652e96, used once; no DWARF local holds it
+    f32 t0 = r.readF32();
+    // inferred: a temporary for the result of the call at 0x652ea4, used once; no DWARF local holds it
+    f32 t1 = r.readF32();
+    // inferred: a temporary for the result of the call at 0x652eb2, used once; no DWARF local holds it
+    f32 t2 = r.readF32();
+    // inferred: a temporary for the result of the call at 0x652ec0, used once; no DWARF local holds it
+    f32 t3 = r.readF32();
+    u32 r32 = r.readU32();
+    u32 g32 = r.readU32();
+    u32 b32 = r.readU32();
+    u32 a32 = r.readU32();
+    pData->mColor.x = t0;
+    pData->mColor.y = t1;
+    pData->mColor.z = t2;
+    pData->mColor.w = t3;
+    pData->mUIColor.rgba = static_cast<unsigned int>(((static_cast<unsigned long>(a32 * static_cast<u32>(16777216)) | static_cast<unsigned long>((b32 * static_cast<u32>(65536)) & static_cast<u32>(16711680))) | static_cast<unsigned long>(static_cast<unsigned char>(r32))) | static_cast<unsigned long>(static_cast<unsigned short>(g32 * static_cast<u32>(256))));
+    return true;
 }
 
 // Address: 0x01a7d400 - 0x01a7d408 (8 bytes)

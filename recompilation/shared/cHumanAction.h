@@ -225,3 +225,14 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s32 cHumanActSetNpcMotMyRoom::getMotIndex() const {
+    return this->mNPCMotIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s32 cHumanActSetNpcMotion::getMotIndex() const {
+    return this->mNPCMotIndex;
+}

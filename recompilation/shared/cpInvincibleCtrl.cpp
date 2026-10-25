@@ -147,10 +147,11 @@ __attribute__((weak)) void cpInvincibleCtrl::removeInvType(nObjCollision::UNIT_I
 }
 
 // Address: 0x00498a30 - 0x00498a3d (13 bytes)
-__attribute__((weak)) bool cpInvincibleCtrl::isInvTypeActive(nObjCollision::UNIT_INV_TYPE type) const {
-    // local: u32 flag;
-    DDON_STUB("cpInvincibleCtrl::isInvTypeActive")
-    return {};
+bool cpInvincibleCtrl::isInvTypeActive(nObjCollision::UNIT_INV_TYPE type) const {
+    // DWARF local not rendered: u32 flag;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->::cpInvincibleCtrl::getInvTypeFlagPrivate()) >> (static_cast<unsigned long>(type) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x00498b70 - 0x00498b7a (10 bytes)
@@ -199,10 +200,101 @@ __attribute__((weak)) void cpInvincibleCtrl::callbackDamageAfter_calcEnd(cHitInf
 // cpObjCollisionBase* cpInvincibleCtrl::findCpObjCollision() const;
 
 // Address: 0x00497a20 - 0x00497dad (909 bytes)
-__attribute__((weak)) void cpInvincibleCtrl::defineInvincible() {
-    // local: u32 invAttr;
-    DDON_STUB("cpInvincibleCtrl::defineInvincible")
-    /* stub */
+void cpInvincibleCtrl::defineInvincible() {
+    // DWARF local not rendered: u32 invAttr;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x288 from cpInvincibleCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x290 from cpInvincibleCtrl*
+    this->mInvInfo[1].mAttr = static_cast<u32>(8396768);
+    this->mInvInfo[1].mAttrCheatCheack = static_cast<u32>(4286570527);
+    this->mInvInfo[1].mPriority = static_cast<u32>(100);
+    this->mInvInfo[1].mPriorityCheatCheack = static_cast<u32>(4294967195);
+    this->mInvInfo[2].mAttr = static_cast<u32>(1040387);
+    this->mInvInfo[2].mAttrCheatCheack = static_cast<u32>(4293926908);
+    this->mInvInfo[2].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[2].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[3].mAttr = static_cast<u32>(134733838);
+    this->mInvInfo[3].mAttrCheatCheack = static_cast<u32>(4160233457);
+    this->mInvInfo[3].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[3].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[4].mAttr = static_cast<u32>(24174560);
+    this->mInvInfo[4].mAttrCheatCheack = static_cast<u32>(4270792735);
+    this->mInvInfo[4].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[4].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[5].mAttr = static_cast<u32>(8160);
+    this->mInvInfo[5].mAttrCheatCheack = static_cast<u32>(4294959135);
+    this->mInvInfo[5].mPriority = static_cast<u32>(50);
+    this->mInvInfo[5].mPriorityCheatCheack = static_cast<u32>(4294967245);
+    this->mInvInfo[6].mAttr = static_cast<u32>(69205998);
+    this->mInvInfo[6].mAttrCheatCheack = static_cast<u32>(4225761297);
+    this->mInvInfo[6].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[6].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[7].mAttr = static_cast<u32>(32759815);
+    this->mInvInfo[7].mAttrCheatCheack = static_cast<u32>(4262207480);
+    this->mInvInfo[7].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[7].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[8].mAttr = static_cast<u32>(581632);
+    this->mInvInfo[8].mAttrCheatCheack = static_cast<u32>(4294385663);
+    this->mInvInfo[8].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[8].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[9].mAttr = static_cast<u32>(19980270);
+    this->mInvInfo[9].mAttrCheatCheack = static_cast<u32>(4274987025);
+    this->mInvInfo[9].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[9].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[10].mAttr = static_cast<u32>(135782414);
+    this->mInvInfo[10].mAttrCheatCheack = static_cast<u32>(4159184881);
+    this->mInvInfo[10].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[10].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[11].mAttr = static_cast<u32>(516098);
+    this->mInvInfo[11].mAttrCheatCheack = static_cast<u32>(4294451197);
+    this->mInvInfo[11].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[11].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[12].mAttr = static_cast<u32>(24240108);
+    this->mInvInfo[12].mAttrCheatCheack = static_cast<u32>(4270727187);
+    this->mInvInfo[12].mPriority = static_cast<u32>(50);
+    this->mInvInfo[12].mPriorityCheatCheack = static_cast<u32>(4294967245);
+    this->mInvInfo[13].mAttr = static_cast<u32>(573454);
+    this->mInvInfo[13].mAttrCheatCheack = static_cast<u32>(4294393841);
+    this->mInvInfo[13].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[13].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[14].mAttr = static_cast<u32>(1024);
+    this->mInvInfo[14].mAttrCheatCheack = static_cast<u32>(4294966271);
+    this->mInvInfo[14].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[14].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[15].mAttr = static_cast<u32>(33554944);
+    this->mInvInfo[15].mAttrCheatCheack = static_cast<u32>(4261412351);
+    this->mInvInfo[15].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[15].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[16].mAttr = static_cast<u32>(32759791);
+    this->mInvInfo[16].mAttrCheatCheack = static_cast<u32>(4262207504);
+    this->mInvInfo[16].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[16].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[17].mAttr = static_cast<u32>(1536);
+    this->mInvInfo[17].mAttrCheatCheack = static_cast<u32>(4294965759);
+    this->mInvInfo[17].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[17].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[18].mAttr = static_cast<u32>(1632);
+    this->mInvInfo[18].mAttrCheatCheack = static_cast<u32>(4294965663);
+    this->mInvInfo[18].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[18].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[19].mAttr = static_cast<u32>(49152);
+    this->mInvInfo[19].mAttrCheatCheack = static_cast<u32>(4294918143);
+    this->mInvInfo[19].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[19].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[20].mAttr = static_cast<u32>(4243462);
+    this->mInvInfo[20].mAttrCheatCheack = static_cast<u32>(4290723833);
+    this->mInvInfo[20].mPriority = static_cast<u32>(9999);
+    this->mInvInfo[20].mPriorityCheatCheack = static_cast<u32>(4294957296);
+    this->mInvInfo[21].mAttr = static_cast<u32>(22142956);
+    this->mInvInfo[21].mAttrCheatCheack = static_cast<u32>(4272824339);
+    this->mInvInfo[21].mPriority = static_cast<u32>(50);
+    this->mInvInfo[21].mPriorityCheatCheack = static_cast<u32>(4294967245);
+    this->mInvInfo[22].mAttr = static_cast<u32>(22142956);
+    this->mInvInfo[22].mAttrCheatCheack = static_cast<u32>(4272824339);
+    this->mInvInfo[22].mPriority = static_cast<u32>(50);
+    this->mInvInfo[22].mPriorityCheatCheack = static_cast<u32>(4294967245);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(648)) = static_cast<unsigned long>(-94821749613338656);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(656)) = static_cast<unsigned long>(-42949672950001);
 }
 
 // No out-of-line body: 9 inlined copies in 7 functions (91 bytes)

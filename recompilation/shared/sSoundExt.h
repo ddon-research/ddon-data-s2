@@ -693,6 +693,12 @@ inline rSoundRequest* sSoundExt::getGameBuffResource() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rSoundSubMixerSet* sSoundExt::getSoundSubMixerSetResource() {
+    return this->mprSoundSubMixerSet;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sSoundExt::cVoiceRequest::cVoiceRequest() {
     this->mpResource = static_cast<rSoundStreamRequest*>(nullptr);
     this->mReqNo = static_cast<u32>(4294967295);

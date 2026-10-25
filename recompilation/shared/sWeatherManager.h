@@ -33,6 +33,7 @@ class MtPropertyList;
 class MtQuaternion;
 class MtVector3;
 class MtVector4;
+class aStage;
 class cCommonSkyFogData;
 class cDayNightColorFogParam;
 class cDayNightLightParam;
@@ -201,6 +202,8 @@ public:
 
 class sWeatherManager : public cSystem
 {
+    // inferred: aStage::releaseStageWeather names sWeatherManager::mpInstance
+    friend class aStage;
 public:
     enum WEATHER_PHASE
     {

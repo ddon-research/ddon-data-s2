@@ -5,6 +5,7 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cResource.h"
 #include "nCastUtility.h"
 #include "nEnemy.h"
@@ -367,24 +368,167 @@ __attribute__((weak)) bool sEnemyManager::isRageEnemy() {
 }
 
 // Address: 0x0077a500 - 0x0077a557 (87 bytes)
-__attribute__((weak)) f32 sEnemyManager::getEmAdjustParam(nEnemy::EM_ADJUST_PARAM param) const {
-    // local: cAdjustParam* pParam;
-    DDON_STUB("sEnemyManager::getEmAdjustParam")
-    return {};
+f32 sEnemyManager::getEmAdjustParam(nEnemy::EM_ADJUST_PARAM param) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: nEnemy::EM_ADJUST_PARAM used as unsigned int
+    if (this->mpEnemyAdjustParam != static_cast<rAdjustParam*>(nullptr)) {
+        if (static_cast<unsigned int>(param) < this->mpEnemyAdjustParam->getDataNum()) {
+            cAdjustParam* pParam = this->mpEnemyAdjustParam->getData(static_cast<u32>(param));
+            if (pParam != static_cast<cAdjustParam*>(nullptr)) {
+                return pParam->mParam;
+            } else {
+                return 0.0f;
+            }
+        } else {
+            return 0.0f;
+        }
+    } else {
+        return 0.0f;
+    }
 }
 
 // Address: 0x0077a230 - 0x0077a32f (255 bytes)
-__attribute__((weak)) u32 sEnemyManager::getEnemyGroupId(u32 em_id) {
-    // local: cEnemyGroup* pData;
-    DDON_STUB("sEnemyManager::getEnemyGroupId")
-    return {};
+u32 sEnemyManager::getEnemyGroupId(u32 em_id) {
+    // DWARF local not rendered: cEnemyGroup* pData;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x77a31e; no location-less local in scope fits
+    u32 v6_1;
+    if (this->mpEnemyGroup == static_cast<rEnemyGroup*>(nullptr)) {
+        v6_1 = static_cast<u32>(0);
+    } else {
+        if (this->mpEnemyGroup->getDataNum() == static_cast<u32>(0)) {
+            v6_1 = static_cast<u32>(0);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_10 = static_cast<unsigned int>(0);
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i1_10;
+            // inferred: the value the loop at 0x77a2c8 carries; no location-less local in scope fits
+            const MtDTI* v2_0;
+            for (;;) {
+                // inferred: the value the loop at 0x77a2b0 carries; no location-less local in scope fits
+                cEnemyGroup* v1_3 = this->mpEnemyGroup->getData(i0_10);
+                if (v1_3 != static_cast<cEnemyGroup*>(nullptr)) {
+                    if (v1_3->mEmList.::MtArray::mLength != static_cast<u32>(0)) {
+                        i1_10 = static_cast<unsigned int>(0);
+                        for (;;) {
+                            // inferred: the value the loop at 0x77a2c8 carries; no location-less local in scope fits
+                            MtObject* v2_9 = v1_3->mEmList.::MtArray::mpArray[i1_10];
+                            // inferred: a temporary for the result of the call at 0x77a2c1, used once; no DWARF local holds it
+                            const MtDTI& t0 = v2_9->getDTI();
+                            // inferred: the value the loop at 0x77a2c8 carries; no location-less local in scope fits
+                            MT_CTSTR v2_1 = ::cEnemyGroup::cEmList::DTI.::MtDTI::mName;
+                            v2_0 = &t0;
+                            for (;;) {
+                                if (v2_1 != v2_0->mName) {
+                                    if (v2_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                                        v2_0 = v2_0->mpParent;
+                                    } else {
+                                        break;
+                                    }
+                                } else {
+                                    if (v2_9 == static_cast<MtObject*>(nullptr)) {
+                                        break;
+                                    } else {
+                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + static_cast<long>(8))) != em_id) {
+                                            break;
+                                        } else {
+                                            v6_1 = v1_3->mEnemyGroupId;
+                                            return v6_1;
+                                        }
+                                    }
+                                }
+                            }
+                            if ((i1_10 + static_cast<unsigned int>(1)) < v1_3->mEmList.::MtArray::mLength) {
+                                i1_10 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+                if ((i0_10 + static_cast<unsigned int>(1)) < this->mpEnemyGroup->getDataNum()) {
+                    i0_10 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+            v6_1 = static_cast<u32>(0);
+        }
+    }
+    return v6_1;
 }
 
 // Address: 0x0077a340 - 0x0077a43f (255 bytes)
-__attribute__((weak)) s32 sEnemyManager::getMsgIndexFromEnemyId(u32 em_id) {
-    // local: cEnemyGroup* pData;
-    DDON_STUB("sEnemyManager::getMsgIndexFromEnemyId")
-    return {};
+s32 sEnemyManager::getMsgIndexFromEnemyId(u32 em_id) {
+    // DWARF local not rendered: cEnemyGroup* pData;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x77a42e; no location-less local in scope fits
+    u32 v6_1;
+    if (this->mpEnemyGroup == static_cast<rEnemyGroup*>(nullptr)) {
+        v6_1 = static_cast<u32>(0);
+    } else {
+        if (this->mpEnemyGroup->getDataNum() == static_cast<u32>(0)) {
+            v6_1 = static_cast<u32>(0);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_10 = static_cast<unsigned int>(0);
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i1_10;
+            // inferred: the value the loop at 0x77a3d8 carries; no location-less local in scope fits
+            const MtDTI* v2_0;
+            for (;;) {
+                // inferred: the value the loop at 0x77a3c0 carries; no location-less local in scope fits
+                cEnemyGroup* v1_3 = this->mpEnemyGroup->getData(i0_10);
+                if (v1_3 != static_cast<cEnemyGroup*>(nullptr)) {
+                    if (v1_3->mEmList.::MtArray::mLength != static_cast<u32>(0)) {
+                        i1_10 = static_cast<unsigned int>(0);
+                        for (;;) {
+                            // inferred: the value the loop at 0x77a3d8 carries; no location-less local in scope fits
+                            MtObject* v2_9 = v1_3->mEmList.::MtArray::mpArray[i1_10];
+                            // inferred: a temporary for the result of the call at 0x77a3d1, used once; no DWARF local holds it
+                            const MtDTI& t0 = v2_9->getDTI();
+                            // inferred: the value the loop at 0x77a3d8 carries; no location-less local in scope fits
+                            MT_CTSTR v2_1 = ::cEnemyGroup::cEmList::DTI.::MtDTI::mName;
+                            v2_0 = &t0;
+                            for (;;) {
+                                if (v2_1 != v2_0->mName) {
+                                    if (v2_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                                        v2_0 = v2_0->mpParent;
+                                    } else {
+                                        break;
+                                    }
+                                } else {
+                                    if (v2_9 == static_cast<MtObject*>(nullptr)) {
+                                        break;
+                                    } else {
+                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v2_9) + static_cast<long>(8))) != em_id) {
+                                            break;
+                                        } else {
+                                            v6_1 = v1_3->mMsgIndex;
+                                            return static_cast<s32>(v6_1);
+                                        }
+                                    }
+                                }
+                            }
+                            if ((i1_10 + static_cast<unsigned int>(1)) < v1_3->mEmList.::MtArray::mLength) {
+                                i1_10 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+                if ((i0_10 + static_cast<unsigned int>(1)) < this->mpEnemyGroup->getDataNum()) {
+                    i0_10 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+            v6_1 = static_cast<u32>(0);
+        }
+    }
+    return static_cast<s32>(v6_1);
 }
 
 // Address: 0x0077a440 - 0x0077a4c7 (135 bytes)

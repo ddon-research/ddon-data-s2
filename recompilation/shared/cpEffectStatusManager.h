@@ -92,3 +92,9 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cpEffectStatusManager::cpEffectStatusManager() {
+    this->mEffectArray.mAutoDelete = true;
+}

@@ -84,8 +84,35 @@ inline rSituationMsgCtrl::rSituationMsgCtrl() {
 // Address: 0x006bc020 - 0x006bc0d1 (177 bytes)
 // Also emitted as: _ZN17rSituationMsgCtrlD0Ev at 0x006bc0e0
 rSituationMsgCtrl::~rSituationMsgCtrl() {
-    DDON_STUB("rSituationMsgCtrl::~rSituationMsgCtrl")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x6bc050 carries; no location-less local in scope fits
+        u32 v0_0 = this->mArray.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mArray.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
+                    v0_0 = this->mArray.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    }
+    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mArray.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x006bc1b0 - 0x006bc293 (227 bytes)
@@ -153,7 +180,8 @@ const MtDTI& rSituationMsgCtrl::cSituationData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rSituationMsgCtrl::cSituationData::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rSituationMsgCtrl::cSituationData::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::cSituationData::DTI)->memAlloc(sz, align, ::rSituationMsgCtrl::cSituationData::DTI.::MtDTI::getID());
 }
 

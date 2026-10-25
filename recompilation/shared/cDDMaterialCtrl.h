@@ -2515,6 +2515,12 @@ inline uBaseModel* cDDMaterialCtrl::cShaderData::getOwner() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cDDMaterialCtrl::cShaderData::getCacheFlag() {
+    return this->mIsCacheNone;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline f32 cDDMaterialCtrl::cShaderDataStatusAilments::getApplicateA() {
     return this->mApplicateA;
 }

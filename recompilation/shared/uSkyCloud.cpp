@@ -153,9 +153,9 @@ __attribute__((weak)) void uSkyCloudModel::setCommonState(cDraw* pdraw) {
 // void uSkyCloudModel::setViewType(u32 viewType);
 
 // Address: 0x00d0f240 - 0x00d0f256 (22 bytes)
-__attribute__((weak)) u32 uSkyCloudModel::getAddTransparentDrawPriority() {
-    DDON_STUB("uSkyCloudModel::getAddTransparentDrawPriority")
-    return {};
+u32 uSkyCloudModel::getAddTransparentDrawPriority() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned int>(static_cast<long>(this->::uBaseModel::getTransparency() * 100.0f));
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

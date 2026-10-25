@@ -31,6 +31,7 @@
 #include "nCollisionNode.h"
 #include "rCollision.h"
 #include "rCollisionHeightField.h"
+#include "uDynamicSbc.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -563,10 +564,10 @@ __attribute__((weak)) u32 sCollision::repairConvexSinkIn(MtVector3& pos, const M
 // bool sCollision::registResourceWithConvert(sCollision::SBC_HANDLE& handle_output, rCollision* * ppResourceOutput, MT_CTSTR FileName, u32 type, u8 group, bool FlgForceRegist, bool FlgEnableMove);
 
 // Address: 0x012e9d20 - 0x012e9d34 (20 bytes)
-__attribute__((weak)) sCollision::SBC_HANDLE sCollision::registResource(rCollision* pResource, u32 type, u8 group, bool FlgForceRegist, bool FlgEnableMove) {
-    // local: SBC_HANDLE hSbc;
-    DDON_STUB("sCollision::registResource")
-    return {};
+sCollision::SBC_HANDLE sCollision::registResource(rCollision* pResource, u32 type, u8 group, bool FlgForceRegist, bool FlgEnableMove) {
+    // DWARF local not rendered: SBC_HANDLE hSbc;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->mSbcArray.::sCollision::cSbcArrayBP::registResource(pResource, type, group, FlgForceRegist, FlgEnableMove);
 }
 
 // No out-of-line body: no code in the ELF
@@ -601,10 +602,34 @@ __attribute__((weak)) void sCollision::unregistResourceFromIndex(u32 index) {
 }
 
 // Address: 0x012e9f50 - 0x012e9fbf (111 bytes)
-__attribute__((weak)) void sCollision::unregistResource(sCollision::SBC_HANDLE SbcHandle) {
-    // local: u32 index;
-    DDON_STUB("sCollision::unregistResource")
-    /* stub */
+void sCollision::unregistResource(sCollision::SBC_HANDLE SbcHandle) {
+    // DWARF local not rendered: u32 index;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; code after a join copied into the arms; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from MtObject*
+    if (SbcHandle < this->::sCollision::getSbcSize()) {
+        // inferred: a temporary for the value the load at 0x12e9f71 read, used 5 times; no DWARF local holds it
+        MtObject* t0 = this->mSbcArray.::MtArray::mpArray[SbcHandle];
+        if (t0 != static_cast<MtObject*>(nullptr)) {
+            // inferred: a temporary for the value the load at 0x12e9f7a read, used 3 times; no DWARF local holds it
+            unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(48));
+            if (t1 != static_cast<unsigned int>(0)) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + static_cast<long>(48)) = t1 - static_cast<unsigned int>(1);
+                if ((t1 - static_cast<unsigned int>(1)) == static_cast<unsigned int>(0)) {
+                    static_cast<sCollision::Sbc*>(t0)->::sCollision::Sbc::releaseAllDynamicData();
+                    if (this->mIsDeleteSbc_OnUnregistResource != false) {
+                        delete t0;
+                        this->mSbcArray.::MtArray::mpArray[SbcHandle] = static_cast<MtObject*>(nullptr);
+                    }
+                }
+            } else {
+                static_cast<sCollision::Sbc*>(t0)->::sCollision::Sbc::releaseAllDynamicData();
+                if (this->mIsDeleteSbc_OnUnregistResource != false) {
+                    delete t0;
+                    this->mSbcArray.::MtArray::mpArray[SbcHandle] = static_cast<MtObject*>(nullptr);
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -769,17 +794,34 @@ void sCollision::setCeilingDegree(f32 deg) {
 // void sCollision::setDispAllFalse();
 
 // Address: 0x012e8110 - 0x012e8133 (35 bytes)
-__attribute__((weak)) void sCollision::setActive(sCollision::SBC_HANDLE SbcHandle, bool bActive) {
-    // local: Sbc* p;
-    DDON_STUB("sCollision::setActive")
-    /* stub */
+void sCollision::setActive(sCollision::SBC_HANDLE SbcHandle, bool bActive) {
+    // DWARF local not rendered: Sbc* p;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    if (SbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        return;
+    }
+    if (SbcHandle < this->mSbcArray.::MtArray::mLength) {
+        if (this->mSbcArray.::MtArray::mpArray[SbcHandle] != static_cast<MtObject*>(nullptr)) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[SbcHandle]) + static_cast<long>(9)) = static_cast<unsigned char>(bActive);
+        }
+    }
 }
 
 // Address: 0x012e8140 - 0x012e8170 (48 bytes)
-__attribute__((weak)) bool sCollision::getActive(sCollision::SBC_HANDLE SbcHandle) {
-    // local: Sbc* p;
-    DDON_STUB("sCollision::getActive")
-    return {};
+bool sCollision::getActive(sCollision::SBC_HANDLE SbcHandle) {
+    // DWARF local not rendered: Sbc* p;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
+    if (SbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        if (SbcHandle < this->mSbcArray.::MtArray::mLength) {
+            if (this->mSbcArray.::MtArray::mpArray[SbcHandle] != static_cast<MtObject*>(nullptr)) {
+                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[SbcHandle]) + static_cast<long>(9))) != static_cast<unsigned char>(0);
+            }
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -798,17 +840,33 @@ __attribute__((weak)) bool sCollision::getActive(sCollision::SBC_HANDLE SbcHandl
 // void sCollision::setActiveAllFalse();
 
 // Address: 0x012e8180 - 0x012e81a3 (35 bytes)
-__attribute__((weak)) void sCollision::setType(sCollision::SBC_HANDLE SbcHandle, u32 NewType) {
-    // local: Sbc* pSbc;
-    DDON_STUB("sCollision::setType")
-    /* stub */
+void sCollision::setType(sCollision::SBC_HANDLE SbcHandle, u32 NewType) {
+    // DWARF local not rendered: Sbc* pSbc;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
+    if (SbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        return;
+    }
+    if (SbcHandle < this->mSbcArray.::MtArray::mLength) {
+        if (this->mSbcArray.::MtArray::mpArray[SbcHandle] != static_cast<MtObject*>(nullptr)) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[SbcHandle]) + static_cast<long>(24)) = NewType;
+        }
+    }
 }
 
 // Address: 0x012e81b0 - 0x012e81d5 (37 bytes)
-__attribute__((weak)) u32 sCollision::getType(sCollision::SBC_HANDLE SbcHandle) {
-    // local: Sbc* pSbc;
-    DDON_STUB("sCollision::getType")
-    return {};
+u32 sCollision::getType(sCollision::SBC_HANDLE SbcHandle) {
+    // DWARF local not rendered: Sbc* pSbc;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
+    if (SbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        if (SbcHandle < this->mSbcArray.::MtArray::mLength) {
+            if (this->mSbcArray.::MtArray::mpArray[SbcHandle] != static_cast<MtObject*>(nullptr)) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[SbcHandle]) + static_cast<long>(24));
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -833,17 +891,43 @@ __attribute__((weak)) u32 sCollision::getType(sCollision::SBC_HANDLE SbcHandle) 
 // u32 sCollision::getGroupWithIndex(u32);
 
 // Address: 0x012e81f0 - 0x012e822e (62 bytes)
-__attribute__((weak)) bool sCollision::getPartsActive(sCollision::SBC_HANDLE TargetSbcHandle, u32 TargetPartsIndex) {
-    // local: Sbc* pSbc;
-    DDON_STUB("sCollision::getPartsActive")
-    return {};
+bool sCollision::getPartsActive(sCollision::SBC_HANDLE TargetSbcHandle, u32 TargetPartsIndex) {
+    // DWARF local not rendered: Sbc* pSbc;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from MtObject*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x18 from unsigned long
+    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
+            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
+                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) + static_cast<long>(24))) != static_cast<unsigned char>(0);
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x012e8230 - 0x012e8271 (65 bytes)
-__attribute__((weak)) void sCollision::setPartsActive(sCollision::SBC_HANDLE TargetSbcHandle, u32 TargetPartsIndex, bool FlagNextActive) {
-    // local: Sbc* pSbc;
-    DDON_STUB("sCollision::setPartsActive")
-    /* stub */
+void sCollision::setPartsActive(sCollision::SBC_HANDLE TargetSbcHandle, u32 TargetPartsIndex, bool FlagNextActive) {
+    // DWARF local not rendered: Sbc* pSbc;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x98 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from MtObject*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x18 from unsigned long
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    if (TargetSbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        return;
+    }
+    if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
+        if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
+            if (TargetPartsIndex < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(152)))) {
+                if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) != static_cast<unsigned long>(0)) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) + static_cast<long>(24)) = static_cast<unsigned char>(FlagNextActive);
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -860,10 +944,26 @@ __attribute__((weak)) void sCollision::setPartsActiveID(sCollision::SBC_HANDLE T
 // bool sCollision::getPartsActiveByIndex(u32 TargetSbcIndex, u32 TargetPartsIndex);
 
 // Address: 0x012e8330 - 0x012e8371 (65 bytes)
-__attribute__((weak)) void sCollision::setPartsActiveByIndex(u32 TargetSbcIndex, u32 TargetPartsIndex, bool FlagNextActive) {
-    // local: SBC_HANDLE TargetSbcHandle;
-    DDON_STUB("sCollision::setPartsActiveByIndex")
-    /* stub */
+void sCollision::setPartsActiveByIndex(u32 TargetSbcIndex, u32 TargetPartsIndex, bool FlagNextActive) {
+    // DWARF local not rendered: SBC_HANDLE TargetSbcHandle;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x98 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x90 from MtObject*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x18 from unsigned long
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    if (TargetSbcIndex == static_cast<u32>(4294967295)) {
+        return;
+    }
+    if (TargetSbcIndex < this->mSbcArray.::MtArray::mLength) {
+        if (this->mSbcArray.::MtArray::mpArray[TargetSbcIndex] != static_cast<MtObject*>(nullptr)) {
+            if (TargetPartsIndex < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcIndex]) + static_cast<long>(152)))) {
+                if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcIndex]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) != static_cast<unsigned long>(0)) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcIndex]) + static_cast<long>(144))) + static_cast<unsigned long>(TargetPartsIndex * static_cast<u32>(120))) + static_cast<long>(24)) = static_cast<unsigned char>(FlagNextActive);
+                }
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -1194,7 +1294,7 @@ __attribute__((weak)) bool sCollision::getMatrixById(sCollision::SBC_HANDLE SbcH
 // sCollision::Sbc* sCollision::getSbcFastFromHandle(sCollision::SBC_HANDLE);
 
 // Address: 0x012e97d0 - 0x012e97d7 (7 bytes)
-u32 sCollision::getSbcSize() {
+__attribute__((weak)) u32 sCollision::getSbcSize() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     return this->mSbcArray.::MtArray::mLength;
 }
@@ -1253,17 +1353,34 @@ __attribute__((weak)) void sCollision::setSbcOwnerFromHandle(MtObject* pOwnerObj
 // bool sCollision::isSbcActive(u32 TargetSbcIndex);
 
 // Address: 0x012e9a20 - 0x012e9a44 (36 bytes)
-__attribute__((weak)) void sCollision::setSbcActiveFromHandle(bool FlgNextActiveSetting, sCollision::SBC_HANDLE TargetSbcHandle) {
-    // local: Sbc* pTarget;
-    DDON_STUB("sCollision::setSbcActiveFromHandle")
-    /* stub */
+void sCollision::setSbcActiveFromHandle(bool FlgNextActiveSetting, sCollision::SBC_HANDLE TargetSbcHandle) {
+    // DWARF local not rendered: Sbc* pTarget;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    if (TargetSbcHandle == static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        return;
+    }
+    if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
+        if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(9)) = static_cast<unsigned char>(FlgNextActiveSetting);
+        }
+    }
 }
 
 // Address: 0x012e9a50 - 0x012e9a80 (48 bytes)
-__attribute__((weak)) bool sCollision::isSbcActiveFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
-    // local: Sbc* pTarget;
-    DDON_STUB("sCollision::isSbcActiveFromHandle")
-    return {};
+bool sCollision::isSbcActiveFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
+    // DWARF local not rendered: Sbc* pTarget;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
+    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
+            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
+                return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(9))) != static_cast<unsigned char>(0);
+            }
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1276,10 +1393,18 @@ __attribute__((weak)) bool sCollision::isSbcActiveFromHandle(sCollision::SBC_HAN
 // void sCollision::setSbcTypeFromHandle(nCollision::cScrCommonFilter::TYPE NewFilterType, sCollision::SBC_HANDLE TargetSbcHandle);
 
 // Address: 0x012e9aa0 - 0x012e9ac5 (37 bytes)
-__attribute__((weak)) u32 sCollision::getSbcTypeFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
-    // local: Sbc* pTarget;
-    DDON_STUB("sCollision::getSbcTypeFromHandle")
-    return {};
+u32 sCollision::getSbcTypeFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
+    // DWARF local not rendered: Sbc* pTarget;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
+    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
+            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(24));
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1309,20 +1434,36 @@ void sCollision::setSbcGroupByBitFromHandle(u32 NewFilterGroupBit, sCollision::S
 }
 
 // Address: 0x012e9b20 - 0x012e9b45 (37 bytes)
-__attribute__((weak)) u32 sCollision::getSbcGroupByBitFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
-    // local: Sbc* pTarget;
-    DDON_STUB("sCollision::getSbcGroupByBitFromHandle")
-    return {};
+u32 sCollision::getSbcGroupByBitFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
+    // DWARF local not rendered: Sbc* pTarget;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1c from MtObject*
+    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
+            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(28));
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: no code in the ELF
 // void sCollision::setSbcGroupByIndexFromHandle(nCollision::cScrCommonFilter::GROUP_REGIST NewFilterGroup, sCollision::SBC_HANDLE TargetSbcHandle);
 
 // Address: 0x012e9b60 - 0x012e9b86 (38 bytes)
-__attribute__((weak)) u32 sCollision::getSbcGroupByIndexFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
-    // local: Sbc* pTarget;
-    DDON_STUB("sCollision::getSbcGroupByIndexFromHandle")
-    return {};
+u32 sCollision::getSbcGroupByIndexFromHandle(sCollision::SBC_HANDLE TargetSbcHandle) {
+    // DWARF local not rendered: Sbc* pTarget;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x20 from MtObject*
+    if (TargetSbcHandle != static_cast<sCollision::SBC_HANDLE>(4294967295)) {
+        if (TargetSbcHandle < this->mSbcArray.::MtArray::mLength) {
+            if (this->mSbcArray.::MtArray::mpArray[TargetSbcHandle] != static_cast<MtObject*>(nullptr)) {
+                return *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mSbcArray.::MtArray::mpArray[TargetSbcHandle]) + static_cast<long>(32));
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -4842,9 +4983,10 @@ const MtDTI& sCollision::cSbcMoveReserveInfo::getDTI() const {
 // void sCollision::cSbcMoveReserveInfo::setAllocator(u32);
 
 // Address: 0x012c0090 - 0x012c00d0 (64 bytes)
-__attribute__((weak)) void* sCollision::cSbcMoveReserveInfo::operator new[](size_t sz, u32 align) {
-    DDON_STUB("sCollision::cSbcMoveReserveInfo::operator new[]")
-    return nullptr;
+void* sCollision::cSbcMoveReserveInfo::operator new[](size_t sz, u32 align) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from sCollision::cSbcMoveReserveInfo::MyDTI*
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfo::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::sCollision::cSbcMoveReserveInfo::DTI) + static_cast<long>(52)));
 }
 
 // Address: 0x012c0100 - 0x012c012a (42 bytes)
@@ -5263,7 +5405,7 @@ __attribute__((weak)) void sCollision::Sbc::setPartsNum(u32 NewPartsNum) {
 }
 
 // Address: 0x012c37c0 - 0x012c37c7 (7 bytes)
-void sCollision::Sbc::releaseAllDynamicData() {
+__attribute__((weak)) void sCollision::Sbc::releaseAllDynamicData() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->::sCollision::Sbc::setResource(static_cast<rCollision*>(nullptr));
 }
@@ -5652,9 +5794,10 @@ const MtDTI& sCollision::cSbcRegistReserveInfo::getDTI() const {
 // void sCollision::cSbcRegistReserveInfo::setAllocator(u32);
 
 // Address: 0x012c05a0 - 0x012c05e0 (64 bytes)
-__attribute__((weak)) void* sCollision::cSbcRegistReserveInfo::operator new[](size_t sz, u32 align) {
-    DDON_STUB("sCollision::cSbcRegistReserveInfo::operator new[]")
-    return nullptr;
+void* sCollision::cSbcRegistReserveInfo::operator new[](size_t sz, u32 align) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from sCollision::cSbcRegistReserveInfo::MyDTI*
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcRegistReserveInfo::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::sCollision::cSbcRegistReserveInfo::DTI) + static_cast<long>(52)));
 }
 
 // Address: 0x012c0610 - 0x012c063a (42 bytes)
@@ -5774,9 +5917,10 @@ const MtDTI& sCollision::cSbcMoveReserveInfoAll::getDTI() const {
 // void sCollision::cSbcMoveReserveInfoAll::setAllocator(u32);
 
 // Address: 0x012bfea0 - 0x012bfee0 (64 bytes)
-__attribute__((weak)) void* sCollision::cSbcMoveReserveInfoAll::operator new[](size_t sz, u32 align) {
-    DDON_STUB("sCollision::cSbcMoveReserveInfoAll::operator new[]")
-    return nullptr;
+void* sCollision::cSbcMoveReserveInfoAll::operator new[](size_t sz, u32 align) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from sCollision::cSbcMoveReserveInfoAll::MyDTI*
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfoAll::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::sCollision::cSbcMoveReserveInfoAll::DTI) + static_cast<long>(52)));
 }
 
 // Address: 0x012bff10 - 0x012bff3a (42 bytes)
@@ -6629,8 +6773,9 @@ __attribute__((weak)) sCollision::cSbcHeightField::cHeightField* sCollision::cSb
 
 // Address: 0x012beee0 - 0x012beee4 (4 bytes)
 __attribute__((weak)) u32 sCollision::cSbcHeightField::getArrayLength() const {
-    DDON_STUB("sCollision::cSbcHeightField::getArrayLength")
-    return {};
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x10 from const sCollision::cSbcHeightField*
+    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(16));
 }
 
 // No out-of-line body: no code in the ELF
@@ -7228,9 +7373,10 @@ const MtDTI& sCollision::Node::getDTI() const {
 // void sCollision::Node::setAllocator(u32);
 
 // Address: 0x012bf0b0 - 0x012bf0f0 (64 bytes)
-__attribute__((weak)) void* sCollision::Node::operator new(size_t sz, u32 align) {
-    DDON_STUB("sCollision::Node::operator new")
-    return nullptr;
+void* sCollision::Node::operator new(size_t sz, u32 align) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from sCollision::Node::MyDTI*
+    return ::MtMemoryAllocator::getAllocator(::sCollision::Node::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::sCollision::Node::DTI) + static_cast<long>(52)));
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -7273,10 +7419,35 @@ void sCollision::Node::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x012bf240 - 0x012bf29e (94 bytes)
-__attribute__((weak)) void sCollision::Node::copy(const nCollision::cObjectBase& src) {
-    // local: const Node& MySrc;
-    DDON_STUB("sCollision::Node::copy")
-    /* stub */
+void sCollision::Node::copy(const nCollision::cObjectBase& src) {
+    // DWARF local not rendered: const Node& MySrc;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from sCollision::Node::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xc8 from const nCollision::cObjectBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xd0 from sCollision::Node*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0xd0 from const nCollision::cObjectBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xc8 from sCollision::Node*
+    // inferred: a temporary for the result of the call at 0x12bf253, used once; no DWARF local holds it
+    const MtDTI& t0 = src.getDTI();
+    // inferred: the value the loop at 0x12bf261 carries; no location-less local in scope fits
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::sCollision::Node::DTI) + static_cast<long>(8));
+    // inferred: the value the loop at 0x12bf261 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+            this->::nCollision::cCollisionNodeObject::copy(src);
+            // inferred: a temporary for the value the load at 0x12bf27d read, used once; no DWARF local holds it
+            const unsigned long t1 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + static_cast<long>(200));
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(208)) = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + static_cast<long>(208));
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(200)) = t1;
+            return;
+        } else {
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -7597,9 +7768,15 @@ __attribute__((weak)) void sCollision::SbcInfo::setHitScrInfoDyamicSbc(uDynamicS
 // bool sCollision::SbcInfo::isHitHeightField() const;
 
 // Address: 0x012c4770 - 0x012c4792 (34 bytes)
-__attribute__((weak)) bool sCollision::SbcInfo::isHitDynamicSbc() const {
-    DDON_STUB("sCollision::SbcInfo::isHitDynamicSbc")
-    return {};
+bool sCollision::SbcInfo::isHitDynamicSbc() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uDynamicSbc*
+    if (this->::sCollision::SbcInfoBase::FlgHitDynamicSbc != false) {
+        if (this->::sCollision::SbcInfoBase::pHitDSbc != static_cast<uDynamicSbc*>(nullptr)) {
+            return ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::sCollision::SbcInfoBase::pHitDSbc) + static_cast<long>(16))) & static_cast<unsigned int>(7)) <= static_cast<unsigned int>(2);
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (44 bytes)
@@ -8887,9 +9064,18 @@ void sCollision::Param::setOwnerModelPtr(MtObject* _pOwnerModel) {
 // bool sCollision::Param::isTargetSkinMeshSCR() const;
 
 // Address: 0x012bf7d0 - 0x012bf825 (85 bytes)
-__attribute__((weak)) void sCollision::Param::startCallback(const sCollision::ScrCollisionInfo& NowScrCollisionInfo, const sCollision::SbcInfo& sbc) const {
-    DDON_STUB("sCollision::Param::startCallback")
-    /* stub */
+void sCollision::Param::startCallback(const sCollision::ScrCollisionInfo& NowScrCollisionInfo, const sCollision::SbcInfo& sbc) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->pObject == static_cast<MtObject*>(nullptr)) {
+        return;
+    }
+    if (this->pFunc != static_cast<const sCollision::CONTACT_CALLBACK>(0)) {
+        (this->pObject->*this->pFunc)(sbc, this->param);
+    } else {
+        if (this->pCallbackFunctionEx != static_cast<const sCollision::CONTACT_CALLBACK_EX>(0)) {
+            (this->pObject->*this->pCallbackFunctionEx)(NowScrCollisionInfo, sbc, this->param);
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -9147,9 +9333,28 @@ __attribute__((weak)) void sCollision::ScrCollisionInfo::getBoundingAABBByTrans(
 // f32 sCollision::ScrCollisionInfo::getRadius();
 
 // Address: 0x012c7990 - 0x012c7a21 (145 bytes)
-__attribute__((weak)) void sCollision::ScrCollisionInfo::updateMoveParam(const MtVector3& pos, const MtVector3& speed) {
-    DDON_STUB("sCollision::ScrCollisionInfo::updateMoveParam")
-    /* stub */
+void sCollision::ScrCollisionInfo::updateMoveParam(const MtVector3& pos, const MtVector3& speed) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1c from sCollision::ScrCollisionInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x2c from sCollision::ScrCollisionInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x5c from sCollision::ScrCollisionInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x6c from sCollision::ScrCollisionInfo*
+    this->::sCollision::ScrCollisionInfoBase::cpos.x = pos.x;
+    this->::sCollision::ScrCollisionInfoBase::cpos.y = pos.y;
+    this->::sCollision::ScrCollisionInfoBase::cpos.z = pos.z;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(28)) = static_cast<unsigned int>(0);
+    this->::sCollision::ScrCollisionInfoBase::cposTrans.x = pos.x;
+    this->::sCollision::ScrCollisionInfoBase::cposTrans.y = pos.y;
+    this->::sCollision::ScrCollisionInfoBase::cposTrans.z = pos.z;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(44)) = static_cast<unsigned int>(0);
+    this->::sCollision::ScrCollisionInfoBase::cspeed.x = speed.x;
+    this->::sCollision::ScrCollisionInfoBase::cspeed.y = speed.y;
+    this->::sCollision::ScrCollisionInfoBase::cspeed.z = speed.z;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(92)) = static_cast<unsigned int>(0);
+    this->::sCollision::ScrCollisionInfoBase::cspeedTrans.x = speed.x;
+    this->::sCollision::ScrCollisionInfoBase::cspeedTrans.y = speed.y;
+    this->::sCollision::ScrCollisionInfoBase::cspeedTrans.z = speed.z;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(108)) = static_cast<unsigned int>(0);
 }
 
 // Address: 0x012c7a30 - 0x012c7a3f (15 bytes)
@@ -10149,9 +10354,15 @@ __attribute__((weak)) u32 sCollision::ScrCollisionInfoOriginal::runCallback(cons
 // u32 sCollision::ScrCollisionInfoOriginal::runCallback(const sCollision::SbcInfo& info, MtContact& HitResult, u32 GeometryIndex);
 
 // Address: 0x012cbb60 - 0x012cbb99 (57 bytes)
-__attribute__((weak)) void sCollision::ScrCollisionInfoOriginal::runCallbackParts(const sCollision::SbcInfo& info) {
-    DDON_STUB("sCollision::ScrCollisionInfoOriginal::runCallbackParts")
-    /* stub */
+void sCollision::ScrCollisionInfoOriginal::runCallbackParts(const sCollision::SbcInfo& info) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->pCallbackOwnerObj == static_cast<MtObject*>(nullptr)) {
+        return;
+    }
+    if (this->pScrPartsHitCallback == static_cast<sCollision::CONTACT_CALLBACK_ORGFUNC_PARTS>(0)) {
+        return;
+    }
+    (this->pCallbackOwnerObj->*this->pScrPartsHitCallback)(info, this->CallbackParam);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

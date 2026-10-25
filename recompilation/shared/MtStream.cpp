@@ -466,9 +466,11 @@ u32 MtMemoryStream::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
 }
 
 // Address: 0x01a60b10 - 0x01a60b17 (7 bytes)
-__attribute__((weak)) bool MtMemoryStream::isBufferOverflowed() const {
-    DDON_STUB("MtMemoryStream::isBufferOverflowed")
-    return {};
+bool MtMemoryStream::isBufferOverflowed() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x1c from const MtMemoryStream*
+    // inferred: a value cast to the type its use takes: const unsigned int used as bool
+    return static_cast<bool>((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(28))) & static_cast<unsigned int>(1));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

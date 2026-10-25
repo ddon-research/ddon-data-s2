@@ -77,8 +77,8 @@ inline void cQuestUnitGroup::operator delete(void* p_addr) {
 // Address: 0x001c73e0 - 0x001c7417 (55 bytes)
 // Also emitted as: _ZN15cQuestUnitGroupD0Ev at 0x001c7560
 cQuestUnitGroup::~cQuestUnitGroup() {
-    DDON_STUB("cQuestUnitGroup::~cQuestUnitGroup")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cQuestUnitGroup::release();
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
@@ -291,8 +291,8 @@ cQuestUnitManager::cQuestUnitManager() {
 // Address: 0x001c8730 - 0x001c875e (46 bytes)
 // Also emitted as: _ZN17cQuestUnitManagerD0Ev at 0x001c8830
 cQuestUnitManager::~cQuestUnitManager() {
-    DDON_STUB("cQuestUnitManager::~cQuestUnitManager")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cQuestUnitManager::release();
 }
 
 // Address: 0x001c8880 - 0x001c8a83 (515 bytes)
@@ -328,7 +328,7 @@ void cQuestUnitManager::move() {
 }
 
 // Address: 0x001c8760 - 0x001c882b (203 bytes)
-void cQuestUnitManager::release() {
+__attribute__((weak)) void cQuestUnitManager::release() {
     // DWARF local not rendered: u32 i;
     // DWARF local not rendered: cQuestUnitGroup* group;
     // Approximate from the ELF: a cast to the other signedness; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.

@@ -231,10 +231,52 @@ __attribute__((weak)) bool sPadExt::isOnCheck(sPadExt::PAD_BTN_TYPE button, u32 
 // f32 sPadExt::getRepeatFrame(u32 pad_id);
 
 // Address: 0x01ac8a60 - 0x01ac8b8d (301 bytes)
-__attribute__((weak)) void sPadExt::clearInputData() {
-    // local: u32 i;
-    DDON_STUB("sPadExt::clearInputData")
-    /* stub */
+void sPadExt::clearInputData() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x15c8 from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x12e4 from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x12dc from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x135c from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1354 from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x134c from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1344 from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x133c from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1334 from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x132c from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1324 from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x131c from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1314 from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x130c from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1304 from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x12fc from sPadExt*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x12f4 from sPadExt*
+    this->::sPad::mPad[0].::sPad::Pad::initData();
+    this->::sPad::mPad[0].::sPad::Pad::initVib();
+    this->::sPad::mPad[1].::sPad::Pad::initData();
+    this->::sPad::mPad[1].::sPad::Pad::initVib();
+    this->::sPad::mPad[2].::sPad::Pad::initData();
+    this->::sPad::mPad[2].::sPad::Pad::initVib();
+    this->::sPad::mPad[3].::sPad::Pad::initData();
+    this->::sPad::mPad[3].::sPad::Pad::initVib();
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(5576)) = static_cast<unsigned long>(0);
+    this->mPadInfo[0].mBtn.acl = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4836)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4828)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4956)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4948)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4940)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4932)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4924)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4916)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4908)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4900)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4892)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4884)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4876)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4868)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4860)) = static_cast<unsigned long>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(4852)) = static_cast<unsigned long>(0);
 }
 
 // Address: 0x00805c20 - 0x00805c4a (42 bytes)

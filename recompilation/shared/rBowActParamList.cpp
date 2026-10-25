@@ -8,6 +8,7 @@
 #include "MtObject.h"
 #include "MtSerializer.h"
 #include "cResource.h"
+#include "nHumanBow.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -113,9 +114,13 @@ MT_CTSTR rBowActParamList::getExt() const {
 // void rBowActParamList::setParamList(const MtArray& list);
 
 // Address: 0x00648b30 - 0x00648b45 (21 bytes)
-__attribute__((weak)) const nHumanBow::cBowActParam* rBowActParamList::getParam(u32 index) {
-    DDON_STUB("rBowActParamList::getParam")
-    return nullptr;
+const nHumanBow::cBowActParam* rBowActParamList::getParam(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mParamList.mLength) {
+        return static_cast<const nHumanBow::cBowActParam*>(this->mParamList.mpArray[index]);
+    } else {
+        return static_cast<const nHumanBow::cBowActParam*>(nullptr);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (132 bytes)

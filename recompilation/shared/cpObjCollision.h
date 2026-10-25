@@ -43,6 +43,7 @@ class rAttackParam;
 class rBitTable;
 class rObjCollision;
 class uDDOModel;
+class uShlBase;
 
 // Declarations
 class cHitInfo;
@@ -166,6 +167,8 @@ class cpObjCollisionBase : public cpComponent
 {
     // inferred: uDDOModel::isAttackTestHit calls cpObjCollisionBase::isAttackHitSub
     friend class uDDOModel;
+    // inferred: uShlBase::setCollision names cpObjCollisionBase::mpResource[0]
+    friend class uShlBase;
 public:
     class MyDTI;
     class cHitFlag;
@@ -419,6 +422,12 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline cAttackParam* cHitInfo::getAttackParam() {
     return this->mpAttackParam;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cpObjCollisionBase::getSharedUID(u32 index) {
+    return this->mSharedUID[index];
 }
 
 // Inline, no code of its own: checked where it is inlined.

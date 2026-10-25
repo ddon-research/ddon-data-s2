@@ -211,7 +211,7 @@ void uGUICaplinkTalk::moveInput() {
 
 // Address: 0x009dc600 - 0x009dc70c (268 bytes)
 void uGUICaplinkTalk::moveEvent() {
-    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    // Approximate from the ELF: a cast to the other signedness; a range test the recompile folds to a mask test; the body oracle reports this body.
     if (static_cast<int>(this->::uGUIBase::getInputEvent()) <= static_cast<int>(65)) {
         if ((this->::uGUIBase::getInputEvent() - static_cast<u32>(52)) > static_cast<u32>(1)) {
         } else {
@@ -634,7 +634,7 @@ __attribute__((weak)) void uGUICaplinkTalk::eventDecide() {
 // void uGUICaplinkTalk::eventAdjustPage();
 
 // Address: 0x009d8190 - 0x009d8252 (194 bytes)
-u32 uGUICaplinkTalk::evCtrlDecide(cControl::Message* msg) {
+__attribute__((weak)) u32 uGUICaplinkTalk::evCtrlDecide(cControl::Message* msg) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (this->mMain.mButton.::uGUIBase::cReferenceUIButton::isFocus() != false) {
         if (this->mMain.mButton.mIsEnable != false) {
@@ -690,9 +690,31 @@ u32 uGUICaplinkTalk::evCtrlAdjustPage(cControl::Message* msg) {
 }
 
 // Address: 0x009d8280 - 0x009d82e7 (103 bytes)
-__attribute__((weak)) u32 uGUICaplinkTalk::evCtrlMouseClick(cControl::Message* msg) {
-    DDON_STUB("uGUICaplinkTalk::evCtrlMouseClick")
-    return {};
+u32 uGUICaplinkTalk::evCtrlMouseClick(cControl::Message* msg) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        if (msg->pSender != static_cast<cControl*>(nullptr)) {
+            if (msg->pSender != this->mpListCtrl) {
+                this->::uGUIBase::setInputEvent(static_cast<u32>(0));
+                return static_cast<u32>(0);
+            } else {
+                if (this->mFlowId == static_cast<u32>(10)) {
+                    this->::uGUICaplinkTalk::adjustMemberListCursor();
+                } else {
+                    if (this->mFlowId == static_cast<u32>(2)) {
+                        this->::uGUICaplinkTalk::adjustTalkListCursor();
+                    }
+                }
+                return this->::uGUICaplinkTalk::evCtrlDecide(msg);
+            }
+        } else {
+            this->::uGUIBase::setInputEvent(static_cast<u32>(0));
+            return static_cast<u32>(0);
+        }
+    } else {
+        this->::uGUIBase::setInputEvent(static_cast<u32>(0));
+        return static_cast<u32>(0);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

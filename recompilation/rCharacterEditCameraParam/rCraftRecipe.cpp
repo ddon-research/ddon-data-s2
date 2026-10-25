@@ -145,8 +145,8 @@ rCraftRecipe::cCraftRecipe::cCraftRecipe() {
 // Address: 0x0065d090 - 0x0065d0be (46 bytes)
 // Also emitted as: _ZN12rCraftRecipe12cCraftRecipeD0Ev at 0x0065d1a0
 rCraftRecipe::cCraftRecipe::~cCraftRecipe() {
-    DDON_STUB("rCraftRecipe::cCraftRecipe::~cCraftRecipe")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::rCraftRecipe::cCraftRecipe::releaseWork();
 }
 
 // Address: 0x0065d0c0 - 0x0065d19a (218 bytes)

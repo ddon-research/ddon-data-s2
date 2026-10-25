@@ -322,6 +322,12 @@ inline bool uStagePartsMdl::isSetResource() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline uScheduler* uStagePartsMdl::getLightSdl() const {
+    return this->mpLightSchdl;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline uSoundOcclusion* uStagePartsMdl::getSoundOcclusion() {
     return this->mpSoundOcclusion;
 }

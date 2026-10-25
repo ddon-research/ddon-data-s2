@@ -76,9 +76,19 @@ inline void cEnemyStatusChange::operator delete(void* p_addr) {
 // cEnemyStatusChange::~cEnemyStatusChange();
 
 // Address: 0x0066e1b0 - 0x0066e1ce (30 bytes)
-__attribute__((weak)) bool cEnemyStatusChange::IsTypeCheckMaster(u32 type, u32 changeStatus) {
-    DDON_STUB("cEnemyStatusChange::IsTypeCheckMaster")
-    return {};
+bool cEnemyStatusChange::IsTypeCheckMaster(u32 type, u32 changeStatus) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (type == static_cast<u32>(13)) {
+        return false;
+    } else {
+        if ((changeStatus - static_cast<u32>(1)) <= static_cast<u32>(8)) {
+            return static_cast<bool>((static_cast<unsigned long>(94) >> static_cast<unsigned long>(static_cast<unsigned char>(changeStatus + static_cast<u32>(255)) & static_cast<unsigned char>(31))) & static_cast<unsigned long>(1));
+        } else {
+            return true;
+        }
+    }
 }
 
 // Address: 0x0066e1d0 - 0x0066ee66 (3222 bytes)

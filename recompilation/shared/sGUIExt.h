@@ -121,6 +121,7 @@ class rTexture;
 class rTextureJpeg;
 class rWarpLocation;
 class sGame;
+class sScenario;
 class sTalkManager;
 class uCharacter;
 class uGUI;
@@ -153,6 +154,7 @@ class uGUIItemBase01;
 class uGUIJobMaster;
 class uGUILoading;
 class uGUIMap;
+class uGUIMenuComm;
 class uGUIMouseOverCursor;
 class uGUIMousePointer;
 class uGUINewspaper;
@@ -170,6 +172,7 @@ class uGUIQuestInfo;
 class uGUIQueueAnnounce;
 class uGUIShakeEnemy;
 class uGUIShakeStick;
+class uGUIShopBuy;
 class uGUIShopTitle;
 class uGUISkill;
 class uGUISystemMsg;
@@ -228,8 +231,16 @@ class sGUIExt : public sGUI
     friend class nGUIItem::cItem;
     // inferred: sGame::initDecideCharacter names sGUIExt::mDispGuideNo
     friend class sGame;
+    // inferred: sScenario::deleteSystemMsg names sGUIExt::mpSingletonMenu
+    friend class sScenario;
     // inferred: sTalkManager::deleteGUISingleton names sGUIExt::mpSingletonMenu
     friend class sTalkManager;
+    // inferred: uGUIBase::draw names sGUIExt::mNDispGUIFromBaseF
+    friend class uGUIBase;
+    // inferred: uGUIBrowserBG::adjustScale names sGUIExt::mBrowserDispPos.x
+    friend class uGUIBrowserBG;
+    // inferred: uGUIChat::updateWait names sGUIExt::mChat.mIsDefaultBoot
+    friend class uGUIChat;
     // inferred: uGUICommunityList::kill names sGUIExt::mpGUICommunityList
     friend class uGUICommunityList;
     // inferred: uGUIItemBase01::updateWaitSort names sGUIExt::mpEquipList
@@ -238,7 +249,9 @@ class sGUIExt : public sGUI
     friend class uGUINewspaper;
     // inferred: uGUIPhoto::setup names sGUIExt::mIsPhotoMode
     friend class uGUIPhoto;
-    // inferred: uHuman::isNowBoosting names sGUIExt::mIsEnableMenuUI
+    // inferred: uGUIShopBuy::announceCallBack names sGUIExt::mItemCBF
+    friend class uGUIShopBuy;
+    // inferred: uHuman::isCantBoostSpirit names sGUIExt::mIsEnableMenuUI
     friend class uHuman;
 public:
     enum INFO_FLAG
@@ -832,6 +845,8 @@ public:
     {
         // inferred: sGUIExt::noticeChatLogReset names sGUIExt::mChat.mpGUIChat
         friend class sGUIExt;
+        // inferred: uGUIChat::updateWait names sGUIExt::mChat.mIsDefaultBoot
+        friend class uGUIChat;
     public:
         enum
         {
@@ -1535,6 +1550,8 @@ public:
     {
         // inferred: uGUIMap::moveInput names sGUIExt::mSCM.mMode
         friend class uGUIMap;
+        // inferred: uGUIMenuComm::updateWaitTmpPhrase names sGUIExt::mSCM.mCurrentSCCEditData.mType
+        friend class uGUIMenuComm;
     public:
         enum
         {
@@ -3301,6 +3318,42 @@ inline rGUIMessage* sGUIExt::getMsgEnemyName() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rGUIMessage* sGUIExt::getMsgTmpMsgCtgr() const {
+    return this->mpMsgTmpMsgCtgr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rGUIMessage* sGUIExt::getMsgTmpMsg() const {
+    return this->mpMsgTmpMsg;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rGUIMessage* sGUIExt::getMsgEmotionCtgr() const {
+    return this->mpMsgEmotionCtgr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rGUIMessage* sGUIExt::getMsgEmotion() const {
+    return this->mpMsgEmotion;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rGUIMessage* sGUIExt::getMsgPawnOrderCtgr() const {
+    return this->mpMsgPawnOrderCtgr;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rGUIMessage* sGUIExt::getMsgPawnOrder() const {
+    return this->mpMsgPawnOrder;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline rGUIMessage* sGUIExt::getMsgCommonDialog() const {
     return this->mpMsgCommonDialog;
 }
@@ -3313,6 +3366,11 @@ inline rGUIMessage* sGUIExt::getMsgCommonMessage() const {
 // Inline, no code of its own: checked where it is inlined.
 inline rGUIMessage* sGUIExt::getMsgSystemLog() const {
     return this->mpMsgSystemLog;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline rGUIMessage* sGUIExt::getMsgHud() const {
+    return this->mpMsgHud;
 }
 
 // Inline, no code of its own: checked where it is inlined.
@@ -3345,6 +3403,12 @@ inline uGUICommunityList* sGUIExt::getOpenCommunityList() {
 inline sGUIExt::cPrioHandle::cPrioHandle() {
     this->mPrio = static_cast<u32>(4294967295);
     this->mDistCam = 0.0f;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline sGUIExt::cRatingEmoteInfo::cRatingEmoteInfo() {
+    this->mEmoteNum = static_cast<u32>(0);
 }
 
 // Inline, no code of its own: checked where it is inlined.

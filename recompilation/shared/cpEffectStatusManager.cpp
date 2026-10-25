@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cpComponent.h"
 #include "sEffectExt.h"
 #ifndef DDON_STUB
@@ -176,8 +177,8 @@ __attribute__((weak)) cEfcHandle* cpEffectStatusManager::getEfcHandle(u64 syncFl
 // cpEffectStatusManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00470670 - 0x004706f1 (129 bytes)
-__attribute__((weak)) MtObject* cpEffectStatusManager::MyDTI::newInstance() const {
-    DDON_STUB("cpEffectStatusManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpEffectStatusManager::MyDTI::newInstance() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::cpEffectStatusManager;
 }
 

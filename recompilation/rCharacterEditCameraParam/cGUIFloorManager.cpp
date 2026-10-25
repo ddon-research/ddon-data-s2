@@ -71,8 +71,7 @@ cGUIFloorManager::cGUIFloorManager() {
 // Address: 0x001ff050 - 0x001ff067 (23 bytes)
 // Also emitted as: _ZN16cGUIFloorManagerD0Ev at 0x001ff070
 cGUIFloorManager::~cGUIFloorManager() {
-    DDON_STUB("cGUIFloorManager::~cGUIFloorManager")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x001ff0c0 - 0x001ff3ea (810 bytes)
@@ -264,9 +263,15 @@ __attribute__((weak)) s32 cGUIFloorManager::getFloorIdFromPos(const MtVector3& v
 }
 
 // Address: 0x00200180 - 0x00200199 (25 bytes)
-__attribute__((weak)) void cGUIFloorManager::setFloorBaseIdOfs(u32 idx, s32 sFloorBaseIdOfs) {
-    DDON_STUB("cGUIFloorManager::setFloorBaseIdOfs")
-    /* stub */
+void cGUIFloorManager::setFloorBaseIdOfs(u32 idx, s32 sFloorBaseIdOfs) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
+    if (idx == static_cast<u32>(4294967295)) {
+        return;
+    }
+    if (idx < this->mParamArray.::MtArray::mLength) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mParamArray.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(16)) = static_cast<unsigned int>(sFloorBaseIdOfs);
+    }
 }
 
 // No out-of-line body: 5 inlined copies in 1 function (46 bytes)

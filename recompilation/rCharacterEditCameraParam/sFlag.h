@@ -16,6 +16,7 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 class aStage;
+class cFSMBase;
 namespace nLayout { class cGameDataCache; }
 namespace nSessionManager { class cNetSessionManager; }
 
@@ -30,10 +31,17 @@ using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 
+// Functions the classes below befriend, declared first
+namespace nDDOUtility { void requestOnTutorialFlg(s32 questTarget); }
+
 class sFlag : public cSystem
 {
     // inferred: aStage::requestWarp calls sFlag::setFlag
     friend class aStage;
+    // inferred: cFSMBase::stateUpdateGameGlobalFlagOn calls sFlag::setFlag
+    friend class cFSMBase;
+    // inferred: nDDOUtility::requestOnTutorialFlg calls sFlag::setFlag
+    friend void nDDOUtility::requestOnTutorialFlg(s32 questTarget);
     // inferred: nLayout::cGameDataCache::setGameData calls sFlag::setFlag
     friend class nLayout::cGameDataCache;
     // inferred: nSessionManager::cNetSessionManager::setReadyAction calls sFlag::setFlag

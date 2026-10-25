@@ -52,7 +52,7 @@ class uBaseModel : public uCoord
 {
     // inferred: cBakeModel::buildJointIndexTable names uBaseModel::mpModel
     friend class cBakeModel;
-    // inferred: cDDMaterialCtrl::setCommonState names uBaseModel::mMaterialNum
+    // inferred: cDDMaterialCtrl::setCacheNone names uBaseModel::mCommandCacheOffNow
     friend class cDDMaterialCtrl;
     // inferred: cpBakeJoint::setOriginalEnvelope names uBaseModel::mpModel
     friend class cpBakeJoint;

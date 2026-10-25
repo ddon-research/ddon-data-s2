@@ -9,10 +9,24 @@
 #include "cAIObject.h"
 #include "cAIUserProcess.h"
 #include "cFSMBase.h"
+#include "cUnit.h"
+#include "cpComponent.h"
+#include "cpEnemyThink.h"
 #include "sEnemyManager.h"
+#include "sEventManager.h"
 #include "sMain.h"
+#include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
+#include "sUnit.h"
+#include "uCharacter.h"
+#include "uControl.h"
+#include "uControlNpc.h"
 #include "uCoord.h"
+#include "uDDOModel.h"
+#include "../rCharacterEditCameraParam/uEnemy.h"
+#include "uHuman.h"
+#include "uNpc.h"
+#include "uPlayer.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -127,10 +141,37 @@ __attribute__((weak)) u32 cFSMUnit::stateSetGoto(MtObject* pParam, MtObject* pCa
 }
 
 // Address: 0x001f0670 - 0x001f06eb (123 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateExitSetGoto(MtObject* pParam, MtObject* pCaller) {
-    // local: uNpc* pNpc;
-    DDON_STUB("cFSMUnit::stateExitSetGoto")
-    return {};
+u32 cFSMUnit::stateExitSetGoto(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: uNpc* pNpc;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+        // inferred: the value the loop at 0x1f069b carries; no location-less local in scope fits
+        MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        // inferred: a temporary for the result of the call at 0x1f068d, used once; no DWARF local holds it
+        const MtDTI& t0 = v0_3->getDTI();
+        // inferred: the value the loop at 0x1f069b carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uNpc::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x1f069b carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                if (v0_3 != static_cast<MtObject*>(nullptr)) {
+                    if (static_cast<cUnit*>(v0_3)->::cUnit::isEnable() != false) {
+                        if (this->mIsForceWarp != false) {
+                            static_cast<uHuman*>(v0_3)->::uHuman::startChangeTrp(0.0f, 1.0f, 30.0f);
+                        }
+                    }
+                }
+                return static_cast<u32>(0);
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f06f0 - 0x001f07bd (205 bytes)
@@ -231,12 +272,95 @@ __attribute__((weak)) u32 cFSMUnit::stateSetNeck(MtObject* pParam, MtObject* pCa
 }
 
 // Address: 0x001f29c0 - 0x001f2aee (302 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateExitSetNeck(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetNeck* pParamSetNeck;
-    // local: uNpc* pNpc;
-    // local: uEnemy* pEnemy;
-    DDON_STUB("cFSMUnit::stateExitSetNeck")
-    return {};
+u32 cFSMUnit::stateExitSetNeck(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cParamSetNeck* pParamSetNeck;
+    // DWARF local not rendered: uNpc* pNpc;
+    // DWARF local not rendered: uEnemy* pEnemy;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cFSMUnit::cParamSetNeck::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x8 from const MtDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uNpc::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2d from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uEnemy::MyDTI*
+    // inferred: a temporary for the result of the call at 0x1f29d6, used twice; no DWARF local holds it
+    const MtDTI& t0 = pParam->getDTI();
+    // inferred: the value the loop at 0x1f29f0 carries; no location-less local in scope fits
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cFSMUnit::cParamSetNeck::DTI) + static_cast<long>(8));
+    if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&t0) + static_cast<long>(8)))) {
+        // inferred: the value the loop at 0x1f29f0 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) == static_cast<unsigned long>(0)) {
+                return static_cast<u32>(0);
+            } else {
+                if (v0_1 != (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) + static_cast<long>(8)))) {
+                    v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                } else {
+                    break;
+                }
+            }
+        }
+        if (pParam == static_cast<MtObject*>(nullptr)) {
+            return static_cast<u32>(0);
+        }
+    }
+    if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+        // inferred: the value the loop at 0x1f2a31 carries; no location-less local in scope fits
+        MtObject* v3_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        // inferred: a temporary for the result of the call at 0x1f2a23, used once; no DWARF local holds it
+        const MtDTI& t1 = v3_9->getDTI();
+        // inferred: the value the loop at 0x1f2a31 carries; no location-less local in scope fits
+        unsigned long v3_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uNpc::DTI) + static_cast<long>(8));
+        // inferred: the value the loop at 0x1f2a31 carries; no location-less local in scope fits
+        for (const MtDTI* v3_0 = &t1;;) {
+            if (v3_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(8)))) {
+                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                    v3_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(32)));
+                } else {
+                    break;
+                }
+            } else {
+                if (v3_9 != static_cast<MtObject*>(nullptr)) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(45))) != static_cast<unsigned char>(0)) {
+                        static_cast<uNpc*>(v3_9)->::uNpc::setHeadCtrlEnable(static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8))), false);
+                    }
+                }
+                break;
+            }
+        }
+        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+            // inferred: the value the loop at 0x1f2a7c carries; no location-less local in scope fits
+            MtObject* v5_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            // inferred: a temporary for the result of the call at 0x1f2a6e, used once; no DWARF local holds it
+            const MtDTI& t2 = v5_3->getDTI();
+            // inferred: the value the loop at 0x1f2a7c carries; no location-less local in scope fits
+            unsigned long v5_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uEnemy::DTI) + static_cast<long>(8));
+            // inferred: the value the loop at 0x1f2a7c carries; no location-less local in scope fits
+            for (const MtDTI* v5_0 = &t2;;) {
+                if (v5_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(8)))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                        v5_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(32)));
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v5_3 != static_cast<MtObject*>(nullptr)) {
+                        if (static_cast<uEnemy*>(v5_3)->::uEnemy::findcpEnemyThink() != static_cast<cpEnemyThink*>(nullptr)) {
+                            static_cast<uEnemy*>(v5_3)->::uEnemy::findcpEnemyThink()->mIsFmsTarget = false;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+    ::sUnit::getInstance()->::sUnit::remove(static_cast<cUnit*>(this->mpEvHeadTarget));
+    if (this->mpEvHeadTarget != static_cast<cFSMUnit::uEvHeadTarget*>(nullptr)) {
+        delete this->mpEvHeadTarget;
+        this->mpEvHeadTarget = static_cast<cFSMUnit::uEvHeadTarget*>(nullptr);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f2af0 - 0x001f2bf9 (265 bytes)
@@ -298,10 +422,37 @@ __attribute__((weak)) u32 cFSMUnit::stateSetWaypoint(MtObject* pParam, MtObject*
 }
 
 // Address: 0x001f3530 - 0x001f35ab (123 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateExitSetWaypoint(MtObject* pParam, MtObject* pCaller) {
-    // local: uNpc* pNpc;
-    DDON_STUB("cFSMUnit::stateExitSetWaypoint")
-    return {};
+u32 cFSMUnit::stateExitSetWaypoint(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: uNpc* pNpc;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+        // inferred: the value the loop at 0x1f355b carries; no location-less local in scope fits
+        MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        // inferred: a temporary for the result of the call at 0x1f354d, used once; no DWARF local holds it
+        const MtDTI& t0 = v0_3->getDTI();
+        // inferred: the value the loop at 0x1f355b carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uNpc::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x1f355b carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                if (v0_3 != static_cast<MtObject*>(nullptr)) {
+                    if (static_cast<cUnit*>(v0_3)->::cUnit::isEnable() != false) {
+                        if (this->mIsForceWarp != false) {
+                            static_cast<uHuman*>(v0_3)->::uHuman::startChangeTrp(0.0f, 1.0f, 30.0f);
+                        }
+                    }
+                }
+                return static_cast<u32>(0);
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f35b0 - 0x001f369e (238 bytes)
@@ -352,21 +503,110 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetOpenDoor(MtObject* pParam, MtO
 }
 
 // Address: 0x001f3960 - 0x001f39fd (157 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateUpdateSetDispWeapon(MtObject* pParam, MtObject* pCaller) {
-    // local: uControl* pCtrl;
-    // local: uControlNpc* pCtrlNpc;
-    // local: cParamSetDispWeapon* pParamSetDispWep;
-    // local: uNpc* pNpc;
-    DDON_STUB("cFSMUnit::stateUpdateSetDispWeapon")
-    return {};
+u32 cFSMUnit::stateUpdateSetDispWeapon(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: uControl* pCtrl;
+    // DWARF local not rendered: uControlNpc* pCtrlNpc;
+    // DWARF local not rendered: cParamSetDispWeapon* pParamSetDispWep;
+    // DWARF local not rendered: uNpc* pNpc;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uNpc::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uControlNpc::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x9 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+            // inferred: the value the loop at 0x1f3993 carries; no location-less local in scope fits
+            MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            // inferred: a temporary for the result of the call at 0x1f3985, used once; no DWARF local holds it
+            const MtDTI& t0 = v0_3->getDTI();
+            // inferred: the value the loop at 0x1f3993 carries; no location-less local in scope fits
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uNpc::DTI) + static_cast<long>(8));
+            // inferred: the value the loop at 0x1f3993 carries; no location-less local in scope fits
+            const MtDTI* v0_0 = &t0;
+            // inferred: the value the loop at 0x1f39c9 carries; no location-less local in scope fits
+            const MtDTI* v2_0;
+            for (;;) {
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v0_3 == static_cast<MtObject*>(nullptr)) {
+                        break;
+                    } else {
+                        // inferred: the value the loop at 0x1f39c9 carries; no location-less local in scope fits
+                        uControl* v2_10 = static_cast<uDDOModel*>(v0_3)->::uDDOModel::getCtrl();
+                        if (v2_10 == static_cast<uControl*>(nullptr)) {
+                            break;
+                        } else {
+                            // inferred: a temporary for the result of the call at 0x1f39bb, used once; no DWARF local holds it
+                            const MtDTI& t2 = v2_10->getDTI();
+                            // inferred: the value the loop at 0x1f39c9 carries; no location-less local in scope fits
+                            unsigned long v2_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uControlNpc::DTI) + static_cast<long>(8));
+                            v2_0 = &t2;
+                            for (;;) {
+                                if (v2_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + static_cast<long>(8)))) {
+                                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                                        v2_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v2_0) + static_cast<long>(32)));
+                                    } else {
+                                        break;
+                                    }
+                                } else {
+                                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v2_10) + static_cast<long>(734)) = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8));
+                                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v2_10) + static_cast<long>(735)) = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(9));
+                                    goto loop_1f3993_end;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            loop_1f3993_end:;
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f3a00 - 0x001f3a67 (103 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateUpdateSetShadowCast(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetShadowCast* pParamSetShadowCast;
-    // local: uDDOModel* pModel;
-    DDON_STUB("cFSMUnit::stateUpdateSetShadowCast")
-    return {};
+u32 cFSMUnit::stateUpdateSetShadowCast(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cParamSetShadowCast* pParamSetShadowCast;
+    // DWARF local not rendered: uDDOModel* pModel;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+            // inferred: the value the loop at 0x1f3a30 carries; no location-less local in scope fits
+            MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            // inferred: a temporary for the result of the call at 0x1f3a22, used once; no DWARF local holds it
+            const MtDTI& t0 = v0_9->getDTI();
+            // inferred: the value the loop at 0x1f3a30 carries; no location-less local in scope fits
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            // inferred: the value the loop at 0x1f3a30 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v0_9 != static_cast<MtObject*>(nullptr)) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8))) != static_cast<unsigned char>(0)) {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + static_cast<long>(20)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + static_cast<long>(20))) | static_cast<unsigned int>(520);
+                        } else {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + static_cast<long>(20)) = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + static_cast<long>(20))) & static_cast<unsigned int>(4294966775);
+                        }
+                    }
+                    return static_cast<u32>(0);
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f3a70 - 0x001f3aec (124 bytes)
@@ -390,12 +630,47 @@ u32 cFSMUnit::stateUpdateSetCallSeUnit(MtObject* pParam, MtObject* pCaller) {
 }
 
 // Address: 0x001f3b20 - 0x001f3bbb (155 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateSetCallSeUnit(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetCallSe* pParamSetCallSe;
-    // local: u32 diffFrame;
-    // local: uDDOModel* pModel;
-    DDON_STUB("cFSMUnit::stateSetCallSeUnit")
-    return {};
+u32 cFSMUnit::stateSetCallSeUnit(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cParamSetCallSe* pParamSetCallSe;
+    // DWARF local not rendered: u32 diffFrame;
+    // DWARF local not rendered: uDDOModel* pModel;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        if (this->mRnoSE == static_cast<u32>(0)) {
+            if ((::sMain::getInstance()->::sMain::getFrameTimer() - this->mStartFrame) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(16)))) {
+            } else {
+                if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+                    // inferred: the value the loop at 0x1f3b79 carries; no location-less local in scope fits
+                    MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+                    // inferred: a temporary for the result of the call at 0x1f3b6b, used once; no DWARF local holds it
+                    const MtDTI& t0 = v0_9->getDTI();
+                    // inferred: the value the loop at 0x1f3b79 carries; no location-less local in scope fits
+                    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+                    // inferred: the value the loop at 0x1f3b79 carries; no location-less local in scope fits
+                    for (const MtDTI* v0_0 = &t0;;) {
+                        if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                            } else {
+                                break;
+                            }
+                        } else {
+                            if (v0_9 != static_cast<MtObject*>(nullptr)) {
+                                ::sEventManager::getInstance()->::sEventManager::callEventSe(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)), static_cast<uCoord*>(v0_9), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(12))));
+                            }
+                            break;
+                        }
+                    }
+                }
+                this->mRnoSE = this->mRnoSE + static_cast<u32>(1);
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f3bc0 - 0x001f3c3b (123 bytes)
@@ -418,10 +693,14 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetParts(MtObject* pParam, MtObje
 }
 
 // Address: 0x001f3cc0 - 0x001f3cdf (31 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateUpdateSetVibUnit(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetVibUnit* pParamSetVibUnit;
-    DDON_STUB("cFSMUnit::stateUpdateSetVibUnit")
-    return {};
+u32 cFSMUnit::stateUpdateSetVibUnit(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cParamSetVibUnit* pParamSetVibUnit;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        ::sEventManager::getInstance()->::sEventManager::reqEventVib(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)));
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f3ce0 - 0x001f3d7e (158 bytes)
@@ -435,28 +714,129 @@ __attribute__((weak)) u32 cFSMUnit::stateUpdateSetEmMontage(MtObject* pParam, Mt
 }
 
 // Address: 0x001f3d80 - 0x001f3de3 (99 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateUpdateSetHeadCtrl(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetHeadCtrl* pParamSetHeadCtrl;
-    // local: uDDOModel* pModel;
-    // local: uNpc* pNpc;
-    DDON_STUB("cFSMUnit::stateUpdateSetHeadCtrl")
-    return {};
+u32 cFSMUnit::stateUpdateSetHeadCtrl(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cParamSetHeadCtrl* pParamSetHeadCtrl;
+    // DWARF local not rendered: uDDOModel* pModel;
+    // DWARF local not rendered: uNpc* pNpc;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x8 from MtObject*
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+            // inferred: the value the loop at 0x1f3db0 carries; no location-less local in scope fits
+            MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            // inferred: a temporary for the result of the call at 0x1f3da2, used once; no DWARF local holds it
+            const MtDTI& t0 = v0_9->getDTI();
+            // inferred: the value the loop at 0x1f3db0 carries; no location-less local in scope fits
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            // inferred: the value the loop at 0x1f3db0 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v0_9 != static_cast<MtObject*>(nullptr)) {
+                        if (static_cast<uDDOModel*>(v0_9)->::uDDOModel::isNpc() != false) {
+                            static_cast<uNpc*>(v0_9)->::uNpc::setHeadCtrl(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8))));
+                        }
+                    }
+                    return static_cast<u32>(0);
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f3df0 - 0x001f3e5b (107 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateUpdateSetEyeClose(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetEyeClose* pParamSetEyeClose;
-    // local: uDDOModel* pModel;
-    DDON_STUB("cFSMUnit::stateUpdateSetEyeClose")
-    return {};
+u32 cFSMUnit::stateUpdateSetEyeClose(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cParamSetEyeClose* pParamSetEyeClose;
+    // DWARF local not rendered: uDDOModel* pModel;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+            // inferred: the value the loop at 0x1f3e20 carries; no location-less local in scope fits
+            MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            // inferred: a temporary for the result of the call at 0x1f3e12, used once; no DWARF local holds it
+            const MtDTI& t0 = v0_9->getDTI();
+            // inferred: the value the loop at 0x1f3e20 carries; no location-less local in scope fits
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            // inferred: the value the loop at 0x1f3e20 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v0_9 == static_cast<MtObject*>(nullptr)) {
+                        return static_cast<u32>(0);
+                    } else {
+                        if (static_cast<uDDOModel*>(v0_9)->::uDDOModel::getCtrlNpc() == static_cast<uControlNpc*>(nullptr)) {
+                            return static_cast<u32>(0);
+                        } else {
+                            // inferred: a temporary for the result of the call at 0x1f3e46, used once; no DWARF local holds it
+                            uControlNpc* t1 = static_cast<uDDOModel*>(v0_9)->::uDDOModel::getCtrlNpc();
+                            t1->mIsEyeClose = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)));
+                            return static_cast<u32>(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f3e60 - 0x001f3ecb (107 bytes)
-__attribute__((weak)) u32 cFSMUnit::stateUpdateSetDispMiniMap(MtObject* pParam, MtObject* pCaller) {
-    // local: cParamSetDispMiniMap* pParamSetDispMiniMap;
-    // local: uDDOModel* pModel;
-    DDON_STUB("cFSMUnit::stateUpdateSetDispMiniMap")
-    return {};
+u32 cFSMUnit::stateUpdateSetDispMiniMap(MtObject* pParam, MtObject* pCaller) {
+    // DWARF local not rendered: cParamSetDispMiniMap* pParamSetDispMiniMap;
+    // DWARF local not rendered: uDDOModel* pModel;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    if (pParam != static_cast<MtObject*>(nullptr)) {
+        if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+            // inferred: the value the loop at 0x1f3e90 carries; no location-less local in scope fits
+            MtObject* v0_9 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+            // inferred: a temporary for the result of the call at 0x1f3e82, used once; no DWARF local holds it
+            const MtDTI& t0 = v0_9->getDTI();
+            // inferred: the value the loop at 0x1f3e90 carries; no location-less local in scope fits
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            // inferred: the value the loop at 0x1f3e90 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v0_9 == static_cast<MtObject*>(nullptr)) {
+                        return static_cast<u32>(0);
+                    } else {
+                        if (static_cast<uDDOModel*>(v0_9)->::uDDOModel::getCtrlNpc() == static_cast<uControlNpc*>(nullptr)) {
+                            return static_cast<u32>(0);
+                        } else {
+                            // inferred: a temporary for the result of the call at 0x1f3eb6, used once; no DWARF local holds it
+                            uControlNpc* t1 = static_cast<uDDOModel*>(v0_9)->::uDDOModel::getCtrlNpc();
+                            t1->mIsDispMiniMap = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pParam) + static_cast<long>(8)));
+                            return static_cast<u32>(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001f3ed0 - 0x001f3f38 (104 bytes)
@@ -556,10 +936,40 @@ __attribute__((weak)) bool cFSMUnit::isGoalWaypoint() const {
 }
 
 // Address: 0x001f4290 - 0x001f42e6 (86 bytes)
-__attribute__((weak)) u32 cFSMUnit::getHp() const {
-    // local: uCharacter* pChar;
-    DDON_STUB("cFSMUnit::getHp")
-    return {};
+u32 cFSMUnit::getHp() const {
+    // DWARF local not rendered: uCharacter* pChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x1f42de; no location-less local in scope fits
+    HP_DATATYPE v2_8;
+    if (this->::cFSMBase::getOwner() == static_cast<MtObject*>(nullptr)) {
+        v2_8 = static_cast<HP_DATATYPE>(0);
+    } else {
+        // inferred: the value the loop at 0x1f42bb carries; no location-less local in scope fits
+        MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        // inferred: a temporary for the result of the call at 0x1f42ad, used once; no DWARF local holds it
+        const MtDTI& t0 = v0_3->getDTI();
+        // inferred: the value the loop at 0x1f42bb carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uCharacter::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x1f42bb carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                if (v0_3 == static_cast<MtObject*>(nullptr)) {
+                    v2_8 = static_cast<HP_DATATYPE>(0);
+                } else {
+                    v2_8 = static_cast<uDDOModel*>(v0_3)->::uDDOModel::getHp(static_cast<u32>(0));
+                }
+                return static_cast<unsigned int>(v2_8);
+            }
+        }
+        v2_8 = static_cast<HP_DATATYPE>(0);
+    }
+    return static_cast<unsigned int>(v2_8);
 }
 
 // Address: 0x001f42f0 - 0x001f43d5 (229 bytes)
@@ -640,11 +1050,42 @@ bool cFSMUnit::isExistEnemyUnit() const {
 }
 
 // Address: 0x001f4600 - 0x001f4672 (114 bytes)
-__attribute__((weak)) bool cFSMUnit::isTouchActionFromPlayer() const {
-    // local: uPlayer* pPlayer;
-    // local: uCharacter* pChar;
-    DDON_STUB("cFSMUnit::isTouchActionFromPlayer")
-    return {};
+bool cFSMUnit::isTouchActionFromPlayer() const {
+    // DWARF local not rendered: uPlayer* pPlayer;
+    // DWARF local not rendered: uCharacter* pChar;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->::cFSMBase::getOwner() != static_cast<MtObject*>(nullptr)) {
+        // inferred: the value the loop at 0x1f4628 carries; no location-less local in scope fits
+        MtObject* v0_3 = static_cast<cpComponent*>(this->::cFSMBase::getOwner())->::cpComponent::getOwner();
+        // inferred: a temporary for the result of the call at 0x1f461a, used once; no DWARF local holds it
+        const MtDTI& t0 = v0_3->getDTI();
+        // inferred: the value the loop at 0x1f4628 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uCharacter::DTI.::MtDTI::mName;
+        // inferred: the value the loop at 0x1f4628 carries; no location-less local in scope fits
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 == v0_0->mName) {
+                // inferred: a temporary for the value the load at 0x1f4643 read, used 3 times; no DWARF local holds it
+                uPlayer* t1 = ::sPlayerManager::getInstance()->::sPlayerManager::getMyPlayer();
+                if (t1 != static_cast<uPlayer*>(nullptr)) {
+                    if (v0_3 != static_cast<MtObject*>(nullptr)) {
+                        if (t1->::uHuman::isTouchNow() != false) {
+                            if (v0_3 == t1->::uHuman::mpTouchSelectTarget) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                break;
+            } else {
+                if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x001f4680 - 0x001f4752 (210 bytes)

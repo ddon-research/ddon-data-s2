@@ -11,6 +11,7 @@
 #include "cOcdCustomReqInfo.h"
 #include "cOcdInfo.h"
 #include "cOcdParamRes.h"
+#include "../rOcdPriorityParam/cOcdPriority.h"
 #include "cUnit.h"
 #include "cpOcdCtrl.h"
 #include "nAbility.h"
@@ -20,6 +21,7 @@
 #include "nOcdMsg.h"
 #include "sEffect.h"
 #include "sEffectExt.h"
+#include "sObjCondition.h"
 #include "sWorkRate.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
@@ -84,8 +86,7 @@ cOcdBase::cOcdBase() {
 // Address: 0x00399b00 - 0x00399b44 (68 bytes)
 // Also emitted as: _ZN8cOcdBaseD0Ev at 0x00399b50
 cOcdBase::~cOcdBase() {
-    DDON_STUB("cOcdBase::~cOcdBase")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x0039b660 - 0x0039b810 (432 bytes)
@@ -95,10 +96,33 @@ __attribute__((weak)) void cOcdBase::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x00399bb0 - 0x00399c3c (140 bytes)
-__attribute__((weak)) void cOcdBase::setup() {
-    // local: const cOcdPriorityParam* pData;
-    DDON_STUB("cOcdBase::setup")
-    /* stub */
+void cOcdBase::setup() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; code after a join copied into the arms; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x114 from cOcdBase*
+    const cOcdPriorityParam* pData = ::sObjCondition::getInstance()->::sObjCondition::getPriorityData(this->mOcdUID);
+    if (pData != static_cast<const cOcdPriorityParam*>(nullptr)) {
+        this->mStatusParam.mIsMultiApply = pData->::cOcdPriorityParam::isMultiApply();
+        this->mStatusParam.mIsMultiNumLimit = pData->::cOcdPriorityParam::isMultiNumLimit();
+        // inferred: a temporary for the value the load at 0x399be5 read, used twice; no DWARF local holds it
+        u32 t0 = pData->::cOcdPriorityParam::getMultiApplyNum();
+        this->mStatusParam.mMultiApplyNum = t0;
+        this->mStatusParam.mMultiApplyNumMax = this->mStatusParam.mMultiApplyNum;
+        this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(0);
+        if ((this->mpModel->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
+            this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(1);
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(276)) = static_cast<unsigned long>(30064771072);
+        } else {
+            this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(0);
+        }
+    } else {
+        this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(0);
+        if ((this->mpModel->mUnitId & static_cast<u32>(16)) != static_cast<u32>(0)) {
+            this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(1);
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(276)) = static_cast<unsigned long>(30064771072);
+        } else {
+            this->mImmuneMode = static_cast<nObjCondition::OCD_IMMUNE_MODE>(0);
+        }
+    }
 }
 
 // Address: 0x0039ac70 - 0x0039ac95 (37 bytes)
@@ -187,10 +211,27 @@ void cOcdBase::update() {
 }
 
 // Address: 0x0039aa60 - 0x0039aa9f (63 bytes)
-__attribute__((weak)) bool cOcdBase::isEnableInit() const {
-    // local: const cOcdCache& chach;
-    DDON_STUB("cOcdBase::isEnableInit")
-    return {};
+bool cOcdBase::isEnableInit() const {
+    // DWARF local not rendered: const cOcdCache& chach;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mStatusParam.::cOcdStatusParam::isEffective() != false) {
+        if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
+            if ((static_cast<unsigned long>(this->mNonInitOST) & static_cast<unsigned long>(this->mpModel->mObjStatus)) != static_cast<unsigned long>(0)) {
+                return false;
+            } else {
+                if ((static_cast<unsigned long>(this->mNonInitOST) & static_cast<unsigned long>(this->mpModel->mObjStatusOld)) != static_cast<unsigned long>(0)) {
+                    return false;
+                } else {
+                    return this->mOcdActiveCache.mIsActive == false;
+                }
+            }
+        } else {
+            return this->mOcdActiveCache.mIsActive == false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01a42ad0 - 0x01a42ad3 (3 bytes)
@@ -413,9 +454,14 @@ __attribute__((weak)) void cOcdBase::applyCustomRequestMulti(const cOcdCustomReq
 }
 
 // Address: 0x00399ec0 - 0x00399ed4 (20 bytes)
-__attribute__((weak)) bool cOcdBase::isCustomRequest() const {
-    DDON_STUB("cOcdBase::isCustomRequest")
-    return {};
+bool cOcdBase::isCustomRequest() const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpOwner != static_cast<cOcdInfo*>(nullptr)) {
+        return this->mpOwner->::cOcdInfo::isCustomRequest();
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (12 bytes)

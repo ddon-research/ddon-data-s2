@@ -35,6 +35,7 @@ class cBakeModelEx;
 class cDraw;
 class cpBakeJoint;
 class cpMotionRate;
+class cpShakeCtrl;
 namespace nDraw { class CommandCache; }
 namespace nDraw { class Material; }
 namespace nDraw { class Texture; }
@@ -44,6 +45,7 @@ namespace nMotion { struct MPARAM_WORK; }
 namespace nMotion { struct SEQUENCE_INFO; }
 class rModel;
 class rMotionList;
+class uCnsDDOIK;
 class uConstraint;
 class uDDOModel;
 class uSimSoftBody;
@@ -87,7 +89,13 @@ class uModel : public uBaseModel
     friend class cpBakeJoint;
     // inferred: cpMotionRate::saveMotionSpeed names uModel::mMotion[0].mSpeed
     friend class cpMotionRate;
-    // inferred: uSimSoftBody::updateTargetBoundary calls uModel::updateBoundary
+    // inferred: cpShakeCtrl::findNearestCnsShakeCtrl names uModel::mJointTable
+    friend class cpShakeCtrl;
+    // inferred: uCnsDDOIK::getDependentJointNum names uModel::mJointTable
+    friend class uCnsDDOIK;
+    // inferred: uConstraint::setConstraint names uModel::mJointTable
+    friend class uConstraint;
+    // inferred: uSimSoftBody::getTargetJointIndexFromNo names uModel::mJointNum
     friend class uSimSoftBody;
 public:
     enum UPDATE_WORLD_MATRIX_MODE

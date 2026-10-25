@@ -82,8 +82,35 @@ MT_CTSTR rWaypoint2::getExt() const {
 // Address: 0x007115d0 - 0x0071168d (189 bytes)
 // Also emitted as: _ZN10rWaypoint2D0Ev at 0x00711690
 rWaypoint2::~rWaypoint2() {
-    DDON_STUB("rWaypoint2::~rWaypoint2")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mRouteList2.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x711600 carries; no location-less local in scope fits
+        u32 v0_0 = this->mRouteList2.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mRouteList2.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mRouteList2.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRouteList2.::MtArray::mLength) {
+                    v0_0 = this->mRouteList2.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mRouteList2.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRouteList2.::MtArray::mpArray));
+    }
+    this->mRouteList2.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mRouteList2.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mRouteList2.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x00711770 - 0x00711905 (405 bytes)
@@ -149,7 +176,8 @@ const MtDTI& rWaypoint2::cRoute2::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rWaypoint2::cRoute2::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rWaypoint2::cRoute2::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rWaypoint2::cRoute2::DTI)->memAlloc(sz, align, ::rWaypoint2::cRoute2::DTI.::MtDTI::getID());
 }
 

@@ -25,6 +25,7 @@
 #include "../shared/uGUIBase.h"
 #include "uGUIDialogTextBox.h"
 #include "uGUIEntryBoard.h"
+#include "uGUIMissionInfo.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -611,9 +612,62 @@ __attribute__((weak)) void cMenuEntryBoardItem::exitMenu() {
 // s32 cMenuEntryBoardItem::getRno();
 
 // Address: 0x00149d60 - 0x00149df4 (148 bytes)
-__attribute__((weak)) void cMenuEntryBoardItem::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
-    DDON_STUB("cMenuEntryBoardItem::checkMenuPartsParam")
-    /* stub */
+void cMenuEntryBoardItem::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu::MENU_PARTS* pParts, s32 menuId) {
+    // Approximate from the ELF: a cast to the other signedness; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as u32
+    // inferred: a temporary for the value the load at 0x149d60 read, used twice; no DWARF local holds it
+    s32 t0 = this->mType;
+    pParts->attr = static_cast<u32>(t0 == static_cast<s32>(1));
+    switch (static_cast<unsigned int>(menuId)) {
+        case static_cast<unsigned int>(0):
+        {
+            if (t0 == static_cast<s32>(2)) {
+                if (this->mpBoardInfo->isPassword == false) {
+                    pParts->attr = static_cast<u32>(1);
+                }
+            }
+            break;
+        }
+        case static_cast<unsigned int>(3):
+        {
+            if (t0 == static_cast<s32>(2)) {
+                pParts->attr = static_cast<u32>(1);
+            }
+            break;
+        }
+        case static_cast<unsigned int>(4):
+        {
+            if (t0 == static_cast<s32>(2)) {
+                pParts->attr = static_cast<u32>(1);
+            }
+            break;
+        }
+        case static_cast<unsigned int>(5):
+        {
+            if (t0 == static_cast<s32>(2)) {
+                pParts->attr = static_cast<u32>(1);
+            }
+            break;
+        }
+        case static_cast<unsigned int>(7):
+        {
+            if (t0 == static_cast<s32>(2)) {
+                pParts->attr = static_cast<u32>(1);
+            }
+            break;
+        }
+        case static_cast<unsigned int>(10):
+        {
+            if (t0 == static_cast<s32>(1)) {
+                pParts->attr = static_cast<u32>(0);
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -814,12 +868,12 @@ void cMenuEntryBoardItemList::checkMenuPartsParam(cMenuSupportMenu* pMenu, nMenu
         return;
     }
     if (menuId == static_cast<s32>(7)) {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
+        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
             pParts->attr = static_cast<u32>(1);
             pParts->param = static_cast<u32>(1);
         }
     } else {
-        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->mQuickMatchRno != static_cast<s32>(0)) {
+        if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getSessionManager()->::nSessionManager::cNetSessionManager::isNowQuickMatchFlow()) {
             pParts->attr = static_cast<u32>(1);
             pParts->param = static_cast<u32>(2);
         } else {
@@ -1013,8 +1067,7 @@ inline void cMenuEntryBoardRecruit::operator delete(void* p_addr) {
 // Address: 0x0197aa20 - 0x0197aa51 (49 bytes)
 // Also emitted as: _ZN22cMenuEntryBoardRecruitD0Ev at 0x0197aa60
 cMenuEntryBoardRecruit::~cMenuEntryBoardRecruit() {
-    DDON_STUB("cMenuEntryBoardRecruit::~cMenuEntryBoardRecruit")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x001485c0 - 0x001486cd (269 bytes)
@@ -1391,10 +1444,27 @@ cMenuInviteEntryBoardItem::~cMenuInviteEntryBoardItem() {
 }
 
 // Address: 0x0014e080 - 0x0014e115 (149 bytes)
-__attribute__((weak)) void cMenuInviteEntryBoardItem::initInviteEntryBoardItem(nNet::stEntryBoardItemInfo* pDstInfo) {
-    // local: uGUIMissionInfo* pGUI;
-    DDON_STUB("cMenuInviteEntryBoardItem::initInviteEntryBoardItem")
-    /* stub */
+void cMenuInviteEntryBoardItem::initInviteEntryBoardItem(nNet::stEntryBoardItemInfo* pDstInfo) {
+    // DWARF local not rendered: uGUIMissionInfo* pGUI;
+    // Approximate from the ELF: a load named after a store only its type keeps apart; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1820
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1828
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x147d from uGUIBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x148c from uGUIBase*
+    this->::cMenuBase::initMenu();
+    this->mpBoardInfo = pDstInfo;
+    this->mIsJumpMemberList = false;
+    this->mIsActiveOld = false;
+    this->mBoardId = static_cast<sNetworkExt*>(::sNetwork::getInstance())->mSaveEntryInvitedInfo.mEntryBoardId;
+    this->mEntryId = static_cast<sNetworkExt*>(::sNetwork::getInstance())->mSaveEntryInvitedInfo.mEntryId;
+    // inferred: a temporary for the result of the call at 0x14e0e3, used 3 times; no DWARF local holds it
+    uGUIBase* t0 = this->::cMenuBase::registerGUI(::uGUIMissionInfo::DTI, ::cMenuBase::DEFAULT_GUI_LINE, ::cMenuBase::DEFAULT_GUI_GROUP);
+    if ((this->::cMenuBase::mpGUIMenu = t0) != static_cast<uGUIBase*>(nullptr)) {
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(5245)) = static_cast<unsigned char>(1);
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(5260)) = static_cast<unsigned char>(1);
+    }
+    this->::cMenuBase::setGUIWindowActive(false);
+    this->::cMenuBase::mMenuRno[0] = static_cast<int>(0);
 }
 
 // Address: 0x0014e120 - 0x0014e42c (780 bytes)

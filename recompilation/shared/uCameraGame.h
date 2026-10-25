@@ -716,6 +716,11 @@ inline s32 cCamImpBase::getCut() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline const cCamImpBase* uCameraGame::getCamImp() const {
+    return this->mpImple;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void uCameraGame::requestReset() {
     this->mIsResetReq = true;

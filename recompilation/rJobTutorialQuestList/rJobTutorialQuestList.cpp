@@ -5,6 +5,7 @@
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtDataReader.h"
+#include "../shared/MtDataWriter.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cResource.h"
@@ -96,8 +97,35 @@ inline rJobTutorialQuestList::rJobTutorialQuestList() {
 // Address: 0x0068e960 - 0x0068ea11 (177 bytes)
 // Also emitted as: _ZN21rJobTutorialQuestListD0Ev at 0x0068ea20
 rJobTutorialQuestList::~rJobTutorialQuestList() {
-    DDON_STUB("rJobTutorialQuestList::~rJobTutorialQuestList")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mJobTutorialList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x68e990 carries; no location-less local in scope fits
+        u32 v0_0 = this->mJobTutorialList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mJobTutorialList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mJobTutorialList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mJobTutorialList.::MtArray::mLength) {
+                    v0_0 = this->mJobTutorialList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mJobTutorialList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mJobTutorialList.::MtArray::mpArray));
+    }
+    this->mJobTutorialList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mJobTutorialList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mJobTutorialList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0068eaf0 - 0x0068ebd3 (227 bytes)
@@ -107,10 +135,24 @@ __attribute__((weak)) void rJobTutorialQuestList::createProperty(MtPropertyList&
 }
 
 // Address: 0x0068ebe0 - 0x0068ecc5 (229 bytes)
-__attribute__((weak)) bool rJobTutorialQuestList::save(MtStream& out) {
-    // local: MtDataWriter w;
-    DDON_STUB("rJobTutorialQuestList::save")
-    return {};
+bool rJobTutorialQuestList::save(MtStream& out) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; code after the loop copied into an arm that skips it; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rJobTutorialQuestList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
+    (&w)->writeU32(static_cast<u32>(5329994));
+    (&w)->writeU16(static_cast<u16>(1));
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) == static_cast<unsigned int>(0)) {
+        return true;
+    }
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i3 = static_cast<unsigned int>(0);
+    do {
+        (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mJobTutorialList.::MtArray::getBuffer()[static_cast<int>(i3)]) + static_cast<long>(8)));
+        i3 += static_cast<unsigned int>(1);
+    } while (i3 < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))));
+    return true;
 }
 
 // Address: 0x0068ecd0 - 0x0068ed7a (170 bytes)

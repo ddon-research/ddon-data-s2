@@ -142,9 +142,15 @@ __attribute__((weak)) void uEffectExt::draw(cDraw* pDraw) {
 }
 
 // Address: 0x008e5a00 - 0x008e5a1e (30 bytes)
-__attribute__((weak)) void uEffectExt::kill() {
-    DDON_STUB("uEffectExt::kill")
-    /* stub */
+void uEffectExt::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uEffectExt*
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+        return;
+    }
+    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    }
 }
 
 // Address: 0x008e5aa0 - 0x008e69be (3870 bytes)
@@ -332,9 +338,9 @@ void uEffectExt::setDeltaTimeCoefEx(f32 DeltaTimeCoef) {
 }
 
 // Address: 0x01ad61f0 - 0x01ad6204 (20 bytes)
-__attribute__((weak)) void uEffectExt::setCCTransparency(f32 val) {
-    DDON_STUB("uEffectExt::setCCTransparency")
-    /* stub */
+void uEffectExt::setCCTransparency(f32 val) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mCorrectColorParam.mTransparency = static_cast<unsigned int>(static_cast<long>(256.0f * val));
 }
 
 // Address: 0x01ad61d0 - 0x01ad61e4 (20 bytes)
@@ -968,9 +974,10 @@ __attribute__((weak)) void uEffectExt::setCorrectColorRate(f32 rate) {
 }
 
 // Address: 0x01ad6210 - 0x01ad6224 (20 bytes)
-__attribute__((weak)) f32 uEffectExt::getCorrectColorRate() const {
-    DDON_STUB("uEffectExt::getCorrectColorRate")
-    return {};
+f32 uEffectExt::getCorrectColorRate() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x2c4 from const uEffectExt*
+    return 0.00390625f * static_cast<float>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(708)));
 }
 
 // Address: 0x01ad6300 - 0x01ad6315 (21 bytes)
@@ -980,9 +987,10 @@ __attribute__((weak)) void uEffectExt::setCorrectColorAlpha(f32 alpha) {
 }
 
 // Address: 0x01ad62e0 - 0x01ad62f4 (20 bytes)
-__attribute__((weak)) f32 uEffectExt::getCorrectColorAlpha() const {
-    DDON_STUB("uEffectExt::getCorrectColorAlpha")
-    return {};
+f32 uEffectExt::getCorrectColorAlpha() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x2c2 from const uEffectExt*
+    return 0.00390625f * static_cast<float>(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(706)));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1022,9 +1030,10 @@ __attribute__((weak)) void uEffectExt::resetEffectKind() {
 }
 
 // Address: 0x01ad6000 - 0x01ad600a (10 bytes)
-__attribute__((weak)) bool uEffectExt::isEffectSt() {
-    DDON_STUB("uEffectExt::isEffectSt")
-    return {};
+bool uEffectExt::isEffectSt() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as bool
+    return static_cast<bool>(this->mEffectKind & static_cast<u32>(1));
 }
 
 // No out-of-line body: no code in the ELF

@@ -19,6 +19,7 @@
 #include "MtString.h"
 #include "MtSynchronize.h"
 #include "Quest.h"
+#include "Skill.h"
 #include "Stage.h"
 #include "cArcLoader.h"
 #include "cCharacterData.h"
@@ -47,6 +48,7 @@
 #include "nHumanMsg.h"
 #include "nKeyCustom.h"
 #include "nQuest.h"
+#include "rAchievement.h"
 #include "rArchiveListArray.h"
 #include "../rEmblemColorTable/rEmblemColorTable.h"
 #include "rGUIFont.h"
@@ -62,23 +64,28 @@
 #include "../rStageConnect/sArea.h"
 #include "../rStageConnect/sAreaExt.h"
 #include "../rCharacterEditCameraParam/sBrowser.h"
+#include "sCaplinkManager.h"
+#include "../rCharacterEditCameraParam/sChat.h"
 #include "sContextManager.h"
 #include "sEnemyManager.h"
 #include "sGUI.h"
+#include "sGame.h"
 #include "sItemManager.h"
 #include "sMain.h"
+#include "../rCharacterEditCameraParam/sMarker.h"
 #include "sNetwork.h"
 #include "sNetworkExt.h"
 #include "sPad.h"
 #include "sPadExt.h"
 #include "../rCharacterEditCameraParam/sPlatformUtil.h"
 #include "sPlayerManager.h"
+#include "sRender.h"
 #include "../rCharacterEditCameraParam/sSoundManager.h"
 #include "uDDOModel.h"
 #include "../rCharacterEditCameraParam/uGUIActionPalette.h"
 #include "../rCharacterEditCameraParam/uGUIAim.h"
 #include "uGUIBase.h"
-#include "uGUIBaseExt.h"
+#include "../rCharacterEditCameraParam/uGUIBaseExt.h"
 #include "../rCharacterEditCameraParam/uGUIBrowserBG.h"
 #include "../rCharacterEditCameraParam/uGUIChargesHUD.h"
 #include "../rCharacterEditCameraParam/uGUIChat.h"
@@ -728,11 +735,36 @@ __attribute__((weak)) MT_CTSTR sGUIExt::getLandNameFromId(u32 land_id) {
 }
 
 // Address: 0x0079b390 - 0x0079b3f2 (98 bytes)
-__attribute__((weak)) MT_CTSTR sGUIExt::getJobName(u32 job_id) {
-    // local: const JobParam* const job_param;
-    // local: const u32 job_name_msg_id;
-    DDON_STUB("sGUIExt::getJobName")
-    return {};
+MT_CTSTR sGUIExt::getJobName(u32 job_id) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    const nGUIExt::JobParam* const job_param = ::cGUIUtility::GetJobParamFromJobId(job_id);
+    if (job_param != static_cast<const nGUIExt::JobParam* const>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x79b3a5 read, used 4 times; no DWARF local holds it
+        rGUIMessage* t0 = this->mpMsgJobName;
+        if (t0 != static_cast<rGUIMessage*>(nullptr)) {
+            const u32 job_name_msg_id = job_param->mJobNameMsgId;
+            if (job_name_msg_id < t0->mMessageNum) {
+                if (job_name_msg_id != static_cast<u32>(4294967295)) {
+                    // inferred: a temporary for the result of the call at 0x79b3c4, used twice; no DWARF local holds it
+                    const rGUIMessage::INDEX* t1 = t0->::rGUIMessage::getIndex(job_name_msg_id);
+                    if (t1 != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+                        return t0->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(t1) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+                    } else {
+                        return "";
+                    }
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
 }
 
 // Address: 0x0079b400 - 0x0079b45c (92 bytes)
@@ -781,11 +813,38 @@ const cWarpLocation* sGUIExt::getWarpInfo(u32 idx) {
 }
 
 // Address: 0x0079b660 - 0x0079b6e5 (133 bytes)
-__attribute__((weak)) const cAchievementData* sGUIExt::getAchievementData(u32 achievement_id) {
-    // local: u32 i;
-    // local: cAchievementData* pData;
-    DDON_STUB("sGUIExt::getAchievementData")
-    return nullptr;
+const cAchievementData* sGUIExt::getAchievementData(u32 achievement_id) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cAchievementData* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x79b6da; no location-less local in scope fits
+    cAchievementData* v1_0;
+    if (this->mpAchievement == static_cast<rAchievement*>(nullptr)) {
+        v1_0 = static_cast<cAchievementData*>(nullptr);
+    } else {
+        if (this->mpAchievement->getDataNum() == static_cast<u32>(0)) {
+            v1_0 = static_cast<cAchievementData*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x79b6ac, used 3 times; no DWARF local holds it
+                cAchievementData* t0 = this->mpAchievement->getData(i0_2);
+                if (t0 != static_cast<cAchievementData*>(nullptr)) {
+                    if (t0->mID == achievement_id) {
+                        v1_0 = t0;
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < this->mpAchievement->getDataNum()) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cAchievementData*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x0079b490 - 0x0079b49c (12 bytes)
@@ -1328,9 +1387,36 @@ void sGUIExt::finishGameUI() {
 // void sGUIExt::setPhotoMode(bool IsPhoto);
 
 // Address: 0x0079c550 - 0x0079c5a0 (80 bytes)
-__attribute__((weak)) bool sGUIExt::isBlackOut() {
-    DDON_STUB("sGUIExt::isBlackOut")
-    return {};
+bool sGUIExt::isBlackOut() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
+        if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isAreaLoading() == false) {
+            if (::sGame::getInstance() != static_cast<sGame*>(nullptr)) {
+                if (::sGame::getInstance()->::sGame::isFadeEnd() != false) {
+                    if (::sGame::getInstance()->::sGame::isFadeBlack() == false) {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        if (::sGame::getInstance() != static_cast<sGame*>(nullptr)) {
+            if (::sGame::getInstance()->::sGame::isFadeEnd() != false) {
+                if (::sGame::getInstance()->::sGame::isFadeBlack() == false) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
 // Address: 0x0079c5a0 - 0x0079c5d2 (50 bytes)
@@ -2114,15 +2200,142 @@ u32 sGUIExt::requestGetJobChangeList(bool isForceUpdate) {
 }
 
 // Address: 0x007a0640 - 0x007a06e0 (160 bytes)
-__attribute__((weak)) u32 sGUIExt::requestGetCustomSkillParam(u32 job_id, bool isForceUpdate) {
-    DDON_STUB("sGUIExt::requestGetCustomSkillParam")
-    return {};
+u32 sGUIExt::requestGetCustomSkillParam(u32 job_id, bool isForceUpdate) {
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (((static_cast<unsigned long>(this->mNetMgr.mData.ReleasedJobBit) >> static_cast<unsigned long>(job_id & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+        if (isForceUpdate == false) {
+            if (this->mNetMgr.::cGUIExtNetMgr::isReceiveCustomSkillParam(job_id) == false) {
+                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                    } else {
+                        ::abort();
+                    }
+                }
+                this->mNetMgr.mReqData[1].Bit = static_cast<unsigned int>(static_cast<unsigned long>(this->mNetMgr.mReqData[1].Bit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31))));
+                this->mNetMgr.mReqData[1].IsRequest = true;
+                this->mNetMgr.mIsComplete = false;
+                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                    } else {
+                        ::abort();
+                    }
+                }
+                return static_cast<u32>(1);
+            } else {
+                return static_cast<u32>(0);
+            }
+        } else {
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                } else {
+                    ::abort();
+                }
+            }
+            this->mNetMgr.mReqData[1].Bit = static_cast<unsigned int>(static_cast<unsigned long>(this->mNetMgr.mReqData[1].Bit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31))));
+            this->mNetMgr.mReqData[1].IsRequest = true;
+            this->mNetMgr.mIsComplete = false;
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                } else {
+                    ::abort();
+                }
+            }
+            return static_cast<u32>(1);
+        }
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x007a06e0 - 0x007a07cb (235 bytes)
-__attribute__((weak)) u32 sGUIExt::requestGetAbilityParam(u32 job_id, bool isForceUpdate) {
-    DDON_STUB("sGUIExt::requestGetAbilityParam")
-    return {};
+u32 sGUIExt::requestGetAbilityParam(u32 job_id, bool isForceUpdate) {
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from sGUIExt*
+    if (job_id != static_cast<u32>(0)) {
+        if (((static_cast<unsigned long>(this->mNetMgr.mData.ReleasedJobBit) >> static_cast<unsigned long>(job_id & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+            if (isForceUpdate == false) {
+                if (((static_cast<unsigned long>(this->mNetMgr.mData.ReceiveAbilityParam) >> static_cast<unsigned long>(job_id & static_cast<u32>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                        } else {
+                            ::abort();
+                        }
+                    }
+                    this->mNetMgr.mReqData[2].Bit = static_cast<unsigned int>(static_cast<unsigned long>(this->mNetMgr.mReqData[2].Bit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31))));
+                    this->mNetMgr.mReqData[2].IsRequest = true;
+                    this->mNetMgr.mIsComplete = false;
+                    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                            ::abort();
+                        }
+                    }
+                    return static_cast<u32>(2);
+                } else {
+                    return static_cast<u32>(0);
+                }
+            } else {
+                if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                    } else {
+                        ::abort();
+                    }
+                }
+                this->mNetMgr.mReqData[2].Bit = static_cast<unsigned int>(static_cast<unsigned long>(this->mNetMgr.mReqData[2].Bit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31))));
+                this->mNetMgr.mReqData[2].IsRequest = true;
+                this->mNetMgr.mIsComplete = false;
+                if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                        ::abort();
+                    }
+                }
+                return static_cast<u32>(2);
+            }
+        } else {
+            return static_cast<u32>(0);
+        }
+    } else {
+        if (isForceUpdate == false) {
+            if (((static_cast<unsigned long>(this->mNetMgr.mData.ReceiveAbilityParam) >> static_cast<unsigned long>(job_id & static_cast<u32>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                    } else {
+                        ::abort();
+                    }
+                }
+                this->mNetMgr.mReqData[2].Bit = this->mNetMgr.mReqData[2].Bit | static_cast<u32>(2048);
+                this->mNetMgr.mReqData[2].IsRequest = true;
+                this->mNetMgr.mIsComplete = false;
+                if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                    } else {
+                        ::abort();
+                    }
+                }
+                return static_cast<u32>(2);
+            } else {
+                return static_cast<u32>(0);
+            }
+        } else {
+            if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                } else {
+                    ::abort();
+                }
+            }
+            this->mNetMgr.mReqData[2].Bit = this->mNetMgr.mReqData[2].Bit | static_cast<u32>(2048);
+            this->mNetMgr.mReqData[2].IsRequest = true;
+            this->mNetMgr.mIsComplete = false;
+            if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                } else {
+                    ::abort();
+                }
+            }
+            return static_cast<u32>(2);
+        }
+    }
 }
 
 // Address: 0x007a07d0 - 0x007a084b (123 bytes)
@@ -2252,9 +2465,52 @@ u32 sGUIExt::requestGetLearnedAbility(bool isForceUpdate) {
 }
 
 // Address: 0x007a0950 - 0x007a09e9 (153 bytes)
-__attribute__((weak)) u32 sGUIExt::requestGetSetCustomSkill(u32 job_id, bool isForceUpdate) {
-    DDON_STUB("sGUIExt::requestGetSetCustomSkill")
-    return {};
+u32 sGUIExt::requestGetSetCustomSkill(u32 job_id, bool isForceUpdate) {
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a path ending in a no-return import call; the code after it is compared path by path; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (((static_cast<unsigned long>(this->mNetMgr.mData.ReleasedJobBit) >> static_cast<unsigned long>(job_id & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+        if ((static_cast<unsigned long>(this->mNetMgr.mData.ReceiveSetCustomSkill) & (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31)))) != static_cast<unsigned long>(0)) {
+            if (isForceUpdate != false) {
+                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                    } else {
+                        ::abort();
+                    }
+                }
+                this->mNetMgr.mReqData[6].Bit = static_cast<unsigned int>(static_cast<unsigned long>(this->mNetMgr.mReqData[6].Bit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31))));
+                this->mNetMgr.mReqData[6].IsRequest = true;
+                this->mNetMgr.mIsComplete = false;
+                if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                    } else {
+                        ::abort();
+                    }
+                }
+                return static_cast<u32>(6);
+            } else {
+                return static_cast<u32>(0);
+            }
+        } else {
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                } else {
+                    ::abort();
+                }
+            }
+            this->mNetMgr.mReqData[6].Bit = static_cast<unsigned int>(static_cast<unsigned long>(this->mNetMgr.mReqData[6].Bit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31))));
+            this->mNetMgr.mReqData[6].IsRequest = true;
+            this->mNetMgr.mIsComplete = false;
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                } else {
+                    ::abort();
+                }
+            }
+            return static_cast<u32>(6);
+        }
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x007a09f0 - 0x007a0a6b (123 bytes)
@@ -2670,9 +2926,51 @@ u32 sGUIExt::requestGetPawnLearnedAbility(u32 pawn_id, bool isForceUpdate) {
 }
 
 // Address: 0x007a0f70 - 0x007a1020 (176 bytes)
-__attribute__((weak)) u32 sGUIExt::requestGetPawnSetCustomSkill(u32 pawn_id, u32 job_id, bool isForceUpdate) {
-    DDON_STUB("sGUIExt::requestGetPawnSetCustomSkill")
-    return {};
+u32 sGUIExt::requestGetPawnSetCustomSkill(u32 pawn_id, u32 job_id, bool isForceUpdate) {
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->::sGUIExt::checkPawnSkillReceiveId(pawn_id);
+    if (((static_cast<unsigned long>(this->mNetMgr.mData.ReceivePawnSetCustomSkill) >> static_cast<unsigned long>(job_id & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+        if (isForceUpdate != false) {
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                } else {
+                    ::abort();
+                }
+            }
+            this->mNetMgr.mReqData[17].Param = pawn_id;
+            this->mNetMgr.mReqData[17].Bit = static_cast<unsigned int>(static_cast<unsigned long>(this->mNetMgr.mReqData[17].Bit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31))));
+            this->mNetMgr.mReqData[17].IsRequest = true;
+            this->mNetMgr.mIsComplete = false;
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                } else {
+                    ::abort();
+                }
+            }
+            return static_cast<u32>(17);
+        } else {
+            return static_cast<u32>(0);
+        }
+    } else {
+        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+            } else {
+                ::abort();
+            }
+        }
+        this->mNetMgr.mReqData[17].Param = pawn_id;
+        this->mNetMgr.mReqData[17].Bit = static_cast<unsigned int>(static_cast<unsigned long>(this->mNetMgr.mReqData[17].Bit) | (static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(job_id) & static_cast<unsigned char>(31))));
+        this->mNetMgr.mReqData[17].IsRequest = true;
+        this->mNetMgr.mIsComplete = false;
+        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+            } else {
+                ::abort();
+            }
+        }
+        return static_cast<u32>(17);
+    }
 }
 
 // Address: 0x007a1020 - 0x007a10ae (142 bytes)
@@ -2909,10 +3207,19 @@ __attribute__((weak)) void sGUIExt::getMargeJobChangeList(u32 pawn_id, JobChange
 // const cGUIExtNetMgr::BasicAbilityInfo& sGUIExt::getAbilityParam(u32 abilityId);
 
 // Address: 0x007a1580 - 0x007a15a7 (39 bytes)
-__attribute__((weak)) bool sGUIExt::isPawnDisableAbility(u32 abilityId) {
-    // local: u32 i;
-    DDON_STUB("sGUIExt::isPawnDisableAbility")
-    return {};
+bool sGUIExt::isPawnDisableAbility(u32 abilityId) {
+    // Approximate from the ELF: a pointer stepped beside a counter; the body oracle reports this body.
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    unsigned short* p3 = &this->mNetMgr.mData.PawnDisableAbility[0];
+    do {
+        if ((*p3) == abilityId) {
+            return true;
+        }
+        i += static_cast<u32>(1);
+        p3 += static_cast<int>(1);
+    } while (i <= static_cast<u32>(47));
+    return false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (21 bytes)
@@ -3021,22 +3328,58 @@ __attribute__((weak)) bool sGUIExt::isPawnDisableAbility(u32 abilityId) {
 // u32 sGUIExt::getPawnAbilityCost();
 
 // Address: 0x007a1760 - 0x007a1793 (51 bytes)
-__attribute__((weak)) bool sGUIExt::isLearnedNormalSkill(const NormalSkillParamVec& list, u32 job_id, u32 index) {
-    // local: const CNormalSkillParam* pParam;
-    // local: u32 i;
-    DDON_STUB("sGUIExt::isLearnedNormalSkill")
-    return {};
+bool sGUIExt::isLearnedNormalSkill(const NormalSkillParamVec& list, u32 job_id, u32 index) {
+    // DWARF local not rendered: const CNormalSkillParam* pParam;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
+    if (list.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x7a1760, 0x7a1790)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (list.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.::MtArray::mpArray[i]) + static_cast<long>(8))) == job_id) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(list.::MtArray::mpArray[i]) + static_cast<long>(16))) != index) {
+                    } else {
+                        return true;
+                    }
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < list.::MtArray::mLength);
+    }
+    return false;
 }
 
 // No out-of-line body: no code in the ELF
 // u32 sGUIExt::getLearnedAcquirementLevel(const LearnedAcquirementParamVec& list, u32 job_id, u32 id);
 
 // Address: 0x007a17b0 - 0x007a17f5 (69 bytes)
-__attribute__((weak)) const CSkillLevelParam* sGUIExt::getCustomSkillLevelParam(const SkillLevelParamVec& list, u32 lv) {
-    // local: const CSkillLevelParam* pParam;
-    // local: u32 i;
-    DDON_STUB("sGUIExt::getCustomSkillLevelParam")
-    return nullptr;
+const CSkillLevelParam* sGUIExt::getCustomSkillLevelParam(const SkillLevelParamVec& list, u32 lv) {
+    // DWARF local not rendered: const CSkillLevelParam* pParam;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x14 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from MtObject*
+    if (lv == static_cast<u32>(0)) {
+        return static_cast<const CSkillLevelParam*>(nullptr);
+    }
+    if (list.::MtArray::mLength == static_cast<u32>(0)) {
+        return static_cast<const CSkillLevelParam*>(nullptr);
+    }
+    // inferred: DWARF's location-less 'i' (lexical block [0x7a17b6, 0x7a17f4)) is the counter this loop steps
+    u32 i = static_cast<u32>(0);
+    do {
+        if (list.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.::MtArray::mpArray[i]) + static_cast<long>(20))) != static_cast<unsigned char>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.::MtArray::mpArray[i]) + static_cast<long>(8))) != lv) {
+                } else {
+                    return static_cast<const CSkillLevelParam*>(list.::MtArray::mpArray[i]);
+                }
+            }
+        }
+        i += static_cast<u32>(1);
+    } while (i < list.::MtArray::mLength);
+    return static_cast<const CSkillLevelParam*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -3100,11 +3443,26 @@ __attribute__((weak)) void sGUIExt::clearJobOrbTreeInfo() {
 }
 
 // Address: 0x007a18c0 - 0x007a18f3 (51 bytes)
-__attribute__((weak)) const CJobOrbTreeStatus* sGUIExt::getJobOrbTreeInfo(u8 job_id) {
-    // local: u32 i;
-    // local: const CJobOrbTreeStatus& info;
-    DDON_STUB("sGUIExt::getJobOrbTreeInfo")
-    return nullptr;
+const CJobOrbTreeStatus* sGUIExt::getJobOrbTreeInfo(u8 job_id) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const CJobOrbTreeStatus& info;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x7a18d0 carries; no location-less local in scope fits
+    u8* v0_0 = &this->mJobOrbTreeInfoList[0].m_ucJobID;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+        if ((*v0_0) == job_id) {
+            return &this->mJobOrbTreeInfoList[i0_1];
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(9)) {
+                v0_0 += static_cast<int>(16);
+                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return static_cast<const CJobOrbTreeStatus*>(nullptr);
 }
 
 // Address: 0x007a1900 - 0x007a192c (44 bytes)
@@ -3202,32 +3560,215 @@ __attribute__((weak)) rTexture* sGUIExt::getCaplinkIcon(u32 index) {
 }
 
 // Address: 0x007a1d60 - 0x007a1e17 (183 bytes)
-__attribute__((weak)) void sGUIExt::setCaplinkIcon(void* ppng, size_t size, s32 id) {
-    // local: u32 i;
-    // local: cTexturePNG* pTex;
-    DDON_STUB("sGUIExt::setCaplinkIcon")
-    /* stub */
+void sGUIExt::setCaplinkIcon(void* ppng, size_t size, s32 id) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cTexturePNG* pTex;
+    // Approximate from the ELF: a cast to the other signedness; a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: the value the loop at 0x7a1dd0 carries; no location-less local in scope fits
+    u32 v0_0;
+    // inferred: the value the loop at 0x7a1dd0 carries; no location-less local in scope fits
+    MtObject* * v0_1;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_2;
+    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+            ::abort();
+            return;
+        }
+        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                ::abort();
+                return;
+            }
+            v0_0 = this->mCaplinkIcon.::MtArray::mLength;
+            if (v0_0 != static_cast<u32>(0)) {
+                v0_1 = this->mCaplinkIcon.::MtArray::getBuffer();
+                i0_2 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        } else {
+            v0_0 = this->mCaplinkIcon.::MtArray::mLength;
+            if (v0_0 != static_cast<u32>(0)) {
+                v0_1 = this->mCaplinkIcon.::MtArray::getBuffer();
+                i0_2 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        }
+    } else {
+        v0_0 = this->mCaplinkIcon.::MtArray::mLength;
+        if (v0_0 != static_cast<u32>(0)) {
+            v0_1 = this->mCaplinkIcon.::MtArray::getBuffer();
+            i0_2 = static_cast<unsigned int>(0);
+        } else {
+            return;
+        }
+    }
+    for (;;) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(280))) == static_cast<unsigned int>(id)) {
+            static_cast<cTexturePNG*>(v0_1[static_cast<int>(i0_2)])->::cTexturePNG::set(ppng, size);
+            return;
+        } else {
+            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
 // void sGUIExt::loadCaplinkIcon();
 
 // Address: 0x007a1e30 - 0x007a1ed5 (165 bytes)
-__attribute__((weak)) void sGUIExt::loadCaplinkProfileIcon() {
-    // local: const MtTypedArray<cIconUrl>& list;
-    // local: u32 i;
-    // local: const cIconUrl* pUrl;
-    DDON_STUB("sGUIExt::loadCaplinkProfileIcon")
-    /* stub */
+void sGUIExt::loadCaplinkProfileIcon() {
+    // DWARF local not rendered: const MtTypedArray<cIconUrl>& list;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cIconUrl* pUrl;
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x7a1e90 carries; no location-less local in scope fits
+    u32 v0_0;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_3;
+    // inferred: the value the loop at 0x7a1e90 carries; no location-less local in scope fits
+    sCaplinkManager* v0_8;
+    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+            ::abort();
+            return;
+        }
+        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                ::abort();
+                return;
+            }
+            v0_8 = ::sCaplinkManager::getInstance();
+            if (v0_8->mIconUrl.::MtArray::mLength != static_cast<u32>(0)) {
+                v0_0 = v0_8->mIconUrl.::MtArray::mLength;
+                i0_3 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        } else {
+            v0_8 = ::sCaplinkManager::getInstance();
+            if (v0_8->mIconUrl.::MtArray::mLength != static_cast<u32>(0)) {
+                v0_0 = v0_8->mIconUrl.::MtArray::mLength;
+                i0_3 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        }
+    } else {
+        v0_8 = ::sCaplinkManager::getInstance();
+        if (v0_8->mIconUrl.::MtArray::mLength != static_cast<u32>(0)) {
+            v0_0 = v0_8->mIconUrl.::MtArray::mLength;
+            i0_3 = static_cast<unsigned int>(0);
+        } else {
+            return;
+        }
+    }
+    for (;;) {
+        if (v0_8->mIconUrl.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_8->mIconUrl.::MtArray::mpArray[i0_3]) + static_cast<long>(276))) == static_cast<unsigned short>(6)) {
+                this->::sGUIExt::getCaplinkIcon(i0_3);
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mIconUrl.::MtArray::mLength) {
+                    v0_0 = v0_8->mIconUrl.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        } else {
+            if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_3 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x007a1ee0 - 0x007a1f85 (165 bytes)
-__attribute__((weak)) void sGUIExt::loadCaplinkTrophyIcon() {
-    // local: const MtTypedArray<cIconUrl>& list;
-    // local: u32 i;
-    // local: const cIconUrl* pUrl;
-    DDON_STUB("sGUIExt::loadCaplinkTrophyIcon")
-    /* stub */
+void sGUIExt::loadCaplinkTrophyIcon() {
+    // DWARF local not rendered: const MtTypedArray<cIconUrl>& list;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cIconUrl* pUrl;
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x7a1f40 carries; no location-less local in scope fits
+    u32 v0_0;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_3;
+    // inferred: the value the loop at 0x7a1f40 carries; no location-less local in scope fits
+    sCaplinkManager* v0_8;
+    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+            ::abort();
+            return;
+        }
+        if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                ::abort();
+                return;
+            }
+            v0_8 = ::sCaplinkManager::getInstance();
+            if (v0_8->mIconUrl.::MtArray::mLength != static_cast<u32>(0)) {
+                v0_0 = v0_8->mIconUrl.::MtArray::mLength;
+                i0_3 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        } else {
+            v0_8 = ::sCaplinkManager::getInstance();
+            if (v0_8->mIconUrl.::MtArray::mLength != static_cast<u32>(0)) {
+                v0_0 = v0_8->mIconUrl.::MtArray::mLength;
+                i0_3 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        }
+    } else {
+        v0_8 = ::sCaplinkManager::getInstance();
+        if (v0_8->mIconUrl.::MtArray::mLength != static_cast<u32>(0)) {
+            v0_0 = v0_8->mIconUrl.::MtArray::mLength;
+            i0_3 = static_cast<unsigned int>(0);
+        } else {
+            return;
+        }
+    }
+    for (;;) {
+        if (v0_8->mIconUrl.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_8->mIconUrl.::MtArray::mpArray[i0_3]) + static_cast<long>(278))) == static_cast<unsigned short>(81)) {
+                this->::sGUIExt::getCaplinkIcon(i0_3);
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_8->mIconUrl.::MtArray::mLength) {
+                    v0_0 = v0_8->mIconUrl.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        } else {
+            if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_3 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x007a1f90 - 0x007a2066 (214 bytes)
@@ -3380,10 +3921,23 @@ __attribute__((weak)) void sGUIExt::getTargetCursorOffsetFromResource(u32 type, 
 // u32 sGUIExt::convertDecToHex(u32 dec);
 
 // Address: 0x00797e00 - 0x00797e46 (70 bytes)
-__attribute__((weak)) MT_CTSTR sGUIExt::getMsgFromIdxInfo(const rGUIMessage* pMsg, u32 uIdxId) {
-    // local: const INDEX* pIndex;
-    DDON_STUB("sGUIExt::getMsgFromIdxInfo")
-    return {};
+MT_CTSTR sGUIExt::getMsgFromIdxInfo(const rGUIMessage* pMsg, u32 uIdxId) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    if (uIdxId != static_cast<u32>(4294967295)) {
+        if (pMsg != static_cast<const rGUIMessage*>(nullptr)) {
+            const rGUIMessage::INDEX* pIndex = pMsg->::rGUIMessage::getIndex(uIdxId);
+            if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+                return pMsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+            } else {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
 }
 
 // Address: 0x007a37b0 - 0x007a3867 (183 bytes)
@@ -3431,20 +3985,51 @@ MT_CTSTR sGUIExt::getEnemyNameFromGroupId(u32 enemy_group_id) {
 }
 
 // Address: 0x007a3bd0 - 0x007a3c13 (67 bytes)
-__attribute__((weak)) MT_CTSTR sGUIExt::getMsgTmpMessageCtgrMessage(u32 uCtgr) {
-    // local: rGUIMessage* pMsg;
-    // local: const INDEX* pIndex;
-    DDON_STUB("sGUIExt::getMsgTmpMessageCtgrMessage")
-    return {};
+MT_CTSTR sGUIExt::getMsgTmpMessageCtgrMessage(u32 uCtgr) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    rGUIMessage* pMsg = this->::sGUIExt::getMsgTmpMsgCtgr();
+    if (pMsg != static_cast<rGUIMessage*>(nullptr)) {
+        const rGUIMessage::INDEX* pIndex = pMsg->::rGUIMessage::getIndex(uCtgr);
+        if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+            return pMsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
 }
 
 // Address: 0x007a3c20 - 0x007a3c85 (101 bytes)
-__attribute__((weak)) MT_CTSTR sGUIExt::getMsgTmpMessage(u32 uCtgr, u32 uId, bool bUseId2) {
-    // local: rGUIMessage* pMsg;
-    // local: u32 uMsgId;
-    // local: const INDEX* pIndex;
-    DDON_STUB("sGUIExt::getMsgTmpMessage")
-    return {};
+MT_CTSTR sGUIExt::getMsgTmpMessage(u32 uCtgr, u32 uId, bool bUseId2) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    rGUIMessage* pMsg = this->::sGUIExt::getMsgTmpMsg();
+    if (pMsg != static_cast<rGUIMessage*>(nullptr)) {
+        if (this->mpTblMenuCommTmpMessage != static_cast<rTblMenuComm*>(nullptr)) {
+            u32 uMsgId = this->mpTblMenuCommTmpMessage->::rTblMenuComm::getMsgId(uCtgr, uId, bUseId2);
+            if (uMsgId != static_cast<u32>(4294967295)) {
+                const rGUIMessage::INDEX* pIndex = pMsg->::rGUIMessage::getIndex(uMsgId);
+                if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+                    return pMsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        } else {
+            const rGUIMessage::INDEX* pIndex = pMsg->::rGUIMessage::getIndex(uId);
+            if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+                return pMsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+            } else {
+                return "";
+            }
+        }
+    } else {
+        return "";
+    }
 }
 
 // Address: 0x007a3c90 - 0x007a3ca7 (23 bytes)
@@ -3529,11 +4114,20 @@ __attribute__((weak)) bool sGUIExt::isEnableRimWarpDecide(bool isPermitLargePart
 // bool sGUIExt::checkReleasedEmotionFromCategoryIndex(u32 category, u32 index);
 
 // Address: 0x007a3d50 - 0x007a3d93 (67 bytes)
-__attribute__((weak)) MT_CTSTR sGUIExt::getMsgEmotionCtgrMessage(u32 uCtgr) {
-    // local: rGUIMessage* pMsg;
-    // local: const INDEX* pIndex;
-    DDON_STUB("sGUIExt::getMsgEmotionCtgrMessage")
-    return {};
+MT_CTSTR sGUIExt::getMsgEmotionCtgrMessage(u32 uCtgr) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    rGUIMessage* pMsg = this->::sGUIExt::getMsgEmotionCtgr();
+    if (pMsg != static_cast<rGUIMessage*>(nullptr)) {
+        const rGUIMessage::INDEX* pIndex = pMsg->::rGUIMessage::getIndex(uCtgr);
+        if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+            return pMsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
 }
 
 // Address: 0x007a3da0 - 0x007a3dd6 (54 bytes)
@@ -3549,11 +4143,33 @@ MT_CTSTR sGUIExt::getMsgEmotionMessageFromIndex(u32 CategoryId, u32 MenuIdx) {
 
 // Address: 0x007a3df0 - 0x007a3e54 (100 bytes)
 __attribute__((weak)) MT_CTSTR sGUIExt::getMsgEmotionMessage(u32 CategoryId, u32 ResourceIdx) {
-    // local: rGUIMessage* pmsg;
-    // local: u32 msgid;
-    // local: const INDEX* pguiindex;
-    DDON_STUB("sGUIExt::getMsgEmotionMessage")
-    return {};
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    rGUIMessage* pmsg = this->::sGUIExt::getMsgEmotion();
+    if (pmsg != static_cast<rGUIMessage*>(nullptr)) {
+        if (this->mpTblMenuCommEmotion != static_cast<rTblMenuComm*>(nullptr)) {
+            u32 msgid = this->mpTblMenuCommEmotion->::rTblMenuComm::getMsgId(CategoryId, ResourceIdx, false);
+            if (msgid != static_cast<u32>(4294967295)) {
+                const rGUIMessage::INDEX* pguiindex = pmsg->::rGUIMessage::getIndex(msgid);
+                if (pguiindex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+                    return pmsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pguiindex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        } else {
+            const rGUIMessage::INDEX* pguiindex = pmsg->::rGUIMessage::getIndex(ResourceIdx);
+            if (pguiindex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+                return pmsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pguiindex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+            } else {
+                return "";
+            }
+        }
+    } else {
+        return "";
+    }
 }
 
 // Address: 0x007a3eb0 - 0x007a3efc (76 bytes)
@@ -3570,12 +4186,36 @@ u32 sGUIExt::getEmotionIdx(u32 uCtgr, u32 uIndex) {
 }
 
 // Address: 0x007a3f00 - 0x007a3f75 (117 bytes)
-__attribute__((weak)) u32 sGUIExt::getEmotionResIdxFromEmotionIdx(u32 uCtgr, u32 uEmotionIdx) {
-    // local: u32 uMax;
-    // local: u32 i;
-    // local: u32 emotionIdx;
-    DDON_STUB("sGUIExt::getEmotionResIdxFromEmotionIdx")
-    return {};
+u32 sGUIExt::getEmotionResIdxFromEmotionIdx(u32 uCtgr, u32 uEmotionIdx) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 emotionIdx;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x7a3f66; no location-less local in scope fits
+    unsigned int v2_0;
+    if (this->mpTblMenuCommEmotion == static_cast<rTblMenuComm*>(nullptr)) {
+        v2_0 = static_cast<unsigned int>(0);
+    } else {
+        u32 uMax = this->mpTblMenuCommEmotion->::rTblMenuComm::getMsgNum(uCtgr);
+        if (uMax == static_cast<u32>(0)) {
+            v2_0 = static_cast<unsigned int>(0);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_10 = static_cast<unsigned int>(0);;) {
+                if (uEmotionIdx != this->mpTblMenuCommEmotion->::rTblMenuComm::getVoiceId(uCtgr, i0_10)) {
+                    if ((i0_10 + static_cast<unsigned int>(1)) < uMax) {
+                        i0_10 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    v2_0 = i0_10;
+                    return v2_0;
+                }
+            }
+            v2_0 = static_cast<unsigned int>(0);
+        }
+    }
+    return v2_0;
 }
 
 // No out-of-line body: no code in the ELF
@@ -3734,20 +4374,51 @@ __attribute__((weak)) void sGUIExt::setupRatingInfo() {
 }
 
 // Address: 0x007a4740 - 0x007a4783 (67 bytes)
-__attribute__((weak)) MT_CTSTR sGUIExt::getMsgPawnOrderCtgrMessage(u32 uCtgr) {
-    // local: rGUIMessage* pMsg;
-    // local: const INDEX* pIndex;
-    DDON_STUB("sGUIExt::getMsgPawnOrderCtgrMessage")
-    return {};
+MT_CTSTR sGUIExt::getMsgPawnOrderCtgrMessage(u32 uCtgr) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    rGUIMessage* pMsg = this->::sGUIExt::getMsgPawnOrderCtgr();
+    if (pMsg != static_cast<rGUIMessage*>(nullptr)) {
+        const rGUIMessage::INDEX* pIndex = pMsg->::rGUIMessage::getIndex(uCtgr);
+        if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+            return pMsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+        } else {
+            return "";
+        }
+    } else {
+        return "";
+    }
 }
 
 // Address: 0x007a4790 - 0x007a47f4 (100 bytes)
-__attribute__((weak)) MT_CTSTR sGUIExt::getMsgPawnOrderMessage(u32 uCtgr, u32 uId) {
-    // local: rGUIMessage* pMsg;
-    // local: u32 uMsgId;
-    // local: const INDEX* pIndex;
-    DDON_STUB("sGUIExt::getMsgPawnOrderMessage")
-    return {};
+MT_CTSTR sGUIExt::getMsgPawnOrderMessage(u32 uCtgr, u32 uId) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const rGUIMessage::INDEX*
+    rGUIMessage* pMsg = this->::sGUIExt::getMsgPawnOrder();
+    if (pMsg != static_cast<rGUIMessage*>(nullptr)) {
+        if (this->mpTblMenuCommPawnOrder != static_cast<rTblMenuComm*>(nullptr)) {
+            u32 uMsgId = this->mpTblMenuCommPawnOrder->::rTblMenuComm::getMsgId(uCtgr, uId, false);
+            if (uMsgId != static_cast<u32>(4294967295)) {
+                const rGUIMessage::INDEX* pIndex = pMsg->::rGUIMessage::getIndex(uMsgId);
+                if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+                    return pMsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+                } else {
+                    return "";
+                }
+            } else {
+                return "";
+            }
+        } else {
+            const rGUIMessage::INDEX* pIndex = pMsg->::rGUIMessage::getIndex(uId);
+            if (pIndex != static_cast<const rGUIMessage::INDEX*>(nullptr)) {
+                return pMsg->::rGUIMessage::getMessage((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(pIndex) + static_cast<long>(0))) & static_cast<unsigned int>(2147483647));
+            } else {
+                return "";
+            }
+        }
+    } else {
+        return "";
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (145 bytes)
@@ -5649,9 +6320,33 @@ s32 sGUIExt::getSystemMsgChoicePos(s32 sPage) {
 // void sGUIExt::setSystemMsgDefaultChoicePos(s32 sDefaultChoicePos, s32 sPage);
 
 // Address: 0x007aa680 - 0x007aa6f5 (117 bytes)
-__attribute__((weak)) void sGUIExt::exitSystemMsg() {
-    DDON_STUB("sGUIExt::exitSystemMsg")
-    /* stub */
+void sGUIExt::exitSystemMsg() {
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from sGUIExt*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x2270 from uGUISystemMsg*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x800 from uGUISystemMsg*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x808 from uGUISystemMsg*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x2278 from uGUISystemMsg*
+    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+        } else {
+            ::abort();
+        }
+    }
+    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpGUISystemMsg) + static_cast<long>(8816))) != static_cast<unsigned long>(0)) {
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpGUISystemMsg) + static_cast<long>(2048)) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpGUISystemMsg) + static_cast<long>(8816));
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpGUISystemMsg) + static_cast<long>(2056)) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mpGUISystemMsg) + static_cast<long>(8824));
+        }
+    }
+    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) == static_cast<unsigned long>(0)) {
+        return;
+    }
+    if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+    } else {
+        ::abort();
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -6701,10 +7396,44 @@ u32 sGUIExt::getMapModeMini() {
 // bool sGUIExt::isMapVisibleMask();
 
 // Address: 0x007aca00 - 0x007acaaf (175 bytes)
-__attribute__((weak)) void sGUIExt::setMapMapType(u32 uType, u32 uTargetStage) {
-    // local: u32 fieldId;
-    DDON_STUB("sGUIExt::setMapMapType")
-    /* stub */
+void sGUIExt::setMapMapType(u32 uType, u32 uTargetStage) {
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from sGUIExt*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: bool used as u32
+    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+        } else {
+            ::abort();
+        }
+    }
+    if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
+        if (uType == static_cast<u32>(1)) {
+            this->mMap.mMapType = static_cast<u32>(static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isField() == false);
+        } else {
+            this->mMap.mMapType = uType;
+        }
+    } else {
+        this->mMap.mMapType = uType;
+    }
+    if (::sMarker::getInstance() != static_cast<sMarker*>(nullptr)) {
+        u32 fieldId = ::sMarker::getInstance()->::sMarker::getFieldAreaIdFromBelongStage(static_cast<s32>(uTargetStage));
+        this->mMap.mTargetStage = static_cast<u32>(::sMarker::getInstance()->::sMarker::getStageNoFromFieldAreaId(fieldId, uTargetStage));
+        if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+            } else {
+                ::abort();
+            }
+        }
+    } else {
+        this->mMap.mTargetStage = uTargetStage;
+        if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+            if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+            } else {
+                ::abort();
+            }
+        }
+    }
 }
 
 // Address: 0x007acab0 - 0x007acc1b (363 bytes)
@@ -7106,9 +7835,31 @@ __attribute__((weak)) void sGUIExt::setupBrowserDrawByLoadingState() {
 }
 
 // Address: 0x007ab5a0 - 0x007ab604 (100 bytes)
-__attribute__((weak)) bool sGUIExt::isBrowserInputEnable() {
-    DDON_STUB("sGUIExt::isBrowserInputEnable")
-    return {};
+bool sGUIExt::isBrowserInputEnable() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if ((this->mMenuUIF & static_cast<u32>(20)) != static_cast<u32>(0)) {
+        return false;
+    } else {
+        if (::sArea::getInstance() != static_cast<sArea*>(nullptr)) {
+            if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isAreaLoading() != false) {
+                return false;
+            }
+        }
+        if (::sGame::getInstance() != static_cast<sGame*>(nullptr)) {
+            if (::sGame::getInstance()->::sGame::isFadeEnd() != false) {
+                if (::sGame::getInstance()->::sGame::isFadeBlack() != false) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 }
 
 // Address: 0x007aba80 - 0x007abaa0 (32 bytes)
@@ -7158,9 +7909,33 @@ void sGUIExt::exitEventBanner() {
 }
 
 // Address: 0x007abf00 - 0x007abf7d (125 bytes)
-__attribute__((weak)) void sGUIExt::setActiveEventBanner(bool IsActive) {
-    DDON_STUB("sGUIExt::setActiveEventBanner")
-    /* stub */
+void sGUIExt::setActiveEventBanner(bool IsActive) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x13 from sBrowser*
+    if (this->mpGUIBrowserBG != static_cast<uGUIBrowserBG*>(nullptr)) {
+        this->mpGUIBrowserBG->::uGUIBase::setWindowActive(IsActive);
+        this->mpGUIBrowserBG->mIsKeyOff = IsActive == false;
+        this->mpGUIBrowserBG->replacePriority(static_cast<u32>(static_cast<unsigned long>(IsActive) | static_cast<unsigned long>(10)));
+        this->mIsBrowserExec = IsActive;
+        this->mIsActiveEventBanner = this->mIsBrowserExec;
+        // inferred: a temporary for the value the load at 0x7abf60 read, used twice; no DWARF local holds it
+        sBrowser* t0 = ::sBrowser::getInstance();
+        if (IsActive != false) {
+            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + static_cast<long>(19)) = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + static_cast<long>(19))) & static_cast<unsigned short>(64511);
+        }
+        t0->mIsInputEnable = IsActive;
+    } else {
+        this->mIsBrowserExec = IsActive;
+        this->mIsActiveEventBanner = this->mIsBrowserExec;
+        // inferred: a temporary for the value the load at 0x7abf60 read, used twice; no DWARF local holds it
+        sBrowser* t0 = ::sBrowser::getInstance();
+        if (IsActive != false) {
+            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + static_cast<long>(19)) = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + static_cast<long>(19))) & static_cast<unsigned short>(64511);
+        }
+        t0->mIsInputEnable = IsActive;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -7752,10 +8527,19 @@ __attribute__((weak)) void sGUIExt::sortPrioHandleDistCam(u32 uPrioGrp) {
 }
 
 // Address: 0x007a2a00 - 0x007a2a20 (32 bytes)
-__attribute__((weak)) bool sGUIExt::isHighResolution() {
-    // local: const s32 high_resolution_width;
-    DDON_STUB("sGUIExt::isHighResolution")
-    return {};
+bool sGUIExt::isHighResolution() {
+    // DWARF local not rendered: const s32 high_resolution_width;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (::sRender::getInstance() != static_cast<sRender*>(nullptr)) {
+        if (::sRender::getInstance()->mScreenSize.w <= static_cast<s32>(1679)) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x007a33c0 - 0x007a350a (330 bytes)
@@ -7809,9 +8593,18 @@ __attribute__((weak)) nCharacterEdit::EDIT_NAME_CHECK sGUIExt::checkEditNameType
 // bool sGUIExt::isLobbyWarpRequest();
 
 // Address: 0x007a7400 - 0x007a7435 (53 bytes)
-__attribute__((weak)) bool sGUIExt::isLobbyWarpRequest(s32 stage_no) {
-    DDON_STUB("sGUIExt::isLobbyWarpRequest")
-    return {};
+bool sGUIExt::isLobbyWarpRequest(s32 stage_no) {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() != false) {
+        if (::sGame::getInstance()->mStageNo != stage_no) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x007ae2e0 - 0x007ae4b8 (472 bytes)
@@ -8478,9 +9271,11 @@ __attribute__((weak)) void sGUIExt::cChat::bootup() {
 // s32 sGUIExt::cChat::getChatArea();
 
 // Address: 0x007b2540 - 0x007b2554 (20 bytes)
-__attribute__((weak)) void sGUIExt::cChat::setChatArea(s32 chatArea) {
-    DDON_STUB("sGUIExt::cChat::setChatArea")
-    /* stub */
+void sGUIExt::cChat::setChatArea(s32 chatArea) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1e588 from sChat*
+    this->mChatArea = chatArea;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sChat::getInstance()) + static_cast<long>(124296)) = static_cast<unsigned int>(chatArea);
 }
 
 // Address: 0x007b2560 - 0x007b257c (28 bytes)
@@ -8783,10 +9578,19 @@ __attribute__((weak)) rTexture* sGUIExt::cDivItemIcon::getItemIconTex(u32 uIconN
 }
 
 // Address: 0x007bb0b0 - 0x007bb0e1 (49 bytes)
-__attribute__((weak)) void sGUIExt::cDivItemIcon::releaseItemIconTex(u32 uIconNo, u32& uIdx) {
-    // local: cItemIcon& icon;
-    DDON_STUB("sGUIExt::cDivItemIcon::releaseItemIconTex")
-    /* stub */
+void sGUIExt::cDivItemIcon::releaseItemIconTex(u32 uIconNo, u32& uIdx) {
+    // DWARF local not rendered: cItemIcon& icon;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if ((uIdx) <= static_cast<unsigned int>(127)) {
+        if (this->mItemIcon[uIdx].mEnable != false) {
+            if (this->mItemIcon[uIdx].mIconNo == uIconNo) {
+                if (this->mItemIcon[uIdx].mRefCount != static_cast<u8>(0)) {
+                    this->mItemIcon[uIdx].mRefCount = static_cast<unsigned char>(this->mItemIcon[uIdx].mRefCount + static_cast<int>(255));
+                }
+            }
+        }
+    }
+    uIdx = static_cast<unsigned int>(128);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (10 bytes)
@@ -9540,9 +10344,9 @@ __attribute__((weak)) MtVector3 sGUIExt::cMap::getPosPLFreeMarker(u32 idx) {
 }
 
 // Address: 0x007b9980 - 0x007b99c4 (68 bytes)
-__attribute__((weak)) void sGUIExt::cMap::setPosPLFreeMarker(const MtVector3& vPos, u32 idx) {
-    DDON_STUB("sGUIExt::cMap::setPosPLFreeMarker")
-    /* stub */
+void sGUIExt::cMap::setPosPLFreeMarker(const MtVector3& vPos, u32 idx) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mPosPLFreeMarker[(idx <= static_cast<u32>(2)) ? idx : static_cast<u32>(0)] = vPos;
 }
 
 // Address: 0x007b99d0 - 0x007b99e3 (19 bytes)
@@ -9620,9 +10424,22 @@ __attribute__((weak)) bool sGUIExt::cMap::addMarkerSave(sGUIExt::cMap::cMarkerSa
 }
 
 // Address: 0x007ba630 - 0x007ba665 (53 bytes)
-__attribute__((weak)) void sGUIExt::cMap::actionMarkerSaveByIndex(u32 Idx) {
-    DDON_STUB("sGUIExt::cMap::actionMarkerSaveByIndex")
-    /* stub */
+void sGUIExt::cMap::actionMarkerSaveByIndex(u32 Idx) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from sGUIExt::cMap*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x40 from sGUIExt::cMap*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x40 from unsigned long
+    if (Idx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48)))) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64))) + static_cast<unsigned long>(Idx * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(52))) == static_cast<unsigned int>(0)) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64))) + static_cast<unsigned long>(Idx * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(52)) = static_cast<unsigned int>(1);
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64))) + static_cast<unsigned long>(Idx * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(64))) > static_cast<int>(0)) {
+                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(static_cast<u32>(0), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64))) + static_cast<unsigned long>(Idx * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(64)));
+            }
+        }
+    }
 }
 
 // Address: 0x007ba680 - 0x007ba692 (18 bytes)
@@ -9885,8 +10702,20 @@ inline void sGUIExt::cMap::cMarkerSave::operator delete(void* p_addr) {
 
 // Address: 0x007ba800 - 0x007ba862 (98 bytes)
 sGUIExt::cMap::cMarkerSave::cMarkerSave() {
-    DDON_STUB("sGUIExt::cMap::cMarkerSave::cMarkerSave")
-    /* stub */
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1c from sGUIExt::cMap::cMarkerSave*
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mMode = static_cast<u32>(0);
+    this->mIcon = static_cast<u32>(0);
+    this->mHeight = 0.0f;
+    this->mID = static_cast<u32>(0);
+    this->mEndTime = 0.0f;
+    this->mRange = 0.0f;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(28)) = static_cast<unsigned long>(0);
+    this->mMarkerType = static_cast<s32>(-1);
+    this->mSE_ID = static_cast<s32>(-1);
 }
 
 // Address: 0x007ba870 - 0x007ba871 (1 bytes)
@@ -9909,9 +10738,9 @@ sGUIExt::cMap::cMarkerSave::~cMarkerSave() {
 // sGUIExt::cMap::cMarkerSave::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x0078a930 - 0x0078a9c3 (147 bytes)
-__attribute__((weak)) MtObject* sGUIExt::cMap::cMarkerSave::MyDTI::newInstance() const {
-    DDON_STUB("sGUIExt::cMap::cMarkerSave::MyDTI::newInstance")
-    return nullptr;
+MtObject* sGUIExt::cMap::cMarkerSave::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::sGUIExt::cMap::cMarkerSave;
 }
 
 // No out-of-line body: no code in the ELF
@@ -11619,10 +12448,20 @@ MtObject* sGUIExt::cItemTmp::MyDTI::newInstance() const {
 // bool sGUIExt::cDialog::createDialog(MT_CTSTR msg, s32 cancelPos, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4);
 
 // Address: 0x007bda10 - 0x007bda5e (78 bytes)
-__attribute__((weak)) s32 sGUIExt::cDialog::getDialogPos() {
-    // local: s32 pos;
-    DDON_STUB("sGUIExt::cDialog::getDialogPos")
-    return {};
+s32 sGUIExt::cDialog::getDialogPos() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x460 from uGUISystemMsg*
+    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpGUISystemMsg) + static_cast<long>(1120))) == static_cast<unsigned int>(1)) {
+            s32 pos = this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(static_cast<s32>(-1));
+            if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+                this->mpGUISystemMsg->kill();
+                this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+            }
+            return pos;
+        }
+    }
+    return static_cast<s32>(-1);
 }
 
 // No out-of-line body: no code in the ELF

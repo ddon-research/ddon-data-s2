@@ -124,9 +124,24 @@ __attribute__((weak)) void uGUIMapMini::draw(cDraw* pDraw) {
 }
 
 // Address: 0x00b78430 - 0x00b784cc (156 bytes)
-__attribute__((weak)) void uGUIMapMini::updateInit() {
-    DDON_STUB("uGUIMapMini::updateInit")
-    /* stub */
+void uGUIMapMini::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpCtrlSize != static_cast<cControl*>(nullptr)) {
+        this->mpCtrlSize->setFocus(true);
+    }
+    if (this->::uGUIMap::mpCtrlZoom != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+        this->::uGUIMap::mpCtrlZoom->setFocus(true);
+    }
+    if (this->::uGUIMap::mpCtrlMarkerIdx != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        this->::uGUIMap::mpCtrlMarkerIdx->setFocus(true);
+    }
+    if (this->::uGUIMap::mpCtrlMarker != static_cast<cControl*>(nullptr)) {
+        this->::uGUIMap::mpCtrlMarker->setFocus(true);
+    }
+    if (this->mpCtrlStart != static_cast<cControl*>(nullptr)) {
+        this->mpCtrlStart->setFocus(true);
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMapMini::updateWait);
 }
 
 // Address: 0x00b78520 - 0x00b78576 (86 bytes)

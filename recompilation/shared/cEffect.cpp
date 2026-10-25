@@ -3,6 +3,7 @@
 #include "cEffect.h"
 #include "MtMath.h"
 #include "MtPrimitive3D.h"
+#include "cUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -64,9 +65,18 @@
 // void cSynchronization::disableBoundary();
 
 // Address: 0x01090470 - 0x0109048a (26 bytes)
-__attribute__((weak)) bool cSynchronization::isRelation() const {
-    DDON_STUB("cSynchronization::isRelation")
-    return {};
+bool cSynchronization::isRelation() const {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpParent != static_cast<cUnit*>(nullptr)) {
+        if ((this->mpParent->mBeFlag - static_cast<u32>(1)) > static_cast<u32>(1)) {
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x01090490 - 0x010905f2 (354 bytes)

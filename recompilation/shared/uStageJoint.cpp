@@ -23,9 +23,9 @@
 #include "uCoord.h"
 #include "../rCharacterEditCameraParam/uScheduler.h"
 #include "uScrollCollisionGeometry.h"
-#include "uSoundGenerator.h"
-#include "uSoundOcclusion.h"
-#include "uSoundTrigger.h"
+#include "../rCharacterEditCameraParam/uSoundGenerator.h"
+#include "../rCharacterEditCameraParam/uSoundOcclusion.h"
+#include "../rCharacterEditCameraParam/uSoundTrigger.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -248,12 +248,33 @@ __attribute__((weak)) bool uStageJointCtrl::calcJointArea(const MtVector3& pos, 
 // u32 uStageJointCtrl::getArcTag(s32 areaNo);
 
 // Address: 0x00d33180 - 0x00d331d0 (80 bytes)
-__attribute__((weak)) bool uStageJointCtrl::isSetup() {
-    // local: u32 idx;
-    // local: bool ans;
-    // local: uStageJointMdl* pModel;
-    DDON_STUB("uStageJointCtrl::isSetup")
-    return {};
+bool uStageJointCtrl::isSetup() {
+    // DWARF local not rendered: bool ans;
+    // DWARF local not rendered: uStageJointMdl* pModel;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x68 from uStageJointCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x16c from MtObject*
+    if (this->mIsSetup == false) {
+        return false;
+    }
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(104))) == static_cast<unsigned int>(0)) {
+        return false;
+    }
+    u32 idx = static_cast<u32>(0);
+    do {
+        if (this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(idx)] != static_cast<MtObject*>(nullptr)) {
+            if (static_cast<uStageJointMdl*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(idx)])->::uStageJointMdl::isSetResource() != false) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(idx)]) + static_cast<long>(364))) == static_cast<unsigned int>(2)) {
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        idx += static_cast<u32>(1);
+    } while (idx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(104))));
+    return true;
 }
 
 // Address: 0x00d331d0 - 0x00d33493 (707 bytes)
@@ -276,11 +297,30 @@ __attribute__((weak)) bool uStageJointCtrl::isSbc(s32 x, s32 z) {
 }
 
 // Address: 0x00d33520 - 0x00d3357a (90 bytes)
-__attribute__((weak)) bool uStageJointCtrl::isSbc(s32 areaNo) {
-    // local: uStageJointMdl* pMdl;
-    // local: u32 i;
-    DDON_STUB("uStageJointCtrl::isSbc")
-    return {};
+bool uStageJointCtrl::isSbc(s32 areaNo) {
+    // DWARF local not rendered: uStageJointMdl* pMdl;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x68 from uStageJointCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x158 from MtObject*
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x16c from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(104))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(344))) == static_cast<unsigned int>(areaNo)) {
+                    if (static_cast<uStageJointMdl*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i)])->::uStageJointMdl::isSetResource() != false) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mJointMdlAry.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(364))) != static_cast<unsigned int>(2)) {
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(104))));
+    }
+    return false;
 }
 
 // Address: 0x00d33580 - 0x00d335b9 (57 bytes)

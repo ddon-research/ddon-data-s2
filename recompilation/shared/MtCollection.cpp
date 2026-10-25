@@ -11,7 +11,7 @@
 #include "cCycleQuestManagerBase.h"
 #include "cCycleQuestSubCategoryManager.h"
 #include "cDDMaterialCtrl.h"
-#include "cFurniture.h"
+#include "../rCharacterEditCameraParam/cFurniture.h"
 #include "../rCharacterEditCameraParam/cGUIFloorManager.h"
 #include "cLayoutSet.h"
 #include "cPawnQuestManager.h"
@@ -28,7 +28,7 @@
 #include "cpLockOn.h"
 #include "../rCharacterEditCameraParam/cpReaction.h"
 #include "cpShlShotCtrl.h"
-#include "nFurnitureMenuFlow.h"
+#include "../rCharacterEditCameraParam/nFurnitureMenuFlow.h"
 #include "nMarker.h"
 #include "nQuest.h"
 #include "nZone.h"
@@ -102,15 +102,19 @@
 #include "../rCharacterEditCameraParam/uGUICommunityList.h"
 #include "../rCharacterEditCameraParam/uGUICredit.h"
 #include "../rCharacterEditCameraParam/uGUIEntryBoard.h"
+#include "../rCharacterEditCameraParam/uGUIEntryBoardInfo.h"
 #include "../rCharacterEditCameraParam/uGUIGiveAndTake.h"
 #include "../rCharacterEditCameraParam/uGUIItem01.h"
 #include "../rCharacterEditCameraParam/uGUIMap.h"
 #include "../rCharacterEditCameraParam/uGUIMenuTutorial.h"
+#include "../rCharacterEditCameraParam/uGUIMissionInfo.h"
 #include "uGUIMissionResult.h"
 #include "../rCharacterEditCameraParam/uGUINewspaper.h"
 #include "../rCharacterEditCameraParam/uGUIPhotoUpload.h"
 #include "../rCharacterEditCameraParam/uGUIPopCmd01.h"
 #include "../rCharacterEditCameraParam/uGUIPopDetail01.h"
+#include "../rCharacterEditCameraParam/uGUIPopFilter.h"
+#include "../rCharacterEditCameraParam/uGUIPopListDialog.h"
 #include "../rCharacterEditCameraParam/uGUIRimWarp.h"
 #include "../rCharacterEditCameraParam/uGUISystemMsg.h"
 #include "../rCharacterEditCameraParam/uGUIsMenuBase.h"
@@ -568,10 +572,36 @@ __attribute__((weak)) void MtMap::erase(MtString _key) {
 }
 
 // Address: 0x00d7d620 - 0x00d7d664 (68 bytes)
-__attribute__((weak)) MtObject* MtMap::at(u32 pos) {
-    // local: Cell* pcell;
-    DDON_STUB("MtMap::at")
-    return nullptr;
+MtObject* MtMap::at(u32 pos) {
+    // DWARF local not rendered: Cell* pcell;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0xd7d663; no location-less local in scope fits
+    MtObject* v2_0;
+    if (pos >= this->mListNum) {
+        v2_0 = static_cast<MtObject*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0xd7d650 carries; no location-less local in scope fits
+        unsigned int v0_0 = this->mList[pos];
+        if (this->mpHashTable[static_cast<unsigned char>(v0_0)] == static_cast<MtMap::Cell*>(nullptr)) {
+            v2_0 = static_cast<MtObject*>(nullptr);
+        } else {
+            // inferred: the value the loop at 0xd7d650 carries; no location-less local in scope fits
+            for (MtMap::Cell* v0_1 = this->mpHashTable[static_cast<unsigned char>(v0_0)];;) {
+                if (v0_1->mCrc != v0_0) {
+                    if (v0_1->mpNext != static_cast<MtMap::Cell*>(nullptr)) {
+                        v0_1 = v0_1->mpNext;
+                    } else {
+                        break;
+                    }
+                } else {
+                    v2_0 = v0_1->mpObj;
+                    return v2_0;
+                }
+            }
+            v2_0 = static_cast<MtObject*>(nullptr);
+        }
+    }
+    return v2_0;
 }
 
 // Address: 0x00d7d670 - 0x00d7d787 (279 bytes)

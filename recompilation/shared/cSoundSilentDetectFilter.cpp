@@ -34,9 +34,16 @@ void cSoundSilentDetectFilter::init(const bool enable, const u32 channelNum) {
 }
 
 // Address: 0x012f2ca0 - 0x012f2cf7 (87 bytes)
-__attribute__((weak)) void cSoundSilentDetectFilter::executeProcess(f32* pData, const u32 frames, const u32 channels) {
-    DDON_STUB("cSoundSilentDetectFilter::executeProcess")
-    /* stub */
+void cSoundSilentDetectFilter::executeProcess(f32* pData, const u32 frames, const u32 channels) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpRms300 == static_cast<cSoundMeterRms*>(nullptr)) {
+        return;
+    }
+    if (this->mIsInitialize != false) {
+        this->mpRms300->::cSoundMeterRms::initialize(static_cast<unsigned char>(channels));
+        this->mIsInitialize = false;
+    }
+    this->mpRms300->::cSoundMeterRms::update(pData, frames, static_cast<unsigned char>(channels));
 }
 
 // Address: 0x012f2d00 - 0x012f2d04 (4 bytes)

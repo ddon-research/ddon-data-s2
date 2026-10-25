@@ -5,6 +5,7 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "MtPrimitive3D.h"
 #include "cDraw.h"
 #include "cResource.h"
@@ -14,6 +15,7 @@
 #include "rModel.h"
 #include "sBakingJointOrder.h"
 #include "sScene.h"
+#include "uDDOModel.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -251,9 +253,28 @@ void cpBakeJoint::upadatePtr() {
 }
 
 // Address: 0x0017ae20 - 0x0017ae68 (72 bytes)
-__attribute__((weak)) void cpBakeJoint::setOwner(MtObject* pOwner) {
-    DDON_STUB("cpBakeJoint::setOwner")
-    /* stub */
+void cpBakeJoint::setOwner(MtObject* pOwner) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->::cpComponent::mpOwner = pOwner;
+    this->mpModel = static_cast<uModel*>(pOwner);
+    // inferred: a temporary for the result of the call at 0x17ae3a, used once; no DWARF local holds it
+    const MtDTI& t0 = pOwner->getDTI();
+    // inferred: the value the loop at 0x17ae4a carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::uDDOModel::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x17ae4a carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            this->mIsDDOModel = true;
+            return;
+        } else {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+    this->mIsDDOModel = false;
 }
 
 // Address: 0x0017ae00 - 0x0017ae01 (1 bytes)

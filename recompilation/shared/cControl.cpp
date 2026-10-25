@@ -346,9 +346,12 @@ __attribute__((weak)) void cControl::eraseMouseTouchListPosVol(s32 sPos, s32 sCl
 }
 
 // Address: 0x0006ece0 - 0x0006ecfa (26 bytes)
-__attribute__((weak)) void cControl::setMouseTouchListPos(u32 uIdx, s32 sPos) {
-    DDON_STUB("cControl::setMouseTouchListPos")
-    /* stub */
+void cControl::setMouseTouchListPos(u32 uIdx, s32 sPos) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x38 from MtObject*
+    if (uIdx < this->mMouseExec.mMTI.::MtArray::mLength) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mMouseExec.mMTI.::MtArray::getBuffer()[static_cast<int>(uIdx)]) + static_cast<long>(56)) = static_cast<unsigned int>(sPos);
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -399,17 +402,33 @@ __attribute__((weak)) void cControl::setMouseTouchListMask(u32 uIdx, cGUIObject*
 // bool cControl::isMouseOver() const;
 
 // Address: 0x0006ed70 - 0x0006eda0 (48 bytes)
-__attribute__((weak)) s32 cControl::getMouseOverPos() const {
-    // local: const cMouseTouchInfo* pInfo;
-    DDON_STUB("cControl::getMouseOverPos")
-    return {};
+s32 cControl::getMouseOverPos() const {
+    // DWARF local not rendered: const cMouseTouchInfo* pInfo;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x38 from MtObject*
+    if (this->mMouseExec.mIsMouseOver != false) {
+        if (this->mMouseExec.mMouseOverIndex < this->mMouseExec.mMTI.::MtArray::mLength) {
+            if (this->mMouseExec.mMTI.::MtArray::mpArray[this->mMouseExec.mMouseOverIndex] != static_cast<MtObject*>(nullptr)) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mMouseExec.mMTI.::MtArray::mpArray[this->mMouseExec.mMouseOverIndex]) + static_cast<long>(56)));
+            }
+        }
+    }
+    return static_cast<s32>(-1);
 }
 
 // Address: 0x0006edb0 - 0x0006ede0 (48 bytes)
-__attribute__((weak)) s32 cControl::getMouseOverClickVol() const {
-    // local: const cMouseTouchInfo* pInfo;
-    DDON_STUB("cControl::getMouseOverClickVol")
-    return {};
+s32 cControl::getMouseOverClickVol() const {
+    // DWARF local not rendered: const cMouseTouchInfo* pInfo;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x48 from MtObject*
+    if (this->mMouseExec.mIsMouseOver != false) {
+        if (this->mMouseExec.mMouseOverIndex < this->mMouseExec.mMTI.::MtArray::mLength) {
+            if (this->mMouseExec.mMTI.::MtArray::mpArray[this->mMouseExec.mMouseOverIndex] != static_cast<MtObject*>(nullptr)) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mMouseExec.mMTI.::MtArray::mpArray[this->mMouseExec.mMouseOverIndex]) + static_cast<long>(72)));
+            }
+        }
+    }
+    return static_cast<s32>(-1);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (19 bytes)
@@ -421,9 +440,12 @@ __attribute__((weak)) s32 cControl::getMouseOverClickVol() const {
 // u32 cControl::MOUSE_REASON_FLAG(nGUIExt::MSG_REASON mr);
 
 // Address: 0x0006ede0 - 0x0006edfa (26 bytes)
-__attribute__((weak)) void cControl::setMouseTouchListLimitedReason(u32 uIdx, u32 limitedReasonFlags) {
-    DDON_STUB("cControl::setMouseTouchListLimitedReason")
-    /* stub */
+void cControl::setMouseTouchListLimitedReason(u32 uIdx, u32 limitedReasonFlags) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x58 from MtObject*
+    if (uIdx < this->mMouseExec.mMTI.::MtArray::mLength) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mMouseExec.mMTI.::MtArray::getBuffer()[static_cast<int>(uIdx)]) + static_cast<long>(88)) = limitedReasonFlags;
+    }
 }
 
 // Address: 0x0006ee00 - 0x0006ee1b (27 bytes)
@@ -762,10 +784,27 @@ f32 cControl::getRatio() const {
 }
 
 // Address: 0x0006efb0 - 0x0006efe5 (53 bytes)
-__attribute__((weak)) s32 cControl::getDetailPos() const {
-    // local: s32 detail_pos;
-    DDON_STUB("cControl::getDetailPos")
-    return {};
+s32 cControl::getDetailPos() const {
+    // DWARF local not rendered: s32 detail_pos;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x38 from MtObject*
+    if (this->mMouseExec.mIsMouseOver != false) {
+        if (this->mMouseExec.mMouseOverIndex < this->mMouseExec.mMTI.::MtArray::mLength) {
+            if (this->mMouseExec.mMTI.::MtArray::mpArray[this->mMouseExec.mMouseOverIndex] != static_cast<MtObject*>(nullptr)) {
+                if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mMouseExec.mMTI.::MtArray::mpArray[this->mMouseExec.mMouseOverIndex]) + static_cast<long>(56))) <= static_cast<int>(-1)) {
+                    return this->::cControl::getCurrentPos();
+                } else {
+                    return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mMouseExec.mMTI.::MtArray::mpArray[this->mMouseExec.mMouseOverIndex]) + static_cast<long>(56)));
+                }
+            } else {
+                return this->::cControl::getCurrentPos();
+            }
+        } else {
+            return this->::cControl::getCurrentPos();
+        }
+    } else {
+        return this->::cControl::getCurrentPos();
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -900,8 +939,7 @@ inline void cControl::cMouseExecution::operator delete(void* p_addr) {
 // Address: 0x0006eee0 - 0x0006eef7 (23 bytes)
 // Also emitted as: _ZN8cControl15cMouseExecutionD0Ev at 0x0006ef00
 cControl::cMouseExecution::~cMouseExecution() {
-    DDON_STUB("cControl::cMouseExecution::~cMouseExecution")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x0006d450 - 0x0006dd4a (2298 bytes)

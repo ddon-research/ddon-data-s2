@@ -6,6 +6,7 @@
 #include "MtAllocator.h"
 #include "MtCollection.h"
 #include "MtDTI.h"
+#include "MtDataWriter.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
@@ -249,9 +250,12 @@ u32 cGroupParam::getPriority() const {
 }
 
 // Address: 0x01a99b80 - 0x01a99b89 (9 bytes)
-__attribute__((weak)) bool cGroupParam::isDisableSplit() const {
-    DDON_STUB("cGroupParam::isDisableSplit")
-    return {};
+bool cGroupParam::isDisableSplit() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2f from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(47))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // No out-of-line body: 12 inlined copies in 12 functions (79 bytes)
@@ -262,33 +266,44 @@ __attribute__((weak)) bool cGroupParam::isDisableSplit() const {
 // bool cGroupParam::isParts() const;
 
 // Address: 0x01a99bd0 - 0x01a99bd9 (9 bytes)
-__attribute__((weak)) bool cGroupParam::hasMarkerPos() const {
-    DDON_STUB("cGroupParam::hasMarkerPos")
-    return {};
+bool cGroupParam::hasMarkerPos() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2f from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(47))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x01a99c60 - 0x01a99c67 (7 bytes)
-__attribute__((weak)) bool cGroupParam::isLoadLotFlag() const {
-    DDON_STUB("cGroupParam::isLoadLotFlag")
-    return {};
+bool cGroupParam::isLoadLotFlag() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mLoadCondition.mLoadCondition & static_cast<u32>(1));
 }
 
 // Address: 0x01a99ca0 - 0x01a99ca8 (8 bytes)
-__attribute__((weak)) bool cGroupParam::isLoadLayoutFlag() const {
-    DDON_STUB("cGroupParam::isLoadLayoutFlag")
-    return {};
+bool cGroupParam::isLoadLayoutFlag() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x30 from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01a99e10 - 0x01a99e19 (9 bytes)
-__attribute__((weak)) bool cGroupParam::isLoadRandomOnly() const {
-    DDON_STUB("cGroupParam::isLoadRandomOnly")
-    return {};
+bool cGroupParam::isLoadRandomOnly() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x30 from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x01a99c80 - 0x01a99c85 (5 bytes)
-__attribute__((weak)) u32 cGroupParam::getLotFlagNo() const {
-    DDON_STUB("cGroupParam::getLotFlagNo")
-    return {};
+u32 cGroupParam::getLotFlagNo() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x34 from const cGroupParam*
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(52));
 }
 
 // Address: 0x01a99cd0 - 0x01a99cd4 (4 bytes)
@@ -304,9 +319,12 @@ u32 cGroupParam::getLayoutFlagNo() const {
 }
 
 // Address: 0x01a99d10 - 0x01a99d19 (9 bytes)
-__attribute__((weak)) bool cGroupParam::isLoadStage() const {
-    DDON_STUB("cGroupParam::isLoadStage")
-    return {};
+bool cGroupParam::isLoadStage() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x30 from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x01a99d40 - 0x01a99d44 (4 bytes)
@@ -316,9 +334,12 @@ u32 cGroupParam::getLoadStageNo() const {
 }
 
 // Address: 0x01a99d60 - 0x01a99d69 (9 bytes)
-__attribute__((weak)) bool cGroupParam::isLoadVersion() const {
-    DDON_STUB("cGroupParam::isLoadVersion")
-    return {};
+bool cGroupParam::isLoadVersion() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x30 from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x01a99d90 - 0x01a99d94 (4 bytes)
@@ -328,21 +349,28 @@ u32 cGroupParam::getLoadVersionNo() const {
 }
 
 // Address: 0x01a99db0 - 0x01a99db9 (9 bytes)
-__attribute__((weak)) bool cGroupParam::isLoadOmit() const {
-    DDON_STUB("cGroupParam::isLoadOmit")
-    return {};
+bool cGroupParam::isLoadOmit() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x30 from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(48))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x01a99e70 - 0x01a99e77 (7 bytes)
-__attribute__((weak)) bool cGroupParam::isSetAreaHit() const {
-    DDON_STUB("cGroupParam::isSetAreaHit")
-    return {};
+bool cGroupParam::isSetAreaHit() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mSetCondition.mSetCondition & static_cast<u32>(1));
 }
 
 // Address: 0x01a99de0 - 0x01a99de8 (8 bytes)
-__attribute__((weak)) bool cGroupParam::isSetSimpleEv() const {
-    DDON_STUB("cGroupParam::isSetSimpleEv")
-    return {};
+bool cGroupParam::isSetSimpleEv() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x48 from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(72))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01a99e40 - 0x01a99e4c (12 bytes)
@@ -352,15 +380,19 @@ s32 cGroupParam::getSetMax() const {
 }
 
 // Address: 0x01a99e90 - 0x01a99e9a (10 bytes)
-__attribute__((weak)) bool cGroupParam::isDeleteLotFlag() const {
-    DDON_STUB("cGroupParam::isDeleteLotFlag")
-    return {};
+bool cGroupParam::isDeleteLotFlag() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mDeleteCondition.mDeleteCondition & static_cast<u32>(1));
 }
 
 // Address: 0x01a99ec0 - 0x01a99ecb (11 bytes)
-__attribute__((weak)) bool cGroupParam::isDeleteLayoutFlag() const {
-    DDON_STUB("cGroupParam::isDeleteLayoutFlag")
-    return {};
+bool cGroupParam::isDeleteLayoutFlag() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0xb4 from const cGroupParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(180))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01a99bb0 - 0x01a99bb4 (4 bytes)
@@ -381,24 +413,28 @@ __attribute__((weak)) void cGroupParam::setDummy(u32 d) {
 }
 
 // Address: 0x01a99b90 - 0x01a99ba5 (21 bytes)
-__attribute__((weak)) void cGroupParam::setIsDisableSplit(bool b) {
-    DDON_STUB("cGroupParam::setIsDisableSplit")
-    /* stub */
+void cGroupParam::setIsDisableSplit(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mDataCommon = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(134217728)) | static_cast<unsigned long>(this->mDataCommon & static_cast<u32>(4160749567)));
 }
 
 // No out-of-line body: no code in the ELF
 // void cGroupParam::setIsParts(bool b);
 
 // Address: 0x01a99e50 - 0x01a99e67 (23 bytes)
-__attribute__((weak)) void cGroupParam::setSetMax(s32 no) {
-    DDON_STUB("cGroupParam::setSetMax")
-    /* stub */
+void cGroupParam::setSetMax(s32 no) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    this->mSetCondition.mSetCondition = static_cast<u32>(static_cast<unsigned long>(this->mSetCondition.mSetCondition & static_cast<u32>(4294966275)) | static_cast<unsigned long>((no * static_cast<s32>(4)) & static_cast<s32>(1020)));
 }
 
 // Address: 0x01a99be0 - 0x01a99bf5 (21 bytes)
-__attribute__((weak)) void cGroupParam::setHasMarkerPos(bool b) {
-    DDON_STUB("cGroupParam::setHasMarkerPos")
-    /* stub */
+void cGroupParam::setHasMarkerPos(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mDataCommon = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(536870912)) | static_cast<unsigned long>(this->mDataCommon & static_cast<u32>(3758096383)));
 }
 
 // Address: 0x00699440 - 0x006996cc (652 bytes)
@@ -431,10 +467,7 @@ __attribute__((weak)) MtVector3 cGroupParam::getMarkerPos() const {
 // Address: 0x01a99c30 - 0x01a99c55 (37 bytes)
 void cGroupParam::setMarkerPos(MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mMarkerPos.x = pos.x;
-    this->mMarkerPos.y = pos.y;
-    this->mMarkerPos.z = pos.z;
-    this->mMarkerPos.pad_ = 0.0f;
+    this->mMarkerPos = pos;
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (48 bytes)
@@ -641,39 +674,46 @@ __attribute__((weak)) bool cGroupParam::isQuestLayoutFlag() const {
 // void cGroupParam::setIsDieStageBossFlag();
 
 // Address: 0x01a99c70 - 0x01a99c80 (16 bytes)
-__attribute__((weak)) void cGroupParam::setLoadLotFlag(bool b) {
-    DDON_STUB("cGroupParam::setLoadLotFlag")
-    /* stub */
+void cGroupParam::setLoadLotFlag(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    this->mLoadCondition.mLoadCondition = static_cast<u32>(static_cast<unsigned long>(this->mLoadCondition.mLoadCondition & static_cast<u32>(4294967294)) | static_cast<unsigned long>(b));
 }
 
 // Address: 0x01a99cb0 - 0x01a99cc2 (18 bytes)
-__attribute__((weak)) void cGroupParam::setLoadLayoutFlag(bool b) {
-    DDON_STUB("cGroupParam::setLoadLayoutFlag")
-    /* stub */
+void cGroupParam::setLoadLayoutFlag(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(2)) | static_cast<unsigned long>(this->mLoadCondition.mLoadCondition & static_cast<u32>(4294967293)));
 }
 
 // Address: 0x01a99e20 - 0x01a99e33 (19 bytes)
-__attribute__((weak)) void cGroupParam::setLoadRandomOnly(bool b) {
-    DDON_STUB("cGroupParam::setLoadRandomOnly")
-    /* stub */
+void cGroupParam::setLoadRandomOnly(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(4)) | static_cast<unsigned long>(this->mLoadCondition.mLoadCondition & static_cast<u32>(4294967291)));
 }
 
 // Address: 0x01a99d20 - 0x01a99d33 (19 bytes)
-__attribute__((weak)) void cGroupParam::setLoadStage(bool b) {
-    DDON_STUB("cGroupParam::setLoadStage")
-    /* stub */
+void cGroupParam::setLoadStage(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(8)) | static_cast<unsigned long>(this->mLoadCondition.mLoadCondition & static_cast<u32>(4294967287)));
 }
 
 // Address: 0x01a99d70 - 0x01a99d83 (19 bytes)
-__attribute__((weak)) void cGroupParam::setLoadVersion(bool b) {
-    DDON_STUB("cGroupParam::setLoadVersion")
-    /* stub */
+void cGroupParam::setLoadVersion(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(16)) | static_cast<unsigned long>(this->mLoadCondition.mLoadCondition & static_cast<u32>(4294967279)));
 }
 
 // Address: 0x01a99dc0 - 0x01a99dd3 (19 bytes)
-__attribute__((weak)) void cGroupParam::setLoadOmit(bool b) {
-    DDON_STUB("cGroupParam::setLoadOmit")
-    /* stub */
+void cGroupParam::setLoadOmit(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(32)) | static_cast<unsigned long>(this->mLoadCondition.mLoadCondition & static_cast<u32>(4294967263)));
 }
 
 // Address: 0x01a99c90 - 0x01a99c95 (5 bytes)
@@ -713,35 +753,71 @@ void cGroupParam::setPriority(u32 prio) {
 }
 
 // Address: 0x01a99e80 - 0x01a99e90 (16 bytes)
-__attribute__((weak)) void cGroupParam::setSetAreaHit(bool b) {
-    DDON_STUB("cGroupParam::setSetAreaHit")
-    /* stub */
+void cGroupParam::setSetAreaHit(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    this->mSetCondition.mSetCondition = static_cast<u32>(static_cast<unsigned long>(this->mSetCondition.mSetCondition & static_cast<u32>(4294967294)) | static_cast<unsigned long>(b));
 }
 
 // Address: 0x01a99df0 - 0x01a99e02 (18 bytes)
-__attribute__((weak)) void cGroupParam::setSetSimpleEv(bool b) {
-    DDON_STUB("cGroupParam::setSetSimpleEv")
-    /* stub */
+void cGroupParam::setSetSimpleEv(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mSetCondition.mSetCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(2)) | static_cast<unsigned long>(this->mSetCondition.mSetCondition & static_cast<u32>(4294967293)));
 }
 
 // Address: 0x01a99ea0 - 0x01a99eb6 (22 bytes)
-__attribute__((weak)) void cGroupParam::setDeleteLotFlag(bool b) {
-    DDON_STUB("cGroupParam::setDeleteLotFlag")
-    /* stub */
+void cGroupParam::setDeleteLotFlag(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    this->mDeleteCondition.mDeleteCondition = static_cast<u32>(static_cast<unsigned long>(this->mDeleteCondition.mDeleteCondition & static_cast<u32>(4294967294)) | static_cast<unsigned long>(b));
 }
 
 // Address: 0x01a99ed0 - 0x01a99ee8 (24 bytes)
-__attribute__((weak)) void cGroupParam::setDeleteLayoutFlag(bool b) {
-    DDON_STUB("cGroupParam::setDeleteLayoutFlag")
-    /* stub */
+void cGroupParam::setDeleteLayoutFlag(bool b) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->mDeleteCondition.mDeleteCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * static_cast<int>(2)) | static_cast<unsigned long>(this->mDeleteCondition.mDeleteCondition & static_cast<u32>(4294967293)));
 }
 
 // Address: 0x0069a360 - 0x0069a39a (58 bytes)
-__attribute__((weak)) cGroupParam::EmSetInfo* cGroupParam::getEmSetInfo(u32 posId) {
-    // local: s32 i;
-    // local: EmSetInfo* info;
-    DDON_STUB("cGroupParam::getEmSetInfo")
-    return nullptr;
+cGroupParam::EmSetInfo* cGroupParam::getEmSetInfo(u32 posId) {
+    // DWARF local not rendered: s32 i;
+    // DWARF local not rendered: EmSetInfo* info;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x69a399; no location-less local in scope fits
+    MtObject* v2_0;
+    if (static_cast<int>(this->mSetInfoList.mLength - static_cast<u32>(1)) <= static_cast<int>(-1)) {
+        v2_0 = static_cast<MtObject*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0x69a380 carries; no location-less local in scope fits
+        MtObject* * v0_1 = this->mSetInfoList.mpArray;
+        // inferred: the value the loop at 0x69a380 carries; no location-less local in scope fits
+        for (u32 v0_0 = this->mSetInfoList.mLength - static_cast<u32>(1);;) {
+            if (v0_1[v0_0] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[v0_0]) + static_cast<long>(8))) != posId) {
+                    if (static_cast<int>(v0_0 - static_cast<u32>(1)) > static_cast<int>(-1)) {
+                        v0_0 += static_cast<u32>(4294967295);
+                    } else {
+                        break;
+                    }
+                } else {
+                    v2_0 = v0_1[v0_0];
+                    return static_cast<cGroupParam::EmSetInfo*>(v2_0);
+                }
+            } else {
+                if (static_cast<int>(v0_0 - static_cast<u32>(1)) > static_cast<int>(-1)) {
+                    v0_0 += static_cast<u32>(4294967295);
+                } else {
+                    break;
+                }
+            }
+        }
+        v2_0 = static_cast<MtObject*>(nullptr);
+    }
+    return static_cast<cGroupParam::EmSetInfo*>(v2_0);
 }
 
 // Address: 0x0069a3a0 - 0x0069a694 (756 bytes)
@@ -795,11 +871,24 @@ __attribute__((weak)) void cGroupParam::setGatherEnemyList(const u32 posId, CDat
 }
 
 // Address: 0x0069aca0 - 0x0069acdc (60 bytes)
-__attribute__((weak)) cGroupParam::OmSetInfo* cGroupParam::getOmSetInfo(u32 id) {
-    // local: u32 i;
-    // local: OmSetInfo* info;
-    DDON_STUB("cGroupParam::getOmSetInfo")
-    return nullptr;
+cGroupParam::OmSetInfo* cGroupParam::getOmSetInfo(u32 id) {
+    // DWARF local not rendered: OmSetInfo* info;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (this->mSetInfoList.mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x69aca0, 0x69acd8)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mSetInfoList.mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mSetInfoList.mpArray[i]) + static_cast<long>(8))) != id) {
+                } else {
+                    return static_cast<cGroupParam::OmSetInfo*>(this->mSetInfoList.mpArray[i]);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mSetInfoList.mLength);
+    }
+    return static_cast<cGroupParam::OmSetInfo*>(nullptr);
 }
 
 // Address: 0x0069ace0 - 0x0069ae4b (363 bytes)
@@ -820,11 +909,24 @@ __attribute__((weak)) void cGroupParam::setOmSetList(const LayoutItemDataVec& li
 }
 
 // Address: 0x0069af50 - 0x0069af8f (63 bytes)
-__attribute__((weak)) cGroupParam::DropItemInfo* cGroupParam::getDropItemSetInfo(u32 id) {
-    // local: u32 i;
-    // local: DropItemInfo* info;
-    DDON_STUB("cGroupParam::getDropItemSetInfo")
-    return nullptr;
+cGroupParam::DropItemInfo* cGroupParam::getDropItemSetInfo(u32 id) {
+    // DWARF local not rendered: DropItemInfo* info;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from MtObject*
+    if (this->mDropItemList.mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x69af50, 0x69af8e)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mDropItemList.mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mDropItemList.mpArray[i]) + static_cast<long>(10))) != id) {
+                } else {
+                    return static_cast<cGroupParam::DropItemInfo*>(this->mDropItemList.mpArray[i]);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mDropItemList.mLength);
+    }
+    return static_cast<cGroupParam::DropItemInfo*>(nullptr);
 }
 
 // Address: 0x0069af90 - 0x0069b1b0 (544 bytes)
@@ -1211,9 +1313,15 @@ __attribute__((weak)) bool cGroupParam::cID::load(MtDataReader& r) {
 }
 
 // Address: 0x0069a2f0 - 0x0069a342 (82 bytes)
-__attribute__((weak)) bool cGroupParam::cID::save(MtDataWriter& w) {
-    DDON_STUB("cGroupParam::cID::save")
-    return {};
+bool cGroupParam::cID::save(MtDataWriter& w) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cGroupParam::cID*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xe from cGroupParam::cID*
+    w.writeU32(this->mLayoutID.mLayoutID & static_cast<u32>(1023));
+    w.writeU32(this->mLayoutID.mLayoutID >> static_cast<u32>(10));
+    w.writeS32(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(12)));
+    w.writeS32(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(14)));
+    return true;
 }
 
 // No out-of-line body: no code in the ELF
@@ -1258,15 +1366,17 @@ void cGroupParam::cID::setGroup(u32 group) {
 // const nLayout::stSplitID& cGroupParam::cID::getSplitID() const;
 
 // Address: 0x01a99ef0 - 0x01a99ef5 (5 bytes)
-__attribute__((weak)) s32 cGroupParam::cID::getSplitX() const {
-    DDON_STUB("cGroupParam::cID::getSplitX")
-    return {};
+s32 cGroupParam::cID::getSplitX() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0xc from const cGroupParam::cID*
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(12));
 }
 
 // Address: 0x01a99f00 - 0x01a99f05 (5 bytes)
-__attribute__((weak)) s32 cGroupParam::cID::getSplitZ() const {
-    DDON_STUB("cGroupParam::cID::getSplitZ")
-    return {};
+s32 cGroupParam::cID::getSplitZ() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0xe from const cGroupParam::cID*
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(14));
 }
 
 // No out-of-line body: no code in the ELF

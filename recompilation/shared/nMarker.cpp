@@ -126,8 +126,63 @@ nMarker::cMarkerInfo::cMarkerInfo() {
 // Address: 0x00170240 - 0x00170360 (288 bytes)
 // Also emitted as: _ZN7nMarker11cMarkerInfoD0Ev at 0x00170360
 nMarker::cMarkerInfo::~cMarkerInfo() {
-    DDON_STUB("nMarker::cMarkerInfo::~cMarkerInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mPosList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x170270 carries; no location-less local in scope fits
+        u32 v0_0 = this->mPosList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mPosList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mPosList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPosList.::MtArray::mLength) {
+                    v0_0 = this->mPosList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mPosList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPosList.::MtArray::mpArray));
+    }
+    this->mPosList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mPosList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mPosList.::MtArray::mLength = static_cast<u32>(0);
+    if (this->mCtrlFlagList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x1702e0 carries; no location-less local in scope fits
+        u32 v2_0 = this->mCtrlFlagList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+            if (this->mCtrlFlagList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mCtrlFlagList.::MtArray::mpArray[i2_3];
+                if ((i2_3 + static_cast<unsigned int>(1)) < this->mCtrlFlagList.::MtArray::mLength) {
+                    v2_0 = this->mCtrlFlagList.::MtArray::mLength;
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mCtrlFlagList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCtrlFlagList.::MtArray::mpArray));
+    }
+    this->mCtrlFlagList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mCtrlFlagList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mCtrlFlagList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x00170390 - 0x00170391 (1 bytes)

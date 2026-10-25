@@ -340,9 +340,13 @@ __attribute__((weak)) void cAIUserProcessCallback::createProperty(MtPropertyList
 }
 
 // Address: 0x01060620 - 0x01060647 (39 bytes)
-__attribute__((weak)) s32 cAIUserProcessCallback::process(MtObject* pOwner, MtObject* pParam, MtObject* pCaller) {
-    DDON_STUB("cAIUserProcessCallback::process")
-    return {};
+s32 cAIUserProcessCallback::process(MtObject* pOwner, MtObject* pParam, MtObject* pCaller) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpFunc != static_cast<cAIUserProcessCallback::CALLBACK_FUNC>(0)) {
+        return static_cast<s32>((pOwner->*this->mpFunc)(pParam, pCaller));
+    } else {
+        return static_cast<s32>(0);
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

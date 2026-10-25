@@ -129,9 +129,12 @@ void uBaseEffect::setEffectParent(uCoord* pParent) {
 // void uBaseEffect::setParentNo(s32 ParentNo);
 
 // Address: 0x01ad5e60 - 0x01ad5e6b (11 bytes)
-__attribute__((weak)) bool uBaseEffect::getSleepMode() const {
-    DDON_STUB("uBaseEffect::getSleepMode")
-    return {};
+bool uBaseEffect::getSleepMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01ad5e70 - 0x01ad5e8b (27 bytes)
@@ -141,9 +144,12 @@ void uBaseEffect::setSleepMode(bool Mode) {
 }
 
 // Address: 0x01b659e0 - 0x01b659ec (12 bytes)
-__attribute__((weak)) bool uBaseEffect::getSchedulerMode() const {
-    DDON_STUB("uBaseEffect::getSchedulerMode")
-    return {};
+bool uBaseEffect::getSchedulerMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x01b659f0 - 0x01b65a0b (27 bytes)
@@ -153,9 +159,12 @@ void uBaseEffect::setSchedulerMode(bool Mode) {
 }
 
 // Address: 0x01b65a10 - 0x01b65a1c (12 bytes)
-__attribute__((weak)) bool uBaseEffect::getEventMode() const {
-    DDON_STUB("uBaseEffect::getEventMode")
-    return {};
+bool uBaseEffect::getEventMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x01b65a20 - 0x01b65a3b (27 bytes)
@@ -165,9 +174,12 @@ void uBaseEffect::setEventMode(bool Mode) {
 }
 
 // Address: 0x01b659c0 - 0x01b659cc (12 bytes)
-__attribute__((weak)) bool uBaseEffect::getTimerControlMode() const {
-    DDON_STUB("uBaseEffect::getTimerControlMode")
-    return {};
+bool uBaseEffect::getTimerControlMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x01b65a40 - 0x01b65a5b (27 bytes)
@@ -177,9 +189,12 @@ void uBaseEffect::setTimerControlMode(bool Mode) {
 }
 
 // Address: 0x01b65ad0 - 0x01b65ada (10 bytes)
-__attribute__((weak)) bool uBaseEffect::getTextureOmitMode() const {
-    DDON_STUB("uBaseEffect::getTextureOmitMode")
-    return {};
+bool uBaseEffect::getTextureOmitMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) >> static_cast<unsigned long>(7));
 }
 
 // Address: 0x01b65ae0 - 0x01b65b00 (32 bytes)
@@ -189,9 +204,11 @@ void uBaseEffect::setTextureOmitMode(bool Mode) {
 }
 
 // Address: 0x01b65b00 - 0x01b65b09 (9 bytes)
-__attribute__((weak)) bool uBaseEffect::getVBInvalidMode() const {
-    DDON_STUB("uBaseEffect::getVBInvalidMode")
-    return {};
+bool uBaseEffect::getVBInvalidMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uBaseEffect*
+    // inferred: a value cast to the type its use takes: const unsigned char used as bool
+    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(1));
 }
 
 // Address: 0x01b65b10 - 0x01b65b30 (32 bytes)
@@ -201,9 +218,12 @@ void uBaseEffect::setVBInvalidMode(bool Mode) {
 }
 
 // Address: 0x01b65b30 - 0x01b65b3b (11 bytes)
-__attribute__((weak)) bool uBaseEffect::getNoFogMode() const {
-    DDON_STUB("uBaseEffect::getNoFogMode")
-    return {};
+bool uBaseEffect::getNoFogMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uBaseEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01b65b40 - 0x01b65b60 (32 bytes)
@@ -213,9 +233,12 @@ void uBaseEffect::setNoFogMode(bool Mode) {
 }
 
 // Address: 0x01ad5e90 - 0x01ad5e9c (12 bytes)
-__attribute__((weak)) bool uBaseEffect::getRestartFlag() const {
-    DDON_STUB("uBaseEffect::getRestartFlag")
-    return {};
+bool uBaseEffect::getRestartFlag() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uBaseEffect*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x01ad5ea0 - 0x01ad5ebb (27 bytes)
@@ -299,9 +322,9 @@ u32 uBaseEffect::getCullingGroup() const {
 }
 
 // Address: 0x01b66000 - 0x01b6602e (46 bytes)
-__attribute__((weak)) void uBaseEffect::setCullingGroup(u32 Group) {
-    DDON_STUB("uBaseEffect::setCullingGroup")
-    /* stub */
+void uBaseEffect::setCullingGroup(u32 Group) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mCullingGroup = Group;
 }
 
 // Address: 0x01b65c20 - 0x01b65c2b (11 bytes)
@@ -311,9 +334,13 @@ u32 uBaseEffect::getAxisType() const {
 }
 
 // Address: 0x00fc1310 - 0x00fc1359 (73 bytes)
-__attribute__((weak)) void uBaseEffect::setAxisType(u32 AxisType) {
-    DDON_STUB("uBaseEffect::setAxisType")
-    /* stub */
+void uBaseEffect::setAxisType(u32 AxisType) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mAxisType = AxisType;
+    if ((AxisType & static_cast<u32>(15)) == static_cast<u32>(6)) {
+    } else {
+        this->::uBaseEffect::setDir(this->mDir);
+    }
 }
 
 // Address: 0x01b65c30 - 0x01b65c3c (12 bytes)
@@ -323,9 +350,9 @@ u32 uBaseEffect::getRelationType() const {
 }
 
 // Address: 0x01b65c40 - 0x01b65c6e (46 bytes)
-__attribute__((weak)) void uBaseEffect::setRelationType(u32 RelationType) {
-    DDON_STUB("uBaseEffect::setRelationType")
-    /* stub */
+void uBaseEffect::setRelationType(u32 RelationType) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mRelationType = RelationType;
 }
 
 // Address: 0x01b65c70 - 0x01b65c7a (10 bytes)
@@ -335,9 +362,9 @@ u32 uBaseEffect::getEndType() const {
 }
 
 // Address: 0x01b65c80 - 0x01b65ca8 (40 bytes)
-__attribute__((weak)) void uBaseEffect::setEndType(u32 EndType) {
-    DDON_STUB("uBaseEffect::setEndType")
-    /* stub */
+void uBaseEffect::setEndType(u32 EndType) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mEndType = EndType;
 }
 
 // Address: 0x01b661b0 - 0x01b661b8 (8 bytes)
@@ -419,9 +446,15 @@ u32 uBaseEffect::getParticleVolume() const {
 }
 
 // Address: 0x00fc21f0 - 0x00fc2259 (105 bytes)
-__attribute__((weak)) void uBaseEffect::setParticleVolume(u32 Volume) {
-    DDON_STUB("uBaseEffect::setParticleVolume")
-    /* stub */
+void uBaseEffect::setParticleVolume(u32 Volume) {
+    // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
+    if (Volume == static_cast<u32>(3)) {
+        this->mParticleVolume = static_cast<u32>(3);
+    } else {
+        // inferred: a temporary for the value the load at 0xfc221d read, used once; no DWARF local holds it
+        u32 t0 = (::sEffect::mpInstance)->mParticleVolume;
+        this->mParticleVolume = (t0 < Volume) ? t0 : Volume;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -434,9 +467,9 @@ u32 uBaseEffect::getFilterVolume() const {
 }
 
 // Address: 0x01b65f70 - 0x01b65f9d (45 bytes)
-__attribute__((weak)) void uBaseEffect::setFilterVolume(u32 Volume) {
-    DDON_STUB("uBaseEffect::setFilterVolume")
-    /* stub */
+void uBaseEffect::setFilterVolume(u32 Volume) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mFilterVolume = Volume;
 }
 
 // Address: 0x01b65fa0 - 0x01b65faf (15 bytes)
@@ -446,9 +479,9 @@ __attribute__((weak)) u32 uBaseEffect::getLifeFrameVolume() const {
 }
 
 // Address: 0x01b65fb0 - 0x01b65fe1 (49 bytes)
-__attribute__((weak)) void uBaseEffect::setLifeFrameVolume(u32 Volume) {
-    DDON_STUB("uBaseEffect::setLifeFrameVolume")
-    /* stub */
+void uBaseEffect::setLifeFrameVolume(u32 Volume) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mLifeFrameVolume = Volume;
 }
 
 // Address: 0x01b66070 - 0x01b6607f (15 bytes)
@@ -458,9 +491,9 @@ u32 uBaseEffect::getBoundaryType() const {
 }
 
 // Address: 0x01b66080 - 0x01b660b1 (49 bytes)
-__attribute__((weak)) void uBaseEffect::setBoundaryType(u32 BoundaryType) {
-    DDON_STUB("uBaseEffect::setBoundaryType")
-    /* stub */
+void uBaseEffect::setBoundaryType(u32 BoundaryType) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mBoundaryType = BoundaryType;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

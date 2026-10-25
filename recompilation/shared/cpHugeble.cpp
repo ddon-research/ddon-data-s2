@@ -255,10 +255,7 @@ bool cpHugeble::isHugebleFixed() const {
 // Address: 0x0048b9e0 - 0x0048ba11 (49 bytes)
 void cpHugeble::resetHugebleOldPos(const MtVector3& pos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
-    this->mHugebleOldPos.x = pos.x;
-    this->mHugebleOldPos.y = pos.y;
-    this->mHugebleOldPos.z = pos.z;
-    this->mHugebleOldPos.pad_ = 0.0f;
+    this->mHugebleOldPos = pos;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (24 bytes)

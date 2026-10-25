@@ -29,6 +29,7 @@ class rEventParam;
 class rSoundRequest;
 class rSoundStreamRequest;
 class rVibration;
+class uCameraGame;
 class uControl;
 class uCoord;
 class uDDOModel;
@@ -52,6 +53,8 @@ using u32 = unsigned int;
 
 class sEventManager : public cSystem
 {
+    // inferred: uCameraGame::isEventCamera names sEventManager::mpInstance
+    friend class uCameraGame;
 public:
     enum SYNC_FLAG
     {

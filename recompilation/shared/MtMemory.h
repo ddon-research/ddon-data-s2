@@ -25,6 +25,7 @@ namespace nNetwork { class Decoder; }
 class rEffect2D;
 class rEffectStrip;
 class rVibration;
+class sBrowser;
 class sItemManager;
 class sMain;
 class sRender;
@@ -78,6 +79,8 @@ class MtMemory
     friend class rEffectStrip;
     // inferred: rVibration::load names MtMemory::mpAllocatorType
     friend class rVibration;
+    // inferred: sBrowser::releaseFontData names MtMemory::mpAllocatorType
+    friend class sBrowser;
     // inferred: sItemManager::releaseSortBinary names MtMemory::mpAllocatorType
     friend class sItemManager;
     // inferred: sMain::initMemory names MtMemory::mpAllocatorType

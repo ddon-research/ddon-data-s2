@@ -15,12 +15,19 @@
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
 #include "../shared/rSoundRequest.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
 #include "../shared/sQuestManagerExt.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+// inferred: a callee declared from its ELF symbol _Z14SetMessageTimeP14cGUIObjMessageS0_fb, its return type from the caller's use of neither rax nor xmm0
+void elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(cGUIObjMessage*, cGUIObjMessage*, float, bool) __asm__("_Z14SetMessageTimeP14cGUIObjMessageS0_fb");
+// inferred: a callee declared from its ELF symbol _Z15SetMessagePointP14cGUIObjMessagejb, its return type from the caller's use of neither rax nor xmm0
+void elf_v_Z15SetMessagePointP14cGUIObjMessagejb(cGUIObjMessage*, unsigned int, bool) __asm__("_Z15SetMessagePointP14cGUIObjMessagejb");
 
 // No out-of-line body: no code in the ELF
 // MtDTI* uGUIQuestActive::getMyDTIPtr();
@@ -121,8 +128,121 @@ __attribute__((weak)) void uGUIQuestActive::contentSetTime(uGUIQuestActive::Cont
 
 // Address: 0x00bebfb0 - 0x00bec0c3 (275 bytes)
 __attribute__((weak)) void uGUIQuestActive::contentEventAddTime(uGUIQuestActive::Content& content, f32 time) {
-    DDON_STUB("uGUIQuestActive::contentEventAddTime")
-    /* stub */
+    // Approximate from the ELF: a call declared from its ELF symbol, its return type from the caller's use; a temporary declared in several branches; the body oracle reports this body.
+    if (content.mpINST_msg_time != static_cast<cGUIInstAnimation*>(nullptr)) {
+        if (content.mpINST_msg_time->::cGUIInstAnimation::getSequenceId() == static_cast<u32>(1000003)) {
+            // inferred: a temporary for the value the load at 0xbebfdf read, used twice; no DWARF local holds it
+            f32 t0 = content.mAddTime;
+            content.mAddTime = t0 + time;
+            ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, t0 + time, true);
+        } else {
+            if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                // inferred: a temporary for the result of the call at 0xbec00e, used once; no DWARF local holds it
+                u32 t1 = content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::getChildSequenceId();
+                if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                    // inferred: a temporary for the value the load at 0xbec01f read, used once; no DWARF local holds it
+                    f32 t2 = content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::getChildAnimationCurrentFrame();
+                    this->::uGUIBase::setSequenceId(content.mpINST_msg_time, static_cast<u32>(1000003), true);
+                    if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                        content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildSequenceId(t1);
+                        if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                            content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(t2);
+                        }
+                    }
+                    content.mAddTime = time;
+                    if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
+                        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(this->mpSeRes, static_cast<u32>(3));
+                        ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, content.mAddTime, true);
+                    } else {
+                        ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, time, true);
+                    }
+                } else {
+                    this->::uGUIBase::setSequenceId(content.mpINST_msg_time, static_cast<u32>(1000003), true);
+                    if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                        content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildSequenceId(t1);
+                        if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                            content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(0.0f);
+                        }
+                    }
+                    content.mAddTime = time;
+                    if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
+                        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(this->mpSeRes, static_cast<u32>(3));
+                        ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, content.mAddTime, true);
+                    } else {
+                        ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, time, true);
+                    }
+                }
+            } else {
+                this->::uGUIBase::setSequenceId(content.mpINST_msg_time, static_cast<u32>(1000003), true);
+                if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                    content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildSequenceId(static_cast<u32>(0));
+                    if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                        content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(0.0f);
+                    }
+                }
+                content.mAddTime = time;
+                if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(this->mpSeRes, static_cast<u32>(3));
+                    ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, content.mAddTime, true);
+                } else {
+                    ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, time, true);
+                }
+            }
+        }
+    } else {
+        if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+            // inferred: a temporary for the result of the call at 0xbec00e, used once; no DWARF local holds it
+            u32 t1 = content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::getChildSequenceId();
+            if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                // inferred: a temporary for the value the load at 0xbec01f read, used once; no DWARF local holds it
+                f32 t2 = content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::getChildAnimationCurrentFrame();
+                this->::uGUIBase::setSequenceId(content.mpINST_msg_time, static_cast<u32>(1000003), true);
+                if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                    content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildSequenceId(t1);
+                    if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                        content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(t2);
+                    }
+                }
+                content.mAddTime = time;
+                if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(this->mpSeRes, static_cast<u32>(3));
+                    ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, content.mAddTime, true);
+                } else {
+                    ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, time, true);
+                }
+            } else {
+                this->::uGUIBase::setSequenceId(content.mpINST_msg_time, static_cast<u32>(1000003), true);
+                if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                    content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildSequenceId(t1);
+                    if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                        content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(0.0f);
+                    }
+                }
+                content.mAddTime = time;
+                if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
+                    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(this->mpSeRes, static_cast<u32>(3));
+                    ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, content.mAddTime, true);
+                } else {
+                    ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, time, true);
+                }
+            }
+        } else {
+            this->::uGUIBase::setSequenceId(content.mpINST_msg_time, static_cast<u32>(1000003), true);
+            if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildSequenceId(static_cast<u32>(0));
+                if (content.mpOBJ_msg_time_msg_childtime != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+                    content.mpOBJ_msg_time_msg_childtime->::cGUIObjChildAnimationRoot::setChildAnimationCurrentFrame(0.0f);
+                }
+            }
+            content.mAddTime = time;
+            if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
+                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(this->mpSeRes, static_cast<u32>(3));
+                ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, content.mAddTime, true);
+            } else {
+                ::elf_v_Z14SetMessageTimeP14cGUIObjMessageS0_fb(content.mpOBJ_msg_time_m_time01, content.mpOBJ_msg_time_m_time02, time, true);
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (68 bytes)
@@ -191,10 +311,47 @@ __attribute__((weak)) void uGUIQuestActive::checkMode() {
 // void uGUIQuestActive::setMode(uGUIQuestActive::MODE mode);
 
 // Address: 0x00beac20 - 0x00bead3a (282 bytes)
-__attribute__((weak)) void uGUIQuestActive::clearAllMessages() {
-    // local: u32 i;
-    DDON_STUB("uGUIQuestActive::clearAllMessages")
-    /* stub */
+void uGUIQuestActive::clearAllMessages() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mQuests.elems[0].mInstTitle.mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[0].mInstTitle.mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[0].mPurposes.elems[0].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[0].mPurposes.elems[0].mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[0].mPurposes.elems[1].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[0].mPurposes.elems[1].mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[0].mPurposes.elems[2].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[0].mPurposes.elems[2].mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[1].mInstTitle.mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[1].mInstTitle.mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[1].mPurposes.elems[0].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[1].mPurposes.elems[0].mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[1].mPurposes.elems[1].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[1].mPurposes.elems[1].mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[1].mPurposes.elems[2].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[1].mPurposes.elems[2].mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[2].mInstTitle.mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[2].mInstTitle.mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[2].mPurposes.elems[0].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[2].mPurposes.elems[0].mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[2].mPurposes.elems[1].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[2].mPurposes.elems[1].mpOBJ_msg->clearMessage();
+    }
+    if (this->mQuests.elems[2].mPurposes.elems[2].mpOBJ_msg != static_cast<cGUIObjMessage*>(nullptr)) {
+        this->mQuests.elems[2].mPurposes.elems[2].mpOBJ_msg->clearMessage();
+    }
+    this->mContent.::uGUIQuestActive::Content::clearAllMessages();
 }
 
 // Omitted: mem-initializer not recorded in DWARF (base uGUIBase has no default constructor)
@@ -337,9 +494,34 @@ void uGUIQuestActive::kill() {
 // void uGUIQuestActive::setObjectMessage(cGUIObject* object, MT_CTSTR msg);
 
 // Address: 0x00bebef0 - 0x00bebf86 (150 bytes)
-__attribute__((weak)) void uGUIQuestActive::evAddPoint(u32 point) {
-    DDON_STUB("uGUIQuestActive::evAddPoint")
-    /* stub */
+void uGUIQuestActive::evAddPoint(u32 point) {
+    // Approximate from the ELF: a call declared from its ELF symbol, its return type from the caller's use; code after a join copied into the arms; the body oracle reports this body.
+    if (this->mContent.mpINST_msg_point != static_cast<cGUIInstAnimation*>(nullptr)) {
+        if (this->mContent.mpINST_msg_point->::cGUIInstAnimation::getSequenceId() == static_cast<u32>(1000003)) {
+            // inferred: a temporary for the value the load at 0xbebf17 read, used twice; no DWARF local holds it
+            u32 t1 = this->mContent.mAddPoint;
+            this->mContent.mAddPoint = point + t1;
+            ::elf_v_Z15SetMessagePointP14cGUIObjMessagejb(this->mContent.mpOBJ_msg_point_m_point00, point + t1, true);
+        } else {
+            this->::uGUIBase::setSequenceId(this->mContent.mpINST_msg_point, static_cast<u32>(1000003), true);
+            this->mContent.mAddPoint = point;
+            if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
+                static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(this->mpSeRes, static_cast<u32>(2));
+                ::elf_v_Z15SetMessagePointP14cGUIObjMessagejb(this->mContent.mpOBJ_msg_point_m_point00, this->mContent.mAddPoint, true);
+            } else {
+                ::elf_v_Z15SetMessagePointP14cGUIObjMessagejb(this->mContent.mpOBJ_msg_point_m_point00, point, true);
+            }
+        }
+    } else {
+        this->::uGUIBase::setSequenceId(static_cast<cGUIInstAnimation*>(nullptr), static_cast<u32>(1000003), true);
+        this->mContent.mAddPoint = point;
+        if (this->mpSeRes != static_cast<rSoundRequest*>(nullptr)) {
+            static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::requestSE(this->mpSeRes, static_cast<u32>(2));
+            ::elf_v_Z15SetMessagePointP14cGUIObjMessagejb(this->mContent.mpOBJ_msg_point_m_point00, this->mContent.mAddPoint, true);
+        } else {
+            ::elf_v_Z15SetMessagePointP14cGUIObjMessagejb(this->mContent.mpOBJ_msg_point_m_point00, point, true);
+        }
+    }
 }
 
 // Address: 0x00bebfa0 - 0x00bebfac (12 bytes)
@@ -349,9 +531,9 @@ void uGUIQuestActive::evAddTime(f32 time) {
 }
 
 // Address: 0x00be9bd0 - 0x00be9bea (26 bytes)
-__attribute__((weak)) void uGUIQuestActive::updateInit() {
-    DDON_STUB("uGUIQuestActive::updateInit")
-    /* stub */
+void uGUIQuestActive::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIQuestActive::updateWait);
 }
 
 // Address: 0x00be9c40 - 0x00be9d54 (276 bytes)

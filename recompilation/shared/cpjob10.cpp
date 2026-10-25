@@ -7,6 +7,8 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
+#include "cContextInterface.h"
+#include "cEfcHandle.h"
 #include "cHumanAction.h"
 #include "cUnit.h"
 #include "cpChargeCtrl.h"
@@ -15,6 +17,9 @@
 #include "cpMotionSe.h"
 #include "cpObjCollision.h"
 #include "nDDOUtility.h"
+#include "nHumanMsg.h"
+#include "sEffect.h"
+#include "sEffectExt.h"
 #include "sGUI.h"
 #include "sGUIExt.h"
 #include "sSound.h"
@@ -142,9 +147,57 @@ void cpJob10::updatePtr() {
 }
 
 // Address: 0x0018a7f0 - 0x0018a9b6 (454 bytes)
-__attribute__((weak)) void cpJob10::updateEfcHandle() {
-    DDON_STUB("cpJob10::updateEfcHandle")
-    /* stub */
+void cpJob10::updateEfcHandle() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mEfcLanceNormalHnd != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mEfcLanceNormalHnd) != false) {
+            this->mEfcLanceNormalHnd->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mEfcLanceNormalHnd = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mEfcLanceNukeBoostHnd != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mEfcLanceNukeBoostHnd) != false) {
+            this->mEfcLanceNukeBoostHnd->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mEfcLanceNukeBoostHnd = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mEfcLanceSupportBoostHnd != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mEfcLanceSupportBoostHnd) != false) {
+            this->mEfcLanceSupportBoostHnd->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mEfcLanceSupportBoostHnd = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mEfcBoostAuraHnd != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mEfcBoostAuraHnd) != false) {
+            this->mEfcBoostAuraHnd->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mEfcBoostAuraHnd = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mEfcLanceHanyouHnd != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mEfcLanceHanyouHnd) != false) {
+            this->mEfcLanceHanyouHnd->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mEfcLanceHanyouHnd = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mEfcLanceZanzouHnd != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mEfcLanceZanzouHnd) != false) {
+            this->mEfcLanceZanzouHnd->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mEfcLanceZanzouHnd = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mpCs08EfcHnd != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpCs08EfcHnd) != false) {
+            this->mpCs08EfcHnd->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mpCs08EfcHnd = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mpCs08EfcHndSphere != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpCs08EfcHndSphere) != false) {
+            this->mpCs08EfcHndSphere->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mpCs08EfcHndSphere = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x0018aa10 - 0x0018ab58 (328 bytes)
@@ -422,17 +475,18 @@ __attribute__((weak)) void cpJob10::setJob10Motion(u32 motNo, bool forcible, u32
 }
 
 // Address: 0x0018f9a0 - 0x0018f9c0 (32 bytes)
-__attribute__((weak)) u16 cpJob10::getActFreeWork() const {
-    // local: cContextInterface& contxt;
-    DDON_STUB("cpJob10::getActFreeWork")
-    return {};
+u16 cpJob10::getActFreeWork() const {
+    // DWARF local not rendered: cContextInterface& contxt;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned short>(::cContextInterface::getActFreeWork(this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextInstance, this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextCharacter));
 }
 
 // Address: 0x0018f9c0 - 0x0018f9db (27 bytes)
-__attribute__((weak)) void cpJob10::setActFreeWork(u16 work) {
-    // local: cContextInterface& contxt;
-    DDON_STUB("cpJob10::setActFreeWork")
-    /* stub */
+void cpJob10::setActFreeWork(u16 work) {
+    // DWARF local not rendered: cContextInterface& contxt;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u16 used as u32
+    ::cContextInterface::setActFreeWork(this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextInstance, this->::cpJobBase::mpHuman->::uDDOModel::mContextInterface.mpContextCharacter, static_cast<u32>(work));
 }
 
 // No out-of-line body: no code in the ELF
@@ -472,9 +526,32 @@ __attribute__((weak)) bool cpJob10::canEndureInClimb() {
 }
 
 // Address: 0x0018fb30 - 0x0018fb98 (104 bytes)
-__attribute__((weak)) bool cpJob10::checkCndEnableDelayCombo() const {
-    DDON_STUB("cpJob10::checkCndEnableDelayCombo")
-    return {};
+bool cpJob10::checkCndEnableDelayCombo() const {
+    // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc68 from unsigned long
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x18fb40 read, used 4 times; no DWARF local holds it
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+        if (t0 != static_cast<unsigned long>(0)) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                return false;
+            } else {
+                // inferred: a temporary for the result of the call at 0x18fb69, used once; no DWARF local holds it
+                u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                // inferred: a temporary for the result of the call at 0x18fb76, used once; no DWARF local holds it
+                u32 t2 = ::nHuman::getNormalSkillIdArrayIndex(static_cast<nHuman::GROW_NORMAL_SKILL_ENUM>(1));
+                return static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(40))) + static_cast<unsigned long>(t2 * static_cast<u32>(4))) + static_cast<long>(3176))) > static_cast<int>(0);
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0018fba0 - 0x0018fcb7 (279 bytes)
@@ -636,10 +713,12 @@ __attribute__((weak)) void cpJob10::reqHealPartyHealAll() {
 // void cpJob10::reqSupLimitBreakShl(u32 id);
 
 // Address: 0x0018ffc0 - 0x0018ffec (44 bytes)
-__attribute__((weak)) bool cpJob10::canUseCs02Air() const {
-    // local: u32 limit;
-    DDON_STUB("cpJob10::canUseCs02Air")
-    return {};
+bool cpJob10::canUseCs02Air() const {
+    // DWARF local not rendered: u32 limit;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the result of the call at 0x18ffd2, used once; no DWARF local holds it
+    f32 t0 = this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(36));
+    return this->mUseNumCustom02Air < static_cast<unsigned int>(static_cast<long>(t0));
 }
 
 // Address: 0x0018fff0 - 0x0018fff7 (7 bytes)
@@ -897,9 +976,10 @@ __attribute__((weak)) cpJob10::CS08_SHL_SIZE cpJob10::getCs08ShlSize() const {
 }
 
 // Address: 0x00190d10 - 0x00190d18 (8 bytes)
-__attribute__((weak)) cpJob10::CS08_SHL_SIZE cpJob10::getCs08ShlSizeCache() const {
-    DDON_STUB("cpJob10::getCs08ShlSizeCache")
-    return {};
+cpJob10::CS08_SHL_SIZE cpJob10::getCs08ShlSizeCache() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u16 used as cpJob10::CS08_SHL_SIZE
+    return static_cast<cpJob10::CS08_SHL_SIZE>(this->mCs08ShlSizeCache);
 }
 
 // Address: 0x00190d20 - 0x00190d28 (8 bytes)
@@ -909,10 +989,31 @@ __attribute__((weak)) void cpJob10::setCs08ShlSizeCache(cpJob10::CS08_SHL_SIZE s
 }
 
 // Address: 0x00190d30 - 0x00190dc5 (149 bytes)
-__attribute__((weak)) f32 cpJob10::getCs08PreShlChargeFrameMax() const {
-    // local: f32 chargeFrameMax;
-    DDON_STUB("cpJob10::getCs08PreShlChargeFrameMax")
-    return {};
+f32 cpJob10::getCs08PreShlChargeFrameMax() const {
+    // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x948 from unsigned long
+    f32 chargeFrameMax = this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(51));
+    // inferred: a temporary for the value the load at 0x190d4f read, used 4 times; no DWARF local holds it
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+    if (t0 != static_cast<unsigned long>(0)) {
+        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) <= static_cast<unsigned char>(9)) {
+            // inferred: a temporary for the result of the call at 0x190d71, used once; no DWARF local holds it
+            u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(80))) + static_cast<unsigned long>(::nHuman::getCustomSkillIdArrayIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(8)) * static_cast<u32>(4))) + static_cast<long>(2376))) > static_cast<int>(5)) {
+                return this->::cpJobBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(52));
+            } else {
+                return chargeFrameMax;
+            }
+        } else {
+            return chargeFrameMax;
+        }
+    } else {
+        return chargeFrameMax;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (102 bytes)
@@ -1530,9 +1631,10 @@ __attribute__((weak)) f32 cpJob10::cSpiritManager::cSpiritStateBoost::getDecreas
 }
 
 // Address: 0x00191bc0 - 0x00191bc5 (5 bytes)
-__attribute__((weak)) cpJob10::BOOST_MODE cpJob10::cSpiritManager::cSpiritStateBoost::getBoostMode() const {
-    DDON_STUB("cpJob10::cSpiritManager::cSpiritStateBoost::getBoostMode")
-    return {};
+cpJob10::BOOST_MODE cpJob10::cSpiritManager::cSpiritStateBoost::getBoostMode() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as cpJob10::BOOST_MODE
+    return static_cast<cpJob10::BOOST_MODE>(this->mBoostMode);
 }
 
 // Address: 0x00191bd0 - 0x00191bd5 (5 bytes)

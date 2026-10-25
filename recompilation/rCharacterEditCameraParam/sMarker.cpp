@@ -9,6 +9,7 @@
 #include "../shared/cResource.h"
 #include "../shared/cSystem.h"
 #include "../shared/nMarker.h"
+#include "../shared/nQuest.h"
 #include "../shared/rFieldAreaList.h"
 #include "../shared/rGUIMessage.h"
 #include "../shared/rQuestMarkerInfo.h"
@@ -83,10 +84,29 @@ __attribute__((weak)) const nMarker::cMarkerInfo* sMarker::getMarkerInfoStage(co
 }
 
 // Address: 0x007e2cc0 - 0x007e2d42 (130 bytes)
-__attribute__((weak)) const nMarker::cMarkerInfo* sMarker::getMarkerInfoFieldArea(const nQuest::cQuestMarker* pMarker) {
-    // local: const bool isOtherFieldArea;
-    DDON_STUB("sMarker::getMarkerInfoFieldArea")
-    return nullptr;
+const nMarker::cMarkerInfo* sMarker::getMarkerInfoFieldArea(const nQuest::cQuestMarker* pMarker) {
+    // DWARF local not rendered: const bool isOtherFieldArea;
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as int
+    if (pMarker != static_cast<const nQuest::cQuestMarker*>(nullptr)) {
+        if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
+            // inferred: a temporary for the value the load at 0x7e2cdf read, used once; no DWARF local holds it
+            s32 t0 = this->mFieldAreaId;
+            // inferred: a temporary for the result of the call at 0x7e2ce9, used once; no DWARF local holds it
+            s32 t1 = pMarker->::nQuest::cQuestMarker::getStageNo();
+            if (this->mpFieldAreaList != static_cast<rFieldAreaList*>(nullptr)) {
+                if (t0 == static_cast<int>(this->mpFieldAreaList->::rFieldAreaList::getFieldAreaIdFromStageList(t1))) {
+                    return pMarker->::nQuest::cQuestMarker::getMarkerInfoPtr();
+                }
+            } else {
+                if (t0 == static_cast<s32>(0)) {
+                    return pMarker->::nQuest::cQuestMarker::getMarkerInfoPtr();
+                }
+            }
+            return this->::sMarker::getFieldAreaAdjoinMarkerInfo(pMarker->::nQuest::cQuestMarker::getStageNo());
+        }
+    }
+    return static_cast<const nMarker::cMarkerInfo*>(nullptr);
 }
 
 // Address: 0x007e2fb0 - 0x007e30d0 (288 bytes)
@@ -394,10 +414,15 @@ bool sMarker::hasChangedFieldAreaResource() const {
 }
 
 // Address: 0x007e51b0 - 0x007e51e1 (49 bytes)
-__attribute__((weak)) bool sMarker::isLoadFieldAreaResource(s32 stageNo) const {
-    // local: const cFieldAreaInfo* pFieldAreaInfo;
-    DDON_STUB("sMarker::isLoadFieldAreaResource")
-    return {};
+bool sMarker::isLoadFieldAreaResource(s32 stageNo) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as int
+    const rFieldAreaList::cFieldAreaInfo* pFieldAreaInfo = this->mpFieldAreaList->::rFieldAreaList::getFieldAreaInfoFromStageNo(stageNo);
+    if (pFieldAreaInfo != static_cast<const rFieldAreaList::cFieldAreaInfo*>(nullptr)) {
+        return this->mFieldAreaId == static_cast<int>(pFieldAreaInfo->mFieldAreaId);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x007e51f0 - 0x007e5202 (18 bytes)

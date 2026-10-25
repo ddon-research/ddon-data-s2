@@ -12,6 +12,8 @@
 class MtAllocator;
 class MtCriticalSection;
 class MtDTI;
+class MtNetContext;
+class MtNetCore;
 class MtNetMediator;
 class MtPropertyList;
 
@@ -259,6 +261,10 @@ public:
 
 class MtNetObject : public MtObject
 {
+    // inferred: MtNetContext::addDependency names MtNetObject::mIsThreadSafe
+    friend class MtNetContext;
+    // inferred: MtNetCore::addDependency names MtNetObject::mIsThreadSafe
+    friend class MtNetCore;
     // inferred: MtNetMediator::setLibsslContextId names MtNetObject::mCS
     friend class MtNetMediator;
 public:

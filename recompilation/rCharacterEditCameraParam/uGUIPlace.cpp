@@ -11,6 +11,8 @@
 #include "../shared/cUnit.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
 #include "../shared/sGame.h"
 #include "../shared/sMain.h"
 #include "../shared/uGUI.h"
@@ -99,9 +101,23 @@ bool uGUIPlace::loadResource() {
 }
 
 // Address: 0x00b97340 - 0x00b973ff (191 bytes)
-__attribute__((weak)) void uGUIPlace::setup() {
-    DDON_STUB("uGUIPlace::setup")
-    /* stub */
+void uGUIPlace::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(0)), true);
+    this->setPlay(true);
+    this->::uGUIBase::setFlowAndInit(static_cast<u32>(3), false);
+    // inferred: a temporary for the result of the call at 0xb973a8, used twice; no DWARF local holds it
+    cGUIInstance* t0 = this->getInstance(static_cast<u32>(3), false);
+    this->mpINST_msg_place = static_cast<cGUIInstAnimation*>(t0);
+    this->mpOBJ_test_message_Message = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(2)));
+    if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpINST_msg_place->::cGUIInstance::setVisible(false);
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPlace::updateInit);
 }
 
 // Address: 0x00b97420 - 0x00b97451 (49 bytes)
@@ -134,9 +150,15 @@ __attribute__((weak)) void uGUIPlace::setSpotName(u32 spotId) {
 }
 
 // Address: 0x00b97590 - 0x00b975a5 (21 bytes)
-__attribute__((weak)) bool uGUIPlace::isDisp() const {
-    DDON_STUB("uGUIPlace::isDisp")
-    return {};
+bool uGUIPlace::isDisp() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x58 from cGUIInstAnimation*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    if (this->mpINST_msg_place != static_cast<cGUIInstAnimation*>(nullptr)) {
+        return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpINST_msg_place) + static_cast<long>(88))) & static_cast<unsigned char>(1));
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00b975b0 - 0x00b975b8 (8 bytes)
@@ -146,9 +168,9 @@ void uGUIPlace::startDisp() {
 }
 
 // Address: 0x00b97400 - 0x00b9741a (26 bytes)
-__attribute__((weak)) void uGUIPlace::updateInit() {
-    DDON_STUB("uGUIPlace::updateInit")
-    /* stub */
+void uGUIPlace::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPlace::updateWait);
 }
 
 // Address: 0x00b975c0 - 0x00b97788 (456 bytes)

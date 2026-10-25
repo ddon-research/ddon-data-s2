@@ -7,6 +7,7 @@
 #include "../shared/MtPrimitive2D.h"
 #include "../shared/MtStream.h"
 #include "../shared/MtString.h"
+#include "cGUIFontFilter.h"
 #include "../shared/cResource.h"
 #include "../shared/nGUI.h"
 #ifndef DDON_STUB
@@ -309,11 +310,30 @@ t64 rGUI::getUpdateTime2() const {
 // nGUI::ANIMATION* rGUI::getAnimationAdrs() const;
 
 // Address: 0x012128d0 - 0x01212908 (56 bytes)
-__attribute__((weak)) nGUI::ANIMATION* rGUI::getAnimation(u32 id) const {
-    // local: ANIMATION* prAnimation;
-    // local: u32 i;
-    DDON_STUB("rGUI::getAnimation")
-    return nullptr;
+nGUI::ANIMATION* rGUI::getAnimation(u32 id) const {
+    // DWARF local not rendered: ANIMATION* prAnimation;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x12128f0 carries; no location-less local in scope fits
+    u32 v0_0 = this->mpHeader->animationNum;
+    if (v0_0 != static_cast<u32>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        unsigned int i0_1 = static_cast<unsigned int>(0);
+        // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+        for (nGUI::ANIMATION* p0_2 = this->mpHeader->pAnimation;;) {
+            if (p0_2->id == id) {
+                return p0_2;
+            } else {
+                if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_1 += static_cast<unsigned int>(1);
+                    p0_2 += static_cast<int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<nGUI::ANIMATION*>(nullptr);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -443,11 +463,36 @@ u32 rGUI::getFontFilterNum() const {
 }
 
 // Address: 0x012159d0 - 0x01215a4c (124 bytes)
-__attribute__((weak)) cGUIFontFilter* rGUI::getFontFilterFromId(u32 id) const {
-    // local: u32 i;
-    // local: cGUIFontFilter* pFontFilter;
-    DDON_STUB("rGUI::getFontFilterFromId")
-    return nullptr;
+cGUIFontFilter* rGUI::getFontFilterFromId(u32 id) const {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cGUIFontFilter* pFontFilter;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x1215a41; no location-less local in scope fits
+    cGUIFontFilter* v1_0;
+    if (this->mpFontFilter == static_cast<cGUIFontFilter* *>(nullptr)) {
+        v1_0 = static_cast<cGUIFontFilter*>(nullptr);
+    } else {
+        if (this->getFontFilterNum() == static_cast<u32>(0)) {
+            v1_0 = static_cast<cGUIFontFilter*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                if (this->mpFontFilter[i0_2] != static_cast<cGUIFontFilter*>(nullptr)) {
+                    if (this->mpFontFilter[i0_2]->mId == id) {
+                        v1_0 = this->mpFontFilter[i0_2];
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < this->getFontFilterNum()) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cGUIFontFilter*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -586,15 +631,19 @@ nGUI::GENERALRESOURCE* rGUI::getGeneralResourceFromId(u32 id) const {
 // void rGUI::getResourcePath(MT_STR retPath, u32 length, MT_CTSTR basePath, MT_CTSTR srcPath);
 
 // Address: 0x01b9dd10 - 0x01b9dd17 (7 bytes)
-__attribute__((weak)) bool rGUI::isUseAlphaMask() const {
-    DDON_STUB("rGUI::isUseAlphaMask")
-    return {};
+bool rGUI::isUseAlphaMask() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mAttr & static_cast<u32>(1));
 }
 
 // Address: 0x01b9ddd0 - 0x01b9ddd8 (8 bytes)
-__attribute__((weak)) bool rGUI::is3D() const {
-    DDON_STUB("rGUI::is3D")
-    return {};
+bool rGUI::is3D() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x78 from const rGUI*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(120))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01b9dd70 - 0x01b9dd7c (12 bytes)

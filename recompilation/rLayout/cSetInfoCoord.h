@@ -100,3 +100,9 @@ public:
     s32 mTblIndex;  // offset: 0x40
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s32 cSetInfoCoord::getAreaHitNo() const {
+    return this->mAreaHitNo;
+}

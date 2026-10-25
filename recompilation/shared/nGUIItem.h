@@ -23,7 +23,6 @@ class MtObject;
 class MtString;
 class cItemParam;
 class cOmControl;
-namespace nGUIItem { struct cLoadCategory; }
 namespace nGUIItem { struct cLoadOption; }
 namespace nGUIItem { struct cSwitchStorage; }
 class uGUIBase;
@@ -32,6 +31,7 @@ class uGUIItemBase01;
 // Declarations
 namespace nGUIItem { class cItem; }
 namespace nGUIItem { class cItemList; }
+namespace nGUIItem { struct cLoadCategory; }
 
 namespace nGUIItem {
     enum EQUIP_INFO
@@ -275,6 +275,19 @@ namespace nGUIItem {
     };
 }  // namespace nGUIItem
 
+namespace nGUIItem {
+    struct cLoadCategory
+    {
+    public:
+        cLoadCategory();
+        void init();
+        void fill(bool b);
+        void setEnableCategory(sItemManager::cItemBag::ITEM_CATEGORY cat, bool b);
+    private:
+        nDDOUtility::cArray<bool, 7> mEnableCategory;  // offset: 0x0
+    };
+}  // namespace nGUIItem
+
 // Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline nGUIItem::cItem::cItem() {
@@ -298,6 +311,12 @@ inline nGUIItem::cItem::cItem() {
     this->mLoadFrom = static_cast<nGUIItem::LOAD_FROM>(0);
     this->mBagType = static_cast<nItem::E_STORAGE_TYPE>(0);
     this->mToBagType = static_cast<nItem::E_STORAGE_TYPE>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 nGUIItem::cItem::getItemNo() const {
+    return this->mItemNo;
 }
 
 // Inline, no code of its own: checked where it is inlined.

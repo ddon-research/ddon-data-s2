@@ -128,15 +128,23 @@ bool cArcLoaderBase::isArcLoad() const {
 }
 
 // Address: 0x000247e0 - 0x000247f5 (21 bytes)
-__attribute__((weak)) rArchive* cArcLoaderBase::getArcPtr(u32 index) {
-    DDON_STUB("cArcLoaderBase::getArcPtr")
-    return nullptr;
+rArchive* cArcLoaderBase::getArcPtr(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mNum) {
+        return this->mppArc[index];
+    } else {
+        return static_cast<rArchive*>(nullptr);
+    }
 }
 
 // Address: 0x00024800 - 0x00024814 (20 bytes)
-__attribute__((weak)) ARC_TAGID cArcLoaderBase::getArcTag(u32 index) {
-    DDON_STUB("cArcLoaderBase::getArcTag")
-    return {};
+ARC_TAGID cArcLoaderBase::getArcTag(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mNum) {
+        return this->mpTag[index];
+    } else {
+        return static_cast<ARC_TAGID>(0);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -205,9 +213,11 @@ __attribute__((weak)) void cArcLoaderBase::updateLoadFilishRes(ARC_TAGID tag, rA
 }
 
 // Address: 0x000247b0 - 0x000247c3 (19 bytes)
-__attribute__((weak)) void cArcLoaderBase::setArcPtrIndex(rArchive* pArc, u32 index) {
-    DDON_STUB("cArcLoaderBase::setArcPtrIndex")
-    /* stub */
+void cArcLoaderBase::setArcPtrIndex(rArchive* pArc, u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mNum) {
+        this->mppArc[index] = pArc;
+    }
 }
 
 // Address: 0x000248a0 - 0x000248a5 (5 bytes)

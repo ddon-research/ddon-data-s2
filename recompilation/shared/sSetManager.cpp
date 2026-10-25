@@ -29,7 +29,10 @@
 #include "rLayoutGroupParam.h"
 #include "../rLayoutPreset/rLayoutPreset.h"
 #include "../rNamedParam/rNamedParam.h"
+#include "../rStageConnect/sArea.h"
+#include "../rStageConnect/sAreaExt.h"
 #include "sContextManager.h"
+#include "sControlManager.h"
 #include "sEnemyManager.h"
 #include "sNetwork.h"
 #include "sNetworkExt.h"
@@ -228,11 +231,55 @@ __attribute__((weak)) void sSetManager::final() {
 // void sSetManager::reserveCancelUnitDataEnemy(u32 unitID, const nLayout::stLayoutID& layoutID, u32 id);
 
 // Address: 0x00843190 - 0x00843288 (248 bytes)
-__attribute__((weak)) bool sSetManager::setKilledMgrData(sSetManager::ManageDataArrayCur& ar, const nLayout::stLayoutID& layoutID, s32 setNo, cGroupParam* pGp) {
-    // local: cOmGroupData& data;
-    // local: u32 stageSeq;
-    DDON_STUB("sSetManager::setKilledMgrData")
-    return {};
+bool sSetManager::setKilledMgrData(sSetManager::ManageDataArrayCur& ar, const nLayout::stLayoutID& layoutID, s32 setNo, cGroupParam* pGp) {
+    // DWARF local not rendered: cOmGroupData& data;
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x10 from sSetManager*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from sSetManager::cOmGroupData*
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    if (this->mIsSetup != false) {
+        if (setNo > static_cast<s32>(-1)) {
+            if (pGp != static_cast<cGroupParam*>(nullptr)) {
+                // inferred: a temporary for the value the load at 0x8431c9 read, used 4 times; no DWARF local holds it
+                const u32 t0 = layoutID.mLayoutID;
+                if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                    if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                    } else {
+                        ::abort();
+                    }
+                }
+                if ((ar.elems[(t0 <= static_cast<u32>(524287)) ? (t0 >> static_cast<u32>(10)) : static_cast<u32>(0)].mGroupData & static_cast<u32>(511)) == static_cast<u32>(511)) {
+                    u32 stageSeq = static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::convertStageIndex(static_cast<s32>(layoutID.mLayoutID & static_cast<u32>(1023)));
+                    // inferred: a temporary for the value the load at 0x84323b read, used twice; no DWARF local holds it
+                    unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&ar.elems[(t0 <= static_cast<u32>(524287)) ? (t0 >> static_cast<u32>(10)) : static_cast<u32>(0)]) + static_cast<long>(8));
+                    ar.elems[(t0 <= static_cast<u32>(524287)) ? (t0 >> static_cast<u32>(10)) : static_cast<u32>(0)].mGroupData = (t1 & static_cast<unsigned int>(4294966784)) | (stageSeq & static_cast<u32>(511));
+                    ar.elems[(t0 <= static_cast<u32>(524287)) ? (t0 >> static_cast<u32>(10)) : static_cast<u32>(0)].mGroupData = static_cast<u32>(static_cast<unsigned long>(((t1 & static_cast<unsigned int>(4294966784)) | (stageSeq & static_cast<u32>(511))) & static_cast<unsigned int>(4294705663)) | static_cast<unsigned long>((layoutID.mLayoutID >> static_cast<u32>(1)) & static_cast<u32>(261632)));
+                    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                        } else {
+                            ::abort();
+                        }
+                    }
+                    return true;
+                } else {
+                    if ((static_cast<unsigned long>(::cSystem::mJobSafe) | static_cast<unsigned long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(16)))) != static_cast<unsigned long>(0)) {
+                        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) == static_cast<int>(0)) {
+                        } else {
+                            ::abort();
+                        }
+                    }
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (58 bytes)
@@ -699,10 +746,10 @@ __attribute__((weak)) void sSetManager::addPartsGroup(cGroupParam* pParam, rLayo
 // uDDOModel* sSetManager::createNpcInstance(u32, u32, bool);
 
 // Address: 0x00845170 - 0x0084518f (31 bytes)
-__attribute__((weak)) uControl* sSetManager::createControlInstance(u32 ctrlType, u32 uid, u32 unit_id) {
-    // local: uControl* pCtrl;
-    DDON_STUB("sSetManager::createControlInstance")
-    return nullptr;
+uControl* sSetManager::createControlInstance(u32 ctrlType, u32 uid, u32 unit_id) {
+    // DWARF local not rendered: uControl* pCtrl;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return ::sControlManager::getInstance()->::sControlManager::createControl(static_cast<unsigned char>(ctrlType), static_cast<u32>(0), uid, unit_id, static_cast<cContextInstance*>(nullptr));
 }
 
 // Address: 0x00845040 - 0x008450b2 (114 bytes)
@@ -955,14 +1002,50 @@ __attribute__((weak)) void sSetManager::addRequestCreateContextInfo(u32 Id, u32 
 // void sSetManager::clearRequestCreateContextInfo();
 
 // Address: 0x00845ac0 - 0x00845bdb (283 bytes)
-__attribute__((weak)) void sSetManager::sendRequestCreateContext() {
-    // local: u32 id;
-    // local: u32 uniqueId;
-    // local: s32 stageNo;
-    // local: s32 encountArea;
-    // local: MtTypedArray<CreateContextParam>& param;
-    DDON_STUB("sSetManager::sendRequestCreateContext")
-    /* stub */
+void sSetManager::sendRequestCreateContext() {
+    // DWARF local not rendered: MtTypedArray<CreateContextParam>& param;
+    // Approximate from the ELF: a frame slot read as the DWARF object it holds; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14 from MtObject*
+    u32 id = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*this->mRequestCreateContextInfo.::MtArray::getBuffer()) + static_cast<long>(8));
+    u32 uniqueId = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*this->mRequestCreateContextInfo.::MtArray::getBuffer()) + static_cast<long>(12));
+    s32 stageNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*this->mRequestCreateContextInfo.::MtArray::getBuffer()) + static_cast<long>(16));
+    s32 encountArea = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*this->mRequestCreateContextInfo.::MtArray::getBuffer()) + static_cast<long>(20));
+    // inferred: a temporary for the value the load at 0x845af6 read, used once; no DWARF local holds it
+    cNetGameServer* t0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+    if (t0->::cNetGameServer::reqGetSetContext(id, uniqueId, stageNo, encountArea, static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby()) != false) {
+        ::sContextManager::getInstance()->::sContextManager::createContextInstance(id, uniqueId, stageNo, encountArea);
+    }
+    if (this->mRequestCreateContextInfo.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x845b60 carries; no location-less local in scope fits
+        u32 v0_0 = this->mRequestCreateContextInfo.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mRequestCreateContextInfo.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mRequestCreateContextInfo.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mRequestCreateContextInfo.::MtArray::mLength) {
+                    v0_0 = this->mRequestCreateContextInfo.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mRequestCreateContextInfo.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRequestCreateContextInfo.::MtArray::mpArray));
+    }
+    this->mRequestCreateContextInfo.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mRequestCreateContextInfo.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mRequestCreateContextInfo.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1506,15 +1589,17 @@ void sSetManager::cUnitData::setPrio(u32 prio) {
 // void sSetManager::cUnitData::killAndEmpty();
 
 // Address: 0x01acdb90 - 0x01acdb95 (5 bytes)
-__attribute__((weak)) u32 sSetManager::cUnitData::getReserveIDGroup() const {
-    DDON_STUB("sSetManager::cUnitData::getReserveIDGroup")
-    return {};
+u32 sSetManager::cUnitData::getReserveIDGroup() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x18 from const sSetManager::cUnitData*
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(24));
 }
 
 // Address: 0x01acdba0 - 0x01acdba5 (5 bytes)
-__attribute__((weak)) u32 sSetManager::cUnitData::getReserveIDID() const {
-    DDON_STUB("sSetManager::cUnitData::getReserveIDID")
-    return {};
+u32 sSetManager::cUnitData::getReserveIDID() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x1a from const sSetManager::cUnitData*
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(26));
 }
 
 // No out-of-line body: no code in the ELF

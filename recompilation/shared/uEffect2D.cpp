@@ -7,7 +7,14 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtPrimitive3D.h"
+#include "cDraw.h"
+#include "cParticle2D.h"
+#include "cResource.h"
+#include "cUnit.h"
+#include "nDrawTexture.h"
 #include "rEffect2D.h"
+#include "sEffect.h"
+#include "sPrimitive.h"
 #include "uCoord.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -175,75 +182,116 @@ void uEffect2D::setEffectParent(uCoord* pParent) {
 }
 
 // Address: 0x01ad60b0 - 0x01ad60bb (11 bytes)
-__attribute__((weak)) bool uEffect2D::getSleepMode() const {
-    DDON_STUB("uEffect2D::getSleepMode")
-    return {};
+bool uEffect2D::getSleepMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uEffect2D*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01ad60c0 - 0x01ad60db (27 bytes)
-__attribute__((weak)) void uEffect2D::setSleepMode(bool Mode) {
-    DDON_STUB("uEffect2D::setSleepMode")
-    /* stub */
+void uEffect2D::setSleepMode(bool Mode) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (Mode) {
+        this->mStatus = this->mStatus | static_cast<u32>(2);
+    } else {
+        this->mStatus = this->mStatus & static_cast<u32>(65533);
+    }
 }
 
 // Address: 0x01b66250 - 0x01b6625c (12 bytes)
-__attribute__((weak)) bool uEffect2D::getSchedulerMode() const {
-    DDON_STUB("uEffect2D::getSchedulerMode")
-    return {};
+bool uEffect2D::getSchedulerMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uEffect2D*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x01b66260 - 0x01b6627b (27 bytes)
-__attribute__((weak)) void uEffect2D::setSchedulerMode(bool Mode) {
-    DDON_STUB("uEffect2D::setSchedulerMode")
-    /* stub */
+void uEffect2D::setSchedulerMode(bool Mode) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (Mode) {
+        this->mStatus = this->mStatus | static_cast<u32>(4);
+    } else {
+        this->mStatus = this->mStatus & static_cast<u32>(65531);
+    }
 }
 
 // Address: 0x01b66280 - 0x01b6628c (12 bytes)
-__attribute__((weak)) bool uEffect2D::getEventMode() const {
-    DDON_STUB("uEffect2D::getEventMode")
-    return {};
+bool uEffect2D::getEventMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uEffect2D*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x01b66290 - 0x01b662ab (27 bytes)
-__attribute__((weak)) void uEffect2D::setEventMode(bool Mode) {
-    DDON_STUB("uEffect2D::setEventMode")
-    /* stub */
+void uEffect2D::setEventMode(bool Mode) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (Mode) {
+        this->mStatus = this->mStatus | static_cast<u32>(8);
+    } else {
+        this->mStatus = this->mStatus & static_cast<u32>(65527);
+    }
 }
 
 // Address: 0x01b66240 - 0x01b66249 (9 bytes)
-__attribute__((weak)) bool uEffect2D::getTimerControlMode() const {
-    DDON_STUB("uEffect2D::getTimerControlMode")
-    return {};
+bool uEffect2D::getTimerControlMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uEffect2D*
+    // inferred: a value cast to the type its use takes: const unsigned char used as bool
+    return static_cast<bool>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(1));
 }
 
 // Address: 0x01b662b0 - 0x01b662d0 (32 bytes)
-__attribute__((weak)) void uEffect2D::setTimerControlMode(bool Mode) {
-    DDON_STUB("uEffect2D::setTimerControlMode")
-    /* stub */
+void uEffect2D::setTimerControlMode(bool Mode) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (Mode) {
+        this->mStatus = this->mStatus | static_cast<u32>(256);
+    } else {
+        this->mStatus = this->mStatus & static_cast<u32>(65279);
+    }
 }
 
 // Address: 0x01b662d0 - 0x01b662db (11 bytes)
-__attribute__((weak)) bool uEffect2D::getWorldPosMode() const {
-    DDON_STUB("uEffect2D::getWorldPosMode")
-    return {};
+bool uEffect2D::getWorldPosMode() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x111 from const uEffect2D*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(273))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01b662e0 - 0x01b66300 (32 bytes)
-__attribute__((weak)) void uEffect2D::setWorldPosMode(bool Mode) {
-    DDON_STUB("uEffect2D::setWorldPosMode")
-    /* stub */
+void uEffect2D::setWorldPosMode(bool Mode) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (Mode) {
+        this->mStatus = this->mStatus | static_cast<u32>(512);
+    } else {
+        this->mStatus = this->mStatus & static_cast<u32>(65023);
+    }
 }
 
 // Address: 0x01ad60e0 - 0x01ad60ec (12 bytes)
-__attribute__((weak)) bool uEffect2D::getRestartFlag() const {
-    DDON_STUB("uEffect2D::getRestartFlag")
-    return {};
+bool uEffect2D::getRestartFlag() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x110 from const uEffect2D*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(272))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x01ad60f0 - 0x01ad610b (27 bytes)
-__attribute__((weak)) void uEffect2D::setRestartFlag(bool Flag) {
-    DDON_STUB("uEffect2D::setRestartFlag")
-    /* stub */
+void uEffect2D::setRestartFlag(bool Flag) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (Flag) {
+        this->mStatus = this->mStatus | static_cast<u32>(16);
+    } else {
+        this->mStatus = this->mStatus & static_cast<u32>(65519);
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -401,9 +449,10 @@ u32 uEffect2D::getFlagBitNum() const {
 }
 
 // Address: 0x01b664a0 - 0x01b664b6 (22 bytes)
-__attribute__((weak)) bool uEffect2D::getGroupFlagBit(u32 No) const {
-    DDON_STUB("uEffect2D::getGroupFlagBit")
-    return {};
+bool uEffect2D::getGroupFlagBit(u32 No) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mGroupFlag) >> static_cast<unsigned long>(No & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x01b664c0 - 0x01b664e2 (34 bytes)
@@ -416,9 +465,10 @@ __attribute__((weak)) void uEffect2D::setGroupFlagBit(bool Flag, u32 No) {
 // u32 uEffect2D::getGroupFlag() const;
 
 // Address: 0x01b66510 - 0x01b66526 (22 bytes)
-__attribute__((weak)) bool uEffect2D::getMaterialFlagBit(u32 No) const {
-    DDON_STUB("uEffect2D::getMaterialFlagBit")
-    return {};
+bool uEffect2D::getMaterialFlagBit(u32 No) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mMaterialFlag) >> static_cast<unsigned long>(No & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x01b66530 - 0x01b66552 (34 bytes)
@@ -496,16 +546,80 @@ __attribute__((weak)) void uEffect2D::doFinish() {
 }
 
 // Address: 0x00fcd490 - 0x00fcd55f (207 bytes)
-__attribute__((weak)) void uEffect2D::doRestart() {
-    // local: u32 ctr;
-    DDON_STUB("uEffect2D::doRestart")
-    /* stub */
+void uEffect2D::doRestart() {
+    // Approximate from the ELF: a bitfield unit stored one field at a time; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a wider integer stored into a bitfield; code after the loop copied into an arm that skips it; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x138 from uEffect2D*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x130 from uEffect2D*
+    if (static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312))) == static_cast<unsigned short>(0)) {
+        this->mStatus = (this->mStatus & static_cast<u32>(36812)) | static_cast<u32>(1);
+        this->mTimeInterpolationRate = 1.0f;
+        this->mIntTimeInterpolationRate = static_cast<s32>(256);
+        this->mTimer = static_cast<u32>(0);
+        this->mGeneratorNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
+        this->mGeneratorMoveNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
+        this->mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(304))) >> static_cast<unsigned long>(32);
+        return;
+    }
+    u32 ctr = static_cast<u32>(0);
+    do {
+        this->mGenerator[ctr].::cParticle2DGenerator::restart();
+        this->mGenerator[ctr].::cParticle2DGenerator::closeParticleAll();
+        ctr += static_cast<u32>(1);
+    } while (ctr < static_cast<unsigned short>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312))));
+    this->mStatus = (this->mStatus & static_cast<u32>(36812)) | static_cast<u32>(1);
+    this->mTimeInterpolationRate = 1.0f;
+    this->mIntTimeInterpolationRate = static_cast<s32>(256);
+    this->mTimer = static_cast<u32>(0);
+    this->mGeneratorNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
+    this->mGeneratorMoveNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
+    this->mLifeTimer = (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(304))) >> static_cast<unsigned long>(32);
 }
 
 // Address: 0x00fd0300 - 0x00fd042f (303 bytes)
-__attribute__((weak)) void uEffect2D::doClear() {
-    DDON_STUB("uEffect2D::doClear")
-    /* stub */
+void uEffect2D::doClear() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->releaseGenerator();
+    this->mCreateFlag = static_cast<u32>(0);
+    this->mRTFlag = static_cast<u32>(0);
+    if (this->mpEffect2D != static_cast<rEffect2D*>(nullptr)) {
+        this->mpEffect2D->::cResource::release();
+        this->mpEffect2D = static_cast<rEffect2D*>(nullptr);
+    }
+    if (this->mpTempTexture[0] != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpTempTexture[0]->release();
+        this->mpTempTexture[0] = static_cast<nDraw::Texture*>(nullptr);
+    }
+    if (this->mpTempTexture[1] != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpTempTexture[1]->release();
+        this->mpTempTexture[1] = static_cast<nDraw::Texture*>(nullptr);
+    }
+    if (this->mpTempTexture[2] != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpTempTexture[2]->release();
+        this->mpTempTexture[2] = static_cast<nDraw::Texture*>(nullptr);
+    }
+    if (this->mpTempTexture[3] != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpTempTexture[3]->release();
+        this->mpTempTexture[3] = static_cast<nDraw::Texture*>(nullptr);
+    }
+    if (this->mpDepthStencil[0] != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpDepthStencil[0]->release();
+        this->mpDepthStencil[0] = static_cast<nDraw::Texture*>(nullptr);
+    }
+    if (this->mpDepthStencil[1] != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpDepthStencil[1]->release();
+        this->mpDepthStencil[1] = static_cast<nDraw::Texture*>(nullptr);
+    }
+    if (this->mpDepthStencil[2] != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpDepthStencil[2]->release();
+        this->mpDepthStencil[2] = static_cast<nDraw::Texture*>(nullptr);
+    }
+    if (this->mpDepthStencil[3] != static_cast<nDraw::Texture*>(nullptr)) {
+        this->mpDepthStencil[3]->release();
+        this->mpDepthStencil[3] = static_cast<nDraw::Texture*>(nullptr);
+    }
+    this->mGroupFlag = static_cast<u32>(4294967295);
+    this->mMaterialFlag = static_cast<u32>(4294967295);
 }
 
 // Address: 0x00fd0430 - 0x00fd047a (74 bytes)
@@ -624,18 +738,65 @@ __attribute__((weak)) bool uEffect2D::moveParticleMoveCustom(cParticle2DGenerato
 
 // Address: 0x00fce760 - 0x00fce834 (212 bytes)
 __attribute__((weak)) void uEffect2D::drawScene(cDraw* pDraw) {
-    // local: s32 intAlphaRate;
-    // local: cPrim* pPrim;
-    // local: u8* pDrawBuff;
-    // local: u32 generatorCtr;
-    DDON_STUB("uEffect2D::drawScene")
-    /* stub */
+    // DWARF local not rendered: u8* pDrawBuff;
+    // DWARF local not rendered: u32 generatorCtr;
+    // Approximate from the ELF: code after a join copied into the arms; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    s32 intAlphaRate = this->::uEffect2D::getDrawAlphaRate(pDraw);
+    // inferred: the value the loop at 0xfce7e0 carries; no location-less local in scope fits
+    u8* v0_0;
+    cPrim* pPrim;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_10;
+    if (intAlphaRate != static_cast<s32>(0)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xfce78f, held ahead of the effects the ELF orders after it
+        sPrimitive* t1 = ::sPrimitive::mpInstance;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xfce792, held ahead of the effects the ELF orders after it
+        u32 t2 = this->mDrawPass;
+        pPrim = t1->::sPrimitive::getCPrim(pDraw, static_cast<nDraw::PASS_TYPE>(t2), static_cast<cUnit*>(this));
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7a7, held ahead of the effects the ELF orders after it
+        u32 t4 = this->mDrawBuffSize;
+        if (t4 != static_cast<u32>(0)) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7ba, held ahead of the effects the ELF orders after it
+            sEffect* t5 = ::sEffect::mpInstance;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7bd, held ahead of the effects the ELF orders after it
+            u32 t6 = pDraw->mJobThreadIndex;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7c4, held ahead of the effects the ELF orders after it
+            u8* t7 = t5->::sEffect::getTempBuff(t6, t4);
+            if (this->mGeneratorNum != static_cast<u32>(0)) {
+                v0_0 = t7;
+                i0_10 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        } else {
+            if (this->mGeneratorNum != static_cast<u32>(0)) {
+                v0_0 = static_cast<u8*>(nullptr);
+                i0_10 = static_cast<unsigned int>(0);
+            } else {
+                return;
+            }
+        }
+    } else {
+        return;
+    }
+    for (;;) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xfce7eb, held ahead of the effects the ELF orders after it
+        cParticle2DGenerator* t9 = this->mGenerator;
+        t9[i0_10].::cParticle2DGenerator::draw(pDraw, pPrim, intAlphaRate, static_cast<u32>(0), v0_0);
+        if ((i0_10 + static_cast<unsigned int>(1)) < this->mGeneratorNum) {
+            i0_10 += static_cast<unsigned int>(1);
+        } else {
+            break;
+        }
+    }
 }
 
 // Address: 0x00fd17d0 - 0x00fd17e6 (22 bytes)
-__attribute__((weak)) bool uEffect2D::isSubSceneDraw(cDraw* pDraw) const {
-    DDON_STUB("uEffect2D::isSubSceneDraw")
-    return {};
+bool uEffect2D::isSubSceneDraw(cDraw* pDraw) const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x230 from cDraw*
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pDraw) + static_cast<long>(560))) & static_cast<unsigned long>(281474976710656)) >> static_cast<unsigned long>(48));
 }
 
 // Address: 0x00fcd5e0 - 0x00fce754 (4468 bytes)

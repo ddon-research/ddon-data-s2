@@ -281,9 +281,16 @@ __attribute__((weak)) bool cThinkMgrName::cThinkMgr::setMainThinkTbl(s32 thinktb
 }
 
 // Address: 0x00586140 - 0x0058616d (45 bytes)
-__attribute__((weak)) void cThinkMgrName::cThinkMgr::checkStartTbl() {
-    DDON_STUB("cThinkMgrName::cThinkMgr::checkStartTbl")
-    /* stub */
+void cThinkMgrName::cThinkMgr::checkStartTbl() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::cThinkMgrName::cThinkMgr::isStartTbl()) {
+        if (this->mbComboFlg == false) {
+            if (this->mpThinkTblReset != static_cast<u8*>(nullptr)) {
+                this->mpThinkTbl = this->mpThinkTblReset;
+                this->mpTopSelectThinkTbl = this->mpThinkTbl;
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -1082,9 +1089,31 @@ __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::createProperty(Mt
 // cThinkMgrName::cThinkMgrTargetData* cThinkMgrName::cThinkMgrTargetData::operator=(const cThinkMgrName::cThinkMgrTargetData& targetData);
 
 // Address: 0x005848f0 - 0x005849a3 (179 bytes)
-__attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::init() {
-    DDON_STUB("cThinkMgrName::cThinkMgrTargetData::init")
-    /* stub */
+void cThinkMgrName::cThinkMgrTargetData::init() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x2c from cThinkMgrName::cThinkMgrTargetData*
+    this->mMyPos = ::MtVector3::Zero;
+    this->mTargetPos.x = ::MtVector3::Zero.x;
+    this->mTargetPos.y = ::MtVector3::Zero.y;
+    this->mTargetPos.z = ::MtVector3::Zero.z;
+    this->mYLength = 0.0f;
+    this->mAngle = 0.0f;
+    this->mXyzLength = 0.0f;
+    this->mXzLength = 0.0f;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(44)) = static_cast<unsigned long>(0);
+    this->mMotState = static_cast<u32>(0);
+    this->mPriority = 0.0f;
+    this->mId = static_cast<u32>(0);
+    this->mStatusBefore = static_cast<u64>(0);
+    this->mStatus = static_cast<u64>(0);
+    this->mIsTargetDataAll = static_cast<u32>(0);
+    this->mIsTargetType = static_cast<u32>(0);
+    this->mTargetId = static_cast<u32>(0);
+    this->mpTargetChar = static_cast<MtObject*>(nullptr);
+    this->mTargetHandlingTypeThink = static_cast<u32>(1);
+    this->mTargetHandlingType = static_cast<u32>(1);
+    this->mLinkID = static_cast<u32>(0);
+    this->mLinkIdx = static_cast<u32>(0);
 }
 
 // No out-of-line body: 45 inlined copies in 7 functions (800 bytes)

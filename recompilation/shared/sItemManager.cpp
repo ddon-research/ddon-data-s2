@@ -19,6 +19,7 @@
 #include "cResource.h"
 #include "cSystem.h"
 #include "nCharacterData.h"
+#include "nHumanMsg.h"
 #include "rArchiveListArray.h"
 #include "rGUIMessage.h"
 #include "rItemList.h"
@@ -239,10 +240,15 @@ __attribute__((weak)) void sItemManager::createItemSlot(u32 TargetNo) {
 // void sItemManager::releaseItemBag();
 
 // Address: 0x007cfe10 - 0x007cfe22 (18 bytes)
-__attribute__((weak)) sItemManager::cItemBag* sItemManager::setLinkItem(nCharacterData::ITEM_BAG_TYPE no) {
-    // local: cItemBag* pSrc;
-    DDON_STUB("sItemManager::setLinkItem")
-    return nullptr;
+sItemManager::cItemBag* sItemManager::setLinkItem(nCharacterData::ITEM_BAG_TYPE no) {
+    // DWARF local not rendered: cItemBag* pSrc;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: nCharacterData::ITEM_BAG_TYPE used as unsigned int
+    if (static_cast<unsigned int>(no) < this->mBag.::MtArray::mLength) {
+        return static_cast<sItemManager::cItemBag*>(this->mBag.::MtArray::mpArray[no]);
+    } else {
+        return static_cast<sItemManager::cItemBag*>(nullptr);
+    }
 }
 
 // Address: 0x007da630 - 0x007da6e4 (180 bytes)
@@ -535,9 +541,33 @@ void sItemManager::setGoldToServerDirect(u32 totalNum, u32 type) {
 // u64 sItemManager::getRim();
 
 // Address: 0x007d89b0 - 0x007d8a45 (149 bytes)
-__attribute__((weak)) u64 sItemManager::getGp() {
-    DDON_STUB("sItemManager::getGp")
-    return {};
+u64 sItemManager::getGp() {
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x1120 from sNetwork*
+    // inferred: a value cast to the type its use takes: u64 used as long
+    // inferred: a value cast to the type its use takes: unsigned long used as long
+    if (::scePthreadMutexLock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
+    } else {
+        ::abort();
+    }
+    if (this->mGPControl.mServerResult == static_cast<u8>(0)) {
+        if (this->mGPControl.mUseLimit != static_cast<u64>(0)) {
+            if (static_cast<long>(this->mGPControl.mUseLimit) < static_cast<long>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sNetwork::getInstance()) + static_cast<long>(4384)))) {
+                if (this->mGPControl.mRepeatWaitTime > 0.0f) {
+                } else {
+                    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::getGP() != false) {
+                        this->mGPControl.mServerResult = static_cast<u8>(1);
+                        this->mGPControl.mRepeatWaitTime = 30.0f;
+                    }
+                }
+            }
+        }
+    }
+    if (::scePthreadMutexUnlock(&this->mGPControl.mCS.mCSection) == static_cast<int>(0)) {
+    } else {
+        ::abort();
+    }
+    return this->mPoint[5];
 }
 
 // Address: 0x007d8a50 - 0x007d8ae4 (148 bytes)
@@ -684,10 +714,21 @@ void sItemManager::setGpUseLimit(s64 useLimit) {
 // u32 sItemManager::getMyPawnSlotNum();
 
 // Address: 0x007da950 - 0x007daa61 (273 bytes)
-__attribute__((weak)) void sItemManager::setJobEquip(nCharacterData::stEquipData& Data, u8 job) {
-    // local: u32 jobIndex;
-    DDON_STUB("sItemManager::setJobEquip")
-    /* stub */
+void sItemManager::setJobEquip(nCharacterData::stEquipData& Data, u8 job) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as nHuman::JOB_ENUM
+    u32 jobIndex = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(job));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(1), ::sItemManager::equip_tbl[jobIndex].wepMain, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(2), ::sItemManager::equip_tbl[jobIndex].wepSub, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(5), ::sItemManager::equip_tbl[jobIndex].wearBody, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(8), ::sItemManager::equip_tbl[jobIndex].wearLeg, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(3), ::sItemManager::equip_tbl[jobIndex].protectHelm, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(4), ::sItemManager::equip_tbl[jobIndex].protectBody, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(6), ::sItemManager::equip_tbl[jobIndex].protectArm, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(7), ::sItemManager::equip_tbl[jobIndex].protectLeg, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(9), ::sItemManager::equip_tbl[jobIndex].accessory, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(10), ::sItemManager::equip_tbl[jobIndex].jewelry1, static_cast<u8>(0));
+    Data.::nCharacterData::stEquipData::setEquip(static_cast<u8>(11), ::sItemManager::equip_tbl[jobIndex].jewelry2, static_cast<u8>(0));
 }
 
 // No out-of-line body: no code in the ELF
@@ -826,15 +867,65 @@ void sItemManager::reqKeyItemGetAnnounce(u32 ItemId) {
 // void sItemManager::callbackItemNotice(void* param);
 
 // Address: 0x007d9a40 - 0x007d9a9a (90 bytes)
-__attribute__((weak)) void sItemManager::resetWaitNotice(u8 type) {
-    // local: u32 length;
-    // local: u32 stockNum;
-    // local: u32 index;
-    // local: u32 i;
-    // local: stRequest* pReq;
-    // local: bool result;
-    DDON_STUB("sItemManager::resetWaitNotice")
-    /* stub */
+void sItemManager::resetWaitNotice(u8 type) {
+    // DWARF local not rendered: u32 length;
+    // DWARF local not rendered: u32 stockNum;
+    // DWARF local not rendered: u32 index;
+    // DWARF local not rendered: stRequest* pReq;
+    // DWARF local not rendered: bool result;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x7d9a60 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    u32 v0_1 = this->mRequest.::MtArray::mLength;
+    if (v0_1 != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x7d9a60 carries; no location-less local in scope fits
+        MtObject* v0_0 = *this->mRequest.::MtArray::mpArray;
+        // inferred: DWARF's location-less 'i' (lexical block [0x7d9a47, 0x7d9a99)) is the counter this loop steps
+        u32 i = static_cast<u32>(1);
+        // inferred: the value the loop at 0x7d9a60 carries; the location-less local in scope that fits is declared on no line of the value's writes
+        for (u32 v0_3 = v0_1;;) {
+            if (v0_0 != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_0) + static_cast<long>(16))) != static_cast<unsigned long>(0)) {
+                    if (static_cast<sItemManager::stRequest*>(v0_0)->::sItemManager::stRequest::getResult() != false) {
+                        if (i >= v0_1) {
+                            return;
+                        } else {
+                            if ((v0_3 - static_cast<u32>(1)) != static_cast<u32>(0)) {
+                                i += static_cast<u32>(1);
+                                v0_3 += static_cast<u32>(4294967295);
+                            } else {
+                                break;
+                            }
+                        }
+                    } else {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_0) + static_cast<long>(150))) == type) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_0) + static_cast<long>(151)) = static_cast<unsigned char>(0);
+                        }
+                        return;
+                    }
+                } else {
+                    if (i >= v0_1) {
+                        return;
+                    } else {
+                        if (v0_3 != static_cast<u32>(0)) {
+                            i += static_cast<u32>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            } else {
+                if (i >= v0_1) {
+                    return;
+                } else {
+                    if (v0_3 != static_cast<u32>(0)) {
+                        i += static_cast<u32>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x007d9aa0 - 0x007d9f00 (1120 bytes)
@@ -1172,13 +1263,35 @@ __attribute__((weak)) sItemManager::cItemBag* sItemManager::getEnableUseItemStor
 }
 
 // Address: 0x007dcf00 - 0x007dcf73 (115 bytes)
-__attribute__((weak)) u32 sItemManager::getWalletItemToPoint(u32 itemId, u32 num, nCharacter::E_WALLET_POINT_TYPE& walletType) {
-    // local: u32 total;
-    // local: rItemParam* pItemParam;
-    // local: rParam* pKindParam;
-    // local: const E_WALLET_POINT_TYPE wallet_point_type;
-    DDON_STUB("sItemManager::getWalletItemToPoint")
-    return {};
+u32 sItemManager::getWalletItemToPoint(u32 itemId, u32 num, nCharacter::E_WALLET_POINT_TYPE& walletType) {
+    // DWARF local not rendered: u32 total;
+    // DWARF local not rendered: const E_WALLET_POINT_TYPE wallet_point_type;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from rItemList::rParam*
+    // inferred: a value cast to the type its use takes: unsigned short used as nCharacter::E_WALLET_POINT_TYPE
+    walletType = static_cast<nCharacter::E_WALLET_POINT_TYPE>(0);
+    if (this->mpItemParamList != static_cast<rItemList*>(nullptr)) {
+        rItemList::rItemParam* pItemParam = this->mpItemParamList->getItemList(itemId);
+        if (pItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
+            rItemList::rParam* pKindParam = pItemParam->::rItemList::rItemParam::getItemParam(static_cast<rItemList::rParam::PARAM_KIND>(124));
+            if (pKindParam != static_cast<rItemList::rParam*>(nullptr)) {
+                if (pKindParam->mKindType == static_cast<s16>(124)) {
+                    if (static_cast<unsigned int>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + static_cast<long>(10))) - static_cast<int>(1)) <= static_cast<unsigned int>(4)) {
+                        // inferred: a temporary for the value the load at 0x7dcf5a read, used once; no DWARF local holds it
+                        unsigned short t0 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + static_cast<long>(12));
+                        walletType = static_cast<nCharacter::E_WALLET_POINT_TYPE>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pKindParam) + static_cast<long>(10)));
+                        return num * t0;
+                    }
+                }
+            }
+            return static_cast<u32>(0);
+        } else {
+            return static_cast<u32>(0);
+        }
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x007dcf80 - 0x007dcfb0 (48 bytes)
@@ -2613,10 +2726,20 @@ __attribute__((weak)) void sItemManager::cItemBag::sortStrageItem(sItemManager::
 // void sItemManager::cItemBag::setServerSort(bool flag);
 
 // Address: 0x007ca910 - 0x007ca936 (38 bytes)
-__attribute__((weak)) u32 sItemManager::cItemBag::getStorageCategoryIndex(sItemManager::cItemBag::ITEM_CATEGORY category) {
-    // local: u32 i;
-    DDON_STUB("sItemManager::cItemBag::getStorageCategoryIndex")
-    return {};
+u32 sItemManager::cItemBag::getStorageCategoryIndex(sItemManager::cItemBag::ITEM_CATEGORY category) {
+    // Approximate from the ELF: a pointer stepped beside a counter; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: sItemManager::cItemBag::ITEM_CATEGORY used as unsigned int
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    const unsigned int* p2 = ::sItemManager::cItemBag::ItemCategoryTbl;
+    do {
+        if ((*p2) == static_cast<unsigned int>(category)) {
+            return i;
+        }
+        i += static_cast<u32>(1);
+        p2 += static_cast<int>(1);
+    } while (i <= static_cast<u32>(6));
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (50 bytes)
@@ -2625,10 +2748,20 @@ __attribute__((weak)) u32 sItemManager::cItemBag::getStorageCategoryIndex(sItemM
 // u32 sItemManager::cItemBag::getCategoryIndex(rItemList::ITEM_CATEGORY category);
 
 // Address: 0x007ca890 - 0x007ca8b6 (38 bytes)
-__attribute__((weak)) u32 sItemManager::cItemBag::getCategoryIndex(sItemManager::cItemBag::ITEM_CATEGORY category) {
-    // local: u32 i;
-    DDON_STUB("sItemManager::cItemBag::getCategoryIndex")
-    return {};
+u32 sItemManager::cItemBag::getCategoryIndex(sItemManager::cItemBag::ITEM_CATEGORY category) {
+    // Approximate from the ELF: a pointer stepped beside a counter; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: sItemManager::cItemBag::ITEM_CATEGORY used as unsigned int
+    u32 i = static_cast<u32>(0);
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    const unsigned int* p2 = ::sItemManager::cItemBag::ItemCategoryTbl;
+    do {
+        if ((*p2) == static_cast<unsigned int>(category)) {
+            return i;
+        }
+        i += static_cast<u32>(1);
+        p2 += static_cast<int>(1);
+    } while (i <= static_cast<u32>(6));
+    return static_cast<u32>(0);
 }
 
 // Address: 0x007ca8c0 - 0x007ca8cd (13 bytes)

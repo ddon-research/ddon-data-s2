@@ -17,6 +17,7 @@
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/sKeyboardInterface.h"
+#include "../shared/sMain.h"
 #include "../shared/uGUIBase.h"
 #include "uGUICommunityList.h"
 #ifndef DDON_STUB
@@ -216,9 +217,14 @@ void uGUIChat::replacePriority(u32 uPrioGrp) {
 // void uGUIChat::bootup();
 
 // Address: 0x00a2a5a0 - 0x00a2a5f8 (88 bytes)
-__attribute__((weak)) void uGUIChat::finish() {
-    DDON_STUB("uGUIChat::finish")
-    /* stub */
+void uGUIChat::finish() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mBootUp = false;
+    this->mAlpha = 0.0f;
+    this->::uGUIChat::disableMenu(true);
+    this->::uGUIChat::updateDisp();
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateHide);
+    this->::uGUIChat::setButtonGuide(true);
 }
 
 // Address: 0x00a2a600 - 0x00a2a62e (46 bytes)
@@ -308,9 +314,9 @@ __attribute__((weak)) bool uGUIChat::isMenuUI() const {
 // void uGUIChat::setAlpha(f32 fAlpha);
 
 // Address: 0x00a2a460 - 0x00a2a487 (39 bytes)
-__attribute__((weak)) bool uGUIChat::isChatInput() const {
-    DDON_STUB("uGUIChat::isChatInput")
-    return {};
+bool uGUIChat::isChatInput() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::uGUIBase::mpCurrentFunc == static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateWaitInput);
 }
 
 // Address: 0x00a2a490 - 0x00a2a58d (253 bytes)
@@ -367,15 +373,41 @@ __attribute__((weak)) void uGUIChat::updateHide() {
 }
 
 // Address: 0x00a27570 - 0x00a275fc (140 bytes)
-__attribute__((weak)) void uGUIChat::updateIn() {
-    DDON_STUB("uGUIChat::updateIn")
-    /* stub */
+void uGUIChat::updateIn() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
+    this->::uGUIChat::execDirectChat();
+    this->mAlpha = this->mAlpha + (::sMain::getInstance()->mDeltaTime * 0.5f);
+    if (this->mAlpha >= 1.0f) {
+        this->mAlpha = 1.0f;
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateWait);
+        this->::uGUIChat::setButtonGuide(true);
+    }
+    this->::uGUIChat::updateDisp();
 }
 
 // Address: 0x00a27600 - 0x00a276b4 (180 bytes)
-__attribute__((weak)) void uGUIChat::updateWait() {
-    DDON_STUB("uGUIChat::updateWait")
-    /* stub */
+void uGUIChat::updateWait() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x2280
+    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
+    if (this->mIsReqTellState != false) {
+        this->::uGUIChat::enableMenu();
+    } else {
+        this->::uGUIChat::execDirectChat();
+        if (static_cast<sGUIExt*>(::sGUI::getInstance())->mChat.mIsDefaultBoot == false) {
+            this->mFrmCntNoneCtrl = ::sMain::getInstance()->mDeltaTime + this->mFrmCntNoneCtrl;
+            if (this->mFrmCntNoneCtrl >= this->mFrmNoneCtrl) {
+                this->mFrmCntNoneCtrl = 0.0f;
+                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateOutToHide);
+                this->::uGUIChat::setButtonGuide(true);
+            } else {
+                this->::uGUIChat::updateDisp();
+            }
+        } else {
+            this->::uGUIChat::updateDisp();
+        }
+    }
 }
 
 // Address: 0x00a276c0 - 0x00a2778f (207 bytes)
@@ -447,15 +479,30 @@ void uGUIChat::updateWaitFilterSubCmdDelete() {
 }
 
 // Address: 0x00a29790 - 0x00a2981c (140 bytes)
-__attribute__((weak)) void uGUIChat::updateOutToHide() {
-    DDON_STUB("uGUIChat::updateOutToHide")
-    /* stub */
+void uGUIChat::updateOutToHide() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mBtnGuide.::uGUIBase::cReferenceUIBtnGuide::update();
+    this->::uGUIChat::execDirectChat();
+    this->mAlpha = this->mAlpha + (::sMain::getInstance()->mDeltaTime * (-0.5f));
+    if (0.0f >= this->mAlpha) {
+        this->mAlpha = 0.0f;
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateHide);
+        this->::uGUIChat::setButtonGuide(true);
+    }
+    this->::uGUIChat::updateDisp();
 }
 
 // Address: 0x00a29a80 - 0x00a29aea (106 bytes)
-__attribute__((weak)) void uGUIChat::updateWaitFrame() {
-    DDON_STUB("uGUIChat::updateWaitFrame")
-    /* stub */
+void uGUIChat::updateWaitFrame() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mWaitFrame > static_cast<s32>(0)) {
+        this->mWaitFrame = this->mWaitFrame - static_cast<s32>(1);
+    } else {
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(this->mpNextFunc);
+        this->::uGUIChat::setButtonGuide(true);
+        this->mpNextFunc = static_cast<void(uGUIChat::*)()>(0);
+    }
+    this->::uGUIChat::updateDisp();
 }
 
 // Address: 0x00a29af0 - 0x00a29b11 (33 bytes)
@@ -880,10 +927,39 @@ u32 uGUIChat::evCtrlYoNDelCancel(cControl::Message* msg) {
 }
 
 // Address: 0x00a25160 - 0x00a251ec (140 bytes)
-__attribute__((weak)) u32 uGUIChat::evCtrlYoNDelClick(cControl::Message* msg) {
-    // local: const bool isSelectDecide;
-    DDON_STUB("uGUIChat::evCtrlYoNDelClick")
-    return {};
+u32 uGUIChat::evCtrlYoNDelClick(cControl::Message* msg) {
+    // DWARF local not rendered: const bool isSelectDecide;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc18 from uGUIBase::cHorizontalList*
+    if (this->mpCtrlYoNDel != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0xa2517e read, used twice; no DWARF local holds it
+        s32 t0 = this->mpCtrlYoNDel->::cControl::mCurrentPos;
+        this->mPopWndwYoN.mBtnDecide.::uGUIBase::cReferenceUIButton::setFocus(t0 == static_cast<s32>(0));
+        this->mPopWndwYoN.mBtnCancel.::uGUIBase::cReferenceUIButton::setFocus((t0 == static_cast<s32>(0)) == false);
+        if (msg != static_cast<cControl::Message*>(nullptr)) {
+            if (this->mpCtrlFilter != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrlFilter) + static_cast<long>(3096))) > static_cast<unsigned int>(1)) {
+                    msg->changeSE = static_cast<u32>(4);
+                    this->::uGUIBase::setInputEvent(static_cast<u32>(92));
+                    return static_cast<u32>(1);
+                }
+            }
+        }
+        return static_cast<u32>(0);
+    } else {
+        this->mPopWndwYoN.mBtnDecide.::uGUIBase::cReferenceUIButton::setFocus(true);
+        this->mPopWndwYoN.mBtnCancel.::uGUIBase::cReferenceUIButton::setFocus(false);
+        if (msg != static_cast<cControl::Message*>(nullptr)) {
+            if (this->mpCtrlFilter != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpCtrlFilter) + static_cast<long>(3096))) > static_cast<unsigned int>(1)) {
+                    msg->changeSE = static_cast<u32>(4);
+                    this->::uGUIBase::setInputEvent(static_cast<u32>(92));
+                    return static_cast<u32>(1);
+                }
+            }
+        }
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x00a251f0 - 0x00a25205 (21 bytes)

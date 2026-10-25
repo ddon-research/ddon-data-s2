@@ -16,17 +16,23 @@ class MtPropertyList;
 class aStage;
 class cArea;
 class cFSMBase;
+class cGUIUtility;
 class cLayoutSet;
 class cNetGameServer;
 namespace nSessionManager { class cNetSessionManager; }
+class sGUIExt;
 class sGame;
+class sNpcManager;
+class uControl;
 class uControlNpc;
+class uGUIContentsBoard;
 class uGUIGaugeEnemy;
 class uGUIGaugeNpc;
 class uGUIGaugeNpcBase;
 class uGUINewspaper;
 class uGUIPopTopSel;
 class uHuman;
+class uNpc;
 
 // Declarations
 class sArea;
@@ -45,16 +51,26 @@ class sArea : public cSystem
     friend class aStage;
     // inferred: cFSMBase::stateCallMessage names sArea::mpArea[2]
     friend class cFSMBase;
+    // inferred: cGUIUtility::GetStageName names sArea::mpInstance
+    friend class cGUIUtility;
     // inferred: cLayoutSet::isSplitSbc names sArea::mpArea[2]
     friend class cLayoutSet;
     // inferred: cNetGameServer::updateMyRoomBgm names sArea::mpArea[2]
     friend class cNetGameServer;
     // inferred: nSessionManager::cNetSessionManager::endQuickMatch names sArea::mpArea[2]
     friend class nSessionManager::cNetSessionManager;
-    // inferred: sGame::getNextStage names sArea::mpArea[2]
+    // inferred: sGUIExt::isBlackOut names sArea::mpInstance
+    friend class sGUIExt;
+    // inferred: sGame::getNextStage names sArea::mpInstance
     friend class sGame;
+    // inferred: sNpcManager::loadCoMotionArc names sArea::mpArea[2]
+    friend class sNpcManager;
+    // inferred: uControl::move names sArea::mpArea[2]
+    friend class uControl;
     // inferred: uControlNpc::isUseMotionListLight names sArea::mpArea[2]
     friend class uControlNpc;
+    // inferred: uGUIContentsBoard::isExitContentBoard names sArea::mpArea[2]
+    friend class uGUIContentsBoard;
     // inferred: uGUIGaugeEnemy::draw names sArea::mpArea[2]
     friend class uGUIGaugeEnemy;
     // inferred: uGUIGaugeNpc::draw names sArea::mpArea[2]
@@ -65,8 +81,10 @@ class sArea : public cSystem
     friend class uGUINewspaper;
     // inferred: uGUIPopTopSel::isExitEntryBoard names sArea::mpArea[2]
     friend class uGUIPopTopSel;
-    // inferred: uHuman::initBake names sArea::mpArea[2]
+    // inferred: uHuman::callbackHitLand names sArea::mpInstance
     friend class uHuman;
+    // inferred: uNpc::setGripFinger names sArea::mpInstance
+    friend class uNpc;
 public:
     class MyDTI;
     class AreaInfo;

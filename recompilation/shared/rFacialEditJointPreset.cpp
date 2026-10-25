@@ -65,12 +65,16 @@ inline void cFacialEditJointPreset::operator delete(void* p_addr) {
 // No out-of-line body: no code in the ELF
 // void cFacialEditJointPreset::operator delete[](void* p_addr, u32 align);
 
-// No out-of-line body: 4 inlined copies in 2 functions (606 bytes)
-//   in cFacialEditJointPreset::MyDTI::newInstance at 0x0067470d-0x0067479c (called at rFacialEditJointPreset.cpp:23)
-//   in cFacialEditJointPreset::MyDTI::newInstance at 0x0067470d-0x0067479c (called at rFacialEditJointPreset.h:32)
-//   in rTbl2<cFacialEditJointPreset>::allocData at 0x01a8fbc7-0x01a8fbe0, 0x01a8fbe3-0x01a8fc6a (called at rTbl2.h:215)
-//   and 1 more (every copy is in <bundle>.inlined.json)
-// cFacialEditJointPreset::cFacialEditJointPreset();
+// Inline, no code of its own: checked where it is inlined.
+// a new-expression's constructor: the body its liftable inlined copies give, `this` the allocation's result, the others refused (026 plan-P69, D-B); approximate: no recompile checks it
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+cFacialEditJointPreset::cFacialEditJointPreset() {
+    // inferred: the member constructor inlined with no DWARF copy left no code: MtVector3() (only stores of constants, dead under this body's; ruling D-P69b)
+    this->mJntNo = static_cast<s32>(0);
+    this->mTrans = ::MtVector3::Zero;
+    this->mRot = ::MtVector3::Zero;
+    this->mScale = ::MtVector3::One;
+}
 
 // Defined in the class (its body was written in a header).
 // cFacialEditJointPreset::~cFacialEditJointPreset();

@@ -128,9 +128,9 @@ void uGUIEventSkip::kill() {
 // void uGUIEventSkip::setDisp(bool flg);
 
 // Address: 0x00a873d0 - 0x00a873ea (26 bytes)
-__attribute__((weak)) void uGUIEventSkip::updateInit() {
-    DDON_STUB("uGUIEventSkip::updateInit")
-    /* stub */
+void uGUIEventSkip::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEventSkip::updateWait);
 }
 
 // Address: 0x00a87430 - 0x00a874e4 (180 bytes)

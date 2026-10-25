@@ -10,6 +10,7 @@
 #include "MtSynchronize.h"
 #include "cUnit.h"
 #include "cpComponent.h"
+#include "cpObjCollision.h"
 #include "nDDOUtility.h"
 #include "nHumanMsg.h"
 #include "rShotReqInfo2.h"
@@ -317,10 +318,31 @@ __attribute__((weak)) void cpShlShotCtrl::setShotReqInfo(rShotReqInfo* pParam) {
 }
 
 // Address: 0x005348f0 - 0x00534956 (102 bytes)
-__attribute__((weak)) void cpShlShotCtrl::registShellRequestMsg(const nHuman::stShellRequestMsg& srcMsg) {
-    // local: u32 i;
-    DDON_STUB("cpShlShotCtrl::registShellRequestMsg")
-    /* stub */
+void cpShlShotCtrl::registShellRequestMsg(const nHuman::stShellRequestMsg& srcMsg) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x534900 carries; no location-less local in scope fits
+    bool* v0_0 = &this->mShlReqArray.elems[0].mIsSeted;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+        if ((*v0_0) == false) {
+            this->mShlReqArray.elems[i0_1].mReqMsg.mShlOwnerUID = srcMsg.mShlOwnerUID;
+            this->mShlReqArray.elems[i0_1].mReqMsg.mTargetUID = srcMsg.mTargetUID;
+            this->mShlReqArray.elems[i0_1].mReqMsg.mShotSys = srcMsg.mShotSys;
+            this->mShlReqArray.elems[i0_1].mReqMsg.mShotGroup = srcMsg.mShotGroup;
+            this->mShlReqArray.elems[i0_1].mReqMsg.mShotIndex = srcMsg.mShotIndex;
+            this->mShlReqArray.elems[i0_1].mReqMsg.mLockOnIndex = srcMsg.mLockOnIndex;
+            *v0_0 = true;
+            return;
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                v0_0 += static_cast<int>(20);
+                i0_1 = i0_1 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x00532050 - 0x005323e7 (919 bytes)
@@ -483,10 +505,28 @@ __attribute__((weak)) void cpShlShotCtrl::cShlShotReqInfo::copyParam(const cpShl
 // s32 cpShlShotCtrl::cShlShotReqInfo::getWork();
 
 // Address: 0x005340d0 - 0x00534136 (102 bytes)
-__attribute__((weak)) void cpShlShotCtrl::cShlShotReqInfo::copySharedUID(cpObjCollisionBase* pSrc) {
-    // local: u32 i;
-    DDON_STUB("cpShlShotCtrl::cShlShotReqInfo::copySharedUID")
-    /* stub */
+void cpShlShotCtrl::cShlShotReqInfo::copySharedUID(cpObjCollisionBase* pSrc) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x518 from cpObjCollisionBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x51c from cpObjCollisionBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x520 from cpObjCollisionBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x524 from cpObjCollisionBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x528 from cpObjCollisionBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x52c from cpObjCollisionBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x530 from cpObjCollisionBase*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x534 from cpObjCollisionBase*
+    if (pSrc == static_cast<cpObjCollisionBase*>(nullptr)) {
+        return;
+    }
+    this->mSharedUID[0] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1304));
+    this->mSharedUID[1] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1308));
+    this->mSharedUID[2] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1312));
+    this->mSharedUID[3] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1316));
+    this->mSharedUID[4] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1320));
+    this->mSharedUID[5] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1324));
+    this->mSharedUID[6] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1328));
+    this->mSharedUID[7] = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pSrc) + static_cast<long>(1332));
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (104 bytes)

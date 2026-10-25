@@ -2562,6 +2562,18 @@ inline nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::cDeliverCharacterInfo(
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 nQuest::cCycleContentsPersonalRankInfo::getRanking() const {
+    return this->mRank;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 nQuest::cCycleContentsPersonalRankInfo::getScore() const {
+    return this->mScore;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 nQuest::cCycleContentsInfo::getSituation() const {
     return this->mBaseSituation;
 }
@@ -2630,6 +2642,45 @@ inline nQuest::cDeliverTargetInfo::cDeliverTargetInfo() {
     this->mMsgGroupSerial = static_cast<u32>(0);
     this->mStageNo = static_cast<u32>(0);
     this->mGroupNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nQuest::cGUIBoardData::cGUIBoardData() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nQuest::cGUIDeliveryData::cGUIDeliveryData() {
+    this->mBlockNo = static_cast<s32>(-1);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nQuest::cGUIEventBoardData::cGUIEventBoardData() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nQuest::cGUIActiveData::cGUIActiveData() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nQuest::cCycleContentsSituationInfo::cCycleContentsSituationInfo() {
+    this->mBaseLevel = static_cast<u32>(0);
+    this->mCycleContentsSubCategory = static_cast<u32>(0);
+    this->mMaxClearTimeBonusRatio = static_cast<u32>(100);
+    this->mSituationNo = static_cast<u8>(0);
+    this->mCycleContentsCategory = static_cast<u8>(0);
+    this->mIsDistribution = false;
+    this->mRewardItem[6] = static_cast<unsigned int>(0);
+    this->mRewardItem[4] = static_cast<unsigned int>(0);
+    this->mRewardItem[5] = static_cast<unsigned int>(0);
+    this->mRewardItem[2] = static_cast<unsigned int>(0);
+    this->mRewardItem[3] = static_cast<unsigned int>(0);
+    this->mRewardItem[0] = static_cast<unsigned int>(0);
+    this->mRewardItem[1] = static_cast<unsigned int>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline nQuest::cEndContentsGroupQuestInfo::cEndContentsGroupQuestInfo() {
 }
 
 // Inline, no code of its own: checked where it is inlined.

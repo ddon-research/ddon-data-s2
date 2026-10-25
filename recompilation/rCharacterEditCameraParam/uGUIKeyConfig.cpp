@@ -6,13 +6,15 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
 #include "../shared/cControl.h"
-#include "../shared/cGUIControlMgr.h"
+#include "cGUIControlMgr.h"
+#include "../shared/cResource.h"
 #include "../shared/nDDOUtility.h"
 #include "nGUIKeyConfig.h"
+#include "../rKeyConfigTextTable/rKeyConfigTextTable.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/uGUIBase.h"
-#include "../shared/uGUIBaseExt.h"
+#include "uGUIBaseExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -226,9 +228,13 @@ const rGUIMessage* uGUIKeyConfig::getResMsgDetail() const {
 // const rKeyConfigTextTable* uGUIKeyConfig::getResTextTable() const;
 
 // Address: 0x00af8200 - 0x00af821c (28 bytes)
-__attribute__((weak)) rKeyConfigTextTable* uGUIKeyConfig::getResTextTable() {
-    DDON_STUB("uGUIKeyConfig::getResTextTable")
-    return nullptr;
+rKeyConfigTextTable* uGUIKeyConfig::getResTextTable() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::uGUIBase::isAttachedResource() != false) {
+        return static_cast<rKeyConfigTextTable*>(this->getRes(static_cast<u32>(0)));
+    } else {
+        return static_cast<rKeyConfigTextTable*>(nullptr);
+    }
 }
 
 // Address: 0x00af8220 - 0x00af8230 (16 bytes)

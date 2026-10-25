@@ -9,6 +9,10 @@
 #include "../shared/MtString.h"
 #include "cScenario.h"
 #include "../shared/cSystem.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
+#include "../shared/uGUIBase.h"
+#include "uGUISystemMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -89,9 +93,13 @@ MtUI* SCE_AH_LIST::createUI(MtProperty& prop) {
 }
 
 // Address: 0x00838f60 - 0x00838f72 (18 bytes)
-__attribute__((weak)) cScenario* SCE_AH_LIST::getScenario(u32 no) {
-    DDON_STUB("SCE_AH_LIST::getScenario")
-    return nullptr;
+cScenario* SCE_AH_LIST::getScenario(u32 no) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (no < this->mArray.mLength) {
+        return static_cast<cScenario*>(this->mArray.mpArray[no]);
+    } else {
+        return static_cast<cScenario*>(nullptr);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (173 bytes)
@@ -339,10 +347,15 @@ __attribute__((weak)) void sScenario::evEventFinish() {
 // void sScenario::clearEvent();
 
 // Address: 0x00838f30 - 0x00838f5d (45 bytes)
-__attribute__((weak)) cScenario* sScenario::getScenario(u32 type, u32 no) {
-    // local: SCE_AH_LIST* pList;
-    DDON_STUB("sScenario::getScenario")
-    return nullptr;
+cScenario* sScenario::getScenario(u32 type, u32 no) {
+    // DWARF local not rendered: SCE_AH_LIST* pList;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (::sScenario::getInstance()->mAccessList[type] != static_cast<SCE_AH_LIST*>(nullptr)) {
+        if (no < ::sScenario::getInstance()->mAccessList[type]->mArray.mLength) {
+            return static_cast<cScenario*>(::sScenario::getInstance()->mAccessList[type]->mArray.mpArray[no]);
+        }
+    }
+    return static_cast<cScenario*>(nullptr);
 }
 
 // Address: 0x00838f80 - 0x008390a0 (288 bytes)
@@ -354,9 +367,18 @@ __attribute__((weak)) void sScenario::createSystemMsg(u32 textNo) {
 }
 
 // Address: 0x00838540 - 0x0083858d (77 bytes)
-__attribute__((weak)) void sScenario::deleteSystemMsg() {
-    DDON_STUB("sScenario::deleteSystemMsg")
-    /* stub */
+void sScenario::deleteSystemMsg() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sGUIExt member read past the end of sGUI, which DWARF gives no other deriving class a member at 0x32f0
+    if (this->mpGUISystemMsg == static_cast<uGUISystemMsg*>(nullptr)) {
+        return;
+    }
+    if (this->mpGUISystemMsg != static_cast<sGUIExt*>(::sGUI::getInstance())->mpSingletonMenu) {
+        this->mpGUISystemMsg->kill();
+    } else {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::killSingletonMenu();
+    }
+    this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

@@ -345,6 +345,8 @@ public:
 public:
     class cQuestProcess : public MtObject
     {
+        // inferred: cQuestPersonalData::getRequestDeliverProcessNo names cQuestTask::cQuestProcess::mProcessNo
+        friend class cQuestPersonalData;
     public:
         enum
         {
@@ -1343,6 +1345,12 @@ inline u32 cQuestTask::cDeliveryItemInfo::getItemNum() const {
 inline cQuestTask::cDeliveryItemInfo::cDeliveryItemInfo() {
     this->mItemId = static_cast<u32>(0);
     this->mItemNum = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cQuestTask::cQuestProcess::getDieEmNum() {
+    return this->mDieEmNum;
 }
 
 // Inline, no code of its own: checked where it is inlined.

@@ -7,7 +7,9 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cControl.h"
+#include "../shared/cGUIInstance.h"
 #include "../shared/cResource.h"
+#include "../shared/cUnit.h"
 #include "../shared/nCharacterData.h"
 #include "nMenu.h"
 #include "../shared/rArchiveListArray.h"
@@ -15,6 +17,7 @@
 #include "../shared/rGUIMessage.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
+#include "sMenu.h"
 #include "../shared/sNetwork.h"
 #include "../shared/sNetworkExt.h"
 #include "../shared/uGUI.h"
@@ -494,9 +497,14 @@ __attribute__((weak)) void uGUICommunityList::cTabData::init() {
 }
 
 // Address: 0x00a456c0 - 0x00a45706 (70 bytes)
-__attribute__((weak)) nMenu::MENU_RET uGUICommunityList::cTabData::move() {
-    DDON_STUB("uGUICommunityList::cTabData::move")
-    return {};
+nMenu::MENU_RET uGUICommunityList::cTabData::move() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x158 from uGUICommunityList::cTabData*
+    this->mScrollList.::uGUIBase::cScrollList::update(this->::uGUICommunityList::cTabData::getOwner()->::cUnit::getDeltaTime());
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(344))) == static_cast<unsigned int>(0)) {
+        static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::hidePointer(this->::uGUICommunityList::cTabData::getOwner()->::uGUIBase::getBasePointerPriority());
+    }
+    return static_cast<nMenu::MENU_RET>(0);
 }
 
 // Address: 0x01aee3d0 - 0x01aee3d6 (6 bytes)
@@ -810,9 +818,24 @@ __attribute__((weak)) void uGUICommunityList::cTabDataInData::reflectMessage() {
 // void uGUICommunityList::cTabDataInData::copyInstanceExecuteFlag();
 
 // Address: 0x00a471b0 - 0x00a47208 (88 bytes)
-__attribute__((weak)) void uGUICommunityList::cTabDataInData::reflectIcon() {
-    DDON_STUB("uGUICommunityList::cTabDataInData::reflectIcon")
-    /* stub */
+void uGUICommunityList::cTabDataInData::reflectIcon() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x54 from cGUIInstNull*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpInst) + static_cast<long>(84))) != static_cast<unsigned int>(4294967295)) {
+        // inferred: a temporary for the result of the call at 0xa471c8, used twice; no DWARF local holds it
+        cGUIInstance* t0 = this->mpInst->::cGUIInstance::getDuplicateInstanceFromId(static_cast<u32>(227));
+        if (t0 != static_cast<cGUIInstance*>(nullptr)) {
+            t0->::cGUIInstance::setVisible(this->mIsFavorite);
+        }
+        this->mOnlineStatusIcon.::uGUIBase::cReferenceUIIconOnlineStatus::setOnlineStatus(this->mOnlineStatus);
+    } else {
+        // inferred: a temporary for the result of the call at 0xa471d4, used twice; no DWARF local holds it
+        cGUIInstance* t1 = this->mpInst->::cGUIInstance::getInstanceFromId(static_cast<u32>(227));
+        if (t1 != static_cast<cGUIInstance*>(nullptr)) {
+            t1->::cGUIInstance::setVisible(this->mIsFavorite);
+        }
+        this->mOnlineStatusIcon.::uGUIBase::cReferenceUIIconOnlineStatus::setOnlineStatus(this->mOnlineStatus);
+    }
 }
 
 // Address: 0x00a470a0 - 0x00a471a9 (265 bytes)
@@ -1067,9 +1090,10 @@ u32 uGUICommunityList::cTabDataFriendList::getMakeArrayDataNum() {
 }
 
 // Address: 0x01aee510 - 0x01aee525 (21 bytes)
-__attribute__((weak)) bool uGUICommunityList::cTabDataFriendList::isMenuListCompListup() {
-    DDON_STUB("uGUICommunityList::cTabDataFriendList::isMenuListCompListup")
-    return {};
+bool uGUICommunityList::cTabDataFriendList::isMenuListCompListup() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x74d0 from sMenu*
+    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(29904))) == static_cast<unsigned int>(3);
 }
 
 // Address: 0x00a45710 - 0x00a45aac (924 bytes)
@@ -1106,9 +1130,16 @@ __attribute__((weak)) u32 uGUICommunityList::cTabDataFriendList::getListCount() 
 }
 
 // Address: 0x01aee580 - 0x01aee59e (30 bytes)
-__attribute__((weak)) u32 uGUICommunityList::cTabDataFriendList::getListIndex(u32 index) {
-    DDON_STUB("uGUICommunityList::cTabDataFriendList::getListIndex")
-    return {};
+u32 uGUICommunityList::cTabDataFriendList::getListIndex(u32 index) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7598 from sMenu*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from unsigned long
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(30104))) != static_cast<unsigned long>(0)) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(30104))) + static_cast<unsigned long>(index * static_cast<u32>(4))) + static_cast<long>(0));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x01aee5a0 - 0x01aee5b4 (20 bytes)
@@ -1205,15 +1236,17 @@ __attribute__((weak)) nMenu::MENU_RET uGUICommunityList::cTabDataActiveList::mov
 }
 
 // Address: 0x01aee620 - 0x01aee637 (23 bytes)
-__attribute__((weak)) u32 uGUICommunityList::cTabDataActiveList::getMakeArrayDataNum() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::getMakeArrayDataNum")
-    return {};
+u32 uGUICommunityList::cTabDataActiveList::getMakeArrayDataNum() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x169c from sNetwork*
+    return static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getClanMemberMax() + (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sNetwork::getInstance()) + static_cast<long>(5788)));
 }
 
 // Address: 0x01aee640 - 0x01aee655 (21 bytes)
-__attribute__((weak)) bool uGUICommunityList::cTabDataActiveList::isMenuListCompListup() {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::isMenuListCompListup")
-    return {};
+bool uGUICommunityList::cTabDataActiveList::isMenuListCompListup() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x13058 from sMenu*
+    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(77912))) == static_cast<unsigned int>(2);
 }
 
 // Address: 0x00a45ba0 - 0x00a45f7a (986 bytes)
@@ -1257,15 +1290,29 @@ __attribute__((weak)) u32 uGUICommunityList::cTabDataActiveList::getListCount() 
 }
 
 // Address: 0x01aee6b0 - 0x01aee6ce (30 bytes)
-__attribute__((weak)) u32 uGUICommunityList::cTabDataActiveList::getListIndex(u32 index) {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::getListIndex")
-    return {};
+u32 uGUICommunityList::cTabDataActiveList::getListIndex(u32 index) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x13108 from sMenu*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from unsigned long
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78088))) != static_cast<unsigned long>(0)) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78088))) + static_cast<unsigned long>(index * static_cast<u32>(4))) + static_cast<long>(0));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x01aee6d0 - 0x01aee6f1 (33 bytes)
-__attribute__((weak)) s32 uGUICommunityList::cTabDataActiveList::getListType(u32 index) {
-    DDON_STUB("uGUICommunityList::cTabDataActiveList::getListType")
-    return {};
+s32 uGUICommunityList::cTabDataActiveList::getListType(u32 index) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x13118 from sMenu*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from unsigned long
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78104))) != static_cast<unsigned long>(0)) {
+        return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78104))) + static_cast<unsigned long>(index * static_cast<u32>(4))) + static_cast<long>(0)));
+    } else {
+        return static_cast<s32>(1);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
@@ -1368,9 +1415,10 @@ __attribute__((weak)) void uGUICommunityList::cTabDataNearPlayerList::linkInstan
 }
 
 // Address: 0x01aee780 - 0x01aee795 (21 bytes)
-__attribute__((weak)) bool uGUICommunityList::cTabDataNearPlayerList::isMenuListCompListup() {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::isMenuListCompListup")
-    return {};
+bool uGUICommunityList::cTabDataNearPlayerList::isMenuListCompListup() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x13200 from sMenu*
+    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78336))) == static_cast<unsigned int>(1);
 }
 
 // Address: 0x00a46290 - 0x00a465d6 (838 bytes)
@@ -1408,9 +1456,16 @@ __attribute__((weak)) u32 uGUICommunityList::cTabDataNearPlayerList::getListCoun
 }
 
 // Address: 0x01aee7f0 - 0x01aee80e (30 bytes)
-__attribute__((weak)) u32 uGUICommunityList::cTabDataNearPlayerList::getListIndex(u32 index) {
-    DDON_STUB("uGUICommunityList::cTabDataNearPlayerList::getListIndex")
-    return {};
+u32 uGUICommunityList::cTabDataNearPlayerList::getListIndex(u32 index) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x132a8 from sMenu*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from unsigned long
+    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78504))) != static_cast<unsigned long>(0)) {
+        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78504))) + static_cast<unsigned long>(index * static_cast<u32>(4))) + static_cast<long>(0));
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)
@@ -1513,9 +1568,10 @@ __attribute__((weak)) void uGUICommunityList::cTabDataBlackList::linkInstancePoi
 }
 
 // Address: 0x01aee890 - 0x01aee8a5 (21 bytes)
-__attribute__((weak)) bool uGUICommunityList::cTabDataBlackList::isMenuListCompListup() {
-    DDON_STUB("uGUICommunityList::cTabDataBlackList::isMenuListCompListup")
-    return {};
+bool uGUICommunityList::cTabDataBlackList::isMenuListCompListup() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x13370 from sMenu*
+    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(::sMenu::getInstance()) + static_cast<long>(78704))) == static_cast<unsigned int>(1);
 }
 
 // Address: 0x00a46760 - 0x00a4698f (559 bytes)

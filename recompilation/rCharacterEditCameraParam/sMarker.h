@@ -32,6 +32,7 @@ class rFieldAreaMarkerInfo;
 class rGUIMessage;
 class rQuestMarkerInfo;
 class rStageAdjoinList;
+class sGUIExt;
 
 // Declarations
 class sMarker;
@@ -50,6 +51,8 @@ using u32 = unsigned int;
 
 class sMarker : public cSystem
 {
+    // inferred: sGUIExt::setMapMapType names sMarker::mpInstance
+    friend class sGUIExt;
 public:
     enum DATA_TYPE
     {

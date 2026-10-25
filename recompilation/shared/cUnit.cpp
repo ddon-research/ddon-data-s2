@@ -104,9 +104,10 @@ s32 cUnit::getMoveLine() const {
 // u64 cUnit::getUnitGroup() const;
 
 // Address: 0x00e5ed30 - 0x00e5ed3c (12 bytes)
-__attribute__((weak)) bool cUnit::checkUnitGroup(u32 group) const {
-    DDON_STUB("cUnit::checkUnitGroup")
-    return {};
+bool cUnit::checkUnitGroup(u32 group) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mUnitGroup) >> static_cast<unsigned long>(group & static_cast<u32>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x01989b70 - 0x01989b73 (3 bytes)
@@ -170,9 +171,15 @@ __attribute__((weak)) void cUnit::createProperty(MtPropertyList& s) {
 // void cUnit::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset);
 
 // Address: 0x01ad0860 - 0x01ad087e (30 bytes)
-__attribute__((weak)) void cUnit::kill() {
-    DDON_STUB("cUnit::kill")
-    /* stub */
+void cUnit::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from cUnit*
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+        return;
+    }
+    if ((this->mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+        this->mBeFlag = static_cast<u32>(3);
+    }
 }
 
 // No out-of-line body: 1099 inlined copies in 611 functions (13054 bytes)
@@ -183,15 +190,23 @@ __attribute__((weak)) void cUnit::kill() {
 // bool cUnit::isEnable() const;
 
 // Address: 0x01b5bc00 - 0x01b5bc1a (26 bytes)
-__attribute__((weak)) void cUnit::setFix(bool fix) {
-    DDON_STUB("cUnit::setFix")
-    /* stub */
+void cUnit::setFix(bool fix) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (fix) {
+        this->mUnitAttr = this->mUnitAttr | static_cast<u32>(8);
+    } else {
+        this->mUnitAttr = this->mUnitAttr & static_cast<u32>(55);
+    }
 }
 
 // Address: 0x01b5bb80 - 0x01b5bb9a (26 bytes)
-__attribute__((weak)) void cUnit::setMove(bool move) {
-    DDON_STUB("cUnit::setMove")
-    /* stub */
+void cUnit::setMove(bool move) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (move) {
+        this->mUnitAttr = this->mUnitAttr | static_cast<u32>(1);
+    } else {
+        this->mUnitAttr = this->mUnitAttr & static_cast<u32>(62);
+    }
 }
 
 // Address: 0x01b5bbb0 - 0x01b5bbef (63 bytes)
@@ -265,9 +280,12 @@ u32 cUnit::getBeFlag() const {
 // bool cUnit::isSelect() const;
 
 // Address: 0x01b5bbf0 - 0x01b5bbf9 (9 bytes)
-__attribute__((weak)) bool cUnit::isFix() const {
-    DDON_STUB("cUnit::isFix")
-    return {};
+bool cUnit::isFix() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x11 from const cUnit*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(17))) & static_cast<unsigned char>(32)) >> static_cast<unsigned long>(5));
 }
 
 // Address: 0x01b5bb60 - 0x01b5bb71 (17 bytes)
@@ -347,9 +365,12 @@ void cUnit::setBeFlag(u32 bf) {
 }
 
 // Address: 0x01b5bba0 - 0x01b5bba9 (9 bytes)
-__attribute__((weak)) bool cUnit::getTrans() const {
-    DDON_STUB("cUnit::getTrans")
-    return {};
+bool cUnit::getTrans() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x11 from const cUnit*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(17))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // No out-of-line body: no code in the ELF
@@ -427,9 +448,10 @@ const MtDTI& cUnit::cHardwareDispCtrl::getDTI() const {
 // void cUnit::cHardwareDispCtrl::setAllocator(u32);
 
 // Address: 0x00e5f7a0 - 0x00e5f7e0 (64 bytes)
-__attribute__((weak)) void* cUnit::cHardwareDispCtrl::operator new(size_t sz, u32 align) {
-    DDON_STUB("cUnit::cHardwareDispCtrl::operator new")
-    return nullptr;
+void* cUnit::cHardwareDispCtrl::operator new(size_t sz, u32 align) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x34 from cUnit::cHardwareDispCtrl::MyDTI*
+    return ::MtMemoryAllocator::getAllocator(::cUnit::cHardwareDispCtrl::DTI)->memAlloc(sz, align, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&::cUnit::cHardwareDispCtrl::DTI) + static_cast<long>(52)));
 }
 
 // No out-of-line body: no code in the ELF
@@ -478,15 +500,17 @@ __attribute__((weak)) void cUnit::cHardwareDispCtrl::update() {
 }
 
 // Address: 0x01b5bd70 - 0x01b5bd7d (13 bytes)
-__attribute__((weak)) bool cUnit::cHardwareDispCtrl::isDispOperateHard() {
-    DDON_STUB("cUnit::cHardwareDispCtrl::isDispOperateHard")
-    return {};
+bool cUnit::cHardwareDispCtrl::isDispOperateHard() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mFlag) >> static_cast<unsigned long>(this->mHard & static_cast<u32>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0);
 }
 
 // Address: 0x01b5bd80 - 0x01b5bd8d (13 bytes)
-__attribute__((weak)) bool cUnit::cHardwareDispCtrl::isDispOperateHardOld() {
-    DDON_STUB("cUnit::cHardwareDispCtrl::isDispOperateHardOld")
-    return {};
+bool cUnit::cHardwareDispCtrl::isDispOperateHardOld() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mOldFlag) >> static_cast<unsigned long>(this->mHard & static_cast<u32>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0);
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

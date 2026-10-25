@@ -88,9 +88,27 @@ MtUI* sUnitManager::createUI(MtProperty& prop) {
 }
 
 // Address: 0x00868a50 - 0x00868af7 (167 bytes)
-__attribute__((weak)) void sUnitManager::init() {
-    DDON_STUB("sUnitManager::init")
-    /* stub */
+void sUnitManager::init() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x20 from sUnitManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x40 from sUnitManager*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x60 from sUnitManager*
+    if (this->mRefArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRefArray.::MtArray::mpArray));
+    }
+    this->mRefArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(32)) = static_cast<unsigned long>(0);
+    if (this->mAddArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mAddArray.::MtArray::mpArray));
+    }
+    this->mAddArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(64)) = static_cast<unsigned long>(0);
+    if (this->mDelArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mDelArray.::MtArray::mpArray));
+    }
+    this->mDelArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(96)) = static_cast<unsigned long>(0);
+    this->::sUnitManager::createLodDistData();
 }
 
 // Address: 0x00868d40 - 0x00868d45 (5 bytes)

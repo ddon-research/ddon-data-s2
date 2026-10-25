@@ -246,9 +246,10 @@ __attribute__((weak)) cRemoteProcedure* sRemoteProcedure::getElement(u32 index) 
 }
 
 // Address: 0x01ba37e0 - 0x01ba37e4 (4 bytes)
-__attribute__((weak)) u32 sRemoteProcedure::getElementNum() {
-    DDON_STUB("sRemoteProcedure::getElementNum")
-    return {};
+u32 sRemoteProcedure::getElementNum() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from sRemoteProcedure*
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48));
 }
 
 // Address: 0x01ba37d0 - 0x01ba37d1 (1 bytes)

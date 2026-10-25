@@ -438,10 +438,23 @@ __attribute__((weak)) u32 sCraftManager::getPawnCraftExp(u32 pawnId) {
 // u32 sCraftManager::getPawnCraftNextExp(u32 rank);
 
 // Address: 0x00762350 - 0x0076239f (79 bytes)
-__attribute__((weak)) u32 sCraftManager::getPawnCraftNextExp(rCraftElementExp* pCraftExp, u32 rank) {
-    // local: cCraftElementExpData* pData;
-    DDON_STUB("sCraftManager::getPawnCraftNextExp")
-    return {};
+u32 sCraftManager::getPawnCraftNextExp(rCraftElementExp* pCraftExp, u32 rank) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from cCraftElementExpData*
+    if (pCraftExp != static_cast<rCraftElementExp*>(nullptr)) {
+        if (rank < pCraftExp->getDataNum()) {
+            cCraftElementExpData* pData = pCraftExp->getData(rank);
+            if (pData != static_cast<cCraftElementExpData*>(nullptr)) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pData) + static_cast<long>(8));
+            } else {
+                return static_cast<u32>(0);
+            }
+        } else {
+            return static_cast<u32>(0);
+        }
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // Address: 0x007624b0 - 0x00762e1a (2410 bytes)
@@ -682,11 +695,29 @@ void sCraftManager::reqCraftColorRegulateItemList() {
 }
 
 // Address: 0x00764b00 - 0x00764b52 (82 bytes)
-__attribute__((weak)) void sCraftManager::setCraftColorRegulateItemList(void* packet) {
-    // local: bool isSuccess;
-    // local: CPacket_S2C_GET_CRAFT_SETTING_RES* pPacket;
-    DDON_STUB("sCraftManager::setCraftColorRegulateItemList")
-    /* stub */
+void sCraftManager::setCraftColorRegulateItemList(void* packet) {
+    // DWARF local not rendered: bool isSuccess;
+    // DWARF local not rendered: CPacket_S2C_GET_CRAFT_SETTING_RES* pPacket;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from void*
+    if (packet != static_cast<void*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(packet) + static_cast<long>(12))) != static_cast<unsigned int>(0)) {
+            this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(4);
+            static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
+        } else {
+            if (this->mCraftColorRegulateState == static_cast<sCraftManager::COLOR_REGULATE_STATE>(3)) {
+                this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(0);
+                static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
+            } else {
+                if (this->mCraftColorRegulateState == static_cast<sCraftManager::COLOR_REGULATE_STATE>(1)) {
+                    this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(2);
+                }
+            }
+        }
+    } else {
+        this->mCraftColorRegulateState = static_cast<sCraftManager::COLOR_REGULATE_STATE>(4);
+        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->::cNetGameServer::clearCraftSettingPacket();
+    }
 }
 
 // Address: 0x00764b60 - 0x00764bb1 (81 bytes)
@@ -1048,17 +1079,27 @@ void sCraftManager::clearPlusItemList() {
 }
 
 // Address: 0x00763840 - 0x00763855 (21 bytes)
-__attribute__((weak)) void sCraftManager::createPlusItemList(u32 type, u32 rank) {
-    // local: MATERIAL_CATEGORY materialType;
-    DDON_STUB("sCraftManager::createPlusItemList")
-    /* stub */
+void sCraftManager::createPlusItemList(u32 type, u32 rank) {
+    // DWARF local not rendered: MATERIAL_CATEGORY materialType;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as rItemList::MATERIAL_CATEGORY
+    this->mMaterialCache = static_cast<unsigned char>(static_cast<unsigned long>(this->mMaterialCache) | (static_cast<unsigned long>(type != static_cast<u32>(0)) + static_cast<unsigned long>(1)));
+    this->::sCraftManager::createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(static_cast<unsigned long>(type != static_cast<u32>(0)) | static_cast<unsigned long>(26)), rank);
 }
 
 // Address: 0x00763860 - 0x0076387e (30 bytes)
-__attribute__((weak)) void sCraftManager::createElementItemList(u32 type) {
-    // local: MATERIAL_CATEGORY materialType;
-    DDON_STUB("sCraftManager::createElementItemList")
-    /* stub */
+void sCraftManager::createElementItemList(u32 type) {
+    // DWARF local not rendered: MATERIAL_CATEGORY materialType;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as rItemList::MATERIAL_CATEGORY
+    if (type != static_cast<u32>(0)) {
+        this->mMaterialCache = this->mMaterialCache | static_cast<u8>(8);
+    } else {
+        this->mMaterialCache = this->mMaterialCache | static_cast<u8>(4);
+    }
+    this->::sCraftManager::createPlusItemListSub(static_cast<rItemList::MATERIAL_CATEGORY>(static_cast<unsigned long>(type != static_cast<u32>(0)) | static_cast<unsigned long>(24)), static_cast<u32>(255));
 }
 
 // Address: 0x00763880 - 0x00763893 (19 bytes)
@@ -1075,10 +1116,14 @@ void sCraftManager::createColorItemList() {
 // u32 sCraftManager::getPlusItemListNum();
 
 // Address: 0x007640a0 - 0x007640b8 (24 bytes)
-__attribute__((weak)) sCraftManager::cCraftUpGradeItemList* sCraftManager::getPlusItemList(u32 index) {
-    // local: cCraftUpGradeItemList* pList;
-    DDON_STUB("sCraftManager::getPlusItemList")
-    return nullptr;
+sCraftManager::cCraftUpGradeItemList* sCraftManager::getPlusItemList(u32 index) {
+    // DWARF local not rendered: cCraftUpGradeItemList* pList;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mAddItemList.::MtArray::mLength) {
+        return static_cast<sCraftManager::cCraftUpGradeItemList*>(this->mAddItemList.::MtArray::mpArray[index]);
+    } else {
+        return static_cast<sCraftManager::cCraftUpGradeItemList*>(nullptr);
+    }
 }
 
 // Address: 0x007640c0 - 0x0076417d (189 bytes)
@@ -1165,10 +1210,14 @@ u32 sCraftManager::getProcessItemCategoryNum(nCharacterData::EQUIP_CATEGORY cate
 }
 
 // Address: 0x00763eb0 - 0x00763ed0 (32 bytes)
-__attribute__((weak)) sCraftManager::cCraftUpGradeItemList* sCraftManager::getProcessItemList(u32 itemCate, u32 index) {
-    // local: cCraftUpGradeItemList* pList;
-    DDON_STUB("sCraftManager::getProcessItemList")
-    return nullptr;
+sCraftManager::cCraftUpGradeItemList* sCraftManager::getProcessItemList(u32 itemCate, u32 index) {
+    // DWARF local not rendered: cCraftUpGradeItemList* pList;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mProcessItemList[itemCate].::MtArray::mLength) {
+        return static_cast<sCraftManager::cCraftUpGradeItemList*>(this->mProcessItemList[itemCate].::MtArray::mpArray[index]);
+    } else {
+        return static_cast<sCraftManager::cCraftUpGradeItemList*>(nullptr);
+    }
 }
 
 // Address: 0x00763ed0 - 0x00763fbd (237 bytes)
@@ -1220,19 +1269,73 @@ __attribute__((weak)) u32 sCraftManager::getCapPassNum(u32 cap, rCraftCapPass* p
 // rCraftCapPass* sCraftManager::getCraftCapRes();
 
 // Address: 0x00761cf0 - 0x00761d60 (112 bytes)
-__attribute__((weak)) cCraftCapPassData* sCraftManager::getCraftCapDataFromStartLv(rCraftCapPass* pCapRes, u32 startLv) {
-    // local: u32 i;
-    // local: cCraftCapPassData* pData;
-    DDON_STUB("sCraftManager::getCraftCapDataFromStartLv")
-    return nullptr;
+cCraftCapPassData* sCraftManager::getCraftCapDataFromStartLv(rCraftCapPass* pCapRes, u32 startLv) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cCraftCapPassData* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x761d55; no location-less local in scope fits
+    cCraftCapPassData* v1_0;
+    if (pCapRes == static_cast<rCraftCapPass*>(nullptr)) {
+        v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+    } else {
+        if (pCapRes->getDataNum() == static_cast<u32>(0)) {
+            v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x761d28, used 3 times; no DWARF local holds it
+                cCraftCapPassData* t0 = pCapRes->getData(i0_2);
+                if (t0 != static_cast<cCraftCapPassData*>(nullptr)) {
+                    if (t0->mStartLv == startLv) {
+                        v1_0 = t0;
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < pCapRes->getDataNum()) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x00762f50 - 0x00762fc0 (112 bytes)
-__attribute__((weak)) cCraftCapPassData* sCraftManager::getCraftCapDataFromCapLv(rCraftCapPass* pCapRes, u32 capLv) {
-    // local: u32 i;
-    // local: cCraftCapPassData* pData;
-    DDON_STUB("sCraftManager::getCraftCapDataFromCapLv")
-    return nullptr;
+cCraftCapPassData* sCraftManager::getCraftCapDataFromCapLv(rCraftCapPass* pCapRes, u32 capLv) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cCraftCapPassData* pData;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x762fb5; no location-less local in scope fits
+    cCraftCapPassData* v1_0;
+    if (pCapRes == static_cast<rCraftCapPass*>(nullptr)) {
+        v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+    } else {
+        if (pCapRes->getDataNum() == static_cast<u32>(0)) {
+            v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x762f88, used 3 times; no DWARF local holds it
+                cCraftCapPassData* t0 = pCapRes->getData(i0_2);
+                if (t0 != static_cast<cCraftCapPassData*>(nullptr)) {
+                    if (t0->mLvCap == capLv) {
+                        v1_0 = t0;
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < pCapRes->getDataNum()) {
+                    i0_2 += static_cast<unsigned int>(1);
+                } else {
+                    v1_0 = static_cast<cCraftCapPassData*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // Address: 0x00761990 - 0x00761abc (300 bytes)
@@ -1402,19 +1505,56 @@ bool sCraftManager::getCategoryCraftPlusMaterial(nCharacterData::EQUIP_CATEGORY 
 }
 
 // Address: 0x00764a10 - 0x00764a59 (73 bytes)
-__attribute__((weak)) void sCraftManager::setCategoryCraftPlusMaterial(MtTypedArray<CDataCommonU32>& list) {
-    // local: u32 i;
-    // local: CDataCommonU32* pData;
-    DDON_STUB("sCraftManager::setCategoryCraftPlusMaterial")
-    /* stub */
+void sCraftManager::setCategoryCraftPlusMaterial(MtTypedArray<CDataCommonU32>& list) {
+    // DWARF local not rendered: CDataCommonU32* pData;
+    // Approximate from the ELF: a constant over array elements; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from MtTypedArray<CDataCommonU32>*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    this->mMasterPlusCategory[12] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[8] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[9] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[10] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[11] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[0] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[1] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[2] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[3] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[4] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[5] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[6] = static_cast<unsigned char>(0);
+    this->mMasterPlusCategory[7] = static_cast<unsigned char>(0);
+    u32 i = static_cast<u32>(0);
+    if (list.::MtArray::size() != static_cast<u32>(0)) {
+        do {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) <= static_cast<unsigned int>(12)) {
+                    this->mMasterPlusCategory[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))] = static_cast<unsigned char>(1);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < list.::MtArray::size());
+    }
 }
 
 // Address: 0x00764a60 - 0x00764a90 (48 bytes)
-__attribute__((weak)) void sCraftManager::setSupportNumList(MtTypedArray<CDataCommonU32>& list) {
-    // local: u32 i;
-    // local: CDataCommonU32* pData;
-    DDON_STUB("sCraftManager::setSupportNumList")
-    /* stub */
+void sCraftManager::setSupportNumList(MtTypedArray<CDataCommonU32>& list) {
+    // DWARF local not rendered: CDataCommonU32* pData;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from MtTypedArray<CDataCommonU32>*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8 from unsigned long
+    u32 i = static_cast<u32>(0);
+    if (list.::MtArray::size() != static_cast<u32>(0)) {
+        do {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                this->mMasterSupportNumData[i] = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&list) + static_cast<long>(24))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8));
+            }
+            i += static_cast<u32>(1);
+        } while (i < list.::MtArray::size());
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)
@@ -2478,10 +2618,13 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::createCraftColorList(b
 // MtTypedArray<CDataCraftColorant>& sCraftManager::cCraftPawnCtrl::getCraftColorList();
 
 // Address: 0x0075a670 - 0x0075a69d (45 bytes)
-__attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::isCreateGold(u32 type) {
-    // local: u32 cost;
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::isCreateGold")
-    return {};
+bool sCraftManager::cCraftPawnCtrl::isCreateGold(u32 type) {
+    // DWARF local not rendered: u32 cost;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x78 from sItemManager*
+    // inferred: a temporary for the result of the call at 0x75a679, used once; no DWARF local holds it
+    u32 t0 = this->::sCraftManager::cCraftPawnCtrl::getCreateGold(type);
+    return (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sItemManager::getInstance()) + static_cast<long>(120))) >= (this->mCreateCount * t0);
 }
 
 // Address: 0x0075ab40 - 0x0075b376 (2102 bytes)
@@ -2561,10 +2704,16 @@ __attribute__((weak)) u32 sCraftManager::cCraftPawnCtrl::getTimeSavingCost(nChar
 }
 
 // Address: 0x00758830 - 0x00758862 (50 bytes)
-__attribute__((weak)) void sCraftManager::cCraftPawnCtrl::getCraftItemCallBack(void* param) {
-    // local: stRequest* pParam;
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::getCraftItemCallBack")
-    /* stub */
+void sCraftManager::cCraftPawnCtrl::getCraftItemCallBack(void* param) {
+    // DWARF local not rendered: stRequest* pParam;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x88 from void*
+    if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(param) + static_cast<long>(136))) > static_cast<int>(-1)) {
+        this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(1);
+        static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::requestAward(static_cast<s32>(3));
+    } else {
+        this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(2);
+    }
 }
 
 // Address: 0x00758870 - 0x00758a36 (454 bytes)
@@ -2586,10 +2735,19 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::getCraftProductInfoReq
 }
 
 // Address: 0x00758ae0 - 0x00758b0f (47 bytes)
-__attribute__((weak)) sCraftManager::cCraftPawnCtrl::RESULT sCraftManager::cCraftPawnCtrl::getCraftProductInfoReqResult() {
-    // local: NET_STAT stat;
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::getCraftProductInfoReqResult")
-    return {};
+sCraftManager::cCraftPawnCtrl::RESULT sCraftManager::cCraftPawnCtrl::getCraftProductInfoReqResult() {
+    // DWARF local not rendered: NET_STAT stat;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x3f8 from cNetGameServer*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1016))) != static_cast<unsigned int>(1)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1016))) == static_cast<unsigned int>(4)) {
+            return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(2);
+        } else {
+            return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(1);
+        }
+    } else {
+        return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(0);
+    }
 }
 
 // Address: 0x00758b10 - 0x00758b39 (41 bytes)
@@ -2632,10 +2790,22 @@ __attribute__((weak)) bool sCraftManager::cCraftPawnCtrl::cancelCraftReq(s32 ind
 }
 
 // Address: 0x00758c30 - 0x00758c7e (78 bytes)
-__attribute__((weak)) sCraftManager::cCraftPawnCtrl::RESULT sCraftManager::cCraftPawnCtrl::cancelCraftReqResult() {
-    // local: NET_STAT stat;
-    DDON_STUB("sCraftManager::cCraftPawnCtrl::cancelCraftReqResult")
-    return {};
+sCraftManager::cCraftPawnCtrl::RESULT sCraftManager::cCraftPawnCtrl::cancelCraftReqResult() {
+    // DWARF local not rendered: NET_STAT stat;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x400 from cNetGameServer*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1024))) == static_cast<unsigned int>(4)) {
+        this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(2);
+        return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(2);
+    } else {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1024))) == static_cast<unsigned int>(1)) {
+            this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(0);
+            return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(0);
+        } else {
+            this->mCraftReqResult = static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(1);
+            return static_cast<sCraftManager::cCraftPawnCtrl::RESULT>(1);
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -3078,10 +3248,22 @@ bool sCraftManager::cCraftRankUp::craftPointReq(u32 pawnId, u32 Type, u32 level)
 }
 
 // Address: 0x0075e150 - 0x0075e195 (69 bytes)
-__attribute__((weak)) sCraftManager::cCraftRankUp::RESULT sCraftManager::cCraftRankUp::craftPointReqWait() {
-    // local: NET_STAT stat;
-    DDON_STUB("sCraftManager::cCraftRankUp::craftPointReqWait")
-    return {};
+sCraftManager::cCraftRankUp::RESULT sCraftManager::cCraftRankUp::craftPointReqWait() {
+    // DWARF local not rendered: NET_STAT stat;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x414 from cNetGameServer*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1044))) == static_cast<unsigned int>(4)) {
+        this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(2);
+        return static_cast<sCraftManager::cCraftRankUp::RESULT>(2);
+    } else {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(1044))) == static_cast<unsigned int>(1)) {
+            this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(0);
+            return static_cast<sCraftManager::cCraftRankUp::RESULT>(0);
+        } else {
+            this->mCraftReqResult = static_cast<sCraftManager::cCraftRankUp::RESULT>(1);
+            return static_cast<sCraftManager::cCraftRankUp::RESULT>(1);
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)

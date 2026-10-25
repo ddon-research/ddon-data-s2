@@ -11,6 +11,7 @@
 #include "cEfcHandle.h"
 #include "cEquipData.h"
 #include "cHitInfoAfter.h"
+#include "cHumanActId.h"
 #include "cpActionManager.h"
 #include "cpDDMrlMgr.h"
 #include "cpJobBase.h"
@@ -18,6 +19,7 @@
 #include "nDDOGame.h"
 #include "nDDOUtility.h"
 #include "nHuman.h"
+#include "nHumanMsg.h"
 #include "rItemList.h"
 #include "sEffect.h"
 #include "sEffectExt.h"
@@ -340,11 +342,37 @@ void cpJob09::makeShlDamageAttackInfo(cHitInfoAfter* pHitInfo) {
 // void cpJob09::endSpAlchemy();
 
 // Address: 0x004b9f40 - 0x004b9fda (154 bytes)
-__attribute__((weak)) void cpJob09::resetSpAlchemyLevel() {
-    // local: GROW_NORMAL_SKILL_ENUM skillID;
-    // local: HM_SKILL_LV SkillLv;
-    DDON_STUB("cpJob09::resetSpAlchemyLevel")
-    /* stub */
+void cpJob09::resetSpAlchemyLevel() {
+    // DWARF local not rendered: HM_SKILL_LV SkillLv;
+    // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a statement both arms of a test start with; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc68 from unsigned long
+    this->mSpAlchemyJustCount = static_cast<u32>(0);
+    nHuman::GROW_NORMAL_SKILL_ENUM skillID = ::cHumanActId::getNormalSkillId(static_cast<u32>(8201), static_cast<nHuman::JOB_ENUM>(9));
+    // inferred: a temporary for the value the load at 0x4b9f6e read, used 4 times; no DWARF local holds it
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+    if (t0 != static_cast<unsigned long>(0)) {
+        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) <= static_cast<unsigned char>(9)) {
+            // inferred: a temporary for the result of the call at 0x4b9f8d, used once; no DWARF local holds it
+            u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(40))) + static_cast<unsigned long>(::nHuman::getNormalSkillIdArrayIndex(skillID) * static_cast<u32>(4))) + static_cast<long>(3176))) > static_cast<int>(0)) {
+                this->mSpAlchemyCurrentLevel = static_cast<u32>(0);
+                this->mSpAlchemyEndLevel = static_cast<u32>(9);
+            } else {
+                this->mSpAlchemyCurrentLevel = static_cast<u32>(0);
+                this->mSpAlchemyEndLevel = static_cast<u32>(6);
+            }
+        } else {
+            this->mSpAlchemyCurrentLevel = static_cast<u32>(0);
+            this->mSpAlchemyEndLevel = static_cast<u32>(6);
+        }
+    } else {
+        this->mSpAlchemyCurrentLevel = static_cast<u32>(0);
+        this->mSpAlchemyEndLevel = static_cast<u32>(6);
+    }
 }
 
 // No out-of-line body: 8 inlined copies in 8 functions (80 bytes)
@@ -618,9 +646,27 @@ __attribute__((weak)) bool cpJob09::changeElement() {
 // nDDOGame::ELEMENT_TYPE cpJob09::getTmpElementType() const;
 
 // Address: 0x004bad40 - 0x004bad9d (93 bytes)
-__attribute__((weak)) nHuman::HM_SKILL_LV cpJob09::getElementLv() const {
-    DDON_STUB("cpJob09::getElementLv")
-    return {};
+nHuman::HM_SKILL_LV cpJob09::getElementLv() const {
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x948 from unsigned long
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x4bad52 read, used 4 times; no DWARF local holds it
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+        if (t0 != static_cast<unsigned long>(0)) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) <= static_cast<unsigned char>(9)) {
+                // inferred: a temporary for the result of the call at 0x4bad6f, used once; no DWARF local holds it
+                u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                return static_cast<nHuman::HM_SKILL_LV>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(80))) + static_cast<unsigned long>(::nHuman::getCustomSkillIdArrayIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(5)) * static_cast<u32>(4))) + static_cast<long>(2376)));
+            }
+        }
+        return static_cast<nHuman::HM_SKILL_LV>(0);
+    } else {
+        return static_cast<nHuman::HM_SKILL_LV>(0);
+    }
 }
 
 // Address: 0x004bc5c0 - 0x004bc6a4 (228 bytes)
@@ -786,10 +832,7 @@ void cpJob09::resetEffectCtrlData() {
     this->mFinishSequenceNo = static_cast<u32>(4294967295);
     this->mSequenceNo = static_cast<u32>(4294967295);
     this->mAlchemyCoreIndexNo = static_cast<s32>(-1);
-    this->mAlchemyCoreOfset.x = ::MtVector3::Zero.x;
-    this->mAlchemyCoreOfset.y = ::MtVector3::Zero.y;
-    this->mAlchemyCoreOfset.z = ::MtVector3::Zero.z;
-    this->mAlchemyCoreOfset.pad_ = 0.0f;
+    this->mAlchemyCoreOfset = ::MtVector3::Zero;
 }
 
 // Address: 0x004b5f90 - 0x004b6071 (225 bytes)
@@ -963,30 +1006,151 @@ __attribute__((weak)) void cpJob09::updateAlchemyEvaluationSubWriteData(MtTypedA
 // void cpJob09::resetBurstInfo();
 
 // Address: 0x004bd130 - 0x004bd1b7 (135 bytes)
-__attribute__((weak)) void cpJob09::requestStateBurst(uShlAlchemy* pShl, const MtVector3& hit_pos) {
-    // local: f32 value;
-    DDON_STUB("cpJob09::requestStateBurst")
-    /* stub */
+void cpJob09::requestStateBurst(uShlAlchemy* pShl, const MtVector3& hit_pos) {
+    // DWARF local not rendered: f32 value;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x118 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x128 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x138 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x148 from cpJob09*
+    // inferred: the value the loop at 0x4bd160 carries; no location-less local in scope fits
+    f32 v0_3 = pShl->::uShlAlchemy::getAlchemyValue();
+    if (this->mBurstShlAlchemyValue > v0_3) {
+    } else {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(280))) != static_cast<unsigned int>(0)) {
+            // inferred: the value the loop at 0x4bd160 carries; no location-less local in scope fits
+            unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(280));
+            // inferred: the value the loop at 0x4bd160 carries; no location-less local in scope fits
+            for (unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(296));;) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1) + static_cast<long>(0))) + static_cast<long>(10956)) = static_cast<unsigned char>(0);
+                }
+                if ((v0_0 - static_cast<unsigned int>(1)) != static_cast<unsigned int>(0)) {
+                    v0_0 += static_cast<unsigned int>(4294967295);
+                    v0_1 += static_cast<unsigned long>(8);
+                } else {
+                    break;
+                }
+            }
+        }
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312))) != static_cast<unsigned int>(0)) {
+            // inferred: the value the loop at 0x4bd190 carries; no location-less local in scope fits
+            unsigned int v2_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
+            // inferred: the value the loop at 0x4bd190 carries; no location-less local in scope fits
+            for (unsigned long v2_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(328));;) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v2_1) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v2_1) + static_cast<long>(0))) + static_cast<long>(10956)) = static_cast<unsigned char>(0);
+                }
+                if ((v2_0 - static_cast<unsigned int>(1)) != static_cast<unsigned int>(0)) {
+                    v2_0 += static_cast<unsigned int>(4294967295);
+                    v2_1 += static_cast<unsigned long>(8);
+                } else {
+                    break;
+                }
+            }
+        }
+        this->mBurstShlAlchemyValue = v0_3;
+        pShl->mStateBurst = true;
+    }
 }
 
 // Address: 0x004bd230 - 0x004bd29e (110 bytes)
-__attribute__((weak)) bool cpJob09::isExistShlBurst() {
-    // local: u32 i;
-    // local: uShlAlchemy* pTmp;
-    // local: u32 i;
-    // local: uShlAlchemy* pTmp;
-    DDON_STUB("cpJob09::isExistShlBurst")
-    return {};
+bool cpJob09::isExistShlBurst() {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShlAlchemy* pTmp;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShlAlchemy* pTmp;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x118 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x128 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x138 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x148 from cpJob09*
+    // inferred: the value the loop at 0x4bd250 carries; no location-less local in scope fits
+    unsigned int v0_4 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(280));
+    if (v0_4 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0x4bd250 carries; no location-less local in scope fits
+        unsigned long v0_2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(296));
+        // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i0_3 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(i0_3 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(10956))) != static_cast<unsigned char>(0)) {
+                    return true;
+                }
+            }
+            if ((i0_3 + static_cast<unsigned int>(1)) < v0_4) {
+                i0_3 = i0_3 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    // inferred: the value the loop at 0x4bd280 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int v2_1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
+    if (v2_1 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0x4bd280 carries; no location-less local in scope fits
+        unsigned long v2_2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(328));
+        // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
+        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v2_2 + static_cast<unsigned long>(i2_3 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v2_2 + static_cast<unsigned long>(i2_3 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(10956))) != static_cast<unsigned char>(0)) {
+                    return true;
+                }
+            }
+            if ((i2_3 + static_cast<unsigned int>(1)) < v2_1) {
+                i2_3 = i2_3 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x004bd1c0 - 0x004bd228 (104 bytes)
-__attribute__((weak)) void cpJob09::clearBurstShl() {
-    // local: u32 i;
-    // local: uShlAlchemy* pTmp;
-    // local: u32 i;
-    // local: uShlAlchemy* pTmp;
-    DDON_STUB("cpJob09::clearBurstShl")
-    /* stub */
+void cpJob09::clearBurstShl() {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShlAlchemy* pTmp;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShlAlchemy* pTmp;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x118 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x128 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x138 from cpJob09*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x148 from cpJob09*
+    // inferred: the value the loop at 0x4bd1e0 carries; no location-less local in scope fits
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(280));
+    if (v0_0 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0x4bd1e0 carries; no location-less local in scope fits
+        unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(296));
+        // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(i0_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(10956)) = static_cast<unsigned char>(0);
+            }
+            if ((i0_2 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_2 = i0_2 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    // inferred: the value the loop at 0x4bd210 carries; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int v2_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(312));
+    if (v2_0 != static_cast<unsigned int>(0)) {
+        // inferred: the value the loop at 0x4bd210 carries; no location-less local in scope fits
+        unsigned long v2_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(328));
+        // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
+        for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v2_1 + static_cast<unsigned long>(i2_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v2_1 + static_cast<unsigned long>(i2_2 * static_cast<unsigned int>(8))) + static_cast<long>(0))) + static_cast<long>(10956)) = static_cast<unsigned char>(0);
+            }
+            if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
+                i2_2 = i2_2 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x004bd610 - 0x004bdf46 (2358 bytes)
@@ -1049,13 +1213,58 @@ __attribute__((weak)) void cpJob09::finishStickInEffect(bool set_finish_effect, 
 }
 
 // Address: 0x004bd2a0 - 0x004bd30f (111 bytes)
-__attribute__((weak)) uShlAlchemy* cpJob09::getBurstShl() const {
-    // local: u32 i;
-    // local: uShlAlchemy* pTmp;
-    // local: u32 i;
-    // local: uShlAlchemy* pTmp;
-    DDON_STUB("cpJob09::getBurstShl")
-    return nullptr;
+uShlAlchemy* cpJob09::getBurstShl() const {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShlAlchemy* pTmp;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uShlAlchemy* pTmp;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value the loop at 0x4bd2c0 carries; no location-less local in scope fits
+    u32 v0_1 = this->mShlArray.::MtArray::mLength;
+    // inferred: the value carried to 0x4bd30e; no location-less local in scope fits
+    MtObject* v3_0;
+    if (v0_1 != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x4bd2c0 carries; no location-less local in scope fits
+        MtObject* * v0_2 = this->mShlArray.::MtArray::mpArray;
+        // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (v0_2[i0_3] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_2[i0_3]) + static_cast<long>(10956))) != static_cast<unsigned char>(0)) {
+                    v3_0 = v0_2[i0_3];
+                    return static_cast<uShlAlchemy*>(v3_0);
+                }
+            }
+            if ((i0_3 + static_cast<unsigned int>(1)) < v0_1) {
+                i0_3 = i0_3 + static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    // inferred: the value the loop at 0x4bd2f0 carries; no location-less local in scope fits
+    u32 v2_0 = this->mCS03ShlArray.::MtArray::mLength;
+    if (v2_0 == static_cast<u32>(0)) {
+        v3_0 = static_cast<MtObject*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0x4bd2f0 carries; no location-less local in scope fits
+        MtObject* * v2_1 = this->mCS03ShlArray.::MtArray::mpArray;
+        // inferred: the counter this loop steps; the location-less local in scope that fits shares its name with another DWARF local
+        for (unsigned int i2_2 = static_cast<unsigned int>(0);;) {
+            if (v2_1[i2_2] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v2_1[i2_2]) + static_cast<long>(10956))) != static_cast<unsigned char>(0)) {
+                    v3_0 = v2_1[i2_2];
+                    break;
+                }
+            }
+            if ((i2_2 + static_cast<unsigned int>(1)) < v2_0) {
+                i2_2 = i2_2 + static_cast<unsigned int>(1);
+            } else {
+                v3_0 = static_cast<MtObject*>(nullptr);
+                break;
+            }
+        }
+    }
+    return static_cast<uShlAlchemy*>(v3_0);
 }
 
 // Address: 0x004bd310 - 0x004bd3ca (186 bytes)
@@ -1200,19 +1409,60 @@ __attribute__((weak)) void cpJob09::callBackDamageGraze(cHitInfoAfter* pHitInfo)
 }
 
 // Address: 0x004bbe30 - 0x004bbe8d (93 bytes)
-__attribute__((weak)) nHuman::HM_SKILL_LV cpJob09::getFrightBoardLevel() const {
-    DDON_STUB("cpJob09::getFrightBoardLevel")
-    return {};
+nHuman::HM_SKILL_LV cpJob09::getFrightBoardLevel() const {
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x948 from unsigned long
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x4bbe42 read, used 4 times; no DWARF local holds it
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+        if (t0 != static_cast<unsigned long>(0)) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) <= static_cast<unsigned char>(9)) {
+                // inferred: a temporary for the result of the call at 0x4bbe5f, used once; no DWARF local holds it
+                u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                return static_cast<nHuman::HM_SKILL_LV>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(80))) + static_cast<unsigned long>(::nHuman::getCustomSkillIdArrayIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(6)) * static_cast<u32>(4))) + static_cast<long>(2376)));
+            }
+        }
+        return static_cast<nHuman::HM_SKILL_LV>(0);
+    } else {
+        return static_cast<nHuman::HM_SKILL_LV>(0);
+    }
 }
 
 // Address: 0x004bbe90 - 0x004bbf16 (134 bytes)
-__attribute__((weak)) bool cpJob09::checkCndEnableDelayCombo() const {
-    // local: u32 ActNo;
-    // local: GROW_NORMAL_SKILL_ENUM skillID;
-    // local: HM_SKILL_LV SkillLv;
-    // local: bool result;
-    DDON_STUB("cpJob09::checkCndEnableDelayCombo")
-    return {};
+bool cpJob09::checkCndEnableDelayCombo() const {
+    // DWARF local not rendered: u32 ActNo;
+    // DWARF local not rendered: HM_SKILL_LV SkillLv;
+    // DWARF local not rendered: bool result;
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc68 from unsigned long
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        nHuman::GROW_NORMAL_SKILL_ENUM skillID = ::cHumanActId::getNormalSkillId(static_cast<u32>(8215), static_cast<nHuman::JOB_ENUM>(9));
+        // inferred: a temporary for the value the load at 0x4bbeba read, used 4 times; no DWARF local holds it
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+        if (t0 != static_cast<unsigned long>(0)) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                return false;
+            } else {
+                // inferred: a temporary for the result of the call at 0x4bbee3, used once; no DWARF local holds it
+                u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                // inferred: a temporary for the result of the call at 0x4bbeee, used once; no DWARF local holds it
+                u32 t2 = ::nHuman::getNormalSkillIdArrayIndex(skillID);
+                return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(40))) + static_cast<unsigned long>(t2 * static_cast<u32>(4))) + static_cast<long>(3176))) != static_cast<unsigned int>(0);
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x004bbf20 - 0x004bc080 (352 bytes)
@@ -1233,9 +1483,44 @@ __attribute__((weak)) bool cpJob09::checkCndEnableSecondJump() const {
 // bool cpJob09::checkCndEnableAirAlchemyRelease() const;
 
 // Address: 0x004bc080 - 0x004bc112 (146 bytes)
-__attribute__((weak)) bool cpJob09::checkCndEnableAirCS06() const {
-    DDON_STUB("cpJob09::checkCndEnableAirCS06")
-    return {};
+bool cpJob09::checkCndEnableAirCS06() const {
+    // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x948 from unsigned long
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        if (this->mCountAirCS06 != static_cast<u32>(0)) {
+            return false;
+        } else {
+            if (this->::cpJobBase::mpHuman->mJob09AirFrightBoardCount != static_cast<u32>(0)) {
+                return false;
+            } else {
+                if (this->mCountCS10 != static_cast<u32>(0)) {
+                    return false;
+                } else {
+                    // inferred: a temporary for the value the load at 0x4bc0bb read, used 4 times; no DWARF local holds it
+                    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+                    if (t0 != static_cast<unsigned long>(0)) {
+                        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                            return false;
+                        } else {
+                            // inferred: a temporary for the result of the call at 0x4bc0e0, used once; no DWARF local holds it
+                            u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                            // inferred: a temporary for the result of the call at 0x4bc0ed, used once; no DWARF local holds it
+                            u32 t2 = ::nHuman::getCustomSkillIdArrayIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(6));
+                            return static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(80))) + static_cast<unsigned long>(t2 * static_cast<u32>(4))) + static_cast<long>(2376))) > static_cast<int>(5);
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -1251,9 +1536,44 @@ __attribute__((weak)) bool cpJob09::checkCndEnableAirCS06() const {
 // void cpJob09::addAirCS06();
 
 // Address: 0x004bc120 - 0x004bc1b2 (146 bytes)
-__attribute__((weak)) bool cpJob09::checkCndEnableAirCS10() const {
-    DDON_STUB("cpJob09::checkCndEnableAirCS10")
-    return {};
+bool cpJob09::checkCndEnableAirCS10() const {
+    // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x948 from unsigned long
+    if (this->::cpJobBase::mpHuman != static_cast<uHuman*>(nullptr)) {
+        if (this->mCountCS10 != static_cast<u32>(0)) {
+            return false;
+        } else {
+            if (this->mCountAirCS06 != static_cast<u32>(0)) {
+                return false;
+            } else {
+                if (this->::cpJobBase::mpHuman->mJob09AirFrightBoardCount != static_cast<u32>(0)) {
+                    return false;
+                } else {
+                    // inferred: a temporary for the value the load at 0x4bc15b read, used 4 times; no DWARF local holds it
+                    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cpJobBase::mpHuman) + static_cast<long>(13376));
+                    if (t0 != static_cast<unsigned long>(0)) {
+                        if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                            return false;
+                        } else {
+                            // inferred: a temporary for the result of the call at 0x4bc180, used once; no DWARF local holds it
+                            u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                            // inferred: a temporary for the result of the call at 0x4bc18d, used once; no DWARF local holds it
+                            u32 t2 = ::nHuman::getCustomSkillIdArrayIndex(static_cast<nHuman::CUSTOM_SKILL_ENUM>(10));
+                            return static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(80))) + static_cast<unsigned long>(t2 * static_cast<u32>(4))) + static_cast<long>(2376))) > static_cast<int>(5);
+                        }
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)

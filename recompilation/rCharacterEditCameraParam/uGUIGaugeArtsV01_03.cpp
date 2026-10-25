@@ -162,11 +162,14 @@ void uGUIGaugeArtsV01_03::kill() {
 }
 
 // Address: 0x00a96aa0 - 0x00a96ace (46 bytes)
-__attribute__((weak)) void uGUIGaugeArtsV01_03::updateInit() {
-    // local: cGUIObjChildAnimationRoot* pObj;
-    // local: MtVector3 pos;
-    DDON_STUB("uGUIGaugeArtsV01_03::updateInit")
-    /* stub */
+void uGUIGaugeArtsV01_03::updateInit() {
+    // DWARF local not rendered: cGUIObjChildAnimationRoot* pObj;
+    // DWARF local not rendered: MtVector3 pos;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpOBJ_fix_element_elms.elems[0] != static_cast<cGUIObjChildAnimationRoot*>(nullptr)) {
+        this->mGaugeLimitLength = 50.0f;
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeArtsV01_03::updateWait);
 }
 
 // Address: 0x00a96b80 - 0x00a9727c (1788 bytes)

@@ -6,6 +6,7 @@
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "cDDMaterialCtrl.h"
+#include "cHitInfoAfter.h"
 #include "cOmComponent.h"
 #include "cOmControl.h"
 #include "cUnit.h"
@@ -13,8 +14,10 @@
 #include "cpOmComponent.h"
 #include "cpOmGather.h"
 #include "nDDOModel.h"
+#include "rAttackParam.h"
 #include "../rOmParam/rOmParam.h"
 #include "sCollision.h"
+#include "sOmManager.h"
 #include "uBaseModel.h"
 #include "uDDOModel.h"
 #include "uEffect.h"
@@ -188,10 +191,22 @@ void uOmModel::applyWorldOffset(const MtVector3& offset, const MtVector3& absolu
 }
 
 // Address: 0x00caf680 - 0x00caf6d9 (89 bytes)
-__attribute__((weak)) u32 uOmModel::getLODLevel(s32 dist) {
-    // local: MODEL_INFO* pmi;
-    DDON_STUB("uOmModel::getLODLevel")
-    return {};
+u32 uOmModel::getLODLevel(s32 dist) {
+    // DWARF local not rendered: MODEL_INFO* pmi;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::uBaseModel::mLODType <= static_cast<s32>(-1)) {
+        if (static_cast<float>(static_cast<int>(::sOmManager::getInstance()->mAQCLODScale * static_cast<float>(dist))) > this->::uBaseModel::mLODLowDist) {
+            return static_cast<u32>(4);
+        } else {
+            if (static_cast<float>(static_cast<int>(::sOmManager::getInstance()->mAQCLODScale * static_cast<float>(dist))) > this->::uBaseModel::mLODMidDist) {
+                return static_cast<u32>(2);
+            } else {
+                return static_cast<u32>(1);
+            }
+        }
+    } else {
+        return static_cast<u32>(this->::uBaseModel::mLODType);
+    }
 }
 
 // Address: 0x00caf990 - 0x00caf998 (8 bytes)
@@ -296,15 +311,61 @@ void uOmModel::makeHitSeInfo_Attack(cDamageSeInfo* pSeInfo) {
 }
 
 // Address: 0x00cb0860 - 0x00cb08b2 (82 bytes)
-__attribute__((weak)) void uOmModel::makeOcdAttackInfo(cHitInfoAfter* pHitInfo) {
-    DDON_STUB("uOmModel::makeOcdAttackInfo")
-    /* stub */
+void uOmModel::makeOcdAttackInfo(cHitInfoAfter* pHitInfo) {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as nDDOGame::ELEMENT_TYPE
+    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+        return;
+    }
+    this->::uDDOModel::makeOcdAttackInfo(pHitInfo);
+    if (pHitInfo->mCommonInfo.mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0xcb087f read, used 3 times; no DWARF local holds it
+    u8 t0 = pHitInfo->mCommonInfo.mpAttackParam->mElementType2;
+    if (t0 <= static_cast<u8>(1)) {
+        if (pHitInfo->mOcdDamageInfo.mElementResultType == static_cast<nDDOGame::ELEMENT_TYPE>(1)) {
+            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly != false) {
+                pHitInfo->mOcdDamageInfo.mIsElementNone = true;
+            }
+        }
+    } else {
+        pHitInfo->mOcdDamageInfo.mElementResultType = static_cast<nDDOGame::ELEMENT_TYPE>(t0);
+        if (t0 == static_cast<u8>(1)) {
+            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly != false) {
+                pHitInfo->mOcdDamageInfo.mIsElementNone = true;
+            }
+        }
+    }
 }
 
 // Address: 0x00cb08d0 - 0x00cb0922 (82 bytes)
-__attribute__((weak)) void uOmModel::makeOcdAttackInfoShl(cHitInfoAfter* pHitInfo) {
-    DDON_STUB("uOmModel::makeOcdAttackInfoShl")
-    /* stub */
+void uOmModel::makeOcdAttackInfoShl(cHitInfoAfter* pHitInfo) {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as nDDOGame::ELEMENT_TYPE
+    if (pHitInfo == static_cast<cHitInfoAfter*>(nullptr)) {
+        return;
+    }
+    this->::uDDOModel::makeOcdAttackInfoShl(pHitInfo);
+    if (pHitInfo->mCommonInfo.mpAttackParam == static_cast<cAttackParam*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0xcb08ef read, used 3 times; no DWARF local holds it
+    u8 t0 = pHitInfo->mCommonInfo.mpAttackParam->mElementType2;
+    if (t0 <= static_cast<u8>(1)) {
+        if (pHitInfo->mOcdDamageInfo.mElementResultType == static_cast<nDDOGame::ELEMENT_TYPE>(1)) {
+            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly != false) {
+                pHitInfo->mOcdDamageInfo.mIsElementNone = true;
+            }
+        }
+    } else {
+        pHitInfo->mOcdDamageInfo.mElementResultType = static_cast<nDDOGame::ELEMENT_TYPE>(t0);
+        if (t0 == static_cast<u8>(1)) {
+            if (pHitInfo->mCommonInfo.mpAttackParam->mIsPhysAttackOnly != false) {
+                pHitInfo->mOcdDamageInfo.mIsElementNone = true;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (106 bytes)

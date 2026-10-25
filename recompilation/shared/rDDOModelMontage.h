@@ -276,3 +276,9 @@ public:
 protected:
     static const u32 DATA_VERSION = 10;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 rDDOModelMontage::getModelType() {
+    return this->mpHeader->modelType;
+}

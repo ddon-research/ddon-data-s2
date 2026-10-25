@@ -5,14 +5,18 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "../rCharacterEditCameraParam/aStage.h"
 #include "cArcLoader.h"
+#include "../rCharacterEditCameraParam/cArea.h"
 #include "cContextInterface.h"
 #include "cNetBase.h"
 #include "cUnit.h"
 #include "cpLayout.h"
 #include "nLayout.h"
 #include "nNetMsgData.h"
+#include "../rStageConnect/sArea.h"
 #include "sGame.h"
+#include "sMain.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -171,9 +175,73 @@ __attribute__((weak)) void uControl::setup() {
 }
 
 // Address: 0x008c87e0 - 0x008c896e (398 bytes)
-__attribute__((weak)) void uControl::move() {
-    DDON_STUB("uControl::move")
-    /* stub */
+void uControl::move() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 2 goto statements as its last resort
+    if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
+        if (this->mpModel->::cUnit::isEnable()) {
+            if (::cContextInterface::getMasterChangeFlag(this->mContextInterface.mpContextInstance) != false) {
+                // inferred: a temporary for the result of the call at 0x8c881b, used once; no DWARF local holds it
+                bool t0 = this->mpModel->::uDDOModel::isMaster();
+                // inferred: a temporary for the value the load at 0x8c882a read, used once; no DWARF local holds it
+                sGame* t1 = ::sGame::getInstance();
+                // inferred: a temporary for the result of the call at 0x8c883e, used once; no DWARF local holds it
+                bool t2 = t1->::sGame::isMySelfPartyMemberIndex(::cContextInterface::getMasterIndex(this->mContextInterface.mpContextInstance));
+                if (t0 != false) {
+                    if (t2 == false) {
+                        this->mpModel->setMaster(false);
+                    }
+                } else {
+                    if (t2 != false) {
+                        this->mpModel->setMaster(true);
+                        this->mIsSaveSendAct = false;
+                        this->mSendActIntervalTimer = 0.0f;
+                        this->mBossCondSendInterval = 0.0f;
+                    }
+                }
+            }
+        } else {
+            this->mpModel = static_cast<uDDOModel*>(nullptr);
+            goto region_8c88ee;
+        }
+    } else {
+        goto region_8c88ee;
+    }
+    if (static_cast<aStage*>(::sArea::getInstance()->mpArea[2])->::aStage::isFsmEventPlay() != false) {
+        // inferred: the value carried to 0x8c88ca; no location-less local in scope fits
+        uDDOModel* v1_0 = this->mpModel;
+        // inferred: the value carried to 0x8c88ca; no location-less local in scope fits
+        unsigned int v1_1;
+        if (this->mUnitMove != false) {
+            v1_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + static_cast<long>(16))) | static_cast<unsigned int>(1024);
+        } else {
+            v1_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + static_cast<long>(16))) & static_cast<unsigned int>(4294966271);
+        }
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_0) + static_cast<long>(16)) = v1_1;
+        // inferred: the value carried to 0x8c88e8; no location-less local in scope fits
+        uDDOModel* v2_0 = this->mpModel;
+        // inferred: the value carried to 0x8c88e8; no location-less local in scope fits
+        u32 v2_1;
+        if (this->mUnitDraw != false) {
+            v2_1 = v2_0->mDDOModelFlag | static_cast<u32>(1);
+        } else {
+            v2_1 = v2_0->mDDOModelFlag & static_cast<u32>(4294967294);
+        }
+        v2_0->mDDOModelFlag = v2_1;
+    }
+    region_8c88ee:;
+    this->mIsArcLoadEnd = false;
+    if (this->mIsArcLoadRequest != false) {
+        if (this->mArcLoadMgr.::cTagArcLoad::moveArcTag() != false) {
+            this->mIsArcLoadEnd = true;
+        }
+    }
+    if (this->mDisableDispTimer > 0.0f) {
+        this->mDisableDispTimer = this->mDisableDispTimer - ::sMain::getInstance()->mDeltaTime;
+    }
+    if (this->mForceDispTimer > 0.0f) {
+        this->mForceDispTimer = this->mForceDispTimer - ::sMain::getInstance()->mDeltaTime;
+    }
 }
 
 // Address: 0x008c89d0 - 0x008c89dc (12 bytes)

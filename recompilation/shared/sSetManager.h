@@ -195,6 +195,8 @@ public:
 public:
     class cOmGroupData : public MtObject
     {
+        // inferred: sSetManager::setKilledMgrData names sSetManager::cOmGroupData::mGroupData
+        friend class sSetManager;
     public:
         enum
         {
@@ -713,6 +715,12 @@ inline sSetManager* sSetManager::getInstance() {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void sSetManager::requestSetWaitOff() {
     this->mIsSetWaitOffRequest = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rLayoutPreset* sSetManager::getLotPreset() const {
+    return this->mpLotPreset;
 }
 
 // Inline, no code of its own: checked where it is inlined.

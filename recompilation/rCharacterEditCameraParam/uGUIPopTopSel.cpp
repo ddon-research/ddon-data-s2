@@ -15,6 +15,8 @@
 #include "../rGUI/rGUI.h"
 #include "../shared/rGUIMessage.h"
 #include "../rStageConnect/sArea.h"
+#include "../shared/sNetwork.h"
+#include "../shared/sNetworkExt.h"
 #include "../shared/sQuestManagerExt.h"
 #include "../shared/uGUIBase.h"
 #include "uGUIPopBase.h"
@@ -74,10 +76,16 @@ inline void uGUIPopTopSel::operator delete(void* p_addr) {
 // void uGUIPopTopSel::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x00bcdcb0 - 0x00bcdce5 (53 bytes)
-__attribute__((weak)) u32 uGUIPopTopSel::GetClanMode() {
-    // local: u32 mode;
-    DDON_STUB("uGUIPopTopSel::GetClanMode")
-    return {};
+u32 uGUIPopTopSel::GetClanMode() {
+    // DWARF local not rendered: u32 mode;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isBelongClan() != false) {
+        return static_cast<u32>(static_cast<unsigned long>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::isClanLeader()) | static_cast<unsigned long>(4));
+    } else {
+        return static_cast<u32>(3);
+    }
 }
 
 // Omitted: mem-initializer not recorded in DWARF (base uGUIPopBase has no default constructor)
@@ -157,9 +165,13 @@ __attribute__((weak)) void uGUIPopTopSel::setup() {
 // u32 uGUIPopTopSel::getMode();
 
 // Address: 0x00bd1bd0 - 0x00bd1c18 (72 bytes)
-__attribute__((weak)) void uGUIPopTopSel::begin() {
-    DDON_STUB("uGUIPopTopSel::begin")
-    /* stub */
+void uGUIPopTopSel::begin() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mSelectResult = static_cast<u32>(0);
+    this->mIsBegin = true;
+    this->mIsInitOnce = false;
+    this->::uGUIBase::setWindowActive(true);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopTopSel::updateInit);
 }
 
 // Address: 0x00bd1c20 - 0x00bd1cbf (159 bytes)
@@ -176,9 +188,22 @@ __attribute__((weak)) void uGUIPopTopSel::hide() {
 // void uGUIPopTopSel::restart();
 
 // Address: 0x00bd1d90 - 0x00bd1e1b (139 bytes)
-__attribute__((weak)) void uGUIPopTopSel::stay() {
-    DDON_STUB("uGUIPopTopSel::stay")
-    /* stub */
+void uGUIPopTopSel::stay() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+        this->mpListCtrl->setFocus(false);
+    }
+    if (this->mpSelectorCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        this->mpSelectorCtrl->setFocus(false);
+    }
+    if (this->mpSelectorLRCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        this->mpSelectorLRCtrl->setFocus(false);
+    }
+    this->mIsBegin = false;
+    this->mIsInitialized = false;
+    this->mStayCursorPos = this->mpListCtrl->::cControl::getCurrentPos();
+    this->::uGUIBase::setWindowActive(false);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopTopSel::updateWait);
 }
 
 // No out-of-line body: no code in the ELF

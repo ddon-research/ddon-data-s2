@@ -25,6 +25,8 @@ class MtVector3;
 class MtVector4;
 struct ScePadData;
 class cBrowserPS4;
+class sPadExt;
+class uGUIOption;
 
 // Declarations
 class sPad;
@@ -47,6 +49,8 @@ class sPad : public cSystem
 {
     // inferred: cBrowserPS4::checkValidDevice names sPad::mpInstance
     friend class cBrowserPS4;
+    // inferred: uGUIOption::updateReflectionData names sPad::mpInstance
+    friend class uGUIOption;
 public:
     enum PAD_PORT_TYPE
     {
@@ -179,6 +183,8 @@ public:
 public:
     class Pad : public MtObject
     {
+        // inferred: sPadExt::clearInputData calls sPad::Pad::initData
+        friend class sPadExt;
     public:
         enum REQUEST_VIB
         {

@@ -167,7 +167,7 @@ public:
 
 class cContextInstChar : public cContextInstance
 {
-    // inferred: cContextInterface::setCliffPos calls cContextInstChar::setCliffPos
+    // inferred: cContextInterface::setActReqPrio names cContextInstChar::mActReqPrio
     friend class cContextInterface;
 public:
     class MyDTI;
@@ -713,6 +713,21 @@ inline s32 cContextInstHm::getMemberIndex() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline s32 cContextInstHm::getEncountArea(u32 index) const {
+    return this->mEncountArea[index];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s32 cContextInstHm::getStageNoFreeMarker(u32 idx) const {
+    return this->mStageNoFreeMarker[idx];
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline s32 cContextInstHm::getGroupNoFreeMarker(u32 idx) const {
+    return this->mGroupNoFreeMarker[idx];
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // approximate: only approximate callers check this inline body
 inline f32 cContextInstHm::getFJobWork0() const {
     return this->mFJobWork0;
@@ -722,6 +737,12 @@ inline f32 cContextInstHm::getFJobWork0() const {
 // approximate: only approximate callers check this inline body
 inline f32 cContextInstHm::getFJobWork1() const {
     return this->mFJobWork1;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s32 cContextInstHm::getSJobWork0() const {
+    return this->mSJobWork0;
 }
 
 // Inline, no code of its own: checked where it is inlined.

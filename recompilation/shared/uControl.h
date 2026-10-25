@@ -30,6 +30,7 @@ namespace nLayout { struct stSplitID; }
 namespace nNetBase { class cNetBase; }
 namespace nNetMsgData { struct stNetPos; }
 class rArchive;
+class sControlManager;
 class sSetManager;
 class uCharacter;
 class uControlNpc;
@@ -58,6 +59,8 @@ class uControl : public cUnit
     friend class cPlayerLoadManager;
     // inferred: cpErosionEnemySmall::setupBeforeContext names uControl::mCtrlType
     friend class cpErosionEnemySmall;
+    // inferred: sControlManager::dispPlayerModel names uControl::mContextInterface.mpContextInstance
+    friend class sControlManager;
     // inferred: sSetManager::createCharacterInstance names uControl::mCtrlType
     friend class sSetManager;
     // inferred: uCharacter::getNamedParam names uControl::mCtrlType
@@ -266,6 +269,26 @@ private:
     static const f32 COREPOINT_INTERVAL;
     static const u32 BOSS_CONDITION_INTERVAL = 90;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool uControl::isPlayer() {
+    return this->mCtrlType == static_cast<u8>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool uControl::isPawn() {
+    return this->mCtrlType == static_cast<u8>(8);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool uControl::isNpc() {
+    return this->mCtrlType == static_cast<u8>(16);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool uControl::isEnemy() {
+    return this->mCtrlType == static_cast<u8>(32);
+}
 
 // Inline, no code of its own: checked where it is inlined.
 inline uDDOModel* uControl::getObjModel() {

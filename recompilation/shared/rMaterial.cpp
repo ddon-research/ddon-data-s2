@@ -2,6 +2,7 @@
 #include <new>
 #include "rMaterial.h"
 #include "MtAllocator.h"
+#include "MtCRC.h"
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
@@ -155,12 +156,39 @@ u32 rMaterial::getTextureNum() {
 // rTexture* rMaterial::getTextureResource(nDraw::Texture* ptex);
 
 // Address: 0x011d4450 - 0x011d44c1 (113 bytes)
-__attribute__((weak)) u32 rMaterial::getMaterialIndexFromName(MT_CTSTR name) {
-    // local: u32 crc;
-    // local: u32 n;
-    // local: u32 i;
-    DDON_STUB("rMaterial::getMaterialIndexFromName")
-    return {};
+u32 rMaterial::getMaterialIndexFromName(MT_CTSTR name) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x11d44b3; no location-less local in scope fits
+    unsigned int v2_8;
+    if (this->mpHeader == static_cast<rMaterial::HEADER*>(nullptr)) {
+        v2_8 = static_cast<unsigned int>(2147483647);
+    } else {
+        u32 crc = ::MtCRC::getCRC(name, static_cast<u32>(4294967295));
+        u32 n = this->getMaterialNum();
+        if (n == static_cast<u32>(0)) {
+            v2_8 = static_cast<unsigned int>(2147483647);
+        } else {
+            // inferred: the value the loop at 0x11d44a0 carries; no location-less local in scope fits
+            u32* v0_1 = &this->mpHeader->materials->name;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                if ((*v0_1) != crc) {
+                    if ((i0_2 + static_cast<unsigned int>(1)) < n) {
+                        v0_1 += static_cast<int>(18);
+                        i0_2 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    v2_8 = i0_2;
+                    return v2_8;
+                }
+            }
+            v2_8 = static_cast<unsigned int>(2147483647);
+        }
+    }
+    return v2_8;
 }
 
 // Address: 0x011d33f0 - 0x011d3894 (1188 bytes)

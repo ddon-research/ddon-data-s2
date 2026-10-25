@@ -24,7 +24,8 @@ const MtDTI& cTbl2ChatMacro::getDTI() const {
 }
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline MtAllocator* cTbl2ChatMacro::getAllocator() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+MtAllocator* cTbl2ChatMacro::getAllocator() {
     return ::MtMemoryAllocator::getAllocator(::cTbl2ChatMacro::DTI);
 }
 

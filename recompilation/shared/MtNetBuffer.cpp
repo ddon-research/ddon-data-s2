@@ -3,6 +3,7 @@
 #include <string.h>
 #include "MtNetBuffer.h"
 #include "MtDTI.h"
+#include "MtNetDevice.h"
 #include "MtNetObject.h"
 #include "MtObject.h"
 #ifndef DDON_STUB
@@ -303,9 +304,9 @@ MtUI* MtNetUniqueId::createUI(MtProperty& prop) {
 }
 
 // Address: 0x00db3b20 - 0x00db3b2f (15 bytes)
-__attribute__((weak)) bool MtNetUniqueId::isValid() const {
-    DDON_STUB("MtNetUniqueId::isValid")
-    return {};
+bool MtNetUniqueId::isValid() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned char>(this->mData[0] + static_cast<int>(255)) <= static_cast<unsigned char>(20);
 }
 
 // Address: 0x00db3b30 - 0x00db3c2b (251 bytes)
@@ -320,11 +321,33 @@ __attribute__((weak)) void MtNetUniqueId::importFrom(u8 target, const void* data
 // void MtNetUniqueId::importFrom(u8 target, MT_CTSTR str);
 
 // Address: 0x00db3c40 - 0x00db3cd8 (152 bytes)
-__attribute__((weak)) void MtNetUniqueId::exportTo(void* data, u32 size) const {
-    // local: u64 h_u64[2];
-    // local: u32* h_u32;
-    DDON_STUB("MtNetUniqueId::exportTo")
-    /* stub */
+void MtNetUniqueId::exportTo(void* data, u32 size) const {
+    // DWARF local not rendered: u64 h_u64[2];
+    // DWARF local not rendered: u32* h_u32;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x3c from const MtNetUniqueId*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x44 from const MtNetUniqueId*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x48 from const MtNetUniqueId*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from void*
+    // inferred: a value cast to the type its use takes: u32 used as unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from void*
+    if (data == static_cast<void*>(nullptr)) {
+        return;
+    }
+    if (size <= static_cast<u32>(60)) {
+        if (this->mData[0] == static_cast<unsigned char>(5)) {
+            if (size == static_cast<u32>(16)) {
+                // inferred: a temporary for the result of the call at 0xdb3c7d, used once; no DWARF local holds it
+                u64 t0 = ::MtNetByteOrder::netToHost64(static_cast<u64>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(60))));
+                // inferred: a temporary for the result of the call at 0xdb3c89, used once; no DWARF local holds it
+                u32 t1 = ::MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(68)));
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + static_cast<long>(8)) = static_cast<unsigned long>((::MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(72))) * static_cast<u32>(0)) | t1);
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + static_cast<long>(0)) = static_cast<unsigned long>(t0);
+            }
+        } else {
+            ::memcpy(data, static_cast<const void*>(&this->mData[4]), size);
+        }
+    }
 }
 
 // Address: 0x00db3ce0 - 0x00db3e68 (392 bytes)

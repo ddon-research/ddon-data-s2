@@ -297,3 +297,9 @@ private:
     static const MT_CTSTR mChatGroupStr[24];
     static const s32 mGroupToChatArea[24];
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline sChat* sChat::getInstance() {
+    return ::sChat::mpInstance;
+}

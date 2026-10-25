@@ -112,10 +112,102 @@ __attribute__((weak)) bool cCnsBoneScaleCtrl::setScaleCtrl(u32 no, uModel* pMode
 }
 
 // Address: 0x008ad9e0 - 0x008ada7c (156 bytes)
-__attribute__((weak)) void cCnsBoneScaleCtrl::update(f32 deltatime) {
-    // local: f32 per;
-    DDON_STUB("cCnsBoneScaleCtrl::update")
-    /* stub */
+void cCnsBoneScaleCtrl::update(f32 deltatime) {
+    // DWARF local not rendered: f32 per;
+    // Approximate from the ELF: a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x8ad9e0, held ahead of the effects the ELF orders after it
+    bool t0 = this->mbEnable;
+    if (t0 == false) {
+        return;
+    }
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x8ad9ea, held ahead of the effects the ELF orders after it
+    uCnsBoneScale* t1 = this->mpCnsBoneScale;
+    if (t1 == static_cast<uCnsBoneScale*>(nullptr)) {
+        return;
+    }
+    // inferred: a temporary for the value the load at 0x8ad9f7 read, used 4 times; no DWARF local holds it
+    f32 t2 = this->mFrame;
+    this->mFrame = t2 + deltatime;
+    // inferred: a temporary for the value the load at 0x8ada01 read, used 5 times; no DWARF local holds it
+    f32 t3 = this->mFrameMax;
+    if (this->mFrame > t3) {
+        this->mFrame = t3;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada15, held ahead of the effects the ELF orders after it
+        float t4 = 1.0f;
+        if (this->mFrame > t4) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada2f, held ahead of the effects the ELF orders after it
+            f32 t5 = this->mStartScale.x;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada34, held ahead of the effects the ELF orders after it
+            f32 t6 = this->mScale.x;
+            // inferred: a temporary for the value the load at 0x8ada3d read, used once; no DWARF local holds it
+            f32 t7 = this->mStartScale.y;
+            // inferred: a temporary for the value the load at 0x8ada42 read, used once; no DWARF local holds it
+            f32 t8 = this->mScale.y;
+            // inferred: a temporary for the value the load at 0x8ada4b read, used once; no DWARF local holds it
+            f32 t9 = this->mStartScale.z;
+            // inferred: a temporary for the value the load at 0x8ada50 read, used once; no DWARF local holds it
+            f32 t10 = this->mScale.z;
+            t1->mScl.x = (t5 * (t4 - (t3 / t3))) + (t6 * (t3 / t3));
+            t1->mScl.y = (t7 * (t4 - (t3 / t3))) + (t8 * (t3 / t3));
+            t1->mScl.z = (t9 * (t4 - (t3 / t3))) + (t10 * (t3 / t3));
+            t1->mScl.pad_ = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada2f, held ahead of the effects the ELF orders after it
+            f32 t5 = this->mStartScale.x;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada34, held ahead of the effects the ELF orders after it
+            f32 t6 = this->mScale.x;
+            // inferred: a temporary for the value the load at 0x8ada3d read, used once; no DWARF local holds it
+            f32 t7 = this->mStartScale.y;
+            // inferred: a temporary for the value the load at 0x8ada42 read, used once; no DWARF local holds it
+            f32 t8 = this->mScale.y;
+            // inferred: a temporary for the value the load at 0x8ada4b read, used once; no DWARF local holds it
+            f32 t9 = this->mStartScale.z;
+            // inferred: a temporary for the value the load at 0x8ada50 read, used once; no DWARF local holds it
+            f32 t10 = this->mScale.z;
+            t1->mScl.x = (t4 * t6) + (t5 * (t4 - t4));
+            t1->mScl.y = (t4 * t8) + (t7 * (t4 - t4));
+            t1->mScl.z = (t4 * t10) + (t9 * (t4 - t4));
+            t1->mScl.pad_ = 0.0f;
+        }
+    } else {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada15, held ahead of the effects the ELF orders after it
+        float t4 = 1.0f;
+        if (t3 > t4) {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada2f, held ahead of the effects the ELF orders after it
+            f32 t5 = this->mStartScale.x;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada34, held ahead of the effects the ELF orders after it
+            f32 t6 = this->mScale.x;
+            // inferred: a temporary for the value the load at 0x8ada3d read, used once; no DWARF local holds it
+            f32 t7 = this->mStartScale.y;
+            // inferred: a temporary for the value the load at 0x8ada42 read, used once; no DWARF local holds it
+            f32 t8 = this->mScale.y;
+            // inferred: a temporary for the value the load at 0x8ada4b read, used once; no DWARF local holds it
+            f32 t9 = this->mStartScale.z;
+            // inferred: a temporary for the value the load at 0x8ada50 read, used once; no DWARF local holds it
+            f32 t10 = this->mScale.z;
+            t1->mScl.x = (t5 * (t4 - ((t2 + deltatime) / t3))) + (t6 * ((t2 + deltatime) / t3));
+            t1->mScl.y = (t7 * (t4 - ((t2 + deltatime) / t3))) + (t8 * ((t2 + deltatime) / t3));
+            t1->mScl.z = (t9 * (t4 - ((t2 + deltatime) / t3))) + (t10 * ((t2 + deltatime) / t3));
+            t1->mScl.pad_ = 0.0f;
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada2f, held ahead of the effects the ELF orders after it
+            f32 t5 = this->mStartScale.x;
+            // inferred: an ordered temporary, read before a later effect: the value read at 0x8ada34, held ahead of the effects the ELF orders after it
+            f32 t6 = this->mScale.x;
+            // inferred: a temporary for the value the load at 0x8ada3d read, used once; no DWARF local holds it
+            f32 t7 = this->mStartScale.y;
+            // inferred: a temporary for the value the load at 0x8ada42 read, used once; no DWARF local holds it
+            f32 t8 = this->mScale.y;
+            // inferred: a temporary for the value the load at 0x8ada4b read, used once; no DWARF local holds it
+            f32 t9 = this->mStartScale.z;
+            // inferred: a temporary for the value the load at 0x8ada50 read, used once; no DWARF local holds it
+            f32 t10 = this->mScale.z;
+            t1->mScl.x = (t4 * t6) + (t5 * (t4 - t4));
+            t1->mScl.y = (t4 * t8) + (t7 * (t4 - t4));
+            t1->mScl.z = (t4 * t10) + (t9 * (t4 - t4));
+            t1->mScl.pad_ = 0.0f;
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

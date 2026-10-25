@@ -115,3 +115,9 @@ public:
     cHitInfoAfterLocal mLocalInfo;  // offset: 0x50
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cDamageMsg::isReceiveInfo() const {
+    return this->mData.mIsReceiveInfo;
+}

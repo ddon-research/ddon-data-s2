@@ -71,8 +71,39 @@ inline void rSoundMotionSe::operator delete(void* p_addr) {
 // Address: 0x006fad50 - 0x006fae3a (234 bytes)
 // Also emitted as: _ZN14rSoundMotionSeD0Ev at 0x006fae40
 rSoundMotionSe::~rSoundMotionSe() {
-    DDON_STUB("rSoundMotionSe::~rSoundMotionSe")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpIDToIndexTbl != static_cast<u16*>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::rSoundMotionSe::DTI)->memFree(static_cast<void*>(this->mpIDToIndexTbl));
+        this->mpIDToIndexTbl = static_cast<u16*>(nullptr);
+    }
+    if (this->mMotionSe.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x6fadb0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mMotionSe.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mMotionSe.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mMotionSe.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mMotionSe.::MtArray::mLength) {
+                    v0_0 = this->mMotionSe.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mMotionSe.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mMotionSe.::MtArray::mpArray));
+    }
+    this->mMotionSe.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mMotionSe.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mMotionSe.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x01ab3600 - 0x01ab3608 (8 bytes)
@@ -117,10 +148,21 @@ bool rSoundMotionSe::save(MtStream& in) {
 // rSoundMotionSe::cSoundMotionSeData* rSoundMotionSe::getMotionSeData(u32 index);
 
 // Address: 0x006fb1e0 - 0x006fb228 (72 bytes)
-__attribute__((weak)) rSoundMotionSe::cSoundMotionSeData* rSoundMotionSe::getMotionSeDataFromUniqueID(u16 uniqueID) {
-    // local: u16 index;
-    DDON_STUB("rSoundMotionSe::getMotionSeDataFromUniqueID")
-    return nullptr;
+rSoundMotionSe::cSoundMotionSeData* rSoundMotionSe::getMotionSeDataFromUniqueID(u16 uniqueID) {
+    // DWARF local not rendered: u16 index;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (uniqueID < this->mIDToIndexTblNum) {
+        if (this->mpIDToIndexTbl != static_cast<u16*>(nullptr)) {
+            if (this->mpIDToIndexTbl[uniqueID] != static_cast<unsigned short>(65535)) {
+                if (this->mMotionSe.::MtArray::mLength != static_cast<u32>(0)) {
+                    if (this->mpIDToIndexTbl[uniqueID] < this->mMotionSe.::MtArray::mLength) {
+                        return static_cast<rSoundMotionSe::cSoundMotionSeData*>(this->mMotionSe.::MtArray::getBuffer()[this->mpIDToIndexTbl[uniqueID]]);
+                    }
+                }
+            }
+        }
+    }
+    return static_cast<rSoundMotionSe::cSoundMotionSeData*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF

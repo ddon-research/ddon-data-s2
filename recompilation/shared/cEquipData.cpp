@@ -11,6 +11,7 @@
 #include "../rHumanEnemyEquip/rHumanEnemyEquip.h"
 #include "rItemList.h"
 #include "sEnemyManager.h"
+#include "sItemManager.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -323,9 +324,10 @@ void cEquipData::setEquipVisual(bool flag) {
 }
 
 // Address: 0x000c81e0 - 0x000c81e9 (9 bytes)
-__attribute__((weak)) bool cEquipData::checkEquipVisual() const {
-    DDON_STUB("cEquipData::checkEquipVisual")
-    return {};
+bool cEquipData::checkEquipVisual() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as bool
+    return static_cast<bool>(this->mEquipOpt & static_cast<u8>(1));
 }
 
 // Address: 0x000c70f0 - 0x000c710d (29 bytes)
@@ -339,15 +341,30 @@ void cEquipData::setHelmVisualOff(bool flag) {
 }
 
 // Address: 0x000c9480 - 0x000c948b (11 bytes)
-__attribute__((weak)) bool cEquipData::checkHelmVisualOff() const {
-    DDON_STUB("cEquipData::checkHelmVisualOff")
-    return {};
+bool cEquipData::checkHelmVisualOff() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(this->mEquipOpt & static_cast<u8>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x000c9490 - 0x000c94b3 (35 bytes)
-__attribute__((weak)) bool cEquipData::checkHelmVisualChange() {
-    DDON_STUB("cEquipData::checkHelmVisualChange")
-    return {};
+bool cEquipData::checkHelmVisualChange() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if ((this->mEquipOptOld & static_cast<u8>(2)) != static_cast<u8>(0)) {
+        if ((this->mEquipOpt & static_cast<u8>(2)) == static_cast<u8>(0)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        if ((this->mEquipOpt & static_cast<u8>(2)) == static_cast<u8>(0)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
 // Address: 0x000c7110 - 0x000c712d (29 bytes)
@@ -361,15 +378,30 @@ void cEquipData::setLanternVisualOff(bool flag) {
 }
 
 // Address: 0x000c94c0 - 0x000c94cc (12 bytes)
-__attribute__((weak)) bool cEquipData::checkLanternVisualOff() const {
-    DDON_STUB("cEquipData::checkLanternVisualOff")
-    return {};
+bool cEquipData::checkLanternVisualOff() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>(this->mEquipOpt & static_cast<u8>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x000c94d0 - 0x000c94f3 (35 bytes)
-__attribute__((weak)) bool cEquipData::checkLanternVisualChange() {
-    DDON_STUB("cEquipData::checkLanternVisualChange")
-    return {};
+bool cEquipData::checkLanternVisualChange() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if ((this->mEquipOptOld & static_cast<u8>(4)) != static_cast<u8>(0)) {
+        if ((this->mEquipOpt & static_cast<u8>(4)) == static_cast<u8>(0)) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        if ((this->mEquipOpt & static_cast<u8>(4)) == static_cast<u8>(0)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -918,11 +950,16 @@ __attribute__((weak)) u32 cEquipData::getItemRankAverage() const {
 }
 
 // Address: 0x000c96d0 - 0x000c96fd (45 bytes)
-__attribute__((weak)) u32 cEquipData::getMainWeaponItemRank() const {
-    // local: const EQUIP_TYPE equip_type;
-    // local: const rItemParam* pMainWepParam;
-    DDON_STUB("cEquipData::getMainWeaponItemRank")
-    return {};
+u32 cEquipData::getMainWeaponItemRank() const {
+    // DWARF local not rendered: const EQUIP_TYPE equip_type;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x10 from const cEquipData*
+    const rItemList::rItemParam* pMainWepParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(16)));
+    if (pMainWepParam != static_cast<const rItemList::rItemParam*>(nullptr)) {
+        return pMainWepParam->mRank;
+    } else {
+        return static_cast<u32>(1);
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -994,183 +1031,213 @@ __attribute__((weak)) void cEquipData::calcWeightDownElement(rItemList::rParam* 
 }
 
 // Address: 0x000c89f0 - 0x000c89fb (11 bytes)
-__attribute__((weak)) void cEquipData::calcSpredSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcSpredSavUpElement")
-    /* stub */
+void cEquipData::calcSpredSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[10] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[10];
 }
 
 // Address: 0x000c8a00 - 0x000c8a0b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFreezeSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFreezeSavUpElement")
-    /* stub */
+void cEquipData::calcFreezeSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[11] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[11];
 }
 
 // Address: 0x000c8a10 - 0x000c8a1b (11 bytes)
-__attribute__((weak)) void cEquipData::calcShockSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcShockSavUpElement")
-    /* stub */
+void cEquipData::calcShockSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[12] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[12];
 }
 
 // Address: 0x000c8a20 - 0x000c8a2b (11 bytes)
-__attribute__((weak)) void cEquipData::calcCrossSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcCrossSavUpElement")
-    /* stub */
+void cEquipData::calcCrossSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[13] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[13];
 }
 
 // Address: 0x000c8a30 - 0x000c8a3b (11 bytes)
-__attribute__((weak)) void cEquipData::calcBlindSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcBlindSavUpElement")
-    /* stub */
+void cEquipData::calcBlindSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[3];
 }
 
 // Address: 0x000c8a40 - 0x000c8a4b (11 bytes)
-__attribute__((weak)) void cEquipData::calcAttackUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcAttackUpElement")
-    /* stub */
+void cEquipData::calcAttackUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStAttack = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStAttack;
 }
 
 // Address: 0x000c8a50 - 0x000c8a5b (11 bytes)
-__attribute__((weak)) void cEquipData::calcMagicAttackUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcMagicAttackUpElement")
-    /* stub */
+void cEquipData::calcMagicAttackUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStMagicAttack = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStMagicAttack;
 }
 
 // Address: 0x000c8a60 - 0x000c8a6b (11 bytes)
-__attribute__((weak)) void cEquipData::calcPowerRevUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcPowerRevUpElement")
-    /* stub */
+void cEquipData::calcPowerRevUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStPowerRev = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStPowerRev;
 }
 
 // Address: 0x000c8a70 - 0x000c8a7b (11 bytes)
-__attribute__((weak)) void cEquipData::calcStanSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcStanSavUpElement")
-    /* stub */
+void cEquipData::calcStanSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[23] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[23];
 }
 
 // Address: 0x000c8a80 - 0x000c8a8b (11 bytes)
-__attribute__((weak)) void cEquipData::calcPoisonSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcPoisonSavUpElement")
-    /* stub */
+void cEquipData::calcPoisonSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[0] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[0];
 }
 
 // Address: 0x000c8a90 - 0x000c8a9b (11 bytes)
-__attribute__((weak)) void cEquipData::calcSlowSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcSlowSavUpElement")
-    /* stub */
+void cEquipData::calcSlowSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[1];
 }
 
 // Address: 0x000c8aa0 - 0x000c8aab (11 bytes)
-__attribute__((weak)) void cEquipData::calcSleepSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcSleepSavUpElement")
-    /* stub */
+void cEquipData::calcSleepSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[4];
 }
 
 // Address: 0x000c8ab0 - 0x000c8abb (11 bytes)
-__attribute__((weak)) void cEquipData::calcWaterSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcWaterSavUpElement")
-    /* stub */
+void cEquipData::calcWaterSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[5] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[5];
 }
 
 // Address: 0x000c8ac0 - 0x000c8acb (11 bytes)
-__attribute__((weak)) void cEquipData::calcOilSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcOilSavUpElement")
-    /* stub */
+void cEquipData::calcOilSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[2];
 }
 
 // Address: 0x000c8ad0 - 0x000c8adb (11 bytes)
-__attribute__((weak)) void cEquipData::calcSealSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcSealSavUpElement")
-    /* stub */
+void cEquipData::calcSealSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[6] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[6];
 }
 
 // Address: 0x000c8ae0 - 0x000c8aeb (11 bytes)
-__attribute__((weak)) void cEquipData::calcSoftBodySavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcSoftBodySavUpElement")
-    /* stub */
+void cEquipData::calcSoftBodySavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[7] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[7];
 }
 
 // Address: 0x000c8af0 - 0x000c8afb (11 bytes)
-__attribute__((weak)) void cEquipData::calcStoneSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcStoneSavUpElement")
-    /* stub */
+void cEquipData::calcStoneSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[8] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[8];
 }
 
 // Address: 0x000c8b00 - 0x000c8b0b (11 bytes)
-__attribute__((weak)) void cEquipData::calcGoldSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcGoldSavUpElement")
-    /* stub */
+void cEquipData::calcGoldSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[9] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[9];
 }
 
 // Address: 0x000c8b10 - 0x000c8b1b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallFireSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallFireSavUpElement")
-    /* stub */
+void cEquipData::calcFallFireSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[14] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[14];
 }
 
 // Address: 0x000c8b20 - 0x000c8b2b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallIceSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallIceSavUpElement")
-    /* stub */
+void cEquipData::calcFallIceSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[15] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[15];
 }
 
 // Address: 0x000c8b30 - 0x000c8b3b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallThunderSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallThunderSavUpElement")
-    /* stub */
+void cEquipData::calcFallThunderSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[16] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[16];
 }
 
 // Address: 0x000c8b40 - 0x000c8b4b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallSaintSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallSaintSavUpElement")
-    /* stub */
+void cEquipData::calcFallSaintSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[17] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[17];
 }
 
 // Address: 0x000c8b50 - 0x000c8b5b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallBlindSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallBlindSavUpElement")
-    /* stub */
+void cEquipData::calcFallBlindSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[18] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[18];
 }
 
 // Address: 0x000c8b60 - 0x000c8b6b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallAttackSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallAttackSavUpElement")
-    /* stub */
+void cEquipData::calcFallAttackSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[19] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[19];
 }
 
 // Address: 0x000c8b70 - 0x000c8b7b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallDefSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallDefSavUpElement")
-    /* stub */
+void cEquipData::calcFallDefSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[20] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[20];
 }
 
 // Address: 0x000c8b80 - 0x000c8b8b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallMagicSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallMagicSavUpElement")
-    /* stub */
+void cEquipData::calcFallMagicSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[21] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[21];
 }
 
 // Address: 0x000c8b90 - 0x000c8b9b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFallMagicDefSavUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFallMagicDefSavUpElement")
-    /* stub */
+void cEquipData::calcFallMagicDefSavUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamU16[22] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamU16[22];
 }
 
 // Address: 0x000c8ba0 - 0x000c8bab (11 bytes)
-__attribute__((weak)) void cEquipData::calcDefenceUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcDefenceUpElement")
-    /* stub */
+void cEquipData::calcDefenceUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStDefense = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStDefense;
 }
 
 // Address: 0x000c8bb0 - 0x000c8bbb (11 bytes)
-__attribute__((weak)) void cEquipData::calcMagicDefenseUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcMagicDefenseUpElement")
-    /* stub */
+void cEquipData::calcMagicDefenseUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStMagicDefense = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStMagicDefense;
 }
 
 // Address: 0x000c8bc0 - 0x000c8bcb (11 bytes)
-__attribute__((weak)) void cEquipData::calcDurabilityUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcDurabilityUpElement")
-    /* stub */
+void cEquipData::calcDurabilityUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStDurability = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStDurability;
 }
 
 // Address: 0x000c8bd0 - 0x000c8bdc (12 bytes)
@@ -1197,33 +1264,38 @@ __attribute__((weak)) void cEquipData::calcShinRyokuRevUpElement(rItemList::rPar
 }
 
 // Address: 0x000c8c10 - 0x000c8c1b (11 bytes)
-__attribute__((weak)) void cEquipData::calcFireEleDefUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcFireEleDefUpElement")
-    /* stub */
+void cEquipData::calcFireEleDefUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamS16[0] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[0];
 }
 
 // Address: 0x000c8c20 - 0x000c8c2b (11 bytes)
-__attribute__((weak)) void cEquipData::calcIceEleDefUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcIceEleDefUpElement")
-    /* stub */
+void cEquipData::calcIceEleDefUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamS16[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[1];
 }
 
 // Address: 0x000c8c30 - 0x000c8c3b (11 bytes)
-__attribute__((weak)) void cEquipData::calcThunderEleDefUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcThunderEleDefUpElement")
-    /* stub */
+void cEquipData::calcThunderEleDefUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamS16[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[2];
 }
 
 // Address: 0x000c8c40 - 0x000c8c4b (11 bytes)
-__attribute__((weak)) void cEquipData::calcSaintEleDefUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcSaintEleDefUpElement")
-    /* stub */
+void cEquipData::calcSaintEleDefUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamS16[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[3];
 }
 
 // Address: 0x000c8c50 - 0x000c8c5b (11 bytes)
-__attribute__((weak)) void cEquipData::calcDarkEleDefUpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcDarkEleDefUpElement")
-    /* stub */
+void cEquipData::calcDarkEleDefUpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mKindParamS16[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mKindParamS16[4];
 }
 
 // Address: 0x000c8c60 - 0x000c8c6c (12 bytes)
@@ -1377,99 +1449,115 @@ __attribute__((weak)) void cEquipData::calcFallMagicDefenceDefUpElement(rItemLis
 }
 
 // Address: 0x000c8df0 - 0x000c8dfb (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm00UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm00UpElement")
-    /* stub */
+void cEquipData::calcVsEm00UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[1] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[1];
 }
 
 // Address: 0x000c8e00 - 0x000c8e0b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm01UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm01UpElement")
-    /* stub */
+void cEquipData::calcVsEm01UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[2] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[2];
 }
 
 // Address: 0x000c8e10 - 0x000c8e1b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm02UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm02UpElement")
-    /* stub */
+void cEquipData::calcVsEm02UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[3] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[3];
 }
 
 // Address: 0x000c8e20 - 0x000c8e2b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm03UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm03UpElement")
-    /* stub */
+void cEquipData::calcVsEm03UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[4] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[4];
 }
 
 // Address: 0x000c8e30 - 0x000c8e3b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm04UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm04UpElement")
-    /* stub */
+void cEquipData::calcVsEm04UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[5] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[5];
 }
 
 // Address: 0x000c8e40 - 0x000c8e4b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm05UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm05UpElement")
-    /* stub */
+void cEquipData::calcVsEm05UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[6] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[6];
 }
 
 // Address: 0x000c8e50 - 0x000c8e5b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm06UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm06UpElement")
-    /* stub */
+void cEquipData::calcVsEm06UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[7] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[7];
 }
 
 // Address: 0x000c8e60 - 0x000c8e6b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm07UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm07UpElement")
-    /* stub */
+void cEquipData::calcVsEm07UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[8] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[8];
 }
 
 // Address: 0x000c8e70 - 0x000c8e7b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm08UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm08UpElement")
-    /* stub */
+void cEquipData::calcVsEm08UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[9] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[9];
 }
 
 // Address: 0x000c8e80 - 0x000c8e8b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm09UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm09UpElement")
-    /* stub */
+void cEquipData::calcVsEm09UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[10] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[10];
 }
 
 // Address: 0x000c8e90 - 0x000c8e9b (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm10UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm10UpElement")
-    /* stub */
+void cEquipData::calcVsEm10UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[11] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[11];
 }
 
 // Address: 0x000c8ea0 - 0x000c8eab (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm11UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm11UpElement")
-    /* stub */
+void cEquipData::calcVsEm11UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[12] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[12];
 }
 
 // Address: 0x000c8eb0 - 0x000c8ebb (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm12UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm12UpElement")
-    /* stub */
+void cEquipData::calcVsEm12UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[13] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[13];
 }
 
 // Address: 0x000c8ec0 - 0x000c8ecb (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm13UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm13UpElement")
-    /* stub */
+void cEquipData::calcVsEm13UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[14] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[14];
 }
 
 // Address: 0x000c8ed0 - 0x000c8edb (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm14UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm14UpElement")
-    /* stub */
+void cEquipData::calcVsEm14UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[15] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[15];
 }
 
 // Address: 0x000c8fd0 - 0x000c8fdb (11 bytes)
-__attribute__((weak)) void cEquipData::calcVsEm15UpElement(rItemList::rParam* pElementParam) {
-    DDON_STUB("cEquipData::calcVsEm15UpElement")
-    /* stub */
+void cEquipData::calcVsEm15UpElement(rItemList::rParam* pElementParam) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xa from rItemList::rParam*
+    this->mStVsEm[16] = (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pElementParam) + static_cast<long>(10))) + this->mStVsEm[16];
 }
 
 // Address: 0x000c8ee0 - 0x000c8ee1 (1 bytes)

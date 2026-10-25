@@ -149,9 +149,9 @@ __attribute__((weak)) void CDataAchievementFurnitureReward::operator delete(void
 // CDataAchievementFurnitureReward::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bbd10 - 0x003bbd80 (112 bytes)
-__attribute__((weak)) MtObject* CDataAchievementFurnitureReward::MyDTI::newInstance() const {
-    DDON_STUB("CDataAchievementFurnitureReward::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAchievementFurnitureReward::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAchievementFurnitureReward;
 }
 
 // No out-of-line body: no code in the ELF
@@ -291,9 +291,9 @@ __attribute__((weak)) void CDataAchievementProgress::operator delete(void* p_add
 // CDataAchievementProgress::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003bbaa0 - 0x003bbb07 (103 bytes)
-__attribute__((weak)) MtObject* CDataAchievementProgress::MyDTI::newInstance() const {
-    DDON_STUB("CDataAchievementProgress::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataAchievementProgress::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataAchievementProgress;
 }
 
 // No out-of-line body: no code in the ELF

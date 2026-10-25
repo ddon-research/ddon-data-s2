@@ -97,7 +97,7 @@ public:
 
 class cOcdStatusParam : public MtObject
 {
-    // inferred: cOcdBase::isEffective names cOcdBase::mStatusParam.mIsEffective
+    // inferred: cOcdBase::setup names cOcdBase::mStatusParam.mIsMultiApply
     friend class cOcdBase;
 public:
     class MyDTI;
@@ -410,6 +410,12 @@ inline cOcdStatusParam::cOcdStatusParam() {
     this->mFreeParam1 = 0.0f;
     this->mMultiApplyNum = static_cast<u32>(4);
     this->mMultiApplyNumMax = static_cast<u32>(4);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cOcdStatusParam::isEffective() const {
+    return this->mIsEffective;
 }
 
 // Inline, no code of its own: checked where it is inlined.

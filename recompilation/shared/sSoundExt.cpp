@@ -8,9 +8,11 @@
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cArcLoader.h"
+#include "cPlayerLoadManager.h"
 #include "cResource.h"
 #include "nWeapon.h"
 #include "rArchiveListArray.h"
+#include "../rSoundAttributeSe/rSoundAttributeSe.h"
 #include "rSoundHitInfo.h"
 #include "../rSoundOptData/rSoundOptData.h"
 #include "../rSoundParamOfs/rSoundParamOfs.h"
@@ -18,8 +20,11 @@
 #include "rSoundStreamRequest.h"
 #include "rSoundSubMixer.h"
 #include "../rSoundSubMixerSet/rSoundSubMixerSet.h"
+#include "../rWeaponResTable/rWeaponResTable.h"
+#include "../rWepCateResTbl/rWepCateResTbl.h"
 #include "sArchiveManager.h"
 #include "sCollision.h"
+#include "sGame.h"
 #include "sSound.h"
 #include "../rSoundAttributeSe/uSoundSubMixer.h"
 #ifndef DDON_STUB
@@ -178,8 +183,63 @@ inline void sSoundExt::operator delete(void* p_addr) {
 // Address: 0x0084b530 - 0x0084b693 (355 bytes)
 // Also emitted as: _ZN9sSoundExtD0Ev at 0x0084b6a0
 sSoundExt::~sSoundExt() {
-    DDON_STUB("sSoundExt::~sSoundExt")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mVoiceRequest.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x84b560 carries; no location-less local in scope fits
+        u32 v0_0 = this->mVoiceRequest.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mVoiceRequest.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mVoiceRequest.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mVoiceRequest.::MtArray::mLength) {
+                    v0_0 = this->mVoiceRequest.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mVoiceRequest.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mVoiceRequest.::MtArray::mpArray));
+    }
+    this->mVoiceRequest.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mVoiceRequest.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mVoiceRequest.::MtArray::mLength = static_cast<u32>(0);
+    if (this->mStageSplitAreaResource.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x84b5f0 carries; no location-less local in scope fits
+        u32 v2_0 = this->mStageSplitAreaResource.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+            if (this->mStageSplitAreaResource.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mStageSplitAreaResource.::MtArray::mpArray[i2_3];
+                if ((i2_3 + static_cast<unsigned int>(1)) < this->mStageSplitAreaResource.::MtArray::mLength) {
+                    v2_0 = this->mStageSplitAreaResource.::MtArray::mLength;
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mStageSplitAreaResource.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mStageSplitAreaResource.::MtArray::mpArray));
+    }
+    this->mStageSplitAreaResource.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mStageSplitAreaResource.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mStageSplitAreaResource.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (493 bytes)
@@ -635,10 +695,14 @@ __attribute__((weak)) bool sSoundExt::isPrepareOK(rSoundStreamRequest* pr, u32 r
 }
 
 // Address: 0x0084d120 - 0x0084d163 (67 bytes)
-__attribute__((weak)) rSoundAttributeSe* sSoundExt::loadAttributeSeResource() {
-    // local: rSoundAttributeSe* pAttRes;
-    DDON_STUB("sSoundExt::loadAttributeSeResource")
-    return nullptr;
+rSoundAttributeSe* sSoundExt::loadAttributeSeResource() {
+    // DWARF local not rendered: rSoundAttributeSe* pAttRes;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: a temporary for the value the load at 0x84d12e read, used once; no DWARF local holds it
+    sArchiveManager* t0 = ::sArchiveManager::getInstance();
+    // inferred: a temporary for the result of the call at 0x84d138, used once; no DWARF local holds it
+    ARC_TAGID t1 = ::rArchiveListArray::convTagId("sound_game_common");
+    return static_cast<rSoundAttributeSe*>(t0->::sArchiveManager::createRes(t1, ::rArchiveListArray::convSearchId("RES_ID_MT_ATR_ASER"), static_cast<u32>(1), false));
 }
 
 // Address: 0x00851a70 - 0x00851c65 (501 bytes)
@@ -698,10 +762,62 @@ __attribute__((weak)) void sSoundExt::loadHitSeTableResource() {
 }
 
 // Address: 0x0084cfa0 - 0x0084d11c (380 bytes)
-__attribute__((weak)) void sSoundExt::releaseHitSeSrqResource() {
-    // local: u32 i;
-    DDON_STUB("sSoundExt::releaseHitSeSrqResource")
-    /* stub */
+void sSoundExt::releaseHitSeSrqResource() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mprHitSeRequest[0] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[0]->::cResource::release();
+        this->mprHitSeRequest[0] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[1] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[1]->::cResource::release();
+        this->mprHitSeRequest[1] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[2] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[2]->::cResource::release();
+        this->mprHitSeRequest[2] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[3] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[3]->::cResource::release();
+        this->mprHitSeRequest[3] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[4] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[4]->::cResource::release();
+        this->mprHitSeRequest[4] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[5] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[5]->::cResource::release();
+        this->mprHitSeRequest[5] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[6] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[6]->::cResource::release();
+        this->mprHitSeRequest[6] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[7] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[7]->::cResource::release();
+        this->mprHitSeRequest[7] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[8] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[8]->::cResource::release();
+        this->mprHitSeRequest[8] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[9] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[9]->::cResource::release();
+        this->mprHitSeRequest[9] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[10] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[10]->::cResource::release();
+        this->mprHitSeRequest[10] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSeRequest[11] != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSeRequest[11]->::cResource::release();
+        this->mprHitSeRequest[11] = static_cast<rSoundRequest*>(nullptr);
+    }
+    if (this->mprHitSePlAddRequest != static_cast<rSoundRequest*>(nullptr)) {
+        this->mprHitSePlAddRequest->::cResource::release();
+        this->mprHitSePlAddRequest = static_cast<rSoundRequest*>(nullptr);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (138 bytes)
@@ -1057,21 +1173,37 @@ __attribute__((weak)) rSoundAreaInfo* sSoundExt::getSoundAreaInfoToInn() {
 }
 
 // Address: 0x00851c70 - 0x00851cba (74 bytes)
-__attribute__((weak)) rSoundRequest* sSoundExt::getSndWepCategoryResource(u32 wepCategory) {
-    // local: cWepCateResTbl* pRes;
-    // local: rSoundRequest* prResource;
-    // local: u64 resId;
-    DDON_STUB("sSoundExt::getSndWepCategoryResource")
-    return nullptr;
+rSoundRequest* sSoundExt::getSndWepCategoryResource(u32 wepCategory) {
+    // DWARF local not rendered: rSoundRequest* prResource;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    cWepCateResTbl* pRes = ::sGame::getInstance()->::sGame::getWepCateResData(wepCategory);
+    if (pRes != static_cast<cWepCateResTbl*>(nullptr)) {
+        u64 resId = pRes->::cWepCateResTbl::getSndResId();
+        if (resId != static_cast<u64>(0)) {
+            return static_cast<rSoundRequest*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(resId, static_cast<u32>(1), false));
+        } else {
+            return static_cast<rSoundRequest*>(nullptr);
+        }
+    } else {
+        return static_cast<rSoundRequest*>(nullptr);
+    }
 }
 
 // Address: 0x00851cc0 - 0x00851d05 (69 bytes)
-__attribute__((weak)) rSoundRequest* sSoundExt::getSndWepResource(u32 itemId, u32 sex) {
-    // local: cWeaponResTable* pWepRes;
-    // local: rSoundRequest* prResource;
-    // local: u64 resId;
-    DDON_STUB("sSoundExt::getSndWepResource")
-    return nullptr;
+rSoundRequest* sSoundExt::getSndWepResource(u32 itemId, u32 sex) {
+    // DWARF local not rendered: rSoundRequest* prResource;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    cWeaponResTable* pWepRes = ::cPlayerLoadManager::getWeaponArcTagEx(static_cast<unsigned short>(itemId), sex);
+    if (pWepRes != static_cast<cWeaponResTable*>(nullptr)) {
+        u64 resId = pWepRes->::cWeaponResTable::getSndResId();
+        if (resId != static_cast<u64>(0)) {
+            return static_cast<rSoundRequest*>(::sArchiveManager::getInstance()->::sArchiveManager::createRes(resId, static_cast<u32>(1), false));
+        } else {
+            return static_cast<rSoundRequest*>(nullptr);
+        }
+    } else {
+        return static_cast<rSoundRequest*>(nullptr);
+    }
 }
 
 // Address: 0x008529e0 - 0x00852a5b (123 bytes)
@@ -1196,10 +1328,87 @@ __attribute__((weak)) void sSoundExt::setExVolumeParamOfs(rSoundRequest* pReques
 // s32 sSoundExt::getEditPitch(rSoundRequest* pRes, u32 reqNo, uModel* pModel);
 
 // Address: 0x0084e290 - 0x0084e3b0 (288 bytes)
-__attribute__((weak)) f32 sSoundExt::getParamOfsData(s32 index, u32 param) {
-    // local: cSoundParamOfs* pParam;
-    DDON_STUB("sSoundExt::getParamOfsData")
-    return {};
+f32 sSoundExt::getParamOfsData(s32 index, u32 param) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mprHmParamOfs != static_cast<rSoundParamOfs*>(nullptr)) {
+        if (static_cast<unsigned int>(index) < this->mprHmParamOfs->getDataNum()) {
+            cSoundParamOfs* pParam = this->mprHmParamOfs->getData(static_cast<u32>(index));
+            if (pParam != static_cast<cSoundParamOfs*>(nullptr)) {
+                switch (param) {
+                    case static_cast<u32>(0):
+                    {
+                        return pParam->::cSoundParamOfs::getVolume();
+                    }
+                    case static_cast<u32>(1):
+                    {
+                        return static_cast<float>(pParam->mPitchShift);
+                    }
+                    case static_cast<u32>(2):
+                    {
+                        return static_cast<float>(pParam->mProgramNo);
+                    }
+                    case static_cast<u32>(3):
+                    {
+                        return static_cast<float>(pParam->mPriority);
+                    }
+                    case static_cast<u32>(4):
+                    {
+                        return static_cast<float>(pParam->mGlobal);
+                    }
+                    case static_cast<u32>(5):
+                    {
+                        return static_cast<float>(pParam->mID1);
+                    }
+                    case static_cast<u32>(6):
+                    {
+                        return static_cast<float>(pParam->mID2);
+                    }
+                    case static_cast<u32>(7):
+                    {
+                        return static_cast<float>(pParam->mID3);
+                    }
+                    case static_cast<u32>(8):
+                    {
+                        return static_cast<float>(pParam->mLimit);
+                    }
+                    case static_cast<u32>(9):
+                    {
+                        return static_cast<float>(pParam->mCenterVol);
+                    }
+                    case static_cast<u32>(10):
+                    {
+                        return static_cast<float>(pParam->mVolCurveId);
+                    }
+                    case static_cast<u32>(11):
+                    {
+                        return static_cast<float>(pParam->mEffectCurveId);
+                    }
+                    case static_cast<u32>(12):
+                    {
+                        return static_cast<float>(pParam->mLfeCurveId);
+                    }
+                    case static_cast<u32>(13):
+                    {
+                        return static_cast<float>(pParam->mDirectionalCurveId);
+                    }
+                    case static_cast<u32>(14):
+                    {
+                        return static_cast<float>(pParam->mSubmixer);
+                    }
+                    default:
+                    {
+                        return 0.0f;
+                    }
+                }
+            } else {
+                return 0.0f;
+            }
+        } else {
+            return 0.0f;
+        }
+    } else {
+        return 0.0f;
+    }
 }
 
 // Address: 0x0084bb00 - 0x0084bdf4 (756 bytes)
@@ -1386,12 +1595,27 @@ __attribute__((weak)) void sSoundExt::releaseBgmSplitAreaResource(uintptr thisId
 }
 
 // Address: 0x0084dca0 - 0x0084dce0 (64 bytes)
-__attribute__((weak)) cSplitBgm* sSoundExt::getSplitAreaBgmInfo(s8 areaNo) {
-    // local: u32 length;
-    // local: u32 i;
-    // local: cSplitBgm* pSplit;
-    DDON_STUB("sSoundExt::getSplitAreaBgmInfo")
-    return nullptr;
+cSplitBgm* sSoundExt::getSplitAreaBgmInfo(s8 areaNo) {
+    // DWARF local not rendered: u32 length;
+    // DWARF local not rendered: cSplitBgm* pSplit;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x18 from MtObject*
+    // inferred: a value cast to the type its use takes: unsigned char used as unsigned int
+    // inferred: a value cast to the type its use takes: s8 used as unsigned int
+    if (this->mStageSplitAreaResource.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x84dca9, 0x84dcdc)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mStageSplitAreaResource.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mStageSplitAreaResource.::MtArray::mpArray[i]) + static_cast<long>(24))) != static_cast<unsigned int>(areaNo)) {
+                } else {
+                    return static_cast<cSplitBgm*>(this->mStageSplitAreaResource.::MtArray::mpArray[i]);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mStageSplitAreaResource.::MtArray::mLength);
+    }
+    return static_cast<cSplitBgm*>(nullptr);
 }
 
 // No out-of-line body: no code in the ELF
@@ -1475,11 +1699,61 @@ __attribute__((weak)) void sSoundExt::moveWeatherVolumeChange(sSound::VoiceAcces
 }
 
 // Address: 0x00850fb0 - 0x00851155 (421 bytes)
-__attribute__((weak)) void sSoundExt::changeSubMixer(u32 no) {
-    // local: rSoundSubMixerSet* pResource;
-    // local: BasicSubMixers* pBasicSubMixer;
-    DDON_STUB("sSoundExt::changeSubMixer")
-    /* stub */
+void sSoundExt::changeSubMixer(u32 no) {
+    // DWARF local not rendered: rSoundSubMixerSet* pResource;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    rSoundSubMixerSet::BasicSubMixers* pBasicSubMixer;
+    if (this->mpSoundSubMixer != static_cast<uSoundSubMixer*>(nullptr)) {
+        pBasicSubMixer = this->::sSoundExt::getSoundSubMixerSetResource()->::rSoundSubMixerSet::getBasicSubMixers(no);
+        if (pBasicSubMixer != static_cast<rSoundSubMixerSet::BasicSubMixers*>(nullptr)) {
+            if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource0() != static_cast<rSoundSubMixer*>(nullptr)) {
+                // inferred: a temporary for the value the load at 0x850ff0 read, used once; no DWARF local holds it
+                uSoundSubMixer* t0 = this->mpSoundSubMixer;
+                t0->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(0), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource0());
+            }
+        } else {
+            return;
+        }
+    } else {
+        return;
+    }
+    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource1() != static_cast<rSoundSubMixer*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x851019 read, used once; no DWARF local holds it
+        uSoundSubMixer* t1 = this->mpSoundSubMixer;
+        t1->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(1), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource1());
+    }
+    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource2() != static_cast<rSoundSubMixer*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x851045 read, used once; no DWARF local holds it
+        uSoundSubMixer* t2 = this->mpSoundSubMixer;
+        t2->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(2), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource2());
+    }
+    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource3() != static_cast<rSoundSubMixer*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x851071 read, used once; no DWARF local holds it
+        uSoundSubMixer* t3 = this->mpSoundSubMixer;
+        t3->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(3), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource3());
+    }
+    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource4() != static_cast<rSoundSubMixer*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x85109d read, used once; no DWARF local holds it
+        uSoundSubMixer* t4 = this->mpSoundSubMixer;
+        t4->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(4), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource4());
+    }
+    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource5() != static_cast<rSoundSubMixer*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x8510c9 read, used once; no DWARF local holds it
+        uSoundSubMixer* t5 = this->mpSoundSubMixer;
+        t5->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(5), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource5());
+    }
+    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource6() != static_cast<rSoundSubMixer*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x8510f5 read, used once; no DWARF local holds it
+        uSoundSubMixer* t6 = this->mpSoundSubMixer;
+        t6->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(6), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource6());
+    }
+    if (pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource7() != static_cast<rSoundSubMixer*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x851121 read, used once; no DWARF local holds it
+        uSoundSubMixer* t7 = this->mpSoundSubMixer;
+        t7->::uSoundSubMixer::mergeSubMixer(static_cast<u8>(7), pBasicSubMixer->::rSoundSubMixerSet::BasicSubMixers::getResource7());
+        return;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (18 bytes)

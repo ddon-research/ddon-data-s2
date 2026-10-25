@@ -309,9 +309,14 @@ u32 rSoundSource::getMarkerStartPos(u32 markerSamplePos) const {
 }
 
 // Address: 0x013739f0 - 0x01373a16 (38 bytes)
-__attribute__((weak)) u16 rSoundSource::getMarkerIndexFromID(u16 markerID) const {
-    DDON_STUB("rSoundSource::getMarkerIndexFromID")
-    return {};
+u16 rSoundSource::getMarkerIndexFromID(u16 markerID) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (markerID < this->mMarkerIDToIndexTblNum) {
+        if (this->mpMarkerIDToIndexTbl != static_cast<u16*>(nullptr)) {
+            return this->mpMarkerIDToIndexTbl[markerID];
+        }
+    }
+    return static_cast<u16>(65535);
 }
 
 // Address: 0x01373a20 - 0x01373c32 (530 bytes)
@@ -328,10 +333,16 @@ __attribute__((weak)) u16 rSoundSource::getMarkerIndexFromSamplePos(u32 samplePo
 }
 
 // Address: 0x01373c50 - 0x01373c8f (63 bytes)
-__attribute__((weak)) u32 rSoundSource::getSamplePosFromMarkerIndex(u16 markerIndex) const {
-    // local: u16 markerNum;
-    DDON_STUB("rSoundSource::getSamplePosFromMarkerIndex")
-    return {};
+u32 rSoundSource::getSamplePosFromMarkerIndex(u16 markerIndex) const {
+    // DWARF local not rendered: u16 markerNum;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x9c from const rSoundSource*
+    if (this->mpMarker != static_cast<rSoundSource::MARKER*>(nullptr)) {
+        if (markerIndex < (*reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(156)))) {
+            return (((this->mpMarker[markerIndex].sample < this->mDescriptor.mLoopEnd) || (this->mDescriptor.mLoopEnd == this->mDescriptor.mLoopStart)) == false) ? static_cast<u32>(0) : this->mpMarker[markerIndex].sample;
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: no code in the ELF

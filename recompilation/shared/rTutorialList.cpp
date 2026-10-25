@@ -5,6 +5,7 @@
 #include "MtCollection.h"
 #include "MtDTI.h"
 #include "MtDataReader.h"
+#include "MtDataWriter.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cResource.h"
@@ -83,8 +84,35 @@ inline rTutorialList::rTutorialList() {
 // Address: 0x0070e430 - 0x0070e4e1 (177 bytes)
 // Also emitted as: _ZN13rTutorialListD0Ev at 0x0070e4f0
 rTutorialList::~rTutorialList() {
-    DDON_STUB("rTutorialList::~rTutorialList")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x70e460 carries; no location-less local in scope fits
+        u32 v0_0 = this->mArray.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mArray.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
+                    v0_0 = this->mArray.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    }
+    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mArray.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0070e5c0 - 0x0070e6a3 (227 bytes)
@@ -94,10 +122,36 @@ __attribute__((weak)) void rTutorialList::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x0070e6b0 - 0x0070e7da (298 bytes)
-__attribute__((weak)) bool rTutorialList::save(MtStream& out) {
-    // local: MtDataWriter w;
-    DDON_STUB("rTutorialList::save")
-    return {};
+bool rTutorialList::save(MtStream& out) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rTutorialList*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x14 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x18 from MtObject*
+    MtDataWriter w(out, static_cast<u32>(4096), static_cast<u32>(4096));
+    (&w)->writeU32(static_cast<u32>(5524564));
+    (&w)->writeU32(static_cast<u32>(5));
+    (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)));
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120))) != static_cast<unsigned int>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            // inferred: a temporary for the value the load at 0x70e74a read, used 5 times; no DWARF local holds it
+            MtObject* t3 = this->mArray.::MtArray::getBuffer()[static_cast<int>(i0_3)];
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(8)));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(12)));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(16)));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(20)));
+            (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + static_cast<long>(24)));
+            if ((i0_3 + static_cast<unsigned int>(1)) < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(120)))) {
+                i0_3 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
+    return true;
 }
 
 // Address: 0x0070e7e0 - 0x0070e887 (167 bytes)
@@ -149,7 +203,8 @@ const MtDTI& rTutorialList::cTutorialNode::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rTutorialList::cTutorialNode::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rTutorialList::cTutorialNode::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rTutorialList::cTutorialNode::DTI)->memAlloc(sz, align, ::rTutorialList::cTutorialNode::DTI.::MtDTI::getID());
 }
 

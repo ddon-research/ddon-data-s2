@@ -145,10 +145,7 @@ __attribute__((weak)) void cCommonSkyFogData::operator delete(void* p_addr) {
 void cCommonSkyFogData::init() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsEnable = false;
-    this->mColor.x = ::MtVector3::One.x;
-    this->mColor.y = ::MtVector3::One.y;
-    this->mColor.z = ::MtVector3::One.z;
-    this->mColor.pad_ = 0.0f;
+    this->mColor = ::MtVector3::One;
     this->mIntensity = 1.0f;
     this->mDensity = 1.0f;
     this->mExponentDensity = 1.0f;
@@ -171,10 +168,7 @@ void cCommonSkyFogData::initFromData(cIndoorSkyFogParam* pData, MtVector3& color
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIsEnable = enable;
     this->mSupplementFrame = frame;
-    this->mColor.x = color.x;
-    this->mColor.y = color.y;
-    this->mColor.z = color.z;
-    this->mColor.pad_ = 0.0f;
+    this->mColor = color;
     this->mIntensity = pData->::cIndoorSkyFogParam::getIntensity();
     this->mDensity = pData->::cIndoorSkyFogParam::getDensity();
     this->mExponentDensity = exdensity;

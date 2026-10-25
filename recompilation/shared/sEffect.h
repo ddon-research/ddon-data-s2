@@ -31,6 +31,7 @@ class rTexture;
 class uBaseEffect;
 class uEffect;
 class uEffect2D;
+class uEffect2DExt;
 class uMultiFilter;
 class uSimpleEffect;
 
@@ -54,10 +55,14 @@ class sEffect : public cSystem
 {
     // inferred: cParticleManager::~cParticleManager names sEffect::mpInstance
     friend class cParticleManager;
-    // inferred: uBaseEffect::updateDeltaTimeRate names sEffect::mpInstance
+    // inferred: uBaseEffect::setParticleVolume names sEffect::mpInstance
     friend class uBaseEffect;
     // inferred: uEffect::updateDrawBuffSize names sEffect::mpInstance
     friend class uEffect;
+    // inferred: uEffect2D::drawScene names sEffect::mpInstance
+    friend class uEffect2D;
+    // inferred: uEffect2DExt::~uEffect2DExt names sEffect::mpInstance
+    friend class uEffect2DExt;
 public:
     class MyDTI;
     class MultiFilterControl;

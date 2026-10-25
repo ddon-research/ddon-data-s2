@@ -69,8 +69,35 @@ cPlayPointInfo::cPlayPointInfo() {
 // Address: 0x001570f0 - 0x0015718d (157 bytes)
 // Also emitted as: _ZN14cPlayPointInfoD0Ev at 0x00157190
 cPlayPointInfo::~cPlayPointInfo() {
-    DDON_STUB("cPlayPointInfo::~cPlayPointInfo")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mJobPlayPointList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x157120 carries; no location-less local in scope fits
+        u32 v0_0 = this->mJobPlayPointList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mJobPlayPointList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mJobPlayPointList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mJobPlayPointList.::MtArray::mLength) {
+                    v0_0 = this->mJobPlayPointList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mJobPlayPointList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mJobPlayPointList.::MtArray::mpArray));
+    }
+    this->mJobPlayPointList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mJobPlayPointList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mJobPlayPointList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x00157250 - 0x00157293 (67 bytes)

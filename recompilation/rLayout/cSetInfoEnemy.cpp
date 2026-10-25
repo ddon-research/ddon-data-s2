@@ -3,8 +3,10 @@
 #include "cSetInfoEnemy.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataWriter.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "cSetInfo.h"
 #include "cSetInfoCharacter.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -92,9 +94,21 @@ __attribute__((weak)) bool cSetInfoEnemy::load(MtDataReader& r) {
 }
 
 // Address: 0x0055df80 - 0x0055dffe (126 bytes)
-__attribute__((weak)) bool cSetInfoEnemy::save(MtDataWriter& w) {
-    DDON_STUB("cSetInfoEnemy::save")
-    return {};
+bool cSetInfoEnemy::save(MtDataWriter& w) {
+    // Approximate from the ELF: a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as unsigned char
+    w.writeS32(this->mGroup);
+    w.writeS32(this->mPresetKind);
+    w.writeU32(this->mEmReactNo);
+    w.writeS32(this->mSubGroupNo);
+    // inferred: a temporary for the value the load at 0x55dfc4 read, used once; no DWARF local holds it
+    bool t0 = this->mReturnPoint2nd;
+    if (w.mSeekPt >= w.mBufsiz) {
+        w.flush();
+    }
+    w.mBuffer[w.mSeekPt] = static_cast<unsigned char>(t0);
+    w.mSeekPt = w.mSeekPt + static_cast<u32>(1);
+    return this->::cSetInfoCharacter::save(w);
 }
 
 // Address: 0x0055e000 - 0x0055e169 (361 bytes)
@@ -108,10 +122,38 @@ __attribute__((weak)) bool cSetInfoEnemy::applyInfo(cUnit* pu) const {
 }
 
 // Address: 0x0055e170 - 0x0055e1be (78 bytes)
-__attribute__((weak)) void cSetInfoEnemy::copy(cSetInfo* p) {
-    // local: cSetInfoEnemy* pSie;
-    DDON_STUB("cSetInfoEnemy::copy")
-    /* stub */
+void cSetInfoEnemy::copy(cSetInfo* p) {
+    // DWARF local not rendered: cSetInfoEnemy* pSie;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; a vector copy split into members it may not keep apart; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cSetInfoEnemy::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x44 from cSetInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x48 from cSetInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x4c from cSetInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x50 from cSetInfo*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from cSetInfo*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    this->::cSetInfoCharacter::copy(p);
+    // inferred: a temporary for the result of the call at 0x55e188, used once; no DWARF local holds it
+    const MtDTI& t0 = p->getDTI();
+    // inferred: the value the loop at 0x55e196 carries; no location-less local in scope fits
+    unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::cSetInfoEnemy::DTI) + static_cast<long>(8));
+    // inferred: the value the loop at 0x55e196 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+            this->mPresetKind = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(68));
+            this->mGroup = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(72));
+            this->mEmReactNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(76));
+            this->mSubGroupNo = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(p) + static_cast<long>(80));
+            this->mReturnPoint2nd = static_cast<bool>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(p) + static_cast<long>(84)));
+            return;
+        } else {
+            if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF

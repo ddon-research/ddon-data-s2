@@ -68,8 +68,35 @@ inline void cOnceRequestEffectType::operator delete(void* p_addr) {
 // Address: 0x019682c0 - 0x01968354 (148 bytes)
 // Also emitted as: _ZN22cOnceRequestEffectTypeD0Ev at 0x01968360
 cOnceRequestEffectType::~cOnceRequestEffectType() {
-    DDON_STUB("cOnceRequestEffectType::~cOnceRequestEffectType")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mORETD.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x19682f0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mORETD.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mORETD.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mORETD.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mORETD.::MtArray::mLength) {
+                    v0_0 = this->mORETD.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mORETD.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mORETD.::MtArray::mpArray));
+    }
+    this->mORETD.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mORETD.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mORETD.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x000a1550 - 0x000a15cc (124 bytes)

@@ -214,9 +214,66 @@ void uGUICaplinkMessage::updateExit() {
 // void uGUICaplinkMessage::updateInput();
 
 // Address: 0x009cc210 - 0x009cc302 (242 bytes)
-__attribute__((weak)) void uGUICaplinkMessage::eventDecide() {
-    DDON_STUB("uGUICaplinkMessage::eventDecide")
-    /* stub */
+void uGUICaplinkMessage::eventDecide() {
+    // Approximate from the ELF: code after a join copied into the arms; the body oracle reports this body.
+    // inferred: a temporary for the value the load at 0x9cc210 read, used 3 times; no DWARF local holds it
+    uGUIBase::cVerticalList* t0 = this->mpUDCtrl;
+    if (t0 != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+        if (t0->::cControl::mCurrentPos != static_cast<s32>(0)) {
+            // inferred: a temporary for the value the load at 0x9cc229 read, used 3 times; no DWARF local holds it
+            uGUIBase::cHorizontalList* t1 = this->mpButtonCtrl;
+            if (t1 != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                if (t1->::cControl::mCurrentPos == static_cast<s32>(0)) {
+                    this->mIsDecide = true;
+                }
+                this->mFlowId = static_cast<u32>(3);
+                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
+                    this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | static_cast<u32>(8);
+                }
+                if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
+                    this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | static_cast<u32>(8);
+                }
+                t0->::cControl::mCtrlF = t0->::cControl::mCtrlF | static_cast<u32>(8);
+                t1->::cControl::mCtrlF = t1->::cControl::mCtrlF | static_cast<u32>(8);
+            } else {
+                this->mIsDecide = true;
+                this->mFlowId = static_cast<u32>(3);
+                if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
+                    this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | static_cast<u32>(8);
+                }
+                if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
+                    this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | static_cast<u32>(8);
+                }
+                t0->::cControl::mCtrlF = t0->::cControl::mCtrlF | static_cast<u32>(8);
+            }
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICaplinkMessage::updateExit);
+        } else {
+            this->mFlowId = static_cast<u32>(2);
+            if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
+                this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | static_cast<u32>(8);
+            }
+            if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
+                this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | static_cast<u32>(8);
+            }
+            t0->::cControl::mCtrlF = t0->::cControl::mCtrlF | static_cast<u32>(8);
+            if (this->mpButtonCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                this->mpButtonCtrl->::cControl::mCtrlF = this->mpButtonCtrl->::cControl::mCtrlF | static_cast<u32>(8);
+            }
+            this->mMain.mTextBox.::uGUIBase::cReferenceUITextBox::wakeupKeyboard(static_cast<s32>(2));
+        }
+    } else {
+        this->mFlowId = static_cast<u32>(2);
+        if (this->mpDecideCtrl != static_cast<cControl*>(nullptr)) {
+            this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | static_cast<u32>(8);
+        }
+        if (this->mpCancelCtrl != static_cast<cControl*>(nullptr)) {
+            this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | static_cast<u32>(8);
+        }
+        if (this->mpButtonCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+            this->mpButtonCtrl->::cControl::mCtrlF = this->mpButtonCtrl->::cControl::mCtrlF | static_cast<u32>(8);
+        }
+        this->mMain.mTextBox.::uGUIBase::cReferenceUITextBox::wakeupKeyboard(static_cast<s32>(2));
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (116 bytes)

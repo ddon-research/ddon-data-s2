@@ -513,9 +513,65 @@ u32 uGUICaplinkChat::evCtrlAdjustCursor(cControl::Message* msg) {
 }
 
 // Address: 0x009afc60 - 0x009afda0 (320 bytes)
-__attribute__((weak)) u32 uGUICaplinkChat::evCtrlMouseClick(cControl::Message* msg) {
-    DDON_STUB("uGUICaplinkChat::evCtrlMouseClick")
-    return {};
+u32 uGUICaplinkChat::evCtrlMouseClick(cControl::Message* msg) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        if (msg->pSender != static_cast<cControl*>(nullptr)) {
+            if (msg->pSender != this->mpMenuCtrl) {
+                msg->changeSE = static_cast<u32>(0);
+                this->::uGUIBase::setInputEvent(static_cast<u32>(0));
+                return static_cast<u32>(0);
+            } else {
+                if (this->mpMenuCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                    if (this->mpMenuCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
+                        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(1), true);
+                        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(4), true);
+                        this->mMain.mpObjNullPointer = this->mMain.mpObjNullMenuPointer;
+                    } else {
+                        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
+                        this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
+                        this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+                    }
+                } else {
+                    this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimForm, static_cast<u32>(4), true);
+                    this->::uGUIBase::setSequenceId(this->mMain.mpInstAnimMenu, static_cast<u32>(1), true);
+                    this->mMain.mpObjNullPointer = this->mMain.mpObjNullInputPointer;
+                }
+                if (this->mFlowId == static_cast<u32>(4)) {
+                    if (this->mpMenuCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                        if (this->mpMenuCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
+                            msg->changeSE = static_cast<u32>(4);
+                            this->::uGUIBase::setInputEvent(static_cast<u32>(71));
+                            return static_cast<u32>(1);
+                        }
+                    }
+                    if (this->mIsInputEnable != false) {
+                        if (::sKeyboardInterface::getInstance()->::sKeyboardInterface::isBusy() != false) {
+                            msg->changeSE = static_cast<u32>(0);
+                            return static_cast<u32>(0);
+                        } else {
+                            msg->changeSE = static_cast<u32>(4);
+                            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                            return static_cast<u32>(1);
+                        }
+                    } else {
+                        msg->changeSE = static_cast<u32>(0);
+                        return static_cast<u32>(0);
+                    }
+                } else {
+                    msg->changeSE = static_cast<u32>(0);
+                    return static_cast<u32>(0);
+                }
+            }
+        } else {
+            msg->changeSE = static_cast<u32>(0);
+            this->::uGUIBase::setInputEvent(static_cast<u32>(0));
+            return static_cast<u32>(0);
+        }
+    } else {
+        this->::uGUIBase::setInputEvent(static_cast<u32>(0));
+        return static_cast<u32>(0);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

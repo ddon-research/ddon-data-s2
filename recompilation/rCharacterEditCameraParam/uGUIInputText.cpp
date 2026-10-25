@@ -203,9 +203,19 @@ __attribute__((weak)) const MtRectF& uGUIInputText::applyInputTextContext(const 
 }
 
 // Address: 0x00ac5690 - 0x00ac56b0 (32 bytes)
-__attribute__((weak)) bool uGUIInputText::isTextVisible() const {
-    DDON_STUB("uGUIInputText::isTextVisible")
-    return {};
+bool uGUIInputText::isTextVisible() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x58 from cGUIInstNull*
+    // inferred: a value cast to the type its use takes: unsigned char used as bool
+    if (this->mIsVisible == false) {
+        if (this->mpINST_Null_all != static_cast<cGUIInstNull*>(nullptr)) {
+            return static_cast<bool>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpINST_Null_all) + static_cast<long>(88))) & static_cast<unsigned char>(1));
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 // Defined in the class (its body was written in a header).
@@ -215,9 +225,9 @@ __attribute__((weak)) bool uGUIInputText::isTextVisible() const {
 // void uGUIInputText::updateExit();
 
 // Address: 0x00ac4a10 - 0x00ac4a2a (26 bytes)
-__attribute__((weak)) void uGUIInputText::updateInit() {
-    DDON_STUB("uGUIInputText::updateInit")
-    /* stub */
+void uGUIInputText::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateIdle);
 }
 
 // Address: 0x00ac56c0 - 0x00ac5c31 (1393 bytes)

@@ -3,6 +3,7 @@
 #include "rOcdParam.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
+#include "MtDataReader.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "cOcdParamRes.h"
@@ -149,18 +150,27 @@ inline void rOcdStatusParamRes::operator delete(void* p_addr) {
 // void rOcdStatusParamRes::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x006c5b50 - 0x006c5c37 (231 bytes)
-__attribute__((weak)) bool rOcdStatusParamRes::loadData(MtDataReader& in, cOcdStatusParamRes* pData) {
-    // local: u32 OCDUID;
-    // local: f32 endurance;
-    // local: f32 activeTime;
-    // local: f32 cureWaitTime;
-    // local: f32 cureValue;
-    // local: f32 freeParam0;
-    // local: f32 freeParam1;
-    // local: bool flag;
-    // local: bool isTimeRecover;
-    DDON_STUB("rOcdStatusParamRes::loadData")
-    return {};
+bool rOcdStatusParamRes::loadData(MtDataReader& in, cOcdStatusParamRes* pData) {
+    // DWARF local not rendered: u32 OCDUID;
+    // DWARF local not rendered: f32 endurance;
+    // DWARF local not rendered: f32 activeTime;
+    // DWARF local not rendered: f32 cureWaitTime;
+    // DWARF local not rendered: f32 cureValue;
+    // DWARF local not rendered: f32 freeParam0;
+    // DWARF local not rendered: f32 freeParam1;
+    // DWARF local not rendered: bool flag;
+    // DWARF local not rendered: bool isTimeRecover;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    pData->mOcdUID = in.readU32();
+    pData->mIsEffective = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->::cOcdStatusParamRes::setEndurance(in.readF32());
+    pData->mIsTimeRecover = in.::MtDataReader::readU8() != static_cast<u8>(0);
+    pData->::cOcdStatusParamRes::setActiveTime(in.readF32());
+    pData->mCureWaitTime = in.readF32();
+    pData->::cOcdStatusParamRes::setCureValue(in.readF32());
+    pData->::cOcdStatusParamRes::setFreeParam0(in.readF32());
+    pData->::cOcdStatusParamRes::setFreeParam1(in.readF32());
+    return true;
 }
 
 // Address: 0x01aa9c90 - 0x01aa9c98 (8 bytes)

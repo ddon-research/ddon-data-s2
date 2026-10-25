@@ -58,6 +58,8 @@ using u8 = unsigned char;
 
 class cpOcdCtrl : public cpComponent
 {
+    // inferred: cOcdMsgCtrl2::callBackReceiveActiveLv calls cpOcdCtrl::callbackReceiveActive
+    friend class cOcdMsgCtrl2;
     // inferred: cpShakeCtrl::shake names cpOcdCtrl::mOcdActiveBit[1]
     friend class cpShakeCtrl;
 public:
@@ -258,4 +260,10 @@ public:
 // Inline, no code of its own: checked where it is inlined.
 inline bool cpOcdCtrl::isInvalid() const {
     return this->mIsInvalid;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cpOcdCtrl::isOCDapplyContinue() {
+    return this->mIsOCDapplyContinue;
 }

@@ -7,7 +7,7 @@
 #include "../shared/MtString.h"
 #include "../shared/MtTime.h"
 #include "../shared/cControl.h"
-#include "../shared/cGUIControlMgr.h"
+#include "cGUIControlMgr.h"
 #include "../shared/cGUIInstance.h"
 #include "../shared/cGUIObject.h"
 #include "../shared/cNetGameServer.h"
@@ -242,16 +242,51 @@ u32 uGUIPSStore::evCtrlClose(cControl::Message* pMsg) {
 }
 
 // Address: 0x00be5610 - 0x00be5669 (89 bytes)
-__attribute__((weak)) u32 uGUIPSStore::evCtrlCateLClick(cControl::Message* pMsg) {
-    DDON_STUB("uGUIPSStore::evCtrlCateLClick")
-    return {};
+u32 uGUIPSStore::evCtrlCateLClick(cControl::Message* pMsg) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
+            if (this->mCategoryCtrlMgr.mControl[0].mpScrollList != static_cast<uGUIBase::cScrollList*>(nullptr)) {
+                if (pMsg->pSender == this->mCategoryCtrlMgr.mControl[0].mpScrollList->::uGUIBase::cScrollList::getCtrl()) {
+                    if (pMsg->pSender->::cControl::getCurrentPos() == pMsg->pSender->mOldPos) {
+                        this->::uGUIBase::setInputEvent(static_cast<u32>(75));
+                    } else {
+                        this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+                    }
+                }
+            } else {
+                if (pMsg->pSender == this->mCategoryCtrlMgr.mControl[0].mpCtrl) {
+                    if (pMsg->pSender->::cControl::getCurrentPos() == pMsg->pSender->mOldPos) {
+                        this->::uGUIBase::setInputEvent(static_cast<u32>(75));
+                    } else {
+                        this->::uGUIBase::setInputEvent(static_cast<u32>(74));
+                    }
+                }
+            }
+        }
+    }
+    return static_cast<u32>(1);
 }
 
 // Address: 0x00be5670 - 0x00be56d2 (98 bytes)
-__attribute__((weak)) u32 uGUIPSStore::evCtrlListLClick(cControl::Message* pMsg) {
-    // local: cControl* pCtrl;
-    DDON_STUB("uGUIPSStore::evCtrlListLClick")
-    return {};
+u32 uGUIPSStore::evCtrlListLClick(cControl::Message* pMsg) {
+    // DWARF local not rendered: cControl* pCtrl;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (pMsg != static_cast<cControl::Message*>(nullptr)) {
+        if (pMsg->pSender != static_cast<cControl*>(nullptr)) {
+            if (this->mStationScrlList.::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                if (pMsg->pSender == this->mStationScrlList.::uGUIBase::cScrollList::getCtrl()) {
+                    this->::uGUIBase::setInputEvent(static_cast<u32>(76));
+                }
+            }
+            if (this->mHistoryScrlList.::uGUIBase::cScrollList::getCtrl() != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                if (this->mHistoryScrlList.::uGUIBase::cScrollList::getCtrl() == pMsg->pSender) {
+                    this->::uGUIBase::setInputEvent(static_cast<u32>(77));
+                }
+            }
+        }
+    }
+    return static_cast<u32>(1);
 }
 
 // Address: 0x00be4b70 - 0x00be4f60 (1008 bytes)
@@ -524,10 +559,19 @@ __attribute__((weak)) void uGUIPSStore::updateStationItemDisp(uGUIBase::cScrollL
 }
 
 // Address: 0x00be6e70 - 0x00be6eb0 (64 bytes)
-__attribute__((weak)) void uGUIPSStore::updateStationItemHide(uGUIBase::cScrollListItemBase* pDispItem) {
-    // local: cStationListItem* pdisp;
-    DDON_STUB("uGUIPSStore::updateStationItemHide")
-    /* stub */
+void uGUIPSStore::updateStationItemHide(uGUIBase::cScrollListItemBase* pDispItem) {
+    // DWARF local not rendered: cStationListItem* pdisp;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x80 from uGUIBase::cScrollListItemBase*
+    if (pDispItem == static_cast<uGUIBase::cScrollListItemBase*>(nullptr)) {
+        return;
+    }
+    if (pDispItem->mpInstBase == static_cast<cGUIInstNull*>(nullptr)) {
+        return;
+    }
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pDispItem) + static_cast<long>(128)) = static_cast<unsigned int>(4294967295);
+    pDispItem->mpInstBase->::cGUIInstance::setVisible(false);
+    pDispItem->mpInstBase->::cGUIInstance::setExecute(false);
 }
 
 // No out-of-line body: 4 inlined copies in 4 functions (213 bytes)

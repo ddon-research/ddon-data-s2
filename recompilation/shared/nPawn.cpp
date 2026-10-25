@@ -3,6 +3,7 @@
 #include "nPawn.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
+#include "MtMath.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
 #include "nDDOIO.h"
@@ -92,10 +93,23 @@ __attribute__((weak)) bool cPawnEnableArea::isEnableArea(const MtVector3& ownerP
 // bool cPawnEnableArea::isEnableAreaXZ(const MtVector3& ownerPos, const MtVector3& targetOfsPos, f32 angle) const;
 
 // Address: 0x00623570 - 0x006235a2 (50 bytes)
-__attribute__((weak)) bool cPawnEnableArea::isEnableAreaY(const MtVector3& ownerPos, const f32 targetY) const {
-    // local: f32 height;
-    DDON_STUB("cPawnEnableArea::isEnableAreaY")
-    return {};
+bool cPawnEnableArea::isEnableAreaY(const MtVector3& ownerPos, const f32 targetY) const {
+    // DWARF local not rendered: f32 height;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if ((this->mMaxY - this->mMinY) > 1.1920929e-7f) {
+        if (this->mMinY > (ownerPos.y - targetY)) {
+            return false;
+        } else {
+            if ((ownerPos.y - targetY) > this->mMaxY) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    } else {
+        return true;
+    }
 }
 
 // Address: 0x006235d0 - 0x0062362d (93 bytes)

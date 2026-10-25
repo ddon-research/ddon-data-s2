@@ -9,6 +9,7 @@
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
 #include "../shared/rGUIMessage.h"
+#include "../shared/sMain.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -168,10 +169,25 @@ void uGUITelop::setMessageIndex(u32 n) {
 }
 
 // Address: 0x00c60180 - 0x00c601aa (42 bytes)
-__attribute__((weak)) u32 uGUITelop::getPageNum() {
-    // local: u32 i;
-    DDON_STUB("uGUITelop::getPageNum")
-    return {};
+u32 uGUITelop::getPageNum() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_1 = static_cast<unsigned int>(0);
+    // inferred: the value the loop at 0xc60190 carries; no location-less local in scope fits
+    for (bool* v0_2 = &this->mPage[0].mEnable;;) {
+        if ((*v0_2) == false) {
+            return i0_1;
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(63)) {
+                i0_1 += static_cast<unsigned int>(1);
+                v0_2 += static_cast<int>(32);
+            } else {
+                break;
+            }
+        }
+    }
+    return static_cast<u32>(64);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (6 bytes)
@@ -179,10 +195,25 @@ __attribute__((weak)) u32 uGUITelop::getPageNum() {
 // u32 uGUITelop::getCurrentPage();
 
 // Address: 0x00c60cb0 - 0x00c60cd7 (39 bytes)
-__attribute__((weak)) u32 uGUITelop::getFinalPageIdx() {
-    // local: u32 i;
-    DDON_STUB("uGUITelop::getFinalPageIdx")
-    return {};
+u32 uGUITelop::getFinalPageIdx() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_1 = static_cast<unsigned int>(0);
+    // inferred: the value the loop at 0xc60cc0 carries; no location-less local in scope fits
+    for (bool* v0_2 = &this->mPage[0].mEnable;;) {
+        if ((*v0_2) == false) {
+            return i0_1;
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(63)) {
+                i0_1 += static_cast<unsigned int>(1);
+                v0_2 += static_cast<int>(32);
+            } else {
+                break;
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00c60ad0 - 0x00c60ca8 (472 bytes)
@@ -192,15 +223,33 @@ __attribute__((weak)) void uGUITelop::ejectPage() {
 }
 
 // Address: 0x00c604e0 - 0x00c604fa (26 bytes)
-__attribute__((weak)) void uGUITelop::updateInit() {
-    DDON_STUB("uGUITelop::updateInit")
-    /* stub */
+void uGUITelop::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateWait);
 }
 
 // Address: 0x00c60a40 - 0x00c60ac0 (128 bytes)
-__attribute__((weak)) void uGUITelop::updateWait() {
-    DDON_STUB("uGUITelop::updateWait")
-    /* stub */
+void uGUITelop::updateWait() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mType != static_cast<u32>(1)) {
+        return;
+    }
+    if (this->mCurrentPage <= static_cast<u32>(63)) {
+        if (this->mPage[this->mCurrentPage].mEnable != false) {
+            // inferred: a temporary for the value the load at 0xc60a63 read, used twice; no DWARF local holds it
+            f32 t0 = this->mPage[this->mCurrentPage].mCntSkipChk;
+            if (t0 >= 0.0f) {
+                this->mCntSkip = this->mCntSkip + (::sMain::getInstance()->mDeltaTime / ::sMain::getInstance()->mFps);
+                if (this->mCntSkip >= t0) {
+                    this->::uGUITelop::ejectPage();
+                }
+            }
+        } else {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateExit);
+        }
+    } else {
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITelop::updateExit);
+    }
 }
 
 // Address: 0x00c60ac0 - 0x00c60ac9 (9 bytes)

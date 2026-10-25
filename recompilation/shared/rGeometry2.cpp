@@ -294,12 +294,34 @@ bool rGeometry2::cGeometryArray::isActive() const {
 }
 
 // Address: 0x0121cd60 - 0x0121cdc2 (98 bytes)
-__attribute__((weak)) void rGeometry2::cGeometryArray::setActive(bool FlgSetActive) {
-    // local: const u32 GeometryNum;
-    // local: u32 i;
-    // local: cGeometry* pNowGeometry;
-    DDON_STUB("rGeometry2::cGeometryArray::setActive")
-    /* stub */
+void rGeometry2::cGeometryArray::setActive(bool FlgSetActive) {
+    // DWARF local not rendered: const u32 GeometryNum;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cGeometry* pNowGeometry;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from rGeometry2::cGeometryArray*
+    if (this->isActive() == false) {
+        if ((FlgSetActive == false) == false) {
+            // inferred: the value the loop at 0x121cd90 carries; no location-less local in scope fits
+            unsigned int v0_10 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32));
+            if (v0_10 != static_cast<unsigned int>(0)) {
+                // inferred: the counter this loop steps; no location-less local in scope fits
+                for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                    // inferred: a temporary for the result of the call at 0x121cd95, used twice; no DWARF local holds it
+                    nCollision::cGeometry* t0 = this->::nCollision::cCollisionNode::getGeometryClass(i0_3);
+                    if (t0 != static_cast<nCollision::cGeometry*>(nullptr)) {
+                        static_cast<rGeometry2::cGeometry*>(t0)->::rGeometry2::cGeometry::updateAttachGeometry();
+                    }
+                    if (v0_10 != (i0_3 + static_cast<unsigned int>(1))) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    this->::nCollision::cObjectBase::setActive(FlgSetActive);
 }
 
 // Address: 0x0121ca80 - 0x0121cc4b (459 bytes)

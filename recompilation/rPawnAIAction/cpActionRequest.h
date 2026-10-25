@@ -42,7 +42,7 @@ class cpActionRequest : public cpComponent
     friend class uCharacter;
     // inferred: uDDOModel::callbackShrink names cpActionRequest::mShrinkActionReq
     friend class uDDOModel;
-    // inferred: uEnemy::hitInstantDeath names cpActionRequest::mDamageAction
+    // inferred: uEnemy::moveInsuranceWarp names cpActionRequest::mDamageAction
     friend class uEnemy;
     // inferred: uHuman::startBlowUKEMIAcsept names cpActionRequest::mLandAction
     friend class uHuman;

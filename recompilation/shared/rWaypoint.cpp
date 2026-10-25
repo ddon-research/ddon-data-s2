@@ -83,8 +83,63 @@ rWaypoint::rWaypoint() {
 // Address: 0x007107f0 - 0x00710940 (336 bytes)
 // Also emitted as: _ZN9rWaypointD0Ev at 0x00710940
 rWaypoint::~rWaypoint() {
-    DDON_STUB("rWaypoint::~rWaypoint")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mPointList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x710820 carries; no location-less local in scope fits
+        u32 v0_0 = this->mPointList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mPointList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mPointList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mPointList.::MtArray::mLength) {
+                    v0_0 = this->mPointList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mPointList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPointList.::MtArray::mpArray));
+    }
+    this->mPointList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mPointList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mPointList.::MtArray::mLength = static_cast<u32>(0);
+    if (this->mRouteList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x7108a0 carries; no location-less local in scope fits
+        u32 v2_0 = this->mRouteList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+            if (this->mRouteList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mRouteList.::MtArray::mpArray[i2_3];
+                if ((i2_3 + static_cast<unsigned int>(1)) < this->mRouteList.::MtArray::mLength) {
+                    v2_0 = this->mRouteList.::MtArray::mLength;
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mRouteList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mRouteList.::MtArray::mpArray));
+    }
+    this->mRouteList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mRouteList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mRouteList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x00710970 - 0x00710b05 (405 bytes)
@@ -243,7 +298,8 @@ const MtDTI& rWaypoint::cRoute::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rWaypoint::cRoute::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rWaypoint::cRoute::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rWaypoint::cRoute::DTI)->memAlloc(sz, align, ::rWaypoint::cRoute::DTI.::MtDTI::getID());
 }
 

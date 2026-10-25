@@ -303,9 +303,10 @@ __attribute__((weak)) sOccluderEx::Shape* sOccluderEx::Area::getShape(u32 index)
 // void sOccluderEx::Area::setShape(sOccluderEx::Shape* ps, u32 index);
 
 // Address: 0x007f9d30 - 0x007f9d34 (4 bytes)
-__attribute__((weak)) u32 sOccluderEx::Area::getShapeNum() {
-    DDON_STUB("sOccluderEx::Area::getShapeNum")
-    return {};
+u32 sOccluderEx::Area::getShapeNum() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from sOccluderEx::Area*
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32));
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)

@@ -68,12 +68,31 @@ inline void rDungeonMarker::operator delete(void* p_addr) {
 // u32 rDungeonMarker::getWarpStageNo() const;
 
 // Address: 0x0065b5c0 - 0x0065b60f (79 bytes)
-__attribute__((weak)) u32 rDungeonMarker::getWarpPosNum(s32 groupNo, u32 targetStageNo, s32 targetGroupNo) const {
-    // local: const u32 num;
-    // local: u32 i;
-    // local: cWarpInfo* pInfo;
-    DDON_STUB("rDungeonMarker::getWarpPosNum")
-    return {};
+u32 rDungeonMarker::getWarpPosNum(s32 groupNo, u32 targetStageNo, s32 targetGroupNo) const {
+    // DWARF local not rendered: const u32 num;
+    // DWARF local not rendered: cWarpInfo* pInfo;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x28 from MtObject*
+    // inferred: a value cast to the type its use takes: short used as int
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x2a from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x2c from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from MtObject*
+    if (this->mWarpInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x65b5c6, 0x65b609), [0x65b60a, 0x65b60e)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (groupNo == static_cast<int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mWarpInfoList.::MtArray::mpArray[i]) + static_cast<long>(40))))) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mWarpInfoList.::MtArray::mpArray[i]) + static_cast<long>(42))) == targetStageNo) {
+                    if (targetGroupNo != static_cast<int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mWarpInfoList.::MtArray::mpArray[i]) + static_cast<long>(44))))) {
+                    } else {
+                        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWarpInfoList.::MtArray::mpArray[i]) + static_cast<long>(16));
+                    }
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mWarpInfoList.::MtArray::mLength);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x0065b610 - 0x0065b67f (111 bytes)
@@ -107,8 +126,63 @@ inline rDungeonMarker::rDungeonMarker() {
 // Address: 0x0065b690 - 0x0065b7e0 (336 bytes)
 // Also emitted as: _ZN14rDungeonMarkerD0Ev at 0x0065b7e0
 rDungeonMarker::~rDungeonMarker() {
-    DDON_STUB("rDungeonMarker::~rDungeonMarker")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mWarpInfoList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x65b6c0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mWarpInfoList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mWarpInfoList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mWarpInfoList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mWarpInfoList.::MtArray::mLength) {
+                    v0_0 = this->mWarpInfoList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mWarpInfoList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mWarpInfoList.::MtArray::mpArray));
+    }
+    this->mWarpInfoList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mWarpInfoList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mWarpInfoList.::MtArray::mLength = static_cast<u32>(0);
+    if (this->mPositionList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x65b740 carries; no location-less local in scope fits
+        u32 v2_0 = this->mPositionList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i2_3 = static_cast<unsigned int>(0);;) {
+            if (this->mPositionList.::MtArray::mpArray[i2_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mPositionList.::MtArray::mpArray[i2_3];
+                if ((i2_3 + static_cast<unsigned int>(1)) < this->mPositionList.::MtArray::mLength) {
+                    v2_0 = this->mPositionList.::MtArray::mLength;
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i2_3 + static_cast<unsigned int>(1)) < v2_0) {
+                    i2_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mPositionList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mPositionList.::MtArray::mpArray));
+    }
+    this->mPositionList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mPositionList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mPositionList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x0065b810 - 0x0065ba77 (615 bytes)
@@ -175,7 +249,8 @@ const MtDTI& rDungeonMarker::cWarpInfo::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rDungeonMarker::cWarpInfo::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rDungeonMarker::cWarpInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cWarpInfo::DTI)->memAlloc(sz, align, ::rDungeonMarker::cWarpInfo::DTI.::MtDTI::getID());
 }
 

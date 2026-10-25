@@ -3,15 +3,20 @@
 #include "uNpc.h"
 #include "MtDTI.h"
 #include "MtString.h"
+#include "cAction.h"
 #include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
 #include "cEquipData.h"
+#include "cHumanAction.h"
+#include "cpActionManager.h"
 #include "cpHeadCtrl.h"
 #include "cpNpc.h"
 #include "cpObjCollision.h"
 #include "nDDOModel.h"
 #include "../rStageConnect/sArea.h"
 #include "../rStageConnect/sAreaExt.h"
+#include "sNpcManager.h"
+#include "sTalkManager.h"
 #include "sWeatherManager.h"
 #include "uControl.h"
 #include "uControlNpc.h"
@@ -273,9 +278,16 @@ __attribute__((weak)) void uNpc::setTouch(uDDOModel* pUnit, bool isTouchSave) {
 }
 
 // Address: 0x00ca5750 - 0x00ca578c (60 bytes)
-__attribute__((weak)) void uNpc::requestReleaseTouch(uDDOModel* pRelease, nDDOModel::TOUCH_RELEASE_TYPE type) {
-    DDON_STUB("uNpc::requestReleaseTouch")
-    /* stub */
+void uNpc::requestReleaseTouch(uDDOModel* pRelease, nDDOModel::TOUCH_RELEASE_TYPE type) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uDDOModel::requestReleaseTouch(pRelease, type);
+    if (pRelease == static_cast<uDDOModel*>(nullptr)) {
+        return;
+    }
+    if (this != ::sTalkManager::getInstance()->::sTalkManager::getTalkTarget()) {
+    } else {
+        ::sTalkManager::getInstance()->::sTalkManager::forceInterrupt();
+    }
 }
 
 // Address: 0x00ca5790 - 0x00ca584a (186 bytes)
@@ -318,22 +330,49 @@ bool uNpc::isDispMiniMap() {
 // bool uNpc::isPlayMusic();
 
 // Address: 0x00ca82a0 - 0x00ca830a (106 bytes)
-__attribute__((weak)) bool uNpc::isDisableTalkMotCancel() {
-    // local: cHumanActSetNpcMotion* pAct;
-    // local: u32 category;
-    // local: u32 motion;
-    // local: s32 motIndex;
-    DDON_STUB("uNpc::isDisableTalkMotCancel")
-    return {};
+bool uNpc::isDisableTalkMotCancel() {
+    // DWARF local not rendered: cHumanActSetNpcMotion* pAct;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(376)) {
+        // inferred: a temporary for the result of the call at 0xca82c4, used 4 times; no DWARF local holds it
+        cAction* t0 = this->::uDDOModel::getActMgrPtr()->::cpActionManager::getAction();
+        if (t0 != static_cast<cAction*>(nullptr)) {
+            u32 category = static_cast<cHumanActSetNpcMotion*>(t0)->::cHumanActSetNpcMotion::getCategory();
+            u32 motion = static_cast<cHumanActSetNpcMotion*>(t0)->::cHumanActSetNpcMotion::getMotionNo();
+            s32 motIndex = static_cast<cHumanActSetNpcMotion*>(t0)->::cHumanActSetNpcMotion::getMotIndex();
+            return ::sNpcManager::getInstance()->::sNpcManager::isDisableCancel(static_cast<unsigned char>(category), static_cast<unsigned char>(motion), motIndex);
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00ca8310 - 0x00ca837a (106 bytes)
-__attribute__((weak)) bool uNpc::isMotionCancelMyRoom() {
-    // local: cHumanActSetNpcMotMyRoom* pAct;
-    // local: s32 motIndex;
-    // local: u32 motion;
-    DDON_STUB("uNpc::isMotionCancelMyRoom")
-    return {};
+bool uNpc::isMotionCancelMyRoom() {
+    // DWARF local not rendered: cHumanActSetNpcMotMyRoom* pAct;
+    // DWARF local not rendered: u32 motion;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from cAction*
+    if (this->::uDDOModel::getActMgrPtr()->::cpActionManager::getActionNo() == static_cast<u32>(386)) {
+        // inferred: a temporary for the result of the call at 0xca8334, used 4 times; no DWARF local holds it
+        cAction* t0 = this->::uDDOModel::getActMgrPtr()->::cpActionManager::getAction();
+        if (t0 != static_cast<cAction*>(nullptr)) {
+            // inferred: a temporary for the value the load at 0xca833e read, used once; no DWARF local holds it
+            unsigned char t1 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(84));
+            s32 motIndex = static_cast<cHumanActSetNpcMotMyRoom*>(t0)->::cHumanActSetNpcMotMyRoom::getMotIndex();
+            if (static_cast<cHumanActSetNpcMotMyRoom*>(t0)->::cHumanActSetNpcMotMyRoom::getEmotion() != static_cast<u32>(0)) {
+                return ::sNpcManager::getInstance()->::sNpcManager::isMotionCancelEmoMyRoom(t1, motIndex);
+            } else {
+                return ::sNpcManager::getInstance()->::sNpcManager::isMotionCancelMyRoom(t1, motIndex);
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00ca77d0 - 0x00ca7891 (193 bytes)

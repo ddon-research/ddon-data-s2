@@ -118,9 +118,11 @@ __attribute__((weak)) void cpChargeCtrl::setupChargeStart(u8 maxLevel, bool flg,
 }
 
 // Address: 0x00492990 - 0x004929af (31 bytes)
-__attribute__((weak)) void cpChargeCtrl::setChargeParm(u8 level, f32 chargeMax, f32 chargeSpeed, f32 justTimeMax) {
-    DDON_STUB("cpChargeCtrl::setChargeParm")
-    /* stub */
+void cpChargeCtrl::setChargeParm(u8 level, f32 chargeMax, f32 chargeSpeed, f32 justTimeMax) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mChargeMax_Gi[level] = chargeMax;
+    this->mChargeSpeed_Gi[level] = chargeSpeed;
+    this->mJustTimeMax.elems[(level <= static_cast<u8>(4)) ? level : static_cast<u8>(0)] = justTimeMax;
 }
 
 // Address: 0x004929b0 - 0x004929b5 (5 bytes)
@@ -217,9 +219,15 @@ __attribute__((weak)) f32 cpChargeCtrl::getChargeSpeedHosei() {
 // f32 cpChargeCtrl::getChargeMax(u8) const;
 
 // Address: 0x00492a80 - 0x00492aae (46 bytes)
-__attribute__((weak)) bool cpChargeCtrl::cheackJust() {
-    DDON_STUB("cpChargeCtrl::cheackJust")
-    return {};
+bool cpChargeCtrl::cheackJust() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a cast to the other signedness; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mNowChargeLevel != static_cast<u8>(0)) {
+        if (this->mJustTimeMax.elems[(static_cast<unsigned int>(this->mNowChargeLevel - static_cast<int>(1)) <= static_cast<unsigned int>(4)) ? static_cast<unsigned int>(this->mNowChargeLevel - static_cast<int>(1)) : static_cast<unsigned int>(0)] > this->mJustCheck) {
+            return true;
+        }
+    }
+    return false;
 }
 
 // Address: 0x00492ab0 - 0x00492af3 (67 bytes)

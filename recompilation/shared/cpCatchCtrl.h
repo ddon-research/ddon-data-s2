@@ -142,6 +142,8 @@ public:
 
 class cpCatchCtrl : public cpComponent
 {
+    // inferred: uDDOModel::getCatchType names cpCatchCtrl::mCatchType
+    friend class uDDOModel;
 public:
     class MyDTI;
 public:

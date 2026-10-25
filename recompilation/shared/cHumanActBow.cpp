@@ -8,17 +8,22 @@
 #include "MtObject.h"
 #include "cCamInterporate.h"
 #include "cContextPlayerInfo.h"
+#include "cEfcHandle.h"
 #include "cHumanAction.h"
 #include "cJumpParamCtrl.h"
 #include "cpEquip.h"
 #include "cpInput.h"
 #include "cpObjCollision.h"
 #include "cpScrCollision.h"
+#include "cpSequenceCtrl.h"
 #include "cpShlShotCtrl.h"
 #include "cpSlave.h"
 #include "nDDOUtility.h"
 #include "nHuman.h"
 #include "nHumanBow.h"
+#include "nHumanMsg.h"
+#include "sEffect.h"
+#include "sEffectExt.h"
 #include "sSound.h"
 #include "sSoundExt.h"
 #include "uCoord.h"
@@ -125,9 +130,45 @@ __attribute__((weak)) void cPlActWpnBow::final() {
 }
 
 // Address: 0x002299a0 - 0x00229b06 (358 bytes)
-__attribute__((weak)) void cPlActWpnBow::updateEfcHandle() {
-    DDON_STUB("cPlActWpnBow::updateEfcHandle")
-    /* stub */
+void cPlActWpnBow::updateEfcHandle() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpEfcHandleCharge != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcHandleCharge) != false) {
+            this->mpEfcHandleCharge->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mpEfcHandleCharge = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mpEfcHandleChargeSkill != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcHandleChargeSkill) != false) {
+            this->mpEfcHandleChargeSkill->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mpEfcHandleChargeSkill = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mpEfcHandleLandMark != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcHandleLandMark) != false) {
+            this->mpEfcHandleLandMark->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mpEfcHandleLandMark = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mpEfcHandleFilter != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcHandleFilter) != false) {
+            this->mpEfcHandleFilter->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mpEfcHandleFilter = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mpEfcKamaeHandle != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcKamaeHandle) != false) {
+            this->mpEfcKamaeHandle->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mpEfcKamaeHandle = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
+    if (this->mpEfcSpecial != static_cast<cEfcHandle*>(nullptr)) {
+        if (static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::isInvalidHandle(this->mpEfcSpecial) != false) {
+            this->mpEfcSpecial->mpOwner = static_cast<cUnit*>(nullptr);
+            this->mpEfcSpecial = static_cast<cEfcHandle*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x00229b10 - 0x00229b92 (130 bytes)
@@ -316,9 +357,13 @@ void cPlActWpnBow::moveLow_Run() {
 }
 
 // Address: 0x00221ca0 - 0x00221d19 (121 bytes)
-__attribute__((weak)) void cPlActWpnBow::initLow_JumpBgn() {
-    DDON_STUB("cPlActWpnBow::initLow_JumpBgn")
-    /* stub */
+void cPlActWpnBow::initLow_JumpBgn() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    this->mIdealAccurate = this->::cPlActWpnBow::getActParam()->accurateJump;
+    this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motJumpBgn[this->mJumpType]) | static_cast<unsigned long>(1024)), true, static_cast<u32>(0), 10.0f, 0.0f, 1.0f);
+    this->::cHumanActBase::mpHuman->::uDDOModel::getSlavePtr()->::cpSlave::setInterpolateType(static_cast<u32>(2));
 }
 
 // Address: 0x00221d20 - 0x00221d50 (48 bytes)
@@ -332,22 +377,56 @@ void cPlActWpnBow::moveLow_JumpBgn() {
 }
 
 // Address: 0x00221d50 - 0x00221de7 (151 bytes)
-__attribute__((weak)) void cPlActWpnBow::initLow_Jump() {
-    DDON_STUB("cPlActWpnBow::initLow_Jump")
-    /* stub */
+void cPlActWpnBow::initLow_Jump() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motJumpNow[this->mJumpType]) | static_cast<unsigned long>(1024)), true, static_cast<u32>(0), 10.0f, 0.0f, 1.0f);
+    this->::cPlActWpnBowBase::mMoveRadian = this->mJumpInitMoveRad;
+    this->mIsCheckLand = true;
+    if (this->mJumpType == static_cast<cPlActWpnBow::JUMP_TYPE>(1)) {
+        this->::cPlActWpnBowBase::mJumpParamCtrl.::cJumpParamCtrl::initializeY(this->::cHumanActBase::mpHuman, static_cast<u32>(0), static_cast<u32>(11));
+    } else {
+        this->::cPlActWpnBowBase::mJumpParamCtrl.::cJumpParamCtrl::initializeMoveRad(this->::cHumanActBase::mpHuman, static_cast<u32>(0), static_cast<u32>(11));
+    }
 }
 
 // Address: 0x00221df0 - 0x00221e74 (132 bytes)
-__attribute__((weak)) void cPlActWpnBow::moveLow_Jump() {
-    DDON_STUB("cPlActWpnBow::moveLow_Jump")
-    /* stub */
+void cPlActWpnBow::moveLow_Jump() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    this->::cPlActWpnBowBase::mJumpParamCtrl.::cJumpParamCtrl::updateParam(this->::cHumanActBase::mpHuman);
+    this->::cPlActWpnBowBase::mJumpParamCtrl.::cJumpParamCtrl::updatePadAdjustPos(this->::cHumanActBase::mpHuman);
+    if (this->mUpActNo != static_cast<cPlActWpnBow::UP_ACT_NO>(6)) {
+        return;
+    }
+    if (0.0f >= this->::cHumanActBase::mpHuman->::uDDOModel::mVelocity.y) {
+        this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motFall) | static_cast<unsigned long>(1024)), false, static_cast<u32>(0), 10.0f, 0.0f, 1.0f);
+    }
 }
 
 // Address: 0x00221e80 - 0x00221f7b (251 bytes)
-__attribute__((weak)) void cPlActWpnBow::initLow_Fall() {
-    // local: f32 accy;
-    DDON_STUB("cPlActWpnBow::initLow_Fall")
-    /* stub */
+void cPlActWpnBow::initLow_Fall() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as u32
+    f32 accy = this->::cHumanActBase::mpHuman->::uHuman::getComAdjustParam(static_cast<u32>(0));
+    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.x = 0.0f;
+    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.y = accy;
+    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.z = 0.0f;
+    this->::cHumanActBase::mpHuman->::uDDOModel::mAcceleration.pad_ = 0.0f;
+    this->mIsCheckLand = true;
+    this->mIdealAccurate = this->::cPlActWpnBow::getActParam()->accurateFall;
+    if (this->mUpActNo != static_cast<cPlActWpnBow::UP_ACT_NO>(0)) {
+        this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motFall) | static_cast<unsigned long>(1024)), false, static_cast<u32>(0), 10.0f, 0.0f, 1.0f);
+    } else {
+        this->::cHumanActBase::mpHuman->::uDDOModel::setDDOMotion(static_cast<MOT_TYPE>(0), static_cast<u32>(static_cast<unsigned long>(this->::cPlActWpnBow::getActParam()->motJumpNow[1]) | static_cast<unsigned long>(1024)), true, static_cast<u32>(0), 10.0f, 5.0f, 1.0f);
+    }
+    if (this->::cHumanActBase::mpHuman->::uDDOModel::isMaster() != false) {
+    } else {
+        this->::cHumanActBase::mpHuman->::uDDOModel::getSlavePtr()->::cpSlave::setInterpolateType(static_cast<u32>(4));
+    }
 }
 
 // Address: 0x00221f80 - 0x00221f81 (1 bytes)
@@ -1433,10 +1512,43 @@ __attribute__((weak)) void cPlActWpnBow::requestBowCamera() {
 // f32 cPlActWpnBow::getBgnMotionSpeed();
 
 // Address: 0x00222b90 - 0x00222c6f (223 bytes)
-__attribute__((weak)) void cPlActWpnBow::explosionReload(MOT_TYPE type) {
-    // local: f32 motSpeed;
-    DDON_STUB("cPlActWpnBow::explosionReload")
-    /* stub */
+void cPlActWpnBow::explosionReload(MOT_TYPE type) {
+    // Approximate from the ELF: a cast to the other signedness; a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a place read twice with no call between; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x3440 from uHuman*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28 from unsigned long
+    // inferred: a value cast to the type its use takes: unsigned char used as nHuman::JOB_ENUM
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc68 from unsigned long
+    if (this->mUpActNo != static_cast<cPlActWpnBow::UP_ACT_NO>(4)) {
+        return;
+    }
+    if (this->::cPlActWpnBow::getActParam()->isFastExplosionReload == false) {
+        return;
+    }
+    if (this->::cHumanActBase::mpHuman->::uDDOModel::getSequenceCtrlPtr()->::cpSequenceCtrl::getSequenceCount(static_cast<s32>(0)) == static_cast<s32>(1)) {
+        f32 motSpeed = this->::cHumanActBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(27));
+        // inferred: a temporary for the value the load at 0x222bdc read, used 4 times; no DWARF local holds it
+        unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->::cHumanActBase::mpHuman) + static_cast<long>(13376));
+        if (t0 != static_cast<unsigned long>(0)) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))) + static_cast<int>(255)) > static_cast<unsigned char>(9)) {
+                this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), motSpeed);
+            } else {
+                // inferred: a temporary for the result of the call at 0x222c1b, used once; no DWARF local holds it
+                u32 t1 = ::nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + static_cast<long>(40))));
+                if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + static_cast<unsigned long>(t1 * static_cast<u32>(40))) + static_cast<unsigned long>(::nHuman::getNormalSkillIdArrayIndex(static_cast<nHuman::GROW_NORMAL_SKILL_ENUM>(2)) * static_cast<u32>(4))) + static_cast<long>(3176))) > static_cast<int>(0)) {
+                    // inferred: a temporary for the result of the call at 0x222c52, used once; no DWARF local holds it
+                    f32 t2 = this->::cHumanActBase::mpHuman->::uHuman::getJobAdjustParam(static_cast<u32>(28));
+                    this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), t2);
+                } else {
+                    this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), motSpeed);
+                }
+            }
+        } else {
+            this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), motSpeed);
+        }
+    } else {
+        this->::cHumanActBase::mpHuman->::uDDOModel::setMotionSpeed(static_cast<u32>(1), 1.0f);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (114 bytes)

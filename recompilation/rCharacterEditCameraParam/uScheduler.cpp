@@ -102,9 +102,23 @@ __attribute__((weak)) void uScheduler::move() {
 }
 
 // Address: 0x00f62ed0 - 0x00f62efa (42 bytes)
-__attribute__((weak)) void uScheduler::kill() {
-    DDON_STUB("uScheduler::kill")
-    /* stub */
+void uScheduler::kill() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; an | of disjoint bits; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uScheduler*
+    // inferred: a temporary for the value the load at 0xf62ed0 read, used 4 times; no DWARF local holds it
+    unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16));
+    if (((t0 >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+        return;
+    }
+    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = (t0 & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+        if (((((t0 & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3)) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+        } else {
+            this->::uScheduler::deleteTrackWork(false);
+        }
+    } else {
+        this->::uScheduler::deleteTrackWork(false);
+    }
 }
 
 // Address: 0x00f636d0 - 0x00f63723 (83 bytes)
@@ -164,9 +178,9 @@ void uScheduler::setFrame(u32 frame) {
 }
 
 // Address: 0x01b63bb0 - 0x01b63bb7 (7 bytes)
-__attribute__((weak)) u32 uScheduler::getFrame() const {
-    DDON_STUB("uScheduler::getFrame")
-    return {};
+u32 uScheduler::getFrame() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned int>(static_cast<long>(this->mFrame));
 }
 
 // Address: 0x01b63be0 - 0x01b63be6 (6 bytes)
@@ -215,12 +229,49 @@ __attribute__((weak)) void uScheduler::setMarkerFrame(f32 frame) {
 }
 
 // Address: 0x00f642b0 - 0x00f64317 (103 bytes)
-__attribute__((weak)) u32 uScheduler::getMarker() const {
-    // local: TRACK* ptrack;
-    // local: u32 frame;
-    // local: u32 i;
-    DDON_STUB("uScheduler::getMarker")
-    return {};
+u32 uScheduler::getMarker() const {
+    // DWARF local not rendered: u32 frame;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x0 from rScheduler::TRACK*
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xf642ba, held ahead of the effects the ELF orders after it
+    rScheduler* t0 = this->mpScheduler;
+    // inferred: the value carried to 0xf64306; the location-less local in scope that fits is declared on no line of the value's writes
+    unsigned int v2_3;
+    if (t0 == static_cast<rScheduler*>(nullptr)) {
+        v2_3 = static_cast<unsigned int>(0);
+    } else {
+        rScheduler::TRACK* ptrack = t0->::rScheduler::getBaseTrack();
+        if (ptrack == static_cast<rScheduler::TRACK*>(nullptr)) {
+            v2_3 = static_cast<unsigned int>(0);
+        } else {
+            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(ptrack) + static_cast<long>(0))) >> static_cast<unsigned int>(16)) == static_cast<unsigned int>(0)) {
+                v2_3 = static_cast<unsigned int>(4294967295);
+            } else {
+                // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+                rScheduler::KEY* p0_0 = ptrack->key_frame;
+                // inferred: the value the loop at 0xf642f0 carries; the location-less local in scope that fits is declared on no line of the value's writes
+                unsigned int v0_1 = (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(ptrack) + static_cast<long>(0))) >> static_cast<unsigned int>(16);
+                // inferred: the counter this loop steps; the location-less local in scope that fits is declared on no line of the value's writes
+                unsigned int i0_2 = static_cast<unsigned int>(0);
+                // inferred: the value the loop at 0xf642f0 carries; no location-less local in scope fits
+                for (long v0_4 = static_cast<long>(this->mFrame);;) {
+                    if (static_cast<unsigned int>(v0_4) < p0_0->frame) {
+                        return (i0_2 == static_cast<unsigned int>(0)) ? i0_2 : (i0_2 - static_cast<unsigned int>(1));
+                    } else {
+                        if ((i0_2 + static_cast<unsigned int>(1)) < v0_1) {
+                            p0_0 += static_cast<int>(1);
+                            i0_2 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                v2_3 = v0_1 - static_cast<unsigned int>(1);
+            }
+        }
+    }
+    return v2_3;
 }
 
 // Address: 0x00f64320 - 0x00f6436b (75 bytes)
@@ -276,9 +327,13 @@ __attribute__((weak)) s32 uScheduler::getUnitIndex(const MtDTI& dti, MT_CTSTR tr
 }
 
 // Address: 0x00f64540 - 0x00f64556 (22 bytes)
-__attribute__((weak)) cUnit* uScheduler::getUnit(u32 index) const {
-    DDON_STUB("uScheduler::getUnit")
-    return nullptr;
+cUnit* uScheduler::getUnit(u32 index) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mUnitTrackNum) {
+        return static_cast<cUnit*>(this->mpUnitTrack[index]->pobj);
+    } else {
+        return static_cast<cUnit*>(nullptr);
+    }
 }
 
 // Address: 0x00f64560 - 0x00f64574 (20 bytes)

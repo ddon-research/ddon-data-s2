@@ -32,6 +32,7 @@ namespace nDraw { class Texture; }
 namespace nPrim { struct Material; }
 namespace nPrim { struct MetaDataHeader; }
 namespace nPrim { struct Texture; }
+class uEffect2D;
 
 // Declarations
 class sPrimitive;
@@ -53,6 +54,8 @@ class sPrimitive : public cSystem
 {
     // inferred: cPrimTexHandle::reserveTexture names sPrimitive::mpInstance
     friend class cPrimTexHandle;
+    // inferred: uEffect2D::drawScene names sPrimitive::mpInstance
+    friend class uEffect2D;
 public:
     enum ePrimStencilFunc
     {

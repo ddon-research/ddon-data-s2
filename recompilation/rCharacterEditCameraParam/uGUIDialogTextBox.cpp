@@ -189,9 +189,9 @@ __attribute__((weak)) void uGUIDialogTextBox::moveEvent() {
 // void uGUIDialogTextBox::setCheckNGWord();
 
 // Address: 0x00a69590 - 0x00a695aa (26 bytes)
-__attribute__((weak)) void uGUIDialogTextBox::updateInit() {
-    DDON_STUB("uGUIDialogTextBox::updateInit")
-    /* stub */
+void uGUIDialogTextBox::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDialogTextBox::updateWait);
 }
 
 // Address: 0x00a69a00 - 0x00a69bb8 (440 bytes)

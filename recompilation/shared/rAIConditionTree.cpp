@@ -151,8 +151,41 @@ inline void* rAIConditionTree::operator new(size_t sz, u32 align) {
 // Address: 0x0136cd30 - 0x0136cddf (175 bytes)
 // Also emitted as: _ZN16rAIConditionTreeD0Ev at 0x0136cde0
 rAIConditionTree::~rAIConditionTree() {
-    DDON_STUB("rAIConditionTree::~rAIConditionTree")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mpTreeList != static_cast<rAIConditionTree::TreeInfo* *>(nullptr)) {
+        if (this->mTreeNum != static_cast<u32>(0)) {
+            // inferred: the value the loop at 0x136cd76 carries; no location-less local in scope fits
+            u32 v0_0 = this->mTreeNum;
+            // inferred: the value the loop at 0x136cd76 carries; no location-less local in scope fits
+            rAIConditionTree::TreeInfo* * v0_1 = this->mpTreeList;
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(1);;) {
+                if (v0_1 != static_cast<rAIConditionTree::TreeInfo* *>(nullptr)) {
+                    if (v0_1[i0_3 - static_cast<unsigned int>(1)] != static_cast<rAIConditionTree::TreeInfo*>(nullptr)) {
+                        delete v0_1[i0_3 - static_cast<unsigned int>(1)];
+                        this->mpTreeList[i0_3 - static_cast<unsigned int>(1)] = static_cast<rAIConditionTree::TreeInfo*>(nullptr);
+                        if (i0_3 >= this->mTreeNum) {
+                            break;
+                        }
+                        v0_0 = this->mTreeNum;
+                    } else {
+                        if (i0_3 >= v0_0) {
+                            break;
+                        }
+                    }
+                } else {
+                    if (i0_3 >= v0_0) {
+                        break;
+                    }
+                }
+                v0_1 = this->mpTreeList;
+                i0_3 += static_cast<unsigned int>(1);
+            }
+        }
+        ::MtMemoryAllocator::getAllocator(::rAIConditionTree::DTI)->memFree(static_cast<void*>(this->mpTreeList));
+    }
+    this->mTreeNum = static_cast<u32>(0);
+    this->mpTreeList = static_cast<rAIConditionTree::TreeInfo* *>(nullptr);
 }
 
 // Address: 0x0136cff0 - 0x0136d09c (172 bytes)
@@ -892,15 +925,25 @@ rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::ConstS32Node::getValueType() 
 }
 
 // Address: 0x01bda000 - 0x01bda015 (21 bytes)
-__attribute__((weak)) s32 rAIConditionTree::ConstS32Node::getS32() {
-    DDON_STUB("rAIConditionTree::ConstS32Node::getS32")
-    return {};
+s32 rAIConditionTree::ConstS32Node::getS32() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mIsBitNo != false) {
+        return static_cast<s32>(static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(this->mValue) & static_cast<unsigned char>(31))));
+    } else {
+        return this->mValue;
+    }
 }
 
 // Address: 0x01bda020 - 0x01bda036 (22 bytes)
-__attribute__((weak)) s64 rAIConditionTree::ConstS32Node::getS64() {
-    DDON_STUB("rAIConditionTree::ConstS32Node::getS64")
-    return {};
+s64 rAIConditionTree::ConstS32Node::getS64() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mIsBitNo != false) {
+        return static_cast<s64>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(this->mValue) & static_cast<unsigned char>(63)));
+    } else {
+        return this->mValue;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -1024,24 +1067,35 @@ rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::ConstS64Node::getValueType() 
 }
 
 // Address: 0x01bda360 - 0x01bda376 (22 bytes)
-__attribute__((weak)) s32 rAIConditionTree::ConstS64Node::getS32() {
-    DDON_STUB("rAIConditionTree::ConstS64Node::getS32")
-    return {};
+s32 rAIConditionTree::ConstS64Node::getS32() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mIsBitNo != false) {
+        return static_cast<s32>(static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(this->mValue) & static_cast<unsigned char>(31))));
+    } else {
+        return static_cast<s32>(static_cast<unsigned int>(this->mValue));
+    }
 }
 
 // Address: 0x01bda380 - 0x01bda399 (25 bytes)
-__attribute__((weak)) s64 rAIConditionTree::ConstS64Node::getS64() {
-    DDON_STUB("rAIConditionTree::ConstS64Node::getS64")
-    return {};
+s64 rAIConditionTree::ConstS64Node::getS64() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mIsBitNo != false) {
+        return static_cast<s64>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(this->mValue) & static_cast<unsigned char>(63)));
+    } else {
+        return this->mValue;
+    }
 }
 
 // No out-of-line body: no code in the ELF
 // void rAIConditionTree::ConstS64Node::setS64(s64);
 
 // Address: 0x01bda3a0 - 0x01bda3a4 (4 bytes)
-__attribute__((weak)) s32 rAIConditionTree::ConstS64Node::getBitNo() {
-    DDON_STUB("rAIConditionTree::ConstS64Node::getBitNo")
-    return {};
+s32 rAIConditionTree::ConstS64Node::getBitNo() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x40 from rAIConditionTree::ConstS64Node*
+    return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(64)));
 }
 
 // Address: 0x0136f340 - 0x0136f3e2 (162 bytes)
@@ -1480,9 +1534,14 @@ rAIConditionTreeNode::VALUE_TYPE rAIConditionTree::ConstEnumNode::getValueType()
 }
 
 // Address: 0x01bdb040 - 0x01bdb055 (21 bytes)
-__attribute__((weak)) s32 rAIConditionTree::ConstEnumNode::getS32() {
-    DDON_STUB("rAIConditionTree::ConstEnumNode::getS32")
-    return {};
+s32 rAIConditionTree::ConstEnumNode::getS32() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mIsBitNo != false) {
+        return static_cast<s32>(static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(this->mValue.mValue) & static_cast<unsigned char>(31))));
+    } else {
+        return this->mValue.mValue;
+    }
 }
 
 // No out-of-line body: no code in the ELF

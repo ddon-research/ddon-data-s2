@@ -121,3 +121,13 @@ namespace nInputText {
         nIMEPS4::InputInfo mInputInfo;  // offset: 0x2808
     };
 }  // namespace nInputText
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 nInputText::cUnicodeString::getIndex() const {
+    return this->mIndex;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+inline u32 nInputText::cUnicodeString::getSelectIndex() const {
+    return this->mSelectIndex;
+}

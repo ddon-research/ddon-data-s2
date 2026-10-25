@@ -10,7 +10,7 @@
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/uGUIBase.h"
-#include "../shared/uGUIBaseExt.h"
+#include "uGUIBaseExt.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif

@@ -547,16 +547,44 @@ u8 nCollision::cScrCommonFilter::getScrGroupIndex() const {
 }
 
 // Address: 0x01185110 - 0x0118512d (29 bytes)
-__attribute__((weak)) void nCollision::cScrCommonFilter::setScrGroup(u8 NewGroupIndex) {
-    DDON_STUB("nCollision::cScrCommonFilter::setScrGroup")
-    /* stub */
+void nCollision::cScrCommonFilter::setScrGroup(u8 NewGroupIndex) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (NewGroupIndex <= static_cast<u8>(32)) {
+        this->mScrGroup = static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(NewGroupIndex & static_cast<u8>(63)));
+    } else {
+        this->mScrGroup = static_cast<u32>(1);
+    }
+    this->mScrGroupIndex = NewGroupIndex;
 }
 
 // Address: 0x01185380 - 0x011853ba (58 bytes)
-__attribute__((weak)) void nCollision::cScrCommonFilter::setScrGroupByBit(u32 GroupBit) {
-    // local: u8 i;
-    DDON_STUB("nCollision::cScrCommonFilter::setScrGroupByBit")
-    /* stub */
+void nCollision::cScrCommonFilter::setScrGroupByBit(u32 GroupBit) {
+    // DWARF local not rendered: u8 i;
+    // Approximate from the ELF: a narrowed integer a test reads, which the recompile may fold into another range test; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_0 = static_cast<unsigned int>(0);
+    // inferred: the value carried to 0x11853a1; no location-less local in scope fits
+    unsigned int v1_0;
+    for (;;) {
+        if (((static_cast<unsigned long>(GroupBit) >> static_cast<unsigned long>(i0_0 & static_cast<unsigned int>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+            v1_0 = i0_0;
+            break;
+        } else {
+            if (static_cast<unsigned char>(i0_0 + static_cast<unsigned int>(1)) <= static_cast<unsigned char>(31)) {
+                i0_0 = i0_0 + static_cast<unsigned int>(1);
+            } else {
+                v1_0 = i0_0 + static_cast<unsigned int>(1);
+                break;
+            }
+        }
+    }
+    this->mScrGroup = static_cast<unsigned int>(static_cast<unsigned long>(1) << static_cast<unsigned long>(static_cast<unsigned char>(v1_0) & static_cast<unsigned char>(63)));
+    if (static_cast<unsigned char>(v1_0) == static_cast<unsigned char>(32)) {
+        this->mScrGroupIndex = static_cast<u8>(0);
+    } else {
+        this->mScrGroupIndex = static_cast<unsigned char>(v1_0);
+    }
 }
 
 // No out-of-line body: no code in the ELF

@@ -9,6 +9,7 @@
 #include "MtObject.h"
 #include "MtString.h"
 #include "cEquipData.h"
+#include "cItemParam.h"
 #include "cUIObject.h"
 #include "cUnit.h"
 #include "nCharacterData.h"
@@ -197,9 +198,15 @@ void nGUIItem::cItem::setResourceParam(rItemList::rItemParam* p) {
 // nCharacterData::EQUIP_CATEGORY nGUIItem::cItem::getEquipCategory();
 
 // Address: 0x005dae50 - 0x005dae60 (16 bytes)
-__attribute__((weak)) rItemList::ITEM_CATEGORY nGUIItem::cItem::getCategory() {
-    DDON_STUB("nGUIItem::cItem::getCategory")
-    return {};
+rItemList::ITEM_CATEGORY nGUIItem::cItem::getCategory() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5e from rItemList::rItemParam*
+    // inferred: a value cast to the type its use takes: unsigned char used as rItemList::ITEM_CATEGORY
+    if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
+        return static_cast<rItemList::ITEM_CATEGORY>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mprItemParam) + static_cast<long>(94)));
+    } else {
+        return static_cast<rItemList::ITEM_CATEGORY>(0);
+    }
 }
 
 // No out-of-line body: 5 inlined copies in 3 functions (74 bytes)
@@ -222,9 +229,65 @@ __attribute__((weak)) MT_CTSTR nGUIItem::cItem::getName() {
 }
 
 // Address: 0x005dace0 - 0x005dad61 (129 bytes)
-__attribute__((weak)) u32 nGUIItem::cItem::getNum() const {
-    DDON_STUB("nGUIItem::cItem::getNum")
-    return {};
+u32 nGUIItem::cItem::getNum() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; code after a join copied into the arms; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mpParam != static_cast<cItemParam*>(nullptr)) {
+        // inferred: a temporary for the value the load at 0x5dacf7 read, used once; no DWARF local holds it
+        unsigned short t0 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mpParam) + static_cast<long>(12));
+        if (this->mprItemParam != static_cast<rItemList::rItemParam*>(nullptr)) {
+            if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
+                if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                    if (this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1)) < t0) {
+                        if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
+                            if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                                return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                            } else {
+                                return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(0));
+                            }
+                        } else {
+                            return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                        }
+                    } else {
+                        return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mpParam) + static_cast<long>(12));
+                    }
+                } else {
+                    if (this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(0)) < t0) {
+                        if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
+                            if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                                return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                            } else {
+                                return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(0));
+                            }
+                        } else {
+                            return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                        }
+                    } else {
+                        return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mpParam) + static_cast<long>(12));
+                    }
+                }
+            } else {
+                if (this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1)) < t0) {
+                    if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
+                        if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+                            return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                        } else {
+                            return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(0));
+                        }
+                    } else {
+                        return this->mprItemParam->::rItemList::rItemParam::getStackMax(static_cast<nCharacterData::ITEM_BAG_TYPE>(1));
+                    }
+                } else {
+                    return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this->mpParam) + static_cast<long>(12));
+                }
+            }
+        } else {
+            return t0;
+        }
+    } else {
+        return static_cast<u32>(this->mNum);
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -389,11 +452,44 @@ __attribute__((weak)) nGUIItem::RET_TYPE nGUIItem::cItem::sendItem(nItem::E_STOR
 // u64 nGUIItem::cItem::getPrice() const;
 
 // Address: 0x005dba90 - 0x005dbaf0 (96 bytes)
-__attribute__((weak)) rItemList::rParam* nGUIItem::cItem::getParam(rItemList::rParam::PARAM_KIND kind) {
-    // local: u32 i;
-    // local: rParam* pParam;
-    DDON_STUB("nGUIItem::cItem::getParam")
-    return nullptr;
+rItemList::rParam* nGUIItem::cItem::getParam(rItemList::rParam::PARAM_KIND kind) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: rParam* pParam;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x8 from rItemList::rParam*
+    // inferred: a value cast to the type its use takes: rItemList::rParam::PARAM_KIND used as unsigned int
+    // inferred: a value cast to the type its use takes: short used as unsigned int
+    // inferred: the value carried to 0x5dbae5; no location-less local in scope fits
+    rItemList::rParam* v1_0;
+    if (this->mprItemParam == static_cast<rItemList::rItemParam*>(nullptr)) {
+        v1_0 = static_cast<rItemList::rParam*>(nullptr);
+    } else {
+        if (this->mprItemParam->mParamNum == static_cast<u32>(0)) {
+            v1_0 = static_cast<rItemList::rParam*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            unsigned int i0_2 = static_cast<unsigned int>(0);
+            // inferred: the value the loop at 0x5dbac0 carries; no location-less local in scope fits
+            for (rItemList::rItemParam* v0_4 = this->mprItemParam;;) {
+                // inferred: a temporary for the result of the call at 0x5dbac2, used 3 times; no DWARF local holds it
+                rItemList::rParam* t0 = v0_4->::rItemList::rItemParam::getItemParam(i0_2);
+                if (t0 != static_cast<rItemList::rParam*>(nullptr)) {
+                    if (static_cast<unsigned int>(kind) == static_cast<unsigned int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t0) + static_cast<long>(8))))) {
+                        v1_0 = t0;
+                        break;
+                    }
+                }
+                if ((i0_2 + static_cast<unsigned int>(1)) < this->mprItemParam->mParamNum) {
+                    i0_2 += static_cast<unsigned int>(1);
+                    v0_4 = this->mprItemParam;
+                } else {
+                    v1_0 = static_cast<rItemList::rParam*>(nullptr);
+                    break;
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // No out-of-line body: 11 inlined copies in 6 functions (48 bytes)
@@ -515,9 +611,18 @@ bool nGUIItem::cItem::isCheckMode() {
 // void nGUIItem::cItem::setCheckMode(bool isCheckMode);
 
 // Address: 0x005daee0 - 0x005daefa (26 bytes)
-__attribute__((weak)) nCharacterData::ITEM_BAG_TYPE nGUIItem::cItem::getItemBagType() const {
-    DDON_STUB("nGUIItem::cItem::getItemBagType")
-    return {};
+nCharacterData::ITEM_BAG_TYPE nGUIItem::cItem::getItemBagType() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (static_cast<unsigned int>(this->mBagType) <= static_cast<unsigned int>(31)) {
+        if (((static_cast<unsigned long>(3758325760) >> (static_cast<unsigned long>(this->mBagType) & static_cast<unsigned long>(31))) & static_cast<unsigned long>(1)) == static_cast<unsigned long>(0)) {
+            return static_cast<nCharacterData::ITEM_BAG_TYPE>(1);
+        } else {
+            return static_cast<nCharacterData::ITEM_BAG_TYPE>(0);
+        }
+    } else {
+        return static_cast<nCharacterData::ITEM_BAG_TYPE>(1);
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -703,11 +808,11 @@ __attribute__((weak)) void nGUIItem::cItemList::deleteAll() {
 // u32 nGUIItem::cItemList::size(sItemManager::cItemBag::ITEM_CATEGORY cat);
 
 // Address: 0x005dc980 - 0x005dc99f (31 bytes)
-__attribute__((weak)) u32 nGUIItem::cItemList::sizeAll() {
-    // local: u32 ret;
-    // local: u32 i;
-    DDON_STUB("nGUIItem::cItemList::sizeAll")
-    return {};
+u32 nGUIItem::cItemList::sizeAll() {
+    // DWARF local not rendered: u32 ret;
+    // DWARF local not rendered: u32 i;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return (((((this->mItemArrays.elems[1].::MtArray::size() + this->mItemArrays.elems[0].::MtArray::mLength) + this->mItemArrays.elems[2].::MtArray::mLength) + this->mItemArrays.elems[3].::MtArray::mLength) + this->mItemArrays.elems[4].::MtArray::mLength) + this->mItemArrays.elems[5].::MtArray::mLength) + this->mItemArrays.elems[6].::MtArray::mLength;
 }
 
 // Address: 0x005dc890 - 0x005dc972 (226 bytes)
@@ -884,6 +989,34 @@ u32 nGUIItem::cItemList::convertIdx(sItemManager::cItemBag::ITEM_CATEGORY cat) {
 __attribute__((weak)) MtObject* nGUIItem::cItemList::MyDTI::newInstance() const {
     DDON_STUB("nGUIItem::cItemList::MyDTI::newInstance")
     return nullptr;
+}
+
+// No out-of-line body: 1938 inlined copies in 969 functions (50388 bytes)
+//   in _GLOBAL__sub_I_aBase.cpp at 0x000005f5-0x0000060f (called at nGUIItem.h:138)
+//   in _GLOBAL__sub_I_aBase.cpp at 0x000005f5-0x0000060f (called at nGUIItem.h:100)
+//   in _GLOBAL__sub_I_aCharacterEdit.cpp at 0x0000190b-0x00001925 (called at nGUIItem.h:138)
+//   and 1935 more (every copy is in <bundle>.inlined.json)
+// nGUIItem::cLoadCategory::cLoadCategory();
+
+// No out-of-line body: 969 inlined copies in 969 functions (25194 bytes)
+//   in _GLOBAL__sub_I_aBase.cpp at 0x000005f5-0x0000060f (called at nGUIItem.h:100)
+//   in _GLOBAL__sub_I_aCharacterEdit.cpp at 0x0000190b-0x00001925 (called at nGUIItem.h:100)
+//   in _GLOBAL__sub_I_aCharacterEditTest.cpp at 0x00001a56-0x00001a70 (called at nGUIItem.h:100)
+//   and 966 more (every copy is in <bundle>.inlined.json)
+// void nGUIItem::cLoadCategory::init();
+
+// No out-of-line body: 975 inlined copies in 975 functions (25352 bytes)
+//   in _GLOBAL__sub_I_aBase.cpp at 0x000005f5-0x0000060f (called at nGUIItem.h:103)
+//   in _GLOBAL__sub_I_aCharacterEdit.cpp at 0x0000190b-0x00001925 (called at nGUIItem.h:103)
+//   in _GLOBAL__sub_I_aCharacterEditTest.cpp at 0x00001a56-0x00001a70 (called at nGUIItem.h:103)
+//   and 972 more (every copy is in <bundle>.inlined.json)
+// void nGUIItem::cLoadCategory::fill(bool b);
+
+// Address: 0x005dd810 - 0x005dd838 (40 bytes)
+void nGUIItem::cLoadCategory::setEnableCategory(sItemManager::cItemBag::ITEM_CATEGORY cat, bool b) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    s32 idx = ::sItemManager::cItemBag::getStorageCategoryIndex(cat);
+    this->mEnableCategory.elems[(static_cast<unsigned int>(idx) <= static_cast<unsigned int>(6)) ? static_cast<unsigned int>(idx) : static_cast<unsigned int>(0)] = b;
 }
 
 // Instance at 0x01a6c3a0 - 0x01a6c3a5 (5 bytes) of the generic MtTypedArray<T>::~MtTypedArray

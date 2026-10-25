@@ -63,9 +63,10 @@ inline void cQuestTaskParam::operator delete(void* p_addr) {
 // void cQuestTaskParam::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x001c55d0 - 0x001c55d8 (8 bytes)
-__attribute__((weak)) nQuest::QUEST_TYPE cQuestTaskParam::getQuestType() const {
-    DDON_STUB("cQuestTaskParam::getQuestType")
-    return {};
+nQuest::QUEST_TYPE cQuestTaskParam::getQuestType() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as nQuest::QUEST_TYPE
+    return static_cast<nQuest::QUEST_TYPE>(this->mQuestType);
 }
 
 // Address: 0x001c55e0 - 0x001c55f5 (21 bytes)
@@ -292,12 +293,27 @@ __attribute__((weak)) void cQuestTaskParam::setKeyItemPoint(u32 idx, u32 pt) {
 }
 
 // Address: 0x001c60f0 - 0x001c6128 (56 bytes)
-__attribute__((weak)) u32 cQuestTaskParam::getKeyItemPoint(u32 idx) const {
-    // local: const u32 keyItemNum;
-    // local: u32 i;
-    // local: cQuestPoint* pPt;
-    DDON_STUB("cQuestTaskParam::getKeyItemPoint")
-    return {};
+u32 cQuestTaskParam::getKeyItemPoint(u32 idx) const {
+    // DWARF local not rendered: const u32 keyItemNum;
+    // DWARF local not rendered: cQuestPoint* pPt;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x130 from const cQuestTaskParam*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x140 from const cQuestTaskParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from unsigned long
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(304))) != static_cast<unsigned int>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x1c60f8, 0x1c6127)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(320))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == idx) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(320))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(12));
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(304))));
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x001c6130 - 0x001c6292 (354 bytes)
@@ -311,21 +327,46 @@ __attribute__((weak)) void cQuestTaskParam::setRandom(u32 idx, s32 value) {
 }
 
 // Address: 0x001c62a0 - 0x001c62d9 (57 bytes)
-__attribute__((weak)) bool cQuestTaskParam::hasRandom(u32 idx) const {
-    // local: const u32 randNum;
-    // local: u32 i;
-    // local: cQuestPoint* pRndValue;
-    DDON_STUB("cQuestTaskParam::hasRandom")
-    return {};
+bool cQuestTaskParam::hasRandom(u32 idx) const {
+    // DWARF local not rendered: const u32 randNum;
+    // DWARF local not rendered: cQuestPoint* pRndValue;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if (this->mRandomValue.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x1c62a6, 0x1c62d2)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mRandomValue.::MtArray::mpArray[i]) + static_cast<long>(8))) == idx) {
+                return true;
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mRandomValue.::MtArray::mLength);
+    }
+    return false;
 }
 
 // Address: 0x001c62e0 - 0x001c6318 (56 bytes)
-__attribute__((weak)) s32 cQuestTaskParam::getRandom(u32 idx) const {
-    // local: const u32 randNum;
-    // local: u32 i;
-    // local: cQuestPoint* pRndValue;
-    DDON_STUB("cQuestTaskParam::getRandom")
-    return {};
+s32 cQuestTaskParam::getRandom(u32 idx) const {
+    // DWARF local not rendered: const u32 randNum;
+    // DWARF local not rendered: cQuestPoint* pRndValue;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x150 from const cQuestTaskParam*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x160 from const cQuestTaskParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from unsigned long
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(336))) != static_cast<unsigned int>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x1c62e8, 0x1c6317)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(352))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == idx) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(352))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(12)));
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(336))));
+    }
+    return static_cast<s32>(0);
 }
 
 // Address: 0x001c6320 - 0x001c63fa (218 bytes)
@@ -351,21 +392,51 @@ __attribute__((weak)) void cQuestTaskParam::setTimer(u32 idx, s32 sec) {
 // bool cQuestTaskParam::hasTimer(u32 idx) const;
 
 // Address: 0x001c6580 - 0x001c65b7 (55 bytes)
-__attribute__((weak)) s32 cQuestTaskParam::getTimer(u32 idx) const {
-    // local: const u32 timerNum;
-    // local: u32 i;
-    // local: cQuestPoint* pTimer;
-    DDON_STUB("cQuestTaskParam::getTimer")
-    return {};
+s32 cQuestTaskParam::getTimer(u32 idx) const {
+    // DWARF local not rendered: const u32 timerNum;
+    // DWARF local not rendered: cQuestPoint* pTimer;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x180 from const cQuestTaskParam*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x170 from const cQuestTaskParam*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from unsigned long
+    if ((*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(368))) != static_cast<unsigned int>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x1c658c, 0x1c65b6)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(384))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(8))) == idx) {
+                return static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + static_cast<long>(384))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(12)));
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(368))));
+    }
+    return static_cast<s32>(-1);
 }
 
 // Address: 0x001c65c0 - 0x001c65fa (58 bytes)
-__attribute__((weak)) void cQuestTaskParam::endTimer(u32 idx) {
-    // local: const u32 timerNum;
-    // local: u32 i;
-    // local: cQuestPoint* pTimer;
-    DDON_STUB("cQuestTaskParam::endTimer")
-    /* stub */
+void cQuestTaskParam::endTimer(u32 idx) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cQuestPoint* pTimer;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x170 from cQuestTaskParam*
+    const u32 timerNum = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(368));
+    if (timerNum != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x1c65e0 carries; no location-less local in scope fits
+        MtObject* * v0_1 = this->mTimer.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(8))) == idx) {
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(12)) = static_cast<unsigned int>(0);
+            }
+            if (timerNum != (i0_2 + static_cast<unsigned int>(1))) {
+                i0_2 += static_cast<unsigned int>(1);
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x001c6600 - 0x001c66da (218 bytes)
@@ -501,9 +572,10 @@ __attribute__((weak)) cQuestTaskParam& cQuestTaskParam::offTaskState(cQuestTaskP
 }
 
 // Address: 0x001c6880 - 0x001c688d (13 bytes)
-__attribute__((weak)) bool cQuestTaskParam::checkTaskState(u32 questState) const {
-    DDON_STUB("cQuestTaskParam::checkTaskState")
-    return {};
+bool cQuestTaskParam::checkTaskState(u32 questState) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mTaskStatus) >> static_cast<unsigned long>(questState & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x001c6890 - 0x001c68b4 (36 bytes)

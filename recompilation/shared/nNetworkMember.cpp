@@ -178,9 +178,10 @@ MT_CTSTR nNetwork::Member::getName() const {
 }
 
 // Address: 0x01b86510 - 0x01b86517 (7 bytes)
-__attribute__((weak)) bool nNetwork::Member::isSelf() const {
-    DDON_STUB("nNetwork::Member::isSelf")
-    return {};
+bool nNetwork::Member::isSelf() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u32 used as bool
+    return static_cast<bool>(this->mConfiguration & static_cast<u32>(1));
 }
 
 // Address: 0x01b86520 - 0x01b86535 (21 bytes)
@@ -190,9 +191,12 @@ void nNetwork::Member::setSelf(bool f) {
 }
 
 // Address: 0x01b86540 - 0x01b86548 (8 bytes)
-__attribute__((weak)) bool nNetwork::Member::isEntry() const {
-    DDON_STUB("nNetwork::Member::isEntry")
-    return {};
+bool nNetwork::Member::isEntry() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(2)) >> static_cast<unsigned long>(1));
 }
 
 // Address: 0x01b86550 - 0x01b86565 (21 bytes)
@@ -202,9 +206,12 @@ void nNetwork::Member::setEntry(bool f) {
 }
 
 // Address: 0x01b86570 - 0x01b86579 (9 bytes)
-__attribute__((weak)) bool nNetwork::Member::isMatch() const {
-    DDON_STUB("nNetwork::Member::isMatch")
-    return {};
+bool nNetwork::Member::isMatch() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(4)) >> static_cast<unsigned long>(2));
 }
 
 // Address: 0x01b86580 - 0x01b86595 (21 bytes)
@@ -214,9 +221,12 @@ void nNetwork::Member::setMatch(bool f) {
 }
 
 // Address: 0x01b865a0 - 0x01b865a9 (9 bytes)
-__attribute__((weak)) bool nNetwork::Member::isTerminate() const {
-    DDON_STUB("nNetwork::Member::isTerminate")
-    return {};
+bool nNetwork::Member::isTerminate() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(8)) >> static_cast<unsigned long>(3));
 }
 
 // Address: 0x01b865b0 - 0x01b865c5 (21 bytes)
@@ -226,9 +236,12 @@ void nNetwork::Member::setTerminate(bool f) {
 }
 
 // Address: 0x01b865d0 - 0x01b865d9 (9 bytes)
-__attribute__((weak)) bool nNetwork::Member::isMute() const {
-    DDON_STUB("nNetwork::Member::isMute")
-    return {};
+bool nNetwork::Member::isMute() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(16)) >> static_cast<unsigned long>(4));
 }
 
 // Address: 0x01b865e0 - 0x01b865f5 (21 bytes)
@@ -261,9 +274,12 @@ void nNetwork::Member::setTalking(bool f) {
 }
 
 // Address: 0x01b86670 - 0x01b86679 (9 bytes)
-__attribute__((weak)) bool nNetwork::Member::isRestrict() const {
-    DDON_STUB("nNetwork::Member::isRestrict")
-    return {};
+bool nNetwork::Member::isRestrict() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x14 from const nNetwork::Member*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    return static_cast<bool>(static_cast<unsigned long>((*reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(this) + static_cast<long>(20))) & static_cast<unsigned char>(64)) >> static_cast<unsigned long>(6));
 }
 
 // Address: 0x01b86680 - 0x01b86695 (21 bytes)
@@ -295,9 +311,10 @@ void nNetwork::Member::setNewbie(bool f) {
 }
 
 // Address: 0x01b86710 - 0x01b86715 (5 bytes)
-__attribute__((weak)) u32 nNetwork::Member::getGroup() const {
-    DDON_STUB("nNetwork::Member::getGroup")
-    return {};
+u32 nNetwork::Member::getGroup() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned short at 0x16 from const nNetwork::Member*
+    return *reinterpret_cast<const unsigned short*>(reinterpret_cast<const char*>(this) + static_cast<long>(22));
 }
 
 // Address: 0x01b86700 - 0x01b86705 (5 bytes)

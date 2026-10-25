@@ -8,6 +8,9 @@
 #include "cUnit.h"
 #include "cpComponent.h"
 #include "nLayout.h"
+#include "rLayoutGroupParam.h"
+#include "sTalkManager.h"
+#include "uControl.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -170,10 +173,52 @@ void cpLayout::updatePtr() {
 // u32 cpLayout::getSplitZ() const;
 
 // Address: 0x004cbe50 - 0x004cbf1b (203 bytes)
-__attribute__((weak)) bool cpLayout::invalidGroupKill() {
-    // local: uControlEnemy* pCtrlEnemy;
-    DDON_STUB("cpLayout::invalidGroupKill")
-    return {};
+bool cpLayout::invalidGroupKill() {
+    // DWARF local not rendered: uControlEnemy* pCtrlEnemy;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x166 from uControl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28c from uControl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2a4 from uControl*
+    // inferred: a temporary for the result of the call at 0x4cbe63, used once; no DWARF local holds it
+    uDDOModel* t0 = ::sTalkManager::getInstance()->::sTalkManager::getTalkTarget();
+    if (this->mpModel != t0) {
+        if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
+            if (this->mpGroupParam != static_cast<const cGroupParam*>(nullptr)) {
+                if (this->mpGroupParam->::cGroupParam::isValidGroup() != false) {
+                    if ((this->mpModel->mUnitId & static_cast<u32>(1026)) != static_cast<u32>(0)) {
+                        if (this->mpModel->::uDDOModel::isDead() == false) {
+                            if (this->mpGroupParam->::cGroupParam::isResetList() != false) {
+                                if (this->mpModel != static_cast<uDDOModel*>(nullptr)) {
+                                    if (this->mpModel->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpModel->::uDDOModel::getCtrl()) + static_cast<long>(358))) == static_cast<unsigned char>(0)) {
+                                            this->mpModel->::uDDOModel::getCtrl()->::uControl::setFadeOut();
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (this->mpGroupParam->::cGroupParam::isDieStageBoss() != false) {
+                                    if (this->mpModel->::uDDOModel::getCtrl() != static_cast<uControl*>(nullptr)) {
+                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpModel->::uDDOModel::getCtrl()) + static_cast<long>(652))) != static_cast<unsigned int>(7)) {
+                                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpModel->::uDDOModel::getCtrl()) + static_cast<long>(676)) = static_cast<unsigned char>(1);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (37 bytes)

@@ -6,6 +6,7 @@
 #include "cNetGameServer.h"
 #include "Character.h"
 #include "CharacterCommon.h"
+#include "CharacterEdit.h"
 #include "CharacterParam.h"
 #include "ChatMsgType.h"
 #include "Cheat.h"
@@ -50,6 +51,7 @@
 #include "../rCharacterEditCameraParam/nDialog.h"
 #include "nJobParam.h"
 #include "nNet.h"
+#include "../rCharacterEdit/rCharacterEdit.h"
 #include "../rStageConnect/sArea.h"
 #include "sContextManager.h"
 #include "../rCharacterEditCameraParam/sDialogBase.h"
@@ -60,7 +62,7 @@
 #include "sQuestManagerExt.h"
 #include "../rCharacterEditCameraParam/sScreenShot.h"
 #include "sSetManager.h"
-#include "uStageMyRoom.h"
+#include "../rCharacterEditCameraParam/uStageMyRoom.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -1261,17 +1263,19 @@ __attribute__((weak)) bool cNetGameServer::setMessageSetList(CharacterMsgSetVec&
 // bool cNetGameServer::getMessageSetList();
 
 // Address: 0x00342810 - 0x0034281a (10 bytes)
-__attribute__((weak)) u8 cNetGameServer::convSexForGame(nCharacter::E_EDIT_BODY_TYPE src) const {
-    // local: u8 dst;
-    DDON_STUB("cNetGameServer::convSexForGame")
-    return {};
+u8 cNetGameServer::convSexForGame(nCharacter::E_EDIT_BODY_TYPE src) const {
+    // DWARF local not rendered: u8 dst;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as u8
+    return static_cast<u8>(src == static_cast<nCharacter::E_EDIT_BODY_TYPE>(2));
 }
 
 // Address: 0x00342820 - 0x0034282c (12 bytes)
-__attribute__((weak)) nCharacter::E_EDIT_BODY_TYPE cNetGameServer::convSexForServer(u8 src) const {
-    // local: E_EDIT_BODY_TYPE dst;
-    DDON_STUB("cNetGameServer::convSexForServer")
-    return {};
+nCharacter::E_EDIT_BODY_TYPE cNetGameServer::convSexForServer(u8 src) const {
+    // DWARF local not rendered: E_EDIT_BODY_TYPE dst;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return static_cast<nCharacter::E_EDIT_BODY_TYPE>(static_cast<unsigned int>(static_cast<unsigned long>(src == static_cast<u8>(1)) + static_cast<unsigned long>(1)));
 }
 
 // No out-of-line body: no code in the ELF
@@ -1851,11 +1855,28 @@ bool cNetGameServer::searchCharacter() {
 }
 
 // Address: 0x00345e30 - 0x00345ed6 (166 bytes)
-__attribute__((weak)) bool cNetGameServer::reqPartyMemberSetValue(s32 index, bool flag) {
-    // local: bool ret;
-    // local: bool ret;
-    DDON_STUB("cNetGameServer::reqPartyMemberSetValue")
-    return {};
+bool cNetGameServer::reqPartyMemberSetValue(s32 index, bool flag) {
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
+    // inferred: a value cast to the type its use takes: bool used as u8
+    this->mStatus[30] = static_cast<sNetworkExt::NET_STAT>(4);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(30));
+    this->mErrorCode[30] = static_cast<nError::ERROR_CODE>(33000);
+    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
+            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_MEMBER_SET_VALUE_REQ(static_cast<unsigned char>(index), static_cast<u8>(flag)) != static_cast<s32>(0)) {
+                    this->mStatus[30] = static_cast<sNetworkExt::NET_STAT>(1);
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(30));
+                    this->mComTimer[30] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x00345ee0 - 0x00346150 (624 bytes)
@@ -1907,9 +1928,28 @@ bool cNetGameServer::inviteParty(u32 characterId) {
 // bool cNetGameServer::cancelInviteParty();
 
 // Address: 0x00346240 - 0x003462e7 (167 bytes)
-__attribute__((weak)) bool cNetGameServer::cancelInviteParty(u32 inviteServerNo, u32 invitePartyId) {
-    DDON_STUB("cNetGameServer::cancelInviteParty")
-    return {};
+bool cNetGameServer::cancelInviteParty(u32 inviteServerNo, u32 invitePartyId) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x54dc from cNetGameServer*
+    this->mInviteServerNo = inviteServerNo;
+    this->mInvitePartyId = invitePartyId;
+    this->mStatus[33] = static_cast<sNetworkExt::NET_STAT>(4);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(33));
+    this->mErrorCode[33] = static_cast<nError::ERROR_CODE>(33000);
+    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
+            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_INVITE_CANCEL_REQ(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + static_cast<long>(21724)), this->mInvitePartyId) != static_cast<s32>(0)) {
+                    this->mStatus[33] = static_cast<sNetworkExt::NET_STAT>(1);
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(33));
+                    this->mComTimer[33] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x003462f0 - 0x0034637e (142 bytes)
@@ -1977,9 +2017,27 @@ bool cNetGameServer::prepareAcceptInviteParty() {
 // bool cNetGameServer::kickParty();
 
 // Address: 0x00346440 - 0x003464db (155 bytes)
-__attribute__((weak)) bool cNetGameServer::kickParty(s32 memberIndex) {
-    DDON_STUB("cNetGameServer::kickParty")
-    return {};
+bool cNetGameServer::kickParty(s32 memberIndex) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54f8 from cNetGameServer*
+    this->mKickMemberIndex = memberIndex;
+    this->mStatus[41] = static_cast<sNetworkExt::NET_STAT>(4);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(41));
+    this->mErrorCode[41] = static_cast<nError::ERROR_CODE>(33000);
+    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
+            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PARTY_MEMBER_KICK_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(21752))) != static_cast<s32>(0)) {
+                    this->mStatus[41] = static_cast<sNetworkExt::NET_STAT>(1);
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(41));
+                    this->mComTimer[41] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x003464e0 - 0x0034656e (142 bytes)
@@ -2942,9 +3000,28 @@ bool cNetGameServer::createMyPawn(s32 slotNo, cCharacterData::stPawnData* pPawnD
 // bool cNetGameServer::deleteMyPawn();
 
 // Address: 0x00347d30 - 0x00347dd8 (168 bytes)
-__attribute__((weak)) bool cNetGameServer::deleteMyPawn(s32 slotNo, bool isKeepEquip) {
-    DDON_STUB("cNetGameServer::deleteMyPawn")
-    return {};
+bool cNetGameServer::deleteMyPawn(s32 slotNo, bool isKeepEquip) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x5728 from cNetGameServer*
+    this->mMyPawnSlotNo = slotNo;
+    this->mIsKeepEquip = isKeepEquip;
+    this->mStatus[60] = static_cast<sNetworkExt::NET_STAT>(4);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(60));
+    this->mErrorCode[60] = static_cast<nError::ERROR_CODE>(33000);
+    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
+            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_DELETE_MYPAWN_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(22312)), this->mIsKeepEquip) != static_cast<s32>(0)) {
+                    this->mStatus[60] = static_cast<sNetworkExt::NET_STAT>(1);
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(60));
+                    this->mComTimer[60] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x00347de0 - 0x00347e6e (142 bytes)
@@ -3869,9 +3946,99 @@ __attribute__((weak)) void cNetGameServer::updateCharListElement(CCharacterListE
 }
 
 // Address: 0x00344790 - 0x00344d54 (1476 bytes)
-__attribute__((weak)) void cNetGameServer::copySendEditData(CEditInfo* pDstEditData, const cCharacterData::stCharacterEdit& srcEditData) {
-    DDON_STUB("cNetGameServer::copySendEditData")
-    /* stub */
+void cNetGameServer::copySendEditData(CEditInfo* pDstEditData, const cCharacterData::stCharacterEdit& srcEditData) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x20 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x24 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x28 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x2c from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x3c from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x40 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x30 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x44 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x48 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x4c from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x50 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x54 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x58 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x5c from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x60 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x64 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x68 from const cCharacterData::stCharacterEdit*
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned char at 0x6c from const cCharacterData::stCharacterEdit*
+    if (pDstEditData == static_cast<CEditInfo*>(nullptr)) {
+        return;
+    }
+    pDstEditData->m_ucBodyType = srcEditData.mBodyType;
+    pDstEditData->m_ucHair = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(32));
+    pDstEditData->m_ucBeard = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(36));
+    pDstEditData->m_ucMakeup = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(40));
+    pDstEditData->m_ucScar = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(44));
+    pDstEditData->m_ucPersonality = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(60));
+    pDstEditData->m_ucSpeechFreq = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(64));
+    pDstEditData->m_ucVoice = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(48));
+    pDstEditData->m_usVoicePitch = ::rCharacterEdit::toU16(static_cast<float>(srcEditData.mVoicePitch), 0.01f);
+    pDstEditData->m_ucEyePresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(68));
+    pDstEditData->m_ucNosePresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(72));
+    pDstEditData->m_ucMouthPresetNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(76));
+    pDstEditData->m_ucEyebrowTexNo = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(80));
+    pDstEditData->m_ucColorSkin = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(84));
+    pDstEditData->m_ucColorHair = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(88));
+    pDstEditData->m_ucColorBeard = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(92));
+    pDstEditData->m_ucColorEyebrow = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(96));
+    pDstEditData->m_ucColorREye = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(100));
+    pDstEditData->m_ucColorLEye = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(104));
+    pDstEditData->m_ucColorMakeup = *reinterpret_cast<const unsigned char*>(reinterpret_cast<const char*>(&srcEditData) + static_cast<long>(108));
+    pDstEditData->m_usSokutobu = ::rCharacterEdit::toU16(srcEditData.mSokutoubu, 0.001f);
+    pDstEditData->m_usHitai = ::rCharacterEdit::toU16(srcEditData.mHitai, 0.001f);
+    pDstEditData->m_usMimiJyouge = ::rCharacterEdit::toU16(srcEditData.mMimijyouge, 0.001f);
+    pDstEditData->m_usKannkaku = ::rCharacterEdit::toU16(srcEditData.mKannkaku, 0.001f);
+    pDstEditData->m_usMabisasiJyouge = ::rCharacterEdit::toU16(srcEditData.mMabisasijyouge, 0.001f);
+    pDstEditData->m_usHanakuchiJyouge = ::rCharacterEdit::toU16(srcEditData.mHanakuchijyouge, 0.001f);
+    pDstEditData->m_usAgoSakiHaba = ::rCharacterEdit::toU16(srcEditData.mAgosakihaba, 0.001f);
+    pDstEditData->m_usAgoZengo = ::rCharacterEdit::toU16(srcEditData.mAgozengo, 0.001f);
+    pDstEditData->m_usAgoSakiJyouge = ::rCharacterEdit::toU16(srcEditData.mAgosakijyouge, 0.001f);
+    pDstEditData->m_usHitomiOokisa = ::rCharacterEdit::toU16(srcEditData.mHitomiookisa, 0.001f);
+    pDstEditData->m_usMeOokisa = ::rCharacterEdit::toU16(srcEditData.mMeookisa, 0.001f);
+    pDstEditData->m_usMeKaiten = ::rCharacterEdit::toU16(srcEditData.mMekaiten, 0.001f);
+    pDstEditData->m_usMayuKaiten = ::rCharacterEdit::toU16(srcEditData.mMayukaiten, 0.0001f);
+    pDstEditData->m_usMimiOokisa = ::rCharacterEdit::toU16(srcEditData.mMimiookisa, 0.001f);
+    pDstEditData->m_usMimiMuki = ::rCharacterEdit::toU16(srcEditData.mMimimuki, 0.001f);
+    pDstEditData->m_usElfMimi = ::rCharacterEdit::toU16(srcEditData.mElfmimi, 0.001f);
+    pDstEditData->m_usMikenTakasa = ::rCharacterEdit::toU16(srcEditData.mMikentakasa, 0.001f);
+    pDstEditData->m_usMikenHaba = ::rCharacterEdit::toU16(srcEditData.mMikenhaba, 0.001f);
+    pDstEditData->m_usHohoboneRyou = ::rCharacterEdit::toU16(srcEditData.mHohoboneryou, 0.001f);
+    pDstEditData->m_usHohoboneJyouge = ::rCharacterEdit::toU16(srcEditData.mHohobonejyouge, 0.001f);
+    pDstEditData->m_usHohoniku = ::rCharacterEdit::toU16(srcEditData.mHohoniku, 0.001f);
+    pDstEditData->m_usErahoneJyouge = ::rCharacterEdit::toU16(srcEditData.mErahonejyouge, 0.001f);
+    pDstEditData->m_usErahoneHaba = ::rCharacterEdit::toU16(srcEditData.mErahonehaba, 0.001f);
+    pDstEditData->m_usHanaJyouge = ::rCharacterEdit::toU16(srcEditData.mHanajyouge, 0.001f);
+    pDstEditData->m_usHanaHaba = ::rCharacterEdit::toU16(srcEditData.mHanahaba, 0.001f);
+    pDstEditData->m_usHanaTakasa = ::rCharacterEdit::toU16(srcEditData.mHanatakasa, 0.001f);
+    pDstEditData->m_usHanaKakudo = ::rCharacterEdit::toU16(srcEditData.mHanakakudo, 0.001f);
+    pDstEditData->m_usKuchiHaba = ::rCharacterEdit::toU16(srcEditData.mKuchihaba, 0.001f);
+    pDstEditData->m_usKuchiAtsusa = ::rCharacterEdit::toU16(srcEditData.mKuchiatsusa, 0.001f);
+    pDstEditData->m_usEyebrowUVOffsetX = ::rCharacterEdit::toU16(srcEditData.mEyebrowUVOffsetX, 0.0001f);
+    pDstEditData->m_usEyebrowUVOffsetY = ::rCharacterEdit::toU16(srcEditData.mEyebrowUVOffsetY, 0.0001f);
+    pDstEditData->m_usWrinkle = ::rCharacterEdit::toU16(srcEditData.mWrinkle, 0.001f);
+    pDstEditData->m_usWrinkleAlbedoBlendRate = ::rCharacterEdit::toU16(srcEditData.mWrinkleAlbedoBlendRate, 0.001f);
+    pDstEditData->m_usWrinkleDetailNormalPower = ::rCharacterEdit::toU16(srcEditData.mWrinkleDetailNormalPower, 0.001f);
+    pDstEditData->m_usMuscleAlbedoBlendRate = ::rCharacterEdit::toU16(srcEditData.mMuscleAlbedoBlendRate, 0.001f);
+    pDstEditData->m_usMuscleDetailNormalPower = ::rCharacterEdit::toU16(srcEditData.mMuscleDetailNormalPower, 0.001f);
+    pDstEditData->m_usHeight = ::rCharacterEdit::toU16(srcEditData.mHeight, 0.01f);
+    pDstEditData->m_usHeadSize = ::rCharacterEdit::toU16(srcEditData.mHeadSize, 0.0001f);
+    pDstEditData->m_usNeckScale = ::rCharacterEdit::toU16(srcEditData.mNeckScale, 0.0001f);
+    pDstEditData->m_usNeckOffset = ::rCharacterEdit::toU16(srcEditData.mNeckOffset, 0.001f);
+    pDstEditData->m_usUpperBodyScaleX = ::rCharacterEdit::toU16(srcEditData.mUpperBodyScaleX, 0.0001f);
+    pDstEditData->m_usBellySize = ::rCharacterEdit::toU16(srcEditData.mBellySize, 0.0001f);
+    pDstEditData->m_usTeatScale = ::rCharacterEdit::toU16(srcEditData.mTeatScale, 0.0001f);
+    pDstEditData->m_usTekubiSize = ::rCharacterEdit::toU16(srcEditData.mTekubiSize, 0.0001f);
+    pDstEditData->m_usKoshiOffset = ::rCharacterEdit::toU16(srcEditData.mKoshiOffset, 0.001f);
+    pDstEditData->m_usKoshiSize = ::rCharacterEdit::toU16(srcEditData.mKoshiSize, 0.0001f);
+    pDstEditData->m_usAnkleOffset = ::rCharacterEdit::toU16(srcEditData.mAnkleOffset, 0.001f);
+    pDstEditData->m_usFat = ::rCharacterEdit::toU16(srcEditData.mFat, 0.0001f);
+    pDstEditData->m_usMuscle = ::rCharacterEdit::toU16(srcEditData.mMuscle, 0.0001f);
+    pDstEditData->m_usMotionFilter = ::rCharacterEdit::toU16(srcEditData.mMotionFilter, 0.0001f);
 }
 
 // Address: 0x0034a7c0 - 0x0034b1e3 (2595 bytes)
@@ -4822,11 +4989,26 @@ bool cNetGameServer::getQuestDetailList(u32 questScheduleId) {
 }
 
 // Address: 0x0034ee50 - 0x0034eeee (158 bytes)
-__attribute__((weak)) bool cNetGameServer::getQuestCompleteList(u32 questType) {
-    // local: bool ret;
-    // local: bool ret;
-    DDON_STUB("cNetGameServer::getQuestCompleteList")
-    return {};
+bool cNetGameServer::getQuestCompleteList(u32 questType) {
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mStatus[135] = static_cast<sNetworkExt::NET_STAT>(4);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(135));
+    this->mErrorCode[135] = static_cast<nError::ERROR_CODE>(33000);
+    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
+        if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
+            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_GET_QUEST_COMPLETE_LIST_REQ(static_cast<unsigned char>(questType)) != static_cast<s32>(0)) {
+                    this->mStatus[135] = static_cast<sNetworkExt::NET_STAT>(1);
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(135));
+                    this->mComTimer[135] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x0034eef0 - 0x0034ef8d (157 bytes)
@@ -5523,30 +5705,30 @@ SetQuestListVec& cNetGameServer::getSetQuestListRef() {
 }
 
 // Address: 0x003795a0 - 0x003795b3 (19 bytes)
-__attribute__((weak)) MainQuestListVec& cNetGameServer::getMainQuestListRef() {
-    DDON_STUB("cNetGameServer::getMainQuestListRef")
-    __builtin_unreachable();
+MainQuestListVec& cNetGameServer::getMainQuestListRef() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::cNetGameServer::getMainQuestListPacket()->m_MainQuestList;
 }
 
 // Address: 0x003795d0 - 0x003795e3 (19 bytes)
-__attribute__((weak)) TutorialQuestListVec& cNetGameServer::getTutorialQuestListRef() {
-    DDON_STUB("cNetGameServer::getTutorialQuestListRef")
-    __builtin_unreachable();
+TutorialQuestListVec& cNetGameServer::getTutorialQuestListRef() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::cNetGameServer::getTutorialQuestListPacket()->m_TutorialQuestList;
 }
 
 // No out-of-line body: no code in the ELF
 // TimeLimitedQuestListVec& cNetGameServer::getTimeLimitedQuestListRef();
 
 // Address: 0x00379620 - 0x00379633 (19 bytes)
-__attribute__((weak)) WorldManageQuestListVec& cNetGameServer::getWorldManageQuestListRef() {
-    DDON_STUB("cNetGameServer::getWorldManageQuestListRef")
-    __builtin_unreachable();
+WorldManageQuestListVec& cNetGameServer::getWorldManageQuestListRef() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::cNetGameServer::getWorldManageQuestListPacket()->m_WorldManageQuestList;
 }
 
 // Address: 0x00379650 - 0x00379663 (19 bytes)
-__attribute__((weak)) LotQuestListVec& cNetGameServer::getLotQuestListRef() {
-    DDON_STUB("cNetGameServer::getLotQuestListRef")
-    __builtin_unreachable();
+LotQuestListVec& cNetGameServer::getLotQuestListRef() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return this->::cNetGameServer::getLotQuestListPacket()->m_LotQuestList;
 }
 
 // Address: 0x00379560 - 0x0037956f (15 bytes)
@@ -6414,17 +6596,39 @@ __attribute__((weak)) void cNetGameServer::setStageList(const StageInfoVec& list
 // u32 cNetGameServer::getRecvAreaChangeStageNo();
 
 // Address: 0x00351340 - 0x0035137a (58 bytes)
-__attribute__((weak)) u32 cNetGameServer::convertIdToStageNo(u32 id) {
-    // local: u32 i;
-    DDON_STUB("cNetGameServer::convertIdToStageNo")
-    return {};
+u32 cNetGameServer::convertIdToStageNo(u32 id) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8610 from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(34320))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mStageList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) == id) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mStageList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(12));
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(34320))));
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00351090 - 0x003510ca (58 bytes)
-__attribute__((weak)) u32 cNetGameServer::convertStageNoToId(u32 stageNo) {
-    // local: u32 i;
-    DDON_STUB("cNetGameServer::convertStageNoToId")
-    return {};
+u32 cNetGameServer::convertStageNoToId(u32 stageNo) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8610 from cNetGameServer*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(34320))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mStageList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(12))) == stageNo) {
+                return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mStageList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8));
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(34320))));
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x019d3e10 - 0x019d407d (621 bytes)
@@ -10628,12 +10832,30 @@ bool cNetGameServer::cancelFriend(u32 charId) {
 }
 
 // Address: 0x0035ff30 - 0x0035ffdc (172 bytes)
-__attribute__((weak)) bool cNetGameServer::approveFriend(u32 charId, bool isApprove) {
-    // local: u8 approve;
-    // local: bool ret;
-    // local: bool ret;
-    DDON_STUB("cNetGameServer::approveFriend")
-    return {};
+bool cNetGameServer::approveFriend(u32 charId, bool isApprove) {
+    // DWARF local not rendered: u8 approve;
+    // DWARF local not rendered: bool ret;
+    // DWARF local not rendered: bool ret;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
+    // inferred: a value cast to the type its use takes: bool used as u8
+    this->mStatus[314] = static_cast<sNetworkExt::NET_STAT>(4);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(314));
+    this->mErrorCode[314] = static_cast<nError::ERROR_CODE>(33000);
+    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
+            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+                this->mIsFriendApprove = isApprove;
+                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_APPROVE_FRIEND_REQ(charId, static_cast<u8>(isApprove)) != static_cast<s32>(0)) {
+                    this->mStatus[314] = static_cast<sNetworkExt::NET_STAT>(1);
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(314));
+                    this->mComTimer[314] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x0035ffe0 - 0x00360084 (164 bytes)
@@ -10717,19 +10939,71 @@ __attribute__((weak)) void cNetGameServer::setApprovingFriendList(const Communit
 // CharacterListElementVec& cNetGameServer::getApprovingFriendListRef();
 
 // Address: 0x00360140 - 0x0036018d (77 bytes)
-__attribute__((weak)) CFriendInfo* cNetGameServer::getFriendInfo(u32 friendNo) {
-    // local: u32 i;
-    // local: CFriendInfo* pFriendInfo;
-    DDON_STUB("cNetGameServer::getFriendInfo")
-    return nullptr;
+CFriendInfo* cNetGameServer::getFriendInfo(u32 friendNo) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: CFriendInfo* pFriendInfo;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x89c8 from cNetGameServer*
+    // inferred: the value the loop at 0x360170 carries; no location-less local in scope fits
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(35272));
+    // inferred: the value carried to 0x36018c; no location-less local in scope fits
+    MtObject* v1_0;
+    if (v0_0 == static_cast<unsigned int>(0)) {
+        v1_0 = static_cast<MtObject*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0x360170 carries; no location-less local in scope fits
+        MtObject* * v0_2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mFriendList.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+            if (v0_2[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_1)]) + static_cast<long>(116))) == friendNo) {
+                    v1_0 = v0_2[static_cast<int>(i0_1)];
+                    break;
+                }
+            }
+            if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_1 += static_cast<unsigned int>(1);
+            } else {
+                v1_0 = static_cast<MtObject*>(nullptr);
+                break;
+            }
+        }
+    }
+    return static_cast<CFriendInfo*>(v1_0);
 }
 
 // Address: 0x00360190 - 0x003601dd (77 bytes)
-__attribute__((weak)) CFriendInfo* cNetGameServer::getFriendInfoCharId(u32 characterId) {
-    // local: u32 i;
-    // local: CFriendInfo* pFriendInfo;
-    DDON_STUB("cNetGameServer::getFriendInfoCharId")
-    return nullptr;
+CFriendInfo* cNetGameServer::getFriendInfoCharId(u32 characterId) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: CFriendInfo* pFriendInfo;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x89c8 from cNetGameServer*
+    // inferred: the value the loop at 0x3601c0 carries; no location-less local in scope fits
+    unsigned int v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()) + static_cast<long>(35272));
+    // inferred: the value carried to 0x3601dc; no location-less local in scope fits
+    MtObject* v1_0;
+    if (v0_0 == static_cast<unsigned int>(0)) {
+        v1_0 = static_cast<MtObject*>(nullptr);
+    } else {
+        // inferred: the value the loop at 0x3601c0 carries; no location-less local in scope fits
+        MtObject* * v0_2 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mFriendList.::MtArray::getBuffer();
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_1 = static_cast<unsigned int>(0);;) {
+            if (v0_2[static_cast<int>(i0_1)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[static_cast<int>(i0_1)]) + static_cast<long>(24))) == characterId) {
+                    v1_0 = v0_2[static_cast<int>(i0_1)];
+                    break;
+                }
+            }
+            if ((i0_1 + static_cast<unsigned int>(1)) < v0_0) {
+                i0_1 += static_cast<unsigned int>(1);
+            } else {
+                v1_0 = static_cast<MtObject*>(nullptr);
+                break;
+            }
+        }
+    }
+    return static_cast<CFriendInfo*>(v1_0);
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (673 bytes)
@@ -11145,9 +11419,28 @@ bool cNetGameServer::reqGetJobchangeList() {
 // bool cNetGameServer::reqChangeJob();
 
 // Address: 0x00363c90 - 0x00363d2b (155 bytes)
-__attribute__((weak)) bool cNetGameServer::reqChangeJob(u8 job) {
-    DDON_STUB("cNetGameServer::reqChangeJob")
-    return {};
+bool cNetGameServer::reqChangeJob(u8 job) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as u32
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8a50 from cNetGameServer*
+    this->mChangeJob = static_cast<u32>(job);
+    this->mStatus[392] = static_cast<sNetworkExt::NET_STAT>(4);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(392));
+    this->mErrorCode[392] = static_cast<nError::ERROR_CODE>(33000);
+    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
+            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_JOB_REQ(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(35408))) != static_cast<s32>(0)) {
+                    this->mStatus[392] = static_cast<sNetworkExt::NET_STAT>(1);
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(392));
+                    this->mComTimer[392] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (126 bytes)
@@ -11155,9 +11448,29 @@ __attribute__((weak)) bool cNetGameServer::reqChangeJob(u8 job) {
 // bool cNetGameServer::reqChangePawnJob();
 
 // Address: 0x00363d40 - 0x00363de7 (167 bytes)
-__attribute__((weak)) bool cNetGameServer::reqChangePawnJob(u32 pawnID, u8 job) {
-    DDON_STUB("cNetGameServer::reqChangePawnJob")
-    return {};
+bool cNetGameServer::reqChangePawnJob(u32 pawnID, u8 job) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u8 used as u32
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cSeedGameSvConnection*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x8a50 from cNetGameServer*
+    this->mChangeJobPawnId = pawnID;
+    this->mChangeJob = static_cast<u32>(job);
+    this->mStatus[393] = static_cast<sNetworkExt::NET_STAT>(4);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::reserveNetworkErrorDialog(static_cast<s32>(393));
+    this->mErrorCode[393] = static_cast<nError::ERROR_CODE>(33000);
+    if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpConnection) + static_cast<long>(96))) == static_cast<unsigned int>(4)) {
+            if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
+                if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHANGE_PAWN_JOB_REQ(this->mChangeJobPawnId, *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(35408))) != static_cast<s32>(0)) {
+                    this->mStatus[393] = static_cast<sNetworkExt::NET_STAT>(1);
+                    static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(393));
+                    this->mComTimer[393] = 0.0f;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x00379cf0 - 0x00379cff (15 bytes)
@@ -11572,9 +11885,19 @@ __attribute__((weak)) u32 cNetGameServer::getUnreadMailNum() {
 }
 
 // Address: 0x00365100 - 0x00365124 (36 bytes)
-__attribute__((weak)) bool cNetGameServer::isUnreadMail(CMailInfo* pInfo) {
-    DDON_STUB("cNetGameServer::isUnreadMail")
-    return {};
+bool cNetGameServer::isUnreadMail(CMailInfo* pInfo) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as bool
+    if (pInfo != static_cast<CMailInfo*>(nullptr)) {
+        if (pInfo->m_ucState != static_cast<u8>(2)) {
+            return static_cast<bool>((static_cast<unsigned long>(pInfo->m_ucItemState) & static_cast<unsigned long>((pInfo->m_ucItemState & static_cast<u8>(254)) != static_cast<u8>(0))) & static_cast<unsigned long>(1));
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00365150 - 0x00365163 (19 bytes)
@@ -12848,7 +13171,7 @@ bool cNetGameServer::reqCharacterPointRevive(u32 maxHp) {
         if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
             if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
                 if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_POINT_REVIVE_REQ(static_cast<u32>(static_cast<long>(t0))) != static_cast<s32>(0)) {
+                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_POINT_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
                         this->mStatus[452] = static_cast<sNetworkExt::NET_STAT>(1);
                         static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(452));
                         this->mComTimer[452] = 0.0f;
@@ -12893,7 +13216,7 @@ bool cNetGameServer::reqCharacterGoldenRevive(u32 maxHp) {
         if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
             if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
                 if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_GOLDEN_REVIVE_REQ(static_cast<u32>(static_cast<long>(t0))) != static_cast<s32>(0)) {
+                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_GOLDEN_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
                         this->mStatus[453] = static_cast<sNetworkExt::NET_STAT>(1);
                         static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(453));
                         this->mComTimer[453] = 0.0f;
@@ -12938,7 +13261,7 @@ bool cNetGameServer::reqCharacterPenaltyRevive(u32 maxHp) {
         if (this->mpConnection != static_cast<cSeedGameSvConnection*>(nullptr)) {
             if (this->mpConnection->::cSeedServerConnection::mConnStatus == static_cast<cSeedServerConnection::eConnStatus>(4)) {
                 if (this->mpConnection->::cSeedGameSvConnection::isLoginSuccess() != false) {
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_PENALTY_REVIVE_REQ(static_cast<u32>(static_cast<long>(t0))) != static_cast<s32>(0)) {
+                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_CHARACTER_PENALTY_REVIVE_REQ(static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
                         this->mStatus[454] = static_cast<sNetworkExt::NET_STAT>(1);
                         static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(454));
                         this->mComTimer[454] = 0.0f;
@@ -13022,7 +13345,7 @@ bool cNetGameServer::reqPawnPointRevive(unsigned int pawnId, u32 maxHp) {
                 if (pPlInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
                     // inferred: a temporary for the result of the call at 0x3684b0, used once; no DWARF local holds it
                     f32 t0 = pPlInfo->mBaseInfo.::nJobParam::cHumanBaseInfo::getFinalMaxHP();
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_POINT_REVIVE_REQ(pawnId, static_cast<u32>(static_cast<long>(t0))) != static_cast<s32>(0)) {
+                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_POINT_REVIVE_REQ(pawnId, static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
                         this->mStatus[455] = static_cast<sNetworkExt::NET_STAT>(1);
                         static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(455));
                         this->mComTimer[455] = 0.0f;
@@ -13066,7 +13389,7 @@ bool cNetGameServer::reqPawnGoldenRevive(unsigned int pawnId, u32 maxHp) {
                 if (pPlInfo != static_cast<cContextPlayerInfo*>(nullptr)) {
                     // inferred: a temporary for the result of the call at 0x368590, used once; no DWARF local holds it
                     f32 t0 = pPlInfo->mBaseInfo.::nJobParam::cHumanBaseInfo::getFinalMaxHP();
-                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_GOLDEN_REVIVE_REQ(pawnId, static_cast<u32>(static_cast<long>(t0))) != static_cast<s32>(0)) {
+                    if (this->mpConnection->::cSeedGameSvConnection::Send_C2S_PAWN_GOLDEN_REVIVE_REQ(pawnId, static_cast<unsigned int>(static_cast<long>(t0))) != static_cast<s32>(0)) {
                         this->mStatus[456] = static_cast<sNetworkExt::NET_STAT>(1);
                         static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::cancelReserveNetworkErrorDialog(static_cast<s32>(456));
                         this->mComTimer[456] = 0.0f;
@@ -15182,18 +15505,68 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_PARTY_CHANGE_LEADER_NTC(
 // void cNetGameServer::OnPacket_S2C_PLAY_ENTRY_CANCEL_NOTICE(nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_NOTICE& packet);
 
 // Address: 0x0036e530 - 0x0036e5fd (205 bytes)
-__attribute__((weak)) void cNetGameServer::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE(nUserSession::CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE& packet) {
-    // local: cContextInstHm* pInstHm;
-    // local: cContextPlayerInfo* pPlInfo;
-    // local: u32 partyNum;
-    // local: const CTimeGainQuestPlayStartData& data;
-    // local: const CContentsPlayStartData& common;
-    // local: u32 i;
-    // local: const cPartyMemberInfo* pMemInfo;
-    // local: cContextInstHm* pCtxtHuman;
-    // local: cContextPlayerInfo* pPwInfo;
-    DDON_STUB("cNetGameServer::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE")
-    /* stub */
+void cNetGameServer::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE(nUserSession::CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE& packet) {
+    // DWARF local not rendered: cContextInstHm* pInstHm;
+    // DWARF local not rendered: cContextPlayerInfo* pPlInfo;
+    // DWARF local not rendered: const CTimeGainQuestPlayStartData& data;
+    // DWARF local not rendered: const CContentsPlayStartData& common;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: const cPartyMemberInfo* pMemInfo;
+    // DWARF local not rendered: cContextInstHm* pCtxtHuman;
+    // DWARF local not rendered: cContextPlayerInfo* pPwInfo;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the object read as the one class deriving from its pointer's class that has a member there: a sNetworkExt member read past the end of sNetwork, which DWARF gives no other deriving class a member at 0x1838
+    ::sGame::getInstance()->::sGame::startEndContents(packet.m_TimeGainQuestPlayStartData.m_Common.m_unQuestId);
+    static_cast<sNetworkExt*>(::sNetwork::getInstance())->mIsCycleContentsPlayStart = true;
+    // inferred: a temporary for the result of the call at 0x36e573, used twice; no DWARF local holds it
+    cContextPlayerInfo* t0 = ::cContextInterface::getContextPlayerInfo(::sContextManager::getInstance()->::sContextManager::getContextMyPlayer());
+    // inferred: the value the loop at 0x36e5aa carries; no location-less local in scope fits
+    cNetGameServer* v0_0;
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_3;
+    u32 partyNum;
+    if (t0 != static_cast<cContextPlayerInfo*>(nullptr)) {
+        t0->::cContextPlayerInfo::recoverOcdPlayStartContents();
+        partyNum = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mPartyMemberInfoVec.::MtArray::size();
+        if (partyNum != static_cast<u32>(0)) {
+            v0_0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+            i0_3 = static_cast<unsigned int>(0);
+        } else {
+            return;
+        }
+    } else {
+        partyNum = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mPartyMemberInfoVec.::MtArray::size();
+        if (partyNum != static_cast<u32>(0)) {
+            v0_0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+            i0_3 = static_cast<unsigned int>(0);
+        } else {
+            return;
+        }
+    }
+    for (;;) {
+        // inferred: a temporary for the result of the call at 0x36e5be, used twice; no DWARF local holds it
+        cContextInstHm* t1 = ::sContextManager::getInstance()->::sContextManager::getContextPartyPlayerFromMemberIndex(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0->mPartyMemberInfoVec.::MtArray::getBuffer()[static_cast<int>(i0_3)]) + static_cast<long>(116))));
+        if (::cContextInterface::isPawnOwner(t1) != false) {
+            // inferred: a temporary for the result of the call at 0x36e5d5, used twice; no DWARF local holds it
+            cContextPlayerInfo* t2 = ::cContextInterface::getContextPlayerInfo(t1);
+            if (t2 != static_cast<cContextPlayerInfo*>(nullptr)) {
+                t2->::cContextPlayerInfo::recoverOcdPlayStartContents();
+            }
+            if (partyNum == (i0_3 + static_cast<unsigned int>(1))) {
+                break;
+            } else {
+                v0_0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+                i0_3 += static_cast<unsigned int>(1);
+            }
+        } else {
+            if (partyNum == (i0_3 + static_cast<unsigned int>(1))) {
+                break;
+            } else {
+                v0_0 = static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer();
+                i0_3 += static_cast<unsigned int>(1);
+            }
+        }
+    }
 }
 
 // Address: 0x0036e600 - 0x0036e718 (280 bytes)

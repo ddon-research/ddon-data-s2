@@ -189,8 +189,30 @@ cResource* rArchive::getResource(u32 index) {
 // Address: 0x011c0df0 - 0x011c0e9b (171 bytes)
 // Also emitted as: _ZN8rArchiveD0Ev at 0x011c0ea0
 rArchive::~rArchive() {
-    DDON_STUB("rArchive::~rArchive")
-    /* stub */
+    // Approximate from the ELF: code after the loop copied into an arm that skips it; the body oracle reports this body.
+    if (this->mResourceNum == static_cast<u32>(0)) {
+        ::MtMemoryAllocator::getAllocator(::rArchive::DTI)->memFree(static_cast<void*>(this->mpResource));
+        this->mpResource = static_cast<cResource* *>(nullptr);
+        this->mResourceNum = static_cast<u32>(0);
+        this->mTotalSize = static_cast<u32>(0);
+        this->mCurrentSize = static_cast<u32>(0);
+        this->mbCrypted = static_cast<u32>(0);
+    }
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i3 = static_cast<unsigned int>(0);
+    do {
+        if (this->mpResource[i3] != static_cast<cResource*>(nullptr)) {
+            this->mpResource[i3]->::cResource::release();
+            this->mpResource[i3] = static_cast<cResource*>(nullptr);
+        }
+        i3 += static_cast<unsigned int>(1);
+    } while (i3 < this->mResourceNum);
+    ::MtMemoryAllocator::getAllocator(::rArchive::DTI)->memFree(static_cast<void*>(this->mpResource));
+    this->mpResource = static_cast<cResource* *>(nullptr);
+    this->mResourceNum = static_cast<u32>(0);
+    this->mTotalSize = static_cast<u32>(0);
+    this->mCurrentSize = static_cast<u32>(0);
+    this->mbCrypted = static_cast<u32>(0);
 }
 
 // Address: 0x01b91670 - 0x01b91671 (1 bytes)

@@ -83,9 +83,10 @@ __attribute__((weak)) void cPartsCtrlTable::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x01aaae70 - 0x01aaae80 (16 bytes)
-__attribute__((weak)) bool cPartsCtrlTable::isPartsDisp(u32 no) const {
-    DDON_STUB("cPartsCtrlTable::isPartsDisp")
-    return {};
+bool cPartsCtrlTable::isPartsDisp(u32 no) const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mPartsDisp[no >> static_cast<u32>(5)]) >> static_cast<unsigned long>(no & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // Address: 0x01aaae80 - 0x01aaaea5 (37 bytes)

@@ -23,13 +23,9 @@ class MtAllocator;
 class MtDTI;
 struct MtNetError;
 class MtObject;
-class cMenuEntryBoardItemList;
-class cMenuPartyMemberList;
-class cMenuQuickMatchCancel;
 class cPartyMemberInfo;
 namespace nNet { class cProgress; }
 namespace nNet { class cResult; }
-class uGUIAreaMaster;
 class uGUINewspaper;
 
 // Declarations
@@ -150,16 +146,8 @@ namespace nSessionManager {
 namespace nSessionManager {
     class cNetSessionManager : public ::MtObject
     {
-        // inferred: cMenuEntryBoardItemList::checkMenuPartsParam names nSessionManager::cNetSessionManager::mQuickMatchRno
-        friend class ::cMenuEntryBoardItemList;
-        // inferred: cMenuPartyMemberList::checkMenuPartsParam names nSessionManager::cNetSessionManager::mQuickMatchRno
-        friend class ::cMenuPartyMemberList;
-        // inferred: cMenuQuickMatchCancel::moveQuickMatchCancel names nSessionManager::cNetSessionManager::mQuickMatchRno
-        friend class ::cMenuQuickMatchCancel;
         // inferred: nSessionManager::MyListener::onDrop calls nSessionManager::cNetSessionManager::requestSessionCommand
         friend class nSessionManager::MyListener;
-        // inferred: uGUIAreaMaster::eventDecide names nSessionManager::cNetSessionManager::mQuickMatchRno
-        friend class ::uGUIAreaMaster;
         // inferred: uGUINewspaper::evCtrlNewsCmnClick names nSessionManager::cNetSessionManager::mQuickMatchRno
         friend class ::uGUINewspaper;
     public:
@@ -365,6 +353,12 @@ inline nSessionManager::cLobbyDataMessage::cLobbyDataMessage() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool nSessionManager::cNetSessionManager::isPartyInvited() {
+    return this->mIsPartyInvited;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline void nSessionManager::cNetSessionManager::setPartyInvitedTimer(f32 timer) {
     this->mPartyInvitedTimer = timer;
@@ -377,6 +371,18 @@ inline bool nSessionManager::cNetSessionManager::isNowQuickMatchReq() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: a bit-test accessor's polarity, true when its bits are set: none of its 18 DWARF copies materializes its result
+inline bool nSessionManager::cNetSessionManager::isNowQuickMatchFlow() {
+    return this->mQuickMatchRno != static_cast<s32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline s32 nSessionManager::cNetSessionManager::getQuickMatchJob() {
     return this->mQuickMatchJob;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 nSessionManager::cNetSessionManager::getSessionChannel() {
+    return this->mSessionChannel;
 }

@@ -349,6 +349,20 @@ protected:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+inline u32 uGUISystemMsg::getSerialNo() {
+    return this->mSerialNo;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 uGUISystemMsg::getCurrentPage() {
     return this->mCurrentPage;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
+inline void uGUISystemMsg::exit() {
+    if (this->mpExitFunc == static_cast<void(uGUIBase::*)()>(0)) {
+        return;
+    }
+    this->::uGUIBase::mpCurrentFunc = this->mpExitFunc;
 }

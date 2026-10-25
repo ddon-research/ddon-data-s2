@@ -35,6 +35,7 @@
 #include "nObjCollision.h"
 #include "rAttackParam.h"
 #include "rMotionParam.h"
+#include "../rPawnAIAction/sObjCollision.h"
 #include "sQuestManagerExt.h"
 #include "sSetManager.h"
 #include "uBaseModel.h"
@@ -1208,11 +1209,46 @@ void uCharacter::startStopSloTimer(f32 rate, f32 time, bool is_attacker, nObjCol
 
 // Address: 0x0089d230 - 0x0089d31d (237 bytes)
 __attribute__((weak)) void uCharacter::playGuardHitStop(cHitInfo* pHitInfo) {
-    // local: f32 time;
-    // local: f32 rate;
-    // local: bool IsAttacker;
-    DDON_STUB("uCharacter::playGuardHitStop")
-    /* stub */
+    // DWARF local not rendered: f32 rate;
+    // DWARF local not rendered: bool IsAttacker;
+    // Approximate from the ELF: a && of two bools the ELF reads both of, which the recompile may branch on; the body oracle reports this body.
+    f32 time = ::sObjCollision::getInstance()->::sObjCollision::getSystemParam(static_cast<sObjCollision::SYS_PARAM_TYPE>(1));
+    // inferred: a temporary for the value the load at 0x89d254 read, used once; no DWARF local holds it
+    uDDOModel* t0 = pHitInfo->mpAtkModel;
+    if (this->::uDDOModel::mGuardComponent.mpWorkRate == static_cast<cpWorkRate*>(nullptr)) {
+        return;
+    }
+    if (1.1920929e-7f > time) {
+    } else {
+        if (this->::uDDOModel::isDamageAttrActive_Through(static_cast<nObjCollision::DAMAGE_ATTR_ENUM>(21), static_cast<nObjCollision::UNIT_INV_THROUGH_TYPE>(0)) == false) {
+            if (this->mIsHitStopSlow != false) {
+                // inferred: a temporary for the result of the call at 0x89d2ad, used once; no DWARF local holds it
+                f32 t1 = this->::uDDOModel::getWorkRatePtr()->::cpWorkRate::getSpeed(static_cast<cpWorkRate::RATE_INDEX>(0));
+                if (1.1920929e-7f > t1) {
+                    if (this->mHitStopSlowTimer > time) {
+                    } else {
+                        this->mIsHitStopSlow = true;
+                        this->mIsHitStopAttacker = (this == t0) && (t0 != static_cast<uDDOModel*>(nullptr));
+                        this->mHitStopRno = static_cast<u32>(0);
+                        this->mHitStopSlowTimer = time;
+                        this->::uDDOModel::getWorkRatePtr()->::cpWorkRate::setSpeed(0.0f, static_cast<cpWorkRate::RATE_INDEX>(0));
+                    }
+                } else {
+                    this->mIsHitStopSlow = true;
+                    this->mIsHitStopAttacker = (this == t0) && (t0 != static_cast<uDDOModel*>(nullptr));
+                    this->mHitStopRno = static_cast<u32>(0);
+                    this->mHitStopSlowTimer = time;
+                    this->::uDDOModel::getWorkRatePtr()->::cpWorkRate::setSpeed(0.0f, static_cast<cpWorkRate::RATE_INDEX>(0));
+                }
+            } else {
+                this->mIsHitStopSlow = true;
+                this->mIsHitStopAttacker = (this == t0) && (t0 != static_cast<uDDOModel*>(nullptr));
+                this->mHitStopRno = static_cast<u32>(0);
+                this->mHitStopSlowTimer = time;
+                this->::uDDOModel::getWorkRatePtr()->::cpWorkRate::setSpeed(0.0f, static_cast<cpWorkRate::RATE_INDEX>(0));
+            }
+        }
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (20 bytes)
@@ -1320,11 +1356,33 @@ __attribute__((weak)) bool uCharacter::getLifeAreaPointForEnemy(cGeneralPoint* *
 // uCharacter::stDmActColParam& uCharacter::getDmActParam();
 
 // Address: 0x0089e320 - 0x0089e38e (110 bytes)
-__attribute__((weak)) bool uCharacter::makeDamageVec(nObjCollision::stDmageVecInfo* pInfo, nObjCollision::REACTION_TYPE reactionTyep, bool isAir, u32 type) {
-    // local: const cAttackParam* pAttackParam;
-    // local: u32 Lv;
-    DDON_STUB("uCharacter::makeDamageVec")
-    return {};
+bool uCharacter::makeDamageVec(nObjCollision::stDmageVecInfo* pInfo, nObjCollision::REACTION_TYPE reactionTyep, bool isAir, u32 type) {
+    // DWARF local not rendered: const cAttackParam* pAttackParam;
+    // DWARF local not rendered: u32 Lv;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: const u8 used as u32
+    // inferred: a value cast to the type its use takes: const unsigned char used as u32
+    if (this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam() != static_cast<const cAttackParam*>(nullptr)) {
+        if (reactionTyep != static_cast<nObjCollision::REACTION_TYPE>(2)) {
+            if (reactionTyep == static_cast<nObjCollision::REACTION_TYPE>(5)) {
+                return this->::uCharacter::makeDamageVec(pInfo, reactionTyep, isAir, type, this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam()->mWindReactionLv2);
+            } else {
+                if (reactionTyep == static_cast<nObjCollision::REACTION_TYPE>(4)) {
+                    if (isAir != false) {
+                        return this->::uCharacter::makeDamageVec(pInfo, reactionTyep, isAir, type, static_cast<u32>((this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam()->mAirShrinkLv2 == static_cast<u8>(0)) ? static_cast<u8>(1) : this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam()->mAirShrinkLv2));
+                    } else {
+                        return this->::uCharacter::makeDamageVec(pInfo, reactionTyep, isAir, type, this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam()->mGroundShrinkLv2);
+                    }
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            return this->::uCharacter::makeDamageVec(pInfo, reactionTyep, isAir, type, static_cast<u32>(((*((isAir == false) ? (&this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam()->mGroundBlowLv2) : (&this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam()->mAirBlowLv2))) == static_cast<unsigned char>(0)) ? static_cast<unsigned char>(1) : (*((isAir == false) ? (&this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam()->mGroundBlowLv2) : (&this->mDmActParam.::uCharacter::stDmActColParam::getAttackParam()->mAirBlowLv2)))));
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0089e390 - 0x0089e49b (267 bytes)

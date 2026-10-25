@@ -5,9 +5,14 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
+#include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -93,9 +98,44 @@ bool uGUIGaugeExp::loadResource() {
 }
 
 // Address: 0x00a97c10 - 0x00a97df0 (480 bytes)
-__attribute__((weak)) void uGUIGaugeExp::setup() {
-    DDON_STUB("uGUIGaugeExp::setup")
-    /* stub */
+void uGUIGaugeExp::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(7)), true);
+    this->setPlay(true);
+    // inferred: a temporary for the result of the call at 0xa97c72, used twice; no DWARF local holds it
+    cGUIInstance* t0 = this->getInstance(static_cast<u32>(2), false);
+    this->mpInstNull = static_cast<cGUIInstNull*>(t0);
+    this->::uGUIBase::setInstNull(static_cast<cGUIInstNull*>(t0), true);
+    this->mpINST_PL_gauge00 = static_cast<cGUIInstNull*>(this->getInstance(static_cast<u32>(12), false));
+    // inferred: a temporary for the result of the call at 0xa97cb6, used twice; no DWARF local holds it
+    cGUIInstance* t1 = this->getInstance(static_cast<u32>(5), false);
+    this->mpINST_msg_fix_gauge = static_cast<cGUIInstAnimation*>(t1);
+    this->mpOBJ_msg_fix_gauge_f_exp = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(t1, static_cast<u32>(28)));
+    // inferred: a temporary for the value the load at 0xa97cda read, used once; no DWARF local holds it
+    cGUIInstAnimation* t2 = this->mpINST_msg_fix_gauge;
+    // inferred: a temporary for the result of the call at 0xa97cf1, used once; no DWARF local holds it
+    MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgHud(), static_cast<u32>(44));
+    // inferred: a temporary for the result of the call at 0xa97d04, used twice; no DWARF local holds it
+    cGUIObject* t4 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(t2), static_cast<u32>(38));
+    this->mpOBJ_msg_fix_gauge_m_lv = static_cast<cGUIObjMessage*>(t4);
+    this->::uGUIBase::setObjectMessage(t4, t3, static_cast<u32>(0), false);
+    this->mpOBJ_msg_fix_gauge_m_num01 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpINST_msg_fix_gauge), static_cast<u32>(31)));
+    this->mpOBJ_msg_fix_gauge_m_num02 = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpINST_msg_fix_gauge), static_cast<u32>(62)));
+    // inferred: a temporary for the value the load at 0xa97d59 read, used once; no DWARF local holds it
+    cGUIInstAnimation* t5 = this->mpINST_msg_fix_gauge;
+    // inferred: a temporary for the result of the call at 0xa97d70, used once; no DWARF local holds it
+    MT_CTSTR t6 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(14));
+    // inferred: a temporary for the result of the call at 0xa97d83, used twice; no DWARF local holds it
+    cGUIObject* t7 = this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(t5), static_cast<u32>(60));
+    this->mpOBJ_msg_fix_gauge_m_xp = static_cast<cGUIObjMessage*>(t7);
+    this->::uGUIBase::setObjectMessage(t7, t6, static_cast<u32>(0), false);
+    this->mpOBJ_msg_fix_gauge_m_p = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpINST_msg_fix_gauge), static_cast<u32>(27)));
+    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mpINST_PL_gauge00), false);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeExp::updateInit);
 }
 
 // Address: 0x00a97e40 - 0x00a97e71 (49 bytes)
@@ -110,9 +150,14 @@ void uGUIGaugeExp::kill() {
 }
 
 // Address: 0x00a97df0 - 0x00a97e36 (70 bytes)
-__attribute__((weak)) void uGUIGaugeExp::updateInit() {
-    DDON_STUB("uGUIGaugeExp::updateInit")
-    /* stub */
+void uGUIGaugeExp::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mGaugeType = static_cast<u8>(0);
+    this->mGaugeInfo.mExpLatest = static_cast<u64>(-1);
+    this->mGaugeInfo.mLvLatest = static_cast<u16>(65535);
+    this->mGaugeInfo.mJobIdLatest = static_cast<u8>(255);
+    this->mGaugeInfo.mPlayPointLatest = static_cast<u32>(4294967295);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGaugeExp::updateWait);
 }
 
 // Address: 0x00a97e90 - 0x00a97f75 (229 bytes)
@@ -139,15 +184,81 @@ __attribute__((weak)) void uGUIGaugeExp::updateWait() {
 // void uGUIGaugeExp::setupExpDisablePP();
 
 // Address: 0x00a98380 - 0x00a98428 (168 bytes)
-__attribute__((weak)) void uGUIGaugeExp::setupExpEnablePP() {
-    DDON_STUB("uGUIGaugeExp::setupExpEnablePP")
-    /* stub */
+void uGUIGaugeExp::setupExpEnablePP() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from cGUIObjTexture*
+    if (this->mpINST_msg_fix_gauge != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpINST_msg_fix_gauge->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000005));
+        this->::uGUI::play(0.0f);
+        // inferred: a temporary for the value the load at 0xa983ac read, used twice; no DWARF local holds it
+        cGUIObjMessage* t0 = this->mpOBJ_msg_fix_gauge_m_p;
+        if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(14)), static_cast<u32>(0), false);
+        }
+        if (this->mpOBJ_msg_fix_gauge_f_exp != static_cast<cGUIObjTexture*>(nullptr)) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84))) | static_cast<unsigned char>(8);
+        }
+        if (this->mpOBJ_msg_fix_gauge_m_num01 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->mpOBJ_msg_fix_gauge_m_num01->::cGUIObject::setVisible(true);
+        }
+        if (this->mpOBJ_msg_fix_gauge_m_num02 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->mpOBJ_msg_fix_gauge_m_num02->::cGUIObject::setVisible(false);
+        }
+    } else {
+        // inferred: a temporary for the value the load at 0xa983ac read, used twice; no DWARF local holds it
+        cGUIObjMessage* t0 = this->mpOBJ_msg_fix_gauge_m_p;
+        if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(14)), static_cast<u32>(0), false);
+        }
+        if (this->mpOBJ_msg_fix_gauge_f_exp != static_cast<cGUIObjTexture*>(nullptr)) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84))) | static_cast<unsigned char>(8);
+        }
+        if (this->mpOBJ_msg_fix_gauge_m_num01 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->mpOBJ_msg_fix_gauge_m_num01->::cGUIObject::setVisible(true);
+        }
+        if (this->mpOBJ_msg_fix_gauge_m_num02 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->mpOBJ_msg_fix_gauge_m_num02->::cGUIObject::setVisible(false);
+        }
+    }
 }
 
 // Address: 0x00a98430 - 0x00a984d8 (168 bytes)
-__attribute__((weak)) void uGUIGaugeExp::setupPp() {
-    DDON_STUB("uGUIGaugeExp::setupPp")
-    /* stub */
+void uGUIGaugeExp::setupPp() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x54 from cGUIObjTexture*
+    if (this->mpINST_msg_fix_gauge != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mpINST_msg_fix_gauge->::cGUIInstAnimation::setSequenceId(static_cast<u32>(1000004));
+        this->::uGUI::play(0.0f);
+        // inferred: a temporary for the value the load at 0xa9845c read, used twice; no DWARF local holds it
+        cGUIObjMessage* t0 = this->mpOBJ_msg_fix_gauge_m_p;
+        if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(118)), static_cast<u32>(0), false);
+        }
+        if (this->mpOBJ_msg_fix_gauge_f_exp != static_cast<cGUIObjTexture*>(nullptr)) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84))) | static_cast<unsigned char>(8);
+        }
+        if (this->mpOBJ_msg_fix_gauge_m_num01 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->mpOBJ_msg_fix_gauge_m_num01->::cGUIObject::setVisible(false);
+        }
+        if (this->mpOBJ_msg_fix_gauge_m_num02 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->mpOBJ_msg_fix_gauge_m_num02->::cGUIObject::setVisible(true);
+        }
+    } else {
+        // inferred: a temporary for the value the load at 0xa9845c read, used twice; no DWARF local holds it
+        cGUIObjMessage* t0 = this->mpOBJ_msg_fix_gauge_m_p;
+        if (t0 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->::uGUIBase::setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgCommonMessage(), static_cast<u32>(118)), static_cast<u32>(0), false);
+        }
+        if (this->mpOBJ_msg_fix_gauge_f_exp != static_cast<cGUIObjTexture*>(nullptr)) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84)) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mpOBJ_msg_fix_gauge_f_exp) + static_cast<long>(84))) | static_cast<unsigned char>(8);
+        }
+        if (this->mpOBJ_msg_fix_gauge_m_num01 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->mpOBJ_msg_fix_gauge_m_num01->::cGUIObject::setVisible(false);
+        }
+        if (this->mpOBJ_msg_fix_gauge_m_num02 != static_cast<cGUIObjMessage*>(nullptr)) {
+            this->mpOBJ_msg_fix_gauge_m_num02->::cGUIObject::setVisible(true);
+        }
+    }
 }
 
 // Address: 0x00a97f80 - 0x00a981f4 (628 bytes)

@@ -5,6 +5,7 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cZoneListener.h"
 #include "uSkyFog.h"
 #include "uSkyLight.h"
@@ -32,9 +33,11 @@ const MtDTI& cZoneListenerLight::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cZoneListenerLight::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (44 bytes)
-//   in cZoneListenerLight::MyDTI::newInstance at 0x005955d4-0x00595600 (called at cZoneListenerLight.cpp:31)
-// void* cZoneListenerLight::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: parameters written where their values stand in every inlined copy
+inline void* cZoneListenerLight::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneListenerLight::DTI)->memAlloc(sz, align, ::cZoneListenerLight::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* cZoneListenerLight::operator new[](size_t sz, u32 align);
@@ -62,8 +65,13 @@ inline void cZoneListenerLight::operator delete(void* p_addr) {
 
 // Address: 0x005956e0 - 0x00595752 (114 bytes)
 cZoneListenerLight::cZoneListenerLight() {
-    DDON_STUB("cZoneListenerLight::cZoneListenerLight")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mCheckPos.x = ::MtVector3::Zero.x;
+    this->mCheckPos.y = ::MtVector3::Zero.y;
+    this->mCheckPos.z = ::MtVector3::Zero.z;
+    this->mCheckPos.pad_ = 0.0f;
+    this->mDayNightLighId = static_cast<s32>(-1);
+    this->mDayNightColorFogId = static_cast<s32>(-1);
 }
 
 // Address: 0x00595770 - 0x00595775 (5 bytes)
@@ -138,8 +146,8 @@ __attribute__((weak)) MtVector3 cZoneListenerLight::myPos() {
 // cZoneListenerLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x005955d0 - 0x0059566d (157 bytes)
-__attribute__((weak)) MtObject* cZoneListenerLight::MyDTI::newInstance() const {
-    DDON_STUB("cZoneListenerLight::MyDTI::newInstance")
-    return nullptr;
+MtObject* cZoneListenerLight::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::cZoneListenerLight;
 }
 

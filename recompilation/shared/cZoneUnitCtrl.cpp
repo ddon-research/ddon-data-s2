@@ -31,9 +31,11 @@ const MtDTI& cZoneUnitCtrl::getDTI() const {
 // No out-of-line body: no code in the ELF
 // void cZoneUnitCtrl::setAllocator(u32);
 
-// No out-of-line body: 1 inlined copy in 1 function (41 bytes)
-//   in cZoneUnitCtrl::MyDTI::newInstance at 0x00598574-0x0059859d (called at cZoneUnitCtrl.cpp:158)
-// void* cZoneUnitCtrl::operator new(size_t sz, u32 align);
+// Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
+// inferred: parameters written where their values stand in every inlined copy
+inline void* cZoneUnitCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneUnitCtrl::DTI)->memAlloc(sz, align, ::cZoneUnitCtrl::DTI.::MtDTI::getID());
+}
 
 // No out-of-line body: no code in the ELF
 // void* cZoneUnitCtrl::operator new[](size_t sz, u32 align);
@@ -60,8 +62,8 @@ inline void cZoneUnitCtrl::operator delete(void* p_addr) {
 
 // Address: 0x00598640 - 0x0059866a (42 bytes)
 cZoneUnitCtrl::cZoneUnitCtrl() {
-    DDON_STUB("cZoneUnitCtrl::cZoneUnitCtrl")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cZoneUnitCtrl::clearZoneUnitCtrl();
 }
 
 // Address: 0x00598690 - 0x00598691 (1 bytes)
@@ -91,10 +93,18 @@ __attribute__((weak)) void cZoneUnitCtrl::initZoneUnitCtrlStg(u32 zoneHandle, u3
 }
 
 // Address: 0x00598670 - 0x0059868c (28 bytes)
-__attribute__((weak)) void cZoneUnitCtrl::clearZoneUnitCtrl() {
-    // local: u32 i;
-    DDON_STUB("cZoneUnitCtrl::clearZoneUnitCtrl")
-    /* stub */
+void cZoneUnitCtrl::clearZoneUnitCtrl() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from cZoneUnitCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from cZoneUnitCtrl*
+    this->mLocalGroupNum = static_cast<s8>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = static_cast<unsigned long>(-1);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(8)) = static_cast<unsigned long>(-1);
+    this->mZoneUnitCtrlType = static_cast<u8>(0);
+    this->mCkZoneType = static_cast<u8>(0);
+    this->mCheckZoneRet = true;
+    this->mNoCheckHandle = false;
 }
 
 // Address: 0x00598c50 - 0x00598c68 (24 bytes)
@@ -177,8 +187,8 @@ __attribute__((weak)) void cZoneUnitCtrl::createPropertyForScrlModel(MtPropertyL
 // cZoneUnitCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x00598570 - 0x005985cb (91 bytes)
-__attribute__((weak)) MtObject* cZoneUnitCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cZoneUnitCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cZoneUnitCtrl::MyDTI::newInstance() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return new (static_cast<u32>(16)) ::cZoneUnitCtrl;
 }
 

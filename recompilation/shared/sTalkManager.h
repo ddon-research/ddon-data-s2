@@ -288,6 +288,11 @@ private:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+inline u8 sTalkManager::getRno() const {
+    return this->mRno0;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline sTalkManager* sTalkManager::getInstance() {
     return ::sTalkManager::mpInstance;
 }

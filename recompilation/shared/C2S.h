@@ -8,6 +8,8 @@
 #include "CharacterCommon.h"
 #include "CharacterEdit.h"
 #include "Common.h"
+#include "Craft.h"
+#include "EntryBoard.h"
 #include "Item.h"
 #include "MtCollection.h"
 #include "MtString.h"
@@ -23,7 +25,12 @@ class CDataChangeEquipJobItem;
 class CDataCharacterMsgSet;
 class CDataCommonU32;
 class CDataCommunicationShortCut;
+class CDataCraftColorant;
+class CDataCraftElement;
+class CDataCraftMaterial;
+class CDataCraftSupportPawnID;
 class CDataEditInfo;
+class CDataEntryItemParam;
 class CDataGameItemStorage;
 class CDataGatheringItemGetRequest;
 class CDataGetRewardBoxItem;
@@ -55,7 +62,10 @@ namespace nUserSession { class CPacket_C2S_DELIVER_ITEM_REQ; }
 namespace nUserSession { class CPacket_C2S_ENEMY_BREAK_REGION_NTC; }
 namespace nUserSession { class CPacket_C2S_ENEMY_GROUP_ENTRY_NOTICE; }
 namespace nUserSession { class CPacket_C2S_ENEMY_GROUP_LEAVE_NOTICE; }
+namespace nUserSession { class CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ; }
+namespace nUserSession { class CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ; }
 namespace nUserSession { class CPacket_C2S_ENTRY_BOARD_ITEM_INVITE_REQ; }
+namespace nUserSession { class CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ; }
 namespace nUserSession { class CPacket_C2S_GET_CAPLINK_ACHIEVE_REWARD_REQ; }
 namespace nUserSession { class CPacket_C2S_GET_CRAFT_GRADEUP_RECIPE_REQ; }
 namespace nUserSession { class CPacket_C2S_GET_CRAFT_PRODUCT_REQ; }
@@ -75,6 +85,7 @@ namespace nUserSession { class CPacket_C2S_LEARN_PAWN_ABILITY_REQ; }
 namespace nUserSession { class CPacket_C2S_LEARN_PAWN_NORMAL_SKILL_REQ; }
 namespace nUserSession { class CPacket_C2S_LEARN_PAWN_SKILL_REQ; }
 namespace nUserSession { class CPacket_C2S_LEARN_SKILL_REQ; }
+namespace nUserSession { class CPacket_C2S_LOBBY_CHAT_MSG_REQ; }
 namespace nUserSession { class CPacket_C2S_LOGIN_REQ; }
 namespace nUserSession { class CPacket_C2S_LOST_PAWN_WALLET_REVIVE_REQ; }
 namespace nUserSession { class CPacket_C2S_MAIL_SEND_REQ; }
@@ -98,6 +109,10 @@ namespace nUserSession { class CPacket_C2S_SET_PAWN_PROFILE_REQ; }
 namespace nUserSession { class CPacket_C2S_SET_PAWN_SKILL_REQ; }
 namespace nUserSession { class CPacket_C2S_SET_SHORTCUT_LIST_REQ; }
 namespace nUserSession { class CPacket_C2S_SET_SKILL_REQ; }
+namespace nUserSession { class CPacket_C2S_START_ATTACH_ELEMENT_REQ; }
+namespace nUserSession { class CPacket_C2S_START_DETACH_ELEMENT_REQ; }
+namespace nUserSession { class CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ; }
+namespace nUserSession { class CPacket_C2S_START_EQUIP_GRADE_UP_REQ; }
 namespace nUserSession { class CPacket_C2S_STAY_INN_REQ; }
 namespace nUserSession { class CPacket_C2S_STAY_PENALTY_HEAL_INN_REQ; }
 namespace nUserSession { class CPacket_C2S_SUPPORT_POINT_USE_REQ; }
@@ -109,6 +124,7 @@ namespace nUserSession { class CPacket_C2S_WARP_REQ; }
 // Type aliases from DWARF
 using CArisenProfile = CDataArisenProfile;
 using CEditInfo = CDataEditInfo;
+using CEntryItemParam = CDataEntryItemParam;
 using CQuickPartyMatching = CDataQuickPartyMatching;
 using CStageLayoutID = CDataStageLayoutID;
 using __uint64_t = long unsigned int;
@@ -466,6 +482,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ
+    {
+    public:
+        CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ();
+        s32 WritePacket(CPacket* pPacket, u64 in_BoardID, const char* in_strPassword, const CEntryItemParam& in_Param);
+        s32 ReadPacket(CPacket*);
+        u16 Error() const;
+        u64 BoardID() const;
+        const char* Password() const;
+        const CEntryItemParam& Param() const;
+        CEntryItemParam& Param();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x0
+        u64 m_ullBoardID;  // offset: 0x8
+        MtString m_wstrPassword;  // offset: 0x10
+        CEntryItemParam m_Param;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x60
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ
+    {
+    public:
+        CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ();
+        s32 WritePacket(CPacket* pPacket, u64 in_BoardID, u32 in_EntryID, const char* in_strPassword);
+        s32 ReadPacket(CPacket*);
+        u16 Error() const;
+        u64 BoardID() const;
+        u32 EntryID() const;
+        const char* Password() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x0
+        u64 m_ullBoardID;  // offset: 0x8
+        u32 m_unEntryID;  // offset: 0x10
+        MtString m_wstrPassword;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x20
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_C2S_ENTRY_BOARD_ITEM_INVITE_REQ
     {
     public:
@@ -480,6 +539,28 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x0
         MtTypedArray<CDataCommonU32> m_CharacterIds;  // offset: 0x8
         bool m_bIsReceived;  // offset: 0x28
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ
+    {
+    public:
+        CPacket_C2S_ENTRY_BOARD_ITEM_RECREATE_REQ();
+        s32 WritePacket(CPacket* pPacket, u64 in_BoardID, const char* in_strPassword, const CEntryItemParam& in_Param);
+        s32 ReadPacket(CPacket*);
+        u16 Error() const;
+        u64 BoardID() const;
+        const char* Password() const;
+        const CEntryItemParam& Param() const;
+        CEntryItemParam& Param();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x0
+        u64 m_ullBoardID;  // offset: 0x8
+        MtString m_wstrPassword;  // offset: 0x10
+        CEntryItemParam m_Param;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x60
     };
 }  // namespace nUserSession
 
@@ -885,6 +966,27 @@ namespace nUserSession {
         u32 m_unSkillID;  // offset: 0x4
         u8 m_ucSkillLv;  // offset: 0x8
         bool m_bIsReceived;  // offset: 0x9
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_C2S_LOBBY_CHAT_MSG_REQ
+    {
+    public:
+        CPacket_C2S_LOBBY_CHAT_MSG_REQ();
+        s32 WritePacket(CPacket* pPacket, u8 in_Type, u32 in_TargetID, const char* in_strMessage);
+        s32 ReadPacket(CPacket*);
+        u16 Error() const;
+        u8 Type() const;
+        u32 TargetID() const;
+        const char* Message() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x0
+        u8 m_ucType;  // offset: 0x2
+        u32 m_unTargetID;  // offset: 0x4
+        MtString m_wstrMessage;  // offset: 0x8
+        bool m_bIsReceived;  // offset: 0x10
     };
 }  // namespace nUserSession
 
@@ -1376,6 +1478,108 @@ namespace nUserSession {
         u32 m_unSkillID;  // offset: 0x4
         u8 m_ucSkillLv;  // offset: 0x8
         bool m_bIsReceived;  // offset: 0x9
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_C2S_START_ATTACH_ELEMENT_REQ
+    {
+    public:
+        CPacket_C2S_START_ATTACH_ELEMENT_REQ();
+        s32 WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, const MtTypedArray<CDataCraftElement>& in_CraftElementList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList);
+        s32 ReadPacket(CPacket*);
+        u16 Error() const;
+        const char* EquipItemUID() const;
+        const MtTypedArray<CDataCraftElement>& CraftElementList() const;
+        MtTypedArray<CDataCraftElement>& CraftElementList();
+        u32 CraftMainPawnID() const;
+        const MtTypedArray<CDataCraftSupportPawnID>& CraftSupportPawnIDList() const;
+        MtTypedArray<CDataCraftSupportPawnID>& CraftSupportPawnIDList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x0
+        MtString m_wstrEquipItemUID;  // offset: 0x8
+        MtTypedArray<CDataCraftElement> m_CraftElementList;  // offset: 0x10
+        u32 m_unCraftMainPawnID;  // offset: 0x30
+        MtTypedArray<CDataCraftSupportPawnID> m_CraftSupportPawnIDList;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_C2S_START_DETACH_ELEMENT_REQ
+    {
+    public:
+        CPacket_C2S_START_DETACH_ELEMENT_REQ();
+        s32 WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, const MtTypedArray<CDataCraftElement>& in_CraftElementList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList);
+        s32 ReadPacket(CPacket*);
+        u16 Error() const;
+        const char* EquipItemUID() const;
+        const MtTypedArray<CDataCraftElement>& CraftElementList() const;
+        MtTypedArray<CDataCraftElement>& CraftElementList();
+        u32 CraftMainPawnID() const;
+        const MtTypedArray<CDataCraftSupportPawnID>& CraftSupportPawnIDList() const;
+        MtTypedArray<CDataCraftSupportPawnID>& CraftSupportPawnIDList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x0
+        MtString m_wstrEquipItemUID;  // offset: 0x8
+        MtTypedArray<CDataCraftElement> m_CraftElementList;  // offset: 0x10
+        u32 m_unCraftMainPawnID;  // offset: 0x30
+        MtTypedArray<CDataCraftSupportPawnID> m_CraftSupportPawnIDList;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ
+    {
+    public:
+        CPacket_C2S_START_EQUIP_COLOR_CHANGE_REQ();
+        s32 WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, u8 in_Color, const MtTypedArray<CDataCraftColorant>& in_CraftColorantList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList);
+        s32 ReadPacket(CPacket*);
+        u16 Error() const;
+        const char* EquipItemUID() const;
+        u8 Color() const;
+        const MtTypedArray<CDataCraftColorant>& CraftColorantList() const;
+        MtTypedArray<CDataCraftColorant>& CraftColorantList();
+        u32 CraftMainPawnID() const;
+        const MtTypedArray<CDataCraftSupportPawnID>& CraftSupportPawnIDList() const;
+        MtTypedArray<CDataCraftSupportPawnID>& CraftSupportPawnIDList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x0
+        MtString m_wstrEquipItemUID;  // offset: 0x8
+        u8 m_ucColor;  // offset: 0x10
+        MtTypedArray<CDataCraftColorant> m_CraftColorantList;  // offset: 0x18
+        u32 m_unCraftMainPawnID;  // offset: 0x38
+        MtTypedArray<CDataCraftSupportPawnID> m_CraftSupportPawnIDList;  // offset: 0x40
+        bool m_bIsReceived;  // offset: 0x60
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_C2S_START_EQUIP_GRADE_UP_REQ
+    {
+    public:
+        CPacket_C2S_START_EQUIP_GRADE_UP_REQ();
+        s32 WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, const MtTypedArray<CDataCraftMaterial>& in_CraftMaterialList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList);
+        s32 ReadPacket(CPacket*);
+        u16 Error() const;
+        const char* EquipItemUID() const;
+        const MtTypedArray<CDataCraftMaterial>& CraftMaterialList() const;
+        MtTypedArray<CDataCraftMaterial>& CraftMaterialList();
+        u32 CraftMainPawnID() const;
+        const MtTypedArray<CDataCraftSupportPawnID>& CraftSupportPawnIDList() const;
+        MtTypedArray<CDataCraftSupportPawnID>& CraftSupportPawnIDList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x0
+        MtString m_wstrEquipItemUID;  // offset: 0x8
+        MtTypedArray<CDataCraftMaterial> m_CraftMaterialList;  // offset: 0x10
+        u32 m_unCraftMainPawnID;  // offset: 0x30
+        MtTypedArray<CDataCraftSupportPawnID> m_CraftSupportPawnIDList;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
     };
 }  // namespace nUserSession
 

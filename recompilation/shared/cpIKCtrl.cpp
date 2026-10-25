@@ -11,8 +11,10 @@
 #include "cpComponent.h"
 #include "../rIKCtrl/rIKCtrl.h"
 #include "uCnsDDOIK.h"
+#include "uCnsIKHandle.h"
 #include "uCnsIKTarget.h"
 #include "uConstraint.h"
+#include "uDDOModel.h"
 #include "uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -307,11 +309,40 @@ __attribute__((weak)) void cpIKCtrl::init() {
 }
 
 // Address: 0x0048ea00 - 0x0048eafe (254 bytes)
-__attribute__((weak)) void cpIKCtrl::setActive(bool active) {
-    // local: s32 i;
-    // local: s32 i;
-    DDON_STUB("cpIKCtrl::setActive")
-    /* stub */
+void cpIKCtrl::setActive(bool active) {
+    // DWARF local not rendered: s32 i;
+    // DWARF local not rendered: s32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    this->::cpComponent::mActive = active;
+    if (this->mpCnsIK[0] != static_cast<uCnsDDOIK*>(nullptr)) {
+        this->mpCnsIK[0]->setConstraintEnable(active);
+    }
+    if (this->mpCnsIK[1] != static_cast<uCnsDDOIK*>(nullptr)) {
+        this->mpCnsIK[1]->setConstraintEnable(active);
+    }
+    if (this->mpCnsIK[2] != static_cast<uCnsDDOIK*>(nullptr)) {
+        this->mpCnsIK[2]->setConstraintEnable(active);
+    }
+    if (this->mpCnsIK[3] != static_cast<uCnsDDOIK*>(nullptr)) {
+        this->mpCnsIK[3]->setConstraintEnable(active);
+    }
+    if (this->mpCnsIKHandle[0] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[0]->setConstraintEnable(active);
+    }
+    if (this->mpCnsIKHandle[1] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[1]->setConstraintEnable(active);
+    }
+    if (this->mpCnsIKHandle[2] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[2]->setConstraintEnable(active);
+    }
+    if (this->mpCnsIKHandle[3] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[3]->setConstraintEnable(active);
+    }
+    if (this->mpCnsIKHandle[4] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[4]->setConstraintEnable(active);
+        return;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -332,9 +363,26 @@ __attribute__((weak)) void cpIKCtrl::setActive(bool active) {
 // bool cpIKCtrl::isIKCtrlActive();
 
 // Address: 0x01a5a250 - 0x01a5a292 (66 bytes)
-__attribute__((weak)) void cpIKCtrl::setOwner(MtObject* pOwner) {
-    DDON_STUB("cpIKCtrl::setOwner")
-    /* stub */
+void cpIKCtrl::setOwner(MtObject* pOwner) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->::cpComponent::mpOwner = pOwner;
+    // inferred: a temporary for the result of the call at 0x1a5a267, used once; no DWARF local holds it
+    const MtDTI& t0 = pOwner->getDTI();
+    // inferred: the value the loop at 0x1a5a275 carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::uDDOModel::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x1a5a275 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            this->mpModel = static_cast<uModel*>(pOwner);
+            return;
+        } else {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // Address: 0x0048cf40 - 0x0048d022 (226 bytes)
@@ -777,11 +825,43 @@ __attribute__((weak)) void cpIKCtrl::updateChestMatrix(MtMatrix& Result) {
 }
 
 // Address: 0x0048f680 - 0x0048f772 (242 bytes)
-__attribute__((weak)) void cpIKCtrl::enableConstraint(bool enable) {
-    // local: u32 i;
-    // local: u32 i;
-    DDON_STUB("cpIKCtrl::enableConstraint")
-    /* stub */
+void cpIKCtrl::enableConstraint(bool enable) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpCnsIKHandle[0] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[0]->::uConstraint::mEnable = enable;
+        this->mpCnsIKTarget[0]->::uConstraint::mEnable = enable;
+    }
+    if (this->mpCnsIKHandle[1] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[1]->::uConstraint::mEnable = enable;
+        this->mpCnsIKTarget[1]->::uConstraint::mEnable = enable;
+    }
+    if (this->mpCnsIKHandle[2] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[2]->::uConstraint::mEnable = enable;
+        this->mpCnsIKTarget[2]->::uConstraint::mEnable = enable;
+    }
+    if (this->mpCnsIKHandle[3] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[3]->::uConstraint::mEnable = enable;
+        this->mpCnsIKTarget[3]->::uConstraint::mEnable = enable;
+    }
+    if (this->mpCnsIKHandle[4] != static_cast<uCnsIKHandle*>(nullptr)) {
+        this->mpCnsIKHandle[4]->::uConstraint::mEnable = enable;
+        this->mpCnsIKTarget[4]->::uConstraint::mEnable = enable;
+    }
+    if (this->mpCnsIK[0] != static_cast<uCnsDDOIK*>(nullptr)) {
+        this->mpCnsIK[0]->::uConstraint::mEnable = enable;
+    }
+    if (this->mpCnsIK[1] != static_cast<uCnsDDOIK*>(nullptr)) {
+        this->mpCnsIK[1]->::uConstraint::mEnable = enable;
+    }
+    if (this->mpCnsIK[2] != static_cast<uCnsDDOIK*>(nullptr)) {
+        this->mpCnsIK[2]->::uConstraint::mEnable = enable;
+    }
+    if (this->mpCnsIK[3] != static_cast<uCnsDDOIK*>(nullptr)) {
+        this->mpCnsIK[3]->::uConstraint::mEnable = enable;
+    }
 }
 
 // Address: 0x0048e2b0 - 0x0048e424 (372 bytes)
@@ -847,9 +927,88 @@ __attribute__((weak)) MtVector3 cpIKCtrl::calcUpVectorLeg(const MtMatrix& RootMa
 
 // Address: 0x0048d0b0 - 0x0048d192 (226 bytes)
 __attribute__((weak)) void cpIKCtrl::updateIKBlend() {
-    // local: s32 i;
-    DDON_STUB("cpIKCtrl::updateIKBlend")
-    /* stub */
+    // DWARF local not rendered: s32 i;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xb0 from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xac from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x150 from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x14c from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1f0 from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x1ec from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x290 from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x28c from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x330 from cpIKCtrl*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x32c from cpIKCtrl*
+    // inferred: a branching shape written through regions, with 8 goto statements as its last resort
+    // inferred: the value carried to 0x48d0d2; no location-less local in scope fits
+    uCnsDDOIK* v0_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(176))];
+    if (v0_0 != static_cast<uCnsDDOIK*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(172))) != static_cast<unsigned char>(0)) {
+            if (this->::cpComponent::mActive != false) {
+                goto region_48d0dd;
+            }
+        }
+    } else {
+        goto region_48d0dd;
+    }
+    v0_0->::uConstraint::mBlendSpeed = 1.0f;
+    v0_0->::uConstraint::mBlend = 0.0f;
+    region_48d0dd:;
+    // inferred: the value carried to 0x48d0ff; no location-less local in scope fits
+    uCnsDDOIK* v2_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(336))];
+    if (v2_0 != static_cast<uCnsDDOIK*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(332))) != static_cast<unsigned char>(0)) {
+            if (this->::cpComponent::mActive != false) {
+                goto region_48d10a;
+            }
+        }
+    } else {
+        goto region_48d10a;
+    }
+    v2_0->::uConstraint::mBlendSpeed = 1.0f;
+    v2_0->::uConstraint::mBlend = 0.0f;
+    region_48d10a:;
+    // inferred: the value carried to 0x48d12c; no location-less local in scope fits
+    uCnsDDOIK* v4_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(496))];
+    if (v4_0 != static_cast<uCnsDDOIK*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(492))) != static_cast<unsigned char>(0)) {
+            if (this->::cpComponent::mActive != false) {
+                goto region_48d137;
+            }
+        }
+    } else {
+        goto region_48d137;
+    }
+    v4_0->::uConstraint::mBlendSpeed = 1.0f;
+    v4_0->::uConstraint::mBlend = 0.0f;
+    region_48d137:;
+    // inferred: the value carried to 0x48d159; no location-less local in scope fits
+    uCnsDDOIK* v6_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(656))];
+    if (v6_0 != static_cast<uCnsDDOIK*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(652))) != static_cast<unsigned char>(0)) {
+            if (this->::cpComponent::mActive != false) {
+                goto region_48d164;
+            }
+        }
+    } else {
+        goto region_48d164;
+    }
+    v6_0->::uConstraint::mBlendSpeed = 1.0f;
+    v6_0->::uConstraint::mBlend = 0.0f;
+    region_48d164:;
+    // inferred: the value carried to 0x48d186; no location-less local in scope fits
+    uCnsDDOIK* v8_0 = this->mpCnsIK[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(816))];
+    if (v8_0 != static_cast<uCnsDDOIK*>(nullptr)) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + static_cast<long>(812))) != static_cast<unsigned char>(0)) {
+            if (this->::cpComponent::mActive != false) {
+                return;
+            }
+        }
+    } else {
+        return;
+    }
+    v8_0->::uConstraint::mBlendSpeed = 1.0f;
+    v8_0->::uConstraint::mBlend = 0.0f;
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (225 bytes)

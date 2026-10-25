@@ -9,6 +9,9 @@
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
+#include "../shared/sQuestManagerExt.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
@@ -180,9 +183,23 @@ __attribute__((weak)) void uGUIInfo::beginAnnounce(u32 flag, MT_CTSTR msg, MT_CT
 }
 
 // Address: 0x00ac2d10 - 0x00ac2d33 (35 bytes)
-__attribute__((weak)) bool uGUIInfo::isEnableAnnounce() {
-    DDON_STUB("uGUIInfo::isEnableAnnounce")
-    return {};
+bool uGUIInfo::isEnableAnnounce() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mFlowId != static_cast<u32>(0)) {
+        if (this->mFlowId == static_cast<u32>(1)) {
+            if (this->mSubFlowId != static_cast<u32>(0)) {
+                if (this->mSubFlowId != static_cast<u32>(3)) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -235,10 +252,72 @@ void uGUIInfo::moveInput() {
 }
 
 // Address: 0x00ac33f0 - 0x00ac34f0 (256 bytes)
-__attribute__((weak)) void uGUIInfo::moveEvent() {
-    // local: const u32 input_event;
-    DDON_STUB("uGUIInfo::moveEvent")
-    /* stub */
+void uGUIInfo::moveEvent() {
+    // Approximate from the ELF: a temporary declared in several branches; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    this->mInfoResult = static_cast<u32>(0);
+    const u32 input_event = this->::uGUIBase::getInputEvent();
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xac3418, held ahead of the effects the ELF orders after it
+    bool t0 = this->mList.mListCtrl.::uGUIBase::cScrollList::moveEvent();
+    if (t0 != false) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xac3421, held ahead of the effects the ELF orders after it
+        u32 t2 = this->mFlowId;
+        if (t2 == static_cast<u32>(3)) {
+            this->mList.mListCtrl.::uGUIBase::cScrollList::setListPos(false);
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xac3437, held ahead of the effects the ELF orders after it
+            u32 t4 = this->mList.mListCtrl.::uGUIBase::cScrollList::getInputEvent();
+            if (t4 == static_cast<u32>(14)) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xac3445, held ahead of the effects the ELF orders after it
+                u32 t6 = this->mFlowId;
+                if (t6 == static_cast<u32>(3)) {
+                    this->mInfoResult = static_cast<u32>(1);
+                }
+            }
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xac3437, held ahead of the effects the ELF orders after it
+            u32 t4 = this->mList.mListCtrl.::uGUIBase::cScrollList::getInputEvent();
+            if (t4 == static_cast<u32>(14)) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xac3445, held ahead of the effects the ELF orders after it
+                u32 t6 = this->mFlowId;
+                if (t6 == static_cast<u32>(3)) {
+                    this->mInfoResult = static_cast<u32>(1);
+                }
+            }
+        }
+    } else {
+        if (input_event != static_cast<u32>(68)) {
+            if (input_event == static_cast<u32>(67)) {
+                // inferred: an ordered temporary, read before a later effect: the value read at 0xac346d, held ahead of the effects the ELF orders after it
+                u32 t7 = this->mFlowId;
+                if (t7 == static_cast<u32>(3)) {
+                    this->mInfoResult = static_cast<u32>(2);
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xac3487, held ahead of the effects the ELF orders after it
+                    sQuestManagerExt* t8 = ::sQuestManagerExt::getInstance();
+                    t8->::sQuestManagerExt::offEndDistributionQuestCnacel();
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xac3496, held ahead of the effects the ELF orders after it
+                    sGUI* t10 = ::sGUI::getInstance();
+                    static_cast<sGUIExt*>(t10)->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
+                } else {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xac3496, held ahead of the effects the ELF orders after it
+                    sGUI* t10 = ::sGUI::getInstance();
+                    static_cast<sGUIExt*>(t10)->::sGUIExt::requestSE(static_cast<u32>(0), static_cast<u32>(5));
+                }
+            } else {
+                if (input_event == static_cast<u32>(66)) {
+                    // inferred: an ordered temporary, read before a later effect: the value read at 0xac34d2, held ahead of the effects the ELF orders after it
+                    u32 t12 = this->mFlowId;
+                    if (t12 == static_cast<u32>(3)) {
+                        this->mInfoResult = static_cast<u32>(1);
+                    }
+                }
+            }
+        } else {
+            // inferred: an ordered temporary, read before a later effect: the value read at 0xac34af, held ahead of the effects the ELF orders after it
+            u32 t11 = this->mFlowId;
+            if (t11 == static_cast<u32>(3)) {
+                this->mList.mListCtrl.::uGUIBase::cScrollList::setListPos(false);
+            }
+        }
+    }
 }
 
 // Address: 0x00ac2d40 - 0x00ac2fe0 (672 bytes)

@@ -8,6 +8,7 @@
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
 #include "../shared/cContextInterface.h"
+#include "../shared/cUnit.h"
 #include "../shared/cpComponent.h"
 #include "../shared/nDDOUtility.h"
 #include "../shared/nRegionStatus.h"
@@ -280,8 +281,7 @@ cpCorePointCtrl::cpCorePointCtrl() {
 // Address: 0x0017d7b0 - 0x0017d7de (46 bytes)
 // Also emitted as: _ZN15cpCorePointCtrlD0Ev at 0x0017d7e0
 cpCorePointCtrl::~cpCorePointCtrl() {
-    DDON_STUB("cpCorePointCtrl::~cpCorePointCtrl")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x0017d830 - 0x0017da98 (616 bytes)
@@ -308,10 +308,53 @@ void cpCorePointCtrl::setOwner(MtObject* pOwner) {
 }
 
 // Address: 0x0017df20 - 0x0017df9e (126 bytes)
-__attribute__((weak)) void cpCorePointCtrl::updatePtr() {
-    // local: s32 i;
-    DDON_STUB("cpCorePointCtrl::updatePtr")
-    /* stub */
+void cpCorePointCtrl::updatePtr() {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x60 from cpCorePointCtrl*
+    this->::cpComponent::updatePtr();
+    // inferred: the value the loop at 0x17df60 carries; no location-less local in scope fits
+    unsigned int v0_0;
+    // inferred: DWARF's location-less 'i' (lexical block [0x17df4c, 0x17df97)) is the counter this loop steps
+    s32 i;
+    if (this->mpEnemy != static_cast<uEnemy*>(nullptr)) {
+        if (this->mpEnemy->::cUnit::isEnable() == false) {
+            this->mpEnemy = static_cast<uEnemy*>(nullptr);
+            v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(96));
+            if (static_cast<int>(v0_0) <= static_cast<int>(0)) {
+                return;
+            } else {
+                i = static_cast<s32>(0);
+            }
+        } else {
+            v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(96));
+            if (static_cast<int>(v0_0) <= static_cast<int>(0)) {
+                return;
+            } else {
+                i = static_cast<s32>(0);
+            }
+        }
+    } else {
+        v0_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(96));
+        if (static_cast<int>(v0_0) <= static_cast<int>(0)) {
+            return;
+        } else {
+            i = static_cast<s32>(0);
+        }
+    }
+    for (;;) {
+        if (this->mActiveCorePointArray.::MtArray::getBuffer()[i] != static_cast<MtObject*>(nullptr)) {
+            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mActiveCorePointArray.::MtArray::getBuffer()[i]) + static_cast<long>(24))) != static_cast<unsigned long>(0)) {
+                if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mActiveCorePointArray.::MtArray::getBuffer()[i]) + static_cast<long>(24))) + static_cast<long>(16))) & static_cast<unsigned int>(7)) - static_cast<unsigned int>(1)) > static_cast<unsigned int>(1)) {
+                    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mActiveCorePointArray.::MtArray::getBuffer()[i]) + static_cast<long>(24)) = static_cast<unsigned long>(0);
+                }
+            }
+        }
+        if ((i + static_cast<s32>(1)) < static_cast<int>(v0_0)) {
+            i = i + static_cast<s32>(1);
+        } else {
+            break;
+        }
+    }
 }
 
 // Address: 0x0017dfa0 - 0x0017e012 (114 bytes)
@@ -392,9 +435,13 @@ __attribute__((weak)) u32 cpCorePointCtrl::getCorePointActiveNum(nRegionStatus::
 }
 
 // Address: 0x0017e620 - 0x0017e632 (18 bytes)
-__attribute__((weak)) const cCorePointInfo* cpCorePointCtrl::getActiveCorePointFromIndex(u32 index) const {
-    DDON_STUB("cpCorePointCtrl::getActiveCorePointFromIndex")
-    return nullptr;
+const cCorePointInfo* cpCorePointCtrl::getActiveCorePointFromIndex(u32 index) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (index < this->mActiveCorePointArray.::MtArray::mLength) {
+        return static_cast<const cCorePointInfo*>(this->mActiveCorePointArray.::MtArray::mpArray[index]);
+    } else {
+        return static_cast<const cCorePointInfo*>(nullptr);
+    }
 }
 
 // Address: 0x0017e640 - 0x0017e644 (4 bytes)

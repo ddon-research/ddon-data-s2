@@ -123,3 +123,11 @@ protected:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+inline cQuestResourceLoadManager::cLoadTask::cLoadTask() {
+    this->mHasStarted = false;
+    this->mpCallbackFuncWithList = static_cast<cQuestResourceLoadManager::PCALLBACK_FUNC_WITH_LIST>(0);
+    this->mpCallbackFunc = static_cast<cQuestResourceLoadManager::PCALLBACK_FUNC>(0);
+    this->mpClass = static_cast<MtObject*>(nullptr);
+}

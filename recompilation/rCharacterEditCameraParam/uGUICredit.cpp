@@ -13,6 +13,9 @@
 #include "../shared/cControl.h"
 #include "../shared/cResource.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGame.h"
+#include "../shared/sSound.h"
+#include "../shared/sSoundExt.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -132,9 +135,16 @@ __attribute__((weak)) void uGUICredit::moveInput() {
 }
 
 // Address: 0x00a67dc0 - 0x00a67e42 (130 bytes)
-__attribute__((weak)) void uGUICredit::moveEvent() {
-    DDON_STUB("uGUICredit::moveEvent")
-    /* stub */
+void uGUICredit::moveEvent() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->::uGUIBase::mInputEventId != static_cast<u32>(66)) {
+        return;
+    }
+    if (this->mCreditType == static_cast<u32>(1)) {
+        ::sGame::getInstance()->::sGame::fadeOut(30.0f, static_cast<u32>(0));
+        static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::fadeOutStream(this->mpSoundRes, static_cast<u32>(31), static_cast<uintptr>(-1), static_cast<u32>(1000), static_cast<sSoundExt::STREAM_SEARCH_KEY>(1));
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateFadeOut);
 }
 
 // Address: 0x00a67be0 - 0x00a67c4f (111 bytes)
@@ -154,9 +164,18 @@ __attribute__((weak)) void uGUICredit::updateWait() {
 }
 
 // Address: 0x00a67e50 - 0x00a67ead (93 bytes)
-__attribute__((weak)) void uGUICredit::updateFadeOut() {
-    DDON_STUB("uGUICredit::updateFadeOut")
-    /* stub */
+void uGUICredit::updateFadeOut() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mSpdRate = 1.0f;
+    if (this->mCreditType == static_cast<u32>(1)) {
+        if (::sGame::getInstance()->::sGame::isFadeEnd() != false) {
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateExit);
+        } else {
+            this->::uGUICredit::updateDisp();
+        }
+    } else {
+        this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateExit);
+    }
 }
 
 // Address: 0x00a68370 - 0x00a68392 (34 bytes)

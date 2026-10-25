@@ -18,11 +18,14 @@
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
 #include "../shared/rItemList.h"
+#include "../rStageConnect/sArea.h"
+#include "../rStageConnect/sAreaExt.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/sItemManager.h"
 #include "../shared/uGUIBase.h"
 #include "uGUIPopDetail01.h"
+#include "uGUIPopListDialog.h"
 #include "uGUISystemMsg.h"
 #include "uGUIUseItemBase.h"
 #ifndef DDON_STUB
@@ -166,9 +169,39 @@ __attribute__((weak)) void uGUIItemBase01::setStopAllContol(bool b) {
 }
 
 // Address: 0x00ac9a10 - 0x00ac9ada (202 bytes)
-__attribute__((weak)) void uGUIItemBase01::setTabIdx(s32 idx) {
-    DDON_STUB("uGUIItemBase01::setTabIdx")
-    /* stub */
+void uGUIItemBase01::setTabIdx(s32 idx) {
+    // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if (this->mpCtrlTab != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        this->mpCtrlTab->setCurrentPos(idx, false);
+        this->mServerStorageTypeOld = this->mServerStorageType;
+        // inferred: a temporary for the value the load at 0xac9a47 read, used once; no DWARF local holds it
+        sItemManager* t0 = ::sItemManager::getInstance();
+        // inferred: a temporary for the value the load at 0xac9a4a read, used once; no DWARF local holds it
+        nCharacterData::ITEM_BAG_TYPE t1 = this->mStorageType;
+        this->mServerStorageType = t0->::sItemManager::getItemNetStorageType(t1, this->getTab2Category());
+        // inferred: a temporary for the result of the call at 0xac9a76, used once; no DWARF local holds it
+        u32 t2 = this->getItemDrawNum();
+        if (static_cast<unsigned int>(this->mMatrixSelPos) < t2) {
+            this->mpCtrlMatrix->setCurrentPos(this->mMatrixSelPos, false);
+        } else {
+            this->mpCtrlMatrix->setCurrentPos(static_cast<s32>(0), false);
+            this->mMatrixSelPos = static_cast<s32>(0);
+        }
+        this->mPageTabNo = static_cast<s32>(0);
+        this->settingItem(true, true);
+    } else {
+        // inferred: a temporary for the result of the call at 0xac9a76, used once; no DWARF local holds it
+        u32 t2 = this->getItemDrawNum();
+        if (static_cast<unsigned int>(this->mMatrixSelPos) < t2) {
+            this->mpCtrlMatrix->setCurrentPos(this->mMatrixSelPos, false);
+        } else {
+            this->mpCtrlMatrix->setCurrentPos(static_cast<s32>(0), false);
+            this->mMatrixSelPos = static_cast<s32>(0);
+        }
+        this->mPageTabNo = static_cast<s32>(0);
+        this->settingItem(true, true);
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (40 bytes)
@@ -281,17 +314,71 @@ void uGUIItemBase01::checkAddStackNum(nItem::E_STORAGE_TYPE serverStorage, nGUII
 // void uGUIItemBase01::checkAddMaxNumCore(sItemManager::cItemBag* pBag, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg);
 
 // Address: 0x00aca7a0 - 0x00aca810 (112 bytes)
-__attribute__((weak)) void uGUIItemBase01::checkAddMaxNum(nCharacterData::ITEM_BAG_TYPE type, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg) {
-    // local: cItemBag* pBag;
-    DDON_STUB("uGUIItemBase01::checkAddMaxNum")
-    /* stub */
+void uGUIItemBase01::checkAddMaxNum(nCharacterData::ITEM_BAG_TYPE type, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7ba, held ahead of the effects the ELF orders after it
+    sItemManager* t0 = ::sItemManager::getInstance();
+    sItemManager::cItemBag* pBag = t0->::sItemManager::setLinkItem(type);
+    *pMsg = static_cast<int>(-1);
+    if (pBag == static_cast<sItemManager::cItemBag*>(nullptr)) {
+        return;
+    }
+    if (pItem == static_cast<nGUIItem::cItem*>(nullptr)) {
+        return;
+    }
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7d3, held ahead of the effects the ELF orders after it
+    cItemParam* t2 = pItem->::nGUIItem::cItem::getItemParam();
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7d7, held ahead of the effects the ELF orders after it
+    u32 t3 = t2->::cItemParam::getItemNo();
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7dd, held ahead of the effects the ELF orders after it
+    u32 t4 = pBag->::sItemManager::cItemBag::getItemAddMaxNum(t3);
+    *pAddNum = t4;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7e5, held ahead of the effects the ELF orders after it
+    cItemParam* t6 = pItem->::nGUIItem::cItem::getItemParam();
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca7e9, held ahead of the effects the ELF orders after it
+    unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + static_cast<long>(12));
+    if ((*pAddNum) < t7) {
+        if ((*pAddNum) != static_cast<unsigned int>(0)) {
+            *pMsg = static_cast<int>(273);
+        } else {
+            *pMsg = static_cast<int>(272);
+        }
+    }
 }
 
 // Address: 0x00aca810 - 0x00aca880 (112 bytes)
-__attribute__((weak)) void uGUIItemBase01::checkAddMaxNum(nItem::E_STORAGE_TYPE type, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg) {
-    // local: cItemBag* pBag;
-    DDON_STUB("uGUIItemBase01::checkAddMaxNum")
-    /* stub */
+void uGUIItemBase01::checkAddMaxNum(nItem::E_STORAGE_TYPE type, nGUIItem::cItem* pItem, u32* pAddNum, s32* pMsg) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a test after the last call or store that only chooses the result; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0xc from cItemParam*
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca82a, held ahead of the effects the ELF orders after it
+    sItemManager* t0 = ::sItemManager::getInstance();
+    sItemManager::cItemBag* pBag = t0->::sItemManager::setLinkItem(type);
+    *pMsg = static_cast<int>(-1);
+    if (pBag == static_cast<sItemManager::cItemBag*>(nullptr)) {
+        return;
+    }
+    if (pItem == static_cast<nGUIItem::cItem*>(nullptr)) {
+        return;
+    }
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca843, held ahead of the effects the ELF orders after it
+    cItemParam* t2 = pItem->::nGUIItem::cItem::getItemParam();
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca847, held ahead of the effects the ELF orders after it
+    u32 t3 = t2->::cItemParam::getItemNo();
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca84d, held ahead of the effects the ELF orders after it
+    u32 t4 = pBag->::sItemManager::cItemBag::getItemAddMaxNum(t3);
+    *pAddNum = t4;
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca855, held ahead of the effects the ELF orders after it
+    cItemParam* t6 = pItem->::nGUIItem::cItem::getItemParam();
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xaca859, held ahead of the effects the ELF orders after it
+    unsigned short t7 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t6) + static_cast<long>(12));
+    if ((*pAddNum) < t7) {
+        if ((*pAddNum) != static_cast<unsigned int>(0)) {
+            *pMsg = static_cast<int>(273);
+        } else {
+            *pMsg = static_cast<int>(272);
+        }
+    }
 }
 
 // Address: 0x00aca880 - 0x00acabb8 (824 bytes)
@@ -367,9 +454,81 @@ __attribute__((weak)) void uGUIItemBase01::catchCancel(bool isSe) {
 }
 
 // Address: 0x00acac20 - 0x00acadd0 (432 bytes)
-__attribute__((weak)) void uGUIItemBase01::setFlowId(u32 flowId) {
-    DDON_STUB("uGUIItemBase01::setFlowId")
-    /* stub */
+void uGUIItemBase01::setFlowId(u32 flowId) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIUseItemBase::setFlowId(flowId);
+    switch (flowId - static_cast<u32>(1)) {
+        case static_cast<u32>(0):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateInit);
+            break;
+        }
+        case static_cast<u32>(1):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = true;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWait);
+            break;
+        }
+        case static_cast<u32>(3):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateOneFrameWait);
+            break;
+        }
+        case static_cast<u32>(4):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitPopup);
+            break;
+        }
+        case static_cast<u32>(5):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateShareWaitPopup);
+            break;
+        }
+        case static_cast<u32>(6):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitPopup);
+            break;
+        }
+        case static_cast<u32>(7):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateWaitServer);
+            break;
+        }
+        case static_cast<u32>(8):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = true;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateMoveItem);
+            break;
+        }
+        case static_cast<u32>(9):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIUseItemBase::updateExit);
+            break;
+        }
+        case static_cast<u32>(10):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateOnlineShop);
+            break;
+        }
+        case static_cast<u32>(11):
+        {
+            this->::uGUIUseItemBase::mIsExeCtrl = false;
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIItemBase01::updateOnlineShopWait);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 // No out-of-line body: 22 inlined copies in 16 functions (193 bytes)
@@ -530,10 +689,67 @@ u32 uGUIItemBase01::evUse(MtObject* pCaller, MtObject* pData) {
 
 // Address: 0x00acb140 - 0x00acb23f (255 bytes)
 __attribute__((weak)) u32 uGUIItemBase01::evDiscard(MtObject* pCaller, MtObject* pData) {
-    // local: u32 retType;
-    // local: uGUIPopListDialog* pUnit;
-    DDON_STUB("uGUIItemBase01::evDiscard")
-    return {};
+    // DWARF local not rendered: u32 retType;
+    // DWARF local not rendered: uGUIPopListDialog* pUnit;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a temporary for the result of the call at 0xacb153, used once; no DWARF local holds it
+    const MtDTI& t0 = pData->getDTI();
+    // inferred: the value the loop at 0xacb161 carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::nGUIItem::cItem::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0xacb161 carries; no location-less local in scope fits
+    const MtDTI* v0_0 = &t0;
+    // inferred: the value the loop at 0xacb184 carries; no location-less local in scope fits
+    const MtDTI* v1_0;
+    // inferred: the value the loop at 0xacb184 carries; no location-less local in scope fits
+    MT_CTSTR v1_1;
+    for (;;) {
+        if (v0_1 != v0_0->mName) {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                // inferred: a temporary for the result of the call at 0xacb176, used once; no DWARF local holds it
+                const MtDTI& t1 = pData->getDTI();
+                v1_1 = ::nGUIItem::cItemList::DTI.::MtDTI::mName;
+                v1_0 = &t1;
+                break;
+            }
+        } else {
+            this->callbackPopDiscardItemNum(static_cast<MtObject*>(this), pData);
+            if (this->::uGUIUseItemBase::mpUnitPopNumber != static_cast<uGUIPopNumber01*>(nullptr)) {
+                this->releaseGlobalItem(false);
+            }
+            this->setExchangeCtrl(false);
+            if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
+                this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(false);
+            }
+            return static_cast<u32>(0);
+        }
+    }
+    for (;;) {
+        if (v1_1 != v1_0->mName) {
+            if (v1_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v1_0 = v1_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            if (this->callbackPopDiscardItemList(static_cast<MtObject*>(this), pData) != static_cast<u32>(0)) {
+                break;
+            } else {
+                // inferred: a temporary for the value the load at 0xacb201 read, used twice; no DWARF local holds it
+                uGUIPopListDialog* t2 = this->::uGUIUseItemBase::getPopListDialog();
+                if (t2 != static_cast<uGUIPopListDialog*>(nullptr)) {
+                    t2->::uGUIPopListDialog::setText(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(40)), static_cast<MT_CTSTR>(nullptr), static_cast<s32>(0), static_cast<MT_CTSTR>(nullptr), static_cast<s32>(0));
+                }
+                break;
+            }
+        }
+    }
+    this->setExchangeCtrl(false);
+    if (this->::uGUIUseItemBase::mpShareUnit != static_cast<uGUIUseItemBase*>(nullptr)) {
+        this->::uGUIUseItemBase::mpShareUnit->setExchangeCtrl(false);
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00acb240 - 0x00acb257 (23 bytes)
@@ -571,9 +787,20 @@ __attribute__((weak)) u32 uGUIItemBase01::evCatch(MtObject* pCaller, MtObject* p
 }
 
 // Address: 0x00ac7fc0 - 0x00ac802f (111 bytes)
-__attribute__((weak)) u32 uGUIItemBase01::evThrow(MtObject* pCaller, MtObject* pData) {
-    DDON_STUB("uGUIItemBase01::evThrow")
-    return {};
+u32 uGUIItemBase01::evThrow(MtObject* pCaller, MtObject* pData) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x7038 from sArea*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x15e from unsigned long
+    if (static_cast<sAreaExt*>(::sArea::getInstance())->::sAreaExt::isLobby() == false) {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) != static_cast<unsigned long>(0)) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(::sArea::getInstance()) + static_cast<long>(28728))) + static_cast<long>(350))) == static_cast<unsigned char>(0)) {
+                this->callbackThrowItem(static_cast<MtObject*>(this), pData);
+                this->::uGUIBase::mBaseF = this->::uGUIBase::mBaseF | static_cast<u32>(4);
+            }
+        }
+    }
+    this->releaseGlobalItem(false);
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (44 bytes)
@@ -1329,9 +1556,16 @@ __attribute__((weak)) u32 uGUIItemBase01::evCtrlCheckMode(cControl::Message* msg
 }
 
 // Address: 0x00acc9b0 - 0x00acc9e0 (48 bytes)
-__attribute__((weak)) u32 uGUIItemBase01::evCtrlCatch(cControl::Message* msg) {
-    DDON_STUB("uGUIItemBase01::evCtrlCatch")
-    return {};
+u32 uGUIItemBase01::evCtrlCatch(cControl::Message* msg) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (static_cast<unsigned int>(msg->reason) <= static_cast<unsigned int>(42)) {
+        if (((static_cast<unsigned long>(5772436045824) >> (static_cast<unsigned long>(msg->reason) & static_cast<unsigned long>(63))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+            this->mCtrlFocus = static_cast<u32>(0);
+            this->::uGUIUseItemBase::evCtrlChangeBoxCore(msg, msg->reason);
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00acc9e0 - 0x00acca1e (62 bytes)

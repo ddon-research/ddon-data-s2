@@ -48,6 +48,7 @@ namespace nGUI { struct TEXTURE; }
 namespace nGUI { struct VARIABLE; }
 namespace nGUI { struct VERTEX; }
 class rTexture;
+class uGUI;
 
 // Declarations
 class rGUI;
@@ -66,6 +67,8 @@ using u8 = unsigned char;
 
 class rGUI : public cResource
 {
+    // inferred: uGUI::getFlow names rGUI::mpHeader
+    friend class uGUI;
 public:
     class MyDTI;
     struct HEADER;

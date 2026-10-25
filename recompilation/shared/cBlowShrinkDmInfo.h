@@ -127,3 +127,9 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline nObjCollision::FORCE_REACTION_TYPE cBlowShrinkDmInfo::getForceDownType() const {
+    return this->mForceDownType;
+}

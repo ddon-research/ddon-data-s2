@@ -333,27 +333,24 @@ __attribute__((weak)) void cAcquirement::cSkillDataBase::load(u32 job_id) {
 
 // Address: 0x0001be30 - 0x0001bec0 (144 bytes)
 bool cAcquirement::cSkillDataBase::updateLoad() {
-    // Approximate from the ELF: an | of disjoint bits; the body oracle reports this body.
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; an | of disjoint bits; the body oracle reports this body.
     // inferred: a temporary for the value the load at 0x1be4c read, used 3 times; no DWARF local holds it
     cArcLoaderBase* const t0 = ::sArchiveManager::INVALID_TICKET;
     if (this->mTicket != t0) {
         if (::sArchiveManager::getInstance()->::sArchiveManager::isTicketLoadFinish(this->mTicket) != false) {
             if (::scePthreadMutexLock(&this->mCS.mCSection) == static_cast<int>(0)) {
-                this->loadResource();
-                if (t0 != this->mTicket) {
-                    ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mTicket);
-                    this->mTicket = static_cast<TICKET>(t0);
-                }
-                if (::scePthreadMutexUnlock(&this->mCS.mCSection) != static_cast<int>(0)) {
-                    ::abort();
-                    return false;
-                } else {
-                    return true;
-                }
             } else {
                 ::abort();
-                return false;
             }
+            this->loadResource();
+            if (t0 != this->mTicket) {
+                ::sArchiveManager::getInstance()->::sArchiveManager::returnTicket(this->mTicket);
+                this->mTicket = static_cast<TICKET>(t0);
+            }
+            if (::scePthreadMutexUnlock(&this->mCS.mCSection) != static_cast<int>(0)) {
+                ::abort();
+            }
+            return true;
         } else {
             return false;
         }

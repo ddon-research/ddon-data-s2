@@ -14,6 +14,8 @@
 #include "../shared/cUnit.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
 #include "../shared/uGUIBase.h"
 #include "uGUIGPShop.h"
 #include "uGUIPopDetail01.h"
@@ -354,10 +356,54 @@ void uGUIBoxGachaInfo::dlAbort() {
 }
 
 // Address: 0x009aaf60 - 0x009ab0e5 (389 bytes)
-__attribute__((weak)) void uGUIBoxGachaInfo::setBoxFlag(bool flag) {
-    // local: bool old;
-    DDON_STUB("uGUIBoxGachaInfo::setBoxFlag")
-    /* stub */
+void uGUIBoxGachaInfo::setBoxFlag(bool flag) {
+    // DWARF local not rendered: bool old;
+    // Approximate from the ELF: a temporary declared in several branches; the body oracle reports this body.
+    // inferred: a temporary for the value the load at 0x9aaf6d read, used once; no DWARF local holds it
+    bool t0 = this->mBox;
+    this->mBox = flag;
+    if (t0 != flag) {
+        this->mInfoIndex = static_cast<s32>(0);
+    }
+    this->::uGUIBoxGachaInfo::createLotList();
+    if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+        if (this->mBox == false) {
+            this->mpHCtrl->::cControl::resetItemNum(static_cast<s32>(1), static_cast<const u32*>(nullptr), static_cast<s32>(0));
+        } else {
+            this->mpHCtrl->::cControl::resetItemNum(static_cast<s32>(2), static_cast<const u32*>(nullptr), static_cast<s32>(0));
+        }
+    }
+    if (this->mResetBtn.::uGUIBase::cSupportInstAnim::mpInstance != static_cast<cGUIInstAnimation*>(nullptr)) {
+        this->mResetBtn.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(this->mBox);
+    }
+    if (this->mBox != false) {
+        // inferred: a temporary for the result of the call at 0x9aaff7, used once; no DWARF local holds it
+        MT_CTSTR t1 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(54));
+        // inferred: a temporary for the result of the call at 0x9ab00c, used twice; no DWARF local holds it
+        cGUIObject* t2 = this->::uGUIBase::getObjectFromId(static_cast<u32>(6), static_cast<u32>(2));
+        this->mCommon.mpObjMsgHeader = static_cast<cGUIObjMessage*>(t2);
+        this->::uGUIBase::setObjectMessage(t2, t1, static_cast<u32>(0), false);
+        // inferred: a temporary for the result of the call at 0x9ab084, used once; no DWARF local holds it
+        MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(55));
+        // inferred: a temporary for the result of the call at 0x9ab099, used twice; no DWARF local holds it
+        cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<u32>(6), static_cast<u32>(10));
+        this->mCommon.mpObjMsgHeaderSub = static_cast<cGUIObjMessage*>(t6);
+        this->::uGUIBase::setObjectMessage(t6, t5, static_cast<u32>(0), false);
+    } else {
+        // inferred: a temporary for the result of the call at 0x9ab041, used once; no DWARF local holds it
+        MT_CTSTR t3 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(37));
+        // inferred: a temporary for the result of the call at 0x9ab056, used twice; no DWARF local holds it
+        cGUIObject* t4 = this->::uGUIBase::getObjectFromId(static_cast<u32>(6), static_cast<u32>(2));
+        this->mCommon.mpObjMsgHeader = static_cast<cGUIObjMessage*>(t4);
+        this->::uGUIBase::setObjectMessage(t4, t3, static_cast<u32>(0), false);
+        // inferred: a temporary for the result of the call at 0x9ab084, used once; no DWARF local holds it
+        MT_CTSTR t5 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::getMsgFromIdxInfo(this->::uGUIBase::mpGUIMsgs.elems[0], static_cast<u32>(36));
+        // inferred: a temporary for the result of the call at 0x9ab099, used twice; no DWARF local holds it
+        cGUIObject* t6 = this->::uGUIBase::getObjectFromId(static_cast<u32>(6), static_cast<u32>(10));
+        this->mCommon.mpObjMsgHeaderSub = static_cast<cGUIObjMessage*>(t6);
+        this->::uGUIBase::setObjectMessage(t6, t5, static_cast<u32>(0), false);
+    }
+    this->::uGUIBase::setMessageHorizontalInterval(static_cast<cGUIObj2D*>(this->mCommon.mpObjMsgHeader), static_cast<cGUIObj2D*>(this->mCommon.mpObjMsgHeaderSub), 8.0f, true);
 }
 
 // Address: 0x009a6020 - 0x009a6ea3 (3715 bytes)
@@ -942,10 +988,26 @@ void uGUIBoxGachaInfo::evAdjustTab() {
 }
 
 // Address: 0x009a2c90 - 0x009a2cd7 (71 bytes)
-__attribute__((weak)) u32 uGUIBoxGachaInfo::evCtrlDecide(cControl::Message* msg) {
-    // local: const u32 hCtrl;
-    DDON_STUB("uGUIBoxGachaInfo::evCtrlDecide")
-    return {};
+u32 uGUIBoxGachaInfo::evCtrlDecide(cControl::Message* msg) {
+    // DWARF local not rendered: const u32 hCtrl;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mIsNowRequestBoughtItemNum != false) {
+        if (msg != static_cast<cControl::Message*>(nullptr)) {
+            msg->changeSE = static_cast<u32>(0);
+        }
+    } else {
+        if (this->mCtrlType != static_cast<u32>(0)) {
+            if (this->mFlowId <= static_cast<u32>(9)) {
+                if (((static_cast<unsigned long>(840) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                }
+            }
+        } else {
+            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x01ae07f0 - 0x01ae0802 (18 bytes)
@@ -970,9 +1032,59 @@ u32 uGUIBoxGachaInfo::evCtrlTabLRMove(cControl::Message* msg) {
 }
 
 // Address: 0x009a2ce0 - 0x009a2e0a (298 bytes)
-__attribute__((weak)) u32 uGUIBoxGachaInfo::evCtrlBtnClick(cControl::Message* msg) {
-    DDON_STUB("uGUIBoxGachaInfo::evCtrlBtnClick")
-    return {};
+u32 uGUIBoxGachaInfo::evCtrlBtnClick(cControl::Message* msg) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (msg->mouse_hit_id == static_cast<s32>(1)) {
+        this->mGPBtn.::uGUIBase::cReferenceUIButton::setFocus(true);
+        this->mResetBtn.::uGUIBase::cReferenceUIButton::setFocus(true);
+        if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+            this->mpHCtrl->setCurrentPos(msg->mouse_hit_id, false);
+        }
+        this->::uGUIBase::setWindowActive(true);
+        this->mBtnCtrl = true;
+        if (this->mIsNowRequestBoughtItemNum != false) {
+            if (msg != static_cast<cControl::Message*>(nullptr)) {
+                msg->changeSE = static_cast<u32>(0);
+            }
+        } else {
+            if (this->mCtrlType != static_cast<u32>(0)) {
+                if (this->mFlowId <= static_cast<u32>(9)) {
+                    if (((static_cast<unsigned long>(840) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                        this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                    }
+                }
+            } else {
+                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+            }
+        }
+    } else {
+        if (msg->mouse_hit_id == static_cast<s32>(0)) {
+            this->mGPBtn.::uGUIBase::cReferenceUIButton::setFocus(true);
+            this->mResetBtn.::uGUIBase::cReferenceUIButton::setFocus(false);
+            if (this->mpHCtrl != static_cast<uGUIBase::cHorizontalList*>(nullptr)) {
+                this->mpHCtrl->setCurrentPos(msg->mouse_hit_id, false);
+            }
+            this->::uGUIBase::setWindowActive(true);
+            this->mBtnCtrl = true;
+            if (this->mIsNowRequestBoughtItemNum != false) {
+                if (msg != static_cast<cControl::Message*>(nullptr)) {
+                    msg->changeSE = static_cast<u32>(0);
+                }
+            } else {
+                if (this->mCtrlType != static_cast<u32>(0)) {
+                    if (this->mFlowId <= static_cast<u32>(9)) {
+                        if (((static_cast<unsigned long>(840) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                            this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                        }
+                    }
+                } else {
+                    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                }
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x01ae0850 - 0x01ae0862 (18 bytes)

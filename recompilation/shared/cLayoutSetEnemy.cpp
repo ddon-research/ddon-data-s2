@@ -9,9 +9,11 @@
 #include "cResource.h"
 #include "rLayout.h"
 #include "rLayoutGroupParam.h"
+#include "../rLayoutPreset/rLayoutPreset.h"
 #include "../rStageConnect/sArea.h"
 #include "../rStageConnect/sAreaExt.h"
 #include "sControlManager.h"
+#include "sSetManager.h"
 #include "uControl.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -184,24 +186,80 @@ void cLayoutSetEnemy::deleteUnit(MtObject* pObj) {
 // s32 cLayoutSetEnemy::getEnemySetTblIndex(MT_CTSTR name);
 
 // Address: 0x002d3d10 - 0x002d3d94 (132 bytes)
-__attribute__((weak)) s32 cLayoutSetEnemy::getEnemySetTblIndex(s32 uinitID) {
-    // local: s32 find;
-    // local: rLayoutPreset* pPri;
-    // local: u32 i;
-    // local: cLayoutPreset* p;
-    DDON_STUB("cLayoutSetEnemy::getEnemySetTblIndex")
-    return {};
+s32 cLayoutSetEnemy::getEnemySetTblIndex(s32 uinitID) {
+    // DWARF local not rendered: s32 find;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cLayoutPreset* p;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    rLayoutPreset* pPri = ::sSetManager::getInstance()->::sSetManager::getLotPreset();
+    // inferred: the value carried to 0x2d3d88; no location-less local in scope fits
+    unsigned int v2_9;
+    if (pPri == static_cast<rLayoutPreset*>(nullptr)) {
+        v2_9 = static_cast<unsigned int>(4294967295);
+    } else {
+        if (pPri->getDataNum() == static_cast<u32>(0)) {
+            v2_9 = static_cast<unsigned int>(4294967295);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+                // inferred: a temporary for the result of the call at 0x2d3d59, used 3 times; no DWARF local holds it
+                cLayoutPreset* t0 = pPri->getData(i0_3);
+                if (t0 != static_cast<cLayoutPreset*>(nullptr)) {
+                    if (t0->mCtrlType == static_cast<u32>(32)) {
+                        if (t0->mID != static_cast<unsigned int>(uinitID)) {
+                            if ((i0_3 + static_cast<unsigned int>(1)) < pPri->getDataNum()) {
+                                i0_3 += static_cast<unsigned int>(1);
+                            } else {
+                                break;
+                            }
+                        } else {
+                            v2_9 = i0_3;
+                            return static_cast<s32>(v2_9);
+                        }
+                    } else {
+                        if ((i0_3 + static_cast<unsigned int>(1)) < pPri->getDataNum()) {
+                            i0_3 += static_cast<unsigned int>(1);
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    if ((i0_3 + static_cast<unsigned int>(1)) < pPri->getDataNum()) {
+                        i0_3 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+            v2_9 = static_cast<unsigned int>(4294967295);
+        }
+    }
+    return static_cast<s32>(v2_9);
 }
 
 // No out-of-line body: no code in the ELF
 // void cLayoutSetEnemy::setLifeArea(uCharacter* pChara);
 
 // Address: 0x002d58a0 - 0x002d58ce (46 bytes)
-__attribute__((weak)) MtObject* cLayoutSetEnemy::getUnit(u32 id) {
-    // local: u32 i;
-    // local: uControlEnemy* pCB;
-    DDON_STUB("cLayoutSetEnemy::getUnit")
-    return nullptr;
+MtObject* cLayoutSetEnemy::getUnit(u32 id) {
+    // DWARF local not rendered: uControlEnemy* pCB;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x1dc from MtObject*
+    if (this->::cLayoutSet::mUnitArray.mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x2d58a0, 0x2d58cd)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->::cLayoutSet::mUnitArray.mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->::cLayoutSet::mUnitArray.mpArray[i]) + static_cast<long>(476))) != id) {
+                } else {
+                    return this->::cLayoutSet::mUnitArray.mpArray[i];
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->::cLayoutSet::mUnitArray.mLength);
+    }
+    return static_cast<MtObject*>(nullptr);
 }
 
 // Address: 0x002d5070 - 0x002d55c0 (1360 bytes)

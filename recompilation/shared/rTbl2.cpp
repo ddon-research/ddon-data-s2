@@ -221,6 +221,13 @@ MtObject* rTbl2Base::MyDTI::newInstance() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// inferred: parameters written where their values stand in every inlined copy; approximate: from its inlined copies at 0x1a71695; 1 more could not be read, which only callers the body oracle reports inline
+// placed: an inline method defined beside the placed body that calls it: the placed generic member's instances there call it, and no proven caller inlines it (024 T809c4, D4)
+inline void* cAIPawnActNoSwitch::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPawnActNoSwitch::DTI)->memAlloc(sz, align, ::cAIPawnActNoSwitch::DTI.::MtDTI::getID());
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters written where their values stand in every inlined copy; approximate: from its inlined copies at 0x1a720fb, which only callers the body oracle reports inline
 // placed: an inline method defined beside the placed body that calls it: the placed generic member's instances there call it, and no proven caller inlines it (024 T809c4, D4)
 inline void* cAIPawnAutoWordNode::operator new[](size_t sz, u32 align) {

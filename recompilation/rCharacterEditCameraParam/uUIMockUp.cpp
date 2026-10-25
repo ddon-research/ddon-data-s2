@@ -337,12 +337,56 @@ __attribute__((weak)) void uUIMockUp::endMannequinMode() {
 }
 
 // Address: 0x00d56d50 - 0x00d56de4 (148 bytes)
-__attribute__((weak)) bool uUIMockUp::isEquipEnable(const cContextInstHm* pContext, u32 itemId) {
-    // local: const rItemParam* pParam;
-    // local: const bool is_man_param;
-    // local: const bool is_man_context;
-    DDON_STUB("uUIMockUp::isEquipEnable")
-    return {};
+bool uUIMockUp::isEquipEnable(const cContextInstHm* pContext, u32 itemId) {
+    // DWARF local not rendered: const bool is_man_param;
+    // DWARF local not rendered: const bool is_man_context;
+    // Approximate from the ELF: a temporary declared in several branches; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (pContext == static_cast<const cContextInstHm*>(nullptr)) {
+        // inferred: a temporary for the result of the call at 0xd56d6b, used twice; no DWARF local holds it
+        cContextInstHm* t0 = ::sContextManager::getInstance()->::sContextManager::getContextMyPlayer();
+        const rItemList::rItemParam* pParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemId);
+        if (pParam != static_cast<const rItemList::rItemParam*>(nullptr)) {
+            if (pParam->::rItemList::rItemParam::getUseJob(::cContextInterface::getJob(t0)) != false) {
+                if (pParam->::rItemList::rItemParam::getSex() != static_cast<u8>(1)) {
+                    // inferred: a temporary for the result of the call at 0xd56db6, used once; no DWARF local holds it
+                    u8 t1 = pParam->::rItemList::rItemParam::getSex();
+                    if ((static_cast<unsigned long>(t1 == static_cast<u8>(2)) ^ static_cast<unsigned long>(::cContextInterface::getSex(t0) == static_cast<u32>(0))) != static_cast<unsigned long>(0)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        const rItemList::rItemParam* pParam = ::sItemManager::getInstance()->::sItemManager::getItemParam(itemId);
+        if (pParam != static_cast<const rItemList::rItemParam*>(nullptr)) {
+            if (pParam->::rItemList::rItemParam::getUseJob(::cContextInterface::getJob(pContext)) != false) {
+                if (pParam->::rItemList::rItemParam::getSex() != static_cast<u8>(1)) {
+                    // inferred: a temporary for the result of the call at 0xd56db6, used once; no DWARF local holds it
+                    u8 t1 = pParam->::rItemList::rItemParam::getSex();
+                    if ((static_cast<unsigned long>(t1 == static_cast<u8>(2)) ^ static_cast<unsigned long>(::cContextInterface::getSex(pContext) == static_cast<u32>(0))) != static_cast<unsigned long>(0)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (16 bytes)

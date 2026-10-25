@@ -4761,9 +4761,37 @@ __attribute__((weak)) u32 MtCollision::getCoGId(const MtTriangle& tri, const MtV
 // u32 MtCollision::getCoGIdFast(const MtVector3& triPt0, const MtVector3& triPt1, const MtVector3& triPt2, const MtVector3& pos);
 
 // Address: 0x00de21e0 - 0x00de23f7 (535 bytes)
-__attribute__((weak)) void MtCollision::getCoGId2(MtCollisionUtil::MtVectorU4& ret, const MtTriangle& tri, const MtVector3& pos0, const MtVector3& pos1) {
-    DDON_STUB("MtCollision::getCoGId2")
-    /* stub */
+void MtCollision::getCoGId2(MtCollisionUtil::MtVectorU4& ret, const MtTriangle& tri, const MtVector3& pos0, const MtVector3& pos1) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: unsigned long used as unsigned int
+    // inferred: a value cast to the type its use takes: bool used as unsigned int
+    if (((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))))) >= (((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))))) + ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z))))))) {
+        if (0.0f > ((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) {
+            ret.u4[0] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) | static_cast<unsigned long>(2));
+        } else {
+            ret.u4[0] = static_cast<unsigned int>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z))))));
+        }
+    } else {
+        if (0.0f > ((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) {
+            ret.u4[0] = static_cast<unsigned int>(6);
+        } else {
+            ret.u4[0] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos0.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos0.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos0.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos0.z - tri.p0.z)))))) | static_cast<unsigned long>(4));
+        }
+    }
+    if (((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))))) >= (((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))))) + ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z))))))) {
+        if (0.0f > ((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) {
+            ret.u4[1] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) | static_cast<unsigned long>(2));
+        } else {
+            ret.u4[1] = static_cast<unsigned int>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z))))));
+        }
+    } else {
+        if (0.0f > ((((((tri.p2.x - tri.p0.x) * (tri.p2.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p2.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p2.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) {
+            ret.u4[1] = static_cast<unsigned int>(6);
+        } else {
+            ret.u4[1] = static_cast<unsigned int>(static_cast<unsigned long>(0.0f > ((((((tri.p2.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (pos1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (tri.p1.z - tri.p0.z)))) - (((((tri.p2.x - tri.p0.x) * (tri.p1.x - tri.p0.x)) + ((tri.p2.y - tri.p0.y) * (tri.p1.y - tri.p0.y))) + ((tri.p2.z - tri.p0.z) * (tri.p1.z - tri.p0.z))) * ((((tri.p1.x - tri.p0.x) * (pos1.x - tri.p0.x)) + ((tri.p1.y - tri.p0.y) * (pos1.y - tri.p0.y))) + ((tri.p1.z - tri.p0.z) * (pos1.z - tri.p0.z)))))) | static_cast<unsigned long>(4));
+        }
+    }
 }
 
 // No out-of-line body: no code in the ELF
@@ -4920,9 +4948,138 @@ __attribute__((weak)) f32 MtCollision::getMinimumDistSq(const MtAABB& aabb, cons
 // void MtCollision::getMinimumDistSqEdgeFlags(MtCollisionUtil::AABB_VORONOI_ID voronoi, bool* edge);
 
 // Address: 0x00de2670 - 0x00de2828 (440 bytes)
-__attribute__((weak)) bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_ls, bool* edge, u32 index) {
-    DDON_STUB("MtCollision::getMinimumDistSqEdge")
-    return {};
+bool MtCollision::getMinimumDistSqEdge(const MtAABB& aabb, MtLineSegment& edge_ls, bool* edge, u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (edge[index] != false) {
+        switch (index) {
+            case static_cast<u32>(0):
+            {
+                edge_ls.p0.x = aabb.minpos.x;
+                edge_ls.p0.y = aabb.maxpos.y;
+                edge_ls.p0.z = aabb.maxpos.z;
+                edge_ls.p1.x = aabb.maxpos.x;
+                edge_ls.p1.y = edge_ls.p0.y;
+                edge_ls.p1.z = edge_ls.p0.z;
+                return true;
+            }
+            case static_cast<u32>(1):
+            {
+                edge_ls.p0.x = aabb.maxpos.x;
+                edge_ls.p0.y = aabb.maxpos.y;
+                edge_ls.p0.z = aabb.maxpos.z;
+                edge_ls.p1.x = edge_ls.p0.x;
+                edge_ls.p1.y = aabb.minpos.y;
+                edge_ls.p1.z = edge_ls.p0.z;
+                return true;
+            }
+            case static_cast<u32>(2):
+            {
+                edge_ls.p0.x = aabb.maxpos.x;
+                edge_ls.p0.y = aabb.minpos.y;
+                edge_ls.p0.z = aabb.maxpos.z;
+                edge_ls.p1.x = aabb.minpos.x;
+                edge_ls.p1.y = edge_ls.p0.y;
+                edge_ls.p1.z = edge_ls.p0.z;
+                return true;
+            }
+            case static_cast<u32>(3):
+            {
+                edge_ls.p0.x = aabb.minpos.x;
+                edge_ls.p0.y = aabb.minpos.y;
+                edge_ls.p0.z = aabb.maxpos.z;
+                edge_ls.p1.x = edge_ls.p0.x;
+                edge_ls.p1.y = aabb.maxpos.y;
+                edge_ls.p1.z = edge_ls.p0.z;
+                return true;
+            }
+            case static_cast<u32>(4):
+            {
+                edge_ls.p0.x = aabb.minpos.x;
+                edge_ls.p0.y = aabb.maxpos.y;
+                edge_ls.p0.z = aabb.minpos.z;
+                edge_ls.p1.x = aabb.maxpos.x;
+                edge_ls.p1.y = edge_ls.p0.y;
+                edge_ls.p1.z = edge_ls.p0.z;
+                return true;
+            }
+            case static_cast<u32>(5):
+            {
+                edge_ls.p0.x = aabb.maxpos.x;
+                edge_ls.p0.y = aabb.maxpos.y;
+                edge_ls.p0.z = aabb.minpos.z;
+                edge_ls.p1.x = edge_ls.p0.x;
+                edge_ls.p1.y = aabb.minpos.y;
+                edge_ls.p1.z = edge_ls.p0.z;
+                return true;
+            }
+            case static_cast<u32>(6):
+            {
+                edge_ls.p0.x = aabb.maxpos.x;
+                edge_ls.p0.y = aabb.minpos.y;
+                edge_ls.p0.z = aabb.minpos.z;
+                edge_ls.p1.x = aabb.minpos.x;
+                edge_ls.p1.y = edge_ls.p0.y;
+                edge_ls.p1.z = edge_ls.p0.z;
+                return true;
+            }
+            case static_cast<u32>(7):
+            {
+                edge_ls.p0.x = aabb.minpos.x;
+                edge_ls.p0.y = aabb.minpos.y;
+                edge_ls.p0.z = aabb.minpos.z;
+                edge_ls.p1.x = edge_ls.p0.x;
+                edge_ls.p1.y = aabb.maxpos.y;
+                edge_ls.p1.z = edge_ls.p0.z;
+                return true;
+            }
+            case static_cast<u32>(8):
+            {
+                edge_ls.p0.x = aabb.minpos.x;
+                edge_ls.p0.y = aabb.maxpos.y;
+                edge_ls.p0.z = aabb.minpos.z;
+                edge_ls.p1.x = edge_ls.p0.x;
+                edge_ls.p1.y = edge_ls.p0.y;
+                edge_ls.p1.z = aabb.maxpos.z;
+                return true;
+            }
+            case static_cast<u32>(9):
+            {
+                edge_ls.p0.x = aabb.maxpos.x;
+                edge_ls.p0.y = aabb.maxpos.y;
+                edge_ls.p0.z = aabb.minpos.z;
+                edge_ls.p1.x = edge_ls.p0.x;
+                edge_ls.p1.y = edge_ls.p0.y;
+                edge_ls.p1.z = aabb.maxpos.z;
+                return true;
+            }
+            case static_cast<u32>(10):
+            {
+                edge_ls.p0.x = aabb.maxpos.x;
+                edge_ls.p0.y = aabb.minpos.y;
+                edge_ls.p0.z = aabb.minpos.z;
+                edge_ls.p1.x = edge_ls.p0.x;
+                edge_ls.p1.y = edge_ls.p0.y;
+                edge_ls.p1.z = aabb.maxpos.z;
+                return true;
+            }
+            case static_cast<u32>(11):
+            {
+                edge_ls.p0.x = aabb.minpos.x;
+                edge_ls.p0.y = aabb.minpos.y;
+                edge_ls.p0.z = aabb.minpos.z;
+                edge_ls.p1.x = edge_ls.p0.x;
+                edge_ls.p1.y = edge_ls.p0.y;
+                edge_ls.p1.z = aabb.maxpos.z;
+                return true;
+            }
+            default:
+            {
+                return true;
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
@@ -4953,9 +5110,111 @@ __attribute__((weak)) u32 MtCollision::getAABBEdgeList(MtLineSegment* edge, cons
 }
 
 // Address: 0x00de3570 - 0x00de36a8 (312 bytes)
-__attribute__((weak)) bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiID) {
-    DDON_STUB("MtCollision::getAABBVertex")
-    return {};
+bool MtCollision::getAABBVertex(MtVector3& pos, const MtAABB& aabb, u32 VoronoiID) {
+    // Approximate from the ELF: a cast to the other signedness; a temporary declared in several branches; the body oracle reports this body.
+    if (static_cast<int>(VoronoiID) <= static_cast<int>(36)) {
+        switch (VoronoiID - static_cast<u32>(21)) {
+            case static_cast<u32>(0):
+            {
+                pos.x = aabb.minpos.x;
+                pos.y = aabb.minpos.y;
+                pos.z = aabb.minpos.z;
+                pos.pad_ = 0.0f;
+                return true;
+            }
+            case static_cast<u32>(1):
+            {
+                // inferred: a temporary for the value the load at 0xde35db read, used once; no DWARF local holds it
+                const f32 t1 = aabb.minpos.y;
+                // inferred: a temporary for the value the load at 0xde35e0 read, used once; no DWARF local holds it
+                const f32 t2 = aabb.minpos.z;
+                pos.x = aabb.maxpos.x;
+                pos.y = t1;
+                pos.z = t2;
+                pos.pad_ = 0.0f;
+                return true;
+            }
+            case static_cast<u32>(4):
+            {
+                // inferred: a temporary for the value the load at 0xde35e7 read, used once; no DWARF local holds it
+                const f32 t3 = aabb.maxpos.y;
+                // inferred: a temporary for the value the load at 0xde35f0 read, used once; no DWARF local holds it
+                const f32 t4 = aabb.minpos.z;
+                pos.x = aabb.minpos.x;
+                pos.y = t3;
+                pos.z = t4;
+                pos.pad_ = 0.0f;
+                return true;
+            }
+            case static_cast<u32>(5):
+            {
+                // inferred: a temporary for the value the load at 0xde35f7 read, used once; no DWARF local holds it
+                const f32 t5 = aabb.minpos.z;
+                // inferred: a temporary for the value the load at 0xde3601 read, used once; no DWARF local holds it
+                const f32 t6 = aabb.maxpos.y;
+                pos.x = aabb.maxpos.x;
+                pos.y = t6;
+                pos.z = t5;
+                pos.pad_ = 0.0f;
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    } else {
+        switch (VoronoiID - static_cast<u32>(37)) {
+            case static_cast<u32>(0):
+            {
+                // inferred: a temporary for the value the load at 0xde35cf read, used once; no DWARF local holds it
+                const f32 t0 = aabb.minpos.y;
+                // inferred: a temporary for the value the load at 0xde3639 read, used once; no DWARF local holds it
+                const f32 t10 = aabb.maxpos.z;
+                pos.x = aabb.minpos.x;
+                pos.y = t0;
+                pos.z = t10;
+                pos.pad_ = 0.0f;
+                return true;
+            }
+            case static_cast<u32>(1):
+            {
+                // inferred: a temporary for the value the load at 0xde3611 read, used once; no DWARF local holds it
+                const f32 t7 = aabb.minpos.y;
+                // inferred: a temporary for the value the load at 0xde361b read, used once; no DWARF local holds it
+                const f32 t8 = aabb.maxpos.z;
+                pos.x = aabb.maxpos.x;
+                pos.y = t7;
+                pos.z = t8;
+                pos.pad_ = 0.0f;
+                return true;
+            }
+            case static_cast<u32>(4):
+            {
+                // inferred: a temporary for the value the load at 0xde3634 read, used once; no DWARF local holds it
+                const f32 t9 = aabb.maxpos.y;
+                // inferred: a temporary for the value the load at 0xde3639 read, used once; no DWARF local holds it
+                const f32 t10 = aabb.maxpos.z;
+                pos.x = aabb.minpos.x;
+                pos.y = t9;
+                pos.z = t10;
+                pos.pad_ = 0.0f;
+                return true;
+            }
+            case static_cast<u32>(5):
+            {
+                pos.x = aabb.maxpos.x;
+                pos.y = aabb.maxpos.y;
+                pos.z = aabb.maxpos.z;
+                pos.pad_ = 0.0f;
+                return true;
+            }
+            default:
+            {
+                return false;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 16 inlined copies in 4 functions (676 bytes)

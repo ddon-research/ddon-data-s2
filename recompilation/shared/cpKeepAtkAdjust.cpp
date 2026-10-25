@@ -130,24 +130,55 @@ u16 cpKeepAtkAdjust::getCurrentUniqueId() {
 // void cpKeepAtkAdjust::setNowUniqueId(u16 uniqueId);
 
 // Address: 0x004bffd0 - 0x004c0036 (102 bytes)
-__attribute__((weak)) void cpKeepAtkAdjust::setAtkAdjust(f32 atkRate, f32 blowRate, f32 shrinkRate) {
-    // local: cAtkAdjust* pAdjust;
-    DDON_STUB("cpKeepAtkAdjust::setAtkAdjust")
-    /* stub */
+void cpKeepAtkAdjust::setAtkAdjust(f32 atkRate, f32 blowRate, f32 shrinkRate) {
+    // DWARF local not rendered: cAtkAdjust* pAdjust;
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    this->mActive = true;
+    // inferred: a temporary for the value the load at 0x4bffd7 read, used 5 times; no DWARF local holds it
+    u32 t0 = this->mNowIndex;
+    this->mKeepAtkAdjust[t0].mType = static_cast<u32>(0);
+    // inferred: a temporary for the value the load at 0x4bffed read, used twice; no DWARF local holds it
+    u16 t1 = this->mNowUniqueId;
+    this->mNowUniqueId = (static_cast<unsigned short>(t1 + static_cast<int>(1)) == static_cast<unsigned short>(0)) ? static_cast<unsigned short>(t1 + static_cast<int>(2)) : static_cast<unsigned short>(t1 + static_cast<int>(1));
+    this->mKeepAtkAdjust[t0].mUniqueId = this->mNowUniqueId;
+    this->mKeepAtkAdjust[t0].mAtkRate = atkRate;
+    this->mKeepAtkAdjust[t0].mBlowRate = blowRate;
+    this->mKeepAtkAdjust[t0].mShrinkRate = shrinkRate;
+    this->mNowIndex = ((this->mNowIndex + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (this->mNowIndex + static_cast<u32>(1)) : static_cast<u32>(0);
 }
 
 // Address: 0x004c0040 - 0x004c0095 (85 bytes)
-__attribute__((weak)) void cpKeepAtkAdjust::setMgcAdjust(f32 mgcRate) {
-    // local: cAtkAdjust* pAdjust;
-    DDON_STUB("cpKeepAtkAdjust::setMgcAdjust")
-    /* stub */
+void cpKeepAtkAdjust::setMgcAdjust(f32 mgcRate) {
+    // DWARF local not rendered: cAtkAdjust* pAdjust;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mActive = true;
+    // inferred: a temporary for the value the load at 0x4c0047 read, used 4 times; no DWARF local holds it
+    u32 t0 = this->mNowIndex;
+    this->mKeepAtkAdjust[t0].mType = static_cast<u32>(0);
+    // inferred: a temporary for the value the load at 0x4c005d read, used twice; no DWARF local holds it
+    u16 t1 = this->mNowUniqueId;
+    this->mNowUniqueId = (static_cast<unsigned short>(t1 + static_cast<int>(1)) == static_cast<unsigned short>(0)) ? static_cast<unsigned short>(t1 + static_cast<int>(2)) : static_cast<unsigned short>(t1 + static_cast<int>(1));
+    this->mKeepAtkAdjust[t0].mUniqueId = this->mNowUniqueId;
+    this->mKeepAtkAdjust[t0].mMgcRate = mgcRate;
+    this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
 }
 
 // Address: 0x004c00a0 - 0x004c0109 (105 bytes)
-__attribute__((weak)) void cpKeepAtkAdjust::setMgcBowAdjust(f32 atkRate, f32 healRate, f32 ocdRate) {
-    // local: cAtkAdjust* pAdjust;
-    DDON_STUB("cpKeepAtkAdjust::setMgcBowAdjust")
-    /* stub */
+void cpKeepAtkAdjust::setMgcBowAdjust(f32 atkRate, f32 healRate, f32 ocdRate) {
+    // DWARF local not rendered: cAtkAdjust* pAdjust;
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    this->mActive = true;
+    // inferred: a temporary for the value the load at 0x4c00a7 read, used 5 times; no DWARF local holds it
+    u32 t0 = this->mNowIndex;
+    this->mKeepAtkAdjust[t0].mType = static_cast<u32>(0);
+    // inferred: a temporary for the value the load at 0x4c00bd read, used twice; no DWARF local holds it
+    u16 t1 = this->mNowUniqueId;
+    this->mNowUniqueId = (static_cast<unsigned short>(t1 + static_cast<int>(1)) == static_cast<unsigned short>(0)) ? static_cast<unsigned short>(t1 + static_cast<int>(2)) : static_cast<unsigned short>(t1 + static_cast<int>(1));
+    this->mKeepAtkAdjust[t0].mUniqueId = this->mNowUniqueId;
+    this->mKeepAtkAdjust[t0].mMgcBowMAtkRate = atkRate;
+    this->mKeepAtkAdjust[t0].mMgcBowHealRate = healRate;
+    this->mKeepAtkAdjust[t0].mMgcBowOcdRate = ocdRate;
+    this->mNowIndex = ((this->mNowIndex + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (this->mNowIndex + static_cast<u32>(1)) : static_cast<u32>(0);
 }
 
 // Address: 0x004c0110 - 0x004c015b (75 bytes)
@@ -186,10 +217,54 @@ __attribute__((weak)) f32 cpKeepAtkAdjust::getShrinkRate(u16 uniqueId) const {
 }
 
 // Address: 0x004c02d0 - 0x004c0388 (184 bytes)
-__attribute__((weak)) void cpKeepAtkAdjust::setOcdAdjust(f32 value, u32 type) {
-    // local: cAtkAdjust* pAdjust;
-    DDON_STUB("cpKeepAtkAdjust::setOcdAdjust")
-    /* stub */
+void cpKeepAtkAdjust::setOcdAdjust(f32 value, u32 type) {
+    // DWARF local not rendered: cAtkAdjust* pAdjust;
+    // Approximate from the ELF: a place read twice with no call between; the body oracle reports this body.
+    this->mActive = true;
+    // inferred: a temporary for the value the load at 0x4c02d7 read, used 4 times; no DWARF local holds it
+    u32 t0 = this->mNowIndex;
+    this->mKeepAtkAdjust[t0].mType = type;
+    // inferred: a temporary for the value the load at 0x4c02ea read, used twice; no DWARF local holds it
+    u16 t1 = this->mNowUniqueId;
+    this->mNowUniqueId = (static_cast<unsigned short>(t1 + static_cast<int>(1)) == static_cast<unsigned short>(0)) ? static_cast<unsigned short>(t1 + static_cast<int>(2)) : static_cast<unsigned short>(t1 + static_cast<int>(1));
+    this->mKeepAtkAdjust[t0].mUniqueId = this->mNowUniqueId;
+    switch (type - static_cast<u32>(2)) {
+        case static_cast<u32>(0):
+        {
+            this->mKeepAtkAdjust[t0].mPoisonValue = value;
+            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            break;
+        }
+        case static_cast<u32>(1):
+        {
+            this->mKeepAtkAdjust[t0].mOilValue = value;
+            this->mNowIndex = ((this->mNowIndex + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (this->mNowIndex + static_cast<u32>(1)) : static_cast<u32>(0);
+            break;
+        }
+        case static_cast<u32>(2):
+        {
+            this->mKeepAtkAdjust[t0].mSleepValue = value;
+            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            break;
+        }
+        case static_cast<u32>(3):
+        {
+            this->mKeepAtkAdjust[t0].mSilentValue = value;
+            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            break;
+        }
+        case static_cast<u32>(4):
+        {
+            this->mKeepAtkAdjust[t0].mSlowValue = value;
+            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            break;
+        }
+        default:
+        {
+            this->mNowIndex = ((t0 + static_cast<u32>(1)) <= static_cast<u32>(31)) ? (t0 + static_cast<u32>(1)) : static_cast<u32>(0);
+            break;
+        }
+    }
 }
 
 // Address: 0x004c0390 - 0x004c0434 (164 bytes)

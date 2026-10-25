@@ -6,6 +6,7 @@
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemoryAllocator.h"
+#include "MtObject.h"
 #include "cContext.h"
 #include "cContextPlayerInfo.h"
 #include "cCorePointMsg.h"
@@ -525,11 +526,12 @@ bool cContextInstChar::isOcdAllTimerReset() const {
 // void cContextInstChar::setOcdTimerResetFlag(u32 bank, u32 index, bool flag);
 
 // Address: 0x00057940 - 0x0005795a (26 bytes)
-__attribute__((weak)) bool cContextInstChar::isOcdTimerReset(u32 OcdUID) const {
-    // local: u32 bank;
-    // local: u32 index;
-    DDON_STUB("cContextInstChar::isOcdTimerReset")
-    return {};
+bool cContextInstChar::isOcdTimerReset(u32 OcdUID) const {
+    // DWARF local not rendered: u32 bank;
+    // DWARF local not rendered: u32 index;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    return ((static_cast<unsigned long>(this->mOcdTimerResetBit[(OcdUID >> static_cast<u32>(12)) & static_cast<u32>(15)]) >> static_cast<unsigned long>((OcdUID - static_cast<u32>(1)) & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (13 bytes)
@@ -873,10 +875,22 @@ __attribute__((weak)) u32 cContextInstChar::getUnSendedCorePointMsgNum() const {
 }
 
 // Address: 0x00057450 - 0x0005748c (60 bytes)
-__attribute__((weak)) cCorePointMsg* cContextInstChar::getUnSendedTopCorePointMsg() const {
-    // local: u32 i;
-    DDON_STUB("cContextInstChar::getUnSendedTopCorePointMsg")
-    return nullptr;
+cCorePointMsg* cContextInstChar::getUnSendedTopCorePointMsg() const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mCorePointMsgArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: DWARF's location-less 'i' (lexical block [0x57450, 0x57488)) is the counter this loop steps (DWARF's stale constant 0)
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mCorePointMsgArray.::MtArray::mpArray[i] != static_cast<MtObject*>(nullptr)) {
+                if (static_cast<cCorePointMsg*>(this->mCorePointMsgArray.::MtArray::mpArray[i])->::cCorePointMsg::isSended() != false) {
+                } else {
+                    return static_cast<cCorePointMsg*>(this->mCorePointMsgArray.::MtArray::mpArray[i]);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mCorePointMsgArray.::MtArray::mLength);
+    }
+    return static_cast<cCorePointMsg*>(nullptr);
 }
 
 // Address: 0x00057490 - 0x00057497 (7 bytes)
@@ -886,9 +900,13 @@ u32 cContextInstChar::getCorePointMsgNum() const {
 }
 
 // Address: 0x000574a0 - 0x000574b8 (24 bytes)
-__attribute__((weak)) cCorePointMsg* cContextInstChar::getCorePointMsg(u32 index) const {
-    DDON_STUB("cContextInstChar::getCorePointMsg")
-    return nullptr;
+cCorePointMsg* cContextInstChar::getCorePointMsg(u32 index) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mCorePointMsgArray.::MtArray::mLength >= index) {
+        return static_cast<cCorePointMsg*>(this->mCorePointMsgArray.::MtArray::mpArray[index]);
+    } else {
+        return static_cast<cCorePointMsg*>(nullptr);
+    }
 }
 
 // Address: 0x000574c0 - 0x0005754a (138 bytes)

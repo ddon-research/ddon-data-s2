@@ -5,6 +5,10 @@
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "cOmComponent.h"
+#include "rModel.h"
+#include "sEffect.h"
+#include "sEffectExt.h"
+#include "sOmManager.h"
 #include "uBaseModel.h"
 #include "uCoord.h"
 #include "uSwingModel.h"
@@ -97,10 +101,21 @@ void uOmSwingModel::move() {
 }
 
 // Address: 0x00cb1cf0 - 0x00cb1d59 (105 bytes)
-__attribute__((weak)) void uOmSwingModel::kill() {
-    // local: u32 index;
-    DDON_STUB("uOmSwingModel::kill")
-    /* stub */
+void uOmSwingModel::kill() {
+    // DWARF local not rendered: u32 index;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x10 from uOmSwingModel*
+    if (this->mOmComp.mphEfc[1] != static_cast<cEfcHandle*>(nullptr)) {
+        static_cast<sEffectExt*>(::sEffect::getInstance())->::sEffectExt::endEffect(this->mOmComp.mphEfc[1], static_cast<u32>(1));
+        this->mOmComp.mphEfc[1] = static_cast<cEfcHandle*>(nullptr);
+    }
+    this->mOmComp.::cOmComponent::kill(static_cast<uBaseModel*>(this));
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) >> static_cast<unsigned int>(8)) & static_cast<unsigned int>(32)) != static_cast<unsigned int>(0)) {
+        return;
+    }
+    if ((this->::cUnit::mBeFlag - static_cast<u32>(1)) <= static_cast<u32>(1)) {
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16)) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(16))) & static_cast<unsigned int>(4294967288)) | static_cast<unsigned int>(3);
+    }
 }
 
 // Address: 0x00cb1d60 - 0x00cb1d6c (12 bytes)
@@ -131,10 +146,25 @@ void uOmSwingModel::draw(cDraw* pdraw) {
 }
 
 // Address: 0x00cb1d80 - 0x00cb1dd8 (88 bytes)
-__attribute__((weak)) void uOmSwingModel::updateLodDistance() {
-    // local: MODEL_INFO ModelInfo;
-    DDON_STUB("uOmSwingModel::updateLodDistance")
-    /* stub */
+void uOmSwingModel::updateLodDistance() {
+    // DWARF local not rendered: MODEL_INFO ModelInfo;
+    // Approximate from the ELF: effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0xcb1d87, held ahead of the effects the ELF orders after it
+    sOmManager* t0 = ::sOmManager::getInstance();
+    // inferred: a temporary for the value the load at 0xcb1d8a read, used 3 times; no DWARF local holds it
+    f32 t1 = t0->mAQCLODScale;
+    if (t1 > 0.0f) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xcb1d9c, held ahead of the effects the ELF orders after it
+        rModel* t2 = this->::uBaseModel::mpModel;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xcb1da3, held ahead of the effects the ELF orders after it
+        s32 t3 = t2->mModelInfo.middist;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0xcb1dab, held ahead of the effects the ELF orders after it
+        float t4 = 1.0f;
+        // inferred: a temporary for the value the load at 0xcb1dbb read, used once; no DWARF local holds it
+        s32 t5 = t2->mModelInfo.lowdist;
+        this->::uBaseModel::mLODMidDist = (t4 / t1) * static_cast<float>(t3);
+        this->::uBaseModel::mLODLowDist = (t4 / t1) * static_cast<float>(t5);
+    }
 }
 
 // Address: 0x00cb1de0 - 0x00cb1e55 (117 bytes)

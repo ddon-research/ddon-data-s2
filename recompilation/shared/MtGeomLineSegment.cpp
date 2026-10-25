@@ -210,19 +210,87 @@ bool MtGeomLineSegment::isIntersect(const MtCylinder& cylinder) const {
 }
 
 // Address: 0x01be5090 - 0x01be5154 (196 bytes)
-__attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtVector3& pos, MtContact* pContact) const {
-    // local: f32 t;
-    // local: bool ret;
-    DDON_STUB("MtGeomLineSegment::getClosest")
-    return {};
+bool MtGeomLineSegment::getClosest(const MtVector3& pos, MtContact* pContact) const {
+    // DWARF local not rendered: bool ret;
+    // Approximate from the ELF: a place read twice with no call between; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    f32 t;
+    // inferred: a temporary for the result of the call at 0x1be50b4, used twice; no DWARF local holds it
+    f32 t1 = ::MtCollision::sqrDistance(this->mLineSegment, pos, &t);
+    if (pContact != static_cast<MtContact*>(nullptr)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50be, held ahead of the effects the ELF orders after it
+        float t2 = 1.1920929e-7f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50ca, held ahead of the effects the ELF orders after it
+        f32 t3 = t;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50d6, held ahead of the effects the ELF orders after it
+        const f32 t4 = ::MtVector3::Zero.x;
+        pContact->pos.x = t4;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50de, held ahead of the effects the ELF orders after it
+        const f32 t5 = ::MtVector3::Zero.y;
+        pContact->pos.y = t5;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50e8, held ahead of the effects the ELF orders after it
+        const f32 t6 = ::MtVector3::Zero.z;
+        pContact->pos.z = t6;
+        pContact->pos.pad_ = 0.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be50f9, held ahead of the effects the ELF orders after it
+        const f32 t7 = ::MtVector3::Zero.x;
+        pContact->normal.x = t7;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5102, held ahead of the effects the ELF orders after it
+        const f32 t8 = ::MtVector3::Zero.y;
+        pContact->normal.y = t8;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be510c, held ahead of the effects the ELF orders after it
+        const f32 t9 = ::MtVector3::Zero.z;
+        pContact->normal.z = t9;
+        pContact->normal.pad_ = 0.0f;
+        pContact->distance = 0.0f;
+        pContact->toi = t3;
+        pContact->bFind = t2 > t1;
+        return 1.1920929e-7f > t1;
+    } else {
+        return 1.1920929e-7f > t1;
+    }
 }
 
 // Address: 0x01be5160 - 0x01be522e (206 bytes)
-__attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtLine& line, MtContact* pContact) const {
-    // local: f32 t;
-    // local: bool ret;
-    DDON_STUB("MtGeomLineSegment::getClosest")
-    return {};
+bool MtGeomLineSegment::getClosest(const MtLine& line, MtContact* pContact) const {
+    // DWARF local not rendered: bool ret;
+    // Approximate from the ELF: a place read twice with no call between; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5184, held ahead of the effects the ELF orders after it
+    float t0 = 0.001f;
+    f32 t;
+    // inferred: a temporary for the result of the call at 0x1be518e, used twice; no DWARF local holds it
+    f32 t2 = ::MtCollision::sqrDistance(this->mLineSegment, line, &t, static_cast<f32*>(nullptr), t0);
+    if (pContact != static_cast<MtContact*>(nullptr)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5198, held ahead of the effects the ELF orders after it
+        float t3 = 1.1920929e-7f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51a4, held ahead of the effects the ELF orders after it
+        f32 t4 = t;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51b0, held ahead of the effects the ELF orders after it
+        const f32 t5 = ::MtVector3::Zero.x;
+        pContact->pos.x = t5;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51b8, held ahead of the effects the ELF orders after it
+        const f32 t6 = ::MtVector3::Zero.y;
+        pContact->pos.y = t6;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51c2, held ahead of the effects the ELF orders after it
+        const f32 t7 = ::MtVector3::Zero.z;
+        pContact->pos.z = t7;
+        pContact->pos.pad_ = 0.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51d3, held ahead of the effects the ELF orders after it
+        const f32 t8 = ::MtVector3::Zero.x;
+        pContact->normal.x = t8;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51dc, held ahead of the effects the ELF orders after it
+        const f32 t9 = ::MtVector3::Zero.y;
+        pContact->normal.y = t9;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be51e6, held ahead of the effects the ELF orders after it
+        const f32 t10 = ::MtVector3::Zero.z;
+        pContact->normal.z = t10;
+        pContact->normal.pad_ = 0.0f;
+        pContact->distance = 0.0f;
+        pContact->toi = t4;
+        pContact->bFind = t3 > t2;
+        return 1.1920929e-7f > t2;
+    } else {
+        return 1.1920929e-7f > t2;
+    }
 }
 
 // Address: 0x01be5230 - 0x01be5304 (212 bytes)
@@ -234,11 +302,46 @@ __attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtRay& ray, MtCon
 }
 
 // Address: 0x01be5310 - 0x01be53de (206 bytes)
-__attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtLineSegment& ls, MtContact* pContact) const {
-    // local: f32 t;
-    // local: bool ret;
-    DDON_STUB("MtGeomLineSegment::getClosest")
-    return {};
+bool MtGeomLineSegment::getClosest(const MtLineSegment& ls, MtContact* pContact) const {
+    // DWARF local not rendered: bool ret;
+    // Approximate from the ELF: a place read twice with no call between; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5334, held ahead of the effects the ELF orders after it
+    float t0 = 0.001f;
+    f32 t;
+    // inferred: a temporary for the result of the call at 0x1be533e, used twice; no DWARF local holds it
+    f32 t2 = ::MtCollision::sqrDistance(this->mLineSegment, ls, &t, static_cast<f32*>(nullptr), t0);
+    if (pContact != static_cast<MtContact*>(nullptr)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5348, held ahead of the effects the ELF orders after it
+        float t3 = 1.1920929e-7f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5354, held ahead of the effects the ELF orders after it
+        f32 t4 = t;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5360, held ahead of the effects the ELF orders after it
+        const f32 t5 = ::MtVector3::Zero.x;
+        pContact->pos.x = t5;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5368, held ahead of the effects the ELF orders after it
+        const f32 t6 = ::MtVector3::Zero.y;
+        pContact->pos.y = t6;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5372, held ahead of the effects the ELF orders after it
+        const f32 t7 = ::MtVector3::Zero.z;
+        pContact->pos.z = t7;
+        pContact->pos.pad_ = 0.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5383, held ahead of the effects the ELF orders after it
+        const f32 t8 = ::MtVector3::Zero.x;
+        pContact->normal.x = t8;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be538c, held ahead of the effects the ELF orders after it
+        const f32 t9 = ::MtVector3::Zero.y;
+        pContact->normal.y = t9;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5396, held ahead of the effects the ELF orders after it
+        const f32 t10 = ::MtVector3::Zero.z;
+        pContact->normal.z = t10;
+        pContact->normal.pad_ = 0.0f;
+        pContact->distance = 0.0f;
+        pContact->toi = t4;
+        pContact->bFind = t3 > t2;
+        return 1.1920929e-7f > t2;
+    } else {
+        return 1.1920929e-7f > t2;
+    }
 }
 
 // Address: 0x01be53e0 - 0x01be5490 (176 bytes)
@@ -282,11 +385,42 @@ __attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtPlane& plane, M
 }
 
 // Address: 0x01be5760 - 0x01be580a (170 bytes)
-__attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtPlaneXZ& planeXZ, MtContact* pContact) const {
-    // local: f32 t;
-    // local: bool ret;
-    DDON_STUB("MtGeomLineSegment::getClosest")
-    return {};
+bool MtGeomLineSegment::getClosest(const MtPlaneXZ& planeXZ, MtContact* pContact) const {
+    // DWARF local not rendered: bool ret;
+    // Approximate from the ELF: a place read twice with no call between; effects written one statement each in the ELF's order, the values read before a later effect held in temporaries; the body oracle reports this body.
+    f32 t;
+    // inferred: a temporary for the result of the call at 0x1be5786, used twice; no DWARF local holds it
+    bool t0 = ::MtCollision::closest(this->mLineSegment, planeXZ, &t, static_cast<MtContact*>(nullptr));
+    if (pContact != static_cast<MtContact*>(nullptr)) {
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be5790, held ahead of the effects the ELF orders after it
+        f32 t2 = t;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be579c, held ahead of the effects the ELF orders after it
+        const f32 t3 = ::MtVector3::Zero.x;
+        pContact->pos.x = t3;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57a4, held ahead of the effects the ELF orders after it
+        const f32 t4 = ::MtVector3::Zero.y;
+        pContact->pos.y = t4;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57ae, held ahead of the effects the ELF orders after it
+        const f32 t5 = ::MtVector3::Zero.z;
+        pContact->pos.z = t5;
+        pContact->pos.pad_ = 0.0f;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57bf, held ahead of the effects the ELF orders after it
+        const f32 t6 = ::MtVector3::Zero.x;
+        pContact->normal.x = t6;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57c8, held ahead of the effects the ELF orders after it
+        const f32 t7 = ::MtVector3::Zero.y;
+        pContact->normal.y = t7;
+        // inferred: an ordered temporary, read before a later effect: the value read at 0x1be57d2, held ahead of the effects the ELF orders after it
+        const f32 t8 = ::MtVector3::Zero.z;
+        pContact->normal.z = t8;
+        pContact->normal.pad_ = 0.0f;
+        pContact->distance = 0.0f;
+        pContact->toi = t2;
+        pContact->bFind = t0;
+        return pContact->bFind;
+    } else {
+        return t0;
+    }
 }
 
 // Address: 0x01be5810 - 0x01be58c0 (176 bytes)

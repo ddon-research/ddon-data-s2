@@ -68,6 +68,7 @@ class cInputTextKeyboardHook;
 class cItemParam;
 class cMenuCancelClanScoutEntry;
 class cMenuLeaveGroupChat;
+class cMenuOnlineShop;
 class cResource;
 namespace nGUI { struct FLOW; }
 namespace nGUIExt { struct stMsgAnalyzerWork; }
@@ -93,8 +94,11 @@ class uGUICaplinkFriendList;
 class uGUICaplinkMenuBase;
 class uGUICaplinkProfile;
 class uGUICaplinkTalk;
+class uGUICaplinkTrophyReceive;
 class uGUIChargesHUD;
+class uGUIContentsBoard;
 class uGUIGPShop;
+class uGUIGameMenu;
 class uGUIGaugeSkill;
 class uGUIGiveAndTake;
 class uGUIInfo;
@@ -105,11 +109,17 @@ class uGUIMenuComm;
 class uGUIMenuTutorial;
 class uGUIMyRoom;
 class uGUINewspaper;
+class uGUINpcWindow;
+class uGUIOption;
 class uGUIPhoto;
+class uGUIPhotoAlbum;
 class uGUIPopCmd01;
 class uGUIPopNumber01;
 class uGUIQuestList;
+class uGUIShopBuy;
+class uGUIShopTitle;
 class uGUISystemMsg;
+class uGUIUseItemBase;
 class uUIMockUp;
 
 // Declarations
@@ -146,6 +156,8 @@ class uGUIBase : public uGUI
     friend class cMenuCancelClanScoutEntry;
     // inferred: cMenuLeaveGroupChat::moveLeaveGroupChat names uGUIBase::mBasePointerPrio
     friend class cMenuLeaveGroupChat;
+    // inferred: cMenuOnlineShop::moveMenuOnlineShop names uGUIBase::mResult
+    friend class cMenuOnlineShop;
     // inferred: sGUIExt::isTelopFSMEnd names uGUIBase::mResult
     friend class sGUIExt;
     // inferred: sTalkManager::isEndGUISingleton names uGUIBase::mResult
@@ -164,6 +176,8 @@ class uGUIBase : public uGUI
     friend class uGUICaplinkMenuBase;
     // inferred: uGUICaplinkTalk::evCtrlDecide names uGUIBase::mpGUIMsgs.elems[0]
     friend class uGUICaplinkTalk;
+    // inferred: uGUICaplinkTrophyReceive::kill names uGUIBase::mEndType
+    friend class uGUICaplinkTrophyReceive;
     // inferred: uGUIGPShop::kill names uGUIBase::mEndType
     friend class uGUIGPShop;
     // inferred: uGUIItemBase01::updateOnlineShopWait names uGUIBase::mResult
@@ -176,10 +190,16 @@ class uGUIBase : public uGUI
     friend class uGUIMenuTutorial;
     // inferred: uGUINewspaper::initRankingActiveControl names uGUIBase::mBasePointerPrio
     friend class uGUINewspaper;
+    // inferred: uGUIOption::execDialog names uGUIBase::mResult
+    friend class uGUIOption;
     // inferred: uGUIPopCmd01::addItemSystemMenu names uGUIBase::mpGUIMsgs.elems[1]
     friend class uGUIPopCmd01;
+    // inferred: uGUIShopBuy::isMoveDialog names uGUIBase::mResult
+    friend class uGUIShopBuy;
     // inferred: uGUISystemMsg::updateStop names uGUIBase::mIsWindowActive
     friend class uGUISystemMsg;
+    // inferred: uGUIUseItemBase::updateWaitPopup names uGUIBase::mResult
+    friend class uGUIUseItemBase;
 public:
     enum GUI_RESULT
     {
@@ -1500,15 +1520,21 @@ public:
 public:
     class cSupportInstAnim : public uGUIBase::cSupportBase
     {
+        // inferred: uGUIBoxGachaInfo::setBoxFlag names uGUIBoxGachaInfo::mResetBtn.::uGUIBase::cSupportInstAnim::mpInstance
+        friend class uGUIBoxGachaInfo;
         // inferred: uGUIBrowserBG::sleep names uGUIBrowserBG::mClose.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIBrowserBG;
         // inferred: uGUICaplinkProfile::setupGame names uGUICaplinkProfile::mGame.mListCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUICaplinkProfile;
         // inferred: uGUIGPShop::shiftHistoryList names uGUIGPShop::mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIGPShop;
+        // inferred: uGUIGameMenu::updateWakeup names uGUIGameMenu::mCursor.::uGUIBase::cSupportInstAnim::mpInstance
+        friend class uGUIGameMenu;
         // inferred: uGUINewspaper::updateRanking names uGUINewspaper::mAreaListCursor.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUINewspaper;
-        // inferred: uGUIPhoto::initFrame names uGUIPhoto::mCursor.::uGUIBase::cSupportInstAnim::mpInstance
+        // inferred: uGUINpcWindow::updateInit names uGUINpcWindow::mToolTip.::uGUIBase::cSupportInstAnim::mpInstance
+        friend class uGUINpcWindow;
+        // inferred: uGUIPhoto::initPhoto names uGUIPhoto::mCursor.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIPhoto;
         // inferred: uGUIQuestList::clearInfo names uGUIQuestList::mInfo.mScrollCtrl.::uGUIBase::cScrollCtrl::mBar.::uGUIBase::cSupportInstAnim::mpInstance
         friend class uGUIQuestList;
@@ -2218,7 +2244,9 @@ public:
 public:
     class cReferenceUICloseBtn : public uGUIBase::cReferenceUIBase
     {
-        // inferred: uGUIPhoto::initFrame names uGUIPhoto::mClose.mEnable
+        // inferred: uGUIContentsBoard::moveInput names uGUIQuestBoardBase::mMain.mClose.mEnable
+        friend class uGUIContentsBoard;
+        // inferred: uGUIPhoto::initPhoto names uGUIPhoto::mClose.mEnable
         friend class uGUIPhoto;
     public:
         class MyDTI;
@@ -2613,6 +2641,8 @@ public:
 public:
     class cReferenceUIBtnGuide : public uGUIBase::cReferenceUIBase
     {
+        // inferred: uGUIShopBuy::initCommon names uGUIShopBuy::mGuide.mpGuideDataPtr
+        friend class uGUIShopBuy;
     public:
         enum GUIDE_TYPE
         {
@@ -2912,6 +2942,8 @@ public:
     {
         // inferred: uGUIChargesHUD::addData names uGUIChargesHUD::mRefCharges[1].mSizeWFix
         friend class uGUIChargesHUD;
+        // inferred: uGUIShopTitle::setup names uGUIShopTitle::mChargesInfo.mSizeWFix
+        friend class uGUIShopTitle;
     public:
         enum
         {
@@ -4333,6 +4365,8 @@ public:
     {
         // inferred: uGUIPopNumber01::evCtrlNumDecide names uGUIPopNumber01::mRefNumBox.mMode
         friend class uGUIPopNumber01;
+        // inferred: uGUIShopBuy::initSell names uGUIShopBuy::mNumBox0.mIsUseComma
+        friend class uGUIShopBuy;
     public:
         enum MODE
         {
@@ -4690,6 +4724,8 @@ public:
         friend class uGUICaplinkFriendList;
         // inferred: uGUICaplinkTalk::moveEvent names uGUICaplinkTalk::mMain.mPage.mNum
         friend class uGUICaplinkTalk;
+        // inferred: uGUIPhotoAlbum::moveEvent names uGUIPhotoAlbum::mFull.mNumPageBtn.mNum
+        friend class uGUIPhotoAlbum;
     public:
         enum
         {
@@ -5018,10 +5054,14 @@ public:
     {
         // inferred: uGUIBoxGachaInfo::evAdjustTab names uGUIBoxGachaInfo::mList.mListCtrl.mpOwner
         friend class uGUIBoxGachaInfo;
+        // inferred: uGUIContentsBoard::moveEvent names uGUIQuestBoardBase::mList.mListCtrl.mIsDecide
+        friend class uGUIContentsBoard;
         // inferred: uGUIInfo::evCtrlMouse names uGUIInfo::mList.mListCtrl.mInfoArray.::MtArray::mLength
         friend class uGUIInfo;
         // inferred: uGUIKeyConfig::getCategoryListIndex names uGUIKeyConfig::mCategoryList.::uGUIKeyConfig::cList::mScrollList.mpVCtrl
         friend class uGUIKeyConfig;
+        // inferred: uGUIMenuComm::updateWaitTmpPhrase names uGUIMenuComm::mScrollList.mpVCtrl
+        friend class uGUIMenuComm;
         // inferred: uGUIMenuTutorial::updateWaitCaption names uGUIMenuTutorial::mScrollListCaption.mIsDecide
         friend class uGUIMenuTutorial;
         // inferred: uGUIMyRoom::getItemIndex names uGUIMyRoom::mList.mScrollList.mpVCtrl
@@ -5174,6 +5214,8 @@ public:
 public:
     class cReferenceUIPullDown : public uGUIBase::cReferenceUIBase
     {
+        // inferred: uGUIMenuComm::evCtrlVLEditDecide names uGUIMenuComm::mPullDownEmotCtgr.mState
+        friend class uGUIMenuComm;
     public:
         enum STATE
         {
@@ -6079,6 +6121,11 @@ inline rGUIMessage* uGUIBase::getMsgClanProfileItem() const {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline bool uGUIBase::isWindowActive() const {
+    return this->mIsWindowActive;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline nGUIExt::stWindowActive& uGUIBase::getWindowActive() {
     return this->mWindowActive;
@@ -6131,6 +6178,22 @@ inline uGUIBase::cVerticalList* uGUIBase::cScrollList::getCtrl() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+inline uGUIBase::cCalcMovePos::~cCalcMovePos() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s32 uGUIBase::cMatrix::getCurrentRow() const {
+    return this->mCurrentRow;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline s32 uGUIBase::cMatrix::getRow() const {
+    return this->mRow;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline bool uGUIBase::cTexRefJpegDownloader::isReplaceTex() const {
     return this->mIsReplaceTex;
 }
@@ -6154,4 +6217,10 @@ inline s32 uGUIBase::cReferenceUINumBox::getCurrentNum() const {
 inline uGUIBase::cReferenceUIPageDot::cPageDotWork::cPageDotWork() {
     this->mpObj = static_cast<cGUIObjTexture*>(nullptr);
     this->mpInst = static_cast<cGUIInstAnimation*>(nullptr);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool uGUIBase::cReferenceUIRadioButton::cObject::isSelect() {
+    return this->mIsSelect;
 }

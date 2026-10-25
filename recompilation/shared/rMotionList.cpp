@@ -73,9 +73,14 @@ MT_CTSTR rMotionList::getExt() const {
 // u32 rMotionList::getMotionNum() const;
 
 // Address: 0x011d8ad0 - 0x011d8aed (29 bytes)
-__attribute__((weak)) nMotion::MOTION_INFO* rMotionList::getMotionInfo(u32 no) const {
-    DDON_STUB("rMotionList::getMotionInfo")
-    return nullptr;
+nMotion::MOTION_INFO* rMotionList::getMotionInfo(u32 no) const {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mpHdr != static_cast<rMotionList::MOTION_LIST_HDR*>(nullptr)) {
+        if (no < this->mpHdr->motion_num) {
+            return this->mpHdr->pmotion[no];
+        }
+    }
+    return static_cast<nMotion::MOTION_INFO*>(nullptr);
 }
 
 // Address: 0x011d8af0 - 0x011d8cd4 (484 bytes)

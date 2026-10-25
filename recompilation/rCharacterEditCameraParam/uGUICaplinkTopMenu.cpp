@@ -10,10 +10,22 @@
 #include "../shared/cControl.h"
 #include "../shared/cResource.h"
 #include "../shared/cUIObject.h"
+#include "../shared/cUnit.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
+#include "uGUICaplinkChat.h"
+#include "uGUICaplinkFriendList.h"
+#include "uGUICaplinkProfile.h"
+#include "uGUICaplinkProfileEdit.h"
+#include "uGUICaplinkTalk.h"
+#include "uGUICaplinkTrophyList.h"
+#include "uGUICaplinkTrophyReceive.h"
+#include "uGUICaplinkTrophyTop.h"
+#include "uGUISystemMsg.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -388,9 +400,47 @@ __attribute__((weak)) void uGUICaplinkTopMenu::setup() {
 }
 
 // Address: 0x009ddc30 - 0x009ddd76 (326 bytes)
-__attribute__((weak)) void uGUICaplinkTopMenu::kill() {
-    DDON_STUB("uGUICaplinkTopMenu::kill")
-    /* stub */
+void uGUICaplinkTopMenu::kill() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+        this->mpGUISystemMsg->kill();
+        this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+    }
+    if (this->mpGUICaplinkProfile != static_cast<uGUICaplinkProfile*>(nullptr)) {
+        this->mpGUICaplinkProfile->kill();
+        this->mpGUICaplinkProfile = static_cast<uGUICaplinkProfile*>(nullptr);
+    }
+    if (this->mpGUICaplinkFriendList != static_cast<uGUICaplinkFriendList*>(nullptr)) {
+        this->mpGUICaplinkFriendList->kill();
+        this->mpGUICaplinkFriendList = static_cast<uGUICaplinkFriendList*>(nullptr);
+    }
+    if (this->mpGUICaplinkProfileEdit != static_cast<uGUICaplinkProfileEdit*>(nullptr)) {
+        this->mpGUICaplinkProfileEdit->kill();
+        this->mpGUICaplinkProfileEdit = static_cast<uGUICaplinkProfileEdit*>(nullptr);
+    }
+    if (this->mpGUICaplinkTalk != static_cast<uGUICaplinkTalk*>(nullptr)) {
+        this->mpGUICaplinkTalk->kill();
+        this->mpGUICaplinkTalk = static_cast<uGUICaplinkTalk*>(nullptr);
+    }
+    if (this->mpGUICaplinkChat != static_cast<uGUICaplinkChat*>(nullptr)) {
+        this->mpGUICaplinkChat->kill();
+        this->mpGUICaplinkChat = static_cast<uGUICaplinkChat*>(nullptr);
+    }
+    if (this->mpGUICaplinkTrophyTop != static_cast<uGUICaplinkTrophyTop*>(nullptr)) {
+        this->mpGUICaplinkTrophyTop->kill();
+        this->mpGUICaplinkTrophyTop = static_cast<uGUICaplinkTrophyTop*>(nullptr);
+    }
+    if (this->mpGUICaplinkTrophyList != static_cast<uGUICaplinkTrophyList*>(nullptr)) {
+        this->mpGUICaplinkTrophyList->kill();
+        this->mpGUICaplinkTrophyList = static_cast<uGUICaplinkTrophyList*>(nullptr);
+    }
+    if (this->mpGUICaplinkTrophyReceive != static_cast<uGUICaplinkTrophyReceive*>(nullptr)) {
+        this->mpGUICaplinkTrophyReceive->kill();
+        this->mpGUICaplinkTrophyReceive = static_cast<uGUICaplinkTrophyReceive*>(nullptr);
+    }
+    static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::deleteCaplinkIcon();
+    this->::uGUIBase::kill();
 }
 
 // Address: 0x009ddd80 - 0x009ddd85 (5 bytes)
@@ -400,9 +450,63 @@ void uGUICaplinkTopMenu::move() {
 }
 
 // Address: 0x009ddd90 - 0x009dded5 (325 bytes)
-__attribute__((weak)) void uGUICaplinkTopMenu::updatePtr() {
-    DDON_STUB("uGUICaplinkTopMenu::updatePtr")
-    /* stub */
+void uGUICaplinkTopMenu::updatePtr() {
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->mpGUISystemMsg != static_cast<uGUISystemMsg*>(nullptr)) {
+        if (this->mpGUISystemMsg->::cUnit::isEnable()) {
+        } else {
+            this->mpGUISystemMsg = static_cast<uGUISystemMsg*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkProfile != static_cast<uGUICaplinkProfile*>(nullptr)) {
+        if (this->mpGUICaplinkProfile->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkProfile = static_cast<uGUICaplinkProfile*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkFriendList != static_cast<uGUICaplinkFriendList*>(nullptr)) {
+        if (this->mpGUICaplinkFriendList->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkFriendList = static_cast<uGUICaplinkFriendList*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkProfileEdit != static_cast<uGUICaplinkProfileEdit*>(nullptr)) {
+        if (this->mpGUICaplinkProfileEdit->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkProfileEdit = static_cast<uGUICaplinkProfileEdit*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkTalk != static_cast<uGUICaplinkTalk*>(nullptr)) {
+        if (this->mpGUICaplinkTalk->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkTalk = static_cast<uGUICaplinkTalk*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkChat != static_cast<uGUICaplinkChat*>(nullptr)) {
+        if (this->mpGUICaplinkChat->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkChat = static_cast<uGUICaplinkChat*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkTrophyTop != static_cast<uGUICaplinkTrophyTop*>(nullptr)) {
+        if (this->mpGUICaplinkTrophyTop->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkTrophyTop = static_cast<uGUICaplinkTrophyTop*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkTrophyList != static_cast<uGUICaplinkTrophyList*>(nullptr)) {
+        if (this->mpGUICaplinkTrophyList->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkTrophyList = static_cast<uGUICaplinkTrophyList*>(nullptr);
+        }
+    }
+    if (this->mpGUICaplinkTrophyReceive != static_cast<uGUICaplinkTrophyReceive*>(nullptr)) {
+        if (this->mpGUICaplinkTrophyReceive->::cUnit::isEnable()) {
+        } else {
+            this->mpGUICaplinkTrophyReceive = static_cast<uGUICaplinkTrophyReceive*>(nullptr);
+        }
+    }
 }
 
 // Address: 0x009dfe00 - 0x009dfe82 (130 bytes)
@@ -437,11 +541,25 @@ __attribute__((weak)) void uGUICaplinkTopMenu::setChatInfo(s32 id_type, MT_CTSTR
 // MtTypedArray<cCaptrophyContentData>& uGUICaplinkTopMenu::getCaptrophyContentData();
 
 // Address: 0x009e0330 - 0x009e0370 (64 bytes)
-__attribute__((weak)) cCaptrophyData* uGUICaplinkTopMenu::getCaptrophyData(s32 id) {
-    // local: u32 i;
-    // local: cCaptrophyData* pData;
-    DDON_STUB("uGUICaplinkTopMenu::getCaptrophyData")
-    return nullptr;
+cCaptrophyData* uGUICaplinkTopMenu::getCaptrophyData(s32 id) {
+    // DWARF local not rendered: cCaptrophyData* pData;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xd38 from uGUICaplinkTopMenu*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x318 from MtObject*
+    // inferred: a value cast to the type its use takes: s32 used as unsigned int
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(3384))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mCaptrophyData.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mCaptrophyData.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(792))) != static_cast<unsigned int>(id)) {
+                } else {
+                    return static_cast<cCaptrophyData*>(this->mCaptrophyData.::MtArray::getBuffer()[static_cast<int>(i)]);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(3384))));
+    }
+    return static_cast<cCaptrophyData*>(nullptr);
 }
 
 // Address: 0x009e0b80 - 0x009e0c02 (130 bytes)
@@ -507,20 +625,58 @@ __attribute__((weak)) void uGUICaplinkTopMenu::setupCaptrophyRelationInfo() {
 }
 
 // Address: 0x009e0cd0 - 0x009e0d17 (71 bytes)
-__attribute__((weak)) void uGUICaplinkTopMenu::getCaptrophyCompleteNum(u32& out_num, u32& out_total) {
-    // local: u32 i;
-    // local: const cCaptrophyData* pTrophy;
-    DDON_STUB("uGUICaplinkTopMenu::getCaptrophyCompleteNum")
-    /* stub */
+void uGUICaplinkTopMenu::getCaptrophyCompleteNum(u32& out_num, u32& out_total) {
+    // DWARF local not rendered: const cCaptrophyData* pTrophy;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x31d from MtObject*
+    out_num = static_cast<unsigned int>(0);
+    out_total = static_cast<unsigned int>(0);
+    if (this->mCaptrophyData.::MtArray::mLength != static_cast<u32>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if (this->mCaptrophyData.::MtArray::getBuffer()[static_cast<int>(i)] != static_cast<MtObject*>(nullptr)) {
+                out_total = (out_total) + static_cast<unsigned int>(1);
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mCaptrophyData.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(797))) == static_cast<unsigned char>(1)) {
+                    out_num = (out_num) + static_cast<unsigned int>(1);
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->mCaptrophyData.::MtArray::mLength);
+    }
 }
 
 // Address: 0x009e0d20 - 0x009e0d84 (100 bytes)
-__attribute__((weak)) void uGUICaplinkTopMenu::getCaptrophyCompleteNum(const cCaptrophyContentData* pContent, u32& out_num, u32& out_total, u32& out_receive) {
-    // local: const MtTypedArray<cCaptrophyRelationData>& trophy;
-    // local: u32 i;
-    // local: const cCaptrophyRelationData* pTrophy;
-    DDON_STUB("uGUICaplinkTopMenu::getCaptrophyCompleteNum")
-    /* stub */
+void uGUICaplinkTopMenu::getCaptrophyCompleteNum(const cCaptrophyContentData* pContent, u32& out_num, u32& out_total, u32& out_receive) {
+    // DWARF local not rendered: const MtTypedArray<cCaptrophyRelationData>& trophy;
+    // DWARF local not rendered: const cCaptrophyRelationData* pTrophy;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned long at 0x20 from const cCaptrophyContentData*
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x325 from unsigned long
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x326 from unsigned long
+    out_num = static_cast<unsigned int>(0);
+    out_total = static_cast<unsigned int>(0);
+    out_receive = static_cast<unsigned int>(0);
+    if (pContent == static_cast<const cCaptrophyContentData*>(nullptr)) {
+        return;
+    }
+    if (pContent->mTrophy.::MtArray::mLength == static_cast<u32>(0)) {
+        return;
+    }
+    u32 i = static_cast<u32>(0);
+    do {
+        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(pContent) + static_cast<long>(32))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) != static_cast<unsigned long>(0)) {
+            out_total = (out_total) + static_cast<unsigned int>(1);
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(pContent) + static_cast<long>(32))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(805))) == static_cast<unsigned char>(1)) {
+                out_num = (out_num) + static_cast<unsigned int>(1);
+            }
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(pContent) + static_cast<long>(32))) + static_cast<unsigned long>(i * static_cast<u32>(8))) + static_cast<long>(0))) + static_cast<long>(806))) == static_cast<unsigned char>(1)) {
+                out_receive = (out_receive) + static_cast<unsigned int>(1);
+            }
+        }
+        i += static_cast<u32>(1);
+    } while (i < pContent->mTrophy.::MtArray::mLength);
 }
 
 // Address: 0x009decb0 - 0x009df294 (1508 bytes)
@@ -804,9 +960,19 @@ u32 uGUICaplinkTopMenu::evCtrlAdjustCursor(cControl::Message* msg) {
 }
 
 // Address: 0x009de850 - 0x009de88c (60 bytes)
-__attribute__((weak)) u32 uGUICaplinkTopMenu::evCtrlMouseClick(cControl::Message* msg) {
-    DDON_STUB("uGUICaplinkTopMenu::evCtrlMouseClick")
-    return {};
+u32 uGUICaplinkTopMenu::evCtrlMouseClick(cControl::Message* msg) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        msg->changeSE = static_cast<u32>(0);
+        if (msg->pSender != static_cast<cControl*>(nullptr)) {
+            if (msg->pSender == this->mpListCtrl) {
+                msg->changeSE = static_cast<u32>(4);
+                this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+                return static_cast<u32>(1);
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

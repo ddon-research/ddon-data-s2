@@ -3,9 +3,11 @@
 #include "rCharacterEdit.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtDataWriter.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/MtSerializer.h"
 #include "../shared/cEditParam.h"
 #include "../shared/cResource.h"
 #ifndef DDON_STUB
@@ -93,14 +95,23 @@ __attribute__((weak)) void rCharacterEdit::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x00651fc0 - 0x00652097 (215 bytes)
-__attribute__((weak)) bool rCharacterEdit::load(MtStream& in) {
-    // local: MtSerializer sz;
-    // local: MtDataReader r;
-    // local: u32 magic;
-    // local: u32 version;
-    // local: bool ret;
-    DDON_STUB("rCharacterEdit::load")
-    return {};
+bool rCharacterEdit::load(MtStream& in) {
+    // DWARF local not rendered: bool ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    MtSerializer sz(static_cast<s32>(65536));
+    MtDataReader r(in, static_cast<u32>(4096));
+    u32 magic = (&r)->readU32();
+    u32 version = (&r)->readU32();
+    if (magic == static_cast<u32>(5522501)) {
+        if (version == static_cast<u32>(23)) {
+            if (this->mpEditParam != static_cast<cEditParam*>(nullptr)) {
+                // inferred: a temporary for the result of the call at 0x65204d, used once; no DWARF local holds it
+                bool t2 = this->mpEditParam->::cEditParam::load(r);
+                return t2;
+            }
+        }
+    }
+    return false;
 }
 
 // Address: 0x006520a0 - 0x00652144 (164 bytes)
@@ -130,11 +141,11 @@ void rCharacterEdit::copy(const rCharacterEdit* pSrc) {
 }
 
 // Address: 0x00652170 - 0x00652190 (32 bytes)
-__attribute__((weak)) u16 rCharacterEdit::toU16(f32 x, f32 place) {
-    // local: f32 val;
-    // local: u16 ret;
-    DDON_STUB("rCharacterEdit::toU16")
-    return {};
+u16 rCharacterEdit::toU16(f32 x, f32 place) {
+    // DWARF local not rendered: f32 val;
+    // DWARF local not rendered: u16 ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned short>(static_cast<int>(30000.0f + ((x + (0.5f * place)) / place)));
 }
 
 // Address: 0x00652190 - 0x006521a1 (17 bytes)
@@ -145,14 +156,14 @@ __attribute__((weak)) f32 rCharacterEdit::toF32(u16 x, f32 place) {
 }
 
 // Address: 0x006521d0 - 0x00652205 (53 bytes)
-__attribute__((weak)) u32 rCharacterEdit::toSlider(f32 x, f32 min, f32 max, u32 div) {
-    // local: f32 range;
-    // local: f32 delta;
-    // local: f32 half;
-    // local: f32 xx;
-    // local: u32 ret;
-    DDON_STUB("rCharacterEdit::toSlider")
-    return {};
+u32 rCharacterEdit::toSlider(f32 x, f32 min, f32 max, u32 div) {
+    // DWARF local not rendered: f32 range;
+    // DWARF local not rendered: f32 delta;
+    // DWARF local not rendered: f32 half;
+    // DWARF local not rendered: f32 xx;
+    // DWARF local not rendered: u32 ret;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<unsigned int>(static_cast<long>(static_cast<float>(static_cast<int>(((x + (0.5f * ((max - min) / static_cast<float>(div)))) - min) / ((max - min) / static_cast<float>(div))))));
 }
 
 // Address: 0x00652210 - 0x0065222f (31 bytes)

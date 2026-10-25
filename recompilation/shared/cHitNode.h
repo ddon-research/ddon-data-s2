@@ -122,6 +122,18 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rCollNode* cHitNode::getCollNodeRes() const {
+    return this->mpCollNodeRes;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline rAttackParam* cHitNode::getAttackParamRes() const {
+    return this->mpAttackParamRes;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline const cCollNode* cHitNode::getCollNode() const {
     return this->mpCollNode;
 }

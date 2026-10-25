@@ -288,9 +288,19 @@ u32 uGUIGPConfirm::evCtrlCursorUD(cControl::Message* pMsg) {
 }
 
 // Address: 0x00aa2e30 - 0x00aa2e91 (97 bytes)
-__attribute__((weak)) u32 uGUIGPConfirm::evCtrlCursorLR(cControl::Message* pMsg) {
-    DDON_STUB("uGUIGPConfirm::evCtrlCursorLR")
-    return {};
+u32 uGUIGPConfirm::evCtrlCursorLR(cControl::Message* pMsg) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as s32
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableBrowser() == false) {
+        if (this->mpCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+            if (this->mpCtrl->::cControl::mCurrentPos != static_cast<s32>(0)) {
+                this->mCursorX = static_cast<s32>(this->mCursorX == static_cast<s32>(0));
+                this->::uGUIBase::setInputEvent(static_cast<u32>(69));
+                return static_cast<u32>(1);
+            }
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // Address: 0x00aa2ea0 - 0x00aa2f21 (129 bytes)

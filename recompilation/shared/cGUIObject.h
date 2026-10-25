@@ -51,6 +51,7 @@ class uGUI;
 class uGUIBase;
 class uGUIInputText;
 class uGUIMyRoomPopup;
+class uGUIQuestActive;
 
 // Declarations
 class cGUIObj2D;
@@ -383,6 +384,8 @@ class cGUIObjMessage : public cGUIObj2D
 {
     // inferred: uGUIMyRoomPopup::setTitle calls cGUIObjMessage::clearMessage
     friend class uGUIMyRoomPopup;
+    // inferred: uGUIQuestActive::clearAllMessages calls cGUIObjMessage::clearMessage
+    friend class uGUIQuestActive;
 public:
     class MyDTI;
 public:
@@ -934,4 +937,10 @@ inline f32 cGUIObjMessage::getMessageWidth() const {
 // Inline, no code of its own: checked where it is inlined.
 inline f32 cGUIObjMessage::getMessageHeight() const {
     return this->mMsgHeight;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cGUIObject* cGUIObject::getNext() const {
+    return this->mpNext;
 }

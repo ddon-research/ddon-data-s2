@@ -8,8 +8,10 @@
 #include "MtString.h"
 #include "cTalkMsgData.h"
 #include "cpComponent.h"
+#include "sNpcManager.h"
 #include "uControlNpc.h"
 #include "uDDOModel.h"
+#include "uNpc.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -132,11 +134,24 @@ __attribute__((weak)) bool cpTalk::isEnableTalkMotion() {
 }
 
 // Address: 0x0053dd30 - 0x0053dd57 (39 bytes)
-__attribute__((weak)) bool cpTalk::isDisableCancel() {
-    // local: uDDOModel* pOwner;
-    // local: uNpc* pNpc;
-    DDON_STUB("cpTalk::isDisableCancel")
-    return {};
+bool cpTalk::isDisableCancel() {
+    // DWARF local not rendered: uDDOModel* pOwner;
+    // DWARF local not rendered: uNpc* pNpc;
+    // Approximate from the ELF: a branching shape written through regions, with goto as its last resort; the body oracle reports this body.
+    // inferred: a branching shape written through regions, with 0 goto statements as its last resort
+    if (this->::cpComponent::getOwner() != static_cast<MtObject*>(nullptr)) {
+        if (static_cast<uDDOModel*>(this->::cpComponent::getOwner())->::uDDOModel::isNpc()) {
+            if (static_cast<uNpc*>(this->::cpComponent::getOwner())->::uNpc::isDisableTalkMotCancel() == false) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0053c560 - 0x0053c7e5 (645 bytes)
@@ -210,11 +225,21 @@ void cpTalk::startFaceMot(u32 MotType, f32 SetFrame, u32 handle) {
 }
 
 // Address: 0x0053dd60 - 0x0053ddab (75 bytes)
-__attribute__((weak)) s16 cpTalk::getTalkMotNo() {
-    // local: uDDOModel* pModel;
-    // local: uControlNpc* pCtrlNpc;
-    DDON_STUB("cpTalk::getTalkMotNo")
-    return {};
+s16 cpTalk::getTalkMotNo() {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    // inferred: a value cast to the type its use takes: s8 used as u8
+    uDDOModel* pModel = static_cast<uDDOModel*>(this->::cpComponent::getOwner());
+    if (pModel != static_cast<uDDOModel*>(nullptr)) {
+        uControlNpc* pCtrlNpc = pModel->::uDDOModel::getCtrlNpc();
+        if (pCtrlNpc != static_cast<uControlNpc*>(nullptr)) {
+            return ::sNpcManager::getInstance()->::sNpcManager::getTalkMot(static_cast<unsigned char>(static_cast<unsigned long>(pCtrlNpc->::uControlNpc::getDefNPCMotCategory()) + static_cast<unsigned long>(255)), static_cast<u8>(pCtrlNpc->mDefNPCMotNo));
+        } else {
+            return static_cast<s16>(-1);
+        }
+    } else {
+        return static_cast<s16>(-1);
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (56 bytes)

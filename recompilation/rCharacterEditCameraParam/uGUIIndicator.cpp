@@ -130,9 +130,9 @@ void uGUIIndicator::draw(cDraw* pDraw) {
 // void uGUIIndicator::setMessage(MT_CTSTR);
 
 // Address: 0x00b66610 - 0x00b6662a (26 bytes)
-__attribute__((weak)) void uGUIIndicator::updateInit() {
-    DDON_STUB("uGUIIndicator::updateInit")
-    /* stub */
+void uGUIIndicator::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIIndicator::updateWait);
 }
 
 // Address: 0x00b66680 - 0x00b66681 (1 bytes)

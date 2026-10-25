@@ -17,6 +17,7 @@ class MtUI;
 class MtVector3;
 class cDraw;
 class cParticle;
+class cSynchronization;
 class cpCatchCtrl;
 class cpIKCtrl;
 class cpJob02;
@@ -24,18 +25,29 @@ class cpJob06;
 class sUnit;
 class uArmor;
 class uBaseEffect;
+class uBaseModel;
 class uCnsTinyChain;
 class uConstraint;
+class uDDOModel;
+class uDynamicSbc;
 class uEffect;
+class uEffectExt;
 class uEnemy;
+class uFade;
 class uFilter;
 class uGUI;
+class uGUIBase;
+class uGUIRankUp;
 class uHuman;
 class uLight;
+class uOmSwingModel;
+class uScheduler;
+class uScrollCollisionGeometry;
 class uScrollCollisionGeometryModel;
 class uShadow;
 class uShlBase;
 class uSimSoftBody;
+class uStageMyRoom;
 class uWeapon;
 
 // Declarations
@@ -56,6 +68,8 @@ class cUnit : public MtObject
 {
     // inferred: cParticle::updateSynchroEnable names cUnit::mBeFlag
     friend class cParticle;
+    // inferred: cSynchronization::isRelation names cUnit::mBeFlag
+    friend class cSynchronization;
     // inferred: cpCatchCtrl::checkCaught names cUnit::mUnitParam
     friend class cpCatchCtrl;
     // inferred: cpIKCtrl::updateIKHandle names cUnit::mBeFlag
@@ -64,36 +78,58 @@ class cUnit : public MtObject
     friend class cpJob02;
     // inferred: cpJob06::decreaseCS14Timer names cUnit::mDeltaTime
     friend class cpJob06;
-    // inferred: sUnit::remove names cUnit::mMoveLine
+    // inferred: sUnit::addBottom names cUnit::mpNextUnit
     friend class sUnit;
     // inferred: uArmor::setup names cUnit::mDrawMode
     friend class uArmor;
     // inferred: uBaseEffect::updateDeltaTimeRate names cUnit::mDeltaTime
     friend class uBaseEffect;
+    // inferred: uBaseModel::moveAfter names cUnit::mDeltaTime
+    friend class uBaseModel;
     // inferred: uCnsTinyChain::move names cUnit::mBeFlag
     friend class uCnsTinyChain;
     // inferred: uConstraint::setup names cUnit::mDrawMode
     friend class uConstraint;
+    // inferred: uDDOModel::kill names cUnit::mBeFlag
+    friend class uDDOModel;
+    // inferred: uDynamicSbc::kill names cUnit::mBeFlag
+    friend class uDynamicSbc;
     // inferred: uEffect::updateParentEnable names cUnit::mBeFlag
     friend class uEffect;
+    // inferred: uEffectExt::kill names cUnit::mBeFlag
+    friend class uEffectExt;
     // inferred: uEnemy::updateEnchantColInfo names cUnit::mDeltaTime
     friend class uEnemy;
+    // inferred: uFade::kill names cUnit::mBeFlag
+    friend class uFade;
     // inferred: uFilter::uFilter names cUnit::mDrawMode
     friend class uFilter;
     // inferred: uGUI::moveAfter names cUnit::mDeltaTime
     friend class uGUI;
+    // inferred: uGUIBase::kill names cUnit::mBeFlag
+    friend class uGUIBase;
+    // inferred: uGUIRankUp::updateMove names cUnit::mDeltaTime
+    friend class uGUIRankUp;
     // inferred: uHuman::updateEnchantColInfo names cUnit::mDeltaTime
     friend class uHuman;
     // inferred: uLight::setPS3DisableMode names cUnit::mpHardwareDispCtrl
     friend class uLight;
+    // inferred: uOmSwingModel::kill names cUnit::mBeFlag
+    friend class uOmSwingModel;
+    // inferred: uScheduler::kill names cUnit::mBeFlag
+    friend class uScheduler;
+    // inferred: uScrollCollisionGeometry::moveForSystem names cUnit::mBeFlag
+    friend class uScrollCollisionGeometry;
     // inferred: uScrollCollisionGeometryModel::uScrollCollisionGeometryModel names cUnit::mDrawMode
     friend class uScrollCollisionGeometryModel;
-    // inferred: uShadow::setPS3DisableMode names cUnit::mpHardwareDispCtrl
+    // inferred: uShadow::kill names cUnit::mBeFlag
     friend class uShadow;
     // inferred: uShlBase::moveAfter names cUnit::mDeltaTime
     friend class uShlBase;
     // inferred: uSimSoftBody::isTargetEnable names cUnit::mBeFlag
     friend class uSimSoftBody;
+    // inferred: uStageMyRoom::kill names cUnit::mBeFlag
+    friend class uStageMyRoom;
     // inferred: uWeapon::moveAfter names cUnit::mDrawMode
     friend class uWeapon;
 public:

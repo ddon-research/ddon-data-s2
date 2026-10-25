@@ -4,6 +4,7 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtCollection.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataWriter.h"
 #include "../shared/MtMath.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
@@ -69,8 +70,35 @@ inline void rGUIMapSetting::operator delete(void* p_addr) {
 // Address: 0x0067c0c0 - 0x0067c171 (177 bytes)
 // Also emitted as: _ZN14rGUIMapSettingD0Ev at 0x0067c180
 rGUIMapSetting::~rGUIMapSetting() {
-    DDON_STUB("rGUIMapSetting::~rGUIMapSetting")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mArray.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x67c0f0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mArray.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mArray.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mArray.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mArray.::MtArray::mLength) {
+                    v0_0 = this->mArray.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mArray.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mArray.::MtArray::mpArray));
+    }
+    this->mArray.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mArray.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mArray.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x01a93290 - 0x01a93298 (8 bytes)
@@ -194,7 +222,8 @@ const MtDTI& rGUIMapSetting::cData::getDTI() const {
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
 // inferred: parameters written where their values stand in every inlined copy
-inline void* rGUIMapSetting::cData::operator new(size_t sz, u32 align) {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+void* rGUIMapSetting::cData::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::rGUIMapSetting::cData::DTI)->memAlloc(sz, align, ::rGUIMapSetting::cData::DTI.::MtDTI::getID());
 }
 
@@ -276,9 +305,18 @@ __attribute__((weak)) bool rGUIMapSetting::cData::load(MtDataReader& r) {
 }
 
 // Address: 0x0067d720 - 0x0067d786 (102 bytes)
-__attribute__((weak)) bool rGUIMapSetting::cData::save(MtDataWriter& w) {
-    DDON_STUB("rGUIMapSetting::cData::save")
-    return {};
+bool rGUIMapSetting::cData::save(MtDataWriter& w) {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; an | of disjoint bits; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: bool used as u32
+    // inferred: a temporary for the value the load at 0x67d730 read, used 4 times; no DWARF local holds it
+    AreaHitShape* t0 = this->mpShape;
+    w.writeU32(static_cast<u32>(t0 != static_cast<AreaHitShape*>(nullptr)));
+    if (t0 != static_cast<AreaHitShape*>(nullptr)) {
+        w.::MtDataWriter::writeString(t0->getDTI().::MtDTI::getName());
+        t0->save(w);
+    }
+    w.writeU32(this->mFloorId);
+    return true;
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

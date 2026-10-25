@@ -27,6 +27,7 @@ class MtProperty;
 class MtPropertyList;
 class MtString;
 class MtUI;
+class cMenuInviteEntryBoardItem;
 class cNetGameServer;
 namespace nNetwork { class BlockPool; }
 namespace nNetwork { class Context; }
@@ -57,6 +58,8 @@ using u64 = __uint64_t;
 
 class sNetwork : public cSystem
 {
+    // inferred: cMenuInviteEntryBoardItem::initInviteEntryBoardItem names sNetwork::mpInstance
+    friend class cMenuInviteEntryBoardItem;
     // inferred: cNetGameServer::move names sNetwork::mpInstance
     friend class cNetGameServer;
     // inferred: nNetwork::Context::reset calls sNetwork::notifyServiceStateChange

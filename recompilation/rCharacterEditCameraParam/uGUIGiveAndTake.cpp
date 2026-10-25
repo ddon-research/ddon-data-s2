@@ -187,10 +187,46 @@ void uGUIGiveAndTake::updatePtr() {
 }
 
 // Address: 0x00a9f6b0 - 0x00a9f831 (385 bytes)
-__attribute__((weak)) void uGUIGiveAndTake::move() {
-    // local: u32 i;
-    DDON_STUB("uGUIGiveAndTake::move")
-    /* stub */
+void uGUIGiveAndTake::move() {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; a virtual call on an object outside an inlined callee; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    this->::uGUIBase::move();
+    if (this->mFlowId <= static_cast<u32>(6)) {
+        if (((static_cast<unsigned long>(122) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+            (&this->mBtnFinish)->update();
+            (&this->mBtnCancel)->update();
+            this->mCloseBtn.::uGUIBase::cReferenceUICloseBtn::update();
+            this->mGuide.::uGUIBase::cReferenceUIBtnGuide::update();
+            this->mItemList[0].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[1].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[2].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[3].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[4].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[5].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[6].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[7].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[8].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[9].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[10].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[11].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[12].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[13].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[14].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[15].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[16].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[17].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[18].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+            this->mItemList[19].mIcon.::uGUIBase::cReferenceUIIconItem::update();
+        }
+    }
+    if (this->mSleep == false) {
+        return;
+    }
+    if (this->mFlowId == static_cast<u32>(2)) {
+    } else {
+        this->::uGUIGiveAndTake::setFlowId(static_cast<u32>(2));
+    }
 }
 
 // Address: 0x00a9f950 - 0x00a9f9c0 (112 bytes)

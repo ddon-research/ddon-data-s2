@@ -104,9 +104,14 @@ rScheduler::TRACK* rScheduler::getBaseTrack() const {
 // rScheduler::TRACK* rScheduler::getTracks() const;
 
 // Address: 0x01b931c0 - 0x01b931d2 (18 bytes)
-__attribute__((weak)) bool rScheduler::isFloorFrame() const {
-    DDON_STUB("rScheduler::isFloorFrame")
-    return {};
+bool rScheduler::isFloorFrame() const {
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: u32 used as bool
+    if (this->mpHeader != static_cast<rScheduler::HEADER*>(nullptr)) {
+        return static_cast<bool>(this->mpHeader->floor_frame);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x011dee90 - 0x011df1d8 (840 bytes)

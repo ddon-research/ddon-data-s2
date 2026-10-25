@@ -196,13 +196,37 @@ u32 sAIPawnSys::getPawnOrderNum() const {
 }
 
 // Address: 0x0071b5e0 - 0x0071b649 (105 bytes)
-__attribute__((weak)) cAIPawnOrderParam* sAIPawnSys::getPawnOrderFormId(u32 id) {
-    // local: rAIPawnOrder* p_ptr;
-    // local: u32 num;
-    // local: u32 i;
-    // local: cAIPawnOrderParam* p_prm;
-    DDON_STUB("sAIPawnSys::getPawnOrderFormId")
-    return nullptr;
+cAIPawnOrderParam* sAIPawnSys::getPawnOrderFormId(u32 id) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    rAIPawnOrder* p_ptr = this->mpAIPawnOrderRes.mpPtr;
+    // inferred: the value carried to 0x71b640; no location-less local in scope fits
+    cAIPawnOrderParam* v1_0;
+    if (p_ptr == static_cast<rAIPawnOrder*>(nullptr)) {
+        v1_0 = static_cast<cAIPawnOrderParam*>(nullptr);
+    } else {
+        u32 num = p_ptr->getDataNum();
+        if (num == static_cast<u32>(0)) {
+            v1_0 = static_cast<cAIPawnOrderParam*>(nullptr);
+        } else {
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                cAIPawnOrderParam* p_prm = p_ptr->getData(i0_2);
+                if (p_prm->mID == id) {
+                    v1_0 = p_prm;
+                    break;
+                } else {
+                    if ((i0_2 + static_cast<unsigned int>(1)) < num) {
+                        i0_2 += static_cast<unsigned int>(1);
+                    } else {
+                        v1_0 = static_cast<cAIPawnOrderParam*>(nullptr);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return v1_0;
 }
 
 // No out-of-line body: no code in the ELF

@@ -221,10 +221,24 @@ MT_CTSTR rStageCustomParts::getFilterName(u32 index) {
 }
 
 // Address: 0x006f51b0 - 0x006f5224 (116 bytes)
-__attribute__((weak)) rStageCustomParts::Info* rStageCustomParts::searchInfo(u32 areaNo) const {
-    // local: u32 i;
-    DDON_STUB("rStageCustomParts::searchInfo")
-    return nullptr;
+rStageCustomParts::Info* rStageCustomParts::searchInfo(u32 areaNo) const {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->getInfoNum() != static_cast<u32>(0)) {
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->getInfo(i0_3)->mAreaNo == areaNo) {
+                return this->getInfo(i0_3);
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->getInfoNum()) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return static_cast<rStageCustomParts::Info*>(nullptr);
 }
 
 // No out-of-line body: 4 inlined copies in 3 functions (26 bytes)

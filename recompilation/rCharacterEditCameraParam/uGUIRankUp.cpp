@@ -4,6 +4,7 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cGUIInstance.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
@@ -151,9 +152,39 @@ void uGUIRankUp::move() {
 // void uGUIRankUp::setFlowId(u32 flow_id);
 
 // Address: 0x00c1e580 - 0x00c1e657 (215 bytes)
-__attribute__((weak)) void uGUIRankUp::updateMove() {
-    DDON_STUB("uGUIRankUp::updateMove")
-    /* stub */
+void uGUIRankUp::updateMove() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mFlowId != static_cast<u32>(3)) {
+        if (this->mFlowId == static_cast<u32>(2)) {
+            this->mDispFrame = this->mDispFrame - this->::cUnit::mDeltaTime;
+            if (0.0f >= this->mDispFrame) {
+                this->mFlowId = static_cast<u32>(3);
+                this->::uGUIBase::setSequenceId(this->mpInstAnim, static_cast<u32>(3), false);
+            }
+        } else {
+            if (this->mFlowId == static_cast<u32>(1)) {
+                if (this->mpInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
+                    if (this->mpInstAnim->isAnimationEnd() != false) {
+                        this->mFlowId = static_cast<u32>(2);
+                        this->mDispFrame = 90.0f;
+                    }
+                } else {
+                    this->mFlowId = static_cast<u32>(2);
+                    this->mDispFrame = 90.0f;
+                }
+            }
+        }
+    } else {
+        if (this->mpInstAnim != static_cast<cGUIInstAnimation*>(nullptr)) {
+            if (this->mpInstAnim->isAnimationEnd() != false) {
+                this->mFlowId = static_cast<u32>(4);
+                this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIRankUp::updateExit);
+            }
+        } else {
+            this->mFlowId = static_cast<u32>(4);
+            this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIRankUp::updateExit);
+        }
+    }
 }
 
 // Address: 0x00c1e660 - 0x00c1e669 (9 bytes)

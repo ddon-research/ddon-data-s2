@@ -5,9 +5,12 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtString.h"
+#include "../shared/cGUIInstance.h"
+#include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
 #include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
@@ -101,9 +104,33 @@ bool uGUIShopTitle::loadResource() {
 }
 
 // Address: 0x00c41690 - 0x00c418a9 (537 bytes)
-__attribute__((weak)) void uGUIShopTitle::setup() {
-    DDON_STUB("uGUIShopTitle::setup")
-    /* stub */
+void uGUIShopTitle::setup() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(10)), true);
+    this->setPlay(false);
+    this->mpObjMsgTitle = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(6), static_cast<u32>(4)));
+    this->mpObjMsgTitleSub = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<u32>(6), static_cast<u32>(25)));
+    this->mpInstAnimBase = static_cast<cGUIInstAnimation*>(this->getInstance(static_cast<u32>(20), false));
+    // inferred: a temporary for the result of the call at 0xc41736, used twice; no DWARF local holds it
+    cGUIInstance* t0 = this->getInstance(static_cast<u32>(16), false);
+    this->mpInstAnimMoney = static_cast<cGUIInstAnimation*>(t0);
+    this->mpObjNullMoney = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(t0, static_cast<u32>(13)));
+    this->mpObjNullGacha = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(25)));
+    this->mpObjNullPawnpoint = static_cast<cGUIObjNull*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(32)));
+    this->mpObjMsgMoney = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(18)));
+    this->mpObjMsgMoneyValue = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(17)));
+    this->mpObjMsgGpValue = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(28)));
+    this->mpObjMsgCtValue = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(31)));
+    this->mpObjTexIcon = static_cast<cGUIObjTexture*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(15)));
+    this->mpObjMsgPoint = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(34)));
+    this->mpObjMsgPointValue = static_cast<cGUIObjMessage*>(this->::uGUIBase::getObjectFromId(static_cast<cGUIInstance*>(this->mpInstAnimMoney), static_cast<u32>(33)));
+    this->mChargesInfo.::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), this->getInstance(static_cast<u32>(22), false), this->mChargesAttr);
+    this->mChargesInfo.mSizeWFix = this->mChargesInfo.mDefaultSize;
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShopTitle::updateInit);
 }
 
 // Address: 0x00c41990 - 0x00c41995 (5 bytes)

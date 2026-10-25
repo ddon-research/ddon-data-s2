@@ -230,9 +230,41 @@ void cGatherItemList::reqGather(u32 groupId, u32 layerNo, u32 posId, u32 type) {
 }
 
 // Address: 0x0050a230 - 0x0050a340 (272 bytes)
-__attribute__((weak)) void cGatherItemList::reqGatherAgain() {
-    DDON_STUB("cGatherItemList::reqGatherAgain")
-    /* stub */
+void cGatherItemList::reqGatherAgain() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x108 from cGatherItemList*
+    if (this->mRno == static_cast<u8>(3)) {
+        this->mRno = static_cast<u8>(1);
+    }
+    this->mItemGetInfo[0].mID = static_cast<s32>(0);
+    this->mItemGetInfo[0].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[0].mNum = static_cast<u32>(0);
+    this->mItemGetInfo[1].mID = static_cast<s32>(0);
+    this->mItemGetInfo[1].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[1].mNum = static_cast<u32>(0);
+    this->mItemGetInfo[2].mID = static_cast<s32>(0);
+    this->mItemGetInfo[2].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[2].mNum = static_cast<u32>(0);
+    this->mItemGetInfo[3].mID = static_cast<s32>(0);
+    this->mItemGetInfo[3].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[3].mNum = static_cast<u32>(0);
+    this->mItemGetInfo[4].mID = static_cast<s32>(0);
+    this->mItemGetInfo[4].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[4].mNum = static_cast<u32>(0);
+    this->mItemGetInfo[5].mID = static_cast<s32>(0);
+    this->mItemGetInfo[5].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[5].mNum = static_cast<u32>(0);
+    this->mItemGetInfo[6].mID = static_cast<s32>(0);
+    this->mItemGetInfo[6].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[6].mNum = static_cast<u32>(0);
+    this->mItemGetInfo[7].mID = static_cast<s32>(0);
+    this->mItemGetInfo[7].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[7].mNum = static_cast<u32>(0);
+    this->mItemGetInfo[8].mID = static_cast<s32>(0);
+    this->mItemGetInfo[8].mItemID = static_cast<s32>(0);
+    this->mItemGetInfo[8].mNum = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(264)) = static_cast<unsigned long>(0);
+    this->mItemGetInfo[9].mNum = static_cast<u32>(0);
 }
 
 // Address: 0x0050a340 - 0x0050a354 (20 bytes)

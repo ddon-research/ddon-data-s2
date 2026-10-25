@@ -119,9 +119,14 @@ void uGUIEntryBoard::kill() {
 }
 
 // Address: 0x00a78b90 - 0x00a78bb4 (36 bytes)
-__attribute__((weak)) bool uGUIEntryBoard::isItemEnable(u32 index) {
-    DDON_STUB("uGUIEntryBoard::isItemEnable")
-    return {};
+bool uGUIEntryBoard::isItemEnable(u32 index) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0xb8 from MtObject*
+    if (index < this->mDataArray.::MtArray::mLength) {
+        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mDataArray.::MtArray::getBuffer()[static_cast<int>(index)]) + static_cast<long>(184))) != static_cast<unsigned char>(0);
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (14 bytes)
@@ -129,9 +134,10 @@ __attribute__((weak)) bool uGUIEntryBoard::isItemEnable(u32 index) {
 // bool uGUIEntryBoard::isTopBtn();
 
 // Address: 0x00a77cd0 - 0x00a77cfe (46 bytes)
-__attribute__((weak)) void uGUIEntryBoard::updateInit() {
-    DDON_STUB("uGUIEntryBoard::updateInit")
-    /* stub */
+void uGUIEntryBoard::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIEntryBoard::updateWait();
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEntryBoard::updateWait);
 }
 
 // Address: 0x00a77d00 - 0x00a786a4 (2468 bytes)

@@ -11,6 +11,7 @@
 class MtAllocator;
 class MtDTI;
 class MtPropertyList;
+class cpStatusChange;
 class rBitTable;
 
 // Declarations
@@ -28,6 +29,8 @@ using u32 = unsigned int;
 
 class cBitCtrl : public MtObject
 {
+    // inferred: cpStatusChange::copyStatusOldBit names cpStatusChange::mEmScaleBitCtrl.mOldBitData
+    friend class cpStatusChange;
 public:
     class MyDTI;
 public:

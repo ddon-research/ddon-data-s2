@@ -96,8 +96,8 @@ inline rMsgSet::rMsgSet() {
 // Address: 0x006a5290 - 0x006a52c3 (51 bytes)
 // Also emitted as: _ZN7rMsgSetD0Ev at 0x006a5440
 rMsgSet::~rMsgSet() {
-    DDON_STUB("rMsgSet::~rMsgSet")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::rMsgSet::deleteAllocateMemory();
 }
 
 // Address: 0x006a5490 - 0x006a5573 (227 bytes)
@@ -141,9 +141,13 @@ __attribute__((weak)) bool rMsgSet::save(MtStream& out) {
 }
 
 // Address: 0x006a5c50 - 0x006a5c66 (22 bytes)
-__attribute__((weak)) rMsgSet::cMsgGroup* rMsgSet::getGroupData(u32 Idx) {
-    DDON_STUB("rMsgSet::getGroupData")
-    return nullptr;
+rMsgSet::cMsgGroup* rMsgSet::getGroupData(u32 Idx) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (Idx < this->mArray.::MtArray::mLength) {
+        return static_cast<rMsgSet::cMsgGroup*>(this->mArray.::MtArray::getBuffer()[static_cast<int>(Idx)]);
+    } else {
+        return static_cast<rMsgSet::cMsgGroup*>(nullptr);
+    }
 }
 
 // Address: 0x006a52d0 - 0x006a5440 (368 bytes)
@@ -257,9 +261,14 @@ __attribute__((weak)) bool rMsgSet::cMsgGroup::save(MtDataWriter& w) {
 // u32 rMsgSet::cMsgGroup::getMsgDataNum();
 
 // Address: 0x006a5c70 - 0x006a5c83 (19 bytes)
-__attribute__((weak)) rMsgSet::cMsgData* rMsgSet::cMsgGroup::getMsgData(u32 Idx) {
-    DDON_STUB("rMsgSet::cMsgGroup::getMsgData")
-    return nullptr;
+rMsgSet::cMsgData* rMsgSet::cMsgGroup::getMsgData(u32 Idx) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x28 from rMsgSet::cMsgGroup*
+    if (Idx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(40)))) {
+        return static_cast<rMsgSet::cMsgData*>(this->mMsgData.::MtArray::getBuffer()[static_cast<int>(Idx)]);
+    } else {
+        return static_cast<rMsgSet::cMsgData*>(nullptr);
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 3 functions (11 bytes)

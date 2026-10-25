@@ -280,9 +280,23 @@ u32 uGUICaplinkMailNotice::evCtrlAdjustCursor(cControl::Message* msg) {
 }
 
 // Address: 0x009c2770 - 0x009c27e0 (112 bytes)
-__attribute__((weak)) u32 uGUICaplinkMailNotice::evCtrlMouseClick(cControl::Message* msg) {
-    DDON_STUB("uGUICaplinkMailNotice::evCtrlMouseClick")
-    return {};
+u32 uGUICaplinkMailNotice::evCtrlMouseClick(cControl::Message* msg) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        if (msg->pSender != static_cast<cControl*>(nullptr)) {
+            if (msg->pSender == this->mpBtnCtrl) {
+                if (this->mpListCtrl != static_cast<uGUIBase::cVerticalList*>(nullptr)) {
+                    this->mpListCtrl->setCurrentPos(this->mpListCtrl->::cControl::getItemNum() - static_cast<s32>(1), false);
+                }
+            }
+        }
+        this->::uGUICaplinkMailNotice::adjustCursor();
+        msg->changeSE = static_cast<u32>(4);
+    } else {
+        this->::uGUICaplinkMailNotice::adjustCursor();
+    }
+    this->::uGUIBase::setInputEvent(static_cast<u32>(66));
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

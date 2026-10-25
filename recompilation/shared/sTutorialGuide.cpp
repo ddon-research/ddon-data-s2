@@ -135,10 +135,31 @@ __attribute__((weak)) void sTutorialGuide::loadGuideArc(u32 GuideNo) {
 // bool sTutorialGuide::isFinishLoadGuideArc(u32 GuideNo);
 
 // Address: 0x00866440 - 0x00866477 (55 bytes)
-__attribute__((weak)) bool sTutorialGuide::isFinishLoadGuideData(u32 GuideNo) {
-    // local: u32 i;
-    DDON_STUB("sTutorialGuide::isFinishLoadGuideData")
-    return {};
+bool sTutorialGuide::isFinishLoadGuideData(u32 GuideNo) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from sTutorialGuide*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x18 from MtObject*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x10 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) != GuideNo) {
+            } else {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(24))) != static_cast<unsigned long>(0)) {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(16))) == static_cast<unsigned long>(0)) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                } else {
+                    return false;
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))));
+    }
+    return false;
 }
 
 // Address: 0x00866490 - 0x00866521 (145 bytes)
@@ -161,17 +182,53 @@ __attribute__((weak)) void sTutorialGuide::createGuideData(u32 GuideNo) {
 // rTutorialList::cTutorialNode* sTutorialGuide::getTutorialNode(u32 GuideNo) const;
 
 // Address: 0x008667a0 - 0x008667d8 (56 bytes)
-__attribute__((weak)) sTutorialGuide::cOpenGuideNo* sTutorialGuide::getOpenGuideData(u32 GuideNo) {
-    // local: u32 i;
-    DDON_STUB("sTutorialGuide::getOpenGuideData")
-    return nullptr;
+sTutorialGuide::cOpenGuideNo* sTutorialGuide::getOpenGuideData(u32 GuideNo) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x20 from sTutorialGuide*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x8 from MtObject*
+    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))) != static_cast<unsigned int>(0)) {
+        u32 i = static_cast<u32>(0);
+        do {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]) + static_cast<long>(8))) == GuideNo) {
+                return static_cast<sTutorialGuide::cOpenGuideNo*>(this->mOpenGuideList.::MtArray::getBuffer()[static_cast<int>(i)]);
+            }
+            i += static_cast<u32>(1);
+        } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(32))));
+    }
+    return static_cast<sTutorialGuide::cOpenGuideNo*>(nullptr);
 }
 
 // Address: 0x00866540 - 0x00866593 (83 bytes)
-__attribute__((weak)) MT_CTSTR sTutorialGuide::getGuideName(u32 GuideNo) {
-    // local: cTutorialNode* pNode;
-    DDON_STUB("sTutorialGuide::getGuideName")
-    return {};
+MT_CTSTR sTutorialGuide::getGuideName(u32 GuideNo) {
+    // DWARF local not rendered: cTutorialNode* pNode;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rTutorialList*
+    if (this->mpTutorialList != static_cast<rTutorialList*>(nullptr)) {
+        // inferred: the value the loop at 0x866560 carries; no location-less local in scope fits
+        unsigned int v0_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpTutorialList) + static_cast<long>(120));
+        if (v0_3 != static_cast<unsigned int>(0)) {
+            // inferred: the value the loop at 0x866560 carries; no location-less local in scope fits
+            MtObject* * v0_1 = this->mpTutorialList->mArray.::MtArray::getBuffer();
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(8))) == GuideNo) {
+                    if (v0_1[static_cast<int>(i0_2)] != static_cast<MtObject*>(nullptr)) {
+                        if (this->mpTutorialName != static_cast<rGUIMessage*>(nullptr)) {
+                            return this->mpTutorialName->::rGUIMessage::getMessage(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(16)));
+                        }
+                    }
+                    return "";
+                } else {
+                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_3) {
+                        i0_2 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return "";
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (63 bytes)
@@ -179,10 +236,43 @@ __attribute__((weak)) MT_CTSTR sTutorialGuide::getGuideName(u32 GuideNo) {
 // u32 sTutorialGuide::getSortNo(u32 GuideNo);
 
 // Address: 0x008665b0 - 0x008665f2 (66 bytes)
-__attribute__((weak)) u32 sTutorialGuide::getCategory(u32 GuideNo) {
-    // local: cTutorialNode* pNode;
-    DDON_STUB("sTutorialGuide::getCategory")
-    return {};
+u32 sTutorialGuide::getCategory(u32 GuideNo) {
+    // DWARF local not rendered: cTutorialNode* pNode;
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x78 from rTutorialList*
+    // inferred: the value carried to 0x8665f1; no location-less local in scope fits
+    unsigned int v2_0;
+    if (this->mpTutorialList == static_cast<rTutorialList*>(nullptr)) {
+        v2_0 = static_cast<unsigned int>(0);
+    } else {
+        // inferred: the value the loop at 0x8665d0 carries; no location-less local in scope fits
+        unsigned int v0_3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpTutorialList) + static_cast<long>(120));
+        if (v0_3 == static_cast<unsigned int>(0)) {
+            v2_0 = static_cast<unsigned int>(0);
+        } else {
+            // inferred: the value the loop at 0x8665d0 carries; no location-less local in scope fits
+            MtObject* * v0_1 = this->mpTutorialList->mArray.::MtArray::getBuffer();
+            // inferred: the counter this loop steps; no location-less local in scope fits
+            for (unsigned int i0_2 = static_cast<unsigned int>(0);;) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(8))) != GuideNo) {
+                    if ((i0_2 + static_cast<unsigned int>(1)) < v0_3) {
+                        i0_2 += static_cast<unsigned int>(1);
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v0_1[static_cast<int>(i0_2)] == static_cast<MtObject*>(nullptr)) {
+                        v2_0 = static_cast<unsigned int>(0);
+                    } else {
+                        v2_0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + static_cast<long>(20));
+                    }
+                    return v2_0;
+                }
+            }
+            v2_0 = static_cast<unsigned int>(0);
+        }
+    }
+    return v2_0;
 }
 
 // Address: 0x00866880 - 0x0086694d (205 bytes)
@@ -262,8 +352,36 @@ sTutorialGuide::sTutorialGuide() {
 // Address: 0x00866b40 - 0x00866bf3 (179 bytes)
 // Also emitted as: _ZN14sTutorialGuideD0Ev at 0x00866c00
 sTutorialGuide::~sTutorialGuide() {
-    DDON_STUB("sTutorialGuide::~sTutorialGuide")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mOpenGuideList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x866b70 carries; no location-less local in scope fits
+        u32 v0_0 = this->mOpenGuideList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mOpenGuideList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mOpenGuideList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mOpenGuideList.::MtArray::mLength) {
+                    v0_0 = this->mOpenGuideList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mOpenGuideList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mOpenGuideList.::MtArray::mpArray));
+    }
+    this->mOpenGuideList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mOpenGuideList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mOpenGuideList.::MtArray::mLength = static_cast<u32>(0);
+    ::sTutorialGuide::mpInstance = static_cast<sTutorialGuide*>(nullptr);
 }
 
 // Address: 0x00866cd0 - 0x00866db3 (227 bytes)
@@ -411,9 +529,16 @@ __attribute__((weak)) void sTutorialGuide::cOpenGuideNo::move() {
 // MT_CTSTR sTutorialGuide::cOpenGuideNo::getMessage(u32 PageIdx);
 
 // Address: 0x008670b0 - 0x008670d5 (37 bytes)
-__attribute__((weak)) u32 sTutorialGuide::cOpenGuideNo::getImageId(u32 PageIdx) {
-    DDON_STUB("sTutorialGuide::cOpenGuideNo::getImageId")
-    return {};
+u32 sTutorialGuide::cOpenGuideNo::getImageId(u32 PageIdx) {
+    // Approximate from the ELF: a cast to the other signedness; a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x80 from rTutorialDialogMessage*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xc from MtObject*
+    if (this->mpDialogMsg != static_cast<rTutorialDialogMessage*>(nullptr)) {
+        if (PageIdx < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpDialogMsg) + static_cast<long>(128)))) {
+            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mpDialogMsg->mPageInfo.::MtArray::getBuffer()[static_cast<int>(PageIdx)]) + static_cast<long>(12));
+        }
+    }
+    return static_cast<u32>(0);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

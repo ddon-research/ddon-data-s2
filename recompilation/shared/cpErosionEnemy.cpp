@@ -13,6 +13,7 @@
 #include "cpErosionEnemyBase.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
+#include "../rCharacterEditCameraParam/cpStatusChange.h"
 #include "nDDOUtility.h"
 #include "nErosionEnemy.h"
 #include "nErosionEnemyBase.h"
@@ -281,11 +282,23 @@ cpErosionEnemy::~cpErosionEnemy() {
 }
 
 // Address: 0x00183e00 - 0x00183ea0 (160 bytes)
-__attribute__((weak)) void cpErosionEnemy::setup() {
-    // local: u32 i;
-    // local: cpStatusChange* pStatusChange;
-    DDON_STUB("cpErosionEnemy::setup")
-    /* stub */
+void cpErosionEnemy::setup() {
+    // DWARF local not rendered: u32 i;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cpErosionEnemyBase::setup();
+    this->mErosionRegionArray.elems[0].::cErosionRegion::setErosionOwner(this->::cpErosionEnemyBase::mpEnemy, this);
+    this->mErosionRegionArray.elems[1].::cErosionRegion::setErosionOwner(this->::cpErosionEnemyBase::mpEnemy, this);
+    this->mErosionRegionArray.elems[2].::cErosionRegion::setErosionOwner(this->::cpErosionEnemyBase::mpEnemy, this);
+    this->mErosionRegionArray.elems[3].::cErosionRegion::setErosionOwner(this->::cpErosionEnemyBase::mpEnemy, this);
+    if (this->::cpErosionEnemyBase::mpEnemy == static_cast<uCharacter*>(nullptr)) {
+        return;
+    }
+    cpStatusChange* pStatusChange = this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::getStatusChangePtr();
+    if (pStatusChange == static_cast<cpStatusChange*>(nullptr)) {
+        return;
+    }
+    pStatusChange->::cpStatusChange::setCollisionBitProgMask(static_cast<BitData>(-4294967296));
+    pStatusChange->::cpStatusChange::setMontageBitProgMask(static_cast<BitData>(16492674416640));
 }
 
 // Address: 0x00184400 - 0x001844bb (187 bytes)
@@ -312,12 +325,24 @@ __attribute__((weak)) void cpErosionEnemy::kill() {
 }
 
 // Address: 0x00184530 - 0x001845af (127 bytes)
-__attribute__((weak)) void cpErosionEnemy::before() {
-    // local: u32 length;
-    // local: u32 i;
-    // local: cErosionRegion& region;
-    DDON_STUB("cpErosionEnemy::before")
-    /* stub */
+void cpErosionEnemy::before() {
+    // DWARF local not rendered: u32 length;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cErosionRegion& region;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mErosionRegionArray.elems[0].::cErosionRegion::isInvalid() == false) {
+        this->mErosionRegionArray.elems[0].::cErosionRegion::beforeErosionRegion();
+    }
+    if (this->mErosionRegionArray.elems[1].::cErosionRegion::isInvalid() == false) {
+        this->mErosionRegionArray.elems[1].::cErosionRegion::beforeErosionRegion();
+    }
+    if (this->mErosionRegionArray.elems[2].::cErosionRegion::isInvalid() == false) {
+        this->mErosionRegionArray.elems[2].::cErosionRegion::beforeErosionRegion();
+    }
+    if (this->mErosionRegionArray.elems[3].::cErosionRegion::isInvalid() != false) {
+    } else {
+        this->mErosionRegionArray.elems[3].::cErosionRegion::beforeErosionRegion();
+    }
 }
 
 // Address: 0x001845b0 - 0x00184688 (216 bytes)
@@ -330,11 +355,15 @@ __attribute__((weak)) void cpErosionEnemy::update() {
 }
 
 // Address: 0x001844e0 - 0x00184527 (71 bytes)
-__attribute__((weak)) void cpErosionEnemy::updatePtr() {
-    // local: u32 length;
-    // local: u32 i;
-    DDON_STUB("cpErosionEnemy::updatePtr")
-    /* stub */
+void cpErosionEnemy::updatePtr() {
+    // DWARF local not rendered: u32 length;
+    // DWARF local not rendered: u32 i;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::cpErosionEnemyBase::updatePtr();
+    this->mErosionRegionArray.elems[0].::cErosionRegion::updatePtr();
+    this->mErosionRegionArray.elems[1].::cErosionRegion::updatePtr();
+    this->mErosionRegionArray.elems[2].::cErosionRegion::updatePtr();
+    this->mErosionRegionArray.elems[3].::cErosionRegion::updatePtr();
 }
 
 // Address: 0x00184760 - 0x00184765 (5 bytes)
@@ -844,12 +873,219 @@ __attribute__((weak)) bool cpErosionSuperEnemy::isAllTentacleOff() {
 }
 
 // Address: 0x001869b0 - 0x00186b68 (440 bytes)
-__attribute__((weak)) void cpErosionSuperEnemy::updateTentacle() {
-    // local: u32 i;
-    // local: u32 i;
-    // local: u32 i;
-    DDON_STUB("cpErosionSuperEnemy::updateTentacle")
-    /* stub */
+void cpErosionSuperEnemy::updateTentacle() {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x2768 from uCharacter*
+    switch (this->mTentacleState - static_cast<u32>(1)) {
+        case static_cast<u32>(0):
+        {
+            if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cpErosionEnemyBase::mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
+                    if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isDead() == false) {
+                        if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mObjStatus & static_cast<u64>(2147483648)) == static_cast<u64>(0)) {
+                            if (this->::cpErosionEnemyBase::getErosionRealLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
+                                this->mTentacleState = static_cast<u32>(2);
+                            } else {
+                                this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                                this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                                this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                                this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                                this->mTentacleState = static_cast<u32>(5);
+                            }
+                            this->mFlgGetUpFromChanceDown = false;
+                        } else {
+                            this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                            this->mTentacleState = static_cast<u32>(5);
+                            this->mFlgGetUpFromChanceDown = false;
+                        }
+                    } else {
+                        this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                        this->mTentacleState = static_cast<u32>(5);
+                        this->mFlgGetUpFromChanceDown = false;
+                    }
+                } else {
+                    this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                    this->mTentacleState = static_cast<u32>(5);
+                    this->mFlgGetUpFromChanceDown = false;
+                }
+            } else {
+                if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isDead() == false) {
+                    if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mObjStatus & static_cast<u64>(2147483648)) == static_cast<u64>(0)) {
+                        if (this->::cpErosionEnemyBase::getErosionRealLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
+                            this->mTentacleState = static_cast<u32>(2);
+                        } else {
+                            this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                            this->mTentacleState = static_cast<u32>(5);
+                        }
+                        this->mFlgGetUpFromChanceDown = false;
+                    } else {
+                        this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                        this->mTentacleState = static_cast<u32>(5);
+                        this->mFlgGetUpFromChanceDown = false;
+                    }
+                } else {
+                    this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                    this->mTentacleState = static_cast<u32>(5);
+                    this->mFlgGetUpFromChanceDown = false;
+                }
+            }
+            break;
+        }
+        case static_cast<u32>(1):
+        {
+            this->mTentacleInfoArray.elems[0].mRequestTentacle = true;
+            this->mTentacleInfoArray.elems[1].mRequestTentacle = true;
+            this->mTentacleInfoArray.elems[2].mRequestTentacle = true;
+            this->mTentacleInfoArray.elems[3].mRequestTentacle = true;
+            this->mTentacleState = static_cast<u32>(4);
+            this->mFlgGetUpFromChanceDown = false;
+            break;
+        }
+        case static_cast<u32>(2):
+        {
+            this->mTentacleInfoArray.elems[0].mRequestTentacleGetUp = true;
+            this->mTentacleInfoArray.elems[1].mRequestTentacleGetUp = true;
+            this->mTentacleInfoArray.elems[2].mRequestTentacleGetUp = true;
+            this->mTentacleInfoArray.elems[3].mRequestTentacleGetUp = true;
+            this->mTentacleState = static_cast<u32>(4);
+            this->mFlgGetUpFromChanceDown = false;
+            break;
+        }
+        case static_cast<u32>(3):
+        {
+            if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cpErosionEnemyBase::mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
+                    if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isDead() == false) {
+                        if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mObjStatus & static_cast<u64>(2147483648)) == static_cast<u64>(0)) {
+                            if (this->::cpErosionEnemyBase::getErosionRealLevel() != static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
+                                this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                                this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                                this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                                this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                                this->mTentacleState = static_cast<u32>(5);
+                            }
+                            this->mFlgGetUpFromChanceDown = false;
+                        } else {
+                            this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                            this->mTentacleState = static_cast<u32>(5);
+                            this->mFlgGetUpFromChanceDown = false;
+                        }
+                    } else {
+                        this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                        this->mTentacleState = static_cast<u32>(5);
+                        this->mFlgGetUpFromChanceDown = false;
+                    }
+                } else {
+                    this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                    this->mTentacleState = static_cast<u32>(5);
+                    this->mFlgGetUpFromChanceDown = false;
+                }
+            } else {
+                if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isDead() == false) {
+                    if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mObjStatus & static_cast<u64>(2147483648)) == static_cast<u64>(0)) {
+                        if (this->::cpErosionEnemyBase::getErosionRealLevel() != static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
+                            this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                            this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                            this->mTentacleState = static_cast<u32>(5);
+                        }
+                        this->mFlgGetUpFromChanceDown = false;
+                    } else {
+                        this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                        this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                        this->mTentacleState = static_cast<u32>(5);
+                        this->mFlgGetUpFromChanceDown = false;
+                    }
+                } else {
+                    this->mTentacleInfoArray.elems[0].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[1].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[2].mRequestTentacleStop = true;
+                    this->mTentacleInfoArray.elems[3].mRequestTentacleStop = true;
+                    this->mTentacleState = static_cast<u32>(5);
+                    this->mFlgGetUpFromChanceDown = false;
+                }
+            }
+            break;
+        }
+        case static_cast<u32>(4):
+        {
+            if (this->mFlgGetUpFromChanceDown != false) {
+                this->mTentacleState = static_cast<u32>(3);
+                this->mFlgGetUpFromChanceDown = false;
+            } else {
+                if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mUnitId & static_cast<u32>(2)) != static_cast<u32>(0)) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->::cpErosionEnemyBase::mpEnemy) + static_cast<long>(10088))) == static_cast<unsigned char>(0)) {
+                        if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isDead() == false) {
+                            if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mObjStatus & static_cast<u64>(2147483648)) == static_cast<u64>(0)) {
+                                if (this->::cpErosionEnemyBase::getErosionRealLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
+                                    this->mTentacleState = static_cast<u32>(2);
+                                }
+                                this->mFlgGetUpFromChanceDown = false;
+                            } else {
+                                this->mFlgGetUpFromChanceDown = false;
+                            }
+                        } else {
+                            this->mFlgGetUpFromChanceDown = false;
+                        }
+                    } else {
+                        this->mFlgGetUpFromChanceDown = false;
+                    }
+                } else {
+                    if (this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::isDead() == false) {
+                        if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mObjStatus & static_cast<u64>(2147483648)) == static_cast<u64>(0)) {
+                            if (this->::cpErosionEnemyBase::getErosionRealLevel() == static_cast<nErosionEnemyBase::EROSION_LEVEL>(0)) {
+                                this->mTentacleState = static_cast<u32>(2);
+                            }
+                            this->mFlgGetUpFromChanceDown = false;
+                        } else {
+                            this->mFlgGetUpFromChanceDown = false;
+                        }
+                    } else {
+                        this->mFlgGetUpFromChanceDown = false;
+                    }
+                }
+            }
+            break;
+        }
+        default:
+        {
+            this->mFlgGetUpFromChanceDown = false;
+            break;
+        }
+    }
 }
 
 // No out-of-line body: 3 inlined copies in 1 function (172 bytes)

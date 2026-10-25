@@ -23,7 +23,8 @@ const MtDTI& cEmLvUpParam::getDTI() const {
 }
 
 // Inline, no code of its own: checked where it is inlined (rendered.json inline_proofs).
-inline MtAllocator* cEmLvUpParam::getAllocator() {
+// Inline-only in the original: defined here with external linkage, as callers in other units call it (ruling D-L1).
+MtAllocator* cEmLvUpParam::getAllocator() {
     return ::MtMemoryAllocator::getAllocator(::cEmLvUpParam::DTI);
 }
 

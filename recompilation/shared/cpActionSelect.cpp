@@ -7,6 +7,7 @@
 #include "MtObject.h"
 #include "cDelegate.h"
 #include "cUnit.h"
+#include "../rPawnAIAction/cpActionRequest.h"
 #include "cpComponent.h"
 #include "cpEnemyThink.h"
 #include "cpKeyCommand.h"
@@ -208,11 +209,22 @@ __attribute__((weak)) u32 cpActionSelect::getAction() {
 // void cpActionSelect::update();
 
 // Address: 0x003b5d20 - 0x003b5d8b (107 bytes)
-__attribute__((weak)) void cpActionSelect::clearLocalRequestAction() {
-    // local: u32 i;
-    // local: cpActionRequest* pCpLocal;
-    DDON_STUB("cpActionSelect::clearLocalRequestAction")
-    /* stub */
+void cpActionSelect::clearLocalRequestAction() {
+    // DWARF local not rendered: cpActionRequest* pCpLocal;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    u32 i = static_cast<u32>(0);
+    if (this->callbackGetAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mArrayLength != static_cast<u32>(0)) {
+        do {
+            if (i < this->callbackGetAutoAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mArrayLength) {
+                if (this->callbackGetAutoAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mpArray[i].::cDelegateBase::cNode::mpThis != static_cast<MtObject*>(nullptr)) {
+                    if (this->callbackGetAutoAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mpArray[i].mpFunc != static_cast<unsigned int(MtObject::*)()>(0)) {
+                        static_cast<cpActionRequest*>(this->callbackGetAutoAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mpArray[i].::cDelegateBase::cNode::mpThis)->::cpActionRequest::clearReqestActionAll();
+                    }
+                }
+            }
+            i += static_cast<u32>(1);
+        } while (i < this->callbackGetAction.::cDelegateCore<unsigned int, unsigned int (MtObject::*)()>::mArrayLength);
+    }
 }
 
 // Address: 0x003b5d90 - 0x003b5e6e (222 bytes)

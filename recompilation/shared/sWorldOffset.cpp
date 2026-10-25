@@ -95,14 +95,8 @@ void sWorldOffset::Init(const MtVector3& targetPos) {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     this->mIdX = static_cast<s32>(-1);
     this->mIdZ = static_cast<s32>(-1);
-    this->mWorldOffset.x = ::MtVector3::Zero.x;
-    this->mWorldOffset.y = ::MtVector3::Zero.y;
-    this->mWorldOffset.z = ::MtVector3::Zero.z;
-    this->mWorldOffset.pad_ = 0.0f;
-    this->mWorldAbsoluteOffset.x = ::MtVector3::Zero.x;
-    this->mWorldAbsoluteOffset.y = ::MtVector3::Zero.y;
-    this->mWorldAbsoluteOffset.z = ::MtVector3::Zero.z;
-    this->mWorldAbsoluteOffset.pad_ = 0.0f;
+    this->mWorldOffset = ::MtVector3::Zero;
+    this->mWorldAbsoluteOffset = ::MtVector3::Zero;
 }
 
 // Address: 0x00873e70 - 0x00873ee4 (116 bytes)
@@ -113,14 +107,8 @@ void sWorldOffset::clear() {
     this->mIdX = static_cast<s32>(-1);
     this->mEnabelWorldOffset = false;
     this->mStatus = static_cast<u32>(1);
-    this->mWorldOffset.x = ::MtVector3::Zero.x;
-    this->mWorldOffset.y = ::MtVector3::Zero.y;
-    this->mWorldOffset.z = ::MtVector3::Zero.z;
-    this->mWorldOffset.pad_ = 0.0f;
-    this->mWorldAbsoluteOffset.x = ::MtVector3::Zero.x;
-    this->mWorldAbsoluteOffset.y = ::MtVector3::Zero.y;
-    this->mWorldAbsoluteOffset.z = ::MtVector3::Zero.z;
-    this->mWorldAbsoluteOffset.pad_ = 0.0f;
+    this->mWorldOffset = ::MtVector3::Zero;
+    this->mWorldAbsoluteOffset = ::MtVector3::Zero;
     this->mUpdate = false;
 }
 

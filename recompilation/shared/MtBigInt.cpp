@@ -67,9 +67,10 @@ MtBigInt::MtBigInt(const MtBigInt& bi) {
 // MtBigInt MtBigInt::operator--(int);
 
 // Address: 0x00d762e0 - 0x00d762e3 (3 bytes)
-__attribute__((weak)) MtBigInt::operator unsigned int() const {
-    DDON_STUB("MtBigInt::operator unsigned int")
-    return {};
+MtBigInt::operator unsigned int() const {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: const unsigned int at 0x0 from const MtBigInt*
+    return *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + static_cast<long>(0));
 }
 
 // No out-of-line body: compiled for inlining, but no inlined copy is in the ELF

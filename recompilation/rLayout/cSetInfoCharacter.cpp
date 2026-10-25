@@ -5,6 +5,7 @@
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "cSetInfo.h"
 #include "cSetInfoCoord.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -108,9 +109,25 @@ __attribute__((weak)) bool cSetInfoCharacter::applyInfo(cUnit* pu) const {
 }
 
 // Address: 0x0055c6a0 - 0x0055c6d8 (56 bytes)
-__attribute__((weak)) void cSetInfoCharacter::copy(cSetInfo* p) {
-    DDON_STUB("cSetInfoCharacter::copy")
-    /* stub */
+void cSetInfoCharacter::copy(cSetInfo* p) {
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    this->::cSetInfoCoord::copy(p);
+    // inferred: a temporary for the result of the call at 0x55c6b4, used once; no DWARF local holds it
+    const MtDTI& t0 = p->getDTI();
+    // inferred: the value the loop at 0x55c6c2 carries; no location-less local in scope fits
+    MT_CTSTR v0_1 = ::cSetInfoCharacter::DTI.::MtDTI::mName;
+    // inferred: the value the loop at 0x55c6c2 carries; no location-less local in scope fits
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            break;
+        } else {
+            if (v0_0->mpParent != static_cast<MtDTI*>(nullptr)) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (122 bytes)

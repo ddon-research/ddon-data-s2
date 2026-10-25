@@ -82,9 +82,9 @@ __attribute__((weak)) void CDataFreeRentalPawnList::operator delete(void* p_addr
 // CDataFreeRentalPawnList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
 
 // Address: 0x003cd610 - 0x003cd676 (102 bytes)
-__attribute__((weak)) MtObject* CDataFreeRentalPawnList::MyDTI::newInstance() const {
-    DDON_STUB("CDataFreeRentalPawnList::MyDTI::newInstance")
-    return nullptr;
+MtObject* CDataFreeRentalPawnList::MyDTI::newInstance() const {
+    // Approximate from the ELF: a base constructor inlined with no DWARF copy, which only the recompiles that inline this body check; a place no accessible member names, accessed by byte offset from its base; stores ahead of a subobject's inlined constructor; the body oracle reports this body.
+    return new (static_cast<u32>(16)) ::CDataFreeRentalPawnList;
 }
 
 // No out-of-line body: no code in the ELF

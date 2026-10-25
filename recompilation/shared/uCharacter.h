@@ -401,3 +401,9 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline const cAttackParam* uCharacter::stDmActColParam::getAttackParam() const {
+    return this->mpAttackParam;
+}

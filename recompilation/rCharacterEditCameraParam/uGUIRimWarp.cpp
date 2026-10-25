@@ -496,9 +496,79 @@ void uGUIRimWarp::moveEvent() {
 }
 
 // Address: 0x00c2a210 - 0x00c2a384 (372 bytes)
-__attribute__((weak)) void uGUIRimWarp::updateMove() {
-    DDON_STUB("uGUIRimWarp::updateMove")
-    /* stub */
+void uGUIRimWarp::updateMove() {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isEnableRimWarp(true) == false) {
+        if (this->mIsPaid != false) {
+            this->mDialog.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+            this->mDialog.mCursor.::uGUIBase::cReferenceUIVlCursor::update();
+            this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+            this->mList.mListCtrl.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+            if (this->mFlowId <= static_cast<u32>(8)) {
+                if (((static_cast<unsigned long>(352) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                    this->::uGUIRimWarp::adjustMapPin(true);
+                } else {
+                    if (((static_cast<unsigned long>(144) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                        this->::uGUIRimWarp::adjustMapPin(false);
+                    }
+                }
+            }
+            if (this->mFlowId <= static_cast<u32>(11)) {
+                if (((static_cast<unsigned long>(3424) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                    this->::uGUIRimWarp::updateSystemMsg();
+                } else {
+                    if (this->mFlowId == static_cast<u32>(4)) {
+                        this->::uGUIRimWarp::updateFavoriteList();
+                    }
+                }
+            }
+        } else {
+            // inferred: a temporary for the result of the call at 0xc2a295, used once; no DWARF local holds it
+            bool t0 = static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::isPartyLarge();
+            // inferred: a temporary for the value the load at 0xc2a29a read, used twice; no DWARF local holds it
+            sGUI* t1 = ::sGUI::getInstance();
+            if (t0 != false) {
+                static_cast<sGUIExt*>(t1)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(143)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+                this->mWarpResult = static_cast<u32>(1);
+                this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+            } else {
+                if (static_cast<sGUIExt*>(t1)->::sGUIExt::isBattle() != false) {
+                    // inferred: a temporary for the value the load at 0xc2a2fe read, used twice; no DWARF local holds it
+                    sGUI* t2 = ::sGUI::getInstance();
+                    static_cast<sGUIExt*>(t2)->::sGUIExt::requestAnnounce(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->::sGUIExt::getMsgCommonDialog(), static_cast<u32>(142)), static_cast<u32>(1), static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), static_cast<u32>(0), static_cast<u32>(0), true);
+                    this->mWarpResult = static_cast<u32>(1);
+                    this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+                } else {
+                    this->mWarpResult = static_cast<u32>(1);
+                    this->::uGUIRimWarp::setFlowId(static_cast<u32>(13), true);
+                }
+            }
+        }
+    } else {
+        this->mDialog.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+        this->mDialog.mCursor.::uGUIBase::cReferenceUIVlCursor::update();
+        this->mMain.mClose.::uGUIBase::cReferenceUICloseBtn::update();
+        this->mList.mListCtrl.::uGUIBase::cScrollList::update(this->::cUnit::getDeltaTime());
+        if (this->mFlowId <= static_cast<u32>(8)) {
+            if (((static_cast<unsigned long>(352) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                this->::uGUIRimWarp::adjustMapPin(true);
+            } else {
+                if (((static_cast<unsigned long>(144) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                    this->::uGUIRimWarp::adjustMapPin(false);
+                }
+            }
+        }
+        if (this->mFlowId <= static_cast<u32>(11)) {
+            if (((static_cast<unsigned long>(3424) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                this->::uGUIRimWarp::updateSystemMsg();
+            } else {
+                if (this->mFlowId == static_cast<u32>(4)) {
+                    this->::uGUIRimWarp::updateFavoriteList();
+                }
+            }
+        }
+    }
 }
 
 // Address: 0x00c2a6d0 - 0x00c2a6d9 (9 bytes)
@@ -580,7 +650,7 @@ __attribute__((weak)) void uGUIRimWarp::addPartyWarp(MtTypedArray<uGUIRimWarp::c
 }
 
 // Address: 0x00c2afe0 - 0x00c2b0e7 (263 bytes)
-void uGUIRimWarp::updateFavoriteList() {
+__attribute__((weak)) void uGUIRimWarp::updateFavoriteList() {
     // Proven from the ELF: the body oracle checks this body (022 D5).
     if (static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLeaderCharacterId == static_cast<sNetworkExt*>(::sNetwork::getInstance())->::sNetworkExt::getGameServer()->mLobbyCharacterId) {
         if (this->mPartyWarpSec != static_cast<u32>(0)) {
@@ -1064,10 +1134,33 @@ u32 uGUIRimWarp::evCtrlAdjustTab(cControl::Message* msg) {
 }
 
 // Address: 0x00c2a190 - 0x00c2a1e6 (86 bytes)
-__attribute__((weak)) u32 uGUIRimWarp::evCtrlMouseClick(cControl::Message* msg) {
-    // local: u32 ret;
-    DDON_STUB("uGUIRimWarp::evCtrlMouseClick")
-    return {};
+u32 uGUIRimWarp::evCtrlMouseClick(cControl::Message* msg) {
+    // DWARF local not rendered: u32 ret;
+    // Approximate from the ELF: a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (msg != static_cast<cControl::Message*>(nullptr)) {
+        if (this->mFlowId <= static_cast<u32>(9)) {
+            if (((static_cast<unsigned long>(664) >> static_cast<unsigned long>(this->mFlowId & static_cast<u32>(31))) & static_cast<unsigned long>(1)) != static_cast<unsigned long>(0)) {
+                if (msg->reason == static_cast<nGUIExt::MSG_REASON>(38)) {
+                    if (msg->pSender != static_cast<cControl*>(nullptr)) {
+                        if (msg->pSender->::cControl::getCurrentPos() != msg->pSender->mOldPos) {
+                            msg->changeSE = static_cast<u32>(2);
+                            this->::uGUIBase::setInputEvent(static_cast<u32>(68));
+                        }
+                    }
+                    return static_cast<u32>(0);
+                } else {
+                    return this->::uGUIRimWarp::evCtrlDecide(msg);
+                }
+            } else {
+                return static_cast<u32>(0);
+            }
+        } else {
+            return static_cast<u32>(0);
+        }
+    } else {
+        return static_cast<u32>(0);
+    }
 }
 
 // No out-of-line body: 28 inlined copies in 11 functions (769 bytes)

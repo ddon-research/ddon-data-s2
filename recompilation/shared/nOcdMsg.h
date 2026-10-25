@@ -5,6 +5,7 @@
 
 // Forward declarations
 class cContextCharacter;
+class cpHpDamageCtrl;
 
 // Declarations
 namespace nObjCondition { struct stHolyAbsorpReqInfo; }
@@ -59,8 +60,10 @@ using u8 = unsigned char;
 namespace nObjCondition {
     struct stHolyAbsorpReqMsg
     {
-        // inferred: cContextCharacter::clearAbsorpReqArray names cContextCharacter::mAbsorpReqArray[0].mReqMsg.mAtkUID
+        // inferred: cContextCharacter::clearAbsorpReqInfoTop names cContextCharacter::mAbsorpReqArray[7].mReqMsg.mAtkUID
         friend class ::cContextCharacter;
+        // inferred: cpHpDamageCtrl::registAbsorpReqMsg names nObjCondition::stHolyAbsorpReqInfo::mReqMsg.mAtkUID
+        friend class ::cpHpDamageCtrl;
     public:
         stHolyAbsorpReqMsg();
         void clear();
@@ -112,8 +115,10 @@ namespace nObjCondition {
 namespace nObjCondition {
     struct stHolyAbsorpReqInfo
     {
-        // inferred: cContextCharacter::getAbsorpReqNum names cContextCharacter::mAbsorpReqArray[0].mIsSeted
+        // inferred: cContextCharacter::clearAbsorpReqInfoTop names cContextCharacter::mAbsorpReqArray[7].mReqMsg.mAtkUID
         friend class ::cContextCharacter;
+        // inferred: cpHpDamageCtrl::registAbsorpReqMsg names cpHpDamageCtrl::mAbsorpReqArray.elems[0].mIsSeted
+        friend class ::cpHpDamageCtrl;
     public:
         stHolyAbsorpReqInfo();
         void clear();
@@ -125,3 +130,8 @@ namespace nObjCondition {
         bool mIsSeted;  // offset: 0xc
     };
 }  // namespace nObjCondition
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool nObjCondition::stHolyAbsorpReqInfo::isSeted() const {
+    return this->mIsSeted;
+}

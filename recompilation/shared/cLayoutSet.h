@@ -19,6 +19,7 @@ class MtString;
 class cGroupParam;
 class cLayoutPreset;
 class cLayoutSetEnemy;
+class cLayoutSetNpc;
 class cLayoutSetOm;
 namespace nLayout { struct stLayoutID; }
 namespace nLayout { struct stSplitID; }
@@ -39,6 +40,8 @@ class cLayoutSet : public MtObject
 {
     // inferred: cLayoutSetEnemy::moveSetUnit names cLayoutSet::mpGroupParam
     friend class cLayoutSetEnemy;
+    // inferred: cLayoutSetNpc::getUnit names cLayoutSet::mUnitArray.mLength
+    friend class cLayoutSetNpc;
     // inferred: cLayoutSetOm::moveSetUnit names cLayoutSet::mpGroupParam
     friend class cLayoutSetOm;
 public:
@@ -225,4 +228,10 @@ inline cGroupParam* cLayoutSet::getGroupParam() const {
 // inferred: parameters bound at each inlined copy's entry: the body its copies' regions agree on (026 P6b1); approximate: no recompile checks it
 inline MtArray& cLayoutSet::getUnitArray() {
     return this->mUnitArray;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline u32 cLayoutSet::getAreaHitBit() const {
+    return this->mAreaHitBit;
 }

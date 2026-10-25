@@ -202,9 +202,33 @@ __attribute__((weak)) void cPrim::setCDraw(cDraw* p_draw) {
 // u32 cPrim::getCurrentTexHandle() const;
 
 // Address: 0x013263b0 - 0x0132649e (238 bytes)
-__attribute__((weak)) void cPrim::clear() {
-    DDON_STUB("cPrim::clear")
-    /* stub */
+void cPrim::clear() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x2f0 from cPrim*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xd0 from cPrim*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0xcc from cPrim*
+    this->mpPrimBuffer->::cPrimBuffer::resetBuffer();
+    this->mTexHandle.mCurrentIdx = static_cast<u32>(0);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(752)) = static_cast<unsigned long>(0);
+    this->mTexHandle.mpTexture = static_cast<nPrim::Texture*>(nullptr);
+    this->mCurrentTexHandle = static_cast<u32>(0);
+    this->mTexture.p_alpha = static_cast<rTexture*>(nullptr);
+    this->mTexture.p_mask = static_cast<rTexture*>(nullptr);
+    this->mTexture.p_normal = static_cast<rTexture*>(nullptr);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + static_cast<long>(208)) = static_cast<unsigned long>(0);
+    this->mTexture.flags = static_cast<u32>(0);
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(204)) = static_cast<unsigned int>(0);
+    this->mCurrentStack = static_cast<u32>(0);
+    this->mMetaDataChanged = false;
+    this->mpMetaData = static_cast<void*>(nullptr);
+    this->mMetaData.p_data[7] = static_cast<void*>(nullptr);
+    this->mMetaData.p_data[6] = static_cast<void*>(nullptr);
+    this->mMetaData.p_data[5] = static_cast<void*>(nullptr);
+    this->mMetaData.p_data[4] = static_cast<void*>(nullptr);
+    this->mMetaData.p_data[3] = static_cast<void*>(nullptr);
+    this->mMetaData.p_data[2] = static_cast<void*>(nullptr);
+    this->mMetaData.p_data[1] = static_cast<void*>(nullptr);
+    this->mMetaData.p_data[0] = static_cast<void*>(nullptr);
 }
 
 // Address: 0x013264a0 - 0x01326556 (182 bytes)

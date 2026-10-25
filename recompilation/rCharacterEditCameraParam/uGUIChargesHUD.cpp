@@ -4,10 +4,13 @@
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
 #include "../shared/MtMemoryAllocator.h"
+#include "../shared/cGUIInstance.h"
 #include "../shared/cGUIObject.h"
 #include "../shared/cResource.h"
 #include "../shared/rArchiveListArray.h"
 #include "../rGUI/rGUI.h"
+#include "../shared/sGUI.h"
+#include "../shared/sGUIExt.h"
 #include "../shared/uGUIBase.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -89,12 +92,33 @@ bool uGUIChargesHUD::loadResource() {
 }
 
 // Address: 0x00a1f900 - 0x00a1fa1e (286 bytes)
-__attribute__((weak)) void uGUIChargesHUD::setup() {
-    // local: cGUIInstAnimation* pInstOrigin;
-    // local: u32 i;
-    // local: cGUIInstance* pInstCopy;
-    DDON_STUB("uGUIChargesHUD::setup")
-    /* stub */
+void uGUIChargesHUD::setup() {
+    // DWARF local not rendered: cGUIInstAnimation* pInstOrigin;
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: cGUIInstance* pInstCopy;
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::setup();
+    if (this->::uGUIBase::mIsEndLoadResource == false) {
+        return;
+    }
+    this->setPlay(true);
+    this->::uGUIBase::setPriority(static_cast<sGUIExt*>(::sGUI::getInstance())->::sGUIExt::issuePriority(static_cast<u32>(7)), true);
+    // inferred: a temporary for the result of the call at 0xa1f960, used 3 times; no DWARF local holds it
+    cGUIInstance* t0 = this->getInstance(static_cast<u32>(2), false);
+    if (t0 != static_cast<cGUIInstance*>(nullptr)) {
+        this->mRefCharges[0].::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), t0, static_cast<u32>(0));
+        // inferred: a temporary for the result of the call at 0xa1f98f, used twice; no DWARF local holds it
+        cGUIInstance* t1 = this->::uGUIBase::ManageDuplicate(t0, t0->::cGUIInstance::getParent());
+        this->::uGUIBase::setInstanceExecuteTree(t1, true);
+        this->mRefCharges[1].::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), t1, static_cast<u32>(0));
+        this->mRefCharges[0].::uGUIBase::cReferenceUIChargesInfo::addData(static_cast<u32>(0), static_cast<u32>(128), static_cast<MT_CTSTR>(nullptr));
+    } else {
+        this->mRefCharges[0].::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(nullptr), static_cast<u32>(0));
+        this->::uGUIBase::setInstanceExecuteTree(static_cast<cGUIInstance*>(nullptr), true);
+        this->mRefCharges[1].::uGUIBase::cReferenceUIChargesInfo::setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(nullptr), static_cast<u32>(0));
+        this->mRefCharges[0].::uGUIBase::cReferenceUIChargesInfo::addData(static_cast<u32>(0), static_cast<u32>(128), static_cast<MT_CTSTR>(nullptr));
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChargesHUD::updateInit);
 }
 
 // Address: 0x00a1fa40 - 0x00a1fa71 (49 bytes)
@@ -165,9 +189,9 @@ void uGUIChargesHUD::deleteData() {
 // void uGUIChargesHUD::setUseEffect(bool isUse);
 
 // Address: 0x00a1fa20 - 0x00a1fa3a (26 bytes)
-__attribute__((weak)) void uGUIChargesHUD::updateInit() {
-    DDON_STUB("uGUIChargesHUD::updateInit")
-    /* stub */
+void uGUIChargesHUD::updateInit() {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChargesHUD::updateWait);
 }
 
 // Address: 0x00a1faa0 - 0x00a1fab1 (17 bytes)

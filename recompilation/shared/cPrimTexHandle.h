@@ -11,6 +11,7 @@
 class MtAllocator;
 class MtDTI;
 class MtObject;
+class cPrim;
 namespace nPrim { struct Texture; }
 
 // Declarations
@@ -25,6 +26,8 @@ using u32 = unsigned int;
 
 class cPrimTexHandle : public cPrimObj
 {
+    // inferred: cPrim::clear names cPrim::mTexHandle.mCurrentIdx
+    friend class cPrim;
 public:
     class MyDTI;
 public:

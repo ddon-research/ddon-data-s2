@@ -71,8 +71,35 @@ inline rTblMenuOption::rTblMenuOption() {
 // Address: 0x0070b2e0 - 0x0070b391 (177 bytes)
 // Also emitted as: _ZN14rTblMenuOptionD0Ev at 0x0070b3a0
 rTblMenuOption::~rTblMenuOption() {
-    DDON_STUB("rTblMenuOption::~rTblMenuOption")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if (this->mCtgr.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x70b310 carries; no location-less local in scope fits
+        u32 v0_0 = this->mCtgr.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mCtgr.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mCtgr.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mCtgr.::MtArray::mLength) {
+                    v0_0 = this->mCtgr.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mCtgr.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mCtgr.::MtArray::mpArray));
+    }
+    this->mCtgr.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mCtgr.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mCtgr.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x01ab5f30 - 0x01ab5f38 (8 bytes)
@@ -294,8 +321,7 @@ inline void rTblMenuOption::cTab::operator delete(void* p_addr) {
 // Address: 0x0070c580 - 0x0070c597 (23 bytes)
 // Also emitted as: _ZN14rTblMenuOption4cTabD0Ev at 0x0070c5a0
 rTblMenuOption::cTab::~cTab() {
-    DDON_STUB("rTblMenuOption::cTab::~cTab")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x0070c5f0 - 0x0070c851 (609 bytes)

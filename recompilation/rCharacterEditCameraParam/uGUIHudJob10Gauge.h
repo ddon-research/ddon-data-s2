@@ -6,7 +6,7 @@
 // Dependencies
 #include "../shared/MtDTI.h"
 #include "../shared/nGUIHudJob10.h"
-#include "../shared/uGUIBaseExt.h"
+#include "uGUIBaseExt.h"
 
 // Forward declarations
 class MtAllocator;

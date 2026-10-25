@@ -12,7 +12,10 @@
 class MtAllocator;
 class MtDTI;
 class MtVector3;
+class cDamageMsg;
+class cHitInfoAfter;
 class cpJob06;
+class uHuman;
 class uShlBase;
 
 // Declarations
@@ -29,8 +32,14 @@ using u8 = unsigned char;
 
 class cHitInfoAfterLocal : public MtObject
 {
+    // inferred: cDamageMsg::makeInfoFromHitNode names cDamageMsg::mLocalInfo.mHitPos.x
+    friend class cDamageMsg;
+    // inferred: cHitInfoAfter::makeInfoFromDmMsg names cDamageMsg::mLocalInfo.mHitPos.y
+    friend class cHitInfoAfter;
     // inferred: cpJob06::makeShlDamageAttackInfo names cHitInfoAfter::mLocalInfo.mHitPos
     friend class cpJob06;
+    // inferred: uHuman::callbackDamageAfter names cHitInfoAfter::mLocalInfo.mIsForceHitStop
+    friend class uHuman;
 public:
     class MyDTI;
 public:

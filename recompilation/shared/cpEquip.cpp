@@ -181,11 +181,130 @@ __attribute__((weak)) void cpEquip::createProperty(MtPropertyList& s) {
 }
 
 // Address: 0x00479d10 - 0x00479e6d (349 bytes)
-__attribute__((weak)) void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 speed, u32 attr) {
-    // local: u32 i;
-    // local: uWeapon* pWpn;
-    DDON_STUB("cpEquip::callbackSetMotion")
-    /* stub */
+void cpEquip::callbackSetMotion(u32 src, u32 mot_no, f32 hokan, f32 frame, f32 speed, u32 attr) {
+    // DWARF local not rendered: u32 i;
+    // DWARF local not rendered: uWeapon* pWpn;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uDDOModel::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x8 from uWeapon::MyDTI*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x246c from uModel*
+    if (this->::cpComponent::mActive == false) {
+        return;
+    } else {
+        if (this->::cpComponent::mpOwner == static_cast<MtObject*>(nullptr)) {
+            return;
+        } else {
+            // inferred: a temporary for the result of the call at 0x479d2b, used once; no DWARF local holds it
+            const MtDTI& t0 = this->::cpComponent::mpOwner->getDTI();
+            // inferred: the value the loop at 0x479d39 carries; no location-less local in scope fits
+            unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uDDOModel::DTI) + static_cast<long>(8));
+            // inferred: the value the loop at 0x479d39 carries; no location-less local in scope fits
+            const MtDTI* v0_0 = &t0;
+            // inferred: the value the loop at 0x479d6c carries; no location-less local in scope fits
+            const MtDTI* v1_0;
+            for (;;) {
+                if (v0_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(8)))) {
+                    if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                        v0_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v0_0) + static_cast<long>(32)));
+                    } else {
+                        return;
+                    }
+                } else {
+                    if (this->mWeapon[0].mpModel == static_cast<uModel*>(nullptr)) {
+                        break;
+                    } else {
+                        // inferred: a temporary for the result of the call at 0x479d5e, used once; no DWARF local holds it
+                        const MtDTI& t1 = this->mWeapon[0].mpModel->getDTI();
+                        // inferred: the value the loop at 0x479d6c carries; no location-less local in scope fits
+                        unsigned long v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uWeapon::DTI) + static_cast<long>(8));
+                        v1_0 = &t1;
+                        for (;;) {
+                            if (v1_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + static_cast<long>(8)))) {
+                                if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                                    v1_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v1_0) + static_cast<long>(32)));
+                                } else {
+                                    goto loop_479d39_end;
+                                }
+                            } else {
+                                if (this->mWeapon[0].mpModel != static_cast<uModel*>(nullptr)) {
+                                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWeapon[0].mpModel) + static_cast<long>(9324)) = static_cast<unsigned int>(0);
+                                }
+                                goto loop_479d39_end;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+            loop_479d39_end:;
+            if (this->mWeapon[1].mpModel != static_cast<uModel*>(nullptr)) {
+                // inferred: a temporary for the result of the call at 0x479da2, used once; no DWARF local holds it
+                const MtDTI& t2 = this->mWeapon[1].mpModel->getDTI();
+                // inferred: the value the loop at 0x479db0 carries; no location-less local in scope fits
+                unsigned long v3_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uWeapon::DTI) + static_cast<long>(8));
+                // inferred: the value the loop at 0x479db0 carries; no location-less local in scope fits
+                for (const MtDTI* v3_0 = &t2;;) {
+                    if (v3_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(8)))) {
+                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                            v3_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v3_0) + static_cast<long>(32)));
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (this->mWeapon[1].mpModel != static_cast<uModel*>(nullptr)) {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWeapon[1].mpModel) + static_cast<long>(9324)) = static_cast<unsigned int>(0);
+                        }
+                        break;
+                    }
+                }
+            }
+            if (this->mWeapon[2].mpModel != static_cast<uModel*>(nullptr)) {
+                // inferred: a temporary for the result of the call at 0x479de6, used once; no DWARF local holds it
+                const MtDTI& t3 = this->mWeapon[2].mpModel->getDTI();
+                // inferred: the value the loop at 0x479df4 carries; no location-less local in scope fits
+                unsigned long v5_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uWeapon::DTI) + static_cast<long>(8));
+                // inferred: the value the loop at 0x479df4 carries; no location-less local in scope fits
+                for (const MtDTI* v5_0 = &t3;;) {
+                    if (v5_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(8)))) {
+                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                            v5_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v5_0) + static_cast<long>(32)));
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (this->mWeapon[2].mpModel != static_cast<uModel*>(nullptr)) {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWeapon[2].mpModel) + static_cast<long>(9324)) = static_cast<unsigned int>(0);
+                        }
+                        break;
+                    }
+                }
+            }
+            if (this->mWeapon[3].mpModel != static_cast<uModel*>(nullptr)) {
+                // inferred: a temporary for the result of the call at 0x479e2a, used once; no DWARF local holds it
+                const MtDTI& t4 = this->mWeapon[3].mpModel->getDTI();
+                // inferred: the value the loop at 0x479e38 carries; no location-less local in scope fits
+                unsigned long v7_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&::uWeapon::DTI) + static_cast<long>(8));
+                // inferred: the value the loop at 0x479e38 carries; no location-less local in scope fits
+                for (const MtDTI* v7_0 = &t4;;) {
+                    if (v7_1 != (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + static_cast<long>(8)))) {
+                        if ((*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + static_cast<long>(32))) != static_cast<unsigned long>(0)) {
+                            v7_0 = reinterpret_cast<const MtDTI*>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(v7_0) + static_cast<long>(32)));
+                        } else {
+                            break;
+                        }
+                    } else {
+                        if (this->mWeapon[3].mpModel != static_cast<uModel*>(nullptr)) {
+                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this->mWeapon[3].mpModel) + static_cast<long>(9324)) = static_cast<unsigned int>(0);
+                        }
+                        this->::cpEquip::updateWeaponCtrl();
+                        return;
+                    }
+                }
+            }
+            this->::cpEquip::updateWeaponCtrl();
+            return;
+        }
+    }
 }
 
 // Address: 0x0047b8d0 - 0x0047ba8b (443 bytes)
@@ -198,10 +317,40 @@ __attribute__((weak)) void cpEquip::setWeapon(u32 index, uWeapon* pWpn) {
 }
 
 // Address: 0x0047ba90 - 0x0047baff (111 bytes)
-__attribute__((weak)) uWeapon* cpEquip::getWeapon(u32 index) {
-    // local: uWeapon* pWpn;
-    DDON_STUB("cpEquip::getWeapon")
-    return nullptr;
+uWeapon* cpEquip::getWeapon(u32 index) {
+    // DWARF local not rendered: uWeapon* pWpn;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47bafa; no location-less local in scope fits
+    uModel* v2_0;
+    if (index > static_cast<u32>(3)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        if (this->mWeapon[index].mpModel == static_cast<uModel*>(nullptr)) {
+            v2_0 = static_cast<uModel*>(nullptr);
+        } else {
+            // inferred: a temporary for the result of the call at 0x47babd, used twice; no DWARF local holds it
+            const MtDTI& t0 = this->mWeapon[index].mpModel->getDTI();
+            // inferred: the value the loop at 0x47bae0 carries; no location-less local in scope fits
+            MT_CTSTR v0_1 = ::uWeapon::DTI.::MtDTI::mName;
+            if (v0_1 != t0.mName) {
+                // inferred: the value the loop at 0x47bae0 carries; no location-less local in scope fits
+                for (const MtDTI* v0_0 = &t0;;) {
+                    if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                        v2_0 = static_cast<uModel*>(nullptr);
+                        return static_cast<uWeapon*>(v2_0);
+                    } else {
+                        if (v0_1 != v0_0->mpParent->mName) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            v2_0 = this->mWeapon[index].mpModel;
+        }
+    }
+    return static_cast<uWeapon*>(v2_0);
 }
 
 // No out-of-line body: 4 inlined copies in 2 functions (8 bytes)
@@ -218,10 +367,40 @@ __attribute__((weak)) void cpEquip::setArmor(u32 index, uArmor* pArmor) {
 }
 
 // Address: 0x0047bcb0 - 0x0047bd1f (111 bytes)
-__attribute__((weak)) uArmor* cpEquip::getArmor(u32 index) {
-    // local: uArmor* pArmor;
-    DDON_STUB("cpEquip::getArmor")
-    return nullptr;
+uArmor* cpEquip::getArmor(u32 index) {
+    // DWARF local not rendered: uArmor* pArmor;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47bd1a; no location-less local in scope fits
+    uModel* v2_0;
+    if (index > static_cast<u32>(6)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        if (this->mArmor[index].mpModel == static_cast<uModel*>(nullptr)) {
+            v2_0 = static_cast<uModel*>(nullptr);
+        } else {
+            // inferred: a temporary for the result of the call at 0x47bcdd, used twice; no DWARF local holds it
+            const MtDTI& t0 = this->mArmor[index].mpModel->getDTI();
+            // inferred: the value the loop at 0x47bd00 carries; no location-less local in scope fits
+            MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+            if (v0_1 != t0.mName) {
+                // inferred: the value the loop at 0x47bd00 carries; no location-less local in scope fits
+                for (const MtDTI* v0_0 = &t0;;) {
+                    if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                        v2_0 = static_cast<uModel*>(nullptr);
+                        return static_cast<uArmor*>(v2_0);
+                    } else {
+                        if (v0_1 != v0_0->mpParent->mName) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            v2_0 = this->mArmor[index].mpModel;
+        }
+    }
+    return static_cast<uArmor*>(v2_0);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (8 bytes)
@@ -253,10 +432,36 @@ void cpEquip::setHair(uArmor* pHair) {
 }
 
 // Address: 0x0047bdd0 - 0x0047be2d (93 bytes)
-__attribute__((weak)) uArmor* cpEquip::getHair() {
-    // local: uArmor* pArmor;
-    DDON_STUB("cpEquip::getHair")
-    return nullptr;
+uArmor* cpEquip::getHair() {
+    // DWARF local not rendered: uArmor* pArmor;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47be26; no location-less local in scope fits
+    uModel* v2_0;
+    if (this->mHair.mpModel == static_cast<uModel*>(nullptr)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x47bdea, used twice; no DWARF local holds it
+        const MtDTI& t0 = this->mHair.mpModel->getDTI();
+        // inferred: the value the loop at 0x47be10 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x47be10 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<uModel*>(nullptr);
+                    return static_cast<uArmor*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = this->mHair.mpModel;
+    }
+    return static_cast<uArmor*>(v2_0);
 }
 
 // No out-of-line body: 3 inlined copies in 2 functions (21 bytes)
@@ -290,10 +495,36 @@ void cpEquip::setBeard(uArmor* pBeard) {
 }
 
 // Address: 0x0047bee0 - 0x0047bf3d (93 bytes)
-__attribute__((weak)) uArmor* cpEquip::getBeard() {
-    // local: uArmor* pArmor;
-    DDON_STUB("cpEquip::getBeard")
-    return nullptr;
+uArmor* cpEquip::getBeard() {
+    // DWARF local not rendered: uArmor* pArmor;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47bf36; no location-less local in scope fits
+    uModel* v2_0;
+    if (this->mBeard.mpModel == static_cast<uModel*>(nullptr)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x47befa, used twice; no DWARF local holds it
+        const MtDTI& t0 = this->mBeard.mpModel->getDTI();
+        // inferred: the value the loop at 0x47bf20 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x47bf20 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<uModel*>(nullptr);
+                    return static_cast<uArmor*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = this->mBeard.mpModel;
+    }
+    return static_cast<uArmor*>(v2_0);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (14 bytes)
@@ -326,10 +557,36 @@ void cpEquip::setMakeup(uArmor* pMakeup) {
 }
 
 // Address: 0x0047bff0 - 0x0047c04d (93 bytes)
-__attribute__((weak)) uArmor* cpEquip::getMakeup() {
-    // local: uArmor* pArmor;
-    DDON_STUB("cpEquip::getMakeup")
-    return nullptr;
+uArmor* cpEquip::getMakeup() {
+    // DWARF local not rendered: uArmor* pArmor;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47c046; no location-less local in scope fits
+    uModel* v2_0;
+    if (this->mMakeup.mpModel == static_cast<uModel*>(nullptr)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x47c00a, used twice; no DWARF local holds it
+        const MtDTI& t0 = this->mMakeup.mpModel->getDTI();
+        // inferred: the value the loop at 0x47c030 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x47c030 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<uModel*>(nullptr);
+                    return static_cast<uArmor*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = this->mMakeup.mpModel;
+    }
+    return static_cast<uArmor*>(v2_0);
 }
 
 // No out-of-line body: 2 inlined copies in 1 function (14 bytes)
@@ -362,10 +619,36 @@ void cpEquip::setUnderwear(uArmor* pUnderwear) {
 }
 
 // Address: 0x0047c100 - 0x0047c15d (93 bytes)
-__attribute__((weak)) uArmor* cpEquip::getUnderwear() {
-    // local: uArmor* pArmor;
-    DDON_STUB("cpEquip::getUnderwear")
-    return nullptr;
+uArmor* cpEquip::getUnderwear() {
+    // DWARF local not rendered: uArmor* pArmor;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47c156; no location-less local in scope fits
+    uModel* v2_0;
+    if (this->mUnderwear.mpModel == static_cast<uModel*>(nullptr)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x47c11a, used twice; no DWARF local holds it
+        const MtDTI& t0 = this->mUnderwear.mpModel->getDTI();
+        // inferred: the value the loop at 0x47c140 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x47c140 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<uModel*>(nullptr);
+                    return static_cast<uArmor*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = this->mUnderwear.mpModel;
+    }
+    return static_cast<uArmor*>(v2_0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -396,10 +679,36 @@ void cpEquip::setUnderwear2(uArmor* pUnderwear2) {
 }
 
 // Address: 0x0047c210 - 0x0047c26d (93 bytes)
-__attribute__((weak)) uArmor* cpEquip::getUnderwear2() {
-    // local: uArmor* pArmor;
-    DDON_STUB("cpEquip::getUnderwear2")
-    return nullptr;
+uArmor* cpEquip::getUnderwear2() {
+    // DWARF local not rendered: uArmor* pArmor;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47c266; no location-less local in scope fits
+    uModel* v2_0;
+    if (this->mUnderwear2.mpModel == static_cast<uModel*>(nullptr)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x47c22a, used twice; no DWARF local holds it
+        const MtDTI& t0 = this->mUnderwear2.mpModel->getDTI();
+        // inferred: the value the loop at 0x47c250 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uArmor::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x47c250 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<uModel*>(nullptr);
+                    return static_cast<uArmor*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = this->mUnderwear2.mpModel;
+    }
+    return static_cast<uArmor*>(v2_0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -422,10 +731,36 @@ void cpEquip::setLantern(uWeapon* pLantern) {
 }
 
 // Address: 0x0047c300 - 0x0047c35d (93 bytes)
-__attribute__((weak)) uWeapon* cpEquip::getLantern() {
-    // local: uWeapon* pWeapon;
-    DDON_STUB("cpEquip::getLantern")
-    return nullptr;
+uWeapon* cpEquip::getLantern() {
+    // DWARF local not rendered: uWeapon* pWeapon;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47c356; no location-less local in scope fits
+    uModel* v2_0;
+    if (this->mLantern.mpModel == static_cast<uModel*>(nullptr)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x47c31a, used twice; no DWARF local holds it
+        const MtDTI& t0 = this->mLantern.mpModel->getDTI();
+        // inferred: the value the loop at 0x47c340 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uWeapon::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x47c340 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<uModel*>(nullptr);
+                    return static_cast<uWeapon*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = this->mLantern.mpModel;
+    }
+    return static_cast<uWeapon*>(v2_0);
 }
 
 // No out-of-line body: no code in the ELF
@@ -447,10 +782,36 @@ void cpEquip::setNpcItem(uWeapon* pNpcItem) {
 }
 
 // Address: 0x0047c3e0 - 0x0047c43d (93 bytes)
-__attribute__((weak)) uWeapon* cpEquip::getNpcItem() {
-    // local: uWeapon* pNpcItem;
-    DDON_STUB("cpEquip::getNpcItem")
-    return nullptr;
+uWeapon* cpEquip::getNpcItem() {
+    // DWARF local not rendered: uWeapon* pNpcItem;
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: the value carried to 0x47c436; no location-less local in scope fits
+    uModel* v2_0;
+    if (this->mNpcItem.mpModel == static_cast<uModel*>(nullptr)) {
+        v2_0 = static_cast<uModel*>(nullptr);
+    } else {
+        // inferred: a temporary for the result of the call at 0x47c3fa, used twice; no DWARF local holds it
+        const MtDTI& t0 = this->mNpcItem.mpModel->getDTI();
+        // inferred: the value the loop at 0x47c420 carries; no location-less local in scope fits
+        MT_CTSTR v0_1 = ::uWeapon::DTI.::MtDTI::mName;
+        if (v0_1 != t0.mName) {
+            // inferred: the value the loop at 0x47c420 carries; no location-less local in scope fits
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_0->mpParent == static_cast<MtDTI*>(nullptr)) {
+                    v2_0 = static_cast<uModel*>(nullptr);
+                    return static_cast<uWeapon*>(v2_0);
+                } else {
+                    if (v0_1 != v0_0->mpParent->mName) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        v2_0 = this->mNpcItem.mpModel;
+    }
+    return static_cast<uWeapon*>(v2_0);
 }
 
 // No out-of-line body: no code in the ELF

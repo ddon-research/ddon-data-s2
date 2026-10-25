@@ -502,10 +502,47 @@ bool sContextManager::isPartyMember(u32 characterId, u32 pawnId) {
 }
 
 // Address: 0x0074d5a0 - 0x0074d644 (164 bytes)
-__attribute__((weak)) bool sContextManager::isPartyMember(const cContextInstHm* pContext) {
-    // local: u32 i;
-    DDON_STUB("sContextManager::isPartyMember")
-    return {};
+bool sContextManager::isPartyMember(const cContextInstHm* pContext) {
+    // DWARF local not rendered: u32 i;
+    // Approximate from the ELF: a path ending in a no-return import call; the code after it is compared path by path; loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (::scePthreadMutexLock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+            ::abort();
+        }
+    }
+    // inferred: the pointer this loop steps by one element; no location-less local in scope fits
+    cContextInstHm* * p0_0 = &this->mpContextPartyPlayerList[0];
+    // inferred: the counter this loop steps; no location-less local in scope fits
+    unsigned int i0_1 = static_cast<unsigned int>(0);
+    // inferred: the value carried to 0x74d5f0; no location-less local in scope fits
+    cContextInstHm* * v1_0;
+    // inferred: the value carried to 0x74d5f0; no location-less local in scope fits
+    unsigned int v1_1;
+    for (;;) {
+        if (pContext == (*p0_0)) {
+            if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+                if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+                    ::abort();
+                }
+            }
+            return true;
+        } else {
+            if ((i0_1 + static_cast<unsigned int>(1)) <= static_cast<unsigned int>(7)) {
+                p0_0 += static_cast<int>(1);
+                i0_1 += static_cast<unsigned int>(1);
+            } else {
+                v1_0 = &p0_0[static_cast<int>(1)];
+                v1_1 = i0_1 + static_cast<unsigned int>(1);
+                break;
+            }
+        }
+    }
+    if ((this->::cSystem::mThreadSafe || (::cSystem::mJobSafe)) != false) {
+        if (::scePthreadMutexUnlock(&this->::cSystem::mCS.mCSection) != static_cast<int>(0)) {
+            ::abort();
+        }
+    }
+    return false;
 }
 
 // Address: 0x0074d650 - 0x0074d73b (235 bytes)

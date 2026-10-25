@@ -160,6 +160,21 @@ __attribute__((weak)) MtObject* nPrim::PrimVertex::MyDTI::newInstance() const {
     return nullptr;
 }
 
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// nPrim::Rect::Rect();
+
+// No out-of-line body: no code in the ELF
+// nPrim::Rect::Rect(u32, u32, u32, u32);
+
+// No out-of-line body: compiled for inlining, but no inlined copy is in the ELF
+// nPrim::Rect::Rect(u64 idata);
+
+// No out-of-line body: no code in the ELF
+// nPrim::Rect::operator unsigned long() const;
+
+// No out-of-line body: no code in the ELF
+// nPrim::Rect& nPrim::Rect::operator=(u64);
+
 // No out-of-line body: no code in the ELF
 // nPrim::TexCoord::TexCoord();
 

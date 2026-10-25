@@ -82,3 +82,8 @@ inline cCorePointMsg::cCorePointMsg() {
     this->mNetFlag = false;
     this->mIsErase = false;
 }
+
+// Inline, no code of its own: checked where it is inlined.
+inline bool cCorePointMsg::isSended() const {
+    return this->mNetFlag;
+}

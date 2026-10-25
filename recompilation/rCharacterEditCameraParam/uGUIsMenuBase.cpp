@@ -10,6 +10,7 @@
 #include "../shared/nDDOUtility.h"
 #include "../shared/sGUI.h"
 #include "../shared/sGUIExt.h"
+#include "../shared/uGUI.h"
 #include "../shared/uGUIBase.h"
 #include "uGUISystemMsg.h"
 #ifndef DDON_STUB
@@ -68,8 +69,7 @@ inline void uGUIsMenuBase::operator delete(void* p_addr) {
 // Address: 0x00c58930 - 0x00c58961 (49 bytes)
 // Also emitted as: _ZN13uGUIsMenuBaseD0Ev at 0x00c58970
 uGUIsMenuBase::~uGUIsMenuBase() {
-    DDON_STUB("uGUIsMenuBase::~uGUIsMenuBase")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
 }
 
 // Address: 0x00c589c0 - 0x00c58e93 (1235 bytes)
@@ -85,9 +85,20 @@ __attribute__((weak)) void uGUIsMenuBase::createProperty(MtPropertyList& s) {
 // s32& uGUIsMenuBase::getCursor(u32);
 
 // Address: 0x00c59120 - 0x00c591a0 (128 bytes)
-__attribute__((weak)) bool uGUIsMenuBase::changeFlow(u32 sw, bool force) {
-    DDON_STUB("uGUIsMenuBase::changeFlow")
-    return {};
+bool uGUIsMenuBase::changeFlow(u32 sw, bool force) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mSwitch == sw) {
+        if (force == false) {
+            return false;
+        }
+    }
+    this->mSwitch = sw;
+    this->::uGUIBase::setVariableParamFromId(this->mVAR_sw, sw, true);
+    this->::uGUIBase::setChangeFlowVariable(this->mVAR_change_flow, true);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIsMenuBase::updateInit);
+    this->::uGUI::play(0.0f);
+    this->execChangeFlow();
+    return true;
 }
 
 // Address: 0x00c591a0 - 0x00c591db (59 bytes)

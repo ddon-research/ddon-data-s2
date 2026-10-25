@@ -8951,6 +8951,570 @@ public:
 };
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuActiveList::cMenuActiveList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuAreaMasterHistory::cMenuAreaMasterHistory() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuAreaMasterQuestInfo::cMenuAreaMasterQuestInfo() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuAreaMasterSpotInfo::cMenuAreaMasterSpotInfo() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuAreaMasterSupplies::cMenuAreaMasterSupplies() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuBaggageMenu::cMenuBaggageMenu() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline bool cMenuBase::getNowMove() {
+    return this->mNowMoveFlag;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuBazaarBuy::cMenuBazaarBuy() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuBazaarMenu::cMenuBazaarMenu() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuBlackList::cMenuBlackList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuBreakupParty::cMenuBreakupParty() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCancelFriend::cMenuCancelFriend() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuChangeServer::cMenuChangeServer() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCharacterList::cMenuCharacterList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftColorItem::cMenuCraftColorItem() {
+    this->mKickPartyCtr = static_cast<u32>(0);
+    this->mIsEffect = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftCreateItem::cMenuCraftCreateItem() {
+    this->mNextMoveLine = static_cast<MOVE_LINE>(64);
+    this->mKickPartyCtr = static_cast<u32>(0);
+    this->mCreateStyle = static_cast<s32>(-1);
+    this->mErrorState = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftElementItem::cMenuCraftElementItem() {
+    this->mType = static_cast<u32>(0);
+    this->mSlotNo = static_cast<u32>(0);
+    this->mKickPartyCtr = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftGoldStoneDialog::cMenuCraftGoldStoneDialog() {
+    this->mType = static_cast<u32>(0);
+    this->mMoveLine = static_cast<MOVE_LINE>(64);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftItemSelect::cMenuCraftItemSelect() {
+    this->mReqType = static_cast<rItemList::MATERIAL_CATEGORY>(0);
+    this->mItemId = static_cast<u32>(0);
+    this->mListType = static_cast<u32>(0);
+    this->mSlotNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftMenu::cMenuCraftMenu() {
+    this->mRecipeList = static_cast<u32>(0);
+    this->mElementSlot = static_cast<u32>(0);
+    this->mColorSlot = static_cast<u32>(0);
+    this->mPawnSlot = static_cast<u32>(0);
+    this->mProcessSlot = static_cast<u32>(0);
+    this->mNextMoveLine = static_cast<MOVE_LINE>(64);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftMyPawnList::cMenuCraftMyPawnList() {
+    this->mSaveSlot = static_cast<u32>(0);
+    this->mListType = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftPoint::cMenuCraftPoint() {
+    this->mPointNum = static_cast<u32>(0);
+    this->mSkillReq = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftProcessMenu::cMenuCraftProcessMenu() {
+    this->mPawnSlot = static_cast<u32>(0);
+    this->mListType = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftRecipeList::cMenuCraftRecipeList() {
+    this->mCategory = static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftSupportList::cMenuCraftSupportList() {
+    this->mSlotNo = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftTask::cMenuCraftTask() {
+    this->mIsClassUp = false;
+    this->mIsReceiveFurniture = false;
+    this->mSaveIdx = static_cast<u32>(0);
+    this->mGetItemIdx = static_cast<u32>(0);
+    this->mMoveLine = static_cast<MOVE_LINE>(64);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftUpGradeItem::cMenuCraftUpGradeItem() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCraftUpGradeList::cMenuCraftUpGradeList() {
+    this->mCategory = static_cast<nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE>(0);
+    this->mIsEffect = false;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuCreateGameSession::cMenuCreateGameSession() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuEditFavoritePawn::cMenuEditFavoritePawn() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuEntryGameSession::cMenuEntryGameSession() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuFirstOption::cMenuFirstOption() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuFriendList::cMenuFriendList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetAreaMasterInfo::cMenuGetAreaMasterInfo() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetBlackList::cMenuGetBlackList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetCharacterName::cMenuGetCharacterName() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetCraftRecipeToServer::cMenuGetCraftRecipeToServer() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetFriendList::cMenuGetFriendList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetItemBaggageListToServer::cMenuGetItemBaggageListToServer() {
+    this->mStorageList.::MtArray::mAutoDelete = true;
+    this->mBagIdx = static_cast<u32>(0);
+    this->mBagNum = static_cast<u32>(0);
+    this->mServerResult = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetItemListToServer::cMenuGetItemListToServer() {
+    this->mBagIdx = static_cast<u32>(0);
+    this->mBagNum = static_cast<u32>(0);
+    this->mServerResult = static_cast<u32>(0);
+    this->mStorageList.::MtArray::mAutoDelete = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetMailList::cMenuGetMailList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetMatchingProfile::cMenuGetMatchingProfile() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetOrbGainExtendParam::cMenuGetOrbGainExtendParam() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetPawnName::cMenuGetPawnName() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGetRecentList::cMenuGetRecentList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuGroupChatMemberList::cMenuGroupChatMemberList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuInvite::cMenuInvite() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuJoinGameSession::cMenuJoinGameSession() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuJoinPartyFlow::cMenuJoinPartyFlow() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuKeyConfigSubMenu::cMenuKeyConfigSubMenu() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuLeaveGroupChat::cMenuLeaveGroupChat() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuLeaveOnTheWay::cMenuLeaveOnTheWay() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuLostPawnList::cMenuLostPawnList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuLostPawnRevive::cMenuLostPawnRevive() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMail::cMenuMail() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline u32 cMenuMail::getSortListCount() {
     return this->mSortListCount;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMailDelete::cMenuMailDelete() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMailDeleteMulti::cMenuMailDeleteMulti() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMailDetail::cMenuMailDetail() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMailGetItem::cMenuMailGetItem() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMailGetItemAll::cMenuMailGetItemAll() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMailToList::cMenuMailToList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMatchingProfile::cMenuMatchingProfile() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuMyPawnList::cMenuMyPawnList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuOnlineShop::cMenuOnlineShop() {
+    this->mType = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPartyList::cMenuPartyList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPartyListMemberInfo::cMenuPartyListMemberInfo() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPartyManager::cMenuPartyManager() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPartyMemberList::cMenuPartyMemberList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPartyReq::cMenuPartyReq() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnDelete::cMenuPawnDelete() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnFeedback::cMenuPawnFeedback() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnHistory::cMenuPawnHistory() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnManageMenu::cMenuPawnManageMenu() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnManager::cMenuPawnManager() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnPoint::cMenuPawnPoint() {
+    this->mPawnId = static_cast<u32>(0);
+    this->mUseSupportPointVec.::MtArray::mAutoDelete = true;
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnRental::cMenuPawnRental() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnReqList::cMenuPawnReqList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnReqMenu::cMenuPawnReqMenu() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnReturn::cMenuPawnReturn() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnRevive::cMenuPawnRevive() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnSetPartner::cMenuPawnSetPartner() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPawnShareRange::cMenuPawnShareRange() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuPlDeadMenu::cMenuPlDeadMenu() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuQuickMatch::cMenuQuickMatch() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuQuickMatchCancel::cMenuQuickMatchCancel() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuQuickMatchRetry::cMenuQuickMatchRetry() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuQuickMatchSelect::cMenuQuickMatchSelect() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuReadyCheck::cMenuReadyCheck() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuRecentList::cMenuRecentList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuRentalPawnList::cMenuRentalPawnList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuResetCraftPoint::cMenuResetCraftPoint() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuSearchFilter::cMenuSearchFilter() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuServerList::cMenuServerList() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuSetJob::cMenuSetJob() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuSetLevel::cMenuSetLevel() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuSetLimitPreset::cMenuSetLimitPreset() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuSimplePartyReq::cMenuSimplePartyReq() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuStartGameSession::cMenuStartGameSession() {
+    this->mStartType = static_cast<u32>(0);
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuTraining::cMenuTraining() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuTreasuresLot::cMenuTreasuresLot() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuTreasuresLotAnnounce::cMenuTreasuresLotAnnounce() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuUILargeSetting::cMenuUILargeSetting() {
+}
+
+// Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline cMenuUpdateCommunityList::cMenuUpdateCommunityList() {
 }

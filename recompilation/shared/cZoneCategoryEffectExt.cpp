@@ -66,8 +66,36 @@ inline void cZCEFLControl::operator delete(void* p_addr) {
 // Address: 0x00591e70 - 0x00591f15 (165 bytes)
 // Also emitted as: _ZN13cZCEFLControlD0Ev at 0x00591f20
 cZCEFLControl::~cZCEFLControl() {
-    DDON_STUB("cZCEFLControl::~cZCEFLControl")
-    /* stub */
+    // Approximate from the ELF: loops the one-loop renderer refuses, rendered through regions; the body oracle reports this body.
+    // inferred: cZCEffectControl declares no destructor; its implicit one is _ZN16cZCEffectControlD1Ev at 0x1a65ed0, one jmp to _ZN13cZoneContentsD2Ev
+    if (this->mSetList.::MtArray::mLength != static_cast<u32>(0)) {
+        // inferred: the value the loop at 0x591ea0 carries; no location-less local in scope fits
+        u32 v0_0 = this->mSetList.::MtArray::mLength;
+        // inferred: the counter this loop steps; no location-less local in scope fits
+        for (unsigned int i0_3 = static_cast<unsigned int>(0);;) {
+            if (this->mSetList.::MtArray::mpArray[i0_3] != static_cast<MtObject*>(nullptr)) {
+                delete this->mSetList.::MtArray::mpArray[i0_3];
+                if ((i0_3 + static_cast<unsigned int>(1)) < this->mSetList.::MtArray::mLength) {
+                    v0_0 = this->mSetList.::MtArray::mLength;
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            } else {
+                if ((i0_3 + static_cast<unsigned int>(1)) < v0_0) {
+                    i0_3 += static_cast<unsigned int>(1);
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (this->mSetList.::MtArray::mpArray != static_cast<MtObject* *>(nullptr)) {
+        ::MtMemoryAllocator::getAllocator(::MtArray::DTI)->memFree(static_cast<void*>(this->mSetList.::MtArray::mpArray));
+    }
+    this->mSetList.::MtArray::mpArray = static_cast<MtObject* *>(nullptr);
+    this->mSetList.::MtArray::mBufsiz = static_cast<u32>(0);
+    this->mSetList.::MtArray::mLength = static_cast<u32>(0);
 }
 
 // Address: 0x00591fe0 - 0x0059208c (172 bytes)
@@ -83,15 +111,27 @@ MtUI* cZCEFLControl::createUI(MtProperty& prop) {
 }
 
 // Address: 0x01a65c30 - 0x01a65c43 (19 bytes)
-__attribute__((weak)) cZCEFLControl::cResourceSet* cZCEFLControl::getResourceSet(u32 Index) {
-    DDON_STUB("cZCEFLControl::getResourceSet")
-    return nullptr;
+cZCEFLControl::cResourceSet* cZCEFLControl::getResourceSet(u32 Index) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (Index < this->mSetList.::MtArray::mLength) {
+        return static_cast<cZCEFLControl::cResourceSet*>(this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)]);
+    } else {
+        return static_cast<cZCEFLControl::cResourceSet*>(nullptr);
+    }
 }
 
 // Address: 0x01a65c50 - 0x01a65c9f (79 bytes)
-__attribute__((weak)) void cZCEFLControl::setResourceSet(cZCEFLControl::cResourceSet* pResourceSet, u32 Index) {
-    DDON_STUB("cZCEFLControl::setResourceSet")
-    /* stub */
+void cZCEFLControl::setResourceSet(cZCEFLControl::cResourceSet* pResourceSet, u32 Index) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    if (Index < this->mSetList.::MtArray::mLength) {
+        if (pResourceSet != this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)]) {
+            if (this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)] != static_cast<MtObject*>(nullptr)) {
+                delete this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)];
+                this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)] = static_cast<MtObject*>(nullptr);
+            }
+            this->mSetList.::MtArray::getBuffer()[static_cast<int>(Index)] = static_cast<MtObject*>(pResourceSet);
+        }
+    }
 }
 
 // Address: 0x01a65ca0 - 0x01a65ca4 (4 bytes)

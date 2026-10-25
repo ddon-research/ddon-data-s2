@@ -305,10 +305,30 @@ u32 MtDataReader::getPosition() {
 // u32 MtDataReader::getLength();
 
 // Address: 0x00dc1f20 - 0x00dc1fa6 (134 bytes)
-__attribute__((weak)) u32 MtDataReader::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
-    // local: u32 p;
-    DDON_STUB("MtDataReader::seek")
-    return {};
+u32 MtDataReader::seek(s32 offset, MtStream::SEEK_ORIGIN origin) {
+    // DWARF local not rendered: u32 p;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0x0 from MtStream*
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned long at 0xa0 from unsigned long
+    // inferred: a temporary for the value the load at 0xdc1f34 read, used 3 times; no DWARF local holds it
+    MtStream& t0 = this->mStream;
+    // inferred: a temporary for the value the load at 0xdc1f3b read, used once; no DWARF local holds it
+    unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&t0) + static_cast<long>(0))) + static_cast<long>(160));
+    if (origin == static_cast<MtStream::SEEK_ORIGIN>(1)) {
+        // inferred: a temporary for the result of the call at 0xdc1f4a, used once; no DWARF local holds it
+        u32 t2 = t0.getPosition();
+        // inferred: a temporary for the result of the call at 0xdc1f6c, used once; no DWARF local holds it
+        u32 t3 = t0.seek(static_cast<s32>(((offset - this->mBufsiz) + this->mSeekPt) + t2), static_cast<MtStream::SEEK_ORIGIN>(0));
+        this->mBufsiz = static_cast<u32>(0);
+        this->mSeekPt = static_cast<u32>(0);
+        return t3;
+    } else {
+        // inferred: a temporary for the result of the call at 0xdc1f7b, used once; no DWARF local holds it
+        u32 t4 = t0.seek(offset, origin);
+        this->mBufsiz = static_cast<u32>(0);
+        this->mSeekPt = static_cast<u32>(0);
+        return t4;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (26 bytes)

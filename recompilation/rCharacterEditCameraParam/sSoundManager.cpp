@@ -16,6 +16,7 @@
 #include "../shared/rSoundAreaInfo.h"
 #include "../shared/rSoundStreamRequest.h"
 #include "../shared/sQuestManagerExt.h"
+#include "../shared/sSound.h"
 #include "../shared/sSoundExt.h"
 #include "../shared/sWeatherManager.h"
 #ifndef DDON_STUB
@@ -327,9 +328,104 @@ __attribute__((weak)) void sSoundManager::updateBtlState() {
 // void sSoundManager::clrBtlState();
 
 // Address: 0x00859d30 - 0x00859e0c (220 bytes)
-__attribute__((weak)) u32 sSoundManager::getStgState() {
-    DDON_STUB("sSoundManager::getStgState")
-    return {};
+u32 sSoundManager::getStgState() {
+    // Approximate from the ELF: a test after the last call or store that only chooses the result; a value cast to the type its use takes, its width and signedness the instruction's; the body oracle reports this body.
+    // inferred: a value cast to the type its use takes: an operation no rule names, written on unsigned long
+    if (this->mBtlStateSnd[0] == static_cast<unsigned int>(0)) {
+        if (this->mIsEvent_222 == false) {
+            if (this->mIsBar_222 != false) {
+                return static_cast<unsigned int>((static_cast<unsigned long>(static_cast<sSoundExt*>(::sSound::getInstance())->::sSoundExt::checkStreamVoice(this->mprStg, this->mStgReqNo) == false) * static_cast<unsigned long>(8)) + static_cast<unsigned long>(3));
+            } else {
+                // inferred: a temporary for the result of the call at 0x859d90, used twice; no DWARF local holds it
+                rSoundAreaInfo* t0 = this->::sSoundManager::getSAR();
+                if (t0 != static_cast<rSoundAreaInfo*>(nullptr)) {
+                    if (t0->::rSoundAreaInfo::isCycleStage() != false) {
+                        if (this->mbCycleZone != false) {
+                            if (::sQuestManagerExt::getInstance()->::sQuestManagerExt::isCycleContentsHolding() == false) {
+                                if (this->mIsBase_222 == false) {
+                                    if (this->mIsJukeBox_222 != false) {
+                                        if (this->mIsJukeBoxChg != false) {
+                                            return static_cast<u32>(5);
+                                        } else {
+                                            return static_cast<u32>(4);
+                                        }
+                                    } else {
+                                        if (this->mIsNPC_222 != false) {
+                                            return static_cast<u32>(6);
+                                        } else {
+                                            return static_cast<u32>(1);
+                                        }
+                                    }
+                                } else {
+                                    return static_cast<u32>(2);
+                                }
+                            } else {
+                                return static_cast<u32>(9);
+                            }
+                        } else {
+                            if (this->mIsBase_222 == false) {
+                                if (this->mIsJukeBox_222 != false) {
+                                    if (this->mIsJukeBoxChg != false) {
+                                        return static_cast<u32>(5);
+                                    } else {
+                                        return static_cast<u32>(4);
+                                    }
+                                } else {
+                                    if (this->mIsNPC_222 != false) {
+                                        return static_cast<u32>(6);
+                                    } else {
+                                        return static_cast<u32>(1);
+                                    }
+                                }
+                            } else {
+                                return static_cast<u32>(2);
+                            }
+                        }
+                    } else {
+                        if (this->mIsBase_222 == false) {
+                            if (this->mIsJukeBox_222 != false) {
+                                if (this->mIsJukeBoxChg != false) {
+                                    return static_cast<u32>(5);
+                                } else {
+                                    return static_cast<u32>(4);
+                                }
+                            } else {
+                                if (this->mIsNPC_222 != false) {
+                                    return static_cast<u32>(6);
+                                } else {
+                                    return static_cast<u32>(1);
+                                }
+                            }
+                        } else {
+                            return static_cast<u32>(2);
+                        }
+                    }
+                } else {
+                    if (this->mIsBase_222 == false) {
+                        if (this->mIsJukeBox_222 != false) {
+                            if (this->mIsJukeBoxChg != false) {
+                                return static_cast<u32>(5);
+                            } else {
+                                return static_cast<u32>(4);
+                            }
+                        } else {
+                            if (this->mIsNPC_222 != false) {
+                                return static_cast<u32>(6);
+                            } else {
+                                return static_cast<u32>(1);
+                            }
+                        }
+                    } else {
+                        return static_cast<u32>(2);
+                    }
+                }
+            }
+        } else {
+            return static_cast<u32>(7);
+        }
+    } else {
+        return static_cast<u32>(10);
+    }
 }
 
 // Address: 0x00855670 - 0x0085648c (3612 bytes)

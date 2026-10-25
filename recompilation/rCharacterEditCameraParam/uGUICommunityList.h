@@ -605,6 +605,12 @@ inline rGUIMessage* uGUICommunityList::getMessageRes() {
 }
 
 // Inline, no code of its own: checked where it is inlined.
+// approximate: only approximate callers check this inline body
+inline uGUICommunityList* uGUICommunityList::cTabData::getOwner() {
+    return this->mpOwner;
+}
+
+// Inline, no code of its own: checked where it is inlined.
 inline uGUICommunityList::cTabDataInData::cTabDataInData() {
     this->mOwnerTabId = static_cast<u32>(0);
     this->mpName[0] = static_cast<char>(0);

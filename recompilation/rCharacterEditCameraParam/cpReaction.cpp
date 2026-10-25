@@ -76,8 +76,12 @@ cpReaction::cpReaction() {
 // Address: 0x0019dd60 - 0x0019dda4 (68 bytes)
 // Also emitted as: _ZN10cpReactionD0Ev at 0x0019ddb0
 cpReaction::~cpReaction() {
-    DDON_STUB("cpReaction::~cpReaction")
-    /* stub */
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (this->mprReaction == static_cast<rReaction*>(nullptr)) {
+        return;
+    }
+    this->mprReaction->::cResource::release();
+    this->mprReaction = static_cast<rReaction*>(nullptr);
 }
 
 // Address: 0x01981cb0 - 0x01981cb9 (9 bytes)

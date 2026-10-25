@@ -3,8 +3,10 @@
 #include "rHumanEnemyPreset.h"
 #include "../shared/MtAllocator.h"
 #include "../shared/MtDTI.h"
+#include "../shared/MtDataReader.h"
 #include "../shared/MtMemoryAllocator.h"
 #include "../shared/MtObject.h"
+#include "../shared/nDDOIO.h"
 #include "../shared/rTbl2.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -136,9 +138,28 @@ inline void rHumanEnemyPreset::operator delete(void* p_addr) {
 // void rHumanEnemyPreset::operator delete[](void* p_addr, u32 align);
 
 // Address: 0x0067f490 - 0x0067f565 (213 bytes)
-__attribute__((weak)) bool rHumanEnemyPreset::loadData(MtDataReader& r, cHumanEnemyPreset* pData) {
-    DDON_STUB("rHumanEnemyPreset::loadData")
-    return {};
+bool rHumanEnemyPreset::loadData(MtDataReader& r, cHumanEnemyPreset* pData) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mCustomSkillListId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mEquipListId);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mEditType);
+    // inferred: reference argument from the copy's one access
+    // inferred: argument from a callee-saved register at the copy's entry
+    ::nDDOIO::readData(r, pData->mIsDisableMontageRandam);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mIsDisableBeginBattleVoice = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    // inferred: a member kept in a register across a bool store is the copy's own read of it
+    pData->mIsOriginalCustomSkillArc = r.::MtDataReader::readU8() != static_cast<u8>(0);
+    return true;
 }
 
 // Address: 0x01a94d30 - 0x01a94d38 (8 bytes)

@@ -12,6 +12,7 @@
 #include "cUnit.h"
 #include "nDDOMath.h"
 #include "nDrawMaterial.h"
+#include "nDrawMaterialStdEst.h"
 #include "sEffectExt.h"
 #include "sOmManager.h"
 #include "sWeatherManager.h"
@@ -153,8 +154,63 @@ __attribute__((weak)) void cDDMaterialCtrl::setCommonState(nDraw::Material* pmat
 
 // Address: 0x000842e0 - 0x0008440e (302 bytes)
 __attribute__((weak)) void cDDMaterialCtrl::setCacheNone() {
-    DDON_STUB("cDDMaterialCtrl::setCacheNone")
-    /* stub */
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned char at 0x20 from MtObject*
+    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mBaseShaderData.::MtArray::mpArray[this->mBaseShaderMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
+        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mShaderData.::MtArray::mpArray[this->mShaderMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mEmissionData.::MtArray::mpArray[this->mEmissionMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mOutlineData.::MtArray::mpArray[this->mOutlineMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mMaterialData.::MtArray::mpArray[this->mMaterialMode]) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mAnimAdvData.::MtArray::mpArray) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
+                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mAnimRetData.::MtArray::mpArray) + static_cast<long>(32))) == static_cast<unsigned char>(0)) {
+                                if (static_cast<cDDMaterialCtrl::cShaderData*>(*this->mOldData.::MtArray::mpArray)->::cDDMaterialCtrl::cShaderData::getCacheFlag() != false) {
+                                    if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
+                                        this->mpOwner->mCommandCacheOffNow = true;
+                                    }
+                                }
+                            } else {
+                                if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
+                                    this->mpOwner->mCommandCacheOffNow = true;
+                                }
+                            }
+                        } else {
+                            if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
+                                this->mpOwner->mCommandCacheOffNow = true;
+                            }
+                        }
+                    } else {
+                        if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
+                            this->mpOwner->mCommandCacheOffNow = true;
+                        }
+                    }
+                } else {
+                    if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
+                        this->mpOwner->mCommandCacheOffNow = true;
+                    }
+                }
+            } else {
+                if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
+                    this->mpOwner->mCommandCacheOffNow = true;
+                }
+            }
+        } else {
+            if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
+                this->mpOwner->mCommandCacheOffNow = true;
+            }
+        }
+    } else {
+        if (this->mpOwner != static_cast<uBaseModel*>(nullptr)) {
+            this->mpOwner->mCommandCacheOffNow = true;
+        }
+    }
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mBaseShaderData.::MtArray::mpArray[this->mBaseShaderMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mShaderData.::MtArray::mpArray[this->mShaderMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mEmissionData.::MtArray::mpArray[this->mEmissionMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mOutlineData.::MtArray::mpArray[this->mOutlineMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this->mMaterialData.::MtArray::mpArray[this->mMaterialMode]) + static_cast<long>(32)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mAnimAdvData.::MtArray::mpArray) + static_cast<long>(32)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mAnimRetData.::MtArray::mpArray) + static_cast<long>(32)) = static_cast<unsigned char>(0);
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*this->mOldData.::MtArray::mpArray) + static_cast<long>(32)) = static_cast<unsigned char>(0);
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (50 bytes)
@@ -432,33 +488,33 @@ __attribute__((weak)) void cDDMaterialCtrl::resetAllMode() {
 // cDDMaterialCtrl::cShaderDataAnimationToDefault* cDDMaterialCtrl::getRetAnimData();
 
 // Address: 0x01964370 - 0x0196437b (11 bytes)
-__attribute__((weak)) cDDMaterialCtrl::cShaderDataDamage* cDDMaterialCtrl::getBaseShaderData(u32 index) {
-    DDON_STUB("cDDMaterialCtrl::getBaseShaderData")
-    return nullptr;
+cDDMaterialCtrl::cShaderDataDamage* cDDMaterialCtrl::getBaseShaderData(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<cDDMaterialCtrl::cShaderDataDamage*>(this->mBaseShaderData.::MtArray::mpArray[index]);
 }
 
 // Address: 0x019643b0 - 0x019643bb (11 bytes)
-__attribute__((weak)) cDDMaterialCtrl::cShaderDataStatusAilments* cDDMaterialCtrl::getShaderData(u32 index) {
-    DDON_STUB("cDDMaterialCtrl::getShaderData")
-    return nullptr;
+cDDMaterialCtrl::cShaderDataStatusAilments* cDDMaterialCtrl::getShaderData(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(this->mShaderData.::MtArray::mpArray[index]);
 }
 
 // Address: 0x019643f0 - 0x019643fe (14 bytes)
-__attribute__((weak)) cDDMaterialCtrl::cShaderDataEmission* cDDMaterialCtrl::getEmissionData(u32 index) {
-    DDON_STUB("cDDMaterialCtrl::getEmissionData")
-    return nullptr;
+cDDMaterialCtrl::cShaderDataEmission* cDDMaterialCtrl::getEmissionData(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<cDDMaterialCtrl::cShaderDataEmission*>(this->mEmissionData.::MtArray::mpArray[index]);
 }
 
 // Address: 0x01964430 - 0x0196443b (11 bytes)
-__attribute__((weak)) cDDMaterialCtrl::cShaderDataOutline* cDDMaterialCtrl::getOutlineData(u32 index) {
-    DDON_STUB("cDDMaterialCtrl::getOutlineData")
-    return nullptr;
+cDDMaterialCtrl::cShaderDataOutline* cDDMaterialCtrl::getOutlineData(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<cDDMaterialCtrl::cShaderDataOutline*>(this->mOutlineData.::MtArray::mpArray[index]);
 }
 
 // Address: 0x01964470 - 0x0196447e (14 bytes)
-__attribute__((weak)) cDDMaterialCtrl::cShaderDataMaterial* cDDMaterialCtrl::getMaterialData(u32 index) {
-    DDON_STUB("cDDMaterialCtrl::getMaterialData")
-    return nullptr;
+cDDMaterialCtrl::cShaderDataMaterial* cDDMaterialCtrl::getMaterialData(u32 index) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    return static_cast<cDDMaterialCtrl::cShaderDataMaterial*>(this->mMaterialData.::MtArray::mpArray[index]);
 }
 
 // Address: 0x01964380 - 0x01964381 (1 bytes)
@@ -1659,9 +1715,10 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataAnimation::addRequestData
 }
 
 // Address: 0x0008e610 - 0x0008e618 (8 bytes)
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataAnimation::judgeValidAnimation(cDDMaterialCtrl::TitleMaterial* pm) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataAnimation::judgeValidAnimation")
-    return {};
+bool cDDMaterialCtrl::cShaderDataAnimation::judgeValidAnimation(cDDMaterialCtrl::TitleMaterial* pm) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from cDDMaterialCtrl::cShaderDataAnimation*
+    return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48))) != static_cast<unsigned int>(0);
 }
 
 // Address: 0x0008e630 - 0x0008e63b (11 bytes)
@@ -3310,11 +3367,16 @@ inline void cDDMaterialCtrl::cShaderDataEmissionEye::operator delete(void* p_add
 // cDDMaterialCtrl::cShaderDataEmissionEye::~cShaderDataEmissionEye();
 
 // Address: 0x00086be0 - 0x00086bfb (27 bytes)
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataEmissionEye::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    // local: const u16 MATERIAL_EMISSION_EYE_ID_START;
-    // local: const u16 MATERIAL_EMISSION_EYE_ID_END;
-    DDON_STUB("cDDMaterialCtrl::cShaderDataEmissionEye::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataEmissionEye::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    // DWARF local not rendered: const u16 MATERIAL_EMISSION_EYE_ID_START;
+    // DWARF local not rendered: const u16 MATERIAL_EMISSION_EYE_ID_END;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
+    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
+        return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65236)) <= static_cast<unsigned short>(99);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00086c00 - 0x00086d03 (259 bytes)
@@ -3901,11 +3963,16 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchant::setCommo
 }
 
 // Address: 0x00089380 - 0x00089399 (25 bytes)
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataMaterialEnchant::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    // local: const u16 MATERIAL_ENCHANT_ID_START;
-    // local: const u16 MATERIAL_ENCHANT_ID_END;
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchant::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataMaterialEnchant::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    // DWARF local not rendered: const u16 MATERIAL_ENCHANT_ID_START;
+    // DWARF local not rendered: const u16 MATERIAL_ENCHANT_ID_END;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
+    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
+        return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65436)) <= static_cast<unsigned short>(99);
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 1 inlined copy in 1 function (34 bytes)
@@ -4366,9 +4433,10 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWaterColor::init(uBaseMod
 }
 
 // Address: 0x0008d870 - 0x0008d881 (17 bytes)
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataWaterColor::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataWaterColor::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataWaterColor::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
+    return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65436)) <= static_cast<unsigned short>(99);
 }
 
 // Address: 0x0008d890 - 0x0008dcc2 (1074 bytes)
@@ -4711,9 +4779,9 @@ void cDDMaterialCtrl::cShaderDataSdl::setUVTransformEnable(bool set) {
 // void cDDMaterialCtrl::cShaderDataSdl::setUVScale2(MtVector2& set, u32 index);
 
 // Address: 0x01964620 - 0x0196462c (12 bytes)
-__attribute__((weak)) cDDMaterialCtrl::cShaderDataSdlData* cDDMaterialCtrl::cShaderDataSdl::getSdlData(u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdl::getSdlData")
-    return nullptr;
+cDDMaterialCtrl::cShaderDataSdlData* cDDMaterialCtrl::cShaderDataSdl::getSdlData(u32 index) {
+    // Approximate from the ELF: a cast to the other signedness; the body oracle reports this body.
+    return static_cast<cDDMaterialCtrl::cShaderDataSdlData*>(this->mSdlData.::MtArray::getBuffer()[static_cast<int>(index)]);
 }
 
 // Address: 0x01964670 - 0x01964671 (1 bytes)
@@ -4722,9 +4790,10 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdl::setSdlData(cDDMateri
 }
 
 // Address: 0x01964680 - 0x01964684 (4 bytes)
-__attribute__((weak)) u32 cDDMaterialCtrl::cShaderDataSdl::getSdlDataNum() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdl::getSdlDataNum")
-    return {};
+u32 cDDMaterialCtrl::cShaderDataSdl::getSdlDataNum() {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned int at 0x30 from cDDMaterialCtrl::cShaderDataSdl*
+    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + static_cast<long>(48));
 }
 
 // Address: 0x01964690 - 0x01964691 (1 bytes)
@@ -5039,33 +5108,33 @@ void cDDMaterialCtrl::cShaderDataSdlData::setShininess(f32 set) {
 }
 
 // Address: 0x01964ab0 - 0x01964ad5 (37 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::setAlbedoColor(MtVector3& set) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::setAlbedoColor")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataSdlData::setAlbedoColor(MtVector3& set) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mAlbedoColor = set;
 }
 
 // Address: 0x01964ae0 - 0x01964b05 (37 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::setDiffuseColor(MtVector3& set) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::setDiffuseColor")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataSdlData::setDiffuseColor(MtVector3& set) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mDiffuseColor = set;
 }
 
 // Address: 0x01964b10 - 0x01964b41 (49 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::setSpecularColor(MtVector3& set) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::setSpecularColor")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataSdlData::setSpecularColor(MtVector3& set) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mSpecularColor = set;
 }
 
 // Address: 0x01964b50 - 0x01964b81 (49 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::setEmissionColor(MtVector3& set) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::setEmissionColor")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataSdlData::setEmissionColor(MtVector3& set) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mEmissionColor = set;
 }
 
 // Address: 0x01964b90 - 0x01964bc1 (49 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::setReflectiveColor(MtVector3& set) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::setReflectiveColor")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataSdlData::setReflectiveColor(MtVector3& set) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mReflectiveColor = set;
 }
 
 // Address: 0x01964bd0 - 0x01964bd9 (9 bytes)
@@ -5093,9 +5162,9 @@ void cDDMaterialCtrl::cShaderDataSdlData::setBAlbedoBlendRate(f32 set) {
 }
 
 // Address: 0x01964c10 - 0x01964c41 (49 bytes)
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataSdlData::setBBlendMapColor(MtVector3& set) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataSdlData::setBBlendMapColor")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataSdlData::setBBlendMapColor(MtVector3& set) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    this->mBBlendMapColor = set;
 }
 
 // Address: 0x01964c50 - 0x01964c59 (9 bytes)
@@ -5295,11 +5364,16 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::set
 }
 
 // Address: 0x0008ca40 - 0x0008ca59 (25 bytes)
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    // local: const u16 MATERIAL_ENCHANT_ID_START;
-    // local: const u16 MATERIAL_ENCHANT_ID_END;
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    // DWARF local not rendered: const u16 MATERIAL_ENCHANT_ID_START;
+    // DWARF local not rendered: const u16 MATERIAL_ENCHANT_ID_END;
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
+    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
+        return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65436)) <= static_cast<unsigned short>(99);
+    } else {
+        return false;
+    }
 }
 
 // No out-of-line body: 2 inlined copies in 2 functions (105 bytes)
@@ -5867,9 +5941,14 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::upd
 }
 
 // Address: 0x00091850 - 0x0009186b (27 bytes)
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataMaterialElementEnemy::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemy::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataMaterialElementEnemy::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
+    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
+        return static_cast<unsigned short>((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) + static_cast<int>(65036)) <= static_cast<unsigned short>(20);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x00091870 - 0x000919fc (396 bytes)
@@ -6248,9 +6327,14 @@ __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialOmBlink::update()
 }
 
 // Address: 0x0008e3a0 - 0x0008e3b1 (17 bytes)
-__attribute__((weak)) bool cDDMaterialCtrl::cShaderDataMaterialOmBlink::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialOmBlink::isSetCommonState")
-    return {};
+bool cDDMaterialCtrl::cShaderDataMaterialOmBlink::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
+    // Approximate from the ELF: a place no accessible member names, accessed by byte offset from its base; the body oracle reports this body.
+    // inferred: a place no accessible member names, by byte offset from its base: unsigned short at 0x20 from nDraw::MaterialStdEst*
+    if (pm != static_cast<cDDMaterialCtrl::TitleMaterial*>(nullptr)) {
+        return (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(pm) + static_cast<long>(32))) == static_cast<unsigned short>(0);
+    } else {
+        return false;
+    }
 }
 
 // Address: 0x0008e3c0 - 0x0008e459 (153 bytes)

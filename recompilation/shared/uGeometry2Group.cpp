@@ -192,9 +192,13 @@ __attribute__((weak)) void uGeometry2Group::restoreGeometryFromResource() {
 }
 
 // Address: 0x01314e30 - 0x01314e42 (18 bytes)
-__attribute__((weak)) uGeometry2* uGeometry2Group::getGeometryGroup(u32 GroupIndex) {
-    DDON_STUB("uGeometry2Group::getGeometryGroup")
-    return nullptr;
+uGeometry2* uGeometry2Group::getGeometryGroup(u32 GroupIndex) {
+    // Proven from the ELF: the body oracle checks this body (022 D5).
+    if (GroupIndex < this->mGeometryGroupArray.::MtArray::mLength) {
+        return static_cast<uGeometry2*>(this->mGeometryGroupArray.::MtArray::mpArray[GroupIndex]);
+    } else {
+        return static_cast<uGeometry2*>(nullptr);
+    }
 }
 
 // Address: 0x01314db0 - 0x01314db4 (4 bytes)
